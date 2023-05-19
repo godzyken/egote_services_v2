@@ -1,0 +1,90 @@
+name: egote_services_v2
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=3.1.0-15.0.dev <4.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.5
+  go_router: ^7.0.1
+  flutter_riverpod: ^2.3.6
+  riverpod_annotation: ^2.1.1
+  sentry_flutter: ^7.6.1
+  shared_preferences: ^2.1.1
+  firebase_auth: ^4.6.1
+  firebase_core: ^2.13.0
+  firebase_database: ^10.2.1
+  geoflutterfire2: 2.3.15
+  connectycube_sdk: ^2.5.5
+  connectivity_plus: ^4.0.1
+  freezed_annotation: 2.2.0
+  supabase_flutter: ^1.9.2
+  fpdart: 0.6.0
+  json_annotation: 4.8.1
+  uni_links: 0.5.1
+  uuid: 3.0.7
+  url_launcher: 6.1.11
+  cloud_firestore: ^4.7.1
+  sqflite: ^2.2.8+4
+  flutter: 
+    sdk: flutter
+
+dev_dependencies: 
+  flutter_lints: ^2.0.1
+  riverpod_generator: ^2.2.3
+  go_router_builder: ^2.0.1
+  build_runner: ^2.4.4
+  freezed: ^2.3.4
+  json_serializable: ^6.7.0
+  riverpod_lint: ^1.3.2
+  custom_lint: ^0.4.0
+  flutter_test: 
+    sdk: flutter
+
+flutter_gen: 
+  integrations: 
+    flutter_svg: true
+
+flutter: 
+  assets: 
+    - assets/lottie/image/carrelage_background.jpg
+    - assets/lottie/image/godzy_logo.png
+    - assets/lottie/image/logo_bat_services.png
+    - assets/lottie/image/digital-transformation-teaser.jpg
+    - assets/lottie/image/digital_transf.jpg
+    - assets/lottie/image/maison_indiv.png
+    - assets/lottie/image/appartement.png
+    - assets/lottie/image/triangle.png
+    - assets/lottie/archive/amenagement/interrieur/sol/matière/pvc/sol_pvc_holywell.png
+    - assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg
+    - assets/lottie/models/Android Robot.gif
+    - assets/lottie/models/AndroidRobot.gif
+    - assets/lottie/models/Arctic Fox (Sitting).gif
+    - assets/lottie/models/ArcticFox.gif
+    - assets/lottie/models/Toco Toucan.gif
+    - assets/lottie/models/TocoToucan.gif
+    - assets/lottie/models/fox_face_mesh_texture.png
+    - assets/lottie/models/prova_texture.png
+    - assets/lottie/models/venom.jpg
+    - assets/lottie/models/venom_with_eyes.jpg
+    - assets/lottie/models/earth.jpg
+    - assets/lottie/models/earth (2).jpg
+    - assets/lottie/models/earth_augmented_image.jpg
+    - assets/lottie/models/copertina.jpg
+    - assets/lottie/models/umano_digitale.png
+    - assets/lottie/models/myimages.imgdb
+    - assets/lottie/models/topolino.jpg
+    - assets/lottie/models/santa_maria_madalena/
+    - assets/lottie/models/
+    - assets/lottie/
+    - assets/json/
+  fonts: 
+    - family: Pacifico
+      fonts: 
+        - asset: assets/fonts/Pacifico-Regular.ttf
+        - style: italic
+
+  uses-material-design: true
+  generate: true
+
