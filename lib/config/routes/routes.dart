@@ -40,6 +40,7 @@ class UserHomeRoute extends GoRouteData {
   const UserHomeRoute({required this.pid});
 
   final String pid;
+
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
 

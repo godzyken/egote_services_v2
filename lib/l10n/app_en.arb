@@ -27,7 +27,7 @@
   "selectUserGuess": "select a guess User",
   "userFirstName": "User First Name",
   "cubeUserName": "enter CubeUser Name",
-  "Auth": "Auth",
+  "auth": "Auth",
   "surfaceArea": "enter surface area",
   "owner": "Owner",
   "ownerId": "Owner Id",
