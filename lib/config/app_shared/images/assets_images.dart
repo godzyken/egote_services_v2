@@ -43,13 +43,12 @@ class ImagesAssets with _$ImagesAssets {
       _$ImagesAssetsFromJson(json);
 }
 
-final assetList = StateNotifierProvider<ImageAssetsNotifier, ImagesAssets>(
+final assetList = StateNotifierProvider<ImageAssetsNotifier, List<ImagesAssets>>(
     (ref) => ImageAssetsNotifier());
 
-class ImageAssetsNotifier extends StateNotifier<ImagesAssets> {
-  ImageAssetsNotifier()
-      : super(const ImagesAssets.failed(
-            isLoading: false, message: 'Error loading image assets message')) {
+class ImageAssetsNotifier extends StateNotifier<List<ImagesAssets>> {
+  ImageAssetsNotifier([List<ImagesAssets>? state])
+      : super(state ?? <ImagesAssets>[]) {
     loadImages(true);
   }
 
@@ -76,9 +75,9 @@ class ImageAssetsNotifier extends StateNotifier<ImagesAssets> {
 
       final images = assetsList.map((e) => Images.fromJson(e)).toList();
       state = isLoading
-          ? ImagesAssets.loading(images: images, isLoading: true)
-          : const ImagesAssets.failed(
-              isLoading: false, message: 'Failed to load images assets');
+          ? <ImagesAssets>[ImagesAssets.loading(images: images, isLoading: true)].toList()
+          : <ImagesAssets>[const ImagesAssets.failed(
+              isLoading: false, message: 'Failed to load images assets')].toList();
     }
   }
 }

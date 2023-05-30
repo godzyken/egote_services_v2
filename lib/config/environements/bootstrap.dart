@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
-import '../app_shared/images/assets_images.dart';
 import 'flavors.dart';
 
 Future<ProviderContainer> bootstrap() async {
@@ -15,12 +14,12 @@ Future<ProviderContainer> bootstrap() async {
   binding
     ..deferFirstFrame()
     ..addPostFrameCallback((timeStamp) {
-      final Element? context = binding.rootElement;
-      if (context != null) {
-        for (final asset in assetList.dependencies!.toList()) {
-          precacheImage(AssetImage(asset.toString()), context);
-        }
-      }
+      // final Element? context = binding.rootElement;
+      // if (context != null) {
+      //   for (final asset in assetList.dependencies!.toList()) {
+      //     precacheImage(AssetImage(asset.toString()), context);
+      //   }
+      // }
       binding.allowFirstFrame();
     });
 

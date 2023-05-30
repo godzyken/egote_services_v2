@@ -23,7 +23,7 @@ part 'routes.g.dart';
   ],
 )
 class HomeRoute extends GoRouteData {
-  static const path = '/home';
+  static const path = '/';
   const HomeRoute();
 
   // any user signup and login redirects would go here
