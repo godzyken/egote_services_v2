@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:egote_services_v2/config/app_shared/images/list_local.dart';
 import 'package:egote_services_v2/features/home/application/home_controller.dart';
 import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
@@ -18,10 +20,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   bool animate = false;
 
+  int index = 0;
+  late Timer _timer;
+
+  final imageWidgets = [
+    const Image(image: AssetImage(LocalImages.maisonIndiv), key: Key('1'), fit: BoxFit.scaleDown, height: 300),
+    const Image(image: AssetImage(LocalImages.swimmingPoolSussargue), key: Key('2'), fit: BoxFit.scaleDown, height: 300),
+    const Image(image: AssetImage(LocalImages.apartmentPng), key: Key('3'), fit: BoxFit.scaleDown, height: 300),
+  ];
+
   @override
   void initState() {
     super.initState();
     startAnimation();
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      setState(() {
+        index = (index + 1) % imageWidgets.length;
+      });
+    });
   }
 
   @override
@@ -80,7 +96,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 1600),
                     opacity: animate ? 1 : 0,
-                    child: const Image(image: AssetImage(LocalImages.maisonIndiv)))),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 5000),
+                      reverseDuration: const Duration(milliseconds: 500),
+                      transitionBuilder: (child, animation) => ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      ),
+                      switchInCurve: Curves.decelerate,
+                      switchOutCurve: Curves.elasticOut,
+                      child: imageWidgets[index],
+                    ),
+                )),
             AnimatedPositioned(
                 duration: const Duration(milliseconds: 1600),
                 bottom: animate ? 0 : -10,
@@ -107,11 +134,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   Future startAnimation() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    setState(() => animate = true);
+    setState(() {
+      animate = true;
+    });
     await Future.delayed(const Duration(milliseconds: 5000));
 
   }
-
 }

@@ -215,7 +215,10 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
       ],
       errorBuilder: (context, state) =>
           ErrorScreen(error: state.error.toString()),
-      redirect: (context, state) {},
+      redirect: (context, state) {
+        // final loggingIn = state.matchedLocation == LoginRoute().location;
+        return null;
+      },
     ));
 
 // <---------------- Cube Provider --------------------> //

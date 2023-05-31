@@ -30,8 +30,14 @@ class HomeRoute extends GoRouteData {
   static const path = '/';
   const HomeRoute();
 
+/*  @override
+  FutureOr<String?> redirect(BuildContext context, GoRouterState state) async {
+    final userRole = await ProviderScope.containerOf(context).read(permissionsProvider.future);
+    return userRole
+  } */
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
+
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
