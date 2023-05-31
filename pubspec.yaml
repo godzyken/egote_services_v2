@@ -43,8 +43,8 @@ dev_dependencies:
   flutter_test: 
     sdk: flutter
 
-flutter_gen: 
-  integrations: 
+flutter_gen:
+  integrations:
     flutter_svg: true
 
 flutter: 
@@ -57,11 +57,11 @@ flutter:
     - assets/lottie/image/maison_indiv.png
     - assets/lottie/image/appartement.png
     - assets/lottie/image/triangle.png
-    - assets/lottie/archive/amenagement/interrieur/sol/matière/pvc/sol_pvc_holywell.png
+    - assets/lottie/archive/amenagement/interrieur/sol/matiere/pvc/sol_pvc_holywell.png
     - assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg
     - assets/lottie/models/Android Robot.gif
     - assets/lottie/models/AndroidRobot.gif
-    - assets/lottie/models/Arctic Fox (Sitting).gif
+    - assets/lottie/models/Arctic_Fox_Sitting.gif
     - assets/lottie/models/ArcticFox.gif
     - assets/lottie/models/Toco Toucan.gif
     - assets/lottie/models/TocoToucan.gif
@@ -70,7 +70,7 @@ flutter:
     - assets/lottie/models/venom.jpg
     - assets/lottie/models/venom_with_eyes.jpg
     - assets/lottie/models/earth.jpg
-    - assets/lottie/models/earth (2).jpg
+    - assets/lottie/models/earth_2.jpg
     - assets/lottie/models/earth_augmented_image.jpg
     - assets/lottie/models/copertina.jpg
     - assets/lottie/models/umano_digitale.png

@@ -19,6 +19,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
+import '../features/home/presentation/widget/godzylogo.dart';
 import '../firebase_options.dart';
 import 'environements/environment.dart';
 import 'environements/flavors.dart';
@@ -168,7 +169,7 @@ final userStreamProvider = StreamProvider.autoDispose<User?>((ref) {
 });*/
 
 // <---------------- GoRouter Provider --------------------> //
-final goRouterProvider = Provider<GoRouter>((_) => GoRouter(
+final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
       initialLocation: '/',
       routes: [
         GoRoute(
@@ -180,12 +181,16 @@ final goRouterProvider = Provider<GoRouter>((_) => GoRouter(
                   path: UserHomeRoute.path,
                   name: 'UserHome',
                   builder: (context, state) {
-                    final auth = _.watch(authControllerProvider);
-                    final cUser = _.watch(cubeEntityProvider);
+                    final auth = ref.watch(authControllerProvider);
+
                     return auth!.when((id, name) => UserHomeScreen(pid: id),
-                        complete: (id, name, authUser, cubeUser) =>
-                            ProfileScreen(
-                                uid: auth.id, pid: cUser.id.toString()),
+                        complete: (id, name, authUser, cubeUser) {
+                            final cUser = ref.watch(cubeEntityProvider);
+                            return ProfileScreen(
+                                uid: auth.id,
+                                pid: cUser.id.toString()
+                            );
+                          },
                         unComplete: (id, name, authUser) =>
                             UserHomeScreen(pid: auth.id));
                   },
@@ -195,12 +200,18 @@ final goRouterProvider = Provider<GoRouter>((_) => GoRouter(
                       name: 'profile',
                       builder: (context, state) {
                         return ProfileScreen(
-                            uid: _.watch(authStateChangesProvider).value!.uid,
-                            pid: _.watch(cubeEntityProvider).id.toString());
+                            uid: ref.watch(authStateChangesProvider).value!.uid,
+                            pid: ref.watch(cubeEntityProvider).id.toString());
                       },
                     )
-                  ])
-            ])
+                  ]),
+              GoRoute(
+                path: GodzyLogoRoute.path,
+                name: 'godzyRoute',
+                builder: (context, state) => const Godzylogo(),
+              ),
+            ]),
+
       ],
       errorBuilder: (context, state) =>
           ErrorScreen(error: state.error.toString()),

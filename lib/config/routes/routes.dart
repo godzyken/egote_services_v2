@@ -6,11 +6,12 @@ import '../../features/auth/presentation/views/screens/auth_screen.dart';
 import '../../features/auth/presentation/views/screens/profile_screen.dart';
 import '../../features/auth/presentation/views/screens/user_home_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
+import '../../features/home/presentation/widget/godzylogo.dart';
 
 part 'routes.g.dart';
 
 @TypedGoRoute<HomeRoute>(
-  path: "/",
+  path: HomeRoute.path,
   name: 'home',
   routes: [
     TypedGoRoute<UserHomeRoute>(
@@ -20,6 +21,9 @@ part 'routes.g.dart';
           TypedGoRoute<PersonRoute>(
               path: PersonRoute.path, name: 'person', routes: []),
         ]),
+    TypedGoRoute<GodzyLogoRoute>(
+        path: GodzyLogoRoute.path,
+        name: 'godzyRoute',),
   ],
 )
 class HomeRoute extends GoRouteData {
@@ -65,7 +69,7 @@ class PersonRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<AuthRoute>(path: AuthRoute.path, name: '/auth', routes: [])
+@TypedGoRoute<AuthRoute>(path: AuthRoute.path, name: 'auth', routes: [])
 class AuthRoute extends GoRouteData {
   static const path = 'auth_route';
   const AuthRoute();
@@ -82,7 +86,7 @@ class AuthRoute extends GoRouteData {
 }
 
 class DevisEditRoute extends GoRouteData {
-  static const path = '/edit_devis:did';
+  static const path = 'edit_devis:did';
   const DevisEditRoute({required this.did});
 
   final int did;
@@ -90,5 +94,20 @@ class DevisEditRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return DevisEditScreen(did: did);
+  }
+}
+
+class GodzyLogoRoute extends GoRouteData {
+  static const path = 'godzyRoute';
+  const GodzyLogoRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const Godzylogo();
   }
 }

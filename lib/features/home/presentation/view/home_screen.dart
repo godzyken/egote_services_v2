@@ -1,7 +1,10 @@
+import 'package:egote_services_v2/config/app_shared/images/list_local.dart';
 import 'package:egote_services_v2/features/home/application/home_controller.dart';
+import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -12,6 +15,15 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+
+  bool animate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    startAnimation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
@@ -58,16 +70,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
-        body: const Text('hello', style: TextStyle(color: Colors.amber),),
+        body: Stack(
+          children: [
+            AnimatedPositioned(
+                duration: const Duration(milliseconds: 1600),
+                top: animate ? 0 : -80,
+                left: animate ? 0 : -80,
+                curve: Curves.elasticInOut,
+                child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 1600),
+                    opacity: animate ? 1 : 0,
+                    child: const Image(image: AssetImage(LocalImages.maisonIndiv)))),
+            AnimatedPositioned(
+                duration: const Duration(milliseconds: 1600),
+                bottom: animate ? 0 : -10,
+                left: animate ? 0 : -30,
+                curve: Curves.fastLinearToSlowEaseIn,
+                child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 1600),
+                    opacity: animate ? 1 : 0,
+                    child: const Image(
+                        width: 250,
+                        height: 250,
+                        image: AssetImage(LocalImages.logoBatServices)
+                    ))),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: const Text(
-              "Go stuff",
-              style: TextStyle(color: Colors.blue),
+            onPressed: () => context.go('/godzyRoute'),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15.0),
+              clipBehavior: Clip.hardEdge,
+              child: const Godzylogo(),
             )),
       );
     });
   }
 
+  Future startAnimation() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() => animate = true);
+    await Future.delayed(const Duration(milliseconds: 5000));
+
+  }
 
 }

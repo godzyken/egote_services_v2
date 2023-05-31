@@ -14,12 +14,13 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
-    final router = ref.watch(goRouterProvider);
+    final router = ref.read(goRouterProvider);
     return MaterialApp.router(
       title: F.title,
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
+      // routerDelegate: router.routerDelegate,
+      // routeInformationParser: router.routeInformationParser,
+      // routeInformationProvider: router.routeInformationProvider,
+      routerConfig: router,
     );
   }
 }
