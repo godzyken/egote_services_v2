@@ -1,4 +1,5 @@
 import 'package:egote_services_v2/config/providers.dart';
+import 'package:egote_services_v2/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,6 +22,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       // routeInformationParser: router.routeInformationParser,
       // routeInformationProvider: router.routeInformationProvider,
       routerConfig: router,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }

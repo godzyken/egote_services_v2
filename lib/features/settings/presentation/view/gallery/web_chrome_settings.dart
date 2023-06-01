@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import '../../../application/navigation/navigation.dart';
+import '../../../../common/application/navigation/navigation.dart';
 import 'gallery.dart';
 
 class WebChromeSettings extends ConsumerWidget {

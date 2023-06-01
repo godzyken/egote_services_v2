@@ -2,9 +2,7 @@ import 'package:egote_services_v2/features/devis/presentation/views/screens/devi
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/auth/presentation/views/screens/auth_screen.dart';
-import '../../features/auth/presentation/views/screens/profile_screen.dart';
-import '../../features/auth/presentation/views/screens/user_home_screen.dart';
+import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
 import '../../features/home/presentation/view/home_screen.dart';
 import '../../features/home/presentation/widget/godzylogo.dart';
@@ -102,9 +100,14 @@ class PersonRoute extends GoRouteData {
   }
 }
 
-@TypedGoRoute<AuthRoute>(path: AuthRoute.path, name: 'auth', routes: [])
+@TypedGoRoute<AuthRoute>(path: AuthRoute.path, name: 'auth', routes: [
+  TypedGoRoute<LoginRoute>(
+      path: LoginRoute.path,
+      name: 'loginRoute',
+  ),
+])
 class AuthRoute extends GoRouteData {
-  static const path = 'auth_route';
+  static const path = 'authRoute';
   const AuthRoute();
 
   @override
@@ -115,6 +118,21 @@ class AuthRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const AuthScreen();
+  }
+}
+
+class LoginRoute extends GoRouteData {
+  static const path = 'loginRoute';
+  const LoginRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const LoginScreen();
   }
 }
 

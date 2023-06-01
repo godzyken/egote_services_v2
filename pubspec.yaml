@@ -32,6 +32,9 @@ dependencies:
   path_provider: ^2.0.15
   comment_box: ^0.0.18
   settings_ui: ^2.0.2
+  intl: ^0.18.1
+  formz: ^0.6.0
+  flutter_localization: ^0.1.11
 
 dev_dependencies: 
   flutter_lints: ^2.0.1

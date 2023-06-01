@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -90,6 +91,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             AnimatedPositioned(
                 duration: const Duration(milliseconds: 1600),
+                onEnd: () => context.go('/authRoute'),
                 top: animate ? 0 : -80,
                 left: animate ? 0 : -80,
                 curve: Curves.elasticInOut,
@@ -147,6 +149,5 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       animate = true;
     });
     await Future.delayed(const Duration(milliseconds: 5000));
-
   }
 }

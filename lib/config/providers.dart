@@ -2,9 +2,6 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
-import 'package:egote_services_v2/config/routes/routes.dart';
-import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
-import 'package:egote_services_v2/features/home/presentation/view/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -16,9 +13,12 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
+import '../config/routes/routes.dart';
+import '../features/auth/domain/providers/auth_repository_provider.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
+import '../features/home/presentation/view/home_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
 import '../features/settings/presentation/view/gallery/gallery.dart';
 import '../features/settings/presentation/view/settings_ui_page.dart';
@@ -179,6 +179,11 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
             name: 'home',
             builder: (context, state) => const HomeScreen(),
             routes: [
+              GoRoute(
+                  path: AuthRoute.path,
+                  name: 'auth',
+                  builder: (context, state) => const AuthScreen(),
+              ),
               GoRoute(
                   path: UserHomeRoute.path,
                   name: 'UserHome',
