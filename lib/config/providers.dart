@@ -4,9 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/config/routes/routes.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
-import 'package:egote_services_v2/features/auth/presentation/views/screens/profile_screen.dart';
-import 'package:egote_services_v2/features/auth/presentation/views/screens/user_home_screen.dart';
-import 'package:egote_services_v2/features/common/presentation/views/screens/error_screen.dart';
 import 'package:egote_services_v2/features/home/presentation/view/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,7 +16,12 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
+import '../features/auth/presentation/views/screens/auth_screens.dart';
+import '../features/avis/presentation/view/avis_box_page.dart';
+import '../features/common/presentation/views/screens/error_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
+import '../features/settings/presentation/view/gallery/gallery.dart';
+import '../features/settings/presentation/view/settings_ui_page.dart';
 import '../firebase_options.dart';
 import 'environements/environment.dart';
 import 'environements/flavors.dart';
@@ -210,8 +212,39 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                 name: 'godzyRoute',
                 builder: (context, state) => const Godzylogo(),
               ),
+              GoRoute(
+                path: AvisBoxRoute.path,
+                name: 'avisRoute',
+                builder: (context, state) => const AvisBoxPage(),
+              ),
+              GoRoute(
+                path: SettingsUiRoute.path,
+                name: 'settingsRoute',
+                builder: (context, state) => const SettingsUiPage(),
+                routes: [
+                  GoRoute(
+                    path: CrossPlatformSettingsRoute.path,
+                    name: 'crossPlatformRoute',
+                    builder: (context, state) => const CrossPlatformSettingsScreen(),
+                  ),
+                  GoRoute(
+                    path: WebChromeAddressesRoute.path,
+                    name: 'webChromeAddressesRoute',
+                    builder: (context, state) => const WebChromeAddressesScreen(),
+                  ),
+                  GoRoute(
+                    path: AndroidNotificationsRoute.path,
+                    name: 'androidNotificationsRoute',
+                    builder: (context, state) => const AndroidNotificationsScreen(),
+                  ),
+                  GoRoute(
+                    path: WebChromeSettingsRoute.path,
+                    name: 'webChromeSettingsRoute',
+                    builder: (context, state) => const WebChromeSettings(),
+                  ),
+                ]
+              ),
             ]),
-
       ],
       errorBuilder: (context, state) =>
           ErrorScreen(error: state.error.toString()),

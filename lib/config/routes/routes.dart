@@ -5,8 +5,14 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/views/screens/auth_screen.dart';
 import '../../features/auth/presentation/views/screens/profile_screen.dart';
 import '../../features/auth/presentation/views/screens/user_home_screen.dart';
+import '../../features/avis/presentation/view/avis_box_page.dart';
 import '../../features/home/presentation/view/home_screen.dart';
 import '../../features/home/presentation/widget/godzylogo.dart';
+import '../../features/settings/presentation/view/gallery/android_notifications_screen.dart';
+import '../../features/settings/presentation/view/gallery/cross_platform_settings_screen.dart';
+import '../../features/settings/presentation/view/gallery/web_chrome_addresses_screen.dart';
+import '../../features/settings/presentation/view/gallery/web_chrome_settings.dart';
+import '../../features/settings/presentation/view/settings_ui_page.dart';
 
 part 'routes.g.dart';
 
@@ -24,6 +30,27 @@ part 'routes.g.dart';
     TypedGoRoute<GodzyLogoRoute>(
         path: GodzyLogoRoute.path,
         name: 'godzyRoute',),
+    TypedGoRoute<AvisBoxRoute>(
+        path: AvisBoxRoute.path,
+        name: 'avisRoute',),
+    TypedGoRoute<SettingsUiRoute>(
+        path: SettingsUiRoute.path,
+        name: 'settingsRoute',
+        routes: [
+          TypedGoRoute<CrossPlatformSettingsRoute>(
+            path: CrossPlatformSettingsRoute.path,
+            name: 'crossPlatformRoute',),
+          TypedGoRoute<WebChromeAddressesRoute>(
+            path: WebChromeAddressesRoute.path,
+            name: 'webChromeAddressesRoute',),
+          TypedGoRoute<AndroidNotificationsRoute>(
+            path: AndroidNotificationsRoute.path,
+            name: 'androidNotificationsRoute',),
+          TypedGoRoute<WebChromeSettingsRoute>(
+            path: WebChromeSettingsRoute.path,
+            name: 'webChromeSettingsRoute',),
+        ]
+    ),
   ],
 )
 class HomeRoute extends GoRouteData {
@@ -115,5 +142,95 @@ class GodzyLogoRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const Godzylogo();
+  }
+}
+
+class AvisBoxRoute extends GoRouteData {
+  static const path = 'avisRoute';
+  const AvisBoxRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AvisBoxPage();
+  }
+}
+
+class SettingsUiRoute extends GoRouteData {
+  static const path = 'settingsRoute';
+  const SettingsUiRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SettingsUiPage();
+  }
+}
+
+class CrossPlatformSettingsRoute extends GoRouteData {
+  static const path = 'crossPlatformRoute';
+  const CrossPlatformSettingsRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CrossPlatformSettingsScreen();
+  }
+}
+
+class WebChromeAddressesRoute extends GoRouteData {
+  static const path = 'webChromeAddressesRoute';
+  const WebChromeAddressesRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const WebChromeAddressesScreen();
+  }
+}
+
+class AndroidNotificationsRoute extends GoRouteData {
+  static const path = 'androidNotificationsRoute';
+  const AndroidNotificationsRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const AndroidNotificationsScreen();
+  }
+}
+
+class WebChromeSettingsRoute extends GoRouteData {
+  static const path = 'webChromeSettingsRoute';
+  const WebChromeSettingsRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const WebChromeSettings();
   }
 }
