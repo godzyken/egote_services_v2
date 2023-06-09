@@ -98,7 +98,7 @@ class AuthUserDatabaseImpl implements SourceBase {
   }
 
   @override
-  Future<UserEntity> insertBoat(final UserEntity user) async {
+  Future<UserEntity> insertUser(final UserEntity user) async {
     final db = await _ensureInitialized();
     late final UserEntity userEntity;
     await db.transaction((txn) async {

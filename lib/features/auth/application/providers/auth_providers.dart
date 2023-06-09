@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/sign_in/sign_in_state.dart';
 import '../../domain/entities/sign_up/sign_up_state.dart';
 import '../../domain/providers/auth_repository_provider.dart';
-import '../../presentation/controller/controller_extensions.dart';
+import '../controller/controller_extensions.dart';
 
 final signInWithGoogleProvider =
 StateNotifierProvider.autoDispose<SignInWithGoogleController, bool>((ref) {

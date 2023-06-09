@@ -13,8 +13,12 @@ class AuthScreen extends ConsumerWidget {
 
       return _authState.when(
           data: (user) {
-            if (user != null) return UserHomeScreen(pid: user.uid);
-            return const LoginScreen();
+            if (user != null) return const LoginScreen();
+            return const SignUpScreen();
+            //return const UserHomeScreen(pid: 'calvinator01');
+            //return const DrawingPage();
+            //return ProfileScreen(uid: user!.uid, pid: users.single.id.toString());
+            //return const ProfileScreen(uid: 'maavis', pid: 'cubanitos');
           },
           error: (error, stackTrace) => ErrorWidget(error),
           loading: () => const Center(

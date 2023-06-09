@@ -6,11 +6,9 @@ import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
 import '../../features/home/presentation/view/home_screen.dart';
 import '../../features/home/presentation/widget/godzylogo.dart';
-import '../../features/settings/presentation/view/gallery/android_notifications_screen.dart';
-import '../../features/settings/presentation/view/gallery/cross_platform_settings_screen.dart';
-import '../../features/settings/presentation/view/gallery/web_chrome_addresses_screen.dart';
-import '../../features/settings/presentation/view/gallery/web_chrome_settings.dart';
+import '../../features/settings/presentation/view/gallery/gallery.dart';
 import '../../features/settings/presentation/view/settings_ui_page.dart';
+import '../../features/sketch/presentation/view/drawing_page.dart';
 
 part 'routes.g.dart';
 
@@ -105,6 +103,10 @@ class PersonRoute extends GoRouteData {
       path: LoginRoute.path,
       name: 'loginRoute',
   ),
+  TypedGoRoute<SignUpRoute>(
+      path: SignUpRoute.path,
+      name: 'signUpRoute',
+  ),
 ])
 class AuthRoute extends GoRouteData {
   static const path = 'authRoute';
@@ -133,6 +135,21 @@ class LoginRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const LoginScreen();
+  }
+}
+
+class SignUpRoute extends GoRouteData {
+  static const path = 'signUpRoute';
+  const SignUpRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SignUpScreen();
   }
 }
 
@@ -250,5 +267,20 @@ class WebChromeSettingsRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const WebChromeSettings();
+  }
+}
+
+class DrawingRoute extends GoRouteData {
+  static const path = 'drawingRoute';
+  const DrawingRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const DrawingPage();
   }
 }

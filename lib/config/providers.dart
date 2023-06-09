@@ -22,6 +22,7 @@ import '../features/home/presentation/view/home_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
 import '../features/settings/presentation/view/gallery/gallery.dart';
 import '../features/settings/presentation/view/settings_ui_page.dart';
+import '../features/sketch/presentation/view/drawing_page.dart';
 import '../firebase_options.dart';
 import 'environements/environment.dart';
 import 'environements/flavors.dart';
@@ -62,11 +63,24 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
   final env =
       Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
-  return supabase.Supabase.initialize(
+  final client = supabase.GoTrueClient(
+    url: 'http://localhost:3000/',
+    autoRefreshToken: true,
+
+    headers: {
+      "alg": "HS256",
+      "typ": "JWT",
+      "apiKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2FubmJoYW5zZmxid3lkcmd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzU3Nzg3OTcsImV4cCI6MTk5MTM1NDc5N30.26lZFFX3_TBhdqsjvqD7WUGiRhTFT05QwVZaUsIATo0",
+      "httpClient": "https://localhost:3000/"
+    },
+  );
+
+  return await supabase.Supabase.initialize(
     url: env.supabaseUrl,
     anonKey: env.supabaseAnonKey,
     debug: kDebugMode,
     authCallbackUrlHostname: env.supabaseAuthCallbackUrlHostname,
+    headers: client.headers,
   );
 });
 
@@ -190,16 +204,17 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                   builder: (context, state) {
                     final auth = ref.watch(authControllerProvider);
 
-                    return auth!.when((id, name) => UserHomeScreen(pid: id),
+                    return auth!.when(
+                            (id, name, createdAt, updatedAt, emailConfirmedAt, phoneConfirmedAt, lastSignInAt, role) => UserHomeScreen(pid: id.value.toString()),
                         complete: (id, name, authUser, cubeUser) {
                             final cUser = ref.watch(cubeEntityProvider);
                             return ProfileScreen(
-                                uid: auth.id,
+                                uid: auth.id.toString(),
                                 pid: cUser.id.toString()
                             );
                           },
                         unComplete: (id, name, authUser) =>
-                            UserHomeScreen(pid: auth.id));
+                            UserHomeScreen(pid: auth.id.toString()));
                   },
                   routes: [
                     GoRoute(
@@ -210,6 +225,11 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                             uid: ref.watch(authStateChangesProvider).value!.uid,
                             pid: ref.watch(cubeEntityProvider).id.toString());
                       },
+                    ),
+                    GoRoute(
+                        path: DrawingRoute.path,
+                      name: 'drawingRoute',
+                      builder: (context, state) => const DrawingPage(),
                     )
                   ]),
               GoRoute(

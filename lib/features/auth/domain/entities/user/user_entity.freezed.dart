@@ -31,12 +31,21 @@ UserEntityModel _$UserEntityModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserEntityModel {
-  String get id => throw _privateConstructorUsedError;
+  Object get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, String name) $default, {
-    required TResult Function(String id, String name,
+    TResult Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)
+        $default, {
+    required TResult Function(UserId id, String name,
             @UserConverter() AuthUser authUser, CubeUser cubeUser)
         complete,
     required TResult Function(
@@ -46,8 +55,17 @@ mixin _$UserEntityModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, String name)? $default, {
-    TResult? Function(String id, String name,
+    TResult? Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)?
+        $default, {
+    TResult? Function(UserId id, String name,
             @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult? Function(
@@ -57,8 +75,17 @@ mixin _$UserEntityModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, String name)? $default, {
-    TResult Function(String id, String name, @UserConverter() AuthUser authUser,
+    TResult Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)?
+        $default, {
+    TResult Function(UserId id, String name, @UserConverter() AuthUser authUser,
             CubeUser cubeUser)?
         complete,
     TResult Function(
@@ -101,7 +128,7 @@ abstract class $UserEntityModelCopyWith<$Res> {
           UserEntityModel value, $Res Function(UserEntityModel) then) =
       _$UserEntityModelCopyWithImpl<$Res, UserEntityModel>;
   @useResult
-  $Res call({String id, String name});
+  $Res call({String name});
 }
 
 /// @nodoc
@@ -117,14 +144,9 @@ class _$UserEntityModelCopyWithImpl<$Res, $Val extends UserEntityModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? name = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -141,7 +163,17 @@ abstract class _$$_UserEntityModelInitCopyWith<$Res>
       __$$_UserEntityModelInitCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name});
+  $Res call(
+      {UserId id,
+      String name,
+      @JsonKey(includeIfNull: false) DateTime? createdAt,
+      @JsonKey(includeIfNull: false) DateTime? updatedAt,
+      @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+      @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+      @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+      String? role});
+
+  $UserIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -157,17 +189,55 @@ class __$$_UserEntityModelInitCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? emailConfirmedAt = freezed,
+    Object? phoneConfirmedAt = freezed,
+    Object? lastSignInAt = freezed,
+    Object? role = freezed,
   }) {
     return _then(_$_UserEntityModelInit(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as UserId,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      emailConfirmedAt: freezed == emailConfirmedAt
+          ? _value.emailConfirmedAt
+          : emailConfirmedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      phoneConfirmedAt: freezed == phoneConfirmedAt
+          ? _value.phoneConfirmedAt
+          : phoneConfirmedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      lastSignInAt: freezed == lastSignInAt
+          ? _value.lastSignInAt
+          : lastSignInAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserIdCopyWith<$Res> get id {
+    return $UserIdCopyWith<$Res>(_value.id, (value) {
+      return _then(_value.copyWith(id: value));
+    });
   }
 }
 
@@ -176,23 +246,48 @@ class __$$_UserEntityModelInitCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class _$_UserEntityModelInit implements _UserEntityModelInit {
   const _$_UserEntityModelInit(
-      {required this.id, required this.name, final String? $type})
+      {required this.id,
+      required this.name,
+      @JsonKey(includeIfNull: false) this.createdAt,
+      @JsonKey(includeIfNull: false) this.updatedAt,
+      @JsonKey(includeIfNull: false) this.emailConfirmedAt,
+      @JsonKey(includeIfNull: false) this.phoneConfirmedAt,
+      @JsonKey(includeIfNull: false) this.lastSignInAt,
+      this.role,
+      final String? $type})
       : $type = $type ?? 'default';
 
   factory _$_UserEntityModelInit.fromJson(Map<String, dynamic> json) =>
       _$$_UserEntityModelInitFromJson(json);
 
   @override
-  final String id;
+  final UserId id;
   @override
   final String name;
+  @override
+  @JsonKey(includeIfNull: false)
+  final DateTime? createdAt;
+  @override
+  @JsonKey(includeIfNull: false)
+  final DateTime? updatedAt;
+  @override
+  @JsonKey(includeIfNull: false)
+  final DateTime? emailConfirmedAt;
+  @override
+  @JsonKey(includeIfNull: false)
+  final DateTime? phoneConfirmedAt;
+  @override
+  @JsonKey(includeIfNull: false)
+  final DateTime? lastSignInAt;
+  @override
+  final String? role;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'UserEntityModel(id: $id, name: $name)';
+    return 'UserEntityModel(id: $id, name: $name, createdAt: $createdAt, updatedAt: $updatedAt, emailConfirmedAt: $emailConfirmedAt, phoneConfirmedAt: $phoneConfirmedAt, lastSignInAt: $lastSignInAt, role: $role)';
   }
 
   @override
@@ -201,12 +296,24 @@ class _$_UserEntityModelInit implements _UserEntityModelInit {
         (other.runtimeType == runtimeType &&
             other is _$_UserEntityModelInit &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.emailConfirmedAt, emailConfirmedAt) ||
+                other.emailConfirmedAt == emailConfirmedAt) &&
+            (identical(other.phoneConfirmedAt, phoneConfirmedAt) ||
+                other.phoneConfirmedAt == phoneConfirmedAt) &&
+            (identical(other.lastSignInAt, lastSignInAt) ||
+                other.lastSignInAt == lastSignInAt) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, name, createdAt, updatedAt,
+      emailConfirmedAt, phoneConfirmedAt, lastSignInAt, role);
 
   @JsonKey(ignore: true)
   @override
@@ -218,36 +325,65 @@ class _$_UserEntityModelInit implements _UserEntityModelInit {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, String name) $default, {
-    required TResult Function(String id, String name,
+    TResult Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)
+        $default, {
+    required TResult Function(UserId id, String name,
             @UserConverter() AuthUser authUser, CubeUser cubeUser)
         complete,
     required TResult Function(
             String id, String name, @UserConverter() AuthUser authUser)
         unComplete,
   }) {
-    return $default(id, name);
+    return $default(id, name, createdAt, updatedAt, emailConfirmedAt,
+        phoneConfirmedAt, lastSignInAt, role);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, String name)? $default, {
-    TResult? Function(String id, String name,
+    TResult? Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)?
+        $default, {
+    TResult? Function(UserId id, String name,
             @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult? Function(
             String id, String name, @UserConverter() AuthUser authUser)?
         unComplete,
   }) {
-    return $default?.call(id, name);
+    return $default?.call(id, name, createdAt, updatedAt, emailConfirmedAt,
+        phoneConfirmedAt, lastSignInAt, role);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, String name)? $default, {
-    TResult Function(String id, String name, @UserConverter() AuthUser authUser,
+    TResult Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)?
+        $default, {
+    TResult Function(UserId id, String name, @UserConverter() AuthUser authUser,
             CubeUser cubeUser)?
         complete,
     TResult Function(
@@ -256,7 +392,8 @@ class _$_UserEntityModelInit implements _UserEntityModelInit {
     required TResult orElse(),
   }) {
     if ($default != null) {
-      return $default(id, name);
+      return $default(id, name, createdAt, updatedAt, emailConfirmedAt,
+          phoneConfirmedAt, lastSignInAt, role);
     }
     return orElse();
   }
@@ -305,16 +442,33 @@ class _$_UserEntityModelInit implements _UserEntityModelInit {
 
 abstract class _UserEntityModelInit implements UserEntityModel {
   const factory _UserEntityModelInit(
-      {required final String id,
-      required final String name}) = _$_UserEntityModelInit;
+      {required final UserId id,
+      required final String name,
+      @JsonKey(includeIfNull: false) final DateTime? createdAt,
+      @JsonKey(includeIfNull: false) final DateTime? updatedAt,
+      @JsonKey(includeIfNull: false) final DateTime? emailConfirmedAt,
+      @JsonKey(includeIfNull: false) final DateTime? phoneConfirmedAt,
+      @JsonKey(includeIfNull: false) final DateTime? lastSignInAt,
+      final String? role}) = _$_UserEntityModelInit;
 
   factory _UserEntityModelInit.fromJson(Map<String, dynamic> json) =
       _$_UserEntityModelInit.fromJson;
 
   @override
-  String get id;
+  UserId get id;
   @override
   String get name;
+  @JsonKey(includeIfNull: false)
+  DateTime? get createdAt;
+  @JsonKey(includeIfNull: false)
+  DateTime? get updatedAt;
+  @JsonKey(includeIfNull: false)
+  DateTime? get emailConfirmedAt;
+  @JsonKey(includeIfNull: false)
+  DateTime? get phoneConfirmedAt;
+  @JsonKey(includeIfNull: false)
+  DateTime? get lastSignInAt;
+  String? get role;
   @override
   @JsonKey(ignore: true)
   _$$_UserEntityModelInitCopyWith<_$_UserEntityModelInit> get copyWith =>
@@ -330,10 +484,12 @@ abstract class _$$_UserEntityModelCompleteCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
+      {UserId id,
       String name,
       @UserConverter() AuthUser authUser,
       CubeUser cubeUser});
+
+  $UserIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -356,7 +512,7 @@ class __$$_UserEntityModelCompleteCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as UserId,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -370,6 +526,14 @@ class __$$_UserEntityModelCompleteCopyWithImpl<$Res>
           : cubeUser // ignore: cast_nullable_to_non_nullable
               as CubeUser,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserIdCopyWith<$Res> get id {
+    return $UserIdCopyWith<$Res>(_value.id, (value) {
+      return _then(_value.copyWith(id: value));
+    });
   }
 }
 
@@ -388,7 +552,7 @@ class _$_UserEntityModelComplete implements _UserEntityModelComplete {
       _$$_UserEntityModelCompleteFromJson(json);
 
   @override
-  final String id;
+  final UserId id;
   @override
   final String name;
   @override
@@ -433,8 +597,17 @@ class _$_UserEntityModelComplete implements _UserEntityModelComplete {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, String name) $default, {
-    required TResult Function(String id, String name,
+    TResult Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)
+        $default, {
+    required TResult Function(UserId id, String name,
             @UserConverter() AuthUser authUser, CubeUser cubeUser)
         complete,
     required TResult Function(
@@ -447,8 +620,17 @@ class _$_UserEntityModelComplete implements _UserEntityModelComplete {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, String name)? $default, {
-    TResult? Function(String id, String name,
+    TResult? Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)?
+        $default, {
+    TResult? Function(UserId id, String name,
             @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult? Function(
@@ -461,8 +643,17 @@ class _$_UserEntityModelComplete implements _UserEntityModelComplete {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, String name)? $default, {
-    TResult Function(String id, String name, @UserConverter() AuthUser authUser,
+    TResult Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)?
+        $default, {
+    TResult Function(UserId id, String name, @UserConverter() AuthUser authUser,
             CubeUser cubeUser)?
         complete,
     TResult Function(
@@ -520,7 +711,7 @@ class _$_UserEntityModelComplete implements _UserEntityModelComplete {
 
 abstract class _UserEntityModelComplete implements UserEntityModel {
   const factory _UserEntityModelComplete(
-      {required final String id,
+      {required final UserId id,
       required final String name,
       @UserConverter() required final AuthUser authUser,
       required final CubeUser cubeUser}) = _$_UserEntityModelComplete;
@@ -529,7 +720,7 @@ abstract class _UserEntityModelComplete implements UserEntityModel {
       _$_UserEntityModelComplete.fromJson;
 
   @override
-  String get id;
+  UserId get id;
   @override
   String get name;
   @UserConverter()
@@ -640,8 +831,17 @@ class _$_UserEntityModelUnComplete implements _UserEntityModelUnComplete {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String id, String name) $default, {
-    required TResult Function(String id, String name,
+    TResult Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)
+        $default, {
+    required TResult Function(UserId id, String name,
             @UserConverter() AuthUser authUser, CubeUser cubeUser)
         complete,
     required TResult Function(
@@ -654,8 +854,17 @@ class _$_UserEntityModelUnComplete implements _UserEntityModelUnComplete {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String id, String name)? $default, {
-    TResult? Function(String id, String name,
+    TResult? Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)?
+        $default, {
+    TResult? Function(UserId id, String name,
             @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult? Function(
@@ -668,8 +877,17 @@ class _$_UserEntityModelUnComplete implements _UserEntityModelUnComplete {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String id, String name)? $default, {
-    TResult Function(String id, String name, @UserConverter() AuthUser authUser,
+    TResult Function(
+            UserId id,
+            String name,
+            @JsonKey(includeIfNull: false) DateTime? createdAt,
+            @JsonKey(includeIfNull: false) DateTime? updatedAt,
+            @JsonKey(includeIfNull: false) DateTime? emailConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? phoneConfirmedAt,
+            @JsonKey(includeIfNull: false) DateTime? lastSignInAt,
+            String? role)?
+        $default, {
+    TResult Function(UserId id, String name, @UserConverter() AuthUser authUser,
             CubeUser cubeUser)?
         complete,
     TResult Function(

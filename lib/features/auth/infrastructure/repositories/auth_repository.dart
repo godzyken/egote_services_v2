@@ -7,6 +7,7 @@ import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:fpdart/src/either.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
+
 class AuthRepository implements AuthRepositoryInterface {
   AuthRepository(this.authTokenLocalDataSource, this.authClient);
 
@@ -135,6 +136,7 @@ class AuthRepository implements AuthRepositoryInterface {
   Future<Either<Failure, bool>> signInWithGoogle() async {
     final res = await authClient.signInWithOAuth(
       supabase.Provider.google,
+      redirectTo: 'io.supabase.flutter://reset-callback/'
     );
     if (!res) {
       developer.log('signInWithGoogle() error: $res');
@@ -148,6 +150,7 @@ class AuthRepository implements AuthRepositoryInterface {
   Future<Either<Failure, UserEntityModel>> signInWithPassword(
       String? email, String? password) async {
     developer.log('signInWithPassword()');
+
     final res = await authClient.signInWithPassword(
       email: email,
       password: password!,
@@ -195,8 +198,12 @@ class AuthRepository implements AuthRepositoryInterface {
       data: {'username': username},
     );
 
-    await authTokenLocalDataSource
+    developer.log('reponse api: $response');
+
+    if (response.user != null) {
+      await authTokenLocalDataSource
         .store(response.session?.persistSessionString ?? '');
+    }
 
     final data = response.session;
 

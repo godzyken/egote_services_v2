@@ -13,7 +13,7 @@ class SubmitButton extends ConsumerWidget {
         super.key,
         this.height = 42,
         this.onPressed,
-        this.enabled = false,
+        this.enabled = true,
         this.fontSize = 16,
       });
 

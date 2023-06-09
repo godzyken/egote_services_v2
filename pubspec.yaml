@@ -35,6 +35,8 @@ dependencies:
   intl: ^0.18.1
   formz: ^0.6.0
   flutter_localization: ^0.1.11
+  flutter_advanced_drawer: ^1.3.5
+  lottie: ^2.4.0
 
 dev_dependencies: 
   flutter_lints: ^2.0.1
@@ -82,6 +84,7 @@ flutter:
     - assets/lottie/models/myimages.imgdb
     - assets/lottie/models/topolino.jpg
     - assets/lottie/models/santa_maria_madalena/
+    - assets/lottie/models/LottieLogo1.json
     - assets/lottie/models/
     - assets/lottie/
     - assets/json/

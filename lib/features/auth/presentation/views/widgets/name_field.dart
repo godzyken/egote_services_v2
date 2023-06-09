@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/presentation/extensions/extensions.dart';
 
-class PasswordField extends ConsumerWidget {
-  const PasswordField({
-    super.key,
+class NameField extends ConsumerWidget {
+  const NameField({
+    Key? key,
     required this.label,
     this.controller,
     this.focusNode,
@@ -13,12 +13,11 @@ class PasswordField extends ConsumerWidget {
     this.errorText,
     this.suffixIcon,
     this.onEditingComplete,
-    this.obscureText = true,
-    this.inputType = TextInputType.text,
+    this.obscureText = false,
+    this.inputType = TextInputType.name,
     this.onChanged,
     this.validator,
-  });
-
+  }) : super(key: key);
   final String label;
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -33,25 +32,23 @@ class PasswordField extends ConsumerWidget {
   final Function(String)? onChanged;
 
   final FormFieldValidator<String>? validator;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextInputField(
-      key: const Key('email_formz'),
+      key: const Key('name_formz'),
+      label: context.tr!.userName,
       controller: controller,
       focusNode: focusNode,
       onEditingComplete: onEditingComplete,
-      onChanged: onChanged,
       decoration: InputDecoration(
         hintText: hintText,
         suffixIcon: suffixIcon,
       ),
-      hintText: context.tr!.enterUserPassword,
-      suffixIcon: suffixIcon,
+      onChanged: onChanged,
+      hintText: context.tr!.enterUsername,
       errorText: errorText,
       obscureText: obscureText,
-      label: context.tr!.userPassword,
-      inputType: TextInputType.visiblePassword,
+      inputType: TextInputType.name,
       validator: validator,
     );
   }

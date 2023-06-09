@@ -1,7 +1,7 @@
 import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
-import 'package:egote_services_v2/features/auth/presentation/controller/auth_controller.dart';
+import 'package:egote_services_v2/features/auth/application/controller/auth_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

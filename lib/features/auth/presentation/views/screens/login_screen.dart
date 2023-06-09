@@ -2,7 +2,6 @@ import 'package:egote_services_v2/features/auth/application/providers/auth_provi
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:formz/formz.dart';
 
 import '../widgets/widgets_extensions.dart';
 
@@ -35,16 +34,14 @@ class LoginScreen extends ConsumerWidget {
               PasswordField(
                 label: context.tr!.userPassword,
                 hintText: context.tr!.enterUserPassword,
-                onChanged: (email) => ref
+                onChanged: (password) => ref
                     .read(loginControllerNotifierProvider.notifier)
-                    .onPasswordChange(email),
+                    .onPasswordChange(password),
                 inputType: TextInputType.visiblePassword,
                 validator: (value) => password?.error?.getMessage(),
               ),
               SubmitButton(
                 onPressed: () => signInController.signInWithPassword(),
-                enabled: ref.read(loginControllerNotifierProvider).status ==
-                    FormzSubmissionStatus.success,
                 context.tr!.submit,
               ),
             ],
