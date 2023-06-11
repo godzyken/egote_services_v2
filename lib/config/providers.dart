@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../config/routes/routes.dart';
+import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/domain/providers/auth_repository_provider.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
@@ -31,6 +32,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(sharedPreferencesProvider.future);
   await container.read(firebaseInitProvider.future);
   await container.read(supabaseInitProvider.future);
+  await container.read(userFutureProvider.future);
 
   container.read(firebaseDatabaseProvider);
   container.read(firebaseFirestoreProvider);
@@ -298,3 +300,4 @@ final fireDatabaseProvider = Provider<FirebaseDatabase?>((ref) {
           app: database.app, databaseURL: database.databaseURL)
       : null;
 });
+

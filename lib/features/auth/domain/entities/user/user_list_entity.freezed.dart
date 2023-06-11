@@ -89,7 +89,7 @@ class __$$_UserListCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UserList extends _UserList with DiagnosticableTreeMixin {
+class _$_UserList extends _UserList {
   const _$_UserList({required final List<UserEntityModel> values})
       : _values = values,
         super._();
@@ -103,16 +103,8 @@ class _$_UserList extends _UserList with DiagnosticableTreeMixin {
   }
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UserList(values: $values)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UserList'))
-      ..add(DiagnosticsProperty('values', values));
   }
 
   @override

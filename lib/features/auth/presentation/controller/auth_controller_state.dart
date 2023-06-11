@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
-import 'package:egote_services_v2/features/auth/presentation/states/auth_state.dart'
+import 'package:egote_services_v2/features/auth/presentation/states/auth/auth_state.dart'
     as perso;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

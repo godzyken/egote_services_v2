@@ -1,5 +1,8 @@
 import 'package:egote_services_v2/config/app_shared/images/list_local.dart';
 import 'package:egote_services_v2/config/providers.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user/user_list_entity.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:egote_services_v2/features/common/presentation/views/screens/error_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,6 +28,8 @@ class UserHomeScreen extends ConsumerWidget {
             ),
             const SizedBox(),
             buildName(data!.uid),
+            const SizedBox(),
+            //Consumer(builder: (context, ref, _) => ref.watch(_usersOnTable),)
           ],
         ),
       ),
@@ -48,6 +53,60 @@ class UserHomeScreen extends ConsumerWidget {
     ],
   );
   }
+
+  Widget _buildUserListContainerWidget(
+      BuildContext context,
+      WidgetRef ref,
+      final UserList userList
+      ) {
+    return Expanded(child: _buildUserListWidget(context, ref, userList));
+  }
+
+  Widget _buildUserListWidget(
+      final BuildContext context,
+      final WidgetRef ref,
+      final UserList userList) {
+    if (userList.length == 0) {
+      return Center(child: Text(context.tr!.noBoat),);
+    } else {
+      return ListView.builder(
+        padding: const EdgeInsets.all(8),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: userList.length,
+          itemBuilder: (final BuildContext context, final int index) =>
+              _buildUserItemCardWidget(context, ref, userList[index]),
+      );
+    }
+  }
+
+  Widget _buildUserItemCardWidget(
+      final BuildContext context,
+      final WidgetRef ref,
+      final UserEntityModel userEntityModel
+      ) => InkWell(
+    child: Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  userEntityModel.name,
+                  style: context.textTheme.displaySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                // TODO: List of args...
+              ],
+            ))
+          ],
+        ),
+      ),
+    ),
+  );
 
 }
 

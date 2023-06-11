@@ -1,9 +1,9 @@
 import 'package:egote_services_v2/features/auth/data/data_sources/database/source_base.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/mapper/user_list_mapper.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/mapper/user_mapper.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_id.dart';
 import 'package:egote_services_v2/features/auth/domain/repository/user_repository.dart';
-import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 
 import '../../domain/entities/user/user_list_entity.dart';
 
@@ -67,6 +67,11 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
     );
 
     await database.updateUser(UserMapper.transformToMap(user));
+  }
+
+  @override
+  Future<void> closeDatabase() async {
+    await database.close();
   }
 
 

@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user/user_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'user_entity.dart';
@@ -20,15 +20,15 @@ class UserList with _$UserList {
 
   UserList updateUser(final UserEntityModel entity) {
     return copyWith(
-        values: values.map((user) => entity == user ? entity : user).toList());
+        values: values.map((user) => entity.id == user.id ? entity : user).toList());
   }
 
-/*  UserList removeUsertById(final UserEntity id) =>
-      copyWith(values: values.where((user) => user).toList());*/
+  UserList removeUserById(final UserId id) =>
+      copyWith(values: values.where((user) => user.name.isNotEmpty).toList());
 
-/*  UserList filterByComplete() =>
-      copyWith(values: values.where((boat) => boat.isAvailable).toList());
+  UserList filterByComplete() =>
+      copyWith(values: values.where((user) => user.name.isNotEmpty).toList());
 
   UserList filterByIncomplete() =>
-      copyWith(values: values.where((boat) => !boat.isAvailable).toList());*/
+      copyWith(values: values.where((user) => user.name.isEmpty).toList());
 }
