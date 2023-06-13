@@ -8,20 +8,20 @@ abstract class AuthRepositoryInterface {
   Future<Either<Failure, bool>> signOut();
 
   void authStateChange(
-    void Function(UserEntityModel? userEntity) callback,
+    void Function(UserModel? userEntity) callback,
   );
 
   Future<void> setSession(String token);
 
-  Future<Either<Failure, UserEntityModel>> restoreSession();
+  Future<Either<Failure, UserModel>> restoreSession();
 
-  Future<Either<Failure, UserEntityModel>> signUp(
+  Future<Either<Failure, UserModel>> signUp(
     String? email,
     String? username,
     String? password,
   );
 
-  Future<Either<Failure, UserEntityModel>> signInWithPassword(
+  Future<Either<Failure, UserModel>> signInWithPassword(
     String? email,
     String? password,
   );

@@ -1,12 +1,10 @@
 import 'dart:developer' as developer;
 
-import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
-import 'package:egote_services_v2/features/auth/domain/entities/user/user_id.dart';
-import 'package:egote_services_v2/features/auth/domain/entities/user/user_list_entity.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/usecases_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/domain/entities/states/state.dart';
+import '../../../domain/entities/entities_extension.dart';
 import '../../../domain/usecases/usescases_extention.dart';
 import 'filter_status_view.dart';
 
@@ -35,14 +33,25 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
     }
   }
 
+  availableUser(final UserEntityModel userEntityModel) async {
+    final newUser = userEntityModel.copyWith(isComplete: true);
+    updateEntityUser(newUser);
+  }
+
+  unavailableUser(final UserEntityModel userEntityModel) {
+    final newUser = userEntityModel.copyWith(isComplete: false);
+    updateEntityUser(newUser);
+  }
+
   createUser(
       final String name,
+      final String role,
+      final bool isComplete,
       final DateTime createdAt,
       final DateTime updateAt,
       final DateTime emailConfirmedAt,
       final DateTime phoneConfirmedAt,
       final DateTime lastSignInAt,
-      final String role,
       ) async {
     try {
       developer.log('CreateUser() : start try with name: $name');
@@ -50,46 +59,39 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
       state = const State.loading();
       final newUser = await _createUserCase.execute(
           name,
+          role,
+          isComplete,
           createdAt,
           updateAt,
           emailConfirmedAt,
           phoneConfirmedAt,
-          lastSignInAt,
-          role
+          lastSignInAt
       );
       developer.log('New User from CreateUser() : $newUser');
 
-      state.maybeWhen(
-        success: (data) {
-          state = State.success(UserList(values: [
-            UserEntityModel.create(
-                name,
-                createdAt,
-                role
-            )
-          ]));
-        },
-        loading: () => const State.loading(),
-        error: (err) => State.error(err),
-        init: () => State.init,
-        orElse: () {},
-      );
+      state = State.success(state.data!.addUser(newUser));
     } on Exception catch (e) {
+      developer.log('Error during createUser(): $e');
       state = State.error(e);
     }
   }
 
-  updateUser(final UserEntityModel newUser) async {
+  updateEntityUser(final UserEntityModel newUser) async {
     try {
+      developer.log('CreateUser() : start try with name: $newUser');
+
+      state = const State.loading();
+
       await _updateUserCase.execute(
-          UserId(value: int.parse(newUser.id.toString())),
-          newUser.name
-          // newUser.createdAt,
-          // newUser.updateAt!,
-          // newUser.emailConfirmedAt!,
-          // newUser.phoneConfirmedAt,
-          // newUser.lastSignInAt,
-          // newUser.role
+        newUser.id,
+        newUser.name,
+        newUser.role,
+        newUser.isComplete,
+        newUser.createdAt,
+        newUser.updatedAt,
+        newUser.emailConfirmedAt,
+        newUser.phoneConfirmedAt,
+        newUser.lastSignInAt,
       );
 
       state = State.success(state.data!.updateUser(newUser));
@@ -110,14 +112,14 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
 
 final filteredUserListProvider = Provider.autoDispose<State<UserList>>(
   (ref) {
-    final fiterKind = ref.watch(filterKindViewModelStateNotifierProvider);
+    final filterKind = ref.watch(filterKindViewModelStateNotifierProvider);
     final userListState = ref.watch(userListViewModelStateNotifierProvider);
 
     return userListState.when(
         init: () => const State.init(),
         loading: () => const State.loading(),
         success: (data) {
-          switch (fiterKind) {
+          switch (filterKind) {
             case FilterKind.all:
               return State.success(data);
             case FilterKind.available:

@@ -23,6 +23,7 @@ class UserFormStateController extends StateNotifier<UserFormState> {
     if (userEntityModel!.name.isNotEmpty) {
       state = state.copyWith(userEntityModel: userEntityModel);
     }
+    return null;
   }
 
   void addUser(UserEntityModel u) async {
@@ -48,8 +49,9 @@ final userNotifierProvider = StateNotifierProvider<
           final now = ref.read(clockProvider);
           final diff = now.add(const Duration(days: 5));
           return UserNotifier(UserEntityModel(
-            id: UserId(value: 0),
+            id: const UserId(value: 0),
             name: 'name',
+            isComplete: false,
             createdAt: now,
             emailConfirmedAt: diff,
             phoneConfirmedAt: diff,

@@ -23,7 +23,7 @@ mixin _$AuthState {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)
+                UserModel userEntity)
         authenticated,
     required TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status) unauthenticated,
   }) =>
@@ -35,7 +35,7 @@ mixin _$AuthState {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)?
+                UserModel userEntity)?
         authenticated,
     TResult? Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status)? unauthenticated,
   }) =>
@@ -47,7 +47,7 @@ mixin _$AuthState {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)?
+                UserModel userEntity)?
         authenticated,
     TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status)? unauthenticated,
     required TResult orElse(),
@@ -104,9 +104,9 @@ abstract class _$$_$AuthStateTrueCopyWith<$Res> {
       {@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
           AuthStatus status,
       @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-          UserEntityModel userEntity});
+          UserModel userEntity});
 
-  $UserEntityModelCopyWith<$Res> get userEntity;
+  $UserModelCopyWith<$Res> get userEntity;
 }
 
 /// @nodoc
@@ -131,14 +131,14 @@ class __$$_$AuthStateTrueCopyWithImpl<$Res>
       userEntity: null == userEntity
           ? _value.userEntity
           : userEntity // ignore: cast_nullable_to_non_nullable
-              as UserEntityModel,
+              as UserModel,
     ));
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UserEntityModelCopyWith<$Res> get userEntity {
-    return $UserEntityModelCopyWith<$Res>(_value.userEntity, (value) {
+  $UserModelCopyWith<$Res> get userEntity {
+    return $UserModelCopyWith<$Res>(_value.userEntity, (value) {
       return _then(_value.copyWith(userEntity: value));
     });
   }
@@ -163,7 +163,7 @@ class _$_$AuthStateTrue implements _$AuthStateTrue {
   @override
   @JsonKey(
       defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-  final UserEntityModel userEntity;
+  final UserModel userEntity;
 
   @override
   String toString() {
@@ -197,7 +197,7 @@ class _$_$AuthStateTrue implements _$AuthStateTrue {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)
+                UserModel userEntity)
         authenticated,
     required TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status) unauthenticated,
   }) {
@@ -212,7 +212,7 @@ class _$_$AuthStateTrue implements _$AuthStateTrue {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)?
+                UserModel userEntity)?
         authenticated,
     TResult? Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status)? unauthenticated,
   }) {
@@ -227,7 +227,7 @@ class _$_$AuthStateTrue implements _$AuthStateTrue {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)?
+                UserModel userEntity)?
         authenticated,
     TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status)? unauthenticated,
     required TResult orElse(),
@@ -278,7 +278,7 @@ abstract class _$AuthStateTrue implements AuthState {
       {@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
           required final AuthStatus status,
       @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-          required final UserEntityModel userEntity}) = _$_$AuthStateTrue;
+          required final UserModel userEntity}) = _$_$AuthStateTrue;
 
   @JsonKey(
       defaultValue: 'AuthStatus',
@@ -288,7 +288,7 @@ abstract class _$AuthStateTrue implements AuthState {
   AuthStatus get status;
   @JsonKey(
       defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-  UserEntityModel get userEntity;
+  UserModel get userEntity;
   @JsonKey(ignore: true)
   _$$_$AuthStateTrueCopyWith<_$_$AuthStateTrue> get copyWith =>
       throw _privateConstructorUsedError;
@@ -369,7 +369,7 @@ class _$_$AuthStateFalse implements _$AuthStateFalse {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)
+                UserModel userEntity)
         authenticated,
     required TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status) unauthenticated,
   }) {
@@ -384,7 +384,7 @@ class _$_$AuthStateFalse implements _$AuthStateFalse {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)?
+                UserModel userEntity)?
         authenticated,
     TResult? Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status)? unauthenticated,
   }) {
@@ -399,7 +399,7 @@ class _$_$AuthStateFalse implements _$AuthStateFalse {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)?
+                UserModel userEntity)?
         authenticated,
     TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status)? unauthenticated,
     required TResult orElse(),
@@ -501,7 +501,7 @@ class _$_AuthState implements _AuthState {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)
+                UserModel userEntity)
         authenticated,
     required TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status) unauthenticated,
   }) {
@@ -516,7 +516,7 @@ class _$_AuthState implements _AuthState {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)?
+                UserModel userEntity)?
         authenticated,
     TResult? Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status)? unauthenticated,
   }) {
@@ -531,7 +531,7 @@ class _$_AuthState implements _AuthState {
             @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
                 AuthStatus status,
             @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
-                UserEntityModel userEntity)?
+                UserModel userEntity)?
         authenticated,
     TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status)? unauthenticated,
     required TResult orElse(),

@@ -11,21 +11,23 @@ class CreateUserCaseImpl implements CreateUserCase {
   @override
   Future<UserEntityModel> execute(
       final String name,
+      final String role,
+      final bool isComplete,
       final DateTime createAt,
       final DateTime updateAt,
       final DateTime emailConfirmedAt,
       final DateTime phoneConfirmedAt,
       final DateTime lastSignInAt,
-      final String role
       ) {
     return _repository.createUser(
         name,
+        role,
+        isComplete,
         createAt,
         updateAt,
         emailConfirmedAt,
         phoneConfirmedAt,
         lastSignInAt,
-        role
     );
   }
 

@@ -24,11 +24,12 @@ class UserList with _$UserList {
   }
 
   UserList removeUserById(final UserId id) =>
-      copyWith(values: values.where((user) => user.name.isNotEmpty).toList());
+      copyWith(values: values.where((user) => user.id == id).toList());
 
   UserList filterByComplete() =>
       copyWith(values: values.where((user) => user.name.isNotEmpty).toList());
 
   UserList filterByIncomplete() =>
       copyWith(values: values.where((user) => user.name.isEmpty).toList());
+
 }

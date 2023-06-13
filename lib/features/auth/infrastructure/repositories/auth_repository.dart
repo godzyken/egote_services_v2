@@ -14,14 +14,14 @@ class AuthRepository implements AuthRepositoryInterface {
   final AuthTokenLocalDataSource authTokenLocalDataSource;
   final supabase.GoTrueClient authClient;
 
-  UserEntityModel? get currentUser => authClient.currentUser == null
+  UserModel? get currentUser => authClient.currentUser == null
       ? null
-      : UserEntityModel.fromJson(authClient.currentUser!.toJson());
+      : UserModel.fromJson(authClient.currentUser!.toJson());
 
   Stream<supabase.AuthUser?>? get user => null;
 
   @override
-  void authStateChange(void Function(UserEntityModel? userEntity) callback) {
+  void authStateChange(void Function(UserModel? userEntity) callback) {
     authClient.onAuthStateChange.listen((data) {
       final supabase.AuthChangeEvent event = data.event;
       final supabase.Session? session = data.session;
@@ -31,7 +31,7 @@ class AuthRepository implements AuthRepositoryInterface {
           // TODO: Handle this case.
           break;
         case supabase.AuthChangeEvent.signedIn:
-          callback(UserEntityModel.fromJson(session!.user.toJson()));
+          callback(UserModel.fromJson(session!.user.toJson()));
           break;
         case supabase.AuthChangeEvent.signedOut:
           callback(null);
@@ -41,13 +41,13 @@ class AuthRepository implements AuthRepositoryInterface {
               accessToken: session!.accessToken,
               tokenType: session.tokenType,
               user: session.user);
-          callback(UserEntityModel.fromJson(newSession.user.toJson()));
+          callback(UserModel.fromJson(newSession.user.toJson()));
           break;
         case supabase.AuthChangeEvent.userUpdated:
-          callback(UserEntityModel.fromJson(session!.user.toJson()));
+          callback(UserModel.fromJson(session!.user.toJson()));
           break;
         case supabase.AuthChangeEvent.userDeleted:
-          callback(UserEntityModel.fromJson(session!.user.toJson()));
+          callback(UserModel.fromJson(session!.user.toJson()));
           break;
         case supabase.AuthChangeEvent.mfaChallengeVerified:
           // TODO: Handle this case.
@@ -98,7 +98,7 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, UserEntityModel>> restoreSession() async {
+  Future<Either<Failure, UserModel>> restoreSession() async {
     final res = authTokenLocalDataSource.get();
     if (res.isLeft()) {
       return left(Failure.empty());
@@ -113,11 +113,11 @@ class AuthRepository implements AuthRepositoryInterface {
     }
     await authTokenLocalDataSource
         .store(response.session?.persistSessionString ?? '');
-    return right(UserEntityModel.fromJson(data!.user.toJson()));
+    return right(UserModel.fromJson(data!.user.toJson()));
   }
 
   @override
-  Future<Either<Failure, UserEntityModel>> setSession(String token) async {
+  Future<Either<Failure, UserModel>> setSession(String token) async {
     final response = await authClient.setSession(token);
     await authTokenLocalDataSource
         .store(response.session?.persistSessionString ?? '');
@@ -129,7 +129,7 @@ class AuthRepository implements AuthRepositoryInterface {
       return left(Failure.unauthorized());
     }
 
-    return right(UserEntityModel.fromJson(data!.user.toJson()));
+    return right(UserModel.fromJson(data!.user.toJson()));
   }
 
   @override
@@ -147,7 +147,7 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, UserEntityModel>> signInWithPassword(
+  Future<Either<Failure, UserModel>> signInWithPassword(
       String? email, String? password) async {
     developer.log('signInWithPassword()');
 
@@ -166,7 +166,7 @@ class AuthRepository implements AuthRepositoryInterface {
       return left(Failure.unauthorized());
     }
 
-    return right(UserEntityModel.fromJson(data!.user.toJson()));
+    return right(UserModel.fromJson(data!.user.toJson()));
   }
 
   @override
@@ -190,7 +190,7 @@ class AuthRepository implements AuthRepositoryInterface {
   ///   required String [password],
   ///   String? [phone],
   @override
-  Future<Either<Failure, UserEntityModel>> signUp(
+  Future<Either<Failure, UserModel>> signUp(
       String? email, String? username, String? password) async {
     final response = await authClient.signUp(
       email: email,
@@ -212,6 +212,6 @@ class AuthRepository implements AuthRepositoryInterface {
       return left(Failure.unauthorized());
     }
 
-    return right(UserEntityModel.fromJson(data!.user.toJson()));
+    return right(UserModel.fromJson(data!.user.toJson()));
   }
 }

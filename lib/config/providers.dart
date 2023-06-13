@@ -207,8 +207,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                     final auth = ref.watch(authControllerProvider);
 
                     return auth!.when(
-                            (id, name, createdAt, updatedAt, emailConfirmedAt, phoneConfirmedAt, lastSignInAt, role) => UserHomeScreen(pid: id.value.toString()),
-                        complete: (id, name, authUser, cubeUser) {
+                        complete: (id, userEntityModel, authUser, cubeUser) {
                             final cUser = ref.watch(cubeEntityProvider);
                             return ProfileScreen(
                                 uid: auth.id.toString(),

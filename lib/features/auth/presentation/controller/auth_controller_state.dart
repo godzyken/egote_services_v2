@@ -43,7 +43,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
     } else {
       state = perso.AuthState.authenticated(
           status: validator(user)!,
-          userEntity: UserEntityModel.fromJson(user.toJson()));
+          userEntity: UserModel.fromJson(user.toJson()));
     }
   }
 

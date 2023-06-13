@@ -24,7 +24,7 @@ class AuthState with _$AuthState {
       includeToJson: true,
       includeFromJson: true,
     )
-        required UserEntityModel userEntity,
+        required UserModel userEntity,
   }) = _$AuthStateTrue;
 
   const factory AuthState.unauthenticated({

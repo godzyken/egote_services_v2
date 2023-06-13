@@ -22,6 +22,8 @@ part 'routes.g.dart';
         routes: [
           TypedGoRoute<PersonRoute>(
               path: PersonRoute.path, name: 'person', routes: []),
+          TypedGoRoute<UserListRoute>(
+              path: UserListRoute.path, name: 'userList', routes: []),
         ]),
     TypedGoRoute<GodzyLogoRoute>(
         path: GodzyLogoRoute.path,
@@ -95,6 +97,21 @@ class PersonRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ProfileScreen(uid: uid, pid: pid);
+  }
+}
+
+class UserListRoute extends GoRouteData {
+  static const path = 'person/:uid';
+  const UserListRoute({required this.uid, required this.pid});
+
+  final String uid;
+  final String pid;
+  // any user signup and login redirects would go here
+  // and be paried up with a required notifier listener
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return UserListScreen(uid: uid, pid: pid);
   }
 }
 

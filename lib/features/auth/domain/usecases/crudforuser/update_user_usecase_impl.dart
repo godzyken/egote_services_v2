@@ -11,22 +11,24 @@ class UpdateUserCaseImpl implements UpdateUserCase {
   Future<void> execute(
       final UserId id,
       final String name,
+      final String role,
+      final bool isComplete,
       final DateTime createdAt,
       final DateTime updateAt,
       final DateTime emailConfirmedAt,
       final DateTime phoneConfirmedAt,
       final DateTime lastSignInAt,
-      final String role,
       ) {
     return _repositoryInterface.updateUser(
-        id,
-        name,
-        createdAt,
-        updateAt,
-        emailConfirmedAt,
-        phoneConfirmedAt,
-        lastSignInAt,
-        role,
+      id,
+      name,
+      role,
+      isComplete,
+      createdAt,
+      updateAt,
+      emailConfirmedAt,
+      phoneConfirmedAt,
+      lastSignInAt,
     );
   }
 }

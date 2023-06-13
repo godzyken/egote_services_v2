@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) {
-  return _UserPreferences.fromJson(json);
-}
-
 /// @nodoc
 mixin _$UserPreferences {
   UserEntityModel get userEntityModel => throw _privateConstructorUsedError;
@@ -25,7 +21,6 @@ mixin _$UserPreferences {
   String get about => throw _privateConstructorUsedError;
   bool get isDarkMode => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserPreferencesCopyWith<UserPreferences> get copyWith =>
       throw _privateConstructorUsedError;
@@ -149,18 +144,13 @@ class __$$_UserPreferencesCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$_UserPreferences
-    with DiagnosticableTreeMixin
-    implements _UserPreferences {
+
+class _$_UserPreferences implements _UserPreferences {
   const _$_UserPreferences(
       {required this.userEntityModel,
       required this.themeMode,
       required this.about,
       required this.isDarkMode});
-
-  factory _$_UserPreferences.fromJson(Map<String, dynamic> json) =>
-      _$$_UserPreferencesFromJson(json);
 
   @override
   final UserEntityModel userEntityModel;
@@ -172,19 +162,8 @@ class _$_UserPreferences
   final bool isDarkMode;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'UserPreferences(userEntityModel: $userEntityModel, themeMode: $themeMode, about: $about, isDarkMode: $isDarkMode)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UserPreferences'))
-      ..add(DiagnosticsProperty('userEntityModel', userEntityModel))
-      ..add(DiagnosticsProperty('themeMode', themeMode))
-      ..add(DiagnosticsProperty('about', about))
-      ..add(DiagnosticsProperty('isDarkMode', isDarkMode));
   }
 
   @override
@@ -201,7 +180,6 @@ class _$_UserPreferences
                 other.isDarkMode == isDarkMode));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, userEntityModel, themeMode, about, isDarkMode);
@@ -211,13 +189,6 @@ class _$_UserPreferences
   @pragma('vm:prefer-inline')
   _$$_UserPreferencesCopyWith<_$_UserPreferences> get copyWith =>
       __$$_UserPreferencesCopyWithImpl<_$_UserPreferences>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_UserPreferencesToJson(
-      this,
-    );
-  }
 }
 
 abstract class _UserPreferences implements UserPreferences {
@@ -226,9 +197,6 @@ abstract class _UserPreferences implements UserPreferences {
       required final ThemeMode themeMode,
       required final String about,
       required final bool isDarkMode}) = _$_UserPreferences;
-
-  factory _UserPreferences.fromJson(Map<String, dynamic> json) =
-      _$_UserPreferences.fromJson;
 
   @override
   UserEntityModel get userEntityModel;
