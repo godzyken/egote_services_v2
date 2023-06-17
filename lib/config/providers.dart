@@ -16,6 +16,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/domain/providers/auth_repository_provider.dart';
+import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
@@ -46,11 +47,11 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(cubeProvider);
 
   container.read(authStateChangesProvider);
+  container.read(authStateProvider);
   container.read(idTokenChangesProvider);
   container.read(userChangesProvider);
 
   container.read(supabaseProvider);
-  container.read(supabaseClientProvider);
   container.read(fireDatabaseProvider);
 
   //container.dispose();
@@ -66,14 +67,14 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
       Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
   final client = supabase.GoTrueClient(
-    url: 'http://localhost:3000/',
+    url: 'http://localhost:9999',
     autoRefreshToken: true,
-
     headers: {
       "alg": "HS256",
       "typ": "JWT",
-      "apiKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2FubmJoYW5zZmxid3lkcmd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzU3Nzg3OTcsImV4cCI6MTk5MTM1NDc5N30.26lZFFX3_TBhdqsjvqD7WUGiRhTFT05QwVZaUsIATo0",
-      "httpClient": "https://localhost:3000/"
+      "apiKey": env.supabaseAnonKey,
+      "Authorization": "Bearer ${env.supabaseUrl}",
+      "httpClient": "https://zngannbhansflbwydrgw.supabase.co"
     },
   );
 
@@ -89,7 +90,7 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
 final supabaseProvider =
     Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
 
-final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
+/*final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
   final provider = ref.read(supabaseInitProvider);
   if (provider.hasValue) {
     final value = provider.value;
@@ -99,10 +100,10 @@ final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
       return client;
     }
   }
-  return provider.value!.client;
+  return provider.asData!.value.client;
 },
     dependencies: [supabaseProvider, supabaseInitProvider],
-    name: 'Supabase Client Provider');
+    name: 'Supabase Client Provider');*/
 
 // <---------------- Firebase Instances Providers -------------------> //
 final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
@@ -204,7 +205,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                   path: UserHomeRoute.path,
                   name: 'UserHome',
                   builder: (context, state) {
-                    final auth = ref.watch(authControllerProvider);
+                    final auth = ref.watch(autoAuthControllerProvider);
 
                     return auth!.when(
                         complete: (id, userEntityModel, authUser, cubeUser) {
@@ -214,7 +215,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                                 pid: cUser.id.toString()
                             );
                           },
-                        unComplete: (id, name, authUser) =>
+                        unComplete: (id, userEntityModel, authUser) =>
                             UserHomeScreen(pid: auth.id.toString()));
                   },
                   routes: [

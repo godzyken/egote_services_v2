@@ -1,4 +1,3 @@
-import 'package:egote_services_v2/features/auth/presentation/views/models/user_list_view_model.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../domain/entities/entities_extension.dart';
+import '../models/userlist/user_list_view_model.dart';
 import '../widgets/widgets_extensions.dart';
 
 class UserListScreen extends ConsumerWidget {
@@ -18,6 +18,7 @@ class UserListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(_userListProvider.notifier).testAdd();
     return Scaffold(
       appBar: AppBar(title: Text(context.tr!.selectUserGuess),),
       body: Column(
@@ -71,7 +72,7 @@ class UserListScreen extends ConsumerWidget {
   }
 
   Widget _buildUserItemCardWidget(final BuildContext context, final WidgetRef ref, final UserEntityModel userEntityModel) => InkWell(
-    onTap: () => context.go('/userFormScreen'),
+    onTap: () => context.go('/userForm'),
     child: Card(child: Padding(padding: const EdgeInsets.all(8.0), child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -122,7 +123,7 @@ class UserListScreen extends ConsumerWidget {
 
   Widget _buildFloatingActionButton(final BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => context.go('/userFormScreen'),
+      onPressed: () => context.go('/userForm'),
       child: const Icon(Icons.add),
     );
   }

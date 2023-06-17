@@ -1,9 +1,11 @@
-import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/domain/entities/entities_extension.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
+import '../../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
 import '../../features/home/presentation/widget/godzylogo.dart';
 import '../../features/settings/presentation/view/gallery/gallery.dart';
@@ -12,6 +14,8 @@ import '../../features/sketch/presentation/view/drawing_page.dart';
 
 part 'routes.g.dart';
 
+
+/// [Route required Authentication]
 @TypedGoRoute<HomeRoute>(
   path: HomeRoute.path,
   name: 'home',
@@ -23,14 +27,21 @@ part 'routes.g.dart';
           TypedGoRoute<PersonRoute>(
               path: PersonRoute.path, name: 'person', routes: []),
           TypedGoRoute<UserListRoute>(
-              path: UserListRoute.path, name: 'userList', routes: []),
+              path: UserListRoute.path,
+              name: 'userList',
+              routes: [
+                TypedGoRoute<AddUserFormRoute>(
+                    path: AddUserFormRoute.path,
+                    name: 'userForm'
+                ),
+              ]),
         ]),
     TypedGoRoute<GodzyLogoRoute>(
-        path: GodzyLogoRoute.path,
-        name: 'godzyRoute',),
+      path: GodzyLogoRoute.path,
+      name: 'godzyRoute',),
     TypedGoRoute<AvisBoxRoute>(
-        path: AvisBoxRoute.path,
-        name: 'avisRoute',),
+      path: AvisBoxRoute.path,
+      name: 'avisRoute',),
     TypedGoRoute<SettingsUiRoute>(
         path: SettingsUiRoute.path,
         name: 'settingsRoute',
@@ -101,8 +112,8 @@ class PersonRoute extends GoRouteData {
 }
 
 class UserListRoute extends GoRouteData {
-  static const path = 'person/:uid';
-  const UserListRoute({required this.uid, required this.pid});
+  static const path = 'userListRoute/:uid&:pid';
+  const UserListRoute({required this.pid, required this.uid});
 
   final String uid;
   final String pid;
@@ -115,14 +126,33 @@ class UserListRoute extends GoRouteData {
   }
 }
 
+class AddUserFormRoute extends GoRouteData {
+  static const path = 'userForm/:uid&:pid';
+  AddUserFormRoute({required this.uid, required this.pid});
+
+  final String uid;
+  final String pid;
+  UserEntityModel? userEntityModel;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return AddUserFormScreen(userEntityModel);
+  }
+}
+
+/// [Authentication Routes]
 @TypedGoRoute<AuthRoute>(path: AuthRoute.path, name: 'auth', routes: [
   TypedGoRoute<LoginRoute>(
-      path: LoginRoute.path,
-      name: 'loginRoute',
+    path: LoginRoute.path,
+    name: 'login',
   ),
   TypedGoRoute<SignUpRoute>(
-      path: SignUpRoute.path,
-      name: 'signUpRoute',
+    path: SignUpRoute.path,
+    name: 'signUp',
+  ),
+  TypedGoRoute<VerificationRoute>(
+    path: VerificationRoute.path,
+    name: 'verify',
   ),
 ])
 class AuthRoute extends GoRouteData {
@@ -170,6 +200,28 @@ class SignUpRoute extends GoRouteData {
   }
 }
 
+class VerificationRoute extends GoRouteData {
+  static const path = 'verificationRoute';
+  const VerificationRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final params = state.extra as VerificationScreenParams?;
+
+    if (params == null) {
+      throw 'Missing `VerificationScreenParams` object';
+    }
+    return VerificationScreen(params: params);
+  }
+}
+
+
+/// [Other Pages Routes]
 class DevisEditRoute extends GoRouteData {
   static const path = 'edit_devis:did';
   const DevisEditRoute({required this.did});

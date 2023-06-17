@@ -1,7 +1,8 @@
+import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../../common/domain/failures/failure.dart';
-import '../entities/user/user_entity.dart';
 
 abstract class AuthRepositoryInterface {
   Future<Either<Failure, bool>> signInWithGoogle();
@@ -21,10 +22,20 @@ abstract class AuthRepositoryInterface {
     String? password,
   );
 
-  Future<Either<Failure, UserModel>> signInWithPassword(
+  Future<Either<Failure, supabase.User>> signInWithPassword(
     String? email,
     String? password,
   );
 
   Future<Either<Failure, bool>> isOnLine();
+
+  Future<Either<Failure, supabase.AuthResponse>> verifyCode(
+      String email,
+      String code,
+      );
+
+  Future<Either<Failure, UserEntityModel>> createUserEntityModel(
+      UserName name
+      );
+
 }

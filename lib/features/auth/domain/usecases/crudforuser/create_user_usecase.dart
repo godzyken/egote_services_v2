@@ -5,7 +5,7 @@ abstract class CreateUserCase {
       final String name,
       final String role,
       final bool isComplete,
-      final DateTime createAt,
+      final DateTime createdAt,
       final DateTime updateAt,
       final DateTime emailConfirmedAt,
       final DateTime phoneConfirmedAt,

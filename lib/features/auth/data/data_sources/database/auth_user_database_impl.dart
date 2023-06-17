@@ -6,12 +6,20 @@ import 'package:egote_services_v2/features/auth/data/entities/users_entity.dart'
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart';
 
-class AuthUserDatabaseImpl implements SourceBase {
+class AuthUserDatabaseImpl implements  SourceBase {
   static final AuthUserDatabaseImpl instance = AuthUserDatabaseImpl._init();
   static const _databaseName = 'auth_users_database';
   static const _tableName = 'auth_users_table';
   static const _databaseVersion = 1;
   static const _columnUserId = 'id';
+  static const _columnUserName = 'name';
+  static const _columnUserRole = 'role';
+  static const _columnUserComplete = 'is_complete';
+  static const _columnUserCreatedAt = 'created_at';
+  static const _columnUserUpdatedAt = 'updated_at';
+  static const _columnUserEmail = 'email_confirmed_at';
+  static const _columnUserPhone = 'phone_confirmed_at';
+  static const _columnUserLastSignIn = 'last_sign_in_at';
   static Database? _database;
   static Completer<Database>? _initCompleter;
 
@@ -55,6 +63,14 @@ class AuthUserDatabaseImpl implements SourceBase {
     await db.execute('''
     CREATE TABLE IF NOT EXISTS $_tableName(
     $_columnUserId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    $_columnUserName TEXT NOT NULL,
+    $_columnUserRole TEXT NOT NULL,
+    $_columnUserComplete BOOLEAN NOT NULL,
+    $_columnUserCreatedAt INTEGER NOT NULL,
+    $_columnUserUpdatedAt INTEGER NOT NULL,
+    $_columnUserEmail INTEGER NOT NULL,
+    $_columnUserPhone INTEGER NOT NULL,
+    $_columnUserLastSignIn INTEGER NOT NULL
     )''');
   }
 

@@ -1,4 +1,4 @@
-import 'package:egote_services_v2/features/auth/presentation/views/models/filter_status_view.dart';
+import 'package:egote_services_v2/features/auth/presentation/views/models/userlist/filter_status_view.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

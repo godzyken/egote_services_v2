@@ -3,9 +3,9 @@ import 'dart:developer' as developer;
 import 'package:egote_services_v2/features/auth/domain/providers/usecases_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../common/domain/entities/states/state.dart';
-import '../../../domain/entities/entities_extension.dart';
-import '../../../domain/usecases/usescases_extention.dart';
+import '../../../../../common/domain/entities/states/state.dart';
+import '../../../../domain/entities/entities_extension.dart';
+import '../../../../domain/usecases/usescases_extention.dart';
 import 'filter_status_view.dart';
 
 class UserListViewModel extends StateNotifier<State<UserList>> {
@@ -43,12 +43,26 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
     updateEntityUser(newUser);
   }
 
+  testAdd() async {
+    var name = 'sasuke';
+    var role = 'renegade';
+    bool isComplete = true;
+    DateTime createdAt = DateTime.now();
+    DateTime updatedAt = DateTime.now();
+    DateTime emailConfirmedAt = DateTime.now();
+    DateTime phoneConfirmedAt = DateTime.now();
+    DateTime lastSignInAt = DateTime.now();
+
+    await _createUserCase.execute(
+        name, role, isComplete, createdAt, updatedAt, emailConfirmedAt, phoneConfirmedAt, lastSignInAt);
+  }
+
   createUser(
       final String name,
       final String role,
       final bool isComplete,
       final DateTime createdAt,
-      final DateTime updateAt,
+      final DateTime updatedAt,
       final DateTime emailConfirmedAt,
       final DateTime phoneConfirmedAt,
       final DateTime lastSignInAt,
@@ -62,7 +76,7 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
           role,
           isComplete,
           createdAt,
-          updateAt,
+          updatedAt,
           emailConfirmedAt,
           phoneConfirmedAt,
           lastSignInAt

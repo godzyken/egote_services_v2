@@ -7,17 +7,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../infrastructure/repositories/auth_repository.dart';
 
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  final authClient = ref.watch(supabaseClientProvider).auth;
+final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
   final prefs = ref.read(sharedPreferencesProvider).asData!.value;
 
-  return AuthRepository(AuthTokenLocalDataSource(prefs), authClient);
+  return AuthRepository(AuthTokenLocalDataSource(prefs));
 },
-    dependencies: [supabaseClientProvider, sharedPreferencesProvider],
+    dependencies: [sharedPreferencesProvider],
     name: 'Auth repository provider');
 
 final authStateListenable = ValueNotifier<bool>(false);
 
-final authControllerProvider =
-    StateNotifierProvider<AuthController, UserModel?>(
-        (ref) => AuthController(ref));
+final autoAuthControllerProvider =
+    StateNotifierProvider<AutoAuthController, UserModel?>(
+        (ref) => AutoAuthController(ref),
+    name: 'auto controller authentication state notifier');
+
+final authProvider =
+StateNotifierProvider.autoDispose<AuthController, AsyncValue<UserModel?>>(
+        (ref) {
+      final repo = ref.watch(authRepositoryProvider);
+      return AuthController(repo);
+    },
+  dependencies: [authRepositoryProvider],
+  name: 'authentication always listener async values state notifier',
+);

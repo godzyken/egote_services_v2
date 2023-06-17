@@ -2,27 +2,37 @@ import 'dart:developer' as developer;
 
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user_values/user_name.dart';
 import 'package:egote_services_v2/features/auth/domain/repository/auth_repository.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:fpdart/src/either.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
+import '../../../common/presentation/extensions/extensions.dart';
 
-class AuthRepository implements AuthRepositoryInterface {
-  AuthRepository(this.authTokenLocalDataSource, this.authClient);
+
+class  AuthRepository implements AuthRepositoryInterface {
+  AuthRepository(this.authTokenLocalDataSource);
 
   final AuthTokenLocalDataSource authTokenLocalDataSource;
-  final supabase.GoTrueClient authClient;
 
-  UserModel? get currentUser => authClient.currentUser == null
-      ? null
-      : UserModel.fromJson(authClient.currentUser!.toJson());
+  static const String _table = 'auth_users_table';
+  static const goTrueUrl = 'http://localhost:9999';
+  static const annonToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ2FubmJoYW5zZmxid3lkcmd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzU3Nzg3OTcsImV4cCI6MTk5MTM1NDc5N30.26lZFFX3_TBhdqsjvqD7WUGiRhTFT05QwVZaUsIATo0';
 
-  Stream<supabase.AuthUser?>? get user => null;
+  final authClient = supabase.Supabase.instance.client;
+  final client = supabase.GoTrueClient(
+    url: goTrueUrl,
+    headers: {
+      'Authorization': 'Bearer $annonToken',
+      'apikey': annonToken
+    }
+  );
 
   @override
   void authStateChange(void Function(UserModel? userEntity) callback) {
-    authClient.onAuthStateChange.listen((data) {
+    authClient.auth.onAuthStateChange.listen((data) {
       final supabase.AuthChangeEvent event = data.event;
       final supabase.Session? session = data.session;
 
@@ -58,7 +68,7 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, bool>> isOnLine() async {
-    final myChannel = supabase.Supabase.instance.client.channel('base_de_test');
+    final myChannel = authClient.channel('base_de_test');
 
     if (myChannel.isClosed) return left(Failure.unauthorized());
     if (myChannel.isErrored) return left(Failure.unauthorized());
@@ -104,7 +114,7 @@ class AuthRepository implements AuthRepositoryInterface {
       return left(Failure.empty());
     }
 
-    final response = await authClient.recoverSession(res.getOrElse((_) => ''));
+    final response = await authClient.auth.recoverSession(res.getOrElse((_) => ''));
     final data = response.session;
 
     if (response.session != null || response.user == null) {
@@ -118,7 +128,7 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, UserModel>> setSession(String token) async {
-    final response = await authClient.setSession(token);
+    final response = await client.setSession(token);
     await authTokenLocalDataSource
         .store(response.session?.persistSessionString ?? '');
 
@@ -134,7 +144,7 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, bool>> signInWithGoogle() async {
-    final res = await authClient.signInWithOAuth(
+    final res = await client.signInWithOAuth(
       supabase.Provider.google,
       redirectTo: 'io.supabase.flutter://reset-callback/'
     );
@@ -147,11 +157,11 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, UserModel>> signInWithPassword(
+  Future<Either<Failure, supabase.User>> signInWithPassword(
       String? email, String? password) async {
     developer.log('signInWithPassword()');
 
-    final res = await authClient.signInWithPassword(
+    final res = await client.signInWithPassword(
       email: email,
       password: password!,
     );
@@ -159,21 +169,22 @@ class AuthRepository implements AuthRepositoryInterface {
     await authTokenLocalDataSource
         .store(res.session?.persistSessionString ?? '');
 
-    final data = res.session;
+    final supabase.Session? data = res.session;
+    final supabase.User? user = res.user;
 
-    if (res.session != null || res.user == null) {
+    if (data != null || user == null) {
       await authTokenLocalDataSource.remove();
       return left(Failure.unauthorized());
     }
 
-    return right(UserModel.fromJson(data!.user.toJson()));
+    return right(data!.user);
   }
 
   @override
   Future<Either<Failure, bool>> signOut() async {
     await authTokenLocalDataSource.remove();
 
-    final res = await authClient
+    final res = await client
         .signOut()
         .then((value) => true, onError: left(Failure.badRequest()));
     if (!res) {
@@ -192,26 +203,100 @@ class AuthRepository implements AuthRepositoryInterface {
   @override
   Future<Either<Failure, UserModel>> signUp(
       String? email, String? username, String? password) async {
-    final response = await authClient.signUp(
+    final response = await client.signUp(
       email: email,
       password: password!,
       data: {'username': username},
     );
 
-    developer.log('reponse api: $response');
+    developer.log('reponse api signup: $response');
 
     if (response.user != null) {
       await authTokenLocalDataSource
         .store(response.session?.persistSessionString ?? '');
     }
 
-    final data = response.session;
+    final supabase.Session? data = response.session;
+    final supabase.User? user = response.user;
 
-    if (response.session != null || response.user == null) {
+    await authClient
+        .from('auth_users_table')
+        .insert(user);
+
+    if (data != null ||   user == null) {
       await authTokenLocalDataSource.remove();
+      await authClient
+          .from('auth_users_table')
+          .delete().match({'id': user!.id});
+
       return left(Failure.unauthorized());
     }
 
     return right(UserModel.fromJson(data!.user.toJson()));
   }
+
+  @override
+  Future<Either<Failure, supabase.AuthResponse>> verifyCode(String email, String code) async{
+    final res = await client.verifyOTP(
+        email: email,
+        token: code,
+        type: supabase.OtpType.signup
+    );
+    developer.log('reponse api verify code: $res');
+
+    if (res.user != null) {
+      await authTokenLocalDataSource.store(res.session?.tokenType ?? '');
+    }
+
+    final supabase.Session? session = res.session;
+    final supabase.User? user = res.user;
+
+    await client.signInWithOtp(
+        email: res.user!.email,
+      shouldCreateUser: true
+    );
+
+    if (session != null || user == null) {
+      await authTokenLocalDataSource.remove();
+      await authClient
+          .from('auth_users_table')
+          .delete().match({'id': user!.id});
+
+      return left(Failure.unauthorized());
+    }
+    return right(supabase.AuthResponse(session: session, user: user));
+  }
+
+  @override
+  Future<Either<Failure, UserEntityModel>> createUserEntityModel(UserName name) async {
+    final now = DateTimeX.current.toIso8601String();
+    
+    final n = name.value.getOrElse((l) => '');
+    
+    final entity = UserEntityModel.create(
+        n, 
+        'role', 
+        false, 
+        DateTime.parse(now), 
+        DateTime.parse(now), 
+        DateTime.parse(now), 
+        DateTime.parse(now), 
+        DateTime.parse(now)
+    );
+    
+    final res = await authClient
+    .from(_table)
+    .insert(entity.toJson());
+
+    if (res.toEither) {
+      return left(Failure.unauthorized());
+    }
+
+    return right(UserEntityModel.fromJson(res));
+  }
+  
+  
+  
+  
+
 }
