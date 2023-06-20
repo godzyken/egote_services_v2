@@ -48,7 +48,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             extra: VerificationScreenParams(
                 email: _emailCtrl.text,
                 password: _passwordCtrl.text,
-                username: _usernameCtrl.text
+                name: _usernameCtrl.text
             )
         );
       }
@@ -76,6 +76,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   void dispose() {
     super.dispose();
     _isSubmitting = false;
+    _usernameCtrl.dispose();
+    _emailCtrl.dispose();
+    _passwordCtrl.dispose();
   }
 
   @override
@@ -109,10 +112,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     });
     final res = ref.watch(authProvider);
 
-    final errorText = res.maybeWhen(
-      error: (error, stackTrace) => error.toString(),
-      orElse: () => null,);
-
     final isLoading = res.maybeWhen(
       data: (_) => res.isRefreshing,
       loading: () => true,
@@ -144,7 +143,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   inputType: TextInputType.name,
                   validator: (value) => name?.error?.getMessage(),
                   onEditingComplete: isLoading ? null : () => ref.read(authProvider.notifier).handle(_name!),
-                  errorText: errorText,
+                  errorText: name?.displayError?.getMessage(),
                 ),
                 const SizedBox(
                   height: 16,
@@ -157,7 +156,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       signUpController.onEmailChange(email),
                   inputType: TextInputType.emailAddress,
                   validator: (value) => email?.error?.getMessage(),
-                  errorText: errorText,
+                  errorText: email?.displayError?.getMessage(),
                 ),
                 const SizedBox(
                   height: 16,
@@ -191,7 +190,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       });
                     }
                   },
-                )
+                ),
               ],
             ),
           ),

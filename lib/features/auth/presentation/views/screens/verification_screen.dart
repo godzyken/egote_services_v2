@@ -9,11 +9,11 @@ class VerificationScreenParams {
   const VerificationScreenParams({
     required this.email,
     required this.password,
-    required this.username,
+    required this.name,
   });
   final String email;
   final String password;
-  final String username;
+  final String name;
 }
 
 class VerificationScreen extends ConsumerStatefulWidget {
@@ -42,8 +42,8 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
 
       await ref.read(authRepositoryProvider).signUp(
           widget.params.email,
-          widget.params.username,
-          _codeCtrl.text
+          widget.params.name,
+          widget.params.password
       );
 
       if (mounted) {

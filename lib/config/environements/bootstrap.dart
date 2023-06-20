@@ -37,7 +37,8 @@ Future<ProviderContainer> bootstrap() async {
   });
 
   final container = ProviderContainer(
-    overrides: [],
+    overrides: [
+    ],
     observers: [if (F.appFlavor == Flavor.local) _Logger()],
   );
 

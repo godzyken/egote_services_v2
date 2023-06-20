@@ -1,15 +1,12 @@
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 import 'package:egote_services_v2/features/auth/domain/repository/user_repository.dart';
 
-import '../../../../../config/providers.dart';
 import 'create_user_usecase.dart';
 
 class CreateUserCaseImpl implements CreateUserCase {
   final UserRepositoryInterface _repository;
 
   CreateUserCaseImpl(this._repository);
-
-  final client = supabaseProvider;
 
   @override
   Future<UserEntityModel> execute(

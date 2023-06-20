@@ -5,14 +5,16 @@ import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../config/providers/supabase/supabase_providers.dart';
 import '../../infrastructure/repositories/auth_repository.dart';
 
 final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
   final prefs = ref.read(sharedPreferencesProvider).asData!.value;
+  final client = ref.watch(supabaseClientProvider).auth;
 
-  return AuthRepository(AuthTokenLocalDataSource(prefs));
+  return AuthRepository(AuthTokenLocalDataSource(prefs), client);
 },
-    dependencies: [sharedPreferencesProvider],
+    dependencies: [sharedPreferencesProvider, supabaseClientProvider],
     name: 'Auth repository provider');
 
 final authStateListenable = ValueNotifier<bool>(false);

@@ -34,7 +34,7 @@ dependencies:
   settings_ui: ^2.0.2
   intl: ^0.18.1
   formz: ^0.6.0
-  flutter_localization: ^0.1.11
+  flutter_localization: ^0.1.12
   flutter_advanced_drawer: ^1.3.5
   lottie: ^2.4.0
   supabase_auth_ui: ^0.2.0
@@ -48,6 +48,7 @@ dev_dependencies:
   json_serializable: ^6.7.0
   riverpod_lint: ^1.3.2
   custom_lint: ^0.4.0
+  flutter_flavorizr: ^2.2.1
   flutter_test: 
     sdk: flutter
 
@@ -89,6 +90,9 @@ flutter:
     - assets/lottie/models/
     - assets/lottie/
     - assets/json/
+    - assets/json/development.config.json
+    - assets/json/local.config.json
+    - assets/json/production.config.json
     - assets/fonts/
   fonts: 
     - family: Pacifico
@@ -99,3 +103,36 @@ flutter:
   uses-material-design: true
   generate: true
 
+flavorizr:
+  app:
+    android:
+      flavorDimensions: "flavor-type"
+    ios:
+
+  flavors:
+    local:
+      app:
+        name: "egote_services_v2 Local"
+
+      android:
+        applicationId: "com.godzy.egote_services_v2.local"
+      ios:
+        bundleId: "com.godzy.egote_services_v2.local"
+
+    development:
+      app:
+        name: "egote_services_v2 Development"
+
+      android:
+        applicationId: "com.godzy.egote_services_v2.dev"
+      ios:
+        bundleId: "com.godzy.egote_services_v2.dev"
+
+    production:
+      app:
+        name: "Example Production"
+
+      android:
+        applicationId: "com.godzy.egote_services_v2"
+      ios:
+        bundleId: "com.godzy.egote_services_v2"

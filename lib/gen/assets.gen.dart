@@ -1,4 +1,4 @@
-  /// GENERATED CODE - DO NOT MODIFY BY HAND
+/// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
 /// *****************************************************
@@ -129,6 +129,9 @@ class $AssetsLottieModelsGen {
   /// File path: assets/lottie/models/Drive.json
   String get drive => 'assets/lottie/models/Drive.json';
 
+  /// File path: assets/lottie/models/LottieLogo1.json
+  String get lottieLogo1 => 'assets/lottie/models/LottieLogo1.json';
+
   /// File path: assets/lottie/models/Toco Toucan.gif
   AssetGenImage get tocoToucan =>
       const AssetGenImage('assets/lottie/models/Toco Toucan.gif');
@@ -195,6 +198,7 @@ class $AssetsLottieModelsGen {
         arcticFox,
         arcticFoxSitting,
         drive,
+        lottieLogo1,
         tocoToucan,
         tocoToucan,
         copertina,

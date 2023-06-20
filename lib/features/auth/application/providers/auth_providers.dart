@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entities/sign_in/sign_in_state.dart';
-import '../../domain/entities/sign_up/sign_up_state.dart';
+import '../../domain/entities/entities_extension.dart';
 import '../../domain/providers/auth_repository_provider.dart';
 import '../controller/controller_extensions.dart';
 

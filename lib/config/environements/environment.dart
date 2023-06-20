@@ -1,17 +1,21 @@
-import 'package:egote_services_v2/config/environements/safe_convert.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Environment {
-  Environment(
-      {required this.supabaseUrl,
-      required this.supabaseAnonKey,
-      String? supabaseAuthCallbackUrlHostname});
+part 'environment.freezed.dart';
+part 'environment.g.dart';
 
-  final String supabaseUrl;
-  final String supabaseAnonKey;
-  String? supabaseAuthCallbackUrlHostname;
+@freezed
+class Environment with _$Environment {
+  /// Default constructor for the [Environment] model
+  /// [supabaseUrl] is the url of the Supabase environment
+  /// [supabaseAnonKey] is the anon_key for Supabase
 
-  factory Environment.fromJson(Map<String, dynamic> json) => Environment(
-      supabaseUrl: asT<String>(json, 'url'),
-      supabaseAnonKey: asT<String>(json, 'anon_key'),
-      supabaseAuthCallbackUrlHostname: asT<String>(json, 'hostname'));
+  const factory Environment({
+    required String supabaseUrl,
+    required String supabaseAnonKey,
+    String? supabaseAuthCallbackUrlHostname,
+  }) = _Environment;
+
+  ///
+  factory Environment.fromJson(Map<String, dynamic> json) =>
+      _$EnvironmentFromJson(json);
 }

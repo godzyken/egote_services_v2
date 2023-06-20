@@ -18,8 +18,8 @@ abstract class AuthRepositoryInterface {
 
   Future<Either<Failure, UserModel>> signUp(
     String? email,
-    String? username,
-    String? password,
+    String? name,
+    String password,
   );
 
   Future<Either<Failure, supabase.User>> signInWithPassword(
