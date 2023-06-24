@@ -106,9 +106,9 @@ class $AssetsLottieImageGen {
 class $AssetsLottieModelsGen {
   const $AssetsLottieModelsGen();
 
-  /// File path: assets/lottie/models/Android Robot.gif
-  AssetGenImage get androidRobot =>
-      const AssetGenImage('assets/lottie/models/Android Robot.gif');
+  /// File path: assets/lottie/models/AndroidLargeRobot.gif
+  AssetGenImage get androidLargeRobot =>
+      const AssetGenImage('assets/lottie/models/AndroidLargeRobot.gif');
 
   /// File path: assets/lottie/models/AndroidRobot.gif
   AssetGenImage get androidRobot =>
@@ -132,9 +132,9 @@ class $AssetsLottieModelsGen {
   /// File path: assets/lottie/models/LottieLogo1.json
   String get lottieLogo1 => 'assets/lottie/models/LottieLogo1.json';
 
-  /// File path: assets/lottie/models/Toco Toucan.gif
-  AssetGenImage get tocoToucan =>
-      const AssetGenImage('assets/lottie/models/Toco Toucan.gif');
+  /// File path: assets/lottie/models/TocoLargeToucan.gif
+  AssetGenImage get tocoLargeToucan =>
+      const AssetGenImage('assets/lottie/models/TocoLargeToucan.gif');
 
   /// File path: assets/lottie/models/TocoToucan.gif
   AssetGenImage get tocoToucan =>
@@ -192,14 +192,14 @@ class $AssetsLottieModelsGen {
 
   /// List of all assets
   List<dynamic> get values => [
-        androidRobot,
+        androidLargeRobot,
         androidRobot,
         andySvg,
         arcticFox,
         arcticFoxSitting,
         drive,
         lottieLogo1,
-        tocoToucan,
+        tocoLargeToucan,
         tocoToucan,
         copertina,
         earth,

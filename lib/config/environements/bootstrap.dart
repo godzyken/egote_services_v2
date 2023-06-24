@@ -31,6 +31,16 @@ Future<ProviderContainer> bootstrap() async {
       ..autoAppStart = true
       ..maxCacheItems
       ..enableAutoPerformanceTracing = true
+      ..debug = true
+      ..reportSilentFlutterErrors = true
+      ..reportPackages = false
+      ..sendDefaultPii = true
+      ..considerInAppFramesByDefault = true
+      ..attachThreads = true
+      ..attachScreenshot = true
+      ..screenshotQuality = SentryScreenshotQuality.low
+      ..maxRequestBodySize = MaxRequestBodySize.always
+      ..maxResponseBodySize = MaxResponseBodySize.always
       ..tracesSampleRate = 1.0
       ..tracesSampler = (samplingContext) =>
           samplingContext.transactionContext.parentSamplingDecision?.sampleRate;

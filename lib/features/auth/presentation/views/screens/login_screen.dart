@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/features/auth/application/providers/auth_providers.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/auth_controller_state.dart';
+import 'package:egote_services_v2/features/auth/presentation/views/screens/verification_screen.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +21,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
   final _emailCtrl = TextEditingController();
+  final _nameCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
   AutovalidateMode? _autovalidateMode;
 
@@ -35,8 +37,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .onSignInWithPassword(_emailCtrl.text, _passwordCtrl.text);
 
       if(mounted) {
+        context.showAlert('Check your inbox');
+
+        final String location = context.namedLocation('verification');
         context.push(
-            '/user_home'
+            location,
+            extra: VerificationScreenParams(
+                email: _emailCtrl.text,
+                password: _passwordCtrl.text,
+                name: _nameCtrl.text
+            )
         );
       }
 
@@ -87,9 +97,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   controller: _passwordCtrl,
                   label: context.tr!.userPassword,
                   hintText: context.tr!.enterUserPassword,
-                  onChanged: (password) => ref
-                      .read(loginControllerNotifierProvider.notifier)
-                      .onPasswordChange(password),
+                  onChanged: (password) {
+                    setState(() {
+                      _isSubmitting = true;
+                    });
+                    ref
+                        .read(loginControllerNotifierProvider.notifier)
+                        .onPasswordChange(password);
+                  },
                   inputType: TextInputType.visiblePassword,
                   validator: (value) => password?.error?.getMessage(),
                 ),

@@ -1,11 +1,12 @@
 import 'dart:developer' as developer;
 
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
-import 'package:egote_services_v2/features/auth/presentation/views/screens/verification_screen.dart';
+import 'package:egote_services_v2/features/auth/presentation/views/screens/auth_screens.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 import '../../../application/providers/auth_providers.dart';
 import '../../../domain/providers/auth_repository_provider.dart';
@@ -43,8 +44,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           .signUp(_emailCtrl.text, _usernameCtrl.text, _passwordCtrl.text);
 
       if(mounted) {
+        context.showAlert('Check your inbox');
+
+        final String location = context.namedLocation('enroll');
         context.push(
-            '/verification',
+            location,
             extra: VerificationScreenParams(
                 email: _emailCtrl.text,
                 password: _passwordCtrl.text,
@@ -53,6 +57,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         );
       }
 
+    } on AuthException catch (e) {
+      developer.log(e.statusCode.toString());
+      context.showAlert(e.message);
     } catch (e) {
       developer.log(e.toString());
       context.showAlert(e.toString());
@@ -190,6 +197,16 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       });
                     }
                   },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                TextButton(
+                    onPressed: () {
+                      final String location = context.namedLocation('login');
+                      return context.go(location);
+                    },
+                    child: const Text('I already have an account'),
                 ),
               ],
             ),

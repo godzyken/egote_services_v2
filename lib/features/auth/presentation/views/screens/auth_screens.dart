@@ -1,6 +1,7 @@
 export 'add_user_form_screen.dart';
 export 'auth_screen.dart';
 export 'login_screen.dart';
+export 'm_f_a_enroll_screen.dart';
 export 'profile_screen.dart';
 export 'sign_up_screen.dart';
 export 'update_user_dialog_screen.dart';

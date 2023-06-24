@@ -82,7 +82,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
 
   Future<perso.AuthState?> onSignInWithPassword(String email, String password) async {
     final userModel = await _repository.signInWithPassword(email, password);
-    if (userModel.exists((r) => _user!.id.isNotEmpty)) {
+    if (userModel.exists((r) => r.id.isNotEmpty)) {
       state = perso.AuthState.authenticated(
           status: validator(userModel.toNullable())!,
           userEntity: UserModel.fromJson(userModel.toNullable()!.toJson())

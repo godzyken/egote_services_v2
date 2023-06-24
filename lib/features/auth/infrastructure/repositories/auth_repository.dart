@@ -7,6 +7,7 @@ import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:fpdart/src/either.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../../common/presentation/extensions/extensions.dart';
@@ -21,6 +22,7 @@ class  AuthRepository implements AuthRepositoryInterface {
   static const String _table = 'auth_users_table';
 
   final authClient = supabase.Supabase.instance.client;
+  var code = '';
 
   @override
   void authStateChange(void Function(UserModel? userEntity) callback) {
@@ -212,7 +214,8 @@ class  AuthRepository implements AuthRepositoryInterface {
       email: email,
       password: password,
       data: {'name': name},
-      emailRedirectTo: kIsWeb ? null : 'io.supabase.flutterquickstart://login-callback/',
+      //emailRedirectTo: kIsWeb ? null : 'io.supabase.flutterquickstart://login-callback/',
+      emailRedirectTo: kIsWeb ? null : 'mfa-app://callback/enroll',
     );
 
     developer.log('reponse api signup: ${response.user}');
@@ -224,18 +227,16 @@ class  AuthRepository implements AuthRepositoryInterface {
 
     final supabase.Session? data = response.session;
     final supabase.User? user = response.user;
-    final now = DateTimeX.current.toIso8601String();
-
 
     final UserEntityModel userEntityModel = UserEntityModel.create(
         name!,
-        'role',
+        user!.role!,
         false,
-        DateTime.parse(user!.createdAt),
-        DateTime.parse(user.updatedAt!),
-        DateTime.parse(user.emailConfirmedAt!),
-        DateTime.parse(user.phoneConfirmedAt!),
-        DateTime.parse(user.lastSignInAt!)
+        DateTime(int.parse(user.createdAt)),
+        DateTime(int.parse(user.updatedAt!)),
+        DateTime(int.parse(user.emailConfirmedAt!)),
+        DateTime(int.parse(user.phoneConfirmedAt!)),
+        DateTime(int.parse(user.lastSignInAt!)),
     );
 
     await authClient
@@ -285,6 +286,41 @@ class  AuthRepository implements AuthRepositoryInterface {
       return left(Failure.unauthorized());
     }
     return right(supabase.AuthResponse(session: session, user: user));
+  }
+
+  @override
+  Future<Either<Failure, supabase.AuthMFAEnrollResponse>> enRoll() async{
+    try {
+      final res = await client.mfa.enroll(
+        factorType: FactorType.totp,
+      );
+
+      developer.log('reponse api verify code: $res');
+
+      AuthMFAChallengeResponse challenge = await mpaChallenge(res);
+
+      final code = getCode;
+
+      await mfaVerify(res, challenge, code.toString());
+
+      return right(supabase.AuthMFAEnrollResponse(id: res.id, totp: res.totp, type: res.type));
+    } on Exception catch (e) {
+      developer.log('enRoll() error: $e');
+      return left(Failure.unauthorized());
+    }
+  }
+
+  Future<AuthMFAChallengeResponse> mpaChallenge(AuthMFAEnrollResponse res) async {
+    final challenge = await client.mfa.challenge(factorId: res.id);
+    return challenge;
+  }
+
+  Future<void> mfaVerify(AuthMFAEnrollResponse res, AuthMFAChallengeResponse challenge, String code) async {
+    await client.mfa.verify(factorId: res.id, challengeId: challenge.id, code: code);
+  }
+
+  Future getCode(value) async {
+   return value;
   }
 
   @override

@@ -13,12 +13,12 @@ class LocalImages {
       'assets/lottie/archive/amenagement/interrieur/sol/matiere/pvc/sol_pvc_holywell.png';
   static const swimmingPoolSussargue =
       'assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg';
-  static const androidRobotGifOne = 'assets/lottie/models/Android Robot.gif';
+  static const androidRobotGifOne = 'assets/lottie/models/AndroidLargeRobot.gif';
   static const androidRobotGifTwo = 'assets/lottie/models/AndroidRobot.gif';
   static const arcticFoxSitting =
       'assets/lottie/models/Arctic_Fox_Sitting.gif';
   static const arcticFoxGif = 'assets/lottie/models/ArcticFox.gif';
-  static const tocoToucanGifOne = 'assets/lottie/models/Toco Toucan.gif';
+  static const tocoToucanGifOne = 'assets/lottie/models/TocoLargeToucan.gif';
   static const tocoToucanGifOne2 = 'assets/lottie/models/TocoToucan.gif';
   static const foxFaceMeshTexture =
       'assets/lottie/models/fox_face_mesh_texture.png';

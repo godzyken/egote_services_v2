@@ -123,6 +123,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         height: 250,
                         image: AssetImage(LocalImages.logoBatServices)
                     ))),
+            GestureDetector(
+                onHorizontalDragEnd: (details) => context.go('/userListRoute/:uid&:pid'),
+                child: child
+            ),
+
           ],
         ),
         floatingActionButton: FloatingActionButton(

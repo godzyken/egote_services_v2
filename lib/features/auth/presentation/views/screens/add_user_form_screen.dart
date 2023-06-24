@@ -8,9 +8,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AddUserFormScreen extends ConsumerStatefulWidget {
-  final UserEntityModel? _userEntityModel;
+  final UserEntityModel? userEntityModel;
   
-  const AddUserFormScreen(this._userEntityModel, {super.key});
+  const AddUserFormScreen({super.key, required this.userEntityModel,});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddUserFormScreenState();
@@ -30,7 +30,7 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
   void initState() {
     super.initState();
     
-    _viewModel = ref.read(addFormViewModelProvider(widget._userEntityModel));
+    _viewModel = ref.read(addFormViewModelProvider(widget.userEntityModel));
     _createDateTextFieldController = TextEditingController(
       text: DateFormat('yyyy/MM/dd').format(_viewModel.initialCreateValue()),
     );

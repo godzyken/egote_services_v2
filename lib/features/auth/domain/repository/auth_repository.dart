@@ -34,6 +34,8 @@ abstract class AuthRepositoryInterface {
       String code,
       );
 
+  Future<Either<Failure, supabase.AuthMFAEnrollResponse>> enRoll();
+
   Future<Either<Failure, UserEntityModel>> createUserEntityModel(
       UserName name
       );

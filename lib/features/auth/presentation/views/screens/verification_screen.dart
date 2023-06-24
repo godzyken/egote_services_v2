@@ -1,7 +1,10 @@
+import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 import '../../../domain/providers/auth_repository_provider.dart';
 
@@ -63,14 +66,49 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
         _isSubmitting = true;
       });
 
-      await ref.read(authRepositoryProvider).verifyCode(
+      final code = await ref.read(authRepositoryProvider).verifyCode(
           widget.params.email,
           _codeCtrl.text
       );
 
+      final auth = await ref.read(authRepositoryProvider).signUp(
+          widget.params.email,
+          widget.params.name,
+          widget.params.password
+      );
+
+      final user = auth.getOrElse((l) =>
+           UserModel.complete(
+              id: UserId(value: l.error.length),
+              userEntityModel: UserEntityModel.empty(),
+               authUser: AuthUser(
+                 id: l.error,
+                 appMetadata: {},
+                 userMetadata: {},
+                 aud: l.error,
+                 email: l.error,
+                 phone: l.error,
+                 createdAt: l.error,
+                 role: l.error,
+                 updatedAt: l.error,
+               ),
+              cubeUser: CubeUser()
+          ));
+
+
+      final client = code.getOrElse((l) => AuthResponse(
+          user: user.authUser,
+          session: Session.fromJson(user.toJson())
+      ));
+
       if (mounted) {
         context.showAlert('Successfully signed up');
-        context.go('/user_home');
+
+        final String location = context.namedLocation(
+            'user_home',
+            pathParameters: {'pid': client.user!.id}
+        );
+        context.go(location);
       }
     } catch (e) {
       context.showAlert(e.toString());
@@ -132,7 +170,6 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                     height: 20,
                     key: _formKey,
                     enabled: _isSubmitting,
-                    //onPressed:  _isSubmitting ? null : () => context.go('/user_home'),
                     onPressed:  _isSubmitting ? null : () {
                       if (_formKey.currentState!.validate()) {
                         _verify();

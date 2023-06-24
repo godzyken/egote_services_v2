@@ -63,36 +63,55 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
     GoRoute(
         path: HomeRoute.path,
         name: 'home',
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) => HomeScreen(key: state.pageKey,),
         routes: [
           GoRoute(
             path: AuthRoute.path,
             name: 'auth',
-            builder: (context, state) => const AuthScreen(),
+            builder: (context, state) => AuthScreen(key: state.pageKey,),
+            routes: [
+              GoRoute(
+                  path: LoginRoute.path,
+                  name: 'login',
+                  builder: (context, state) => LoginScreen(key: state.pageKey,),
+                  routes: [
+                    GoRoute(
+                      path: VerificationRoute.path,
+                      name: 'verification',
+                      builder: (context, state) {
+                        var params = state.extra as VerificationScreenParams;
+                        return VerificationScreen(params: params);
+                      },
+                    )
+                  ]
+              ),
+              GoRoute(
+                  path: SignUpRoute.path,
+                  name: 'sign_up',
+                  builder: (context, state) => SignUpScreen(key: state.pageKey,),
+                  routes: [
+                    GoRoute(
+                      path: MFAEnrollRoute.path,
+                      name: 'enroll',
+                      builder: (context, state) {
+                        var params = state.extra as VerificationScreenParams;
+                        return MFAEnrollScreen(params: params);
+                      },
+                    ),
+                  ]
+              ),
+            ]
           ),
           GoRoute(
               path: UserHomeRoute.path,
               name: 'UserHome',
-              builder: (context, state) {
-                final auth = ref.watch(autoAuthControllerProvider);
-
-                return auth!.when(
-                    complete: (id, userEntityModel, authUser, cubeUser) {
-                      final cUser = ref.watch(cubeEntityProvider);
-                      return ProfileScreen(
-                          uid: auth.id.toString(),
-                          pid: cUser.id.toString()
-                      );
-                    },
-                    unComplete: (id, userEntityModel, authUser) =>
-                        UserHomeScreen(pid: auth.id.toString()));
-              },
+              builder: (context, state) => UserHomeScreen(key: state.pageKey, pid: state.pathParameters['userId']!),
               routes: [
                 GoRoute(
                   path: PersonRoute.path,
                   name: 'profile',
                   builder: (context, state) {
-                    return ProfileScreen(
+                    return ProfileScreen(key: state.pageKey,
                         uid: ref.watch(authStateChangesProvider).value!.uid,
                         pid: ref.watch(cubeEntityProvider).id.toString());
                   },
@@ -100,43 +119,43 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                 GoRoute(
                   path: DrawingRoute.path,
                   name: 'drawingRoute',
-                  builder: (context, state) => const DrawingPage(),
+                  builder: (context, state) => DrawingPage(key: state.pageKey,),
                 )
               ]),
           GoRoute(
             path: GodzyLogoRoute.path,
             name: 'godzyRoute',
-            builder: (context, state) => const Godzylogo(),
+            builder: (context, state) => Godzylogo(key: state.pageKey),
           ),
           GoRoute(
             path: AvisBoxRoute.path,
             name: 'avisRoute',
-            builder: (context, state) => const AvisBoxPage(),
+            builder: (context, state) => AvisBoxPage(key: state.pageKey),
           ),
           GoRoute(
               path: SettingsUiRoute.path,
               name: 'settingsRoute',
-              builder: (context, state) => const SettingsUiPage(),
+              builder: (context, state) => SettingsUiPage(key: state.pageKey),
               routes: [
                 GoRoute(
                   path: CrossPlatformSettingsRoute.path,
                   name: 'crossPlatformRoute',
-                  builder: (context, state) => const CrossPlatformSettingsScreen(),
+                  builder: (context, state) => CrossPlatformSettingsScreen(key: state.pageKey),
                 ),
                 GoRoute(
                   path: WebChromeAddressesRoute.path,
                   name: 'webChromeAddressesRoute',
-                  builder: (context, state) => const WebChromeAddressesScreen(),
+                  builder: (context, state) => WebChromeAddressesScreen(key: state.pageKey),
                 ),
                 GoRoute(
                   path: AndroidNotificationsRoute.path,
                   name: 'androidNotificationsRoute',
-                  builder: (context, state) => const AndroidNotificationsScreen(),
+                  builder: (context, state) => AndroidNotificationsScreen(key: state.pageKey),
                 ),
                 GoRoute(
                   path: WebChromeSettingsRoute.path,
                   name: 'webChromeSettingsRoute',
-                  builder: (context, state) => const WebChromeSettings(),
+                  builder: (context, state) => WebChromeSettings(key: state.pageKey),
                 ),
               ]
           ),
