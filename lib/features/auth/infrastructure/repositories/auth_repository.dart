@@ -22,7 +22,6 @@ class  AuthRepository implements AuthRepositoryInterface {
   static const String _table = 'auth_users_table';
 
   final authClient = supabase.Supabase.instance.client;
-  var code = '';
 
   @override
   void authStateChange(void Function(UserModel? userEntity) callback) {
@@ -124,13 +123,13 @@ class  AuthRepository implements AuthRepositoryInterface {
     final response = await authClient.auth.recoverSession(res.getOrElse((_) => ''));
     final data = response.session;
 
-    if (response.session != null || response.user == null) {
+    if (data != null || response.user == null) {
       await authTokenLocalDataSource.remove();
       return left(Failure.unauthorized());
     }
     await authTokenLocalDataSource
-        .store(response.session?.persistSessionString ?? '');
-    return right(UserModel.fromJson(data!.user.toJson()));
+        .store(data!.persistSessionString ?? '');
+    return right(UserModel.fromJson(data.user.toJson()));
   }
 
   @override
@@ -172,19 +171,21 @@ class  AuthRepository implements AuthRepositoryInterface {
       email: email,
       password: password!,
     );
-
+    developer.log('signInWithPassword response : ${res.session!.toJson()}\n ${res.user!.toJson()}');
     await authTokenLocalDataSource
         .store(res.session?.persistSessionString ?? '');
 
-    final supabase.Session? data = res.session;
+    final supabase.Session? session = res.session;
     final supabase.User? user = res.user;
 
-    if (data != null || user == null) {
-      await authTokenLocalDataSource.remove();
-      return left(Failure.unauthorized());
-    }
+    do {
 
-    return right(data!.user);
+      await authTokenLocalDataSource.remove();
+      left(Failure.unauthorized());
+
+    } while (session != null && user == null);
+
+    return right(session!.user);
   }
 
   @override
@@ -214,8 +215,8 @@ class  AuthRepository implements AuthRepositoryInterface {
       email: email,
       password: password,
       data: {'name': name},
-      //emailRedirectTo: kIsWeb ? null : 'io.supabase.flutterquickstart://login-callback/',
-      emailRedirectTo: kIsWeb ? null : 'mfa-app://callback/enroll',
+      //emailRedirectTo: kIsWeb ? https://qrco.de/be782E : 'https://www.godzy.egote-services-v2/signup/enroll',
+      emailRedirectTo: kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
     );
 
     developer.log('reponse api signup: ${response.user}');
@@ -286,41 +287,6 @@ class  AuthRepository implements AuthRepositoryInterface {
       return left(Failure.unauthorized());
     }
     return right(supabase.AuthResponse(session: session, user: user));
-  }
-
-  @override
-  Future<Either<Failure, supabase.AuthMFAEnrollResponse>> enRoll() async{
-    try {
-      final res = await client.mfa.enroll(
-        factorType: FactorType.totp,
-      );
-
-      developer.log('reponse api verify code: $res');
-
-      AuthMFAChallengeResponse challenge = await mpaChallenge(res);
-
-      final code = getCode;
-
-      await mfaVerify(res, challenge, code.toString());
-
-      return right(supabase.AuthMFAEnrollResponse(id: res.id, totp: res.totp, type: res.type));
-    } on Exception catch (e) {
-      developer.log('enRoll() error: $e');
-      return left(Failure.unauthorized());
-    }
-  }
-
-  Future<AuthMFAChallengeResponse> mpaChallenge(AuthMFAEnrollResponse res) async {
-    final challenge = await client.mfa.challenge(factorId: res.id);
-    return challenge;
-  }
-
-  Future<void> mfaVerify(AuthMFAEnrollResponse res, AuthMFAChallengeResponse challenge, String code) async {
-    await client.mfa.verify(factorId: res.id, challengeId: challenge.id, code: code);
-  }
-
-  Future getCode(value) async {
-   return value;
   }
 
   @override

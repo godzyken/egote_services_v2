@@ -114,9 +114,8 @@ class $AssetsLottieModelsGen {
   AssetGenImage get androidRobot =>
       const AssetGenImage('assets/lottie/models/AndroidRobot.gif');
 
-  /// File path: assets/lottie/models/Andy.svg.svg
-  SvgGenImage get andySvg =>
-      const SvgGenImage('assets/lottie/models/Andy.svg.svg');
+  /// File path: assets/lottie/models/Andy.svg
+  SvgGenImage get andy => const SvgGenImage('assets/lottie/models/Andy.svg');
 
   /// File path: assets/lottie/models/ArcticFox.gif
   AssetGenImage get arcticFox =>
@@ -164,6 +163,13 @@ class $AssetsLottieModelsGen {
   AssetGenImage get foxface =>
       const AssetGenImage('assets/lottie/models/foxface.gif');
 
+  /// File path: assets/lottie/models/frame.svg
+  SvgGenImage get frame => const SvgGenImage('assets/lottie/models/frame.svg');
+
+  /// File path: assets/lottie/models/frame2.png
+  AssetGenImage get frame2 =>
+      const AssetGenImage('assets/lottie/models/frame2.png');
+
   /// File path: assets/lottie/models/myimages.imgdb
   String get myimages => 'assets/lottie/models/myimages.imgdb';
 
@@ -194,7 +200,7 @@ class $AssetsLottieModelsGen {
   List<dynamic> get values => [
         androidLargeRobot,
         androidRobot,
-        andySvg,
+        andy,
         arcticFox,
         arcticFoxSitting,
         drive,
@@ -207,6 +213,8 @@ class $AssetsLottieModelsGen {
         earthAugmentedImage,
         foxFaceMeshTexture,
         foxface,
+        frame,
+        frame2,
         myimages,
         provaTexture,
         topolino,

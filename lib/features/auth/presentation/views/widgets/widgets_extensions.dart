@@ -1,3 +1,4 @@
+export 'app_bar_connection.dart';
 export 'chips_bar_widget.dart';
 export 'email_field.dart';
 export 'name_field.dart';

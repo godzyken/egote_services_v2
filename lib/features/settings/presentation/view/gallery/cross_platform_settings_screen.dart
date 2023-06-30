@@ -1,8 +1,19 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
+import 'package:egote_services_v2/features/settings/presentation/widgets/theme_settings.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import '../../../../common/application/navigation/navigation.dart';
+import '../../../../../config/app_shared/insets/app_insets.dart';
+import '../../../../../config/app_shared/universal/page_body.dart';
+import '../../../../../config/providers/platform/platform_provider.dart';
+import '../../../../common/presentation/views/widgets/key_value_db_list_tile.dart';
+import '../../../../theme/views/widgets/showcase_extensions.dart';
+import '../../../controllers/settings.dart';
+import '../../dialogs/reset_settings_dialogs.dart';
+import '../../widgets/platform_popup_menu.dart';
 
 
 class CrossPlatformSettingsScreen extends ConsumerStatefulWidget {
@@ -15,6 +26,8 @@ class CrossPlatformSettingsScreen extends ConsumerStatefulWidget {
 
 class _CrossPlatformSettingsScreenState
     extends ConsumerState<CrossPlatformSettingsScreen> {
+  late final ScrollController scrollController;
+
   bool useCustomTheme = false;
 
   final platformsMap = <DevicePlatform, String>{
@@ -29,188 +42,135 @@ class _CrossPlatformSettingsScreenState
   };
   DevicePlatform selectedPlatform = DevicePlatform.device;
 
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController(
+      keepScrollOffset: true,
+      debugLabel: 'pageBodyScroll'
+    );
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: SettingsList(
-        platform: selectedPlatform,
-        lightTheme: !useCustomTheme
-            ? null
-            : const SettingsThemeData(
-          dividerColor: Colors.red,
-          tileDescriptionTextColor: Colors.yellow,
-          leadingIconsColor: Colors.pink,
-          settingsListBackground: Colors.white,
-          settingsSectionBackground: Colors.green,
-          settingsTileTextColor: Colors.tealAccent,
-          tileHighlightColor: Colors.blue,
-          titleTextColor: Colors.cyan,
-          trailingTextColor: Colors.deepOrangeAccent,
-        ),
-        darkTheme: !useCustomTheme
-            ? null
-            : const SettingsThemeData(
-          dividerColor: Colors.pink,
-          tileDescriptionTextColor: Colors.blue,
-          leadingIconsColor: Colors.red,
-          settingsListBackground: Colors.grey,
-          settingsSectionBackground: Colors.tealAccent,
-          settingsTileTextColor: Colors.green,
-          tileHighlightColor: Colors.yellow,
-          titleTextColor: Colors.cyan,
-          trailingTextColor: Colors.orange,
-        ),
-        sections: [
-          SettingsSection(
-            title: const Text('Common'),
-            tiles: <SettingsTile>[
-              SettingsTile.navigation(
-                leading: const Icon(Icons.language),
-                title: const Text('Language'),
-                value: const Text('English'),
-              ),
-              SettingsTile.navigation(
-                leading: const Icon(Icons.cloud_outlined),
-                title: const Text('Environment'),
-                value: const Text('Production'),
-              ),
-              SettingsTile.navigation(
-                leading: const Icon(Icons.devices_other),
-                title: const Text('Platform'),
-                onPressed: (context) async {
-                  final platform = await Navigation.navigateTo<DevicePlatform>(
-                    context: context,
-                    style: NavigationRouteStyle.material,
-                    screen: PlatformPickerScreen(
-                      platform: selectedPlatform,
-                      platforms: platformsMap,
-                    ),
-                  );
+    final ThemeData theme = Theme.of(context);
+    final TextTheme textTheme = theme.textTheme;
+    final TextStyle medium = textTheme.headlineMedium!;
 
-                  if (platform != null && platform is DevicePlatform) {
-                    setState(() {
-                      selectedPlatform = platform;
-                    });
-                  }
-                },
-                value: Text(platformsMap[selectedPlatform]!),
+    final MediaQueryData media = MediaQuery.of(context);
+    final double topPadding = media.padding.top + kToolbarHeight + AppInsets.m;
+    final double bottomPadding =
+        media.padding.bottom + kBottomNavigationBarHeight;
+
+    final bool isNarrow = media.size.width < AppInsets.phoneWidthBreakpoint;
+    final double sideMargin = isNarrow ? 0 : AppInsets.l;
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      appBar: AppBar(
+        title: const Text('Egote services'),
+      ),
+      drawer: const CustomMenuWidget(),
+      // This annotated region will change the Android system navigation bar to
+      // a theme color, matching active theme mode and FlexColorScheme theme.
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: FlexColorScheme.themedSystemNavigationBar(context),
+        child: PageBody(
+          controller: scrollController,
+          child: ListView(
+            controller: scrollController,
+            padding: EdgeInsets.fromLTRB(
+              sideMargin,
+              topPadding,
+              sideMargin,
+              bottomPadding,
+            ),
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
+                child: Text('Info', style: medium),
               ),
-              SettingsTile.switchTile(
-                onToggle: (value) {
-                  setState(() {
-                    useCustomTheme = value;
-                  });
-                },
-                initialValue: useCustomTheme,
-                leading: const Icon(Icons.format_paint),
-                title: const Text('Enable custom theme'),
-              ),
-            ],
-          ),
-          SettingsSection(
-            title: const Text('Account'),
-            tiles: <SettingsTile>[
-              SettingsTile.navigation(
-                leading: const Icon(Icons.phone),
-                title: const Text('Phone number'),
-              ),
-              SettingsTile.navigation(
-                leading: const Icon(Icons.mail),
-                title: const Text('Email'),
-                enabled: false,
-              ),
-              SettingsTile.navigation(
-                leading: const Icon(Icons.logout),
-                title: const Text('Sign out'),
-              ),
-            ],
-          ),
-          SettingsSection(
-            title: const Text('Security'),
-            tiles: <SettingsTile>[
-              SettingsTile.switchTile(
-                onToggle: (_) {},
-                initialValue: true,
-                leading: const Icon(Icons.phonelink_lock),
-                title: const Text('Lock app in background'),
-              ),
-              SettingsTile.switchTile(
-                onToggle: (_) {},
-                initialValue: true,
-                leading: const Icon(Icons.fingerprint),
-                title: const Text('Use fingerprint'),
-                description: const Text(
-                  'Allow application to access stored fingerprint IDs',
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppInsets.l),
+                child: Text(
+                  'FlexColorScheme persisted theme demo. Theme settings '
+                      'widgets using Riverpod controllers can be used anywhere in '
+                      'the app. On this page, in the Drawer and in a BottomSheet '
+                      'to control persisted theme settings.',
                 ),
               ),
-              SettingsTile.switchTile(
-                onToggle: (_) {},
-                initialValue: true,
-                leading: const Icon(Icons.lock),
-                title: const Text('Change password'),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
+                child: Text('Persistence', style: medium),
               ),
-              SettingsTile.switchTile(
-                onToggle: (_) {},
-                initialValue: true,
-                leading: const Icon(Icons.notifications_active),
-                title: const Text('Enable notifications'),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppInsets.l),
+                child: Text(
+                  'You can use volatile memory or Shared '
+                      'Preferences and Hive to persist the settings. You can '
+                      'toggle the used implementation dynamically in the app.',
+                ),
               ),
-            ],
-          ),
-          SettingsSection(
-            title: const Text('Misc'),
-            tiles: <SettingsTile>[
-              SettingsTile.navigation(
-                leading: const Icon(Icons.description),
-                title: const Text('Terms of Service'),
-              ),
-              SettingsTile.navigation(
-                leading: const Icon(Icons.collections_bookmark),
-                title: const Text('Open source license'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PlatformPickerScreen extends ConsumerWidget {
-  const PlatformPickerScreen({
-    Key? key,
-    required this.platform,
-    required this.platforms,
-  }) : super(key: key);
-
-  final DevicePlatform platform;
-  final Map<DevicePlatform, String> platforms;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return  Scaffold(
-      appBar: AppBar(title: const Text('Platforms')),
-      body: SettingsList(
-        platform: platform,
-        sections: [
-          SettingsSection(
-            title: const Text('Select the platform you want'),
-            tiles: platforms.keys.map((e) {
-              final platform = platforms[e];
-
-              return SettingsTile(
-                title: Text(platform!),
-                onPressed: (_) {
-                  Navigator.of(context).pop(e);
+              const KeyValueDbListTile(),
+              ListTile(
+                title: const Text('Reset settings'),
+                onTap: () async {
+                  final bool? reset = await showDialog<bool?>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const ResetSettingsDialog();
+                    },
+                  );
+                  if (reset ?? false) {
+                    Settings.reset(ref);
+                  }
                 },
-              );
-            }).toList(),
+              ),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
+                child: Text('Theme Settings', style: medium),
+              ),
+              const ThemeSettings(),
+              const Divider(),
+              PlatformPopupMenu(
+                platform: ref.watch(platformProvider),
+                onChanged: (TargetPlatform newPlatform) {
+                  ref.read(platformProvider.notifier).state = newPlatform;
+                },
+              ),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                child: Text('Theme Colors', style: medium),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                child: ShowColorSchemeColors(),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                child: ShowThemeDataColors(),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                child: ShowSubThemeColors(),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
+
+

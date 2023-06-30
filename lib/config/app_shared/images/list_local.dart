@@ -22,7 +22,9 @@ class LocalImages {
   static const tocoToucanGifOne2 = 'assets/lottie/models/TocoToucan.gif';
   static const foxFaceMeshTexture =
       'assets/lottie/models/fox_face_mesh_texture.png';
-  static const provaTexture = 'assets/lottie/models/prova_texture.png';
+  static const faceFox = 'assets/lottie/models/facefox.gif';
+  static const frameSvg = 'assets/lottie/models/frame.svg';
+  static const frame2Png = 'assets/lottie/models/frame2.png';
   static const venomJpg = 'assets/lottie/models/venom.jpg';
   static const venomWithEyes = 'assets/lottie/models/venom_with_eyes.jpg';
   static const earthJpg = 'assets/lottie/models/earth.jpg';
@@ -31,6 +33,7 @@ class LocalImages {
       'assets/lottie/models/earth_augmented_image.jpg';
   static const copertinaJpg = 'assets/lottie/models/copertina.jpg';
   static const humanDigital = 'assets/lottie/models/umano_digitale.png';
+  static const provaTexture = 'assets/lottie/models/prova_texture.png';
   static const myImagesImgDb = 'assets/lottie/models/myimages.imgdb';
   static const topoLinoJpg = 'assets/lottie/models/topolino.jpg';
   static const santaMariaMadalena =

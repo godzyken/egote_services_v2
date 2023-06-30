@@ -7,6 +7,8 @@ import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//import 'package:supabase_auth_ui/supabase_auth_ui.dart' as ui;
+
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/domain/providers/auth_repository_provider.dart';
@@ -44,17 +46,15 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(idTokenChangesProvider);
   container.read(userChangesProvider);
 
-  // container.read(supabaseProvider);
-  // container.read(supabaseClientProvider);
   container.read(fireDatabaseProvider);
 
-  // container.read(authRepositoryProvider);
 
   //container.dispose();
 }
 
 final sharedPreferencesProvider =
     FutureProvider((ref) => SharedPreferences.getInstance());
+
 
 // <---------------- GoRouter Provider --------------------> //
 final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
@@ -77,7 +77,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                   routes: [
                     GoRoute(
                       path: VerificationRoute.path,
-                      name: 'verification',
+                      name: 'verify',
                       builder: (context, state) {
                         var params = state.extra as VerificationScreenParams;
                         return VerificationScreen(params: params);
@@ -94,11 +94,21 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                       path: MFAEnrollRoute.path,
                       name: 'enroll',
                       builder: (context, state) {
-                        var params = state.extra as VerificationScreenParams;
+                        // var params = state.extra as VerificationScreenParams;
+                        var params = const VerificationScreenParams(
+                            name: 'karl',
+                            email: 'isgodzy@msn.com',
+                            password: 'bondamanmanw');
+
                         return MFAEnrollScreen(params: params);
                       },
                     ),
                   ]
+              ),
+              GoRoute(
+                  path: ListMfaRoute.path,
+                  name: 'mfaList',
+                  builder: (context, state) => ListMfaScreen(key: state.pageKey,),
               ),
             ]
           ),
@@ -120,7 +130,14 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                   path: DrawingRoute.path,
                   name: 'drawingRoute',
                   builder: (context, state) => DrawingPage(key: state.pageKey,),
-                )
+                ),
+                GoRoute(
+                  path: UserListRoute.path,
+                  name: 'userList',
+                  builder: (context, state) => UserListScreen(
+                      key: state.pageKey,
+                  ),
+                ),
               ]),
           GoRoute(
             path: GodzyLogoRoute.path,
@@ -163,10 +180,43 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
   ],
   errorBuilder: (context, state) =>
       ErrorScreen(error: state.error.toString()),
-  redirect: (context, state) {
-    // final loggedIn = authStateListenable.value;
-    // final goigToLogin = state.subloc.contains == LoginRoute().location;
+  redirect: (context, state) async {
+    // final supabase = ref.watch(supabaseClientProvider);
+    // // Any users can visit the /auth route
+    // if (state.location.contains('/authRoute') == true) {
+    //   return null;
+    // }
+    //
+    // final session = supabase.auth.currentSession;
+    // // A user without a session should be redirected to the sign_up screen
+    // if (session == null) {
+    //   return AuthRoute.path;
+    // }
+    //
+    // final assuranceLevelData = supabase
+    //     .auth
+    //     .mfa
+    //     .getAuthenticatorAssuranceLevel();
+    //
+    // final nextLevel = supabase.auth
+    //     .mfa
+    //     .getAuthenticatorAssuranceLevel().nextLevel;
+    // // The user has not setup MFA yet, so send them to enroll MFA page.
+    // if (assuranceLevelData.currentLevel == ui.AuthenticatorAssuranceLevels.aal1) {
+    //   await supabase.auth.refreshSession();
+    //   if(nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
+    //     // The user has already setup MFA, but haven't login via MFA
+    //     // Redirect them to the verify screen
+    //     return VerificationRoute.path;
+    //   } else {
+    //     // The user has not yet setup MFA
+    //     // Redirect them to the enrollment screen
+    //     return MFAEnrollRoute.path;
+    //   }
+    // }
+
     return null;
+
   },
   refreshListenable: authStateListenable,
   debugLogDiagnostics: true,

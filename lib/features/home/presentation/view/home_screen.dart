@@ -83,7 +83,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           leading: IconButton(
             icon: const Icon(Icons.menu),
             tooltip: 'Menu Icon',
-            onPressed: () {},
+            onPressed: () { },
           ),
           systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
@@ -91,7 +91,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             AnimatedPositioned(
                 duration: const Duration(milliseconds: 1600),
-                onEnd: () => context.go('/authRoute'),
+                 //onEnd: () => context.go('/authRoute'),
+                onEnd: () => context.goNamed('mfaList'),
                 top: animate ? 0 : -80,
                 left: animate ? 0 : -80,
                 curve: Curves.elasticInOut,
@@ -123,10 +124,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         height: 250,
                         image: AssetImage(LocalImages.logoBatServices)
                     ))),
-            GestureDetector(
-                onHorizontalDragEnd: (details) => context.go('/userListRoute/:uid&:pid'),
-                child: child
-            ),
+            // GestureDetector(
+            //     onHorizontalDragEnd: (details) => context.goNamed('userList'),
+            //     child: child
+            // ),
 
           ],
         ),

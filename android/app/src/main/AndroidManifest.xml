@@ -21,6 +21,7 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data android:name="io.sentry.traces.user-interaction.enable" android:value="true" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -31,8 +32,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with YOUR_SCHEME://YOUR_HOST -->
                 <data
-                    android:scheme="io.supabase.flutterquickstart"
-                    android:host="login-callback" />
+                    android:scheme="com.godzy.egote-services-v2"
+                    android:host="callback" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

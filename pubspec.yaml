@@ -39,6 +39,8 @@ dependencies:
   lottie: ^2.4.0
   supabase_auth_ui: ^0.2.0
   flutter_svg: ^2.0.7
+  flex_color_scheme: ^7.1.2
+  flex_color_picker: ^3.2.2
 
 dev_dependencies: 
   flutter_lints: ^2.0.1
@@ -77,6 +79,9 @@ flutter:
     - assets/lottie/models/TocoLargeToucan.gif
     - assets/lottie/models/TocoToucan.gif
     - assets/lottie/models/fox_face_mesh_texture.png
+    - assets/lottie/models/foxface.gif
+    - assets/lottie/models/frame.svg
+    - assets/lottie/models/frame2.png
     - assets/lottie/models/prova_texture.png
     - assets/lottie/models/venom.jpg
     - assets/lottie/models/venom_with_eyes.jpg

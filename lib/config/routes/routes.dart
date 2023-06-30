@@ -11,6 +11,7 @@ import '../../features/home/presentation/widget/godzylogo.dart';
 import '../../features/settings/presentation/view/gallery/gallery.dart';
 import '../../features/settings/presentation/view/settings_ui_page.dart';
 import '../../features/sketch/presentation/view/drawing_page.dart';
+import '../../features/theme/views/screen/theme_showcase_screen.dart';
 
 part 'routes.g.dart';
 
@@ -60,6 +61,10 @@ part 'routes.g.dart';
             name: 'webChromeSettingsRoute',),
         ]
     ),
+    TypedGoRoute<ThemeShowcaseRoute>(
+        path: ThemeShowcaseRoute.path,
+        name: 'themes'
+    )
   ],
 )
 class HomeRoute extends GoRouteData {
@@ -112,7 +117,7 @@ class PersonRoute extends GoRouteData {
 }
 
 class UserListRoute extends GoRouteData {
-  static const path = 'userListRoute/:uid&:pid';
+  static const path = 'userList/:uid';
   const UserListRoute({required this.pid, required this.uid});
 
   final String uid;
@@ -122,7 +127,7 @@ class UserListRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return UserListScreen(key: state.pageKey, uid: uid, pid: pid);
+    return UserListScreen(key: state.pageKey);
   }
 }
 
@@ -151,17 +156,21 @@ class AddUserFormRoute extends GoRouteData {
     ),
     TypedGoRoute<SignUpRoute>(
       path: SignUpRoute.path,
-      name: 'signUp',
+      name: 'sign_up',
       routes: [
         TypedGoRoute<MFAEnrollRoute>(
           path: MFAEnrollRoute.path,
-          name: 'mfa',
+          name: 'enroll',
         ),
         TypedGoRoute<VerificationRoute>(
           path: VerificationRoute.path,
           name: 'verify',
         ),
       ],
+    ),
+    TypedGoRoute<ListMfaRoute>(
+      path: ListMfaRoute.path,
+      name: 'mfaList',
     ),
   ],
 )
@@ -210,8 +219,23 @@ class SignUpRoute extends GoRouteData {
   }
 }
 
+class ListMfaRoute extends GoRouteData {
+  static const path = 'mfaListRoute';
+  const ListMfaRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ListMfaScreen(key: state.pageKey);
+  }
+}
+
 class MFAEnrollRoute extends GoRouteData {
-  static const path = 'enroll';
+  static const path = 'enrollRoute';
   const MFAEnrollRoute();
 
   @override
@@ -380,5 +404,20 @@ class DrawingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return DrawingPage(key: state.pageKey,);
+  }
+}
+
+class ThemeShowcaseRoute extends GoRouteData {
+  static const path = 'themeshowcase';
+  const ThemeShowcaseRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ThemeShowcasePage(key: state.pageKey,);
   }
 }
