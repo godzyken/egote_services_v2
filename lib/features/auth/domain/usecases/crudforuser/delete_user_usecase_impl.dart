@@ -1,5 +1,5 @@
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_id.dart';
-import 'package:egote_services_v2/features/auth/domain/repository/user_repository.dart';
+import 'package:egote_services_v2/features/auth/domain/repository/user_repository_interface.dart';
 
 import 'delete_user_usecase.dart';
 

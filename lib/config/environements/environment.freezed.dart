@@ -24,6 +24,10 @@ mixin _$Environment {
   String get supabaseAnonKey => throw _privateConstructorUsedError;
   String? get supabaseAuthCallbackUrlHostname =>
       throw _privateConstructorUsedError;
+  String get appId => throw _privateConstructorUsedError;
+  String get authKey => throw _privateConstructorUsedError;
+  String get authSecret => throw _privateConstructorUsedError;
+  String get vapidKey => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,7 +44,11 @@ abstract class $EnvironmentCopyWith<$Res> {
   $Res call(
       {String supabaseUrl,
       String supabaseAnonKey,
-      String? supabaseAuthCallbackUrlHostname});
+      String? supabaseAuthCallbackUrlHostname,
+      String appId,
+      String authKey,
+      String authSecret,
+      String vapidKey});
 }
 
 /// @nodoc
@@ -59,6 +67,10 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
     Object? supabaseUrl = null,
     Object? supabaseAnonKey = null,
     Object? supabaseAuthCallbackUrlHostname = freezed,
+    Object? appId = null,
+    Object? authKey = null,
+    Object? authSecret = null,
+    Object? vapidKey = null,
   }) {
     return _then(_value.copyWith(
       supabaseUrl: null == supabaseUrl
@@ -74,6 +86,22 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
           ? _value.supabaseAuthCallbackUrlHostname
           : supabaseAuthCallbackUrlHostname // ignore: cast_nullable_to_non_nullable
               as String?,
+      appId: null == appId
+          ? _value.appId
+          : appId // ignore: cast_nullable_to_non_nullable
+              as String,
+      authKey: null == authKey
+          ? _value.authKey
+          : authKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      authSecret: null == authSecret
+          ? _value.authSecret
+          : authSecret // ignore: cast_nullable_to_non_nullable
+              as String,
+      vapidKey: null == vapidKey
+          ? _value.vapidKey
+          : vapidKey // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -89,7 +117,11 @@ abstract class _$$_EnvironmentCopyWith<$Res>
   $Res call(
       {String supabaseUrl,
       String supabaseAnonKey,
-      String? supabaseAuthCallbackUrlHostname});
+      String? supabaseAuthCallbackUrlHostname,
+      String appId,
+      String authKey,
+      String authSecret,
+      String vapidKey});
 }
 
 /// @nodoc
@@ -106,6 +138,10 @@ class __$$_EnvironmentCopyWithImpl<$Res>
     Object? supabaseUrl = null,
     Object? supabaseAnonKey = null,
     Object? supabaseAuthCallbackUrlHostname = freezed,
+    Object? appId = null,
+    Object? authKey = null,
+    Object? authSecret = null,
+    Object? vapidKey = null,
   }) {
     return _then(_$_Environment(
       supabaseUrl: null == supabaseUrl
@@ -121,6 +157,22 @@ class __$$_EnvironmentCopyWithImpl<$Res>
           ? _value.supabaseAuthCallbackUrlHostname
           : supabaseAuthCallbackUrlHostname // ignore: cast_nullable_to_non_nullable
               as String?,
+      appId: null == appId
+          ? _value.appId
+          : appId // ignore: cast_nullable_to_non_nullable
+              as String,
+      authKey: null == authKey
+          ? _value.authKey
+          : authKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      authSecret: null == authSecret
+          ? _value.authSecret
+          : authSecret // ignore: cast_nullable_to_non_nullable
+              as String,
+      vapidKey: null == vapidKey
+          ? _value.vapidKey
+          : vapidKey // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -131,7 +183,11 @@ class _$_Environment implements _Environment {
   const _$_Environment(
       {required this.supabaseUrl,
       required this.supabaseAnonKey,
-      this.supabaseAuthCallbackUrlHostname});
+      this.supabaseAuthCallbackUrlHostname,
+      required this.appId,
+      required this.authKey,
+      required this.authSecret,
+      required this.vapidKey});
 
   factory _$_Environment.fromJson(Map<String, dynamic> json) =>
       _$$_EnvironmentFromJson(json);
@@ -142,10 +198,18 @@ class _$_Environment implements _Environment {
   final String supabaseAnonKey;
   @override
   final String? supabaseAuthCallbackUrlHostname;
+  @override
+  final String appId;
+  @override
+  final String authKey;
+  @override
+  final String authSecret;
+  @override
+  final String vapidKey;
 
   @override
   String toString() {
-    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname)';
+    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey)';
   }
 
   @override
@@ -160,13 +224,19 @@ class _$_Environment implements _Environment {
             (identical(other.supabaseAuthCallbackUrlHostname,
                     supabaseAuthCallbackUrlHostname) ||
                 other.supabaseAuthCallbackUrlHostname ==
-                    supabaseAuthCallbackUrlHostname));
+                    supabaseAuthCallbackUrlHostname) &&
+            (identical(other.appId, appId) || other.appId == appId) &&
+            (identical(other.authKey, authKey) || other.authKey == authKey) &&
+            (identical(other.authSecret, authSecret) ||
+                other.authSecret == authSecret) &&
+            (identical(other.vapidKey, vapidKey) ||
+                other.vapidKey == vapidKey));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, supabaseUrl, supabaseAnonKey,
-      supabaseAuthCallbackUrlHostname);
+      supabaseAuthCallbackUrlHostname, appId, authKey, authSecret, vapidKey);
 
   @JsonKey(ignore: true)
   @override
@@ -186,7 +256,11 @@ abstract class _Environment implements Environment {
   const factory _Environment(
       {required final String supabaseUrl,
       required final String supabaseAnonKey,
-      final String? supabaseAuthCallbackUrlHostname}) = _$_Environment;
+      final String? supabaseAuthCallbackUrlHostname,
+      required final String appId,
+      required final String authKey,
+      required final String authSecret,
+      required final String vapidKey}) = _$_Environment;
 
   factory _Environment.fromJson(Map<String, dynamic> json) =
       _$_Environment.fromJson;
@@ -197,6 +271,14 @@ abstract class _Environment implements Environment {
   String get supabaseAnonKey;
   @override
   String? get supabaseAuthCallbackUrlHostname;
+  @override
+  String get appId;
+  @override
+  String get authKey;
+  @override
+  String get authSecret;
+  @override
+  String get vapidKey;
   @override
   @JsonKey(ignore: true)
   _$$_EnvironmentCopyWith<_$_Environment> get copyWith =>

@@ -2,7 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
-import 'package:egote_services_v2/features/auth/domain/repository/auth_repository.dart';
+import 'package:egote_services_v2/features/auth/domain/repository/auth_repository_interface.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
@@ -13,7 +13,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import '../../../common/presentation/extensions/extensions.dart';
 
 
-class  AuthRepository implements AuthRepositoryInterface {
+class AuthRepository implements AuthRepositoryInterface {
   AuthRepository(this.authTokenLocalDataSource, this.client);
 
   final AuthTokenLocalDataSource authTokenLocalDataSource;

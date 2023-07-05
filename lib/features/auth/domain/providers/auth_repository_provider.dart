@@ -9,7 +9,7 @@ import '../../../../config/providers/supabase/supabase_providers.dart';
 import '../../infrastructure/repositories/auth_repository.dart';
 
 final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
-  final prefs = ref.read(sharedPreferencesProvider).asData!.value;
+  final prefs = ref.read(sharedPreferencesProvider);
   final client = ref.watch(supabaseClientProvider).auth;
 
   return AuthRepository(AuthTokenLocalDataSource(prefs), client);

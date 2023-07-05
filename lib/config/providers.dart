@@ -6,8 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-//import 'package:supabase_auth_ui/supabase_auth_ui.dart' as ui;
+import 'package:supabase_auth_ui/supabase_auth_ui.dart' as ui;
 
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
@@ -15,6 +14,7 @@ import '../features/auth/domain/providers/auth_repository_provider.dart';
 import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
+import '../features/chat/application/controllers/providers/cube_settings_provider.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
 import '../features/home/presentation/view/home_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
@@ -24,17 +24,18 @@ import '../features/sketch/presentation/view/drawing_page.dart';
 
 
 Future<void> initializeProvider(ProviderContainer container) async {
-  await container.read(sharedPreferencesProvider.future);
   await container.read(firebaseInitProvider.future);
   await container.read(supabaseInitProvider.future);
   await container.read(userFutureProvider.future);
+  await container.read(cubeSettingsInitProvider.future);
 
+  container.read(sharedPreferencesProvider);
   container.read(firebaseDatabaseProvider);
   container.read(firebaseFirestoreProvider);
+  container.read(firebaseMessagingProvider);
   container.read(emulatorSettingsProvider);
   container.read(geoFlutterFireProvider);
   container.read(firebaseAuthProvider);
-  container.read(cubeSettingsProvider);
   container.read(cubeSessionManagerProvider);
   container.read(cubeChatConnectionSettingsProvider);
   container.read(cubeChatConnectionProvider);
@@ -53,7 +54,10 @@ Future<void> initializeProvider(ProviderContainer container) async {
 }
 
 final sharedPreferencesProvider =
-    FutureProvider((ref) => SharedPreferences.getInstance());
+    Provider<SharedPreferences>(
+            (ref) => throw UnimplementedError(),
+      name: 'Shared preferences future provider',
+    );
 
 
 // <---------------- GoRouter Provider --------------------> //
@@ -94,11 +98,11 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                       path: MFAEnrollRoute.path,
                       name: 'enroll',
                       builder: (context, state) {
-                        // var params = state.extra as VerificationScreenParams;
-                        var params = const VerificationScreenParams(
-                            name: 'karl',
-                            email: 'isgodzy@msn.com',
-                            password: 'bondamanmanw');
+                        var params = state.extra as VerificationScreenParams;
+                        // var params = const VerificationScreenParams(
+                        //     name: 'karl',
+                        //     email: 'isgodzy@msn.com',
+                        //     password: 'bondamanmanw');
 
                         return MFAEnrollScreen(params: params);
                       },
@@ -181,39 +185,39 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
   errorBuilder: (context, state) =>
       ErrorScreen(error: state.error.toString()),
   redirect: (context, state) async {
-    // final supabase = ref.watch(supabaseClientProvider);
-    // // Any users can visit the /auth route
-    // if (state.location.contains('/authRoute') == true) {
-    //   return null;
-    // }
-    //
-    // final session = supabase.auth.currentSession;
-    // // A user without a session should be redirected to the sign_up screen
-    // if (session == null) {
-    //   return AuthRoute.path;
-    // }
-    //
-    // final assuranceLevelData = supabase
-    //     .auth
-    //     .mfa
-    //     .getAuthenticatorAssuranceLevel();
-    //
-    // final nextLevel = supabase.auth
-    //     .mfa
-    //     .getAuthenticatorAssuranceLevel().nextLevel;
-    // // The user has not setup MFA yet, so send them to enroll MFA page.
-    // if (assuranceLevelData.currentLevel == ui.AuthenticatorAssuranceLevels.aal1) {
-    //   await supabase.auth.refreshSession();
-    //   if(nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
-    //     // The user has already setup MFA, but haven't login via MFA
-    //     // Redirect them to the verify screen
-    //     return VerificationRoute.path;
-    //   } else {
-    //     // The user has not yet setup MFA
-    //     // Redirect them to the enrollment screen
-    //     return MFAEnrollRoute.path;
-    //   }
-    // }
+    final supabase = ref.watch(supabaseClientProvider);
+    // Any users can visit the /auth route
+    if (state.location.contains('/authRoute') == true) {
+      return null;
+    }
+
+    final session = supabase.auth.currentSession;
+    // A user without a session should be redirected to the sign_up screen
+    if (session == null) {
+      return AuthRoute.path;
+    }
+
+    final assuranceLevelData = supabase
+        .auth
+        .mfa
+        .getAuthenticatorAssuranceLevel();
+
+    final nextLevel = supabase.auth
+        .mfa
+        .getAuthenticatorAssuranceLevel().nextLevel;
+    // The user has not setup MFA yet, so send them to enroll MFA page.
+    if (assuranceLevelData.currentLevel == ui.AuthenticatorAssuranceLevels.aal1) {
+      await supabase.auth.refreshSession();
+      if(nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
+        // The user has already setup MFA, but haven't login via MFA
+        // Redirect them to the verify screen
+        return VerificationRoute.path;
+      } else {
+        // The user has not yet setup MFA
+        // Redirect them to the enrollment screen
+        return MFAEnrollRoute.path;
+      }
+    }
 
     return null;
 

@@ -49,7 +49,6 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
           widget.params.password
       );
 
-
     } catch (e) {
       context.showAlert(e.toString());
     }
@@ -58,62 +57,6 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
     });
   }
 
-  Future<void> _verify() async {
-    try {
-      setState(() {
-        _isSubmitting = true;
-      });
-
-      final code = await ref.read(authRepositoryProvider).verifyCode(
-          widget.params.email,
-          _codeCtrl.text
-      );
-
-      final auth = await ref.read(authRepositoryProvider).signUp(
-          widget.params.email,
-          widget.params.name,
-          widget.params.password
-      );
-
-      final user = auth.getOrElse((l) =>
-           UserModel.complete(
-              id: UserId(value: l.error.length),
-              userEntityModel: UserEntityModel.empty(),
-               authUser: AuthUser(
-                 id: l.error,
-                 appMetadata: {},
-                 userMetadata: {},
-                 aud: l.error,
-                 email: l.error,
-                 phone: l.error,
-                 createdAt: l.error,
-                 role: l.error,
-                 updatedAt: l.error,
-               ),
-              cubeUser: CubeUser()
-          ));
-
-      final client = code.getOrElse((l) => AuthResponse(
-          user: user.authUser,
-          session: Session.fromJson(user.toJson())
-      ));
-
-      if (mounted) {
-        context.showAlert('Successfully signed up');
-
-        final String location = context.namedLocation(
-            'user_home',
-            pathParameters: {'pid': client.user!.id}
-        );
-        context.go(location);
-      }
-    } catch (e) {
-      context.showAlert(e.toString());
-    }
-    setState(() {
-      _isSubmitting = false;
-    });
-  }
 
   @override
   void initState() {
@@ -158,7 +101,62 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
               }
               return null;
             },
-            onChanged:(p0) => _verify(),
+            onChanged:(p0) async {
+              try {
+                setState(() {
+                  _isSubmitting = true;
+                });
+
+                final code = await ref.read(authRepositoryProvider).verifyCode(
+                    widget.params.email,
+                    p0
+                );
+
+                final auth = await ref.read(authRepositoryProvider).signUp(
+                    widget.params.email,
+                    widget.params.name,
+                    widget.params.password
+                );
+
+                final user = auth.getOrElse((l) =>
+                    UserModel.complete(
+                        id: UserId(value: l.error.length),
+                        userEntityModel: UserEntityModel.empty(),
+                        authUser: AuthUser(
+                          id: l.error,
+                          appMetadata: {},
+                          userMetadata: {},
+                          aud: l.error,
+                          email: l.error,
+                          phone: l.error,
+                          createdAt: l.error,
+                          role: l.error,
+                          updatedAt: l.error,
+                        ),
+                        cubeUser: CubeUser()
+                    ));
+
+                final client = code.getOrElse((l) => AuthResponse(
+                    user: user.authUser,
+                    session: Session.fromJson(user.authUser.toJson())
+                ));
+
+                if (mounted) {
+                  context.showAlert('Successfully signed up');
+
+                  final String location = context.namedLocation(
+                      'user_home',
+                      pathParameters: {'pid': client.user!.id}
+                  );
+                  context.go(location);
+                }
+              } catch (e) {
+                context.showAlert(e.toString());
+              }
+              setState(() {
+                _isSubmitting = false;
+              });
+            },
             label: 'Verification code',
           ),
           const SizedBox(height: 20,),

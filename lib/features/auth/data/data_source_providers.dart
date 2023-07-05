@@ -2,7 +2,7 @@ import 'package:egote_services_v2/features/auth/data/data_sources/database/sourc
 import 'package:egote_services_v2/features/auth/data/repository_impl/auth_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../domain/repository/user_repository.dart';
+import '../domain/repository/user_repository_interface.dart';
 import '../presentation/controller/user_notifier.dart';
 import 'data_sources/database/auth_user_database_impl.dart';
 

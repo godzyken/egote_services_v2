@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
+import '../providers.dart';
 import 'flavors.dart';
 
 Future<ProviderContainer> bootstrap() async {
@@ -46,8 +48,11 @@ Future<ProviderContainer> bootstrap() async {
           samplingContext.transactionContext.parentSamplingDecision?.sampleRate;
   });
 
+  final sharedPreferences = await SharedPreferences.getInstance();
+
   final container = ProviderContainer(
     overrides: [
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
     ],
     observers: [if (F.appFlavor == Flavor.local) _Logger()],
   );

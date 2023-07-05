@@ -17,7 +17,7 @@ import '../../../../config/app_shared/insets/app_insets.dart';
 /// all the Widgets in this file be dropped into any application. They are
 /// however not so generally reusable.
 class ShowColorSchemeColors extends StatelessWidget {
-  const ShowColorSchemeColors({super.key, this.onBackgroundColor});
+  const  ShowColorSchemeColors({super.key, this.onBackgroundColor});
 
   /// The color of the background the color widget are being drawn on.
   ///

@@ -1,4 +1,5 @@
 import 'package:egote_services_v2/config/app_shared/extensions/app_scroll_behavior.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -37,6 +38,7 @@ class CustomMenuWidget extends ConsumerWidget {
                               theme.primaryColorLight,
                             ],
                           ),
+                          image: const DecorationImage(image: AssetImage(LocalImages.earthAugmentedImage))
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,25 +51,63 @@ class CustomMenuWidget extends ConsumerWidget {
                               'Drawer theme: ${drawerWidth.toStringAsFixed(0)}',
                               style: theme.primaryTextTheme.labelSmall,
                             ),
-                            const CustomListTileTheme()
                           ],
                         )
-                    )
+                    ),
+                    const UseMaterial3Switch(),
+                    const Divider(),
+                    const UseSubThemesListTile(
+                      title: Text('Component themes'),
+                    ),
+                    const Divider(),
+                    const ThemeModeListTile(title: Text('Theme')),
+                    const Divider(),
+                    ListTile(
+                      onTap: () => context.go('/user_home/:pid'),
+                      leading: const Icon(Icons.home),
+                      title: const Text('Home'),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      onTap: () => context.go('/person/:uid'),
+                      leading: const Icon(Icons.account_circle_rounded),
+                      title: const Text('Profile'),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      onTap: () {},
+                      leading: const Icon(Icons.favorite),
+                      title: const Text('Favourites'),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      onTap: () => context.go('/settingsRoute'),
+                      leading: const Icon(Icons.settings),
+                      title: const Text('Settings'),
+                    ),
+                    const Divider(),
+                    const Spacer(),
+                    DefaultTextStyle(
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.white54,
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 30.0,
+                        ),
+                        padding: const EdgeInsets.only(left: 16),
+                        child: const Text('Terms of Service | Privacy Policy'),
+                      ),
+                    ),
                   ]
               )
           )
       ),
     );
   }
-}
 
-class CustomListTileTheme extends StatelessWidget {
-  const CustomListTileTheme({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  ListTileTheme buildCustomListTileTheme(BuildContext context) {
     return ListTileTheme(
       textColor: Colors.white,
       iconColor: Colors.white,
@@ -90,21 +130,26 @@ class CustomListTileTheme extends StatelessWidget {
               LocalImages.earthAugmentedImage,
             ),
           ),
+
+          const Divider(),
           ListTile(
             onTap: () => context.go('/user_home/:pid'),
             leading: const Icon(Icons.home),
             title: const Text('Home'),
           ),
+          const Divider(),
           ListTile(
             onTap: () => context.go('/person/:uid'),
             leading: const Icon(Icons.account_circle_rounded),
             title: const Text('Profile'),
           ),
+          const Divider(),
           ListTile(
             onTap: () {},
             leading: const Icon(Icons.favorite),
             title: const Text('Favourites'),
           ),
+          const Divider(),
           ListTile(
             onTap: () => context.go('/settingsRoute'),
             leading: const Icon(Icons.settings),
@@ -128,3 +173,4 @@ class CustomListTileTheme extends StatelessWidget {
     );
   }
 }
+

@@ -2,7 +2,7 @@ import 'package:egote_services_v2/features/auth/data/data_sources/database/sourc
 import 'package:egote_services_v2/features/auth/data/data_sources/mapper/user_list_mapper.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/mapper/user_mapper.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
-import 'package:egote_services_v2/features/auth/domain/repository/user_repository.dart';
+import 'package:egote_services_v2/features/auth/domain/repository/user_repository_interface.dart';
 
 
 class AuthRepositoryImpl implements UserRepositoryInterface {

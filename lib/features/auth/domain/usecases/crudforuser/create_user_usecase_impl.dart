@@ -1,5 +1,5 @@
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
-import 'package:egote_services_v2/features/auth/domain/repository/user_repository.dart';
+import 'package:egote_services_v2/features/auth/domain/repository/user_repository_interface.dart';
 
 import 'create_user_usecase.dart';
 

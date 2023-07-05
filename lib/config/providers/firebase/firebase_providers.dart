@@ -2,13 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../features/chat/application/managers/push_notifications_manager.dart';
 import '../../../firebase_options.dart';
 
 // <---------------- Firebase Instances Providers -------------------> //
 final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
+  FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
+
   return Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform);
 });
@@ -18,6 +22,8 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instan
 final firebaseDatabaseProvider = Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
 
 final firebaseFirestoreProvider = Provider((ref) => FirebaseFirestore.instance);
+
+final firebaseMessagingProvider = Provider((ref) => FirebaseMessaging.instance);
 
 final emulatorSettingsProvider = Provider((ref) {
   final emulator = ref.watch(firebaseFirestoreProvider).useFirestoreEmulator('10.2.2', 8080);

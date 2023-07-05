@@ -1,6 +1,7 @@
 export '../views/screens/error_screen.dart';
 export '../views/screens/value_ui_extension.dart';
 export '../views/widgets/app_bar_elevation_slider.dart';
+export '../views/widgets/avatar_widgets.dart';
 export '../views/widgets/custom_menu_widget.dart';
 export '../views/widgets/dark_app_bar_opacity.dart';
 export '../views/widgets/dark_app_bar_style_popup_menu.dart';
@@ -14,6 +15,9 @@ export '../views/widgets/dark_surface_mode_toggle_buttons.dart';
 export '../views/widgets/dark_true_black_switch.dart';
 export '../views/widgets/default_border_radius_slider.dart';
 export '../views/widgets/flex_tone_config_popup_menu.dart';
+export '../views/widgets/full_photo_widget.dart';
+export '../views/widgets/key_value_db_list_tile.dart';
+export '../views/widgets/key_value_db_toggle_buttons.dart';
 export '../views/widgets/light_app_bar_opacity.dart';
 export '../views/widgets/light_app_bar_style_popup_menu.dart';
 export '../views/widgets/light_colors_swap_switch.dart';

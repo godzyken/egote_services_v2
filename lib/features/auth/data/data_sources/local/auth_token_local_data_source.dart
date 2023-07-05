@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../common/domain/failures/failure.dart';
 
 class AuthTokenLocalDataSource {
-  AuthTokenLocalDataSource(this._prefs);
+   AuthTokenLocalDataSource(this._prefs);
 
   final SharedPreferences _prefs;
 
