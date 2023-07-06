@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 enum NavigationRouteStyle {
   cupertino,
@@ -19,6 +20,11 @@ class Navigation {
       route = MaterialPageRoute<T>(builder: (_) => screen);
     }
 
-    return await Navigator.push<T>(context, route!);
+    return await context.push<T>(route!.settings.name!);
   }
+
+  static GlobalKey<NavigatorState> mainNavigation = GlobalKey();
+  static GlobalKey<NavigatorState> createDialogNavigation = GlobalKey();
+  static GlobalKey<NavigatorState> updateDialogNavigation = GlobalKey();
+  static GlobalKey<NavigatorState> verifyPhoneNavigation = GlobalKey();
 }

@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
@@ -277,8 +278,8 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
         if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
           CubeDialog dialog = dialogs.items.first;
 
-          Navigator.pushNamed(context, 'chat_dialog',
-              arguments: {USER_ARG_NAME: user, DIALOG_ARG_NAME: dialog});
+          context.pushNamed('chat_dialog',
+              extra: {USER_ARG_NAME: user, DIALOG_ARG_NAME: dialog});
         }
       });
     });

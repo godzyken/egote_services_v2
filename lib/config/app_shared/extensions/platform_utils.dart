@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:go_router/go_router.dart';
 import 'package:universal_io/io.dart';
 
 bool isDesktop() {
@@ -24,7 +25,7 @@ void showModal({
               focusNode: FocusNode(onKey: (FocusNode node, RawKeyEvent evt) {
                 if (evt.logicalKey == LogicalKeyboardKey.escape) {
                   if (evt is RawKeyDownEvent) {
-                    Navigator.pop(context);
+                    context.pop(context);
                     return KeyEventResult.handled;
                   }
                 }

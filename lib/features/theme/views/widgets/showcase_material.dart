@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 /// Used to show the current theme on Material widgets.
 ///
@@ -3529,9 +3530,9 @@ class _AlertDialogExample extends StatelessWidget {
           'sending anonymous location data to us'),
       actions: <Widget>[
         TextButton(
-            onPressed: () => Navigator.of(context).pop(), child: Text(cancel)),
+            onPressed: () => context.pop(), child: Text(cancel)),
         TextButton(
-            onPressed: () => Navigator.of(context).pop(), child: Text(allow)),
+            onPressed: () => context.pop(), child: Text(allow)),
       ],
     );
   }

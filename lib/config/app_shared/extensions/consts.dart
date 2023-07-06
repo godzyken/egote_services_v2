@@ -6,3 +6,9 @@ final String DIALOG_ARG_NAME = "dialog";
 final String SELECTED_USERS_ARG_NAME = "selected_users";
 
 enum LoginType { login, email, phone, facebook }
+
+class ListItem<T> {
+  bool isSelected = false;
+  T data;
+  ListItem(this.data);
+}

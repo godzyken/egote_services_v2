@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart' as ui;
 
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
@@ -14,7 +13,7 @@ import '../features/auth/domain/providers/auth_repository_provider.dart';
 import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
-import '../features/chat/application/controllers/providers/cube_settings_provider.dart';
+import '../features/chat/application/providers/cube_settings_provider.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
 import '../features/home/presentation/view/home_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
@@ -27,7 +26,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(firebaseInitProvider.future);
   await container.read(supabaseInitProvider.future);
   await container.read(userFutureProvider.future);
-  await container.read(cubeSettingsInitProvider.future);
+  //  await container.read(cubeSettingsInitProvider.future);
 
   container.read(sharedPreferencesProvider);
   container.read(firebaseDatabaseProvider);
@@ -36,6 +35,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(emulatorSettingsProvider);
   container.read(geoFlutterFireProvider);
   container.read(firebaseAuthProvider);
+  container.read(cubeUserControllerProvider);
   container.read(cubeSessionManagerProvider);
   container.read(cubeChatConnectionSettingsProvider);
   container.read(cubeChatConnectionProvider);
@@ -185,9 +185,9 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
   errorBuilder: (context, state) =>
       ErrorScreen(error: state.error.toString()),
   redirect: (context, state) async {
-    final supabase = ref.watch(supabaseClientProvider);
+   /* final supabase = ref.watch(supabaseClientProvider);
     // Any users can visit the /auth route
-    if (state.location.contains('/authRoute') == true) {
+    if (state.location.contains('auth') == true) {
       return null;
     }
 
@@ -217,7 +217,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
         // Redirect them to the enrollment screen
         return MFAEnrollRoute.path;
       }
-    }
+    }*/
 
     return null;
 

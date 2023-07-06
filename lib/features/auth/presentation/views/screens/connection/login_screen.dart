@@ -31,6 +31,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   bool _isSubmitting = false;
 
+  _LoginScreenState() {
+    _emailCtrl.addListener(() => ref.watch(loginControllerNotifierProvider).emailFormz);
+    _passwordCtrl.addListener(() => ref.watch(loginControllerNotifierProvider).passwordFormz);
+    _nameCtrl.addListener(() => ref.watch(autoAuthControllerProvider)?.userEntityModel.name.toString() == _nameCtrl.text.toString());
+  }
+
   Future<void> _login() async {
     try {
       setState(() {

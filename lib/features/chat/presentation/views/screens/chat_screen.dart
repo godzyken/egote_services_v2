@@ -6,7 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
-import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart' as platformUtils;
+import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart' as platform_utils;
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:universal_io/io.dart';
 
@@ -37,7 +38,7 @@ class ChatScreen extends ConsumerStatefulWidget {
 }
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
-  final Map<int?, CubeUser?> _occupants = Map();
+  final Map<int?, CubeUser?> _occupants = {};
 
   late bool isLoading;
   late StreamSubscription<ConnectivityResult> connectivityStateSubscription;
@@ -107,7 +108,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     isLoading = false;
     imageUrl = '';
     listScrollController.addListener(onScrollChanged);
-    connectivityStateSubscription = Connectivity().onConnectivityChanged.listen(onConnectivityChanged);
+    connectivityStateSubscription = Connectivity()
+        .onConnectivityChanged
+        .listen(onConnectivityChanged);
     _editMessageFocusNode = createEditMessageFocusNode();
 
   }
@@ -421,9 +424,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
+                            // TODO: regler se shit
+                            context.push(
+                                'fullPhoto',
+                                extra: MaterialPageRoute(
                                     builder: (context) => FullPhoto(
                                         url: message
                                             .attachments!.first.url!)));
@@ -555,9 +559,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
+                              //TODO: fix this shit
+                              context.push(
+                                  'fullPhoto',
+                                  extra: MaterialPageRoute(
                                       builder: (context) => FullPhoto(
                                           url: message
                                               .attachments!.first.url!)));
@@ -735,7 +740,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // Edit text
           Flexible(
             child: TextField(
-              autofocus: platformUtils.isDesktop(),
+              autofocus: platform_utils.isDesktop(),
               focusNode: _editMessageFocusNode,
               keyboardType: TextInputType.multiline,
               maxLines: null,
@@ -856,6 +861,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   Future<bool> onBackPress() {
+    //TODO: fix that too
     return Navigator.pushNamedAndRemoveUntil<bool>(
         context, 'select_dialog', (r) => false,
         arguments: {USER_ARG_NAME: widget.cubeUser}).then((value) {
@@ -1085,7 +1091,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       bgColor: Colors.white,
                     ),
                     onEmojiSelected: (category, emoji) {
-                      Navigator.pop(context, emoji);
+                      context.pop(emoji);
                     },
                   )));
         }).then((emoji) {

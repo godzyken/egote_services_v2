@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../common/application/controllers/used_key_value_db_provider.dart';
 
@@ -19,12 +20,12 @@ class ResetSettingsDialog extends ConsumerWidget {
       actions: <Widget>[
         TextButton(
             onPressed: () {
-              Navigator.of(context).pop(false);
+              context.pop(false);
             },
             child: const Text('Cancel')),
         TextButton(
             onPressed: () {
-              Navigator.of(context).pop(true);
+              context.pop(true);
             },
             child: const Text('Reset')),
       ],

@@ -274,49 +274,7 @@ class VerificationRoute extends GoRouteData {
   }
 }
 
-/// [Other Pages Routes]
-class DevisEditRoute extends GoRouteData {
-  static const path = 'edit_devis:did';
-  const DevisEditRoute({required this.did});
-
-  final int did;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return DevisEditScreen(key: state.pageKey,did: did);
-  }
-}
-
-class GodzyLogoRoute extends GoRouteData {
-  static const path = 'godzyRoute';
-  const GodzyLogoRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return Godzylogo(key: state.pageKey,);
-  }
-}
-
-class AvisBoxRoute extends GoRouteData {
-  static const path = 'avisRoute';
-  const AvisBoxRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return AvisBoxPage(key: state.pageKey,);
-  }
-}
-
+/// [Themes Settings Pages Routes]
 class SettingsUiRoute extends GoRouteData {
   static const path = 'settingsRoute';
   const SettingsUiRoute();
@@ -419,5 +377,51 @@ class ThemeShowcaseRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ThemeShowcasePage(key: state.pageKey,);
+  }
+}
+
+/// [Chat Pages Routes]
+class ChatRoute extends GoRouteData {}
+
+/// [Other Pages Routes]
+class DevisEditRoute extends GoRouteData {
+  static const path = 'edit_devis:did';
+  const DevisEditRoute({required this.did});
+
+  final int did;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return DevisEditScreen(key: state.pageKey,did: did);
+  }
+}
+
+class GodzyLogoRoute extends GoRouteData {
+  static const path = 'godzyRoute';
+  const GodzyLogoRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return Godzylogo(key: state.pageKey,);
+  }
+}
+
+class AvisBoxRoute extends GoRouteData {
+  static const path = 'avisRoute';
+  const AvisBoxRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return AvisBoxPage(key: state.pageKey,);
   }
 }

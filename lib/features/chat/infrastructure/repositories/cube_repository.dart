@@ -1,5 +1,4 @@
 import 'package:connectycube_sdk/connectycube_sdk.dart';
-import 'package:egote_services_v2/config/app_shared/extensions/consts.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
 import 'package:egote_services_v2/features/chat/data/data_sources/local/pref_util.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/src/either.dart';
 import 'package:universal_io/io.dart';
 
+import '../../../../config/app_shared/extensions/extensions.dart';
 import '../../../auth/domain/providers/auth_repository_provider.dart';
 import '../../domain/repository/cube_repository_interface.dart';
 
@@ -133,6 +133,9 @@ class CubeRepository implements CubeRepositoryInterface {
     }
   }
 
+  refreshBadgeCount() {
+    getUnreadMessagesCount().then((value) => updateBadgeCount(value['total']));
+  }
 
 }
 

@@ -49,7 +49,7 @@ class ChatDetailsScreen extends ConsumerWidget {
   }
 
   Future<bool> _onBackPressed(BuildContext context) {
-    Navigator.pop(context);
+    context.pop(context);
     return Future.value(false);
   }
 
@@ -64,7 +64,7 @@ class ChatDetailsScreen extends ConsumerWidget {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                Navigator.pop(context);
+                context.pop(context);
               },
             ),
             TextButton(
@@ -72,11 +72,9 @@ class ChatDetailsScreen extends ConsumerWidget {
               onPressed: () {
                 deleteDialog(cubeDialog.dialogId!).then((onValue) {
                   context.showAlert('Success');
-                  Navigator.of(context, rootNavigator: true)
-                      .pushNamedAndRemoveUntil(
+                  context.pushReplacementNamed(
                     'select_dialog',
-                        (route) => false,
-                    arguments: {USER_ARG_NAME: cubeUser},
+                    extra: {USER_ARG_NAME: cubeUser},
                   );
                 }).catchError((error) {
                   context.showAlert(error);
@@ -236,7 +234,7 @@ class ContactScreenState extends DetailsScreenState {
               color: Colors.white,
             ),
           ),
-          onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+          onPressed: () => context.pop(),
         ),
       ],
     );
@@ -539,10 +537,9 @@ class GroupScreenState extends DetailsScreenState {
   }
 
   _addOpponent() async {
-    _usersToAdd = await Navigator.pushNamed(
-      context,
+    _usersToAdd = await context.pushNamed(
       'search_users',
-      arguments: {
+      extra: {
         USER_ARG_NAME: widget.cubeUser,
       },
     );
