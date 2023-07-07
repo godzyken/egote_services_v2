@@ -51,6 +51,7 @@ dependencies:
   cached_network_image: ^3.2.3
   file_picker: ^5.3.2
   photo_view: ^0.14.0
+  firebase_ui_auth: ^1.5.0
 
 dev_dependencies: 
   flutter_lints: ^2.0.1
@@ -65,6 +66,7 @@ dev_dependencies:
   flutter_test: 
     sdk: flutter
   flutter_gen_runner: ^5.3.1
+  icons_launcher: ^2.1.2
 
 flutter_gen:
   integrations:
@@ -80,6 +82,7 @@ flutter:
     - assets/lottie/image/maison_indiv.png
     - assets/lottie/image/appartement.png
     - assets/lottie/image/triangle.png
+    - assets/lottie/image/logo_tchat_1022x1024.png
     - assets/lottie/archive/amenagement/interrieur/sol/matiere/pvc/sol_pvc_holywell.png
     - assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg
     - assets/lottie/models/AndroidLargeRobot.gif

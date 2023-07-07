@@ -1,4 +1,4 @@
-
+import 'package:egote_services_v2/features/chat/presentation/views/screens/login_on_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,7 +14,6 @@ import '../../features/sketch/presentation/view/drawing_page.dart';
 import '../../features/theme/views/screen/theme_showcase_screen.dart';
 
 part 'routes.g.dart';
-
 
 /// [Route required Authentication]
 @TypedGoRoute<HomeRoute>(
@@ -32,43 +31,49 @@ part 'routes.g.dart';
               name: 'userList',
               routes: [
                 TypedGoRoute<AddUserFormRoute>(
-                    path: AddUserFormRoute.path,
-                    name: 'userForm'
-                ),
+                    path: AddUserFormRoute.path, name: 'userForm'),
               ]),
         ]),
     TypedGoRoute<GodzyLogoRoute>(
       path: GodzyLogoRoute.path,
-      name: 'godzyRoute',),
+      name: 'godzyRoute',
+    ),
     TypedGoRoute<AvisBoxRoute>(
       path: AvisBoxRoute.path,
-      name: 'avisRoute',),
+      name: 'avisRoute',
+    ),
+    TypedGoRoute<ChatRoute>(
+      path: ChatRoute.path,
+      name: 'chat',
+    ),
     TypedGoRoute<SettingsUiRoute>(
         path: SettingsUiRoute.path,
         name: 'settingsRoute',
         routes: [
           TypedGoRoute<CrossPlatformSettingsRoute>(
             path: CrossPlatformSettingsRoute.path,
-            name: 'crossPlatformRoute',),
+            name: 'crossPlatformRoute',
+          ),
           TypedGoRoute<WebChromeAddressesRoute>(
             path: WebChromeAddressesRoute.path,
-            name: 'webChromeAddressesRoute',),
+            name: 'webChromeAddressesRoute',
+          ),
           TypedGoRoute<AndroidNotificationsRoute>(
             path: AndroidNotificationsRoute.path,
-            name: 'androidNotificationsRoute',),
+            name: 'androidNotificationsRoute',
+          ),
           TypedGoRoute<WebChromeSettingsRoute>(
             path: WebChromeSettingsRoute.path,
-            name: 'webChromeSettingsRoute',),
-        ]
-    ),
+            name: 'webChromeSettingsRoute',
+          ),
+        ]),
     TypedGoRoute<ThemeShowcaseRoute>(
-        path: ThemeShowcaseRoute.path,
-        name: 'themes'
-    )
+        path: ThemeShowcaseRoute.path, name: 'themes')
   ],
 )
 class HomeRoute extends GoRouteData {
   static const path = '/';
+
   const HomeRoute();
 
 /*  @override
@@ -79,15 +84,17 @@ class HomeRoute extends GoRouteData {
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
 
-
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return HomeScreen(key: state.pageKey,);
+    return HomeScreen(
+      key: state.pageKey,
+    );
   }
 }
 
 class UserHomeRoute extends GoRouteData {
   static const path = 'user_home/:pid';
+
   const UserHomeRoute({required this.pid});
 
   final String pid;
@@ -103,10 +110,12 @@ class UserHomeRoute extends GoRouteData {
 
 class PersonRoute extends GoRouteData {
   static const path = 'person/:uid';
+
   const PersonRoute({required this.uid, required this.pid});
 
   final String uid;
   final String pid;
+
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
 
@@ -118,10 +127,12 @@ class PersonRoute extends GoRouteData {
 
 class UserListRoute extends GoRouteData {
   static const path = 'userList/:uid';
+
   const UserListRoute({required this.pid, required this.uid});
 
   final String uid;
   final String pid;
+
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
 
@@ -133,6 +144,7 @@ class UserListRoute extends GoRouteData {
 
 class AddUserFormRoute extends GoRouteData {
   static const path = 'userForm/:uid&:pid';
+
   AddUserFormRoute({required this.uid, required this.pid});
 
   final String uid;
@@ -141,7 +153,8 @@ class AddUserFormRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return AddUserFormScreen(key: state.pageKey, userEntityModel: userEntityModel);
+    return AddUserFormScreen(
+        key: state.pageKey, userEntityModel: userEntityModel);
   }
 }
 
@@ -176,6 +189,7 @@ class AddUserFormRoute extends GoRouteData {
 )
 class AuthRoute extends GoRouteData {
   static const path = 'authRoute';
+
   const AuthRoute();
 
   @override
@@ -185,12 +199,15 @@ class AuthRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return AuthScreen(key: state.pageKey,);
+    return AuthScreen(
+      key: state.pageKey,
+    );
   }
 }
 
 class LoginRoute extends GoRouteData {
   static const path = 'loginRoute';
+
   const LoginRoute();
 
   @override
@@ -200,12 +217,15 @@ class LoginRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return LoginScreen(key: state.pageKey,);
+    return LoginScreen(
+      key: state.pageKey,
+    );
   }
 }
 
 class SignUpRoute extends GoRouteData {
   static const path = 'signUpRoute';
+
   const SignUpRoute();
 
   @override
@@ -215,12 +235,15 @@ class SignUpRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SignUpScreen(key: state.pageKey,);
+    return SignUpScreen(
+      key: state.pageKey,
+    );
   }
 }
 
 class ListMfaRoute extends GoRouteData {
   static const path = 'mfaListRoute';
+
   const ListMfaRoute();
 
   @override
@@ -236,6 +259,7 @@ class ListMfaRoute extends GoRouteData {
 
 class MFAEnrollRoute extends GoRouteData {
   static const path = 'enrollRoute';
+
   const MFAEnrollRoute();
 
   @override
@@ -256,6 +280,7 @@ class MFAEnrollRoute extends GoRouteData {
 
 class VerificationRoute extends GoRouteData {
   static const path = 'verificationRoute';
+
   const VerificationRoute();
 
   @override
@@ -277,6 +302,7 @@ class VerificationRoute extends GoRouteData {
 /// [Themes Settings Pages Routes]
 class SettingsUiRoute extends GoRouteData {
   static const path = 'settingsRoute';
+
   const SettingsUiRoute();
 
   @override
@@ -286,12 +312,15 @@ class SettingsUiRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return SettingsUiPage(key: state.pageKey,);
+    return SettingsUiPage(
+      key: state.pageKey,
+    );
   }
 }
 
 class CrossPlatformSettingsRoute extends GoRouteData {
   static const path = 'crossPlatformRoute';
+
   const CrossPlatformSettingsRoute();
 
   @override
@@ -301,12 +330,15 @@ class CrossPlatformSettingsRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return CrossPlatformSettingsScreen(key: state.pageKey,);
+    return CrossPlatformSettingsScreen(
+      key: state.pageKey,
+    );
   }
 }
 
 class WebChromeAddressesRoute extends GoRouteData {
   static const path = 'webChromeAddressesRoute';
+
   const WebChromeAddressesRoute();
 
   @override
@@ -316,12 +348,15 @@ class WebChromeAddressesRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return WebChromeAddressesScreen(key: state.pageKey,);
+    return WebChromeAddressesScreen(
+      key: state.pageKey,
+    );
   }
 }
 
 class AndroidNotificationsRoute extends GoRouteData {
   static const path = 'androidNotificationsRoute';
+
   const AndroidNotificationsRoute();
 
   @override
@@ -331,12 +366,15 @@ class AndroidNotificationsRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return AndroidNotificationsScreen(key: state.pageKey,);
+    return AndroidNotificationsScreen(
+      key: state.pageKey,
+    );
   }
 }
 
 class WebChromeSettingsRoute extends GoRouteData {
   static const path = 'webChromeSettingsRoute';
+
   const WebChromeSettingsRoute();
 
   @override
@@ -346,12 +384,15 @@ class WebChromeSettingsRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return WebChromeSettings(key: state.pageKey,);
+    return WebChromeSettings(
+      key: state.pageKey,
+    );
   }
 }
 
 class DrawingRoute extends GoRouteData {
   static const path = 'drawingRoute';
+
   const DrawingRoute();
 
   @override
@@ -361,12 +402,15 @@ class DrawingRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return DrawingPage(key: state.pageKey,);
+    return DrawingPage(
+      key: state.pageKey,
+    );
   }
 }
 
 class ThemeShowcaseRoute extends GoRouteData {
   static const path = 'themeshowcase';
+
   const ThemeShowcaseRoute();
 
   @override
@@ -376,28 +420,41 @@ class ThemeShowcaseRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ThemeShowcasePage(key: state.pageKey,);
+    return ThemeShowcasePage(
+      key: state.pageKey,
+    );
   }
 }
 
-/// [Chat Pages Routes]
-class ChatRoute extends GoRouteData {}
+
+class ChatRoute extends GoRouteData {
+  static const path = 'chatRoute';
+
+  const ChatRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return LoginOnChat(key: state.pageKey,);
+  }
+}
 
 /// [Other Pages Routes]
 class DevisEditRoute extends GoRouteData {
   static const path = 'edit_devis:did';
+
   const DevisEditRoute({required this.did});
 
   final int did;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return DevisEditScreen(key: state.pageKey,did: did);
+    return DevisEditScreen(key: state.pageKey, did: did);
   }
 }
 
 class GodzyLogoRoute extends GoRouteData {
   static const path = 'godzyRoute';
+
   const GodzyLogoRoute();
 
   @override
@@ -407,12 +464,15 @@ class GodzyLogoRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return Godzylogo(key: state.pageKey,);
+    return Godzylogo(
+      key: state.pageKey,
+    );
   }
 }
 
 class AvisBoxRoute extends GoRouteData {
   static const path = 'avisRoute';
+
   const AvisBoxRoute();
 
   @override
@@ -422,6 +482,8 @@ class AvisBoxRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return AvisBoxPage(key: state.pageKey,);
+    return AvisBoxPage(
+      key: state.pageKey,
+    );
   }
 }

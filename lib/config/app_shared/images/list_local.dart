@@ -9,6 +9,7 @@ class LocalImages {
   static const maisonIndiv = 'assets/lottie/image/maison_indiv.png';
   static const apartmentPng = 'assets/lottie/image/appartement.png';
   static const trianglePng = 'assets/lottie/image/triangle.png';
+  static const logoTchatPng = 'assets/lottie/image/logo_tchat_1022x1024.png';
   static const solPvcHolyWell =
       'assets/lottie/archive/amenagement/interrieur/sol/matiere/pvc/sol_pvc_holywell.png';
   static const swimmingPoolSussargue =

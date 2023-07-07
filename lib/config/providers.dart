@@ -2,6 +2,7 @@
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
+import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
@@ -147,6 +148,11 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
             path: GodzyLogoRoute.path,
             name: 'godzyRoute',
             builder: (context, state) => Godzylogo(key: state.pageKey),
+          ),
+          GoRoute(
+            path: ChatRoute.path,
+            name: 'chat',
+            builder: (context, state) => LoginOnChat(key: state.pageKey),
           ),
           GoRoute(
             path: AvisBoxRoute.path,

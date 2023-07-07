@@ -46,11 +46,11 @@ class EmailField extends ConsumerWidget {
         suffixIcon: suffixIcon,
       ),
       onChanged: onChanged,
-      hintText: context.tr!.enterUserEmail,
+      hintText: hintText!,
       suffixIcon: suffixIcon,
       errorText: errorText,
       obscureText: obscureText,
-      label: context.tr!.userEmail,
+      label: label!,
       inputType: TextInputType.emailAddress,
       validator: validator,
     );

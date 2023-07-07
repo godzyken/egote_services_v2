@@ -92,7 +92,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             AnimatedPositioned(
                 duration: const Duration(milliseconds: 1600),
                  //onEnd: () => context.go('/authRoute'),
-                onEnd: () => context.goNamed('mfaList'),
+                 //onEnd: () => context.goNamed('mfaList'),
+                onEnd: () => context.goNamed('chat'),
                 top: animate ? 0 : -80,
                 left: animate ? 0 : -80,
                 curve: Curves.elasticInOut,

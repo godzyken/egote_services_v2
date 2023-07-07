@@ -82,6 +82,10 @@ class $AssetsLottieImageGen {
   AssetGenImage get logoBatServices =>
       const AssetGenImage('assets/lottie/image/logo_bat_services.png');
 
+  /// File path: assets/lottie/image/logo_tchat_1022x1024.png
+  AssetGenImage get logoTchat1022x1024 =>
+      const AssetGenImage('assets/lottie/image/logo_tchat_1022x1024.png');
+
   /// File path: assets/lottie/image/maison_indiv.png
   AssetGenImage get maisonIndiv =>
       const AssetGenImage('assets/lottie/image/maison_indiv.png');
@@ -98,6 +102,7 @@ class $AssetsLottieImageGen {
         digitalTransf,
         godzyLogo,
         logoBatServices,
+        logoTchat1022x1024,
         maisonIndiv,
         triangle
       ];
