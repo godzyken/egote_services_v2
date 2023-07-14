@@ -69,6 +69,16 @@ class SharedPrefs {
     }
   }
 
+  startSession(CubeSession cubeSession, bool isStart) async {
+    prefs.clear();
+    await Future.delayed(Duration(minutes: cubeSession.tokenExpirationDate!.minute));
+    if (cubeSession.timestamp != 0 && isStart) {
+      prefs.setInt(cubeSession.token!, cubeSession.timestamp!);
+    } else if (cubeSession.timestamp == cubeSession.tokenExpirationDate!.minute) {
+      prefs.clear();
+    }
+  }
+
   updateUser(CubeUser cubeUser) {
     if (cubeUser.password != null) {
       prefs.setString(prefUserPsw, cubeUser.password!);
@@ -84,9 +94,9 @@ class SharedPrefs {
     }
   }
 
-  CubeUser? getUser() {
+  Future<CubeUser?> getUser() {
     if (prefs.getString(prefUserLogin) == null &&
-        prefs.getString(prefUserEmail) == null) return null;
+        prefs.getString(prefUserEmail) == null) return Future.value();
     var user = CubeUser();
     user.login = prefs.getString(prefUserLogin);
     user.email = prefs.getString(prefUserEmail);
@@ -95,7 +105,7 @@ class SharedPrefs {
     user.fullName = prefs.getString(prefUserName);
     user.id = prefs.getInt(prefUserId);
     user.avatar = prefs.getString(prefUserAvatar);
-    return user;
+    return Future.value(user);
   }
 
   LoginType? getLoginType() {

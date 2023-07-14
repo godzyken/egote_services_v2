@@ -265,8 +265,8 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
   log('[onSelectNotification] context != null', PushNotificationsManager.TAG);
 
   if (payload != null) {
-    return SharedPrefs.instance.init().then((sharedPrefs) {
-      CubeUser? user = sharedPrefs.getUser();
+    return SharedPrefs.instance.init().then((sharedPrefs) async {
+      CubeUser? user = await sharedPrefs.getUser().then((savedUser) => savedUser);
 
       Map<String, dynamic> payloadObject = jsonDecode(payload);
       String? dialogId = payloadObject['dialog_id'];

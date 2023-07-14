@@ -95,7 +95,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       }
     } else if (AppLifecycleState.resumed == state) {
       SharedPrefs.instance.init().then((sharedPrefs) async {
-        CubeUser? user = sharedPrefs.getUser();
+        CubeUser? user = await sharedPrefs.getUser().then((savedUser) => savedUser!);
 
         if (user != null) {
           if (!CubeChatConnection.instance.isAuthenticated()) {

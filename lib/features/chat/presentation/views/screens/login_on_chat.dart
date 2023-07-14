@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart' as platform_utils;
+import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/application/providers/auth_providers.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
@@ -10,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../../../../config/app_shared/extensions/extensions.dart';
 import '../../../../../firebase_options.dart';
@@ -27,7 +31,7 @@ class LoginOnChat extends ConsumerStatefulWidget {
 
 enum FormType { login, register }
 
-class _LoginOnChatState extends ConsumerState<LoginOnChat> {
+class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
   final TextEditingController _loginFilter = TextEditingController();
   final TextEditingController _passwordFilter = TextEditingController();
   String _login = "";
@@ -71,7 +75,6 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       }
     });
   }
-
 
   @override
   void initState() {
@@ -144,7 +147,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     if (_isLoginContinues) return const SizedBox.shrink();
     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
     var loginType = sharedPrefs.getLoginType();
-    var user = sharedPrefs.getUser();
+    var user = await sharedPrefs.getUser().then((value) => value);
     if ((user != null && loginType == null) || loginType != null) {
       _loginToCCWithSavedUser(loginType ?? LoginType.login);
       return const SizedBox.shrink();
@@ -354,14 +357,35 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     setState(() {
       _isLoginContinues = true;
     });
-    if (!CubeSessionManager.instance.isActiveSessionValid()) {
+    if (!ref.watch(cubeSessionManagerProvider).isActiveSessionValid()) {
+      final state = SharedPrefs.instance;
       try {
-        await createSession();
-      } catch (error) {
-        _processLoginError(error);
+
+        await createSession(user).then((cubeSession) {
+
+          if (cubeSession.timestamp != null) {
+            state..startSession(cubeSession, _isLoginContinues)
+              ..getLoginType()
+              ..getSubscriptionToken()
+              ..getSubscriptionId()
+              ..getSelectedDialogId()
+              ..getUser();
+
+            user = cubeSession.user!;
+
+            PushNotificationsManager.instance.init();
+
+           return user.id == cubeSession.userId ? user : null;
+          }
+
+        }
+        ).onError((ExceptionCause error, stackTrace) => handleError(error, stackTrace));
+      } on Exception catch (error) {
+        _processLoginError(context, error);
+        rethrow;
       }
     }
-    signUp(user).then((newUser) {
+    await signUp(user).then((newUser) {
       log("signUp newUser $newUser");
       user.id = newUser.id;
       SharedPrefs.instance.saveNewUser(
@@ -371,18 +395,18 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         _loginToCubeChat(context, user);
       });
     }).catchError((exception) {
-      _processLoginError(exception);
+       _processLoginError(context, exception);
     });
   }
 
-  _loginToCC(BuildContext context, CubeUser user, {bool saveUser = false}) {
+  _loginToCC(BuildContext context, CubeUser user, {bool saveUser = false}) async {
     log("_loginToCC user: $user");
     if (_isLoginContinues) return;
     setState(() {
       _isLoginContinues = true;
     });
 
-    createSession(user).then((cubeSession) async {
+    await createSession(user).then((cubeSession) {
       log("createSession cubeSession: $cubeSession");
       var tempUser = user;
       user = cubeSession.user!..password = tempUser.password;
@@ -397,7 +421,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
       _loginToCubeChat(context, user);
     }).catchError((error) {
-      _processLoginError(error);
+      _processLoginError(context, error);
     });
   }
 
@@ -428,16 +452,13 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
           return SharedPrefs.instance.init().then((sharedPrefs) {
             sharedPrefs.saveNewUser(cubeUser, LoginType.phone);
             return cubeUser
-              ..password = CubeSessionManager.instance.activeSession?.token;
+              ..password = ref.read(cubeSessionManagerProvider).activeSession?.token;
           });
         });
       });
     } else if (loginType == LoginType.login || loginType == LoginType.email) {
       signInFuture = SharedPrefs.instance.init().then((sharedPrefs) {
-        var savedUser = sharedPrefs.getUser();
-        return createSession(savedUser).then((value) {
-          return savedUser!;
-        });
+        return sharedPrefs.getUser().then((savedUser) =>  savedUser!);
       });
     }
 
@@ -446,27 +467,27 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
       _loginToCubeChat(context, cubeUser);
     }).catchError((error) {
-      _processLoginError(error);
+      _processLoginError(context, error);
     });
   }
 
   _loginToCubeChat(BuildContext context, CubeUser user) {
     log("_loginToCubeChat user $user");
-    CubeChatConnectionSettings.instance.totalReconnections = 0;
-    CubeChatConnection.instance.login(user).then((cubeUser) {
+    ref.watch(cubeChatConnectionSettingsProvider).totalReconnections = 0;
+    ref.watch(cubeChatConnectionProvider).login(user).then((cubeUser) {
       _isLoginContinues = false;
       _goDialogScreen(context, cubeUser);
     }).catchError((error) {
-      _processLoginError(error);
+      _processLoginError(context, error);
     });
   }
 
-  void _processLoginError(exception) {
+  void _processLoginError(BuildContext context, Exception? exception) {
     log("Login error $exception");
     setState(() {
       _isLoginContinues = false;
     });
-    context.showAlert(exception);
+    context.showAlert(exception!.toString());
   }
 
   void _goDialogScreen(BuildContext context, CubeUser cubeUser) async {
@@ -503,7 +524,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         navigateToNextScreen(cubeUser, null);
       }
     }).catchError((onError) {
-      log("getNotificationAppLaunchDetails ERROR");
+      log("getNotificationAppLaunchDetails ERROR: $onError");
       navigateToNextScreen(cubeUser, null);
     });
   }
@@ -520,4 +541,17 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
           extra: {USER_ARG_NAME: cubeUser, DIALOG_ARG_NAME: dialog});
     }
   }
+
+  handleError(ExceptionCause? object, StackTrace stackTrace) {
+    if(object!.exception && object.stackTrace) {
+      stackTrace = object.stackTrace;
+
+      log('HandleError: ${object.exception}  with stackTrace : $stackTrace');
+      return _processLoginError(context, object.exception);
+    }
+
+    return;
+  }
+
+
 }

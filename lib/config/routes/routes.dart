@@ -1,4 +1,5 @@
-import 'package:egote_services_v2/features/chat/presentation/views/screens/login_on_chat.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,13 +26,17 @@ part 'routes.g.dart';
         name: 'user_home',
         routes: [
           TypedGoRoute<PersonRoute>(
-              path: PersonRoute.path, name: 'person', routes: []),
+              path: PersonRoute.path,
+              name: 'person',
+              routes: []),
           TypedGoRoute<UserListRoute>(
               path: UserListRoute.path,
               name: 'userList',
               routes: [
                 TypedGoRoute<AddUserFormRoute>(
-                    path: AddUserFormRoute.path, name: 'userForm'),
+                    path: AddUserFormRoute.path,
+                    name: 'userForm'
+                ),
               ]),
         ]),
     TypedGoRoute<GodzyLogoRoute>(
@@ -43,8 +48,20 @@ part 'routes.g.dart';
       name: 'avisRoute',
     ),
     TypedGoRoute<ChatRoute>(
-      path: ChatRoute.path,
-      name: 'chat',
+        path: ChatRoute.path,
+        name: 'chat',
+        routes: [
+          TypedGoRoute<SelectDialogRoute>(
+              path: SelectDialogRoute.path,
+              name: 'select_dialog',
+              routes: [
+                TypedGoRoute<ChatDialogRoute>(
+                    path: ChatDialogRoute.path,
+                    name: 'chat_dialog'
+                )
+              ]
+          )
+      ]
     ),
     TypedGoRoute<SettingsUiRoute>(
         path: SettingsUiRoute.path,
@@ -435,6 +452,39 @@ class ChatRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return LoginOnChat(key: state.pageKey,);
+  }
+}
+
+class SelectDialogRoute extends GoRouteData {
+  static const path = 'selectDialogRoute:cid';
+
+  const SelectDialogRoute({required this.currentUser});
+
+  final CubeUser currentUser;
+
+  int? get cid => currentUser.id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+
+    return SelectDialogScreen(key: state.pageKey, currentUser: currentUser,);
+  }
+}
+
+class ChatDialogRoute extends GoRouteData {
+  static const path = 'chatDialogRoute:cid&cdid';
+
+  const ChatDialogRoute({required this.cubeUser, required this.cubeDialog});
+
+  final CubeUser cubeUser;
+  final CubeDialog cubeDialog;
+
+  int? get cid => cubeUser.id;
+  int? get cdid => cubeDialog.id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChatDialogScreen(key: state.pageKey, cubeUser: cubeUser, cubeDialog: cubeDialog,);
   }
 }
 
