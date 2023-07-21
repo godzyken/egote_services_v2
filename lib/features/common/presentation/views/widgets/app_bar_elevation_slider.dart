@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +11,7 @@ class AppBarElevationSlider extends ConsumerWidget {
     final TextStyle style = Theme.of(context).textTheme.bodySmall!;
     final double elevation = ref.watch(Settings.appBarElevationProvider);
     return ListTile(
-      title: const Text('AppBar elevation'),
+      title: Text(context.tr!.appBarElevation),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -29,7 +30,7 @@ class AppBarElevationSlider extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             Text(
-              'Elevation',
+              context.tr!.elevation,
               style: style,
             ),
             Text(

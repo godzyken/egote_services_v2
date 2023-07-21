@@ -33,7 +33,7 @@ class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
-          title: const Text('Contacts'),
+          title: Text(context.tr!.contacts),
         ),
         body: BodyLayout(currentUser),
       ),
@@ -112,7 +112,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
       floatingActionButton: Visibility(
         visible: _selectedUsers.isNotEmpty,
           child: FloatingActionButton(
-            heroTag: "Update dialog",
+            heroTag: context.tr!.updateDialog,
               backgroundColor: Colors.blue,
               onPressed: () => _updateDialog(context, _selectedUsers.toList()),
               child: const Icon(Icons.check, color: Colors.white,
@@ -130,7 +130,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
             child: TextField(
               autofocus: true,
               textInputAction: TextInputAction.search,
-              decoration: const InputDecoration(labelText: 'Search Users'),
+              decoration: InputDecoration(labelText: context.tr!.searchUsers),
               onSubmitted: (value) {
                 _searchUser(value.trim());
               },
@@ -158,14 +158,14 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
             userList.addAll(users!.items);
 
             if (users.items.isEmpty) {
-              userMsg = "Couldn't find user";
+              userMsg = context.tr!.userNotFound;
             }
           });
         }).catchError((onError){
           log("getUsers catchError: $onError");
           setState(() {
             clearValues();
-            userMsg = "Couldn't find user";
+            userMsg = context.tr!.userNotFound;
           });
         });
       }
@@ -200,8 +200,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
                     Container(
                       alignment: Alignment.centerLeft,
                       margin: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
-                      child: Text(
-                        'Name: ${userList[index].fullName}',
+                      child: Text('${context.tr!.userName}: ${userList[index].fullName}',
                         style: TextStyle(color: Colors.primaries.single),
                       ),
                     ),

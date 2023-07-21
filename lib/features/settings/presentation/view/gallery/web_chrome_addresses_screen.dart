@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -16,7 +17,7 @@ class _WebChromeAddressesScreenState extends ConsumerState<WebChromeAddressesScr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Addresses and more')),
+      appBar: AppBar(title: Text(context.tr!.addressMore)),
       body: SettingsList(
         platform: DevicePlatform.web,
         sections: [
@@ -31,18 +32,17 @@ class _WebChromeAddressesScreenState extends ConsumerState<WebChromeAddressesScr
                   });
                 },
                 trailing: const Icon(Icons.info),
-                title: const Text('Save and fill addresses'),
-                description: const Text(
-                    'Include information like phone numbers, email, and shipping addresses'),
-              ),
+                title: Text(context.tr!.addressTitle),
+                description: Text(context.tr!.addressDescription),
+              )
             ],
           ),
           SettingsSection(
-            title: const Text('Addresses'),
+            title: Text(context.tr!.addressesTitle),
             tiles: [
               SettingsTile.navigation(
                 onPressed: (_) {},
-                title: const Text('Name, addresses'),
+                title: Text(context.tr!.addressesNameTitle),
                 trailing: const Icon(Icons.more_vert),
               ),
             ],

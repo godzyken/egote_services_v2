@@ -31,8 +31,8 @@ class ChatSettingsScreen extends ConsumerWidget {
           icon: const Icon(Icons.close, color: Colors.white,),
         ),
         automaticallyImplyLeading: false,
-        title: const Text('Chat Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(context.tr!.chatSettings,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
@@ -189,19 +189,19 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
           Container(
             child: TextField(
               controller: _nameFilter,
-              decoration: const InputDecoration(labelText: 'Change name'),
+              decoration: InputDecoration(labelText: context.tr!.changeName),
             ),
           ),
           Container(
             child: TextField(
               controller: _loginFilter,
-              decoration: const InputDecoration(labelText: 'Change login'),
+              decoration: InputDecoration(labelText: context.tr!.changeLogin),
             ),
           ),
           Container(
             child: TextField(
               controller: _emailFilter,
-              decoration: const InputDecoration(labelText: 'Change e-mail'),
+              decoration: InputDecoration(labelText: context.tr!.changeEmail),
             ),
           ),
         ],
@@ -221,7 +221,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
               minimumSize: const Size(120, 36),
             ),
             onPressed: _updateUser,
-            child: const Text('Save'),
+            child: Text(context.tr!.save),
           ),
           const SizedBox(
             height: 6,
@@ -233,7 +233,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
             icon: const Icon(
               Icons.logout,
             ),
-            label: const Text('Logout'),
+            label: Text(context.tr!.signOut),
             onPressed: _logout,
           ),
           const SizedBox(
@@ -248,9 +248,9 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
               Icons.delete,
               color: Colors.red,
             ),
-            label: const Text(
-              'Delete user',
-              style: TextStyle(color: Colors.red),
+            label: Text(
+              context.tr!.deleteUser,
+              style: const TextStyle(color: Colors.red),
             ),
             onPressed: _deleteUserPressed,
           ),
@@ -266,7 +266,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
         _name.isEmpty &&
         _avatarUrl!.isEmpty &&
         _email.isEmpty) {
-      context.showAlert('Nothing to save');
+      context.showAlert(context.tr!.nothingToSave);
       return;
     }
     var userToUpdate = CubeUser()..id = widget.currentUser.id;
@@ -280,7 +280,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     });
     updateUser(userToUpdate).then((user) {
       SharedPrefs.instance.updateUser(user);
-      context.showAlert('Success');
+      context.showAlert(context.tr!.success);
       setState(() {
         _isUsersContinues = false;
       });
@@ -295,17 +295,17 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Logout"),
-          content: const Text("Are you sure you want logout current user"),
+          title: Text(context.tr!.signOut),
+          content: Text(context.tr!.confirmLogout),
           actions: <Widget>[
             TextButton(
-              child: const Text("CANCEL"),
+              child: Text(context.tr!.cancel),
               onPressed: () {
                 context.pop(context);
               },
             ),
             TextButton(
-              child: const Text("OK"),
+              child: Text(context.tr!.ok),
               onPressed: () {
                 signOut().then(
                       (voidValue) {
@@ -342,32 +342,34 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       context: context,
       builder: (BuildContext _) {
         return AlertDialog(
-          title: const Text("Delete user"),
-          content: const Text("Are you sure you want to delete current user?"),
+          title: Text(context.tr!.deleteUser),
+          content: Text(context.tr!.confirmDeleteUser),
           actions: <Widget>[
             TextButton(
-              child: const Text("CANCEL"),
+              child: Text(context.tr!.cancel),
               onPressed: () {
                 context.pop(context);
               },
             ),
             TextButton(
-              child: const Text("OK"),
+              child: Text(context.tr!.ok),
               onPressed: () async {
                 CubeChatConnection.instance.destroy();
                 await SharedPrefs.instance.deleteUser();
 
                 deleteUser(widget.currentUser.id!).then(
                       (voidValue) {
-                    context.pop(context); // cancel current Dialog
+                    context.pop(context);
                   },
                 ).catchError(
                       (onError) {
-                    context.pop(context); // cancel current Dialog
+                    context.pop(context);
                   },
                 ).whenComplete(() async {
                   await PushNotificationsManager.instance.unsubscribe();
-                  context.pop(); // cancel current screen
+                   setState(() {
+                     context.pop();
+                   });
                   _navigateToLoginScreen();
                 });
               },

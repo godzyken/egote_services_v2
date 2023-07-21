@@ -57,7 +57,7 @@ class UserListScreen extends ConsumerWidget {
       final WidgetRef ref,
       final UserList userList) {
     if (userList.length == 0) {
-      return Center(child: Text(context.tr!.noBoat),);
+      return Center(child: Text(context.tr!.noData),);
     } else {
       return ListView.builder(
         padding: const EdgeInsets.all(8),

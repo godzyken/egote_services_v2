@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -130,7 +131,7 @@ class ShowcaseMaterial extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text('Normal TextTheme',
+                  child: Text(context.tr!.normalTextTheme,
                       style: theme.textTheme.titleMedium),
                 ),
                 const TextThemeShowcase(),
@@ -148,7 +149,7 @@ class ShowcaseMaterial extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text('Primary TextTheme',
+                  child: Text(context.tr!.primaryTextTheme,
                       style: theme.primaryTextTheme.titleMedium),
                 ),
                 const PrimaryTextThemeShowcase(),
@@ -174,16 +175,16 @@ class ElevatedButtonShowcase extends StatelessWidget {
         children: <Widget>[
           ElevatedButton(
             onPressed: () {},
-            child: const Text('Elevated button'),
+            child: Text(context.tr!.elevatedButton),
           ),
           ElevatedButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.add),
-            label: const Text('Elevated icon'),
+            label: Text(context.tr!.elevatedIcon),
           ),
-          const ElevatedButton(
+          ElevatedButton(
             onPressed: null,
-            child: Text('Elevated button'),
+            child: Text(context.tr!.elevatedButton),
           ),
         ],
       ),
@@ -204,16 +205,16 @@ class FilledButtonShowcase extends StatelessWidget {
         children: <Widget>[
           FilledButton(
             onPressed: () {},
-            child: const Text('Filled button'),
+            child: Text(context.tr!.filledButton),
           ),
           FilledButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.add),
-            label: const Text('Filled icon'),
+            label: Text(context.tr!.filledIcon),
           ),
-          const FilledButton(
+          FilledButton(
             onPressed: null,
-            child: Text('Filled button'),
+            child: Text(context.tr!.filledButton),
           ),
         ],
       ),
@@ -234,16 +235,16 @@ class FilledButtonTonalShowcase extends StatelessWidget {
         children: <Widget>[
           FilledButton.tonal(
             onPressed: () {},
-            child: const Text('Filled tonal button'),
+            child: Text(context.tr!.filledTonalButton),
           ),
           FilledButton.tonalIcon(
             onPressed: () {},
             icon: const Icon(Icons.add),
-            label: const Text('Filled tonal icon'),
+            label: Text(context.tr!.filledTonalIcon),
           ),
-          const FilledButton.tonal(
+          FilledButton.tonal(
             onPressed: null,
-            child: Text('Filled tonal button'),
+            child: Text(context.tr!.filledTonalButton),
           ),
         ],
       ),
@@ -264,16 +265,16 @@ class OutlinedButtonShowcase extends StatelessWidget {
         children: <Widget>[
           OutlinedButton(
             onPressed: () {},
-            child: const Text('Outlined button'),
+            child: Text(context.tr!.outlinedButton),
           ),
           OutlinedButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.add),
-            label: const Text('Outlined icon'),
+            label: Text(context.tr!.outlinedIcon),
           ),
-          const OutlinedButton(
+          OutlinedButton(
             onPressed: null,
-            child: Text('Outlined button'),
+            child: Text(context.tr!.outlinedButton),
           ),
         ],
       ),
@@ -294,16 +295,16 @@ class TextButtonShowcase extends StatelessWidget {
         children: <Widget>[
           TextButton(
             onPressed: () {},
-            child: const Text('Text button'),
+            child: Text(context.tr!.textButton),
           ),
           TextButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.add),
-            label: const Text('Text icon'),
+            label: Text(context.tr!.textIcon),
           ),
-          const TextButton(
+          TextButton(
             onPressed: null,
-            child: Text('Text button'),
+            child: Text(context.tr!.textButton),
           ),
         ],
       ),
@@ -346,12 +347,12 @@ class _ToggleButtonsShowcaseState extends State<ToggleButtonsShowcase> {
           if (widget.compareButtons ?? false)
             OutlinedButton(
               onPressed: () {},
-              child: const Text('Outlined'),
+              child: Text(context.tr!.outlined),
             ),
           if (widget.compareButtons ?? false)
             FilledButton(
               onPressed: () {},
-              child: const Text('Filled'),
+              child: Text(context.tr!.filled),
             ),
           ToggleButtons(
             isSelected: const <bool>[true, false, false],
@@ -363,9 +364,9 @@ class _ToggleButtonsShowcaseState extends State<ToggleButtonsShowcase> {
             ],
           ),
           if (widget.compareButtons ?? false)
-            const OutlinedButton(
+            OutlinedButton(
               onPressed: null,
-              child: Text('Outlined'),
+              child: Text(context.tr!.outlined),
             ),
         ],
       ),
@@ -399,22 +400,22 @@ class _SegmentedButtonShowcaseState extends State<SegmentedButtonShowcase> {
           SegmentedButton<Calendar>(
             showSelectedIcon: false,
             // multiSelectionEnabled: false,
-            segments: const <ButtonSegment<Calendar>>[
+            segments: <ButtonSegment<Calendar>>[
               ButtonSegment<Calendar>(
                 value: Calendar.day,
-                label: Text('Day'),
+                label: Text(context.tr!.day),
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.week,
-                label: Text('Week'),
+                label: Text(context.tr!.week),
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.month,
-                label: Text('Month'),
+                label: Text(context.tr!.month),
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.year,
-                label: Text('Year'),
+                label: Text(context.tr!.year),
               ),
             ],
             selected: <Calendar>{_selected},
@@ -425,26 +426,26 @@ class _SegmentedButtonShowcaseState extends State<SegmentedButtonShowcase> {
             },
           ),
           SegmentedButton<Calendar>(
-            segments: const <ButtonSegment<Calendar>>[
+            segments: <ButtonSegment<Calendar>>[
               ButtonSegment<Calendar>(
                 value: Calendar.day,
-                label: Text('Day'),
-                icon: Icon(Icons.calendar_view_day),
+                label: Text(context.tr!.day),
+                icon: const Icon(Icons.calendar_view_day),
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.week,
-                icon: Icon(Icons.calendar_view_week),
-                label: Text('Week'),
+                icon: const Icon(Icons.calendar_view_week),
+                label: Text(context.tr!.week),
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.month,
-                icon: Icon(Icons.calendar_view_month),
-                label: Text('Month'),
+                icon: const Icon(Icons.calendar_view_month),
+                label: Text(context.tr!.month),
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.year,
-                icon: Icon(Icons.calendar_today),
-                label: Text('Year'),
+                icon: const Icon(Icons.calendar_today),
+                label: Text(context.tr!.year),
               ),
             ],
             selected: <Calendar>{_selected},
@@ -455,28 +456,28 @@ class _SegmentedButtonShowcaseState extends State<SegmentedButtonShowcase> {
             },
           ),
           SegmentedButton<Calendar>(
-            segments: const <ButtonSegment<Calendar>>[
+            segments: <ButtonSegment<Calendar>>[
               ButtonSegment<Calendar>(
                 value: Calendar.day,
-                label: Text('Day'),
-                icon: Icon(Icons.calendar_view_day),
+                label: Text(context.tr!.day),
+                icon: const Icon(Icons.calendar_view_day),
                 enabled: false,
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.week,
-                icon: Icon(Icons.calendar_view_week),
-                label: Text('Week'),
+                icon: const Icon(Icons.calendar_view_week),
+                label: Text(context.tr!.week),
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.month,
-                icon: Icon(Icons.calendar_view_month),
-                label: Text('Month'),
+                icon: const Icon(Icons.calendar_view_month),
+                label: Text(context.tr!.month),
                 enabled: false,
               ),
               ButtonSegment<Calendar>(
                 value: Calendar.year,
-                icon: Icon(Icons.calendar_today),
-                label: Text('Year'),
+                icon: const Icon(Icons.calendar_today),
+                label: Text(context.tr!.year),
               ),
             ],
             selected: <Calendar>{_selected},
@@ -513,14 +514,14 @@ class FabShowcase extends StatelessWidget {
             isExtended: false,
             onPressed: () {},
             icon: const Icon(Icons.accessibility),
-            label: const Text('Extended'),
+            label: Text(context.tr!.extended),
           ),
           FloatingActionButton.extended(
             heroTag: 'FAB extended true',
             isExtended: true,
             onPressed: () {},
             icon: const Icon(Icons.accessibility),
-            label: const Text('Extended'),
+            label: Text(context.tr!.extended),
           ),
           FloatingActionButton(
             heroTag: 'FAB standard',
@@ -731,7 +732,7 @@ class _SliderShowcaseState extends State<SliderShowcase> {
         children: <Widget>[
           ListTile(
             dense: true,
-            title: Text('Slider stepped (${value.toStringAsFixed(0)})'),
+            title: Text('${context.tr!.sliderStepped} (${value.toStringAsFixed(0)})'),
             subtitle: Slider(
               max: 30,
               divisions: 31,
@@ -746,7 +747,7 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title: Text('Slider continuous (${value.toStringAsFixed(2)})'),
+            title: Text('${context.tr!.sliderContinuous} (${value.toStringAsFixed(2)})'),
             subtitle: Slider(
               max: 30,
               label: value.toStringAsFixed(0),
@@ -761,7 +762,7 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ListTile(
             dense: true,
             title:
-            Text('Slider stepped disabled (${value.toStringAsFixed(0)})'),
+            Text('${context.tr!.sliderSteppedDisabled} (${value.toStringAsFixed(0)})'),
             subtitle: Slider(
               max: 30,
               divisions: 31,
@@ -773,7 +774,7 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ListTile(
             dense: true,
             title: Text(
-                'Slider continuous disabled (${value.toStringAsFixed(2)})'),
+                '${context.tr!.sliderContinuousDisabled} (${value.toStringAsFixed(2)})'),
             subtitle: Slider(
               max: 30,
               label: value.toStringAsFixed(0),
@@ -804,7 +805,7 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
         children: <Widget>[
           ListTile(
             dense: true,
-            title: Text('RangeSlider stepped (${RangeLabels(
+            title: Text('${context.tr!.rangeSliderStepped} (${RangeLabels(
               values.start.toStringAsFixed(0),
               values.end.toStringAsFixed(0),
             )})'),
@@ -828,7 +829,7 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title: Text('RangeSlider continuous (${RangeLabels(
+            title: Text('${context.tr!.rangeSliderContinuous} (${RangeLabels(
               values.start.toStringAsFixed(2),
               values.end.toStringAsFixed(2),
             )})'),
@@ -848,7 +849,7 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title: Text('RangeSlider stepped disabled (${RangeLabels(
+            title: Text('${context.tr!.rangeSliderSteppedDisabled} (${RangeLabels(
               values.start.toStringAsFixed(0),
               values.end.toStringAsFixed(0),
             )})'),
@@ -865,7 +866,7 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title: Text('RangeSlider continuous disabled (${RangeLabels(
+            title: Text('${context.tr!.rangeSliderContinuousDisabled} (${RangeLabels(
               values.start.toStringAsFixed(2),
               values.end.toStringAsFixed(2),
             )})'),
@@ -906,7 +907,7 @@ class PopupMenuButtonsShowcase extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
               child: Text(
-                'PopupMenuButton',
+                context.tr!.popupMenuButton,
                 style: denseHeader,
               ),
             ),
@@ -914,7 +915,7 @@ class PopupMenuButtonsShowcase extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
               child: Text(
-                'The classic Material popup menu.',
+                context.tr!.materialPopupMenuText,
                 style: denseBody,
               ),
             ),
@@ -938,12 +939,12 @@ class PopupMenuButtonShowcase extends StatelessWidget {
       child: PopupMenuButton<int>(
         onSelected: (_) {},
         position: PopupMenuPosition.under,
-        itemBuilder: (BuildContext context) => const <PopupMenuItem<int>>[
-          PopupMenuItem<int>(value: 1, child: Text('Option 1')),
-          PopupMenuItem<int>(value: 2, child: Text('Option 2')),
-          PopupMenuItem<int>(value: 3, child: Text('Option 3')),
-          PopupMenuItem<int>(value: 4, child: Text('Option 4')),
-          PopupMenuItem<int>(value: 5, child: Text('Option 5')),
+        itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
+          PopupMenuItem<int>(value: 1, child: Text('${context.tr!.optionText} 1')),
+          PopupMenuItem<int>(value: 2, child: Text('${context.tr!.optionText} 2')),
+          PopupMenuItem<int>(value: 3, child: Text('${context.tr!.optionText} 3')),
+          PopupMenuItem<int>(value: 4, child: Text('${context.tr!.optionText} 4')),
+          PopupMenuItem<int>(value: 5, child: Text('${context.tr!.optionText} 5')),
         ],
         icon: const Icon(Icons.more_vert),
       ),
@@ -960,25 +961,25 @@ class PopupMenuButtonTilesShowcase extends StatelessWidget {
       child: PopupMenuButton<int>(
         onSelected: (_) {},
         position: PopupMenuPosition.under,
-        itemBuilder: (BuildContext context) => const <PopupMenuItem<int>>[
+        itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
           PopupMenuItem<int>(
               value: 1,
               child:
-              ListTile(leading: Icon(Icons.alarm), title: Text('Alarm'))),
+              ListTile(leading: const Icon(Icons.alarm), title: Text(context.tr!.alarm))),
           PopupMenuItem<int>(
               value: 2,
               child: ListTile(
-                  leading: Icon(Icons.cabin), title: Text('Wood cabin'))),
+                  leading: const Icon(Icons.cabin), title: Text(context.tr!.woodCabin))),
           PopupMenuItem<int>(
               value: 3,
               child: ListTile(
-                  leading: Icon(Icons.camera_outdoor_rounded),
-                  title: Text('Surveillance'))),
+                  leading: const Icon(Icons.camera_outdoor_rounded),
+                  title: Text(context.tr!.surveillance))),
           PopupMenuItem<int>(
               value: 4,
               child: ListTile(
-                  leading: Icon(Icons.water_damage),
-                  title: Text('Water damage'))),
+                  leading: const Icon(Icons.water_damage),
+                  title: Text(context.tr!.waterDamage))),
         ],
         icon: const Icon(Icons.more_horiz),
       ),
@@ -1002,15 +1003,15 @@ class _DropDownButtonState extends State<_DropDownButton> {
         value: selectedItem,
         onChanged: (String? value) {
           setState(() {
-            selectedItem = value ?? 'Dropdown button 1';
+            selectedItem = value ?? '${context.tr!.dropdownButton} 1';
           });
         },
         items: <String>[
-          'Dropdown button 1',
-          'Dropdown button 2',
-          'Dropdown button 3',
-          'Dropdown button 4',
-          'Dropdown button 5'
+          '${context.tr!.dropdownButton} 1',
+          '${context.tr!.dropdownButton} 2',
+          '${context.tr!.dropdownButton} 3',
+          '${context.tr!.dropdownButton} 4',
+          '${context.tr!.dropdownButton} 5'
         ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -1041,15 +1042,15 @@ class _DropDownButtonFormFieldState extends State<DropDownButtonFormField> {
       value: selectedItem,
       onChanged: (String? value) {
         setState(() {
-          selectedItem = value ?? 'DropDown FormField - Option 1';
+          selectedItem = value ?? '${context.tr!.dropdownFormFieldOption} 1';
         });
       },
       items: <String>[
-        'DropDown FormField - Option 1',
-        'DropDown FormField - Option 2',
-        'DropDown FormField - Option 3',
-        'DropDown FormField - Option 4',
-        'DropDown FormField - Option 5',
+        '${context.tr!.dropdownFormFieldOption} 1',
+        '${context.tr!.dropdownFormFieldOption} 2',
+        '${context.tr!.dropdownFormFieldOption} 3',
+        '${context.tr!.dropdownFormFieldOption} 4',
+        '${context.tr!.dropdownFormFieldOption} 5',
       ].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
@@ -1087,7 +1088,7 @@ class _DropDownMenuShowcaseState extends State<DropDownMenuShowcase> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
               child: Text(
-                'DropdownMenu',
+                context.tr!.dropdownMenu,
                 style: denseHeader,
               ),
             ),
@@ -1095,8 +1096,7 @@ class _DropDownMenuShowcaseState extends State<DropDownMenuShowcase> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
               child: Text(
-                'The new M3 DropdownMenu shares building blocks with MenuBar '
-                    'and MenuAnchor, also uses InputDecorator for text entry.',
+                context.tr!.dropdownMenuText,
                 style: denseBody,
               ),
             ),
@@ -1107,31 +1107,31 @@ class _DropDownMenuShowcaseState extends State<DropDownMenuShowcase> {
                 selectedItem = value ?? 'one';
               });
             },
-            dropdownMenuEntries: const <DropdownMenuEntry<String>>[
+            dropdownMenuEntries: <DropdownMenuEntry<String>>[
               DropdownMenuEntry<String>(
-                label: 'Alarm settings',
-                leadingIcon: Icon(Icons.alarm),
+                label: context.tr!.labelAlarmSettings,
+                leadingIcon: const Icon(Icons.alarm),
                 value: 'one',
               ),
               DropdownMenuEntry<String>(
-                label: 'Disabled settings',
-                leadingIcon: Icon(Icons.settings),
+                label: context.tr!.labelDisabledSettings,
+                leadingIcon: const Icon(Icons.settings),
                 value: 'two',
                 enabled: false,
               ),
               DropdownMenuEntry<String>(
-                label: 'Cabin overview',
-                leadingIcon: Icon(Icons.cabin),
+                label: context.tr!.labelCabinOverview,
+                leadingIcon: const Icon(Icons.cabin),
                 value: 'three',
               ),
               DropdownMenuEntry<String>(
-                label: 'Surveillance view',
-                leadingIcon: Icon(Icons.camera_outdoor_rounded),
+                label: context.tr!.labelSurveillanceView,
+                leadingIcon: const Icon(Icons.camera_outdoor_rounded),
                 value: 'four',
               ),
               DropdownMenuEntry<String>(
-                label: 'Water alert',
-                leadingIcon: Icon(Icons.water_damage),
+                label: context.tr!.labelWaterAlert,
+                leadingIcon: const Icon(Icons.water_damage),
                 value: 'five',
               ),
             ],
@@ -1147,24 +1147,23 @@ class TooltipShowcase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const RepaintBoundary(
+    return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 16,
         runSpacing: 4,
         children: <Widget>[
           Tooltip(
-            message: 'Current tooltip theme',
-            child: Text('Text with tooltip'),
+            message: context.tr!.tooltipShowcaseMessage1,
+            child: Text(context.tr!.tooltipShowcaseText1),
           ),
           Tooltip(
-            message: 'Current tooltip theme.\nThis a two row tooltip.',
-            child: Text('Text with two row tooltip'),
+            message: context.tr!.tooltipShowcaseMessage2,
+            child: Text(context.tr!.tooltipShowcaseText2),
           ),
           Tooltip(
-            message: 'Current tooltip theme.\nThis tooltip is too long.\n'
-                'Try to keep them short.',
-            child: Text('Text with three row tooltip'),
+            message: context.tr!.tooltipShowcaseMessage3,
+            child: Text(context.tr!.tooltipShowcaseText3),
           ),
         ],
       ),
@@ -1192,19 +1191,19 @@ class _IconButtonCircleAvatarDropdownShowcaseState
         spacing: 16,
         runSpacing: 4,
         children: <Widget>[
-          const Tooltip(
-            message: 'This is\nan Icon',
-            child: Icon(Icons.add_circle),
+          Tooltip(
+            message: context.tr!.tooltipIcon,
+            child: const Icon(Icons.add_circle),
           ),
-          const Tooltip(
-            message: 'This is\nan Icon',
-            child: Icon(Icons.flutter_dash),
+          Tooltip(
+            message: context.tr!.tooltipIcon,
+            child: const Icon(Icons.flutter_dash),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: IconButton(
               icon: const Icon(Icons.accessibility),
-              tooltip: 'This is an\nIconButton',
+              tooltip: context.tr!.tooltipIconButton,
               onPressed: () {},
             ),
           ),
@@ -1214,8 +1213,8 @@ class _IconButtonCircleAvatarDropdownShowcaseState
               icon: const Icon(Icons.lock_outlined),
               selectedIcon: const Icon(Icons.lock_open_outlined),
               tooltip: isLockOpen
-                  ? 'This is an IconButton\nIn M3 tap to close lock'
-                  : 'This is an IconButton\nIn M3 tap to open lock',
+                  ? context.tr!.iconButtonCLoseM3
+                  : context.tr!.iconButtonOpenM3,
               isSelected: isLockOpen,
               onPressed: () {
                 setState(() {
@@ -1224,9 +1223,9 @@ class _IconButtonCircleAvatarDropdownShowcaseState
               },
             ),
           ),
-          const Tooltip(
-            message: 'This is a\nCircleAvatar',
-            child: CircleAvatar(
+          Tooltip(
+            message: context.tr!.tooltipCircleAvatar,
+            child: const CircleAvatar(
               child: Text('CA'),
             ),
           ),
@@ -1242,7 +1241,7 @@ class IconButtonShowcase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const RepaintBoundary(
+    return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 16,
@@ -1253,12 +1252,12 @@ class IconButtonShowcase extends StatelessWidget {
             children: <Widget>[
               IconToggleButton(
                 isEnabled: true,
-                tooltip: 'Standard',
+                tooltip: context.tr!.tooltipStandard,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               IconToggleButton(
                 isEnabled: false,
-                tooltip: 'Standard (disabled)',
+                tooltip: context.tr!.tooltipStandardDisabled,
               ),
             ],
           ),
@@ -1267,13 +1266,13 @@ class IconButtonShowcase extends StatelessWidget {
               // Filled IconButton
               IconToggleButton(
                 isEnabled: true,
-                tooltip: 'Filled',
+                tooltip: context.tr!.filled,
                 getDefaultStyle: enabledFilledButtonStyle,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               IconToggleButton(
                 isEnabled: false,
-                tooltip: 'Filled (disabled)',
+                tooltip: context.tr!.filledDisabled,
                 getDefaultStyle: disabledFilledButtonStyle,
               ),
             ],
@@ -1283,13 +1282,13 @@ class IconButtonShowcase extends StatelessWidget {
               // Filled Tonal IconButton
               IconToggleButton(
                 isEnabled: true,
-                tooltip: 'Filled tonal',
+                tooltip: context.tr!.filledTonal,
                 getDefaultStyle: enabledFilledTonalButtonStyle,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               IconToggleButton(
                 isEnabled: false,
-                tooltip: 'Filled tonal (disabled)',
+                tooltip: context.tr!.filledTonalDisabled,
                 getDefaultStyle: disabledFilledTonalButtonStyle,
               ),
             ],
@@ -1299,13 +1298,13 @@ class IconButtonShowcase extends StatelessWidget {
               // Outlined IconButton
               IconToggleButton(
                 isEnabled: true,
-                tooltip: 'Outlined',
+                tooltip: context.tr!.outlined,
                 getDefaultStyle: enabledOutlinedButtonStyle,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               IconToggleButton(
                 isEnabled: false,
-                tooltip: 'Outlined (disabled)',
+                tooltip: context.tr!.outlinedDisabled,
                 getDefaultStyle: disabledOutlinedButtonStyle,
               ),
             ],
@@ -1664,82 +1663,82 @@ class ChipShowcase extends StatelessWidget {
         runSpacing: 8,
         children: <Widget>[
           Chip(
-            label: const Text('Chip'),
+            label: Text(context.tr!.labelChip),
             onDeleted: () {},
           ),
-          const Chip(
-            label: Text('Chip'),
-            avatar: FlutterLogo(),
+          Chip(
+            label: Text(context.tr!.labelChip),
+            avatar: const FlutterLogo(),
           ),
           ActionChip(
-            label: const Text('ActionChip'),
+            label: Text(context.tr!.labelActionChip),
             avatar: const Icon(Icons.settings),
             onPressed: () {},
           ),
-          const ActionChip(
-            label: Text('ActionChip'),
-            avatar: Icon(Icons.settings),
+          ActionChip(
+            label: Text(context.tr!.labelActionChip),
+            avatar: const Icon(Icons.settings),
             onPressed: null,
           ),
           FilterChip(
-            label: const Text('FilterChip'),
+            label: Text(context.tr!.labelFilterChip),
             selected: true,
             onSelected: (bool value) {},
           ),
-          const FilterChip(
-            label: Text('FilterChip'),
+          FilterChip(
+            label: Text(context.tr!.labelFilterChip),
             selected: true,
             onSelected: null,
           ),
           FilterChip(
-            label: const Text('FilterChip'),
+            label: Text(context.tr!.labelFilterChip),
             selected: false,
             onSelected: (bool value) {},
           ),
-          const FilterChip(
-            label: Text('FilterChip'),
+          FilterChip(
+            label: Text(context.tr!.labelFilterChip),
             selected: false,
             onSelected: null,
           ),
           ChoiceChip(
-            label: const Text('ChoiceChip'),
+            label: Text(context.tr!.labelChoiceChip),
             selected: true,
             onSelected: (bool value) {},
           ),
-          const ChoiceChip(
-            label: Text('ChoiceChip'),
+          ChoiceChip(
+            label: Text(context.tr!.labelChoiceChip),
             selected: true,
           ),
           ChoiceChip(
-            label: const Text('ChoiceChip'),
+            label: Text(context.tr!.labelChoiceChip),
             selected: false,
             onSelected: (bool value) {},
           ),
-          const ChoiceChip(
-            label: Text('ChoiceChip'),
+          ChoiceChip(
+            label: Text(context.tr!.labelChoiceChip),
             selected: false,
             onSelected: null,
           ),
           InputChip(
             selected: true,
-            label: const Text('InputChip'),
+            label: Text(context.tr!.labelInputChip),
             onSelected: (bool value) {},
             onDeleted: () {},
           ),
           InputChip(
             selected: true,
-            label: const Text('InputChip'),
+            label: Text(context.tr!.labelInputChip),
             isEnabled: false,
             onSelected: (bool value) {},
             onDeleted: () {},
           ),
           InputChip(
-            label: const Text('InputChip'),
+            label: Text(context.tr!.labelInputChip),
             onSelected: (bool value) {},
             onDeleted: () {},
           ),
           InputChip(
-            label: const Text('InputChip'),
+            label: Text(context.tr!.labelInputChip),
             isEnabled: false,
             onSelected: (bool value) {},
             onDeleted: () {},
@@ -1803,10 +1802,10 @@ class _TextInputFieldState extends State<TextInputField> {
             key: const Key('TextField1'),
             controller: _textController1,
             decoration: InputDecoration(
-              hintText: 'Hint: Write something...',
-              labelText: 'Label: Underline border by default if not defined',
+              hintText: context.tr!.showcaseHintText,
+              labelText: context.tr!.showcaseLabelTextUnder,
               errorText: _errorState1
-                  ? "Any entry without an 'a' will trigger this error"
+                  ? context.tr!.showcaseErrorText
                   : null,
             ),
           ),
@@ -1825,11 +1824,11 @@ class _TextInputFieldState extends State<TextInputField> {
             controller: _textController2,
             decoration: InputDecoration(
               filled: true,
-              hintText: 'Hint: Write something...',
-              labelText: 'Label: Underline border by default if not defined, '
-                  'filled set true by Widget',
+              hintText: context.tr!.showcaseHintText,
+              labelText: '${context.tr!.showcaseLabelTextOutline}, '
+                  '${context.tr!.filledSetTrue}',
               errorText: _errorState2
-                  ? "Any entry without an 'a' will trigger this error"
+                  ? context.tr!.showcaseErrorText
                   : null,
             ),
           ),
@@ -1848,12 +1847,12 @@ class _TextInputFieldState extends State<TextInputField> {
             controller: _textController3,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
-              hintText: 'Hint: Write something...',
-              labelText: 'Label: Outline border set by Widget if not defined',
+              hintText: context.tr!.showcaseHintText,
+              labelText: context.tr!.showcaseLabelTextOutline,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: const Icon(Icons.info),
               errorText: _errorState3
-                  ? "Any entry without an 'a' will trigger this error"
+                  ? context.tr!.showcaseErrorText
                   : null,
             ),
           ),
@@ -1861,26 +1860,26 @@ class _TextInputFieldState extends State<TextInputField> {
           TextField(
             key: const Key('TextField4'),
             controller: _textController4,
-            decoration: const InputDecoration.collapsed(
-              hintText: 'Hint: Collapsed TextField...',
+            decoration: InputDecoration.collapsed(
+              hintText: context.tr!.showcaseHintCollapseText,
             ),
           ),
           const SizedBox(height: 16),
           TextField(
             controller: TextEditingController(),
             enabled: false,
-            decoration: const InputDecoration(
-              labelText: 'TextField - Disabled label',
+            decoration: InputDecoration(
+              labelText: context.tr!.labelTextDisabled,
             ),
           ),
           const SizedBox(height: 16),
           TextField(
             controller: TextEditingController(text: 'Disabled with text entry'),
             enabled: false,
-            decoration: const InputDecoration(
-              labelText: 'TextField - Disabled label',
-              prefixIcon: Icon(Icons.search),
-              suffixIcon: Icon(Icons.info),
+            decoration: InputDecoration(
+              labelText: context.tr!.labelTextDisabled,
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: const Icon(Icons.info),
             ),
           ),
         ],
@@ -1910,7 +1909,7 @@ class AppBarShowcase extends StatelessWidget {
                     icon: const Icon(Icons.menu),
                     onPressed: () {},
                   ),
-                  title: const Text('Standard AppBar'),
+                  title: Text('${context.tr!.tooltipStandard} ${context.tr!.appBar}'),
                   actions: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.search),
@@ -1937,7 +1936,7 @@ class AppBarShowcase extends StatelessWidget {
                         icon: const Icon(Icons.menu),
                         onPressed: () {},
                       ),
-                      title: const Text('SliverAppBar'),
+                      title: Text(context.tr!.sliverAppBar),
                       actions: <Widget>[
                         IconButton(
                           icon: const Icon(Icons.search),
@@ -1962,7 +1961,7 @@ class AppBarShowcase extends StatelessWidget {
                         icon: const Icon(Icons.menu),
                         onPressed: () {},
                       ),
-                      title: const Text('SliverAppBar.medium'),
+                      title: Text(context.tr!.sliverAppBarMedium),
                       actions: <Widget>[
                         IconButton(
                           icon: const Icon(Icons.search),
@@ -1987,7 +1986,7 @@ class AppBarShowcase extends StatelessWidget {
                         icon: const Icon(Icons.menu),
                         onPressed: () {},
                       ),
-                      title: const Text('SliverAppBar.large'),
+                      title: Text(context.tr!.sliverAppBarLarge),
                       actions: <Widget>[
                         IconButton(
                           icon: const Icon(Icons.search),
@@ -2017,12 +2016,12 @@ class _BehindAppBar extends StatelessWidget {
         spacing: 8,
         runSpacing: 8,
         children: <Widget>[
-          const Text('Behind AppBar'),
-          const CircleAvatar(child: Text('AV')),
+          Text(context.tr!.behindAppBar),
+          CircleAvatar(child: Text(context.tr!.circleAvatarAbrev)),
           InputChip(
             showCheckmark: true,
             selected: true,
-            label: const Text('Chip check'),
+            label: Text(context.tr!.labelChipCheck),
             onSelected: (bool value) {},
           ),
         ],
@@ -2059,18 +2058,18 @@ class BottomAppBarShowcase extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   IconButton(
-                    tooltip: 'Open navigation menu',
+                    tooltip: context.tr!.tooltipOpenNavigationMenu,
                     icon: const Icon(Icons.menu),
                     onPressed: () {},
                   ),
                   const Spacer(),
                   IconButton(
-                    tooltip: 'Search',
+                    tooltip: context.tr!.search,
                     icon: const Icon(Icons.search),
                     onPressed: () {},
                   ),
                   IconButton(
-                    tooltip: 'Favorite',
+                    tooltip: context.tr!.favorite,
                     icon: const Icon(Icons.favorite),
                     onPressed: () {},
                   ),
@@ -2081,7 +2080,7 @@ class BottomAppBarShowcase extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                 child: Text(
-                  'BottomAppBar',
+                  context.tr!.bottomAppBar,
                   style: denseHeader,
                 ),
               ),
@@ -2089,12 +2088,7 @@ class BottomAppBarShowcase extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                 child: Text(
-                  'Flutter M2 past default color was '
-                      'ThemeData.bottomAppBarColor. It was deprecated in '
-                      'Flutter 3.7. New default is colorScheme.surface and '
-                      'elevation 8. In M3 it defaults to colorScheme.surface '
-                      'color, elevation 3, no shadow, but with surface elevation '
-                      'tint.',
+                  context.tr!.explainFlutterM2Color,
                   style: denseBody,
                 ),
               ),
@@ -2135,24 +2129,24 @@ class TabBarForAppBarShowcase extends StatelessWidget {
           children: <Widget>[
             Material(
               color: effectiveTabBackground,
-              child: const SizedBox(
+              child: SizedBox(
                 height: 70,
                 child: TabBar(
                   tabs: <Widget>[
                     Tab(
-                      text: 'Chat',
+                      text: context.tr!.labelChat,
                       icon: Badge(
-                        label: Text('18'),
-                        child: Icon(Icons.chat_bubble),
+                        label: Text(context.tr!.tabBadgeLabel18),
+                        child: const Icon(Icons.chat_bubble),
                       ),
                     ),
                     Tab(
-                      text: 'Tasks',
-                      icon: Icon(Icons.beenhere),
+                      text: context.tr!.tabTasks,
+                      icon: const Icon(Icons.beenhere),
                     ),
                     Tab(
-                      text: 'Folder',
-                      icon: Icon(Icons.create_new_folder),
+                      text: context.tr!.tabFolder,
+                      icon: const Icon(Icons.create_new_folder),
                     ),
                   ],
                 ),
@@ -2161,16 +2155,14 @@ class TabBarForAppBarShowcase extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: Text(
-                'TabBar in an AppBar',
+                context.tr!.tabBarAppBar,
                 style: denseHeader,
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Text(
-                'If the TabBar will always be used in an AppBar, then use '
-                    'style FlexTabBarStyle forAppBar (default), '
-                    'it will fit contrast wise here',
+                context.tr!.tabBarIfAppBar,
                 style: denseBody,
               ),
             ),
@@ -2200,24 +2192,24 @@ class TabBarForBackgroundShowcase extends StatelessWidget {
           children: <Widget>[
             Material(
               color: theme.colorScheme.surface,
-              child: const SizedBox(
+              child: SizedBox(
                 height: 70,
                 child: TabBar(
                   tabs: <Widget>[
                     Tab(
-                      text: 'Chat',
+                      text: context.tr!.labelChat,
                       icon: Badge(
-                        label: Text('+99'),
-                        child: Icon(Icons.chat_bubble),
+                        label: Text(context.tr!.tabBadgeLabel99),
+                        child: const Icon(Icons.chat_bubble),
                       ),
                     ),
                     Tab(
-                      text: 'Tasks',
-                      icon: Icon(Icons.beenhere),
+                      text: context.tr!.tabTasks,
+                      icon: const Icon(Icons.beenhere),
                     ),
                     Tab(
-                      text: 'Folder',
-                      icon: Icon(Icons.create_new_folder),
+                      text: context.tr!.tabFolder,
+                      icon: const Icon(Icons.create_new_folder),
                     ),
                   ],
                 ),
@@ -2226,16 +2218,14 @@ class TabBarForBackgroundShowcase extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: Text(
-                'TabBar on a surface',
+                context.tr!.tabBarSurface,
                 style: denseHeader,
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Text(
-                'If the TabBar will always be used on background and surface '
-                    'colors, then use style FlexTabBarStyle forBackground, '
-                    'it will fit contrast wise here',
+                context.tr!.tabBarIfSurface,
                 style: denseBody,
               ),
             ),
@@ -2285,16 +2275,16 @@ class _BottomNavigationBarShowcaseState
                     spacing: 8,
                     runSpacing: 8,
                     children: <Widget>[
-                      const Text('Behind Bottom'),
+                      Text(context.tr!.behindBottom),
                       FloatingActionButton.small(
-                        heroTag: 'Behind Bottom',
+                        heroTag: context.tr!.behindBottom,
                         onPressed: () {},
                         child: const Icon(Icons.add),
                       ),
                       InputChip(
                         showCheckmark: true,
                         selected: true,
-                        label: const Text('Chip check'),
+                        label: Text(context.tr!.labelChipCheck),
                         onSelected: (bool value) {},
                       ),
                     ],
@@ -2307,23 +2297,23 @@ class _BottomNavigationBarShowcaseState
                       buttonIndex = value;
                     });
                   },
-                  items: const <BottomNavigationBarItem>[
+                  items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       icon: Badge(
-                        label: Text('3'),
-                        child: Icon(Icons.chat_bubble),
+                        label: Text(context.tr!.tabBadgeLabel3),
+                        child: const Icon(Icons.chat_bubble),
                       ),
                       label: 'Chat',
                       // title: Text('Item 1'),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.beenhere),
-                      label: 'Tasks',
+                      icon: const Icon(Icons.beenhere),
+                      label: context.tr!.tabTasks,
                       // title: Text('Item 2'),
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.create_new_folder),
-                      label: 'Folder',
+                      icon: const Icon(Icons.create_new_folder),
+                      label: context.tr!.tabFolder,
                       // title: Text('Item 3'),
                     ),
                   ],
@@ -2335,7 +2325,7 @@ class _BottomNavigationBarShowcaseState
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: Text(
-                'BottomNavigationBar (Material 2)',
+                context.tr!.bottomNavigationBar,
                 style: denseHeader,
               ),
             ),
@@ -2343,10 +2333,7 @@ class _BottomNavigationBarShowcaseState
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Text(
-                'Default SDK background color is theme canvasColor via '
-                    'Material. The canvasColor is typically '
-                    'colorScheme.background, elevation is 8. FCS sub-theme default '
-                    'is colorScheme.background and elevation 0.',
+                context.tr!.defaultSdkBackgroundColor,
                 style: denseBody,
               ),
             ),
@@ -2392,16 +2379,16 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
                     spacing: 8,
                     runSpacing: 8,
                     children: <Widget>[
-                      const Text('Behind NavBar'),
+                      Text(context.tr!.behindNavBar),
                       FloatingActionButton.small(
-                        heroTag: 'Behind NavBar',
+                        heroTag: context.tr!.behindNavBar,
                         onPressed: () {},
                         child: const Icon(Icons.add),
                       ),
                       InputChip(
                         showCheckmark: true,
                         selected: true,
-                        label: const Text('Chip check'),
+                        label: Text(context.tr!.labelChipCheck),
                         onSelected: (bool value) {},
                       ),
                     ],
@@ -2414,21 +2401,21 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
                       buttonIndex = value;
                     });
                   },
-                  destinations: const <NavigationDestination>[
+                  destinations: <NavigationDestination>[
                     NavigationDestination(
                       icon: Badge(
-                        label: Text('12'),
-                        child: Icon(Icons.chat_bubble),
+                        label: Text(context.tr!.navBadgeText12),
+                        child: const Icon(Icons.chat_bubble),
                       ),
-                      label: 'Chat',
+                      label: context.tr!.labelChat,
                     ),
                     NavigationDestination(
-                      icon: Icon(Icons.beenhere),
-                      label: 'Tasks',
+                      icon: const Icon(Icons.beenhere),
+                      label: context.tr!.tabTasks,
                     ),
                     NavigationDestination(
-                      icon: Icon(Icons.create_new_folder),
-                      label: 'Folder',
+                      icon: const Icon(Icons.create_new_folder),
+                      label: context.tr!.tabFolder,
                     ),
                   ],
                 ),
@@ -2439,7 +2426,7 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: Text(
-                'NavigationBar (Material 3)',
+                context.tr!.navigationBarM3,
                 style: denseHeader,
               ),
             ),
@@ -2447,10 +2434,7 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Text(
-                'Default background color is surface with an onSurface overlay '
-                    'color in M2, and primary in M3, with elevation 3. '
-                    'FlexColorScheme component theme default is color scheme '
-                    'background, with used surface blend and elevation 0.',
+                context.tr!.defaultBackgroundColorSurface,
                 style: denseBody,
               ),
             ),
@@ -2502,7 +2486,7 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Text(
-                'NavigationRail',
+                context.tr!.navigationRail,
                 style: denseHeader,
               ),
             ),
@@ -2510,8 +2494,7 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Text(
-                'Flutter default background color is colorScheme.surface. '
-                    'FlexColorScheme sub-theme default is colorScheme.background.',
+                context.tr!.flutterBackgroundColor,
                 style: denseBody,
               ),
             ),
@@ -2544,25 +2527,25 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
                             buttonIndex = value;
                           });
                         },
-                        destinations: const <NavigationRailDestination>[
+                        destinations: <NavigationRailDestination>[
                           NavigationRailDestination(
                             icon: Badge(
-                              label: Text('5'),
-                              child: Icon(Icons.chat_bubble),
+                              label: Text(context.tr!.navBadgeText5),
+                              child: const Icon(Icons.chat_bubble),
                             ),
-                            label: Text('Chat'),
+                            label: Text(context.tr!.labelChat),
                           ),
                           NavigationRailDestination(
-                            icon: Icon(Icons.beenhere),
-                            label: Text('Tasks'),
+                            icon: const Icon(Icons.beenhere),
+                            label: Text(context.tr!.tabTasks),
                           ),
                           NavigationRailDestination(
-                            icon: Icon(Icons.create_new_folder),
-                            label: Text('Folder'),
+                            icon: const Icon(Icons.create_new_folder),
+                            label: Text(context.tr!.tabFolder),
                           ),
                           NavigationRailDestination(
-                            icon: Icon(Icons.logout),
-                            label: Text('Logout'),
+                            icon: const Icon(Icons.logout),
+                            label: Text(context.tr!.logout),
                           ),
                         ],
                       ),
@@ -2571,11 +2554,9 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
                       child: Column(
                         children: <Widget>[
                           SwitchListTile(
-                            title: const Text('Expand and collapse'),
+                            title: Text(context.tr!.expandCollapseTitle),
                             subtitle:
-                            const Text('ON to expand  OFF to collapse\n'
-                                'Only used for local control of Rail '
-                                'presentation.'),
+                            Text(context.tr!.expandCollapseSubTitle),
                             value: isExtended,
                             onChanged: (bool value) {
                               setState(() {
@@ -2631,7 +2612,7 @@ class MenuBarShowcase extends StatelessWidget {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(explainIndent, 16, 0, 0),
               child: Text(
-                'MenuBar',
+                context.tr!.menuBar,
                 style: denseHeader,
               ),
             ),
@@ -2639,9 +2620,7 @@ class MenuBarShowcase extends StatelessWidget {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(explainIndent, 0, 0, 8),
               child: Text(
-                'The new M3 menus can be used in a MenuBar via SubMenuButton '
-                    'and its MenuItemButton, but they can also be used in a '
-                    'MenuAnchor anywhere.',
+                context.tr!.menuBarM3,
                 style: denseBody,
               ),
             ),
@@ -2657,103 +2636,103 @@ class MenuBarShowcase extends StatelessWidget {
                             showAboutDialog(
                               context: context,
                               useRootNavigator: false,
-                              applicationName: 'MenuBar Demo',
+                              applicationName: context.tr!.menuBarDemo,
                               applicationVersion: '1.0.0',
                             );
                           },
-                          child: const MenuAcceleratorLabel('&About'),
+                          child: MenuAcceleratorLabel('&${context.tr!.about}'),
                         ),
                         SubmenuButton(
                           menuChildren: <Widget>[
                             MenuItemButton(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Saved!'),
+                                   SnackBar(
+                                    content: Text('${context.tr!.save}!'),
                                   ),
                                 );
                               },
-                              child: const MenuAcceleratorLabel('&Save now'),
+                              child: MenuAcceleratorLabel('&${context.tr!.saveNow}'),
                             ),
                             MenuItemButton(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Load!'),
+                                  SnackBar(
+                                    content: Text('${context.tr!.load}!'),
                                   ),
                                 );
                               },
-                              child: const MenuAcceleratorLabel('&Load now'),
+                              child: MenuAcceleratorLabel('&${context.tr!.loadNow}'),
                             ),
                           ],
-                          child: const Text('File'),
+                          child: Text(context.tr!.file),
                         ),
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Quit!'),
+                              SnackBar(
+                                content: Text('${context.tr!.quit}!'),
                               ),
                             );
                           },
-                          child: const MenuAcceleratorLabel('&Quit'),
+                          child: MenuAcceleratorLabel('&${context.tr!.quit}'),
                         ),
                       ],
-                      child: const MenuAcceleratorLabel('&File'),
+                      child: MenuAcceleratorLabel('&${context.tr!.file}'),
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Bold!'),
+                              SnackBar(
+                                content: Text('${context.tr!.bold}!'),
                               ),
                             );
                           },
-                          child: const MenuAcceleratorLabel('&Bold'),
+                          child: MenuAcceleratorLabel('&${context.tr!.bold}'),
                         ),
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Italic!'),
+                              SnackBar(
+                                content: Text('${context.tr!.italic}!'),
                               ),
                             );
                           },
-                          child: const MenuAcceleratorLabel('&Italic'),
+                          child: MenuAcceleratorLabel('&${context.tr!.italic}'),
                         ),
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Underline!'),
+                              SnackBar(
+                                content: Text('${context.tr!.underline}!'),
                               ),
                             );
                           },
-                          child: const MenuAcceleratorLabel('&Underline'),
+                          child: MenuAcceleratorLabel('&${context.tr!.underline}'),
                         ),
                       ],
-                      child: const MenuAcceleratorLabel('&Style'),
+                      child: MenuAcceleratorLabel('&${context.tr!.style}'),
                     ),
                     SubmenuButton(
                       menuChildren: <Widget>[
-                        const MenuItemButton(
+                        MenuItemButton(
                           onPressed: null,
-                          child: MenuAcceleratorLabel('&Disabled item'),
+                          child: MenuAcceleratorLabel('&${context.tr!.disabledItem}'),
                         ),
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Minify!'),
+                              SnackBar(
+                                content: Text('${context.tr!.minify}!'),
                               ),
                             );
                           },
-                          child: const MenuAcceleratorLabel('Mi&nify'),
+                          child: MenuAcceleratorLabel('&${context.tr!.minify}'),
                         ),
                       ],
-                      child: const MenuAcceleratorLabel('&View'),
+                      child: MenuAcceleratorLabel('&${context.tr!.viewTitle}'),
                     ),
                   ],
                 ),
@@ -2787,7 +2766,7 @@ class MenuAnchorShowcase extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
             child: Text(
-              'MenuAnchor',
+              context.tr!.menuAnchor,
               style: denseHeader,
             ),
           ),
@@ -2795,15 +2774,15 @@ class MenuAnchorShowcase extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
             child: Text(
-              'The new M3 MenuAnchor used on a Container as a context menu.',
+              context.tr!.menuAnchorM3Text,
               style: denseBody,
             ),
           ),
-        const Row(
+        Row(
           children: <Widget>[
             Expanded(
               child: MenuAnchorContextMenu(
-                message: 'The new M3 MenuAnchor is cool!',
+                message: context.tr!.menuAnchorM3ctx,
               ),
             ),
           ],
@@ -2912,8 +2891,8 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
             child: Text(MenuEntry.about.label),
             onPressed: () => _activate(MenuEntry.about),
           ),
-          const MenuItemButton(
-            child: Text('Disabled item'),
+          MenuItemButton(
+            child: Text(context.tr!.disabledItem),
           ),
           if (_showingMessage)
             MenuItemButton(
@@ -2945,7 +2924,7 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
                 child: Text(MenuEntry.colorBlue.label),
               ),
             ],
-            child: const Text('Color'),
+            child: Text(context.tr!.color),
           ),
         ],
         child: Card(
@@ -2956,13 +2935,12 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text(
-                  'Click anywhere on this container to show the '
-                      'MenuAnchor context menu.',
+                Text(
+                  context.tr!.menuAnchorM3ctxClick,
                   textAlign: TextAlign.center,
                 ),
-                const Text(
-                  'Menu keyboard shortcuts also work.',
+                Text(
+                  context.tr!.menuKeyboardShortcuts,
                   textAlign: TextAlign.center,
                 ),
                 Padding(
@@ -2975,7 +2953,7 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
                 ),
                 Text(
                   _lastSelection != null
-                      ? 'Last Selected: ${_lastSelection!.label}'
+                      ? '${context.tr!.lastSelected}: ${_lastSelection!.label}'
                       : '',
                   textAlign: TextAlign.center,
                 ),
@@ -2996,7 +2974,7 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
         showAboutDialog(
           context: context,
           useRootNavigator: false,
-          applicationName: 'MenuAnchor Demo',
+          applicationName: context.tr!.menuAnchorDemo,
           applicationVersion: '1.0.0',
         );
         break;
@@ -3047,7 +3025,7 @@ class DrawerShowcase extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: Text(
-              'Drawer',
+              context.tr!.drawer,
               style: denseHeader,
             ),
           ),
@@ -3055,10 +3033,7 @@ class DrawerShowcase extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             child: Text(
-              'Default Flutter background color in M3 is colorScheme.surface, '
-                  'with elevation tint and no shadow. In M2 it has shadow and '
-                  'uses color theme.canvasColor, that is typically set '
-                  'to colorScheme.background.',
+              context.tr!.flutterBackgroundColorM3,
               style: denseBody,
             ),
           ),
@@ -3068,9 +3043,9 @@ class DrawerShowcase extends StatelessWidget {
             context: context,
             removeBottom: true,
             removeTop: true,
-            child: const Drawer(
+            child: Drawer(
               child: Center(
-                child: Text('Drawer'),
+                child: Text(context.tr!.drawer),
               ),
             ),
           ),
@@ -3111,7 +3086,7 @@ class _NavigationDrawerShowcaseState extends State<NavigationDrawerShowcase> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Text(
-                'NavigationDrawer',
+                context.tr!.navigationDrawer,
                 style: denseHeader,
               ),
             ),
@@ -3119,8 +3094,7 @@ class _NavigationDrawerShowcaseState extends State<NavigationDrawerShowcase> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
               child: Text(
-                'Default Flutter background color is colorScheme.surface, '
-                    'with addition of elevation tint in Material 3 mode.',
+                context.tr!.flutterBackgroundColor,
                 style: denseBody,
               ),
             ),
@@ -3139,27 +3113,27 @@ class _NavigationDrawerShowcaseState extends State<NavigationDrawerShowcase> {
                     selectedIndex = value;
                   });
                 },
-                children: const <Widget>[
-                  SizedBox(height: 16),
+                children: <Widget>[
+                  const SizedBox(height: 16),
                   NavigationDrawerDestination(
                     icon: Badge(
-                      label: Text('26'),
-                      child: Icon(Icons.chat_bubble),
+                      label: Text(context.tr!.navBadgeText26),
+                      child: const Icon(Icons.chat_bubble),
                     ),
-                    label: Text('Chat'),
+                    label: Text(context.tr!.labelChat),
                   ),
                   NavigationDrawerDestination(
-                    icon: Icon(Icons.beenhere),
-                    label: Text('Tasks'),
+                    icon: const Icon(Icons.beenhere),
+                    label: Text(context.tr!.tabTasks),
                   ),
-                  Divider(),
+                  const Divider(),
                   NavigationDrawerDestination(
-                    icon: Icon(Icons.create_new_folder),
-                    label: Text('Folder'),
+                    icon: const Icon(Icons.create_new_folder),
+                    label: Text(context.tr!.tabFolder),
                   ),
                   NavigationDrawerDestination(
-                    icon: Icon(Icons.logout),
-                    label: Text('Logout'),
+                    icon: const Icon(Icons.logout),
+                    label: Text(context.tr!.logout),
                   ),
                 ],
               ),
@@ -3200,25 +3174,25 @@ class ListTileShowcase extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: const Icon(Icons.info),
-            title: const Text('ListTile'),
-            subtitle: const Text('List tile sub title'),
-            trailing: const Text('Trailing'),
+            title: Text(context.tr!.showcaseListTileTitle),
+            subtitle: Text(context.tr!.showcaseListTileSubTitle),
+            trailing: Text(context.tr!.showcaseListTileTrailing),
             onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.info),
-            title: const Text('ListTile selected'),
-            subtitle: const Text('Selected list tile sub title'),
-            trailing: const Text('Trailing'),
+            title: Text(context.tr!.showcaseListTileSelectedTitle),
+            subtitle: Text(context.tr!.showcaseListTileSelectedSubTitle),
+            trailing: Text(context.tr!.showcaseListTileTrailing),
             selected: true,
             onTap: () {},
           ),
           ListTile(
             enabled: false,
             leading: const Icon(Icons.info),
-            title: const Text('ListTile disabled'),
-            subtitle: const Text('Selected list tile sub title'),
-            trailing: const Text('Trailing'),
+            title: Text('${context.tr!.showcaseListTileTitle} ${context.tr!.disabledMin}'),
+            subtitle: Text(context.tr!.showcaseListTileSelectedSubTitle),
+            trailing: Text(context.tr!.showcaseListTileTrailing),
             onTap: () {},
           ),
         ],
@@ -3237,22 +3211,22 @@ class SwitchTileShowcase extends StatelessWidget {
         children: <Widget>[
           SwitchListTile(
             secondary: const Icon(Icons.info),
-            title: const Text('SwitchListTile'),
-            subtitle: const Text('The switch list tile is OFF'),
+            title: Text(context.tr!.switchListTileTitle),
+            subtitle: Text(context.tr!.switchListTileSubTitleOff),
             value: false,
             onChanged: (bool value) {},
           ),
           SwitchListTile(
             secondary: const Icon(Icons.info),
-            title: const Text('SwitchListTile'),
-            subtitle: const Text('The switch list tile is ON'),
+            title: Text(context.tr!.switchListTileTitle),
+            subtitle: Text(context.tr!.switchListTileSubTitleOn),
             value: true,
             onChanged: (bool value) {},
           ),
-          const SwitchListTile(
-            secondary: Icon(Icons.info),
-            title: Text('SwitchListTile disabled'),
-            subtitle: Text('The switch list tile is ON'),
+          SwitchListTile(
+            secondary: const Icon(Icons.info),
+            title: Text(context.tr!.switchListTileTitleDisabled),
+            subtitle: Text(context.tr!.switchListTileSubTitleOn),
             value: true,
             onChanged: null,
           ),
@@ -3272,22 +3246,22 @@ class CheckboxTileShowcase extends StatelessWidget {
         children: <Widget>[
           CheckboxListTile(
             secondary: const Icon(Icons.info),
-            title: const Text('CheckboxListTile'),
-            subtitle: const Text('The checkbox list tile is unchecked'),
+            title: Text(context.tr!.checkboxListTileTitle),
+            subtitle: Text(context.tr!.checkboxListTileUnchecked),
             value: false,
             onChanged: (bool? value) {},
           ),
           CheckboxListTile(
             secondary: const Icon(Icons.info),
-            title: const Text('CheckboxListTile'),
-            subtitle: const Text('The checkbox list tile is checked'),
+            title: Text(context.tr!.checkboxListTileTitle),
+            subtitle: Text(context.tr!.checkboxListTileChecked),
             value: true,
             onChanged: (bool? value) {},
           ),
           CheckboxListTile(
             secondary: const Icon(Icons.info),
-            title: const Text('CheckboxListTile'),
-            subtitle: const Text('The checkbox list tile is null in tristate'),
+            title: Text(context.tr!.checkboxListTileTitle),
+            subtitle: Text(context.tr!.checkboxListTileTristate),
             tristate: true,
             value: null,
             onChanged: (bool? value) {},
@@ -3295,8 +3269,8 @@ class CheckboxTileShowcase extends StatelessWidget {
           CheckboxListTile(
             enabled: false,
             secondary: const Icon(Icons.info),
-            title: const Text('CheckboxListTile disabled'),
-            subtitle: const Text('The checkbox list tile is checked'),
+            title: Text(context.tr!.checkboxListTileTitleDisabled),
+            subtitle: Text(context.tr!.checkboxListTileChecked),
             value: true,
             onChanged: (bool? value) {},
           ),
@@ -3316,33 +3290,33 @@ class RadioTileShowcase extends StatelessWidget {
         children: <Widget>[
           RadioListTile<int>(
             secondary: const Icon(Icons.info),
-            title: const Text('RadioListTile'),
-            subtitle: const Text('The radio option is unselected'),
+            title: Text(context.tr!.radioListTile),
+            subtitle: Text(context.tr!.radioOptionUnselected),
             value: 0,
             onChanged: (_) {},
             groupValue: 1,
           ),
           RadioListTile<int>(
             secondary: const Icon(Icons.info),
-            title: const Text('RadioListTile'),
-            subtitle: const Text('The radio option is selected'),
+            title: Text(context.tr!.radioListTile),
+            subtitle: Text(context.tr!.radioOptionSelected),
             value: 1,
             onChanged: (_) {},
             groupValue: 1,
           ),
           RadioListTile<int>(
             secondary: const Icon(Icons.info),
-            title: const Text('RadioListTile'),
-            subtitle: const Text('The radio option and list tile is selected'),
+            title: Text(context.tr!.radioListTile),
+            subtitle: Text(context.tr!.radioOptionListSelected),
             value: 1,
             selected: true,
             onChanged: (_) {},
             groupValue: 1,
           ),
-          const RadioListTile<int>(
-            secondary: Icon(Icons.info),
-            title: Text('RadioListTile disabled'),
-            subtitle: Text('The radio option is selected'),
+          RadioListTile<int>(
+            secondary: const Icon(Icons.info),
+            title: Text(context.tr!.radioListTileDisabled),
+            subtitle: Text(context.tr!.radioOptionSelected),
             value: 1,
             onChanged: null,
             groupValue: 1,
@@ -3368,34 +3342,34 @@ class _ExpansionTileShowcaseState extends State<ExpansionTileShowcase> {
     return RepaintBoundary(
       child: Column(
         children: <Widget>[
-          const ExpansionTile(
-            title: Text('ExpansionTile 1'),
-            subtitle: Text('Trailing expansion arrow icon'),
+          ExpansionTile(
+            title: Text(context.tr!.expansionTileTitle1),
+            subtitle: Text(context.tr!.expansionTileSubTitle1),
             children: <Widget>[
-              ListTile(title: Text('This is tile number 1')),
+              ListTile(title: Text(context.tr!.expansionTileListTitle1)),
             ],
           ),
           ExpansionTile(
-            title: const Text('ExpansionTile 2'),
-            subtitle: const Text('Custom expansion arrow icon'),
+            title: Text(context.tr!.expansionTileTitle2),
+            subtitle: Text(context.tr!.expansionTileSubTitle2),
             trailing: Icon(
               _customTileExpanded
                   ? Icons.arrow_drop_down_circle
                   : Icons.arrow_drop_down,
             ),
-            children: const <Widget>[
-              ListTile(title: Text('This is tile number 2')),
+            children: <Widget>[
+              ListTile(title: Text(context.tr!.expansionTileListTitle2)),
             ],
             onExpansionChanged: (bool expanded) {
               setState(() => _customTileExpanded = expanded);
             },
           ),
-          const ExpansionTile(
-            title: Text('ExpansionTile 3'),
-            subtitle: Text('Leading expansion arrow icon'),
+          ExpansionTile(
+            title: Text(context.tr!.expansionTileTitle3),
+            subtitle: Text(context.tr!.expansionTileSubTitle3),
             controlAffinity: ListTileControlAffinity.leading,
             children: <Widget>[
-              ListTile(title: Text('This is tile number 3')),
+              ListTile(title: Text(context.tr!.expansionTileListTitle3)),
             ],
           ),
         ],
@@ -3437,10 +3411,8 @@ class _ExpansionPanelListShowcaseState
             body: ListTile(
               title: Text(item.expandedValue),
               subtitle: item.id > 2
-                  ? const Text('To delete this panel, tap the trash can icon')
-                  : const Text(
-                  'This panel is fixed here and cannot be removed. Items '
-                      'numbered 3 and higher can be removed.'),
+                  ? Text(context.tr!.expansionPanelDelete)
+                  : Text(context.tr!.expansionPanelFixed),
               trailing: item.id > 2
                   ? IconButton(
                 icon: const Icon(Icons.delete),
@@ -3504,9 +3476,9 @@ class AlertDialogShowcase extends StatelessWidget {
       children: <Widget>[
         const AbsorbPointer(child: _AlertDialogExample()),
         TextButton(
-          child: const Text(
-            'Show AlertDialog',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          child: Text(
+            '${context.tr!.show} ${context.tr!.alertDialog}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () async => _openDialog(context),
         ),
@@ -3521,13 +3493,12 @@ class _AlertDialogExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool useMaterial3 = Theme.of(context).useMaterial3;
-    final String cancel = useMaterial3 ? 'Cancel' : 'CANCEL';
-    final String allow = useMaterial3 ? 'Allow' : 'ALLOW';
+    final String cancel = useMaterial3 ? context.tr!.cancel : context.tr!.cancel.toUpperCase();
+    final String allow = useMaterial3 ? context.tr!.allow : context.tr!.allow.toUpperCase();
 
     return AlertDialog(
-      title: const Text('Allow location services'),
-      content: const Text('Let us help determine location. This means '
-          'sending anonymous location data to us'),
+      title: Text(context.tr!.allowLocServ),
+      content: Text(context.tr!.allowLocServText),
       actions: <Widget>[
         TextButton(
             onPressed: () => context.pop(), child: Text(cancel)),
@@ -3561,9 +3532,9 @@ class TimePickerDialogShowcase extends StatelessWidget {
           ),
         ),
         TextButton(
-          child: const Text(
-            'Show TimePickerDialog',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          child: Text(
+            '${context.tr!.show} ${context.tr!.timePickerDialog}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () async => _openDialog(context),
         ),
@@ -3599,9 +3570,9 @@ class DatePickerDialogShowcase extends StatelessWidget {
           ),
         ),
         TextButton(
-          child: const Text(
-            'Show DatePickerDialog',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          child: Text(
+            '${context.tr!.show} ${context.tr!.datePickerDialog}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           onPressed: () async => _openDialog(context),
         ),
@@ -3630,12 +3601,11 @@ class BottomSheetShowcase extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Material BottomSheet',
+                  context.tr!.materialBottomSheet,
                   style: theme.textTheme.titleMedium,
                 ),
                 Text(
-                  'Uses Material of type canvas as default background.\n'
-                      'ColorScheme background in M2, but surface in M3.',
+                  context.tr!.materialBottomSheetText,
                   style: theme.textTheme.bodySmall,
                   textAlign: TextAlign.center,
                 ),
@@ -3668,12 +3638,11 @@ class BottomSheetModalShowcase extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Material Modal BottomSheet',
+                  context.tr!.materialModalBottomSheet,
                   style: theme.textTheme.titleMedium,
                 ),
                 Text(
-                  'Uses Material of type canvas as default background.\n'
-                      'ColorScheme background in M2, but surface in M3.',
+                  context.tr!.materialBottomSheetText,
                   style: theme.textTheme.bodySmall,
                   textAlign: TextAlign.center,
                 ),
@@ -3772,9 +3741,9 @@ class SnackBarShowcase extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       const SizedBox(width: 24),
-                      Text('A floating SnackBar', style: snackStyle),
+                      Text(context.tr!.aFloatingSnackBar, style: snackStyle),
                       const Spacer(),
-                      Text('Close', style: snackActionStyle),
+                      Text(context.tr!.close, style: snackActionStyle),
                       const SizedBox(width: 24),
                     ],
                   ),
@@ -3796,9 +3765,9 @@ class SnackBarShowcase extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     const SizedBox(width: 24),
-                    Text('A fixed SnackBar', style: snackStyle),
+                    Text(context.tr!.aFixedSnackBar, style: snackStyle),
                     const Spacer(),
-                    Text('Close', style: snackActionStyle),
+                    Text(context.tr!.close, style: snackActionStyle),
                     const SizedBox(width: 24),
                   ],
                 ),
@@ -3823,15 +3792,15 @@ class MaterialBannerShowcase extends StatelessWidget {
           const Divider(height: 1),
           MaterialBanner(
             padding: const EdgeInsets.all(20),
-            content: const Text('Hello, I am a MaterialBanner'),
+            content: Text(context.tr!.helloMaterialBanner),
             leading: const Icon(Icons.agriculture_outlined),
             actions: <Widget>[
               TextButton(
-                child: const Text('OPEN'),
+                child: Text(context.tr!.open.toUpperCase()),
                 onPressed: () {},
               ),
               TextButton(
-                child: const Text('DISMISS'),
+                child: Text(context.tr!.dismiss.toUpperCase()),
                 onPressed: () {},
               ),
             ],
@@ -3862,20 +3831,16 @@ class MaterialShowcase extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (explain) ...<Widget>[
-            Text('Material elevation and tint', style: denseHeader),
+            Text(context.tr!.materialShowcaseText1, style: denseHeader),
             Text(
-              'Material can also specify surfaceTint color, '
-                  'which is applied when Material is elevated, but only in '
-                  'Material 3 mode.',
+              context.tr!.materialShowcaseText2,
               style: denseBody,
             ),
             const SizedBox(height: 12),
           ],
-          Text('Material type canvas', style: denseHeader),
+          Text(context.tr!.materialShowcaseText3, style: denseHeader),
           Text(
-            'Default background color is theme canvasColor, and '
-                'theme canvasColor is set to theme colorScheme background. The '
-                'color canvasColor is going to be deprecated in Flutter.',
+            context.tr!.materialShowcaseText4,
             style: denseBody,
           ),
           const SizedBox(height: 8),
@@ -3888,8 +3853,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type canvas, elevation 0, default '
-                        'tint and shadow',
+                    context.tr!.materialShowcaseShadowText1,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -3907,8 +3871,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type canvas, elevation 1, default tint '
-                        'and shadow',
+                    context.tr!.materialShowcaseShadowText2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -3922,14 +3885,13 @@ class MaterialShowcase extends StatelessWidget {
             elevation: 1,
             surfaceTintColor: colorScheme.surfaceTint,
             shadowColor: Colors.transparent,
-            child: const SizedBox(
+            child: SizedBox(
               height: 60,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type canvas, elevation 1, '
-                        'assigned surfaceTint and no shadow',
+                    context.tr!.materialShowcaseSurface,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -3948,8 +3910,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type canvas, elevation 1, '
-                        'assigned surfaceTint, and shadow',
+                    context.tr!.materialShowcaseSurfaceShadow,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -3967,8 +3928,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type canvas, elevation 6, default tint '
-                        'and shadow',
+                    context.tr!.materialShowcaseShadowText3,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -3988,8 +3948,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type canvas, elevation 6, '
-                        'assigned surfaceTint and no shadow',
+                    context.tr!.materialShowcaseSurface2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4009,8 +3968,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type canvas, elevation 6, '
-                        'assigned surfaceTint and shadow',
+                    context.tr!.materialShowcaseSurfaceShadow2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4019,11 +3977,9 @@ class MaterialShowcase extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          Text('Material type card', style: denseHeader),
+          Text(context.tr!.materialShowcaseTypeCard1, style: denseHeader),
           Text(
-            'Default background color is theme cardColor, and '
-                'theme cardColor is set to theme colorScheme surface. The '
-                'color cardColor is going to be deprecated in Flutter.',
+            context.tr!.materialShowcaseTypeCard2,
             style: denseBody,
           ),
           const SizedBox(height: 8),
@@ -4036,7 +3992,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type card, elevation 0, default tint and shadow',
+                    context.tr!.materialShowcaseTypeCardShadow1,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4054,7 +4010,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type card, elevation 1, default tint and shadow',
+                    context.tr!.materialShowcaseTypeCardShadow2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4074,8 +4030,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type card, elevation 1, '
-                        'assigned surfaceTint and no shadow',
+                    context.tr!.materialShowcaseTypeCardSurface,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4095,8 +4050,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type card, elevation 1, '
-                        'assigned surfaceTint and shadow',
+                    context.tr!.materialShowcaseTypeCardSurfaceShadow,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4114,7 +4068,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type card, elevation 6, default tint and shadow',
+                    context.tr!.materialShowcaseTypeCardShadow3,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4133,9 +4087,7 @@ class MaterialShowcase extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(
-                    'Material type card, elevation 6, '
-                        'assigned surfaceTint and no shadow',
+                  child: Text(context.tr!.materialShowcaseTypeCardSurface2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4155,8 +4107,7 @@ class MaterialShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Material type card, elevation 6, '
-                        'assigned surfaceTint and shadow',
+                    context.tr!.materialShowcaseTypeCardSurfaceShadow2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4191,17 +4142,13 @@ class CardShowcase extends StatelessWidget {
           if (explain)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text('Card', style: denseHeader),
+              child: Text(context.tr!.labelCard, style: denseHeader),
             ),
           if (explain)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Default background color comes from Material of type card, '
-                    'which by default is set to theme colorScheme surface. '
-                    'When useMaterial3 is true, Card gets elevation based '
-                    'surfaceTint. When it is false, surfaceTint has no '
-                    'effect even if specified.',
+                context.tr!.cardShowcaseText,
                 style: denseBody,
               ),
             ),
@@ -4214,8 +4161,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Card, elevation 0, assigned surfaceTint and '
-                        'default shadow',
+                    context.tr!.cardShowcaseText1,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4232,7 +4178,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                     child: Text(
-                      'Card, elevation 1, default surfaceTint and shadow',
+                      context.tr!.cardShowcaseElevate1Text1,
                       textAlign: TextAlign.center,
                       style: denseHeader,
                     )),
@@ -4249,8 +4195,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Card, elevation 1, assigned surfaceTint and '
-                        'default shadow',
+                    context.tr!.cardShowcaseElevate1Text2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4269,8 +4214,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Card, elevation 1, assigned surfaceTint and '
-                        'transparent shadow',
+                    context.tr!.cardShowcaseElevate1Text3,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4287,7 +4231,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Card, elevation 4, default surfaceTint and shadow',
+                    context.tr!.cardShowcaseElevate4Text1,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4303,7 +4247,7 @@ class CardShowcase extends StatelessWidget {
               height: 60,
               child: Center(
                 child: Text(
-                  'Card, elevation 4, assigned surfaceTint and default shadow',
+                  context.tr!.cardShowcaseElevate4Text2,
                   textAlign: TextAlign.center,
                   style: denseHeader,
                 ),
@@ -4321,8 +4265,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Card, elevation 4, assigned surfaceTint and '
-                        'transparent shadow',
+                    context.tr!.cardShowcaseElevate4Text3,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4339,7 +4282,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Card, elevation 10, default surfaceTint and shadow',
+                    context.tr!.cardShowcaseElevate10Text1,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4357,8 +4300,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    'Card, elevation 10, assigned surfaceTint and '
-                        'default shadow',
+                    context.tr!.cardShowcaseElevate10Text2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4377,8 +4319,7 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                     child: Text(
-                      'Card, elevation 10, assigned surfaceTint and '
-                          'transparent shadow',
+                      context.tr!.cardShowcaseElevate10Text3,
                       textAlign: TextAlign.center,
                       style: denseHeader,
                     )),
@@ -4419,85 +4360,85 @@ class TextThemeColumnShowcase extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Font: ${textTheme.titleSmall!.fontFamily}',
+        Text('${context.tr!.font}: ${textTheme.titleSmall!.fontFamily}',
             style:
             textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
         Text(
-          'Display Large '
+          '${context.tr!.display} ${context.tr!.large} '
               '(${textTheme.displayLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.displayLarge,
         ),
         Text(
-          'Display Medium '
+          '${context.tr!.display} ${context.tr!.medium} '
               '(${textTheme.displayMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.displayMedium,
         ),
         Text(
-          'Display Small '
+          '${context.tr!.display} ${context.tr!.small} '
               '(${textTheme.displaySmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.displaySmall,
         ),
         const SizedBox(height: 12),
         Text(
-          'Headline Large '
+          '${context.tr!.headline} ${context.tr!.large} '
               '(${textTheme.headlineLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.headlineLarge,
         ),
         Text(
-          'Headline Medium '
+          '${context.tr!.headline} ${context.tr!.medium} '
               '(${textTheme.headlineMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.headlineMedium,
         ),
         Text(
-          'Headline Small '
+          '${context.tr!.headline} ${context.tr!.small} '
               '(${textTheme.headlineSmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.headlineSmall,
         ),
         const SizedBox(height: 12),
         Text(
-          'Title Large '
+          '${context.tr!.title} ${context.tr!.large} '
               '(${textTheme.titleLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.titleLarge,
         ),
         Text(
-          'Title Medium '
+          '${context.tr!.title} ${context.tr!.medium} '
               '(${textTheme.titleMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.titleMedium,
         ),
         Text(
-          'Title Small '
+          '${context.tr!.title} ${context.tr!.small} '
               '(${textTheme.titleSmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.titleSmall,
         ),
         const SizedBox(height: 12),
         Text(
-          'Body Large '
+          '${context.tr!.body} ${context.tr!.large} '
               '(${textTheme.bodyLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.bodyLarge,
         ),
         Text(
-          'Body Medium '
+          '${context.tr!.body} ${context.tr!.medium} '
               '(${textTheme.bodyMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.bodyMedium,
         ),
         Text(
-          'Body Small '
+          '${context.tr!.body} ${context.tr!.small} '
               '(${textTheme.bodySmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.bodySmall,
         ),
         const SizedBox(height: 12),
         Text(
-          'Label Large '
+          '${context.tr!.label} ${context.tr!.large} '
               '(${textTheme.labelLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.labelLarge,
         ),
         Text(
-          'Label Medium '
+          '${context.tr!.label} ${context.tr!.medium} '
               '(${textTheme.labelMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.labelMedium,
         ),
         Text(
-          'Label Small '
+          '${context.tr!.label} ${context.tr!.small} '
               '(${textTheme.labelSmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.labelSmall,
         ),

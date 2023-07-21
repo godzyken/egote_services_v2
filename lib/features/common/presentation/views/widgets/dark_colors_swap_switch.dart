@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,8 +10,8 @@ class DarkColorsSwapSwitch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
-      title: const Text('Swap colors'),
-      subtitle: const Text('Swap primary and secondary dark colors'),
+      title: Text(context.tr!.swapColors),
+      subtitle: Text(context.tr!.swapPrimarySecondaryDarkColors),
       value: ref.watch(Settings.darkSwapColorsProvider),
       onChanged: ref.read(Settings.darkSwapColorsProvider.notifier).set,
     );

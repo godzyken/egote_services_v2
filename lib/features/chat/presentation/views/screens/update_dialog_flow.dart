@@ -1,9 +1,10 @@
 import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:egote_services_v2/config/app_shared/extensions/consts.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/common/application/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../../config/cube_config/cube_config.dart';
 
 class UpdateDialog extends ConsumerWidget {
   const UpdateDialog({

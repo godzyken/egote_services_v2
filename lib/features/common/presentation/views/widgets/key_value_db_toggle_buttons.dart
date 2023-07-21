@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,18 +23,18 @@ class KeyValueDbToggleButtons extends ConsumerWidget {
         ref.read(usedKeyValueDbProvider.notifier).state =
         UsedKeyValueDb.values[newIndex];
       },
-      children: const <Widget>[
+      children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text('Mem'),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(context.tr!.mem),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text('Prefs'),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(context.tr!.prefs),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text('Hive'),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(context.tr!.hive),
         ),
       ],
     );

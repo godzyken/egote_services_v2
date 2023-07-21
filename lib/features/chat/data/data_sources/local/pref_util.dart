@@ -6,7 +6,7 @@ import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../../config/app_shared/extensions/consts.dart';
+import '../../../../../config/cube_config/cube_config.dart';
 
 const String prefLoginType = "pref_login_type";
 const String prefUserLogin = "pref_user_login";

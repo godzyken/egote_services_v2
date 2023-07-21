@@ -127,7 +127,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     if (_formKey.currentState!.validate()) {
                       await _login();
                       if(mounted) {
-                        context.showAlert('Check your inbox');
+                        context.showAlert(context.tr!.checkInbox);
                         context.goNamed(
                             'verify',
                             extra: VerificationScreenParams(

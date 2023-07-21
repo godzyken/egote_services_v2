@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -18,73 +19,69 @@ class _AndroidNotificationsScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: Text(context.tr!.notifications),
       ),
       body: SettingsList(
         platform: DevicePlatform.android,
         sections: [
           SettingsSection(
-            title: const Text('Manage'),
+            title: Text(context.tr!.manage),
             tiles: [
               SettingsTile(
-                title: const Text('App settings'),
-                description: const Text('Control notifications from individual apps'),
+                title: Text(context.tr!.appSettings),
+                description: Text(context.tr!.controlNotifications),
               ),
               SettingsTile(
-                title: const Text('Notification history'),
-                description: const Text('Show recent and snoozed notifications'),
+                title: Text(context.tr!.notificationsHistory),
+                description: Text(context.tr!.notificationsHistoryText),
               ),
             ],
           ),
           SettingsSection(
-            title: const Text('Conservation'),
+            title: Text(context.tr!.conservation),
             tiles: [
               SettingsTile(
-                title: const Text('Conservations'),
-                description: const Text('No priority conservations'),
+                title: Text(context.tr!.conservations),
+                description: Text(context.tr!.conservationsNoP),
               ),
               SettingsTile(
-                title: const Text('Bubbles'),
-                description: const Text(
-                  'On / Conservations can appear as floating icons',
-                ),
+                title: Text(context.tr!.bubbles),
+                description: Text(context.tr!.bubblesActive),
               ),
             ],
           ),
           SettingsSection(
-            title: const Text('Privacy'),
+            title: Text(context.tr!.privacy),
             tiles: [
               SettingsTile(
-                title: const Text('Device & app notifications'),
-                description: const Text(
-                  'Control which apps and devices can read notifications',
-                ),
+                title: Text(context.tr!.notificationsDeviceApp),
+                description: Text(context.tr!.notificationsDeviceAppDescription),
               ),
               SettingsTile(
-                title: const Text('Notifications on lock screen'),
-                description: const Text('Show conversations, default, and silent'),
+                title: Text(context.tr!.notificationsLockScreen),
+                description: Text(context.tr!.notificationsDeviceAppDescription),
               ),
             ],
           ),
           SettingsSection(
-            title: const Text('General'),
+            title: Text(context.tr!.general),
             tiles: [
               SettingsTile(
-                title: const Text('Do Not Disturb'),
-                description: const Text('Off / 1 schedule can turn on automatically'),
+                title: Text(context.tr!.doNotDisturb),
+                description: Text(context.tr!.doNotDisturbDescription),
               ),
               SettingsTile(
-                title: const Text('Wireless emergency alerts'),
+                title: Text(context.tr!.wirelessAlert),
               ),
               SettingsTile.switchTile(
                 initialValue: false,
                 onToggle: (_) {},
-                title: const Text('Hide silent notifications in status bar'),
+                title: Text(context.tr!.hideSilentTile),
               ),
               SettingsTile.switchTile(
                 initialValue: false,
                 onToggle: (_) {},
-                title: const Text('Allow notification snoozing'),
+                title: Text(context.tr!.notificationsSnoozing),
               ),
               SettingsTile.switchTile(
                 initialValue: useNotificationDotOnAppIcon,
@@ -93,13 +90,13 @@ class _AndroidNotificationsScreenState
                     useNotificationDotOnAppIcon = value;
                   });
                 },
-                title: const Text('Notification dot on app icon'),
+                title: Text(context.tr!.notificationsDot),
               ),
               SettingsTile.switchTile(
                 initialValue: false,
                 onToggle: (_) {},
-                title: const Text('Enable notifications'),
-                description: const Text('Get suggested actions, replies and more'),
+                title: Text(context.tr!.notificationsEnable),
+                description: Text(context.tr!.notificationsEnableDescription),
               ),
             ],
           ),

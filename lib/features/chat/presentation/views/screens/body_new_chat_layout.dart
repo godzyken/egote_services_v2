@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../config/app_shared/extensions/extensions.dart';
+import '../../../../../config/cube_config/cube_config.dart';
 
 class BodyNewChatLayout extends ConsumerStatefulWidget {
   const BodyNewChatLayout({
@@ -66,7 +66,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
       floatingActionButton: Visibility(
         visible: !_isPrivateDialog,
         child: FloatingActionButton(
-          heroTag: "New dialog",
+          heroTag: context.tr!.newDialog,
           backgroundColor: Colors.blue,
           onPressed: () => _createDialog(context, _selectedUsers, true),
           child: const Icon(
@@ -86,7 +86,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
             child: TextField(
                 autofocus: true,
                 textInputAction: TextInputAction.search,
-                decoration: const InputDecoration(labelText: 'Search users'),
+                decoration: InputDecoration(labelText: context.tr!.searchUsers),
                 onSubmitted: (value) {
                   _searchUser(value.trim());
                 }),
@@ -107,9 +107,9 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
 
     getDescription() {
       if (_isPrivateDialog) {
-        return "Create group chat";
+        return context.tr!.createGroupChat;
       } else {
-        return "Create private chat";
+        return context.tr!.createPrivateChat;
       }
     }
 
@@ -151,7 +151,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
           log("getusers catchError: $onError");
           setState(() {
             clearValues();
-            userMsg = "Couldn't find user";
+            userMsg = context.tr!.userNotFound;
           });
         });
       }

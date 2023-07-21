@@ -2,6 +2,7 @@
 //
 // Does not actually change the platform, only the UI for the selection.
 // The actual selection is done via platform property in ThemeData.
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../config/app_shared/flex_icons/flex_icons.dart';
@@ -18,12 +19,12 @@ class PlatformPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color iconColor = Theme.of(context).colorScheme.primary;
-    const String labelAndroid = 'Google Android';
-    const String labelApple = 'Apple iOS';
-    const String labelWindows = 'Microsoft Windows';
-    const String labelMacOs = 'Apple MacOS';
-    const String labelLinux = 'Linux';
-    const String labelFuchsia = 'Google Fuchsia';
+    final String labelAndroid = context.tr!.labelAndroid;
+    final String labelApple = context.tr!.labelApple;
+    final String labelWindows = context.tr!.labelWindows;
+    final String labelMacOs = context.tr!.labelMacOs;
+    final String labelLinux = context.tr!.labelLinux;
+    final String labelFuchsia = context.tr!.labelFuchsia;
 
     final Map<TargetPlatform, PopupMenuItem<TargetPlatform>> platformItems =
     <TargetPlatform, PopupMenuItem<TargetPlatform>>{
@@ -31,47 +32,47 @@ class PlatformPopupMenu extends StatelessWidget {
         value: TargetPlatform.android,
         child: ListTile(
           leading: Icon(Icons.android, color: iconColor),
-          title: const Text(labelAndroid),
+          title: Text(labelAndroid),
         ),
       ),
       TargetPlatform.iOS: PopupMenuItem<TargetPlatform>(
         value: TargetPlatform.iOS,
         child: ListTile(
           leading: Icon(Icons.phone_iphone, color: iconColor),
-          title: const Text(labelApple),
+          title: Text(labelApple),
         ),
       ),
       TargetPlatform.windows: PopupMenuItem<TargetPlatform>(
         value: TargetPlatform.windows,
         child: ListTile(
           leading: Icon(FlexIcons.windows, color: iconColor),
-          title: const Text(labelWindows),
+          title: Text(labelWindows),
         ),
       ),
       TargetPlatform.macOS: PopupMenuItem<TargetPlatform>(
         value: TargetPlatform.macOS,
         child: ListTile(
           leading: Icon(FlexIcons.apple, color: iconColor),
-          title: const Text(labelMacOs),
+          title: Text(labelMacOs),
         ),
       ),
       TargetPlatform.linux: PopupMenuItem<TargetPlatform>(
         value: TargetPlatform.linux,
         child: ListTile(
           leading: Icon(FlexIcons.linux, color: iconColor),
-          title: const Text(labelLinux),
+          title: Text(labelLinux),
         ),
       ),
       TargetPlatform.fuchsia: PopupMenuItem<TargetPlatform>(
         value: TargetPlatform.fuchsia,
         child: ListTile(
           leading: Icon(FlexIcons.infinity, color: iconColor),
-          title: const Text(labelFuchsia),
+          title: Text(labelFuchsia),
         ),
       ),
     };
 
-    const Map<TargetPlatform, String> platformString = <TargetPlatform, String>{
+    final Map<TargetPlatform, String> platformString = <TargetPlatform, String>{
       TargetPlatform.android: labelAndroid,
       TargetPlatform.iOS: labelApple,
       TargetPlatform.windows: labelWindows,
@@ -90,14 +91,14 @@ class PlatformPopupMenu extends StatelessWidget {
       TargetPlatform.fuchsia: FlexIcons.infinity,
     };
 
-    String subtitle = 'Now set to ${platformString[platform]}\n'
-        'For testing, not persisted.';
+    String subtitle = '${context.tr!.nowSetTo} ${platformString[platform]}\n'
+    '${context.tr!.forTesting}';
 
     return PopupMenuButton<TargetPlatform>(
       tooltip: '',
       padding: const EdgeInsets.all(10),
       onSelected: (TargetPlatform value) {
-        subtitle = 'Now set to ${platformString[value]}';
+        subtitle = '${context.tr!.nowSetTo} ${platformString[value]}';
         onChanged(value);
       },
       itemBuilder: (BuildContext context) =>
@@ -111,7 +112,7 @@ class PlatformPopupMenu extends StatelessWidget {
             size: 40,
           ),
         ),
-        title: const Text('Used platform mechanics'),
+        title: Text(context.tr!.usedPlatformMechanics),
         subtitle: Text(subtitle),
       ),
     );

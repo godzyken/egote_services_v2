@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,7 +33,7 @@ class DarkSurfaceBlendLevelSlider extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             Text(
-              'Level',
+              context.tr!.level,
               style: style,
             ),
             Text(

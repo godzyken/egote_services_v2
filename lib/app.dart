@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
+import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
@@ -24,7 +25,6 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   late StreamSubscription<ConnectivityResult> connectivityStateSubscription;
   AppLifecycleState? appState;
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,22 +63,22 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
     connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen((connectivityType) {
-          if (AppLifecycleState.resumed != appState) return;
+      if (AppLifecycleState.resumed != appState) return;
 
-          if (connectivityType != ConnectivityResult.none) {
-            log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-            bool isChatDisconnected =
-                CubeChatConnection.instance.chatConnectionState ==
+      if (connectivityType != ConnectivityResult.none) {
+        log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
+        bool isChatDisconnected =
+            CubeChatConnection.instance.chatConnectionState ==
                     CubeChatConnectionState.Closed ||
-                    CubeChatConnection.instance.chatConnectionState ==
-                        CubeChatConnectionState.ForceClosed;
+                CubeChatConnection.instance.chatConnectionState ==
+                    CubeChatConnectionState.ForceClosed;
 
-            if (isChatDisconnected &&
-                CubeChatConnection.instance.currentUser != null) {
-              CubeChatConnection.instance.relogin();
-            }
-          }
-        });
+        if (isChatDisconnected &&
+            CubeChatConnection.instance.currentUser != null) {
+          CubeChatConnection.instance.relogin();
+        }
+      }
+    });
 
     appState = WidgetsBinding.instance.lifecycleState;
 
@@ -89,21 +89,24 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     appState = state;
 
-    if(AppLifecycleState.paused == state) {
+    if (AppLifecycleState.paused == state) {
       if (CubeChatConnection.instance.isAuthenticated()) {
         CubeChatConnection.instance.markInactive();
       }
     } else if (AppLifecycleState.resumed == state) {
       SharedPrefs.instance.init().then((sharedPrefs) async {
-        CubeUser? user = await sharedPrefs.getUser().then((savedUser) => savedUser!);
+        CubeUser? user =
+            await sharedPrefs.getUser().then((savedUser) => savedUser!);
 
         if (user != null) {
           if (!CubeChatConnection.instance.isAuthenticated()) {
             if (LoginType.phone == sharedPrefs.getLoginType()) {
               if (CubeSessionManager.instance.isActiveSessionValid()) {
-                user.password = CubeSessionManager.instance.activeSession?.token;
+                user.password =
+                    CubeSessionManager.instance.activeSession?.token;
               } else {
-                var phoneAuthSession = await createSessionUsingFirebase('projectId', 'accessToken');
+                var phoneAuthSession = await createSessionUsingFirebase(
+                    'projectId', 'accessToken');
                 user.password = phoneAuthSession.token;
               }
             }

@@ -18,3 +18,29 @@ abstract class TravauxEntity with _$TravauxEntity {
   factory TravauxEntity.fromJson(Map<String, dynamic> json) =>
       _$TravauxEntityFromJson(json);
 }
+
+@JsonEnum()
+enum TypesOfTravaux {
+  FenetrePorte,
+  CouvertureToiture,
+  Peinture,
+  Plomberie,
+  Ebenisterie,
+  Electricite,
+  ConstructionRenovation,
+  JardinExterieur,
+  Climatisation,
+  Platre,
+  Chauffage,
+  SdeSanitaires,
+  Nettoyage,
+  Securite,
+  Cuisine,
+  EnergiRenoDiag,
+  SolCarrelage,
+  DemolitioEvacuation,
+  Ascenseurs,
+  TraitementNuisibles,
+  Isolation,
+  Bricolage
+}

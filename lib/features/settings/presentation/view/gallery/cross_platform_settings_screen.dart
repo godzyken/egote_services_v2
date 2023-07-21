@@ -9,7 +9,6 @@ import 'package:settings_ui/settings_ui.dart';
 import '../../../../../config/app_shared/insets/app_insets.dart';
 import '../../../../../config/app_shared/universal/page_body.dart';
 import '../../../../../config/providers/platform/platform_provider.dart';
-import '../../../../common/presentation/views/widgets/key_value_db_list_tile.dart';
 import '../../../../theme/views/widgets/showcase_extensions.dart';
 import '../../../controllers/settings.dart';
 import '../../dialogs/reset_settings_dialogs.dart';
@@ -76,7 +75,7 @@ class _CrossPlatformSettingsScreenState
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
-        title: const Text('Egote services'),
+        title: Text(context.tr!.egoteServicesTitle),
       ),
       drawer: const CustomMenuWidget(),
       // This annotated region will change the Android system navigation bar to
@@ -96,33 +95,24 @@ class _CrossPlatformSettingsScreenState
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text('Info', style: medium),
+                child: Text(context.tr!.info, style: medium),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text(
-                  'FlexColorScheme persisted theme demo. Theme settings '
-                      'widgets using Riverpod controllers can be used anywhere in '
-                      'the app. On this page, in the Drawer and in a BottomSheet '
-                      'to control persisted theme settings.',
-                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
+                child: Text(context.tr!.infoThemeSettings),
               ),
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text('Persistence', style: medium),
+                child: Text(context.tr!.persistence, style: medium),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text(
-                  'You can use volatile memory or Shared '
-                      'Preferences and Hive to persist the settings. You can '
-                      'toggle the used implementation dynamically in the app.',
-                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
+                child: Text(context.tr!.persistenceMemoryDescription),
               ),
               const KeyValueDbListTile(),
               ListTile(
-                title: const Text('Reset settings'),
+                title: Text(context.tr!.resetSettingsTitle),
                 onTap: () async {
                   final bool? reset = await showDialog<bool?>(
                     context: context,
@@ -138,7 +128,7 @@ class _CrossPlatformSettingsScreenState
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text('Theme Settings', style: medium),
+                child: Text(context.tr!.themeSettings, style: medium),
               ),
               const ThemeSettings(),
               const Divider(),
@@ -151,7 +141,7 @@ class _CrossPlatformSettingsScreenState
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.edge),
-                child: Text('Theme Colors', style: medium),
+                child: Text(context.tr!.themeColors, style: medium),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),

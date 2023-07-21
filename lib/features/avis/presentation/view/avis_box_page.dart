@@ -2,6 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:comment_box/comment/comment.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -128,14 +129,14 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Avis Page"),
+        title: Text(context.tr!.avisPage),
         backgroundColor: Colors.pink,
       ),
       body: CommentBox(
         userImage: CommentBox.commentImageParser(
             imageURLorPath: LocalImages.venomJpg),
-        labelText: 'Write a comment...',
-        errorText: 'Comment cannot be blank',
+        labelText: context.tr!.comment,
+        errorText: context.tr!.canBeBlank,
         withBorder: false,
         sendButtonMethod: () {
           if (formKey.currentState!.validate()) {

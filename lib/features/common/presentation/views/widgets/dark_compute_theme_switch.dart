@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,10 +11,9 @@ class DarkComputeThemeSwitch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
-      title: const Text('Compute dark scheme colors'),
-      subtitle: const Text(
-        'Dark scheme colors are computed from the light scheme, instead of '
-            'using defined dark scheme colors.',
+      title: Text(context.tr!.computeDarkSchemeColors),
+      subtitle: Text(
+        context.tr!.darkSchemeText + context.tr!.darkSchemeTextSuit
       ),
       value: ref.watch(Settings.darkComputeThemeProvider),
       onChanged: ref.read(Settings.darkComputeThemeProvider.notifier).set,

@@ -1,4 +1,4 @@
-import 'package:egote_services_v2/features/common/presentation/views/widgets/surface_mode_widgets.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +12,7 @@ class LightSurfaceModePopupMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SurfaceModePopupMenu(
-        title: const Text('Light theme surface mode'),
+        title: Text(context.tr!.lightThemeSurfaceMode),
         index: ref.watch(Settings.lightSurfaceModeProvider).index,
         onChanged: (int index) {
           ref

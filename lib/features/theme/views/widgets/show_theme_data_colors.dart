@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../config/app_shared/colors/color_card.dart';
@@ -93,27 +94,27 @@ class ShowThemeDataColors extends StatelessWidget {
     // Warning label for scaffold background when it uses to much blend.
     final String scaffoldTooHigh = isDark
         ? _isLight(theme.scaffoldBackgroundColor)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : ''
         : _isDark(theme.scaffoldBackgroundColor)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : '';
     // Warning label for scaffold background when it uses to much blend.
     final String surfaceTooHigh = isDark
         ? _isLight(theme.colorScheme.surface)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : ''
         : _isDark(theme.colorScheme.surface)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : '';
 
     // Warning label for scaffold background when it uses to much blend.
     final String backTooHigh = isDark
         ? _isLight(theme.colorScheme.background)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : ''
         : _isDark(theme.colorScheme.background)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : '';
 
     // Wrap this widget branch in a custom theme where card has a border outline
@@ -132,7 +133,7 @@ class ShowThemeDataColors extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text(
-                'ThemeData Colors',
+                context.tr!.themeDataColors,
                 style: theme.textTheme.titleMedium,
               ),
             ),
@@ -142,92 +143,92 @@ class ShowThemeDataColors extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
               ColorCard(
-                label: 'Primary\nColor',
+                label: context.tr!.labelPrimaryColor,
                 color: theme.primaryColor,
                 textColor: _onColor(theme.primaryColor, background),
               ),
               ColorCard(
-                label: 'Primary\nDark',
+                label: context.tr!.labelPrimaryDark,
                 color: theme.primaryColorDark,
                 textColor: _onColor(theme.primaryColorDark, background),
               ),
               ColorCard(
-                label: 'Primary\nLight',
+                label: context.tr!.labelPrimaryLight,
                 color: theme.primaryColorLight,
                 textColor: _onColor(theme.primaryColorLight, background),
               ),
               ColorCard(
-                label: 'Secondary\nHeader',
+                label: context.tr!.labelSecondaryHeader,
                 color: theme.secondaryHeaderColor,
                 textColor: _onColor(theme.secondaryHeaderColor, background),
               ),
               ColorCard(
-                label: 'Canvas$backTooHigh',
+                label: '${context.tr!.labelCanvas}$backTooHigh',
                 color: theme.canvasColor,
                 textColor: _onColor(theme.canvasColor, background),
               ),
               ColorCard(
-                label: 'Card$surfaceTooHigh',
+                label: '${context.tr!.labelCard}$surfaceTooHigh',
                 color: theme.cardColor,
                 textColor: _onColor(theme.cardColor, background),
               ),
               ColorCard(
-                label: 'Scaffold\nBackground$scaffoldTooHigh',
+                label: '${context.tr!.labelScaffoldBackground}$scaffoldTooHigh',
                 color: theme.scaffoldBackgroundColor,
                 textColor: _onColor(theme.scaffoldBackgroundColor, background),
               ),
               ColorCard(
-                label: 'Dialog',
+                label: context.tr!.labelDialog,
                 color: theme.dialogBackgroundColor,
                 textColor: _onColor(theme.dialogBackgroundColor, background),
               ),
               ColorCard(
-                label: 'Indicator\nColor',
+                label: context.tr!.labelIndicatorColor,
                 color: theme.indicatorColor,
                 textColor: _onColor(theme.indicatorColor, background),
               ),
               ColorCard(
-                label: 'Divider\nColor',
+                label: context.tr!.labelDividerColor,
                 color: theme.dividerColor,
                 textColor: _onColor(theme.dividerColor, background),
               ),
               ColorCard(
-                label: 'Disabled\nColor',
+                label: context.tr!.labelDisabledColor,
                 color: theme.disabledColor,
                 textColor: _onColor(theme.disabledColor, background),
               ),
               ColorCard(
-                label: 'Hover\nColor',
+                label: context.tr!.labelHoverColor,
                 color: theme.hoverColor,
                 textColor: _onColor(theme.hoverColor, background),
               ),
               ColorCard(
-                label: 'Focus\nColor',
+                label: context.tr!.labelFocusColor,
                 color: theme.focusColor,
                 textColor: _onColor(theme.focusColor, background),
               ),
               ColorCard(
-                label: 'Highlight\nColor',
+                label: context.tr!.labelHighlightColor,
                 color: theme.highlightColor,
                 textColor: _onColor(theme.highlightColor, background),
               ),
               ColorCard(
-                label: 'Splash\nColor',
+                label: context.tr!.labelSplashColor,
                 color: theme.splashColor,
                 textColor: _onColor(theme.splashColor, background),
               ),
               ColorCard(
-                label: 'Shadow\nColor',
+                label: context.tr!.labelShadowColor,
                 color: theme.shadowColor,
                 textColor: _onColor(theme.shadowColor, background),
               ),
               ColorCard(
-                label: 'Hint\nColor',
+                label: context.tr!.labelHintColor,
                 color: theme.hintColor,
                 textColor: _onColor(theme.hintColor, background),
               ),
               ColorCard(
-                label: 'Unselected\nWidget',
+                label: context.tr!.labelUnselectedWidget,
                 color: theme.unselectedWidgetColor,
                 textColor: _onColor(theme.unselectedWidgetColor, background),
               ),

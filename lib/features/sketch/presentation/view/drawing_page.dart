@@ -1,4 +1,5 @@
 
+import 'package:egote_services_v2/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -18,7 +19,8 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
   void initState() {
     super.initState();
 
-    _composition = AssetLottie('assets/lottie/models/LottieLogo1.json').load();
+    _composition = AssetLottie(Assets.lottie.models.lottieLogo1).load();
+    //_composition = AssetLottie('assets/lottie/models/LottieLogo1.json').load();
   }
 
   @override

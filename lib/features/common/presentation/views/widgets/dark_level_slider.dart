@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,11 +32,11 @@ class DarkLevelSlider extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Text(
-                'LEVEL',
+                context.tr!.level,
                 style: style,
               ),
               Text(
-                '$level %',
+                '$level ${context.tr!.percent}',
                 style: style.copyWith(fontWeight: FontWeight.bold),
               ),
             ],

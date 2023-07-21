@@ -1,4 +1,5 @@
 import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,7 +21,7 @@ class NewGroupDialogScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Group configuration...'),
+        title: Text(context.tr!.groupConf),
         centerTitle: true,
       ),
       body: NewChatScreen(currentUser: currentUser, cubeDialog: cubeDialog, users: users),

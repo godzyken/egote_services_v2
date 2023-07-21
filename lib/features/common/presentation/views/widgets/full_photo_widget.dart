@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:photo_view/photo_view.dart';
@@ -14,7 +15,7 @@ class FullPhoto extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Full photo'),
+        title: Text(context.tr!.fullPhoto),
         centerTitle: true,
       ),
       body: FullPhotoScreen(url: url),

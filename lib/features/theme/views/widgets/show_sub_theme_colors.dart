@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../config/app_shared/colors/color_card.dart';
@@ -216,7 +217,7 @@ class ShowSubThemeColors extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text(
-                'Component colors',
+                context.tr!.componentColors,
                 style: theme.textTheme.titleMedium,
               ),
             ),
@@ -227,179 +228,179 @@ class ShowSubThemeColors extends StatelessWidget {
             runSpacing: spacing,
             children: <Widget>[
               ColorCard(
-                label: 'Elevated\nButton',
+                label: context.tr!.labelElevatedButton,
                 color: elevatedButtonColor,
                 textColor: elevatedForegroundButtonColor,
                 elevation: useMaterial3 ? 2 : null,
                 shadowColor: Colors.transparent,
               ),
               ColorCard(
-                label: 'Filled\nButton',
+                label: context.tr!.labelFilledButton,
                 color: filledButtonColor,
                 textColor: _onColor(filledButtonColor, background),
               ),
               ColorCard(
-                label: 'Tonal\nButton',
+                label: context.tr!.labelTonalButton,
                 color: tonalButtonColor,
                 textColor: _onColor(tonalButtonColor, background),
               ),
               ColorCard(
-                label: 'Outlined\nButton',
+                label: context.tr!.labelOutlineButton,
                 color: colorScheme.surface,
                 textColor: outlinedButtonColor,
               ),
               ColorCard(
-                label: 'Text\nButton',
+                label: context.tr!.labelTextButton,
                 color: colorScheme.surface,
                 textColor: textButtonColor,
               ),
               ColorCard(
-                label: 'Toggle\nButtons',
+                label: context.tr!.labelToggleButtons,
                 color: toggleButtonsColor,
                 textColor: _onColor(toggleButtonsColor, background),
               ),
               ColorCard(
-                label: 'Switch',
+                label: context.tr!.labelSwitch,
                 color: switchColor,
                 textColor: _onColor(switchColor, background),
               ),
               ColorCard(
-                label: 'Checkbox',
+                label: context.tr!.labelCheckbox,
                 color: checkboxColor,
                 textColor: _onColor(checkboxColor, background),
               ),
               ColorCard(
-                label: 'Radio',
+                label: context.tr!.labelRadio,
                 color: radioColor,
                 textColor: _onColor(radioColor, background),
               ),
               ColorCard(
-                label: 'Floating\nAction\nButton',
+                label: context.tr!.labelFloatingActionButton,
                 color: floatingActionButtonColor,
                 textColor: onFloatingActionButtonColor,
               ),
               ColorCard(
-                label: 'Circle\nAvatar',
+                label: context.tr!.labelCircleAvatar,
                 color: circleAvatarColor,
                 textColor: onCircleAvatarColor,
               ),
               ColorCard(
-                label: 'Chips',
+                label: context.tr!.labelChips,
                 color: chipColor,
                 textColor: _onColor(chipColor, background),
               ),
               ColorCard(
-                label: 'Input\nDecorator',
+                label: context.tr!.labelInputDecorator,
                 color: inputDecoratorColor,
                 textColor: _onColor(inputDecoratorColor, background),
               ),
               ColorCard(
-                label: 'Tooltip',
+                label: context.tr!.labelTooltip,
                 color: tooltipColor,
                 textColor: _onColor(tooltipColor, background),
               ),
               ColorCard(
-                label: 'AppBar',
+                label: context.tr!.labelAppBar,
                 color: appBarColor,
                 textColor: _onColor(appBarColor, background),
               ),
               ColorCard(
-                label: 'TabBar\nItem',
+                label: context.tr!.labelTabBarItem,
                 color: tabBarColor,
                 textColor: _onColor(tabBarColor, background),
               ),
               ColorCard(
-                label: 'TabBar\nIndicator',
+                label: context.tr!.labelTabBarIndicator,
                 color: theme.indicatorColor,
                 textColor: _onColor(theme.indicatorColor, background),
               ),
               ColorCard(
-                label: 'Dialog\nBackground',
+                label: context.tr!.labelDialogBackground,
                 color: dialogColor,
                 textColor: _onColor(dialogColor, background),
               ),
               ColorCard(
-                label: 'SnackBar\nBackground',
+                label: context.tr!.labelSnackBarBackground,
                 color: snackBarColor,
                 textColor: snackForeground,
               ),
               ColorCard(
-                label: 'Bottom\nNaviBar\nBackground',
+                label: context.tr!.labelBottomNaviBarBackground,
                 color: bottomNavBarColor,
                 textColor: _onColor(bottomNavBarColor, background),
               ),
               ColorCard(
-                label: 'Bottom\nNaviBar\nSelected',
+                label: context.tr!.labelBottomNaviBarSelected,
                 color: bottomNavBarItemColor,
                 textColor: _onColor(bottomNavBarItemColor, background),
               ),
               ColorCard(
-                label: 'Navigation\nBar\nBackground',
+                label: context.tr!.labelNavigationBarBackground,
                 color: navigationBarColor,
                 textColor: _onColor(navigationBarColor, background),
               ),
               ColorCard(
-                label: 'Navigation\nBar\nSelected',
+                label: context.tr!.labelNavigationBarSelected,
                 color: navigationBarItemColor,
                 textColor: _onColor(navigationBarItemColor, background),
               ),
               ColorCard(
-                label: 'Navigation\nBar\nIndicator',
+                label: context.tr!.labelNavigationBarIndicator,
                 color: navigationBarIndicatorColor,
                 textColor: _onColor(navigationBarIndicatorColor, background),
               ),
               ColorCard(
-                label: 'Navigation\nRail\nBackground',
+                label: context.tr!.labelNavigationRailBackground,
                 color: navigationRailColor,
                 textColor: _onColor(navigationRailColor, background),
               ),
               ColorCard(
-                label: 'Navigation\nRail\nSelected',
+                label: context.tr!.labelNavigationRailSelected,
                 color: navigationRailItemColor,
                 textColor: _onColor(navigationRailItemColor, background),
               ),
               ColorCard(
-                label: 'Navigation\nRail\nIndicator',
+                label: context.tr!.labelNavigationRailIndicator,
                 color: navigationRailIndicatorColor,
                 textColor: _onColor(navigationRailIndicatorColor, background),
               ),
               ColorCard(
-                label: 'Text\nTheme',
+                label: context.tr!.labelTextTheme,
                 color: textColor,
                 textColor: _onColor(textColor, background),
               ),
               ColorCard(
-                label: 'PrimaryText\nTheme',
+                label: context.tr!.labelPrimaryTextTheme,
                 color: primTextColor,
                 textColor: _onColor(primTextColor, background),
               ),
               ColorCard(
-                label: 'Card',
+                label: context.tr!.labelCard,
                 color: theme.cardColor,
                 textColor: colorScheme.onSurface,
               ),
               ColorCard(
-                label: 'Disabled\nColor',
+                label: context.tr!.labelDisabledColor,
                 color: theme.disabledColor,
                 textColor: _onColor(theme.disabledColor, background),
               ),
               ColorCard(
-                label: 'Hover\nColor',
+                label: context.tr!.labelHoverColor,
                 color: theme.hoverColor,
                 textColor: _onColor(theme.hoverColor, background),
               ),
               ColorCard(
-                label: 'Focus\nColor',
+                label: context.tr!.labelFocusColor,
                 color: theme.focusColor,
                 textColor: _onColor(theme.focusColor, background),
               ),
               ColorCard(
-                label: 'Highlight\nColor',
+                label: context.tr!.labelHighlightColor,
                 color: theme.highlightColor,
                 textColor: _onColor(theme.highlightColor, background),
               ),
               ColorCard(
-                label: 'Splash\nColor',
+                label: context.tr!.labelSplashColor,
                 color: theme.splashColor,
                 textColor: _onColor(theme.splashColor, background),
               ),

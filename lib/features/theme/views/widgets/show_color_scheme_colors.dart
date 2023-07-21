@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../config/app_shared/colors/color_card.dart';
@@ -82,19 +83,19 @@ class ShowColorSchemeColors extends StatelessWidget {
     // Warning label for scaffold background when it uses to much blend.
     final String surfaceTooHigh = isDark
         ? _isLight(theme.colorScheme.surface)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : ''
         : _isDark(theme.colorScheme.surface)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : '';
 
     // Warning label for scaffold background when it uses to much blend.
     final String backTooHigh = isDark
         ? _isLight(theme.colorScheme.background)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : ''
         : _isDark(theme.colorScheme.background)
-        ? '\nTOO HIGH'
+        ? context.tr!.tooHigh
         : '';
 
     // Wrap this widget branch in a custom theme where card has a border outline
@@ -112,7 +113,7 @@ class ShowColorSchemeColors extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              'ColorScheme Colors',
+              context.tr!.colorScheme,
               style: theme.textTheme.titleMedium,
             ),
           ),
@@ -123,137 +124,137 @@ class ShowColorSchemeColors extends StatelessWidget {
             runSpacing: spacing,
             children: <Widget>[
               ColorCard(
-                label: 'Primary',
+                label: context.tr!.labelPrimary,
                 color: colorScheme.primary,
                 textColor: colorScheme.onPrimary,
               ),
               ColorCard(
-                label: 'on\nPrimary',
+                label: context.tr!.labelOnPrimary,
                 color: colorScheme.onPrimary,
                 textColor: colorScheme.primary,
               ),
               ColorCard(
-                label: 'Primary\nContainer',
+                label: context.tr!.labelPrimaryContainer,
                 color: colorScheme.primaryContainer,
                 textColor: colorScheme.onPrimaryContainer,
               ),
               ColorCard(
-                label: 'onPrimary\nContainer',
+                label: context.tr!.labelOnPrimaryContainer,
                 color: colorScheme.onPrimaryContainer,
                 textColor: colorScheme.primaryContainer,
               ),
               ColorCard(
-                label: 'Secondary',
+                label: context.tr!.labelSecondary,
                 color: colorScheme.secondary,
                 textColor: colorScheme.onSecondary,
               ),
               ColorCard(
-                label: 'on\nSecondary',
+                label: context.tr!.labelOnSecondary,
                 color: colorScheme.onSecondary,
                 textColor: colorScheme.secondary,
               ),
               ColorCard(
-                label: 'Secondary\nContainer',
+                label: context.tr!.labelSecondaryContainer,
                 color: colorScheme.secondaryContainer,
                 textColor: colorScheme.onSecondaryContainer,
               ),
               ColorCard(
-                label: 'on\nSecondary\nContainer',
+                label: context.tr!.labelOnSecondaryContainer,
                 color: colorScheme.onSecondaryContainer,
                 textColor: colorScheme.secondaryContainer,
               ),
               ColorCard(
-                label: 'Tertiary',
+                label: context.tr!.labelTertiary,
                 color: colorScheme.tertiary,
                 textColor: colorScheme.onTertiary,
               ),
               ColorCard(
-                label: 'on\nTertiary',
+                label: context.tr!.labelOnTertiary,
                 color: colorScheme.onTertiary,
                 textColor: colorScheme.tertiary,
               ),
               ColorCard(
-                label: 'Tertiary\nContainer',
+                label: context.tr!.labelTertiaryContainer,
                 color: colorScheme.tertiaryContainer,
                 textColor: colorScheme.onTertiaryContainer,
               ),
               ColorCard(
-                label: 'on\nTertiary\nContainer',
+                label: context.tr!.labelOnTertiaryContainer,
                 color: colorScheme.onTertiaryContainer,
                 textColor: colorScheme.tertiaryContainer,
               ),
               ColorCard(
-                label: 'Error',
+                label: context.tr!.labelError,
                 color: colorScheme.error,
                 textColor: colorScheme.onError,
               ),
               ColorCard(
-                label: 'on\nError',
+                label: context.tr!.labelOnError,
                 color: colorScheme.onError,
                 textColor: colorScheme.error,
               ),
               ColorCard(
-                label: 'Error\nContainer',
+                label: context.tr!.labelErrorContainer,
                 color: colorScheme.errorContainer,
                 textColor: colorScheme.onErrorContainer,
               ),
               ColorCard(
-                label: 'onError\nContainer',
+                label: context.tr!.labelOnErrorContainer,
                 color: colorScheme.onErrorContainer,
                 textColor: colorScheme.errorContainer,
               ),
               ColorCard(
-                label: 'Background$backTooHigh',
+                label: '${context.tr!.labelBackground}$backTooHigh',
                 color: colorScheme.background,
                 textColor: colorScheme.onBackground,
               ),
               ColorCard(
-                label: 'on\nBackground',
+                label: context.tr!.labelOnBackground,
                 color: colorScheme.onBackground,
                 textColor: colorScheme.background,
               ),
               ColorCard(
-                label: 'Surface$surfaceTooHigh',
+                label: '${context.tr!.labelSurface}$surfaceTooHigh',
                 color: colorScheme.surface,
                 textColor: colorScheme.onSurface,
               ),
               ColorCard(
-                label: 'on\nSurface',
+                label: context.tr!.labelOnSurface,
                 color: colorScheme.onSurface,
                 textColor: colorScheme.surface,
               ),
               ColorCard(
-                label: 'Surface\nVariant',
+                label: context.tr!.labelSurfaceVariant,
                 color: colorScheme.surfaceVariant,
                 textColor: colorScheme.onSurfaceVariant,
               ),
               ColorCard(
-                label: 'onSurface\nVariant',
+                label: context.tr!.labelOnSurfaceVariant,
                 color: colorScheme.onSurfaceVariant,
                 textColor: colorScheme.surfaceVariant,
               ),
               ColorCard(
-                label: 'Outline',
+                label: context.tr!.labelOutline,
                 color: colorScheme.outline,
                 textColor: colorScheme.background,
               ),
               ColorCard(
-                label: 'Shadow',
+                label: context.tr!.labelShadow,
                 color: colorScheme.shadow,
                 textColor: _onColor(colorScheme.shadow, background),
               ),
               ColorCard(
-                label: 'Inverse\nSurface',
+                label: context.tr!.labelInverseSurface,
                 color: colorScheme.inverseSurface,
                 textColor: colorScheme.onInverseSurface,
               ),
               ColorCard(
-                label: 'onInverse\nSurface',
+                label: context.tr!.labelOnInverseSurface,
                 color: colorScheme.onInverseSurface,
                 textColor: colorScheme.inverseSurface,
               ),
               ColorCard(
-                label: 'Inverse\nPrimary',
+                label: context.tr!.labelInversePrimary,
                 color: colorScheme.inversePrimary,
                 textColor: colorScheme.primary,
               ),

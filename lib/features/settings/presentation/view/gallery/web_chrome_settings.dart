@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -11,22 +12,22 @@ class WebChromeSettings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(context.tr!.settings)),
       body: SettingsList(
         platform: DevicePlatform.web,
         sections: [
           SettingsSection(
-            title: const Text('Auto-fill'),
+            title: Text(context.tr!.autoFillTitle),
             tiles: [
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.vpn_key),
-                title: const Text('Passwords'),
+                title: Text(context.tr!.passwords),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.credit_card_outlined),
-                title: const Text('Payment methods'),
+                title: Text(context.tr!.paymentMethods),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {
@@ -37,45 +38,45 @@ class WebChromeSettings extends ConsumerWidget {
                   );
                 },
                 leading: const Icon(Icons.location_on),
-                title: const Text('Addresses and more'),
+                title: Text(context.tr!.addressMore),
               ),
             ],
           ),
           SettingsSection(
-            title: const Text('Privacy and security'),
+            title: Text(context.tr!.privacySecTitle),
             tiles: [
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.delete),
-                title: const Text('Clear browsing data'),
-                description: const Text('Clear history, cookies, cache and more'),
+                title: Text(context.tr!.clearBrowsingTitle),
+                description: Text(context.tr!.clearBrowsingDescription),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.web),
-                title: const Text('Cookies and other site data'),
+                title: Text(context.tr!.cookiesOtherTitle),
                 description:
-                const Text('Third-party cookies are blocked in Incognito mode'),
+                Text(context.tr!.cookiesOtherDescription),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.security),
-                title: const Text('Security'),
-                description: const Text(
-                    'Safe Browsing (protection from dangerous sites) and other security settings'),
+                title: Text(context.tr!.securityTitle),
+                description: Text(
+                    context.tr!.securitySafeBrowsingDescription),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.settings),
-                title: const Text('Site settings'),
-                description: const Text(
-                    'Controls what information sites can use and show (location, camera, pop-ups and more)'),
+                title: Text(context.tr!.siteSettingsTitle),
+                description: Text(
+                context.tr!.siteSettingsDescription),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.account_balance_outlined),
-                title: const Text('Privacy Sandbox'),
-                description: const Text('Trial features are on'),
+                title: Text(context.tr!.privacySandBoxTitle),
+                description: Text(context.tr!.privacyDescription),
               ),
             ],
           ),

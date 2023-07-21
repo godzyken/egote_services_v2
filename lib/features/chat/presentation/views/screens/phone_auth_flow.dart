@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_io/io.dart';
 
-import '../../../../../config/app_shared/extensions/extensions.dart';
+import '../../../../../config/cube_config/cube_config.dart';
 import '../../../../common/application/navigation/navigation.dart';
 import '../../../data/data_sources/local/pref_util.dart';
 
@@ -54,7 +54,7 @@ class VerifyPhoneNumber extends ConsumerWidget {
                                 SharedPrefs.instance.saveLoginType(LoginType.phone);
                                 Navigator.of(ctx3, rootNavigator: true)
                                     .pushNamedAndRemoveUntil(
-                                    'login', (route) => false);
+                                    'loginToChat', (route) => false);
                               });
                             }),
                             AuthStateChangeAction<CredentialLinked>((ctx3, state) {
@@ -63,7 +63,7 @@ class VerifyPhoneNumber extends ConsumerWidget {
                                 SharedPrefs.instance.saveLoginType(LoginType.phone);
                                 Navigator.of(ctx3, rootNavigator: true)
                                     .pushNamedAndRemoveUntil(
-                                    'login', (route) => false);
+                                    'loginToChat', (route) => false);
                               });
                             }),
                             AuthStateChangeAction<Uninitialized>((ctx3, state) {
@@ -82,7 +82,7 @@ class VerifyPhoneNumber extends ConsumerWidget {
                                 SharedPrefs.instance.saveLoginType(LoginType.phone);
                                 Navigator.of(ctx3, rootNavigator: true)
                                     .pushNamedAndRemoveUntil(
-                                    'login', (route) => false);
+                                    'loginToChat', (route) => false);
                               });
                             }),
                           ],

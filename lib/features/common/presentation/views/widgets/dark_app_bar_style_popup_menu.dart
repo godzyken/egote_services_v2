@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,8 +14,8 @@ class DarkAppBarStylePopupMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBarStylePopupMenu(
-      title: const Text('Dark AppBar style'),
-      labelForDefault: 'Default',
+      title: Text(context.tr!.darkAppBarStyle),
+      labelForDefault: context.tr!.defaultLabel,
       index: ref.watch(Settings.darkAppBarStyleProvider)?.index ?? -1,
       onChanged: (int index) {
         if (index < 0 || index >= FlexAppBarStyle.values.length) {

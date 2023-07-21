@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,7 @@ class SurfaceModeToggleButtons extends StatelessWidget {
       onPressed: (int newIndex) {
         onChanged?.call(option[newIndex]);
       },
-      children: _getModeWidget(scheme, showAllModes),
+      children: _getModeWidget(context, scheme, showAllModes),
     );
   }
 }
@@ -91,37 +92,26 @@ class SurfaceModePopupMenu extends StatelessWidget {
   // Explain the used surface mode. This is for dev mode to have an explanation
   // of what the used surface mode. All of these are not used by out control,
   // but if we add them this will cover all of them.
-  String explainMode(final FlexSurfaceMode mode) {
+  String explainMode(final BuildContext context, final FlexSurfaceMode mode) {
     switch (mode) {
       case FlexSurfaceMode.level:
-        return 'Level blends\n'
-            'Surface 1x  Background 1x  Scaffold 1x\n';
+        return context.tr!.blendLevelLongText;
       case FlexSurfaceMode.highBackgroundLowScaffold:
-        return 'High background, low scaffold\n'
-            'Surface 1x  Background 3/2x  Scaffold 1/2x\n';
+        return context.tr!.highBackgroundLowScaffoldLongText;
       case FlexSurfaceMode.highSurfaceLowScaffold:
-        return 'High surface, low scaffold\n'
-            'Surface 3/2x  Background 1x  Scaffold 1/2x\n';
+        return context.tr!.highSurfaceLowScaffoldLongText;
       case FlexSurfaceMode.highScaffoldLowSurface:
-        return 'Very high scaffold, low surface\n'
-            'Surface 1/2x  Background 1x  Scaffold 3x\n';
+        return context.tr!.highScaffoldLowSurfaceLongText;
       case FlexSurfaceMode.highScaffoldLevelSurface:
-        return 'Very high scaffold, high background, level surface\n'
-            'Surface 1x  Background 2x  Scaffold 3x\n';
+        return context.tr!.highScaffoldLevelSurfaceLongText;
       case FlexSurfaceMode.levelSurfacesLowScaffold:
-        return 'Level surface and background, low scaffold\n'
-            'Surface 1x  Background 1x  Scaffold 1/2x\n';
+        return context.tr!.levelSurfacesLowScaffoldLongText;
       case FlexSurfaceMode.highScaffoldLowSurfaces:
-        return 'Very high scaffold, low surface and background\n'
-            'Surface 1/2x  Background 1/2x  Scaffold 3x\n';
+        return context.tr!.highScaffoldLowSurfaceLongText;
       case FlexSurfaceMode.levelSurfacesLowScaffoldVariantDialog:
-        return 'Tertiary container dialog, low scaffold\n'
-            'Surface 1x  Background 1x  Scaffold 1/2x\n'
-            'Dialog 1x blend of tertiary container color';
+        return context.tr!.levelSurfacesLowScaffoldVariantDialogLongText;
       case FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog:
-        return 'Tertiary container dialog, very high scaffold\n'
-            'Surface 1/2x  Background 1/2x  Scaffold 3x\n'
-            'Dialog 1/2x blend of tertiary container color';
+        return context.tr!.highScaffoldLowSurfacesVariantDialogLongText;
       case FlexSurfaceMode.custom:
         return '';
     }
@@ -133,8 +123,8 @@ class SurfaceModePopupMenu extends StatelessWidget {
     final ColorScheme scheme = theme.colorScheme;
     final TextStyle txtStyle = theme.textTheme.labelLarge!;
     final bool enabled = onChanged != null;
-    final String styleName = explainMode(FlexSurfaceMode.values[index]);
-    final List<Widget> modeWidgets = _getModeWidget(scheme);
+    final String styleName = explainMode(context, FlexSurfaceMode.values[index]);
+    final List<Widget> modeWidgets = _getModeWidget(context, scheme);
 
     final IconThemeData selectedIconTheme =
     theme.iconTheme.copyWith(color: scheme.onPrimary.withAlpha(0xE5));
@@ -177,7 +167,7 @@ class SurfaceModePopupMenu extends StatelessWidget {
                   ),
                 ),
                 title: Text(
-                  _modeShort(FlexSurfaceMode.values[i]),
+                  _modeShort(context, FlexSurfaceMode.values[i]),
                   style: txtStyle,
                 ),
               ),
@@ -213,25 +203,25 @@ class SurfaceModePopupMenu extends StatelessWidget {
 // need in both the popup menu and toggle buttons implementation.
 // It needs the theme ColorScheme so it can't be a const list or final, and
 // we need to control when we only included a sub set in toggle buttons case.
-List<Widget> _getModeWidget(ColorScheme scheme, [bool allModes = true]) =>
+List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme, [bool allModes = true]) =>
     <Widget>[
-      const Tooltip(
-        message: 'Flat\nall at same level',
-        child: Icon(Icons.check_box_outline_blank),
-      ),
-      const Tooltip(
-        message: 'High background\nlow scaffold',
-        child: Icon(Icons.layers_outlined),
-      ),
-      const Tooltip(
-        message: 'High surface\nlow scaffold',
-        child: Icon(Icons.layers),
+      Tooltip(
+        message: context.tr!.tooltipMessageLevel,
+        child: const Icon(Icons.check_box_outline_blank),
       ),
       Tooltip(
-        message: 'High scaffold\nlow surface',
-        child: Stack(
+        message: context.tr!.tooltipMessageBgScaffold,
+        child: const Icon(Icons.layers_outlined),
+      ),
+      Tooltip(
+        message: context.tr!.tooltipMessageSurface,
+        child: const Icon(Icons.layers),
+      ),
+      Tooltip(
+        message: context.tr!.tooltipMessageScaffold,
+        child: const Stack(
           alignment: Alignment.center,
-          children: const <Widget>[
+          children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: Icon(Icons.layers_outlined),
@@ -241,21 +231,21 @@ List<Widget> _getModeWidget(ColorScheme scheme, [bool allModes = true]) =>
         ),
       ),
       if (allModes)
-        const Tooltip(
-          message: 'High scaffold\nlevel surface',
-          child: Icon(Icons.dynamic_feed_rounded),
+        Tooltip(
+          message: context.tr!.tooltipMessageHighScaffold,
+          child: const Icon(Icons.dynamic_feed_rounded),
         ),
-      const Tooltip(
-        message: 'Level surfaces\nlow scaffold',
-        child: RotatedBox(quarterTurns: 2, child: Icon(Icons.horizontal_split)),
+      Tooltip(
+        message: context.tr!.tooltipMessageLevelSurfaces,
+        child: const RotatedBox(quarterTurns: 2, child: Icon(Icons.horizontal_split)),
       ),
-      const Tooltip(
-        message: 'High scaffold\nlow surfaces',
-        child: Icon(Icons.horizontal_split),
+      Tooltip(
+        message: context.tr!.tooltipMessageHighScafLowSur,
+        child: const Icon(Icons.horizontal_split),
       ),
       if (allModes)
         Tooltip(
-          message: 'Tertiary container dialog\nlow scaffold',
+          message: context.tr!.tooltipMessageTertiaryContainerDialog,
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -267,7 +257,7 @@ List<Widget> _getModeWidget(ColorScheme scheme, [bool allModes = true]) =>
         ),
       if (allModes)
         Tooltip(
-          message: 'High scaffold\ntertiary container dialog',
+          message: context.tr!.tooltipMessageHighScafTertiaryContainerDialog,
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -279,26 +269,26 @@ List<Widget> _getModeWidget(ColorScheme scheme, [bool allModes = true]) =>
     ];
 
 // Short explanation of the used surface mode.
-String _modeShort(final FlexSurfaceMode mode) {
+String _modeShort(final BuildContext context, final FlexSurfaceMode mode) {
   switch (mode) {
     case FlexSurfaceMode.level:
-      return 'Flat\nall at same level';
+      return context.tr!.blendLevelShortText;
     case FlexSurfaceMode.highBackgroundLowScaffold:
-      return 'High background\nlow scaffold';
+      return context.tr!.highBackgroundLowScaffoldShortText;
     case FlexSurfaceMode.highSurfaceLowScaffold:
-      return 'High surface\nlow scaffold';
+      return context.tr!.highSurfaceLowScaffoldShortText;
     case FlexSurfaceMode.highScaffoldLowSurface:
-      return 'High scaffold\nlow surface';
+      return context.tr!.highScaffoldLowSurfaceShortText;
     case FlexSurfaceMode.highScaffoldLevelSurface:
-      return 'High scaffold\nlevel surface';
+      return context.tr!.highScaffoldLevelSurfaceShortText;
     case FlexSurfaceMode.levelSurfacesLowScaffold:
-      return 'Level surfaces\nlow scaffold';
+      return context.tr!.levelSurfacesLowScaffoldShortText;
     case FlexSurfaceMode.highScaffoldLowSurfaces:
-      return 'High scaffold\nlow surfaces';
+      return context.tr!.highScaffoldLowSurfacesShortText;
     case FlexSurfaceMode.levelSurfacesLowScaffoldVariantDialog:
-      return 'Low scaffold\nTertiaryContainer dialog';
+      return context.tr!.levelSurfacesLowScaffoldVariantDialogShortText;
     case FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog:
-      return 'High scaffold\ntertiaryContainer dialog';
+      return context.tr!.highScaffoldLowSurfacesVariantDialogShortText;
     case FlexSurfaceMode.custom:
       return '';
   }

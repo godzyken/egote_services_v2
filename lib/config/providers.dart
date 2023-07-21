@@ -1,9 +1,9 @@
 import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:connectycube_sdk/src/core/users/models/cube_user.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
+import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
@@ -137,7 +137,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                         return ProfileScreen(
                             key: state.pageKey,
                             uid: ref.watch(authStateChangesProvider).value!.uid,
-                            pid: ref.watch(cubeEntityProvider).id.toString());
+                            pid: ref.watch(cubeUserControllerProvider)!.id.toString());
                       },
                     ),
                     GoRoute(
@@ -169,12 +169,18 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                         path: SelectDialogRoute.path,
                         name: 'select_dialog',
                         builder: (context, state) => SelectDialogScreen(
-                            currentUser: CubeUser()),
+                            currentUser: ref.watch(cubeUserControllerProvider.select((value) => value!))),
                         routes: [
                           GoRoute(
                               path: ChatDialogRoute.path, 
                               name: 'chat_dialog',
-                            builder: (context, state) => ChatDialogScreen(cubeUser: CubeUser(), cubeDialog: CubeDialog(type)),
+                              builder: (context, state) {
+                                CubeDialog? cubeDialog;
+                                return ChatDialogScreen(
+                                    cubeUser: ref.watch(cubeUserControllerProvider.select((value) => value!)),
+                                    cubeDialog: cubeDialog!
+                                );
+                              }
                           )
                         ])
                   ]),
@@ -182,6 +188,11 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                 path: AvisBoxRoute.path,
                 name: 'avisRoute',
                 builder: (context, state) => AvisBoxPage(key: state.pageKey),
+              ),
+              GoRoute(
+                path: DevisEditRoute.path,
+                name: 'devis',
+                builder: (context, state) => DevisEditScreen(key: state.pageKey, did: state.pathParameters['userId']!,),
               ),
               GoRoute(
                   path: SettingsUiRoute.path,

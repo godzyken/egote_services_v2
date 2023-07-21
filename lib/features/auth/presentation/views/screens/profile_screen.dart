@@ -104,7 +104,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         appBar: AppBar(
           title: _userEntityModel!.isComplete
               ? ProfileWidget(imagePath: _!.photoURL!, onClicked: () {  },)
-              : const Text('no data!'),
+              : Text(context.tr!.noData),
         ),
         drawer: const CustomMenuWidget(),
         body: Card(
@@ -116,9 +116,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   alignment: Alignment.center,
-                  child: const Text(
-                    'User info',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  child: Text(
+                    context.tr!.userInfo,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
@@ -126,15 +126,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   margin: const EdgeInsets.only(bottom: 8),
                   child: Image.network(_!.photoURL!),
                 ),
-                Text('${_.isAnonymous ? 'User is anonymous\n\n' : ''}'
-                    'Email: ${_.email} (verified: ${_.emailVerified})\n\n'
-                    'Phone number: ${_.phoneNumber}\n\n'
-                    'Name: ${_.displayName}\n\n\n'
+                Text('${_.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
+                    '${context.tr!.email}: ${_.email} (${context.tr!.verified}: ${_.emailVerified})\n\n'
+                    '${context.tr!.phoneNumber}: ${_.phoneNumber}\n\n'
+                    '${context.tr!.name}: ${_.displayName}\n\n\n'
                     'ID: ${_.uid}\n\n'
-                    'Tenant ID: ${_.tenantId}\n\n'
-                    'Refresh token: ${_.refreshToken}\n\n\n'
-                    'Created: ${_.metadata.creationTime.toString()}\n\n'
-                    'Last login: ${_.metadata.lastSignInTime}\n\n'),
+                    '${context.tr!.tenantId}: ${_.tenantId}\n\n'
+                    '${context.tr!.refresh} ${context.tr!.token}: ${_.refreshToken}\n\n\n'
+                    '${context.tr!.created}: ${_.metadata.creationTime.toString()}\n\n'
+                    '${context.tr!.lastLogin}: ${_.metadata.lastSignInTime}\n\n'),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -159,9 +159,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             title: Text(provider.providerId),
                             subtitle: Text(
                                 "${provider.uid == null ? "" : "ID: ${provider.uid}\n"}"
-                                    "${provider.email == null ? "" : "Email: ${provider.email}\n"}"
-                                    "${provider.phoneNumber == null ? "" : "Phone number: ${provider.phoneNumber}\n"}"
-                                    "${provider.displayName == null ? "" : "Name: ${provider.displayName}\n"}"),
+                                    "${provider.email == null ? "" : "${context.tr!.email}: ${provider.email}\n"}"
+                                    "${provider.phoneNumber == null ? "" : "${context.tr!.phoneNumber}: ${provider.phoneNumber}\n"}"
+                                    "${provider.displayName == null ? "" : "${context.tr!.name}: ${provider.displayName}\n"}"),
                           ),
                         ),
                       ),
@@ -206,7 +206,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             appBar: AppBar(
           title: _userEntityModel!.isComplete
               ? ProfileWidget(imagePath: _!.photoURL!, onClicked: () {  },)
-              : const Text('no data!'),
+              : Text(context.tr!.noData),
         ),
             drawer: const CustomMenuWidget(),
             body: Card(
@@ -218,9 +218,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   alignment: Alignment.center,
-                  child: const Text(
-                    'User info',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  child: Text(
+                    context.tr!.userInfo,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
@@ -228,15 +228,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   margin: const EdgeInsets.only(bottom: 8),
                   child: Image.network(_!.photoURL!),
                 ),
-                Text('${_.isAnonymous ? 'User is anonymous\n\n' : ''}'
-                    'Email: ${_.email} (verified: ${_.emailVerified})\n\n'
-                    'Phone number: ${_.phoneNumber}\n\n'
-                    'Name: ${_userEntityModel!.name}\n\n\n'
+                Text('${_.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
+                    '${context.tr!.email}: ${_.email} (${context.tr!.verified}: ${_.emailVerified})\n\n'
+                    '${context.tr!.phoneNumber}: ${_.phoneNumber}\n\n'
+                    '${context.tr!.name}: ${_userEntityModel!.name}\n\n\n'
                     'ID: ${_userEntityModel!.id}\n\n'
-                    'Tenant ID: ${_.tenantId}\n\n'
-                    'Refresh token: ${_.refreshToken}\n\n\n'
-                    'Created: ${_userEntityModel!.createdAt}\n\n'
-                    'Last login: ${_userEntityModel!.lastSignInAt}\n\n'),
+                    '${context.tr!.tenantId}: ${_.tenantId}\n\n'
+                    '${context.tr!.refresh} ${context.tr!.token}: ${_.refreshToken}\n\n\n'
+                    '${context.tr!.created}: ${_userEntityModel!.createdAt}\n\n'
+                    '${context.tr!.lastLogin}: ${_userEntityModel!.lastSignInAt}\n\n'),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -261,9 +261,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             title: Text(provider.providerId),
                             subtitle: Text(
                                 "${provider.uid == null ? "" : "ID: ${provider.uid}\n"}"
-                                    "${provider.email == null ? "" : "Email: ${provider.email}\n"}"
-                                    "${provider.phoneNumber == null ? "" : "Phone number: ${provider.phoneNumber}\n"}"
-                                    "${provider.displayName == null ? "" : "Name: ${provider.displayName}\n"}"),
+                                    "${provider.email == null ? "" : "${context.tr!.email}: ${provider.email}\n"}"
+                                    "${provider.phoneNumber == null ? "" : "${context.tr!.phoneNumber}: ${provider.phoneNumber}\n"}"
+                                    "${provider.displayName == null ? "" : "${context.tr!.name}: ${provider.displayName}\n"}"),
                           ),
                         ),
                       ),
@@ -301,6 +301,5 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
         ),);
   }
-
 
 }

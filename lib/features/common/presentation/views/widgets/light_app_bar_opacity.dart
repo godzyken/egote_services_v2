@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +11,7 @@ class LightAppBarOpacitySlider extends ConsumerWidget {
     final double opacity = ref.watch(Settings.lightAppBarOpacityProvider);
     final TextTheme textTheme = Theme.of(context).textTheme;
     return ListTile(
-      title: const Text('Light AppBar opacity'),
+      title: Text(context.tr!.lightAppBarOpacity),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

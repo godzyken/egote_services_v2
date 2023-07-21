@@ -12,6 +12,7 @@ import 'package:fpdart/src/either.dart';
 import 'package:universal_io/io.dart';
 
 import '../../../../config/app_shared/extensions/extensions.dart';
+import '../../../../config/cube_config/cube_config.dart';
 import '../../../auth/domain/providers/auth_repository_provider.dart';
 import '../../domain/repository/cube_repository_interface.dart';
 

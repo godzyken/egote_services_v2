@@ -2,7 +2,7 @@ import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../config/app_shared/extensions/extensions.dart';
+import '../../../../../config/cube_config/cube_config.dart';
 import '../../../../common/application/navigation/navigation.dart';
 import 'chat_screens.dart';
 

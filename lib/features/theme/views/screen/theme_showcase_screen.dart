@@ -37,13 +37,13 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: AppBar(
-          title: const Text('Theme Showcase'),
-          bottom: const TabBar(
+          title: Text(context.tr!.themeShowcase),
+          bottom: TabBar(
             tabs: <Widget>[
-              Tab(text: 'Home'),
-              Tab(text: 'Favorites'),
-              Tab(text: 'Profile'),
-              Tab(text: 'Settings'),
+              Tab(text: context.tr!.home),
+              Tab(text: context.tr!.favourites),
+              Tab(text: context.tr!.profile),
+              Tab(text: context.tr!.settings),
             ],
           ),
         ),
@@ -65,22 +65,17 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
                 Padding(
                   padding:
                   const EdgeInsets.symmetric(horizontal: AppInsets.edge),
-                  child: Text('Theme Showcase', style: medium),
+                  child: Text(context.tr!.themeShowcase, style: medium),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),
-                  child: Text(
-                    'Shows theme colors and the FlexColorScheme based theme '
-                        'applied on common widgets. '
-                        'It also has a NavigationBar and TabBar in the AppBar, '
-                        "to show what they look like, but they don't do anything.",
-                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                  child: Text(context.tr!.themeShowcaseText),
                 ),
                 const Divider(),
                 // Show all key active theme colors.
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Colors', style: medium),
+                  child: Text(context.tr!.colors, style: medium),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),
@@ -98,7 +93,7 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
                 Padding(
                   padding:
                   const EdgeInsets.symmetric(horizontal: AppInsets.edge),
-                  child: Text('Showcase', style: medium),
+                  child: Text(context.tr!.showcase, style: medium),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),
@@ -115,20 +110,20 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
             });
           },
           selectedIndex: _buttonIndex,
-          destinations: const <NavigationDestination>[
+          destinations: <NavigationDestination>[
             NavigationDestination(
-              icon: Icon(Icons.chat_bubble),
-              label: 'Chat',
+              icon: const Icon(Icons.chat_bubble),
+              label: context.tr!.labelChat,
               tooltip: '',
             ),
             NavigationDestination(
-              icon: Icon(Icons.beenhere),
-              label: 'Tasks',
+              icon: const Icon(Icons.beenhere),
+              label: context.tr!.labelTasks,
               tooltip: '',
             ),
             NavigationDestination(
-              icon: Icon(Icons.create_new_folder),
-              label: 'Archive',
+              icon: const Icon(Icons.create_new_folder),
+              label: context.tr!.labelArchive,
               tooltip: '',
             ),
           ],

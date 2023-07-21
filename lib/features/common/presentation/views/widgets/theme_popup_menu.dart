@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,7 +79,7 @@ class ThemePopupMenu extends ConsumerWidget {
       ],
       child: ListTile(
         contentPadding: contentPadding,
-        title: Text('${CustomThemes.schemes[selected].name} theme'),
+        title: Text('${CustomThemes.schemes[selected].name} ${context.tr!.theme}'),
         subtitle: Text(CustomThemes.schemes[selected].description),
         trailing: SizedBox(
           width: width * 2,

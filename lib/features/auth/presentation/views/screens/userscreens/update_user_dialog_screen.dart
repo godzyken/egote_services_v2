@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,18 +17,18 @@ class _UpdateUserDialogScreenState extends ConsumerState<UpdateUserDialogScreen>
   Widget build(BuildContext context) {
     final authController = ref.watch(loginControllerNotifierProvider);
     return AlertDialog(
-      title: const Text('Update profile'),
+      title: Text(context.tr!.updateProfile),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
             TextFormField(
               controller: TextEditingController(text: authController.passwordFormz!.value),
               autocorrect: false,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(labelText: context.tr!.password),
             ),
             TextFormField(
               controller: TextEditingController(text: authController.emailFormz!.value),
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: context.tr!.email),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               autocorrect: false,
               validator: (String? value) {
@@ -37,7 +38,7 @@ class _UpdateUserDialogScreenState extends ConsumerState<UpdateUserDialogScreen>
                     //TODO: get the data with dart:io or http and check it here
                     return null;
                   }
-                  return 'Faulty URL!';
+                  return context.tr!.faultyUrl;
                 }
                 return null;
               },
@@ -51,7 +52,7 @@ class _UpdateUserDialogScreenState extends ConsumerState<UpdateUserDialogScreen>
             authController.passwordFormz;
             authController.status;
           },
-          child: const Text('Update'),
+          child: Text(context.tr!.update),
         ),
       ],
     );

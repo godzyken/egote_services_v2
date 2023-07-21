@@ -34,7 +34,7 @@ dependencies:
   settings_ui: ^2.0.2
   intl: ^0.18.1
   formz: ^0.6.0
-  flutter_localization: ^0.1.12
+  flutter_localization: ^0.1.13
   flutter_advanced_drawer: ^1.3.5
   lottie: ^2.4.0
   supabase_auth_ui: ^0.2.0
@@ -76,6 +76,7 @@ flutter:
   assets: 
     - assets/lottie/image/carrelage_background.jpg
     - assets/lottie/image/godzy_logo.png
+    - assets/lottie/image/img_not_available.jpg
     - assets/lottie/image/logo_bat_services.png
     - assets/lottie/image/digital-transformation-teaser.jpg
     - assets/lottie/image/digital_transf.jpg

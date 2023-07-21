@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,12 +23,12 @@ class SwitchButton extends ConsumerWidget {
         child: TextButton(
           onPressed: onTap,
           child: showSignIn
-              ? const Text(
-            "Don't have account? Sign Up",
+              ? Text(
+            context.tr!.switchHavent,
             style: _kTextStyle,
           )
-              : const Text(
-            "Already Have one? Sign In",
+              : Text(
+            context.tr!.switchHave,
             style: _kTextStyle,
           ),
         ));

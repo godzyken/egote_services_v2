@@ -47,6 +47,10 @@ part 'routes.g.dart';
       path: AvisBoxRoute.path,
       name: 'avisRoute',
     ),
+    TypedGoRoute<DevisEditRoute>(
+      path: DevisEditRoute.path,
+      name: 'devis',
+    ),
     TypedGoRoute<ChatRoute>(
         path: ChatRoute.path,
         name: 'chat',
@@ -458,47 +462,59 @@ class ChatRoute extends GoRouteData {
 class SelectDialogRoute extends GoRouteData {
   static const path = 'selectDialogRoute:cid';
 
-  const SelectDialogRoute({required this.currentUser});
+  int cid;
 
-  final CubeUser currentUser;
+  SelectDialogRoute({required this.cid});
 
-  int? get cid => currentUser.id;
+  CubeUser? currentUser;
+
+  int? get _cid => cid = currentUser!.id!;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    if(_cid != cid) {
+      return const LoginScreen();
+    }
 
-    return SelectDialogScreen(key: state.pageKey, currentUser: currentUser,);
+    return SelectDialogScreen(key: state.pageKey, currentUser: currentUser!,);
   }
 }
 
 class ChatDialogRoute extends GoRouteData {
-  static const path = 'chatDialogRoute:cid&cdid';
+  static const path = 'chatDialogRoute:cdid';
 
-  const ChatDialogRoute({required this.cubeUser, required this.cubeDialog});
+  ChatDialogRoute({required this.cid, required this.cdid});
 
-  final CubeUser cubeUser;
-  final CubeDialog cubeDialog;
+  int cid;
+  CubeUser? currentUser;
+  int? get _cid => cid = currentUser!.id!;
 
-  int? get cid => cubeUser.id;
-  int? get cdid => cubeDialog.id;
+  int cdid;
+  CubeDialog? cubeDialog;
+  int? get _cdid => cdid = cubeDialog!.id!;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ChatDialogScreen(key: state.pageKey, cubeUser: cubeUser, cubeDialog: cubeDialog,);
+    if(_cid != cid && _cdid != cdid) {
+      return const LoginScreen();
+    }
+    return ChatDialogScreen(key: state.pageKey, cubeUser: currentUser!, cubeDialog: cubeDialog!,);
   }
 }
 
 /// [Other Pages Routes]
 class DevisEditRoute extends GoRouteData {
-  static const path = 'edit_devis:did';
+  static const path = 'edit_devis/:did';
 
   const DevisEditRoute({required this.did});
 
   final int did;
 
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return DevisEditScreen(key: state.pageKey, did: did);
+    final did = state.pathParameters['userId'];
+    return DevisEditScreen(key: state.pageKey, did: did!);
   }
 }
 

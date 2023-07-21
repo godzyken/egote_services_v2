@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/config/app_shared/extensions/app_scroll_behavior.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
+import 'package:egote_services_v2/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -44,11 +45,11 @@ class CustomMenuWidget extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Screen width: ${screenWidth.toStringAsFixed(0)}',
+                              '${context.tr!.screenWidth} ${screenWidth.toStringAsFixed(0)}',
                               style: theme.primaryTextTheme.labelSmall,
                             ),
                             Text(
-                              'Drawer theme: ${drawerWidth.toStringAsFixed(0)}',
+                              '${context.tr!.drawerTheme} ${drawerWidth.toStringAsFixed(0)}',
                               style: theme.primaryTextTheme.labelSmall,
                             ),
                           ],
@@ -56,34 +57,34 @@ class CustomMenuWidget extends ConsumerWidget {
                     ),
                     const UseMaterial3Switch(),
                     const Divider(),
-                    const UseSubThemesListTile(
-                      title: Text('Component themes'),
+                    UseSubThemesListTile(
+                      title: Text(context.tr!.componentTheme),
                     ),
                     const Divider(),
-                    const ThemeModeListTile(title: Text('Theme')),
+                    ThemeModeListTile(title: Text(context.tr!.theme)),
                     const Divider(),
                     ListTile(
                       onTap: () => context.go('/user_home/:pid'),
                       leading: const Icon(Icons.home),
-                      title: const Text('Home'),
+                      title: Text(context.tr!.home),
                     ),
                     const Divider(),
                     ListTile(
                       onTap: () => context.go('/person/:uid'),
                       leading: const Icon(Icons.account_circle_rounded),
-                      title: const Text('Profile'),
+                      title: Text(context.tr!.profile),
                     ),
                     const Divider(),
                     ListTile(
                       onTap: () {},
                       leading: const Icon(Icons.favorite),
-                      title: const Text('Favourites'),
+                      title: Text(context.tr!.favourites),
                     ),
                     const Divider(),
                     ListTile(
                       onTap: () => context.go('/settingsRoute'),
                       leading: const Icon(Icons.settings),
-                      title: const Text('Settings'),
+                      title: Text(context.tr!.settings),
                     ),
                     const Divider(),
                     const Spacer(),
@@ -97,7 +98,7 @@ class CustomMenuWidget extends ConsumerWidget {
                           vertical: 30.0,
                         ),
                         padding: const EdgeInsets.only(left: 16),
-                        child: const Text('Terms of Service | Privacy Policy'),
+                        child: Text(context.tr!.termsOfService),
                       ),
                     ),
                   ]
@@ -126,34 +127,34 @@ class CustomMenuWidget extends ConsumerWidget {
               color: Colors.black26,
               shape: BoxShape.circle,
             ),
-            child: Image.asset(
-              LocalImages.earthAugmentedImage,
-            ),
+            child: Assets.lottie.models.earthAugmentedImage.image(
+
+            )
           ),
 
           const Divider(),
           ListTile(
             onTap: () => context.go('/user_home/:pid'),
             leading: const Icon(Icons.home),
-            title: const Text('Home'),
+            title: Text(context.tr!.home),
           ),
           const Divider(),
           ListTile(
             onTap: () => context.go('/person/:uid'),
             leading: const Icon(Icons.account_circle_rounded),
-            title: const Text('Profile'),
+            title: Text(context.tr!.profile),
           ),
           const Divider(),
           ListTile(
             onTap: () {},
             leading: const Icon(Icons.favorite),
-            title: const Text('Favourites'),
+            title: Text(context.tr!.favourites),
           ),
           const Divider(),
           ListTile(
             onTap: () => context.go('/settingsRoute'),
             leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
+            title: Text(context.tr!.settings),
           ),
           const Spacer(),
           DefaultTextStyle(
@@ -165,7 +166,7 @@ class CustomMenuWidget extends ConsumerWidget {
               margin: const EdgeInsets.symmetric(
                 vertical: 16.0,
               ),
-              child: const Text('Terms of Service | Privacy Policy'),
+              child: Text(context.tr!.termsOfService),
             ),
           ),
         ],

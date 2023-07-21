@@ -31,30 +31,27 @@ class ThemeSettings extends ConsumerWidget {
         : flexTone;
 
     final String explainM3Surface = useSeed
-        ? '. With seeded ColorScheme, for a pure M3 surface design, use level 0'
+        ? context.tr!.useLevelZero
         : '';
 
     return Column(
       children: <Widget>[
-        const ThemeModeListTile(title: Text('Theme mode')),
+        ThemeModeListTile(title: Text(context.tr!.themeModeTitle)),
         const UseMaterial3Switch(),
-        const UseSubThemesListTile(
-          title: Text('Use component themes'),
-          subtitle: Text('Enable FlexColorScheme opinionated sub themes'),
+        UseSubThemesListTile(
+          title: Text(context.tr!.useSubThemesTitle),
+          subtitle: Text(context.tr!.useSubThemesSubTitle),
         ),
         AnimatedHide(
           hide: !useSubThemes,
-          child: const Column(
+          child: Column(
             children: <Widget>[
               ListTile(
-                title: Text('Global border radius on components'),
+                title: Text(context.tr!.useThemesTitle),
                 subtitle: Text(
-                  'Default setting uses mostly Material 3 design '
-                      'values, where radius spec varies per component. '
-                      'Material 2 design uses 4 on all components.',
-                ),
+                    context.tr!.useThemesSubTitle),
               ),
-              DefaultBorderRadiusSlider(),
+              const DefaultBorderRadiusSlider(),
             ],
           ),
         ),
@@ -72,19 +69,12 @@ class ThemeSettings extends ConsumerWidget {
           hide: !useSeed,
           child: Column(
             children: <Widget>[
-              const ListTile(
+              ListTile(
                 subtitle: Text(
-                  'Use FlexTones to configure which tone from '
-                      'generated palettes each color in the ColorScheme use. '
-                      'Set limits on used CAM16 chroma values '
-                      'for the three colors used as keys for primary, '
-                      'secondary and tertiary TonalPalettes. '
-                      'In this app you can choose between the default Material 3 '
-                      'tone mapping plus six pre-defined custom FlexTones setups.',
-                ),
+                    context.tr!.useSeedSubTitle),
               ),
               FlexToneConfigPopupMenu(
-                title: 'FlexTones setup',
+                title: context.tr!.flexTonesTitle1,
                 index: useSeed ? usedFlexTone : 0,
                 onChanged: useSeed
                     ? ref.read(Settings.usedFlexToneProvider.notifier).set
@@ -92,7 +82,7 @@ class ThemeSettings extends ConsumerWidget {
               ),
               ListTile(
                 title: Text('${FlexTone.values[usedFlexTone].tone}'
-                    ' FlexTones setup with CAM16 chroma'),
+                    ' ${context.tr!.flexTonesTitle2}'),
                 subtitle: Text(FlexTone.values[usedFlexTone].setup),
               ),
             ],
@@ -117,18 +107,17 @@ class ThemeSettings extends ConsumerWidget {
           const LightSurfaceModePopupMenu(),
           const LightSurfaceModeListTile(),
           ListTile(
-            title: const Text('Light surface blend'),
-            subtitle: Text('Adjust the surface, background and '
-                'scaffold blends$explainM3Surface'),
+            title: Text(context.tr!.lightThemeSurfaceBlend),
+            //TODO: verify
+            subtitle: Text('${context.tr!.lightThemeSurfaceBlendSubTitle}$explainM3Surface'),
           ),
           const LightSurfaceBlendLevelSlider(),
         ] else ...<Widget>[
           const DarkSurfaceModePopupMenu(),
           const DarkSurfaceModeListTile(),
           ListTile(
-            title: const Text('Dark surface blend'),
-            subtitle: Text('Adjust the surface, background and '
-                'scaffold blends$explainM3Surface'),
+            title: Text(context.tr!.darkSurfaceBlendTitle),
+            subtitle: Text('${context.tr!.darkSurfaceBlendSubTitle}$explainM3Surface'),
           ),
           const DarkSurfaceBlendLevelSlider(),
         ],

@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +11,7 @@ class DarkAppBarOpacitySlider extends ConsumerWidget {
     final double opacity = ref.watch(Settings.darkAppBarOpacityProvider);
     final TextTheme textTheme = Theme.of(context).textTheme;
     return ListTile(
-      title: const Text('Dark AppBar opacity'),
+      title: Text(context.tr!.darkAppBarOpacity),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -33,7 +34,7 @@ class DarkAppBarOpacitySlider extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             Text(
-              '%',
+              context.tr!.percent,
               style: textTheme.bodySmall,
             ),
             Text(

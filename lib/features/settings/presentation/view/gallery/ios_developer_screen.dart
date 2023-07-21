@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -15,7 +16,7 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
   @override
   Widget build(BuildContext context) {
     return  CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(middle: Text('Developer')),
+      navigationBar: CupertinoNavigationBar(middle: Text(context.tr!.developerNavBar)),
       child: SafeArea(
         bottom: false,
         child: SettingsList(
@@ -23,7 +24,7 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
           platform: DevicePlatform.iOS,
           sections: [
             SettingsSection(
-              title: const Text('APPEARANCE'),
+              title: Text(context.tr!.appearanceTitle),
               tiles: [
                 SettingsTile.switchTile(
                   onToggle: (value) {
@@ -32,73 +33,65 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
                     });
                   },
                   initialValue: darkTheme,
-                  title: const Text('Dark Appearance'),
+                  title: Text(context.tr!.appearanceTitleDark),
                 ),
               ],
             ),
             SettingsSection(
-              title: const Text('DISPLAY ZOOM'),
+              title: Text(context.tr!.displayTitleZoom),
               tiles: [
                 SettingsTile.navigation(
                   onPressed: (_) {},
-                  title: const Text('View'),
-                  value: const Text('Standard'),
-                  description: const Text(
-                    'Choose a view for iPhone. '
-                        'Zoomed shadows larger controls. '
-                        'Standard shows more content.',
-                  ),
+                  title: Text(context.tr!.viewTitle),
+                  value: Text(context.tr!.viewValue),
+                  description: Text(context.tr!.viewDescription),
                 ),
               ],
             ),
             SettingsSection(
-              title: const Text('UI AUTOMATION'),
+              title: Text(context.tr!.uiAutomationTitle),
               tiles: [
                 SettingsTile.switchTile(
                   onToggle: (_) {},
                   initialValue: true,
-                  title: const Text('Enable UI Automation'),
+                  title: Text(context.tr!.uiAutomationEnable),
                 ),
                 SettingsTile.navigation(
-                  title: const Text('MultiPath Networking'),
+                  title: Text(context.tr!.multiPathNetworking),
                 ),
                 SettingsTile.switchTile(
                   onToggle: (_) {},
                   initialValue: false,
-                  title: const Text('HTTP/3'),
+                  title: Text(context.tr!.httpThree),
                 ),
               ],
             ),
             SettingsSection(
-              title: const Text('STATE RESTORATION TESTING'),
+              title: Text(context.tr!.stateResSettings),
               tiles: [
                 SettingsTile.switchTile(
                   onToggle: (_) {},
                   initialValue: false,
-                  title: const Text(
-                    'Fast App Termination',
+                  title: Text(
+                      context.tr!.fastAppTerminationTitle
                   ),
-                  description: const Text(
-                    'Terminate instead of suspending apps when backgrounded to '
-                        'force apps to be relaunched when tray '
-                        'are foregrounded.',
-                  ),
+                  description: Text(context.tr!.fastAppTerminationDescription),
                 ),
               ],
             ),
             SettingsSection(
-              title: const Text('IAD DEVELOPER APP TESTING'),
+              title: Text(context.tr!.iadDevTitle),
               tiles: [
                 SettingsTile.navigation(
-                  title: const Text('Fill Rate'),
+                  title: Text(context.tr!.fillRate),
                 ),
                 SettingsTile.navigation(
-                  title: const Text('Add Refresh Rate'),
+                  title: Text(context.tr!.addRefreshTitle),
                 ),
                 SettingsTile.switchTile(
                   onToggle: (_) {},
                   initialValue: false,
-                  title: const Text('Unlimited Ad Presentation'),
+                  title: Text(context.tr!.unlimitedAdPresentation),
                 ),
               ],
             ),

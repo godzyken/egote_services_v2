@@ -30,14 +30,8 @@ class EditDeviViewModelController
   bool get edit => initial.toJson().isNotEmpty;
 
   DevisEntity get devis => initial.when(
-        complete: (id,
-            numDevis,
-            statusModel,
-            typesConstructionModel,
-            superficieEntity,
-            travauxEntity,
-            contactOwnerEntity,
-            missionEntity) {
+        complete: (id, numDevis, statusModel, typesHabitat, superficieEntity,
+            travauxEntity, contactOwnerEntity, missionEntity) {
           try {
             state = const State.loading();
 
@@ -46,7 +40,7 @@ class EditDeviViewModelController
                   id: id,
                   numDevis: _numDevis!,
                   statusModel: _statusModel,
-                  typesConstructionModel: _constructionModel,
+                  typesHabitat: _constructionModel,
                   superficieEntity: _superficieEntity,
                   travauxEntity: _travauxEntity,
                   contactOwnerEntity: _contactOwnerEntity,
@@ -67,12 +61,15 @@ class EditDeviViewModelController
       );
 
   String? _numDevis;
+
   String get numDevis => _numDevis ?? '0';
+
   set numDevis(String value) {
     _numDevis = value;
   }
 
   StatusModel? _statusModel;
+
   StatusModel get statusModel {
     switch (_statusModel) {
       case null:
@@ -90,43 +87,51 @@ class EditDeviViewModelController
     _statusModel = value;
   }
 
-  TypesConstructionModel? _constructionModel;
-  TypesConstructionModel get constructionModel {
+  TypesHabitat? _constructionModel;
+
+  TypesHabitat get constructionModel {
     switch (_constructionModel) {
-      case TypesConstructionModel.apartment:
-        _constructionModel = TypesConstructionModel.apartment;
+      case TypesHabitat.apartment:
+        _constructionModel = TypesHabitat.apartment;
         return _constructionModel!;
-      case TypesConstructionModel.house:
-        _constructionModel = TypesConstructionModel.house;
+      case TypesHabitat.house:
+        _constructionModel = TypesHabitat.house;
         return _constructionModel!;
       case null:
         return _constructionModel!;
     }
   }
 
-  set constructionModel(TypesConstructionModel value) {
+  set constructionModel(TypesHabitat value) {
     _constructionModel = value;
   }
 
   int? _long;
+
   int get longueur => _long!;
+
   set long(int value) {
     _long = value;
   }
 
   int? _larg;
+
   int get largeur => _larg!;
+
   set larg(int value) {
     _larg = value;
   }
 
   int? _haut;
+
   int get hauteur => _haut!;
+
   set haut(int value) {
     _haut = value;
   }
 
   SuperficieEntity? _superficieEntity;
+
   SuperficieEntity get superficieEntity =>
       _superficieEntity ??
       initialSup.when(
@@ -144,17 +149,21 @@ class EditDeviViewModelController
           hauteur: hauteur = _haut!,
         ),
       );
+
   set superficieEntity(SuperficieEntity value) {
     _superficieEntity = value;
   }
 
   TravauxEntity? _travauxEntity;
+
   TravauxEntity get travauxEntity => _travauxEntity ?? initialTra;
+
   set travauxEntity(TravauxEntity value) {
     _travauxEntity = value;
   }
 
   ContactOwnerEntity? _contactOwnerEntity;
+
   ContactOwnerEntity get contactOwnerEntity =>
       _contactOwnerEntity ??
       initialContact.when(
@@ -165,12 +174,25 @@ class EditDeviViewModelController
             phone: phone,
             email: email),
         empty: () => const ContactOwnerEntity.empty(),
+        client: (int id, String firstName, String lastName, String phone,
+                String email) =>
+            ContactOwnerEntity.client(
+                id: id,
+                firstName: firstName,
+                lastName: lastName,
+                phone: phone,
+                email: email),
+        pro: (int id, String companyName, String phone, String email,
+                Professions professions) =>
+            ContactOwnerEntity.pro(id, companyName, phone, email, professions),
       );
+
   set contactOwnerEntity(ContactOwnerEntity value) {
     _contactOwnerEntity = value;
   }
 
   MissionEntity? _missionEntity;
+
   MissionEntity get missionEntity =>
       _missionEntity ??
       initialMission.when(
@@ -192,6 +214,7 @@ class EditDeviViewModelController
                 left: left,
                 isLeft: isLeft),
       );
+
   set missionEntity(MissionEntity value) {
     _missionEntity = value;
   }
@@ -205,6 +228,7 @@ class EditDeviViewModelController
   }
 
   Images get imageLocal => Images.local(images: _localImages!);
+
   State get _loading => const State.loading();
 
   bool get enabled =>

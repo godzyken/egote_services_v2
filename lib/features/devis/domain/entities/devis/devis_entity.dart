@@ -14,7 +14,7 @@ class DevisEntity with _$DevisEntity {
     required int id,
     required String numDevis,
     StatusModel? statusModel,
-    TypesConstructionModel? typesConstructionModel,
+    TypesHabitat? typesHabitat,
     SuperficieEntity? superficieEntity,
     TravauxEntity? travauxEntity,
     ContactOwnerEntity? contactOwnerEntity,
@@ -36,4 +36,4 @@ class DevisEntity with _$DevisEntity {
 enum StatusModel { locataire, proprietaire }
 
 @JsonEnum()
-enum TypesConstructionModel { apartment, house }
+enum TypesHabitat { apartment, house }

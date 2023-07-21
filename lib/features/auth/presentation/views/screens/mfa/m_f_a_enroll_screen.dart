@@ -48,7 +48,7 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
                 vertical: 20
             ),
             children: [
-              const Text('Open your authentication app and add this app via QR code or by pasting the code below.'),
+              Text(context.tr!.openViaQr),
               const SizedBox(height: 16),
               Assets.lottie.models.frame.svg(
                   package: qrCodeUrl,
@@ -58,24 +58,24 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  const Expanded(child: Text('Secret', style: TextStyle(
+                  Expanded(child: Text(context.tr!.secret, style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold
                   ),)),
                   IconButton(
                       onPressed: () {
                         Clipboard.setData(ClipboardData(text: secret));
-                        context.showAlert('Copied your clip board');
+                        context.showAlert(context.tr!.copiedClipBoard);
                       },
                       icon: const Icon(Icons.copy)
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('Enter the code shown in your authentication app.'),
+              Text(context.tr!.enterCodeSent),
               const SizedBox(height: 16),
               TextInputField(
-                  hintText: '000000',
+                  hintText: context.tr!.initCode,
                   onChanged: (code) async {
                     if (code.length != 6) return;
 
@@ -115,7 +115,7 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
                     }
                   },
                   inputType: TextInputType.number,
-                  label: 'Enter Code'
+                  label: context.tr!.enterCode
               ),
             ],
           );

@@ -17,3 +17,4 @@ final cubeChatConnectionSettingsProvider = Provider<CubeChatConnectionSettings>(
 final cubeProvider = Provider<CubeProvider>((_) => CubeProvider());
 
 final cubeEntityProvider = Provider<CubeEntity>((ref) => CubeEntity());
+

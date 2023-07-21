@@ -20,6 +20,10 @@ ContactOwnerEntity _$ContactOwnerEntityFromJson(Map<String, dynamic> json) {
       return _ContactOwnerEntity.fromJson(json);
     case 'empty':
       return _ContactOwnerEntityEmpty.fromJson(json);
+    case 'client':
+      return _ContactOwnerEntityClient.fromJson(json);
+    case 'pro':
+      return _ContactOwnerEntityPro.fromJson(json);
 
     default:
       throw CheckedFromJsonException(json, 'runtimeType', 'ContactOwnerEntity',
@@ -35,6 +39,12 @@ mixin _$ContactOwnerEntity {
             String email)
         $default, {
     required TResult Function() empty,
+    required TResult Function(int id, String firstName, String lastName,
+            String phone, String email)
+        client,
+    required TResult Function(int id, String companyName, String phone,
+            String email, Professions professions)
+        pro,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -43,6 +53,12 @@ mixin _$ContactOwnerEntity {
             String email)?
         $default, {
     TResult? Function()? empty,
+    TResult? Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult? Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -51,6 +67,12 @@ mixin _$ContactOwnerEntity {
             String email)?
         $default, {
     TResult Function()? empty,
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -58,18 +80,24 @@ mixin _$ContactOwnerEntity {
   TResult map<TResult extends Object?>(
     TResult Function(_ContactOwnerEntity value) $default, {
     required TResult Function(_ContactOwnerEntityEmpty value) empty,
+    required TResult Function(_ContactOwnerEntityClient value) client,
+    required TResult Function(_ContactOwnerEntityPro value) pro,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_ContactOwnerEntity value)? $default, {
     TResult? Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult? Function(_ContactOwnerEntityClient value)? client,
+    TResult? Function(_ContactOwnerEntityPro value)? pro,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_ContactOwnerEntity value)? $default, {
     TResult Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult Function(_ContactOwnerEntityClient value)? client,
+    TResult Function(_ContactOwnerEntityPro value)? pro,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -214,6 +242,12 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
             String email)
         $default, {
     required TResult Function() empty,
+    required TResult Function(int id, String firstName, String lastName,
+            String phone, String email)
+        client,
+    required TResult Function(int id, String companyName, String phone,
+            String email, Professions professions)
+        pro,
   }) {
     return $default(id, firstName, lastName, phone, email);
   }
@@ -225,6 +259,12 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
             String email)?
         $default, {
     TResult? Function()? empty,
+    TResult? Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult? Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
   }) {
     return $default?.call(id, firstName, lastName, phone, email);
   }
@@ -236,6 +276,12 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
             String email)?
         $default, {
     TResult Function()? empty,
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
     required TResult orElse(),
   }) {
     if ($default != null) {
@@ -249,6 +295,8 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
   TResult map<TResult extends Object?>(
     TResult Function(_ContactOwnerEntity value) $default, {
     required TResult Function(_ContactOwnerEntityEmpty value) empty,
+    required TResult Function(_ContactOwnerEntityClient value) client,
+    required TResult Function(_ContactOwnerEntityPro value) pro,
   }) {
     return $default(this);
   }
@@ -258,6 +306,8 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_ContactOwnerEntity value)? $default, {
     TResult? Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult? Function(_ContactOwnerEntityClient value)? client,
+    TResult? Function(_ContactOwnerEntityPro value)? pro,
   }) {
     return $default?.call(this);
   }
@@ -267,6 +317,8 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_ContactOwnerEntity value)? $default, {
     TResult Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult Function(_ContactOwnerEntityClient value)? client,
+    TResult Function(_ContactOwnerEntityPro value)? pro,
     required TResult orElse(),
   }) {
     if ($default != null) {
@@ -355,6 +407,12 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
             String email)
         $default, {
     required TResult Function() empty,
+    required TResult Function(int id, String firstName, String lastName,
+            String phone, String email)
+        client,
+    required TResult Function(int id, String companyName, String phone,
+            String email, Professions professions)
+        pro,
   }) {
     return empty();
   }
@@ -366,6 +424,12 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
             String email)?
         $default, {
     TResult? Function()? empty,
+    TResult? Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult? Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
   }) {
     return empty?.call();
   }
@@ -377,6 +441,12 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
             String email)?
         $default, {
     TResult Function()? empty,
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
     required TResult orElse(),
   }) {
     if (empty != null) {
@@ -390,6 +460,8 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
   TResult map<TResult extends Object?>(
     TResult Function(_ContactOwnerEntity value) $default, {
     required TResult Function(_ContactOwnerEntityEmpty value) empty,
+    required TResult Function(_ContactOwnerEntityClient value) client,
+    required TResult Function(_ContactOwnerEntityPro value) pro,
   }) {
     return empty(this);
   }
@@ -399,6 +471,8 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_ContactOwnerEntity value)? $default, {
     TResult? Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult? Function(_ContactOwnerEntityClient value)? client,
+    TResult? Function(_ContactOwnerEntityPro value)? pro,
   }) {
     return empty?.call(this);
   }
@@ -408,6 +482,8 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_ContactOwnerEntity value)? $default, {
     TResult Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult Function(_ContactOwnerEntityClient value)? client,
+    TResult Function(_ContactOwnerEntityPro value)? pro,
     required TResult orElse(),
   }) {
     if (empty != null) {
@@ -429,4 +505,471 @@ abstract class _ContactOwnerEntityEmpty implements ContactOwnerEntity {
 
   factory _ContactOwnerEntityEmpty.fromJson(Map<String, dynamic> json) =
       _$_ContactOwnerEntityEmpty.fromJson;
+}
+
+/// @nodoc
+abstract class _$$_ContactOwnerEntityClientCopyWith<$Res> {
+  factory _$$_ContactOwnerEntityClientCopyWith(
+          _$_ContactOwnerEntityClient value,
+          $Res Function(_$_ContactOwnerEntityClient) then) =
+      __$$_ContactOwnerEntityClientCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {int id, String firstName, String lastName, String phone, String email});
+}
+
+/// @nodoc
+class __$$_ContactOwnerEntityClientCopyWithImpl<$Res>
+    extends _$ContactOwnerEntityCopyWithImpl<$Res, _$_ContactOwnerEntityClient>
+    implements _$$_ContactOwnerEntityClientCopyWith<$Res> {
+  __$$_ContactOwnerEntityClientCopyWithImpl(_$_ContactOwnerEntityClient _value,
+      $Res Function(_$_ContactOwnerEntityClient) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? firstName = null,
+    Object? lastName = null,
+    Object? phone = null,
+    Object? email = null,
+  }) {
+    return _then(_$_ContactOwnerEntityClient(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      firstName: null == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastName: null == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String,
+      phone: null == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
+  const _$_ContactOwnerEntityClient(
+      {required this.id,
+      required this.firstName,
+      required this.lastName,
+      required this.phone,
+      required this.email,
+      final String? $type})
+      : $type = $type ?? 'client';
+
+  factory _$_ContactOwnerEntityClient.fromJson(Map<String, dynamic> json) =>
+      _$$_ContactOwnerEntityClientFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String firstName;
+  @override
+  final String lastName;
+  @override
+  final String phone;
+  @override
+  final String email;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ContactOwnerEntity.client(id: $id, firstName: $firstName, lastName: $lastName, phone: $phone, email: $email)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_ContactOwnerEntityClient &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.email, email) || other.email == email));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, firstName, lastName, phone, email);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ContactOwnerEntityClientCopyWith<_$_ContactOwnerEntityClient>
+      get copyWith => __$$_ContactOwnerEntityClientCopyWithImpl<
+          _$_ContactOwnerEntityClient>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)
+        $default, {
+    required TResult Function() empty,
+    required TResult Function(int id, String firstName, String lastName,
+            String phone, String email)
+        client,
+    required TResult Function(int id, String companyName, String phone,
+            String email, Professions professions)
+        pro,
+  }) {
+    return client(id, firstName, lastName, phone, email);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        $default, {
+    TResult? Function()? empty,
+    TResult? Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult? Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
+  }) {
+    return client?.call(id, firstName, lastName, phone, email);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        $default, {
+    TResult Function()? empty,
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
+    required TResult orElse(),
+  }) {
+    if (client != null) {
+      return client(id, firstName, lastName, phone, email);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ContactOwnerEntity value) $default, {
+    required TResult Function(_ContactOwnerEntityEmpty value) empty,
+    required TResult Function(_ContactOwnerEntityClient value) client,
+    required TResult Function(_ContactOwnerEntityPro value) pro,
+  }) {
+    return client(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ContactOwnerEntity value)? $default, {
+    TResult? Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult? Function(_ContactOwnerEntityClient value)? client,
+    TResult? Function(_ContactOwnerEntityPro value)? pro,
+  }) {
+    return client?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ContactOwnerEntity value)? $default, {
+    TResult Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult Function(_ContactOwnerEntityClient value)? client,
+    TResult Function(_ContactOwnerEntityPro value)? pro,
+    required TResult orElse(),
+  }) {
+    if (client != null) {
+      return client(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ContactOwnerEntityClientToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ContactOwnerEntityClient implements ContactOwnerEntity {
+  const factory _ContactOwnerEntityClient(
+      {required final int id,
+      required final String firstName,
+      required final String lastName,
+      required final String phone,
+      required final String email}) = _$_ContactOwnerEntityClient;
+
+  factory _ContactOwnerEntityClient.fromJson(Map<String, dynamic> json) =
+      _$_ContactOwnerEntityClient.fromJson;
+
+  int get id;
+  String get firstName;
+  String get lastName;
+  String get phone;
+  String get email;
+  @JsonKey(ignore: true)
+  _$$_ContactOwnerEntityClientCopyWith<_$_ContactOwnerEntityClient>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_ContactOwnerEntityProCopyWith<$Res> {
+  factory _$$_ContactOwnerEntityProCopyWith(_$_ContactOwnerEntityPro value,
+          $Res Function(_$_ContactOwnerEntityPro) then) =
+      __$$_ContactOwnerEntityProCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {int id,
+      String companyName,
+      String phone,
+      String email,
+      Professions professions});
+}
+
+/// @nodoc
+class __$$_ContactOwnerEntityProCopyWithImpl<$Res>
+    extends _$ContactOwnerEntityCopyWithImpl<$Res, _$_ContactOwnerEntityPro>
+    implements _$$_ContactOwnerEntityProCopyWith<$Res> {
+  __$$_ContactOwnerEntityProCopyWithImpl(_$_ContactOwnerEntityPro _value,
+      $Res Function(_$_ContactOwnerEntityPro) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? companyName = null,
+    Object? phone = null,
+    Object? email = null,
+    Object? professions = null,
+  }) {
+    return _then(_$_ContactOwnerEntityPro(
+      null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      null == companyName
+          ? _value.companyName
+          : companyName // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == professions
+          ? _value.professions
+          : professions // ignore: cast_nullable_to_non_nullable
+              as Professions,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
+  const _$_ContactOwnerEntityPro(
+      this.id, this.companyName, this.phone, this.email, this.professions,
+      {final String? $type})
+      : $type = $type ?? 'pro';
+
+  factory _$_ContactOwnerEntityPro.fromJson(Map<String, dynamic> json) =>
+      _$$_ContactOwnerEntityProFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String companyName;
+  @override
+  final String phone;
+  @override
+  final String email;
+  @override
+  final Professions professions;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'ContactOwnerEntity.pro(id: $id, companyName: $companyName, phone: $phone, email: $email, professions: $professions)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_ContactOwnerEntityPro &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.companyName, companyName) ||
+                other.companyName == companyName) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.professions, professions) ||
+                other.professions == professions));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, companyName, phone, email, professions);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ContactOwnerEntityProCopyWith<_$_ContactOwnerEntityPro> get copyWith =>
+      __$$_ContactOwnerEntityProCopyWithImpl<_$_ContactOwnerEntityPro>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)
+        $default, {
+    required TResult Function() empty,
+    required TResult Function(int id, String firstName, String lastName,
+            String phone, String email)
+        client,
+    required TResult Function(int id, String companyName, String phone,
+            String email, Professions professions)
+        pro,
+  }) {
+    return pro(id, companyName, phone, email, professions);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        $default, {
+    TResult? Function()? empty,
+    TResult? Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult? Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
+  }) {
+    return pro?.call(id, companyName, phone, email, professions);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        $default, {
+    TResult Function()? empty,
+    TResult Function(int id, String firstName, String lastName, String phone,
+            String email)?
+        client,
+    TResult Function(int id, String companyName, String phone, String email,
+            Professions professions)?
+        pro,
+    required TResult orElse(),
+  }) {
+    if (pro != null) {
+      return pro(id, companyName, phone, email, professions);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_ContactOwnerEntity value) $default, {
+    required TResult Function(_ContactOwnerEntityEmpty value) empty,
+    required TResult Function(_ContactOwnerEntityClient value) client,
+    required TResult Function(_ContactOwnerEntityPro value) pro,
+  }) {
+    return pro(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ContactOwnerEntity value)? $default, {
+    TResult? Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult? Function(_ContactOwnerEntityClient value)? client,
+    TResult? Function(_ContactOwnerEntityPro value)? pro,
+  }) {
+    return pro?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ContactOwnerEntity value)? $default, {
+    TResult Function(_ContactOwnerEntityEmpty value)? empty,
+    TResult Function(_ContactOwnerEntityClient value)? client,
+    TResult Function(_ContactOwnerEntityPro value)? pro,
+    required TResult orElse(),
+  }) {
+    if (pro != null) {
+      return pro(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ContactOwnerEntityProToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ContactOwnerEntityPro implements ContactOwnerEntity {
+  const factory _ContactOwnerEntityPro(
+      final int id,
+      final String companyName,
+      final String phone,
+      final String email,
+      final Professions professions) = _$_ContactOwnerEntityPro;
+
+  factory _ContactOwnerEntityPro.fromJson(Map<String, dynamic> json) =
+      _$_ContactOwnerEntityPro.fromJson;
+
+  int get id;
+  String get companyName;
+  String get phone;
+  String get email;
+  Professions get professions;
+  @JsonKey(ignore: true)
+  _$$_ContactOwnerEntityProCopyWith<_$_ContactOwnerEntityPro> get copyWith =>
+      throw _privateConstructorUsedError;
 }

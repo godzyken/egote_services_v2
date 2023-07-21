@@ -1,12 +1,14 @@
 import 'dart:async';
 
-import 'package:egote_services_v2/config/app_shared/images/list_local.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:egote_services_v2/features/home/application/home_controller.dart';
 import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../gen/assets.gen.dart';
 
 
 
@@ -25,9 +27,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   late Timer _timer;
 
   final imageWidgets = [
-    const Image(image: AssetImage(LocalImages.maisonIndiv), key: Key('1'), fit: BoxFit.scaleDown, height: 300),
-    const Image(image: AssetImage(LocalImages.swimmingPoolSussargue), key: Key('2'), fit: BoxFit.scaleDown, height: 300),
-    const Image(image: AssetImage(LocalImages.apartmentPng), key: Key('3'), fit: BoxFit.scaleDown, height: 300),
+    Assets.lottie.image.maisonIndiv.image(
+      key: const Key('1'),
+      fit: BoxFit.scaleDown,
+      height: 300
+    ),
+    Assets.lottie.archive.amenagement.exterieur.piscines.piscineSussargue1.image(
+        key: const Key('2'),
+        fit: BoxFit.scaleDown,
+        height: 300
+    ),
+    Assets.lottie.image.appartement.image(
+        key: const Key('3'),
+        fit: BoxFit.scaleDown,
+        height: 300
+    ),
   ];
 
   @override
@@ -46,15 +60,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Consumer(builder: (context, ref, child) {
       var network = ref.watch(networkAwareProvider);
       if (network == NetWorkStatus.off) {
-        return const Center(
-          child: Text("No network"),
+        return Center(
+          child: Text(context.tr!.noNetwork),
         );
       }
 
       return Scaffold(
         appBar: AppBar(
           title: Text(
-          'Home $network',
+          '${context.tr!.home} $network',
           style: const TextStyle(color: Colors.black54),
         ),
           titleSpacing: 00.0,
@@ -71,18 +85,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.comment),
-              tooltip: 'Comment Icon',
+              tooltip: context.tr!.tooltipIconComment,
               onPressed: () => context.go('/avisRoute'),
             ), //IconButton
             IconButton(
               icon: const Icon(Icons.settings),
-              tooltip: 'Setting Icon',
+              tooltip: context.tr!.tooltipIconSettings,
               onPressed: () => context.go('/settingsRoute'),
             ), //IconButton
           ],
           leading: IconButton(
             icon: const Icon(Icons.menu),
-            tooltip: 'Menu Icon',
+            tooltip: context.tr!.tooltipIconMenu,
             onPressed: () { },
           ),
           systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -93,7 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 duration: const Duration(milliseconds: 1600),
                  //onEnd: () => context.go('/authRoute'),
                  //onEnd: () => context.goNamed('mfaList'),
-                onEnd: () => context.goNamed('chat'),
+                onEnd: () => context.goNamed('devis', extra: "/:2",),
                 top: animate ? 0 : -80,
                 left: animate ? 0 : -80,
                 curve: Curves.elasticInOut,
@@ -120,11 +134,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 1600),
                     opacity: animate ? 1 : 0,
-                    child: const Image(
-                        width: 250,
-                        height: 250,
-                        image: AssetImage(LocalImages.logoBatServices)
-                    ))),
+                    child: Assets.lottie.image.logoBatServices.image(
+                      width: 250,
+                      height: 250,
+                    ),
+                )
+            ),
             // GestureDetector(
             //     onHorizontalDragEnd: (details) => context.goNamed('userList'),
             //     child: child

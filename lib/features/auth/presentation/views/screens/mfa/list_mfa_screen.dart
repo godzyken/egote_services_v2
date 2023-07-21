@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/routes/routes.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +15,7 @@ class ListMfaScreen extends ConsumerWidget {
     final factorListFuture = ref.watch(supabaseClientProvider).auth.mfa.listFactors();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('List of MFA Factors')),
+      appBar: AppBar(title: Text(context.tr!.listMfa)),
       body: FutureBuilder(
         future: factorListFuture,
         builder: (context, snapshot) {
@@ -40,15 +41,13 @@ class ListMfaScreen extends ConsumerWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text(
-                              'Are you sure you want to delete this factor? You will be signed out of the app upon removing the factor.',
-                            ),
+                            title: Text(context.tr!.deleteFactor),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   context.pop();
                                 },
-                                child: const Text('cancel'),
+                                child: Text(context.tr!.cancel),
                               ),
                               TextButton(
                                 onPressed: () async {
@@ -58,7 +57,7 @@ class ListMfaScreen extends ConsumerWidget {
                                     context.go(SignUpRoute.path);
                                   }
                                 },
-                                child: const Text('delete'),
+                                child: Text(context.tr!.delete),
                               ),
                             ],
                           );

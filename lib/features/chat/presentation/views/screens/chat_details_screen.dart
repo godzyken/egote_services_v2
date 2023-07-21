@@ -7,14 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../config/app_shared/extensions/extensions.dart';
+import '../../../../../config/cube_config/cube_config.dart';
 
 class ChatDetailsScreen extends ConsumerWidget {
-  const ChatDetailsScreen({
-    Key? key,
-    required this.cubeUser,
-    required this.cubeDialog
-  }) : super(key: key);
+  const ChatDetailsScreen(
+      {Key? key, required this.cubeUser, required this.cubeDialog})
+      : super(key: key);
 
   final CubeUser cubeUser;
   final CubeDialog cubeDialog;
@@ -22,29 +20,34 @@ class ChatDetailsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return WillPopScope(
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-                onPressed: () => context.pop(),
-                icon: const Icon(Icons.close, color: Colors.white,),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => context.pop(),
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
             ),
-            automaticallyImplyLeading: false,
-            title: Text(cubeDialog.type == CubeDialogType.PRIVATE ? "Contact details" : "Group details"),
-            centerTitle: false,
-            actions: [
-              if (cubeDialog.type != CubeDialogType.PRIVATE)
-                IconButton(
-                  onPressed: () {
-                    _exitDialog(context);
-                  },
-                  icon: const Icon(
-                    Icons.exit_to_app,
-                  ),
-                )
-            ],
           ),
+          automaticallyImplyLeading: false,
+          title: Text(cubeDialog.type == CubeDialogType.PRIVATE
+              ? context.tr!.contactDetails
+              : context.tr!.groupDetails),
+          centerTitle: false,
+          actions: [
+            if (cubeDialog.type != CubeDialogType.PRIVATE)
+              IconButton(
+                onPressed: () {
+                  _exitDialog(context);
+                },
+                icon: const Icon(
+                  Icons.exit_to_app,
+                ),
+              )
+          ],
         ),
-        onWillPop: () => _onBackPressed(context),
+      ),
+      onWillPop: () => _onBackPressed(context),
     );
   }
 
@@ -58,20 +61,20 @@ class ChatDetailsScreen extends ConsumerWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Leave Dialog'),
-          content: const Text("Are you sure you want to leave this dialog?"),
+          title: Text(context.tr!.leaveDialog),
+          content: Text(context.tr!.confirmLeaveDial),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(context.tr!.cancel),
               onPressed: () {
                 context.pop(context);
               },
             ),
             TextButton(
-              child: const Text('Ok'),
+              child: Text(context.tr!.ok),
               onPressed: () {
                 deleteDialog(cubeDialog.dialogId!).then((onValue) {
-                  context.showAlert('Success');
+                  context.showAlert(context.tr!.success);
                   context.pushReplacementNamed(
                     'select_dialog',
                     extra: {USER_ARG_NAME: cubeUser},
@@ -89,18 +92,14 @@ class ChatDetailsScreen extends ConsumerWidget {
 }
 
 class DetailsScreen extends ConsumerStatefulWidget {
-  DetailsScreen({
-    Key? key,
-    required this.cubeUser,
-    required this.cubeDialog
-  }) : super(key: key);
+  DetailsScreen({Key? key, required this.cubeUser, required this.cubeDialog})
+      : super(key: key);
 
   final CubeUser cubeUser;
   CubeDialog cubeDialog;
 
   @override
-  ConsumerState createState() => cubeDialog.type
-      == CubeDialogType.PRIVATE
+  ConsumerState createState() => cubeDialog.type == CubeDialogType.PRIVATE
       ? ContactScreenState()
       : GroupScreenState();
 }
@@ -119,16 +118,17 @@ abstract class DetailsScreenState extends ConsumerState<DetailsScreen> {
 
   initUsers() async {
     _isProgressContinues = true;
-    if (widget.cubeDialog.occupantsIds == null || widget.cubeDialog.occupantsIds!.isEmpty) {
+    if (widget.cubeDialog.occupantsIds == null ||
+        widget.cubeDialog.occupantsIds!.isEmpty) {
       setState(() {
         _isProgressContinues = false;
       });
       return;
     }
 
-    var result = await ref.watch(cubeUserRepositoryProvider).getCubeUsersByIds(
-        widget.cubeDialog.occupantsIds!.toSet()
-    );
+    var result = await ref
+        .watch(cubeUserRepositoryProvider)
+        .getCubeUsersByIds(widget.cubeDialog.occupantsIds!.toSet());
 
     _occupants.clear();
     _occupants.addAll(result);
@@ -145,7 +145,7 @@ class ContactScreenState extends DetailsScreenState {
   initUser() {
     contactUser = _occupants.values.isNotEmpty
         ? _occupants.values.first
-        : CubeUser(fullName: "Absent");
+        : CubeUser(fullName: context.tr!.absent);
   }
 
   @override
@@ -202,9 +202,9 @@ class ContactScreenState extends DetailsScreenState {
             decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
-                      color: Colors.primaries.single, // Text colour here
-                      width: 1.0, // Underline width
-                    ))),
+              color: Colors.primaries.single, // Text colour here
+              width: 1.0, // Underline width
+            ))),
             child: Text(
               contactUser!.fullName ??
                   contactUser!.login ??
@@ -228,9 +228,9 @@ class ContactScreenState extends DetailsScreenState {
     return Column(
       children: <Widget>[
         ElevatedButton(
-          child: const Text(
-            'Start dialog',
-            style: TextStyle(
+          child: Text(
+            context.tr!.startDialog,
+            style: const TextStyle(
               color: Colors.white,
             ),
           ),
@@ -295,7 +295,7 @@ class GroupScreenState extends DetailsScreenState {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        heroTag: "Update dialog",
+        heroTag: context.tr!.updateDialog,
         backgroundColor: Colors.blue,
         onPressed: () => _updateDialog(),
         child: const Icon(
@@ -342,7 +342,7 @@ class GroupScreenState extends DetailsScreenState {
     );
   }
 
-   _chooseUserImage() async {
+  _chooseUserImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
     );
@@ -357,10 +357,9 @@ class GroupScreenState extends DetailsScreenState {
       setState(() {
         widget.cubeDialog.photo = _photoUrl;
       });
-    })
-        .catchError((error) {
-          _processUpdateError(error);
-        });
+    }).catchError((error) {
+      _processUpdateError(error);
+    });
   }
 
   Widget _buildTextFields() {
@@ -375,7 +374,7 @@ class GroupScreenState extends DetailsScreenState {
             autofocus: true,
             style: TextStyle(color: Colors.primaries.single, fontSize: 20.0),
             controller: _nameFilter,
-            decoration: const InputDecoration(labelText: 'Change group name'),
+            decoration: InputDecoration(labelText: context.tr!.changeGroupName),
           ),
         ],
       ),
@@ -402,14 +401,14 @@ class GroupScreenState extends DetailsScreenState {
       decoration: const BoxDecoration(
           border: Border(
               bottom: BorderSide(
-                color: Colors.green, // Text colour here
-                width: 2.0, // Underline width
-              ))),
+        color: Colors.green, // Text colour here
+        width: 2.0, // Underline width
+      ))),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
-            'Members:',
+            '${context.tr!.members}:',
             style: TextStyle(
               color: Colors.primaries.single,
               fontSize: 18, // Text colour here
@@ -556,17 +555,17 @@ class GroupScreenState extends DetailsScreenState {
         _photoUrl!.isEmpty &&
         (_usersToAdd?.isEmpty ?? true) &&
         (_usersToRemove.isEmpty)) {
-      context.showAlert('Nothing to save');
+      context.showAlert(context.tr!.nothingToSave);
       return;
     }
     Map<String, dynamic> params = {};
     if (_name.isNotEmpty) params['name'] = _name;
     if (_photoUrl!.isNotEmpty) params['photo'] = _photoUrl;
     if (_usersToAdd?.isNotEmpty ?? false) {
-      params['push_all'] = {'occupants_ids': List.of(_usersToAdd!)};
+      params['push_all'] = {context.tr!.occupantsIds: List.of(_usersToAdd!)};
     }
     if (_usersToRemove.isNotEmpty) {
-      params['pull_all'] = {'occupants_ids': List.of(_usersToRemove)};
+      params['pull_all'] = {context.tr!.occupantsIds: List.of(_usersToRemove)};
     }
 
     setState(() {
@@ -574,7 +573,7 @@ class GroupScreenState extends DetailsScreenState {
     });
     updateDialog(widget.cubeDialog.dialogId!, params).then((dialog) {
       widget.cubeDialog = dialog;
-      context.showAlert('Success');
+      context.showAlert(context.tr!.success);
       setState(() {
         if ((_usersToAdd?.isNotEmpty ?? false) || (_usersToRemove.isNotEmpty)) {
           initUsers();

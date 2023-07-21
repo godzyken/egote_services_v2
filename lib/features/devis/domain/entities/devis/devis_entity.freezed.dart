@@ -37,7 +37,7 @@ mixin _$DevisEntity {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -53,7 +53,7 @@ mixin _$DevisEntity {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -69,7 +69,7 @@ mixin _$DevisEntity {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -133,7 +133,7 @@ abstract class _$$_DevisEntityCompleteCopyWith<$Res> {
       {int id,
       String numDevis,
       StatusModel? statusModel,
-      TypesConstructionModel? typesConstructionModel,
+      TypesHabitat? typesHabitat,
       SuperficieEntity? superficieEntity,
       TravauxEntity? travauxEntity,
       ContactOwnerEntity? contactOwnerEntity,
@@ -159,7 +159,7 @@ class __$$_DevisEntityCompleteCopyWithImpl<$Res>
     Object? id = null,
     Object? numDevis = null,
     Object? statusModel = freezed,
-    Object? typesConstructionModel = freezed,
+    Object? typesHabitat = freezed,
     Object? superficieEntity = freezed,
     Object? travauxEntity = freezed,
     Object? contactOwnerEntity = freezed,
@@ -178,10 +178,10 @@ class __$$_DevisEntityCompleteCopyWithImpl<$Res>
           ? _value.statusModel
           : statusModel // ignore: cast_nullable_to_non_nullable
               as StatusModel?,
-      typesConstructionModel: freezed == typesConstructionModel
-          ? _value.typesConstructionModel
-          : typesConstructionModel // ignore: cast_nullable_to_non_nullable
-              as TypesConstructionModel?,
+      typesHabitat: freezed == typesHabitat
+          ? _value.typesHabitat
+          : typesHabitat // ignore: cast_nullable_to_non_nullable
+              as TypesHabitat?,
       superficieEntity: freezed == superficieEntity
           ? _value.superficieEntity
           : superficieEntity // ignore: cast_nullable_to_non_nullable
@@ -259,7 +259,7 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
       {required this.id,
       required this.numDevis,
       this.statusModel,
-      this.typesConstructionModel,
+      this.typesHabitat,
       this.superficieEntity,
       this.travauxEntity,
       this.contactOwnerEntity,
@@ -277,7 +277,7 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
   @override
   final StatusModel? statusModel;
   @override
-  final TypesConstructionModel? typesConstructionModel;
+  final TypesHabitat? typesHabitat;
   @override
   final SuperficieEntity? superficieEntity;
   @override
@@ -292,7 +292,7 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
 
   @override
   String toString() {
-    return 'DevisEntity.complete(id: $id, numDevis: $numDevis, statusModel: $statusModel, typesConstructionModel: $typesConstructionModel, superficieEntity: $superficieEntity, travauxEntity: $travauxEntity, contactOwnerEntity: $contactOwnerEntity, missionEntity: $missionEntity)';
+    return 'DevisEntity.complete(id: $id, numDevis: $numDevis, statusModel: $statusModel, typesHabitat: $typesHabitat, superficieEntity: $superficieEntity, travauxEntity: $travauxEntity, contactOwnerEntity: $contactOwnerEntity, missionEntity: $missionEntity)';
   }
 
   @override
@@ -305,8 +305,8 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
                 other.numDevis == numDevis) &&
             (identical(other.statusModel, statusModel) ||
                 other.statusModel == statusModel) &&
-            (identical(other.typesConstructionModel, typesConstructionModel) ||
-                other.typesConstructionModel == typesConstructionModel) &&
+            (identical(other.typesHabitat, typesHabitat) ||
+                other.typesHabitat == typesHabitat) &&
             (identical(other.superficieEntity, superficieEntity) ||
                 other.superficieEntity == superficieEntity) &&
             (identical(other.travauxEntity, travauxEntity) ||
@@ -324,7 +324,7 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
       id,
       numDevis,
       statusModel,
-      typesConstructionModel,
+      typesHabitat,
       superficieEntity,
       travauxEntity,
       contactOwnerEntity,
@@ -344,7 +344,7 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -353,8 +353,8 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
     required TResult Function(int id, String numDevis) initialize,
     required TResult Function() empty,
   }) {
-    return complete(id, numDevis, statusModel, typesConstructionModel,
-        superficieEntity, travauxEntity, contactOwnerEntity, missionEntity);
+    return complete(id, numDevis, statusModel, typesHabitat, superficieEntity,
+        travauxEntity, contactOwnerEntity, missionEntity);
   }
 
   @override
@@ -364,7 +364,7 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -373,7 +373,7 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
     TResult? Function(int id, String numDevis)? initialize,
     TResult? Function()? empty,
   }) {
-    return complete?.call(id, numDevis, statusModel, typesConstructionModel,
+    return complete?.call(id, numDevis, statusModel, typesHabitat,
         superficieEntity, travauxEntity, contactOwnerEntity, missionEntity);
   }
 
@@ -384,7 +384,7 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -395,8 +395,8 @@ class _$_DevisEntityComplete implements _DevisEntityComplete {
     required TResult orElse(),
   }) {
     if (complete != null) {
-      return complete(id, numDevis, statusModel, typesConstructionModel,
-          superficieEntity, travauxEntity, contactOwnerEntity, missionEntity);
+      return complete(id, numDevis, statusModel, typesHabitat, superficieEntity,
+          travauxEntity, contactOwnerEntity, missionEntity);
     }
     return orElse();
   }
@@ -448,7 +448,7 @@ abstract class _DevisEntityComplete implements DevisEntity {
       {required final int id,
       required final String numDevis,
       final StatusModel? statusModel,
-      final TypesConstructionModel? typesConstructionModel,
+      final TypesHabitat? typesHabitat,
       final SuperficieEntity? superficieEntity,
       final TravauxEntity? travauxEntity,
       final ContactOwnerEntity? contactOwnerEntity,
@@ -460,7 +460,7 @@ abstract class _DevisEntityComplete implements DevisEntity {
   int get id;
   String get numDevis;
   StatusModel? get statusModel;
-  TypesConstructionModel? get typesConstructionModel;
+  TypesHabitat? get typesHabitat;
   SuperficieEntity? get superficieEntity;
   TravauxEntity? get travauxEntity;
   ContactOwnerEntity? get contactOwnerEntity;
@@ -557,7 +557,7 @@ class _$_DevisEntityInitialize implements _DevisEntityInitialize {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -576,7 +576,7 @@ class _$_DevisEntityInitialize implements _DevisEntityInitialize {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -595,7 +595,7 @@ class _$_DevisEntityInitialize implements _DevisEntityInitialize {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -717,7 +717,7 @@ class _$_DevisEntityEmpty implements _DevisEntityEmpty {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -736,7 +736,7 @@ class _$_DevisEntityEmpty implements _DevisEntityEmpty {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,
@@ -755,7 +755,7 @@ class _$_DevisEntityEmpty implements _DevisEntityEmpty {
             int id,
             String numDevis,
             StatusModel? statusModel,
-            TypesConstructionModel? typesConstructionModel,
+            TypesHabitat? typesHabitat,
             SuperficieEntity? superficieEntity,
             TravauxEntity? travauxEntity,
             ContactOwnerEntity? contactOwnerEntity,

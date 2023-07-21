@@ -1,8 +1,9 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DevisEditScreen extends ConsumerWidget {
-  final int did;
+  final String did;
 
   const DevisEditScreen({Key? key, required this.did}) : super(key: key);
 
@@ -14,7 +15,7 @@ class DevisEditScreen extends ConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Add Devis'),
+          title: Text(context.tr!.addDevis),
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
@@ -22,7 +23,7 @@ class DevisEditScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             color: scheme.primary,
             onPressed: () {},
-            child: Text("Done".toUpperCase()),
+            child: Text(context.tr!.done.toUpperCase()),
           ),
         ),
         body: SingleChildScrollView(
@@ -53,7 +54,7 @@ class DevisEditScreen extends ConsumerWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Pick Image".toUpperCase(),
+                          context.tr!.pickImage.toUpperCase(),
                           textAlign: TextAlign.center,
                           style: style.bodySmall,
                         ),
@@ -67,8 +68,8 @@ class DevisEditScreen extends ConsumerWidget {
               ),
               TextFormField(
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(
-                  labelText: "Title",
+                decoration: InputDecoration(
+                  labelText: context.tr!.title,
                 ),
               ),
               const SizedBox(
@@ -78,8 +79,8 @@ class DevisEditScreen extends ConsumerWidget {
                 minLines: 5,
                 maxLines: 20,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(
-                  labelText: "Description",
+                decoration: InputDecoration(
+                  labelText: context.tr!.description,
                 ),
               ),
             ],

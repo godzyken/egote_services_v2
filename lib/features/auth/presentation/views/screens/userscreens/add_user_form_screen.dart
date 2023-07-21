@@ -105,10 +105,10 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
       maxLength: 20,
       onChanged: (value) => _viewModel.setTitle(value),
       validator: (_) => _viewModel.validateName(),
-      decoration: const InputDecoration(
-        icon: Icon(Icons.edit),
-        labelText: 'Title',
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        icon: const Icon(Icons.edit),
+        labelText: context.tr!.title,
+        border: const OutlineInputBorder(),
       ),
     );
   }
@@ -119,10 +119,10 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
       maxLength: 20,
       onChanged: (value) => _viewModel.setRole(value),
       validator: (_) => _viewModel.validateRole(),
-      decoration: const InputDecoration(
-        icon: Icon(Icons.view_headline),
-        labelText: 'Role',
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        icon: const Icon(Icons.view_headline),
+        labelText: context.tr!.role,
+        border: const OutlineInputBorder(),
       ),
     );
   }
@@ -135,11 +135,11 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
       onTap: () => _showDatePicker(context),
       onChanged: (value) => _viewModel.setTitle(value),
       validator: (_) => _viewModel.validateRole(),
-      decoration: const InputDecoration(
-        icon: Icon(Icons.calendar_today_rounded),
-        labelText: 'DueDate',
-        helperText: 'Required',
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        icon: const Icon(Icons.calendar_today_rounded),
+        labelText: context.tr!.dueDate,
+        helperText: context.tr!.required,
+        border: const OutlineInputBorder(),
       ),
     );
   }
@@ -170,14 +170,14 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
     final bool res = await showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          content: Text(context.tr!.deleteBoat),
+          content: Text(context.tr!.deleteUser),
           actions: [
             TextButton(
                 onPressed: () => context.pop([context, false]),
                 child: Text(context.tr!.cancel)),
             TextButton(
                 onPressed: () =>  context.pop([context, true]),
-                child: Text(context.tr!.deleteBoat)),
+                child: Text(context.tr!.delete)),
           ],
         ),
     );

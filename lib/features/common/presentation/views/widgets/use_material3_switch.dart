@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,7 +10,7 @@ class UseMaterial3Switch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
-      title: const Text('Use Material 3'),
+      title: Text(context.tr!.useMaterial3Title),
       value: ref.watch(Settings.useMaterial3Provider),
       onChanged: ref.read(Settings.useMaterial3Provider.notifier).set,
     );

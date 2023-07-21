@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../config/app_shared/extensions/extensions.dart';
+import '../../../../../config/cube_config/cube_config.dart';
 import '../../../domain/models/entities/message_state.dart';
 import 'chat_screens.dart';
 
@@ -66,7 +67,7 @@ class _BodySelectedDialogLayoutState
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        heroTag: "New dialog",
+        heroTag: context.tr!.newDialog,
         backgroundColor: Colors.blue,
         onPressed: () => _createNewDialog(context),
         child: const Icon(
@@ -106,10 +107,10 @@ class _BodySelectedDialogLayoutState
     if (_isDialogContinues && dialogList.isEmpty) {
       return const SizedBox.shrink();
     } else if (dialogList.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'No dialogs yet',
-          style: TextStyle(fontSize: 20),
+          context.tr!.noDialogYet,
+          style: const TextStyle(fontSize: 20),
         ),
       );
     } else {
@@ -171,7 +172,7 @@ class _BodySelectedDialogLayoutState
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        dialogList[index].data.name ?? 'Unknown dialog',
+                        dialogList[index].data.name ?? context.tr!.dialogUnknown,
                         style: TextStyle(
                             color: Colors.primaries.single,
                             fontWeight: FontWeight.bold,

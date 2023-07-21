@@ -76,7 +76,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verification'),
+        title: Text(context.tr!.verification),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(
@@ -84,20 +84,19 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
           vertical: 24,
         ),
         children: [
-          Text('Enter the verification code sent'
-              'to your email address ${widget.params.email}'),
+          Text('${context.tr!.verificationCodeSent} ${context.tr!.toYourEmailAddress} ${widget.params.email}'),
           const SizedBox(height: 30,),
           TextInputField(
             controller: _codeCtrl,
             obscureText: _isSubmitting,
-            hintText: '000000',
-            decoration: const InputDecoration(
-              labelText: 'Verification code',
-              border: OutlineInputBorder(),
+            hintText: context.tr!.initCode,
+            decoration: InputDecoration(
+              labelText: context.tr!.verificationCode,
+              border: const OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Missing the verification code';
+                return context.tr!.missVerification;
               }
               return null;
             },
@@ -142,7 +141,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                 ));
 
                 if (mounted) {
-                  context.showAlert('Successfully signed up');
+                  context.showAlert(context.tr!.successSignedUp);
 
                   final String location = context.namedLocation(
                       'user_home',
@@ -157,11 +156,11 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                 _isSubmitting = false;
               });
             },
-            label: 'Verification code',
+            label: context.tr!.verificationCode,
           ),
           const SizedBox(height: 20,),
           SubmitButton(
-            'Resend Code',
+            context.tr!.codeResent,
             fontSize: 16,
             height: 20,
             key: _formKey,
@@ -169,7 +168,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
             onPressed: _isSubmitting ? null : () async {
               await _resendCode();
               if (mounted) {
-                context.showAlert('Code resent');
+                context.showAlert(context.tr!.codeResent);
               }
             },
           ),

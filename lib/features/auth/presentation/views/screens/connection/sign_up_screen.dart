@@ -178,7 +178,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     if (_formKey.currentState!.validate()) {
                       await _createAccount();
                       if(mounted) {
-                        context.showAlert('Check your inbox');
+                        context.showAlert(context.tr!.checkInbox);
                         context.goNamed(
                             'enroll',
                             extra: VerificationScreenParams(
@@ -203,7 +203,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       final String location = context.namedLocation('login');
                       return context.go(location);
                     },
-                    child: const Text('I already have an account'),
+                    child: Text(context.tr!.alreadyHave),
                 ),
               ],
             ),

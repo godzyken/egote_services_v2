@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,22 +13,19 @@ class ResetSettingsDialog extends ConsumerWidget {
     final String usedDb =
         ref.watch(usedKeyValueDbProvider.notifier).state.describe;
     return AlertDialog(
-      title: const Text('Reset Theme Settings'),
-      content: Text('Reset all $usedDb theme settings back to their '
-          'default values?\n'
-          'Persisted theme settings will also be updated to default '
-          'values.'),
+      title: Text('${context.tr!.reset} ${context.tr!.themeSettings}'),
+      content: Text('${context.tr!.resetAll} $usedDb ${context.tr!.alertDialogContent}'),
       actions: <Widget>[
         TextButton(
             onPressed: () {
               context.pop(false);
             },
-            child: const Text('Cancel')),
+            child: Text(context.tr!.cancel)),
         TextButton(
             onPressed: () {
               context.pop(true);
             },
-            child: const Text('Reset')),
+            child: Text(context.tr!.reset)),
       ],
     );
   }

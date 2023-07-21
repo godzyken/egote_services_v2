@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,16 +13,16 @@ class SettingsUiPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(context.tr!.settings)),
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: const Text('General'),
+            title: Text(context.tr!.general),
               tiles: [
                 SettingsTile.navigation(
-                    title: const Text('Abstract settings screen'),
+                    title: Text(context.tr!.abstractSettingsTitle),
                   leading: const Icon(CupertinoIcons.wrench),
-                  description: const Text('UI create to show plugin\'s possibilities'),
+                  description: Text(context.tr!.abstractSettingsDescription),
                   onPressed: (context) {
                     Navigation.navigateTo(
                       context: context,
@@ -30,13 +31,24 @@ class SettingsUiPage extends ConsumerWidget {
                     );
                   },
                 ),
+                SettingsTile.navigation(
+                  title: Text(context.tr!.languageSettingsScreen),
+                  leading: const Icon(CupertinoIcons.globe),
+                  onPressed: (context) {
+                    Navigation.navigateTo(
+                      context: context,
+                      screen: const LanguageSettingsScreen(),
+                      style: NavigationRouteStyle.material,
+                    );
+                  },
+                ),
               ],
           ),
           SettingsSection(
-            title: const Text('Replications'),
+            title: Text(context.tr!.replications),
               tiles: [
                 SettingsTile.navigation(
-                  title: const Text('iOS Developer Screen'),
+                  title: Text(context.tr!.iosDevTitle),
                   leading: const Icon(CupertinoIcons.settings),
                   onPressed: (context) {
                     Navigation.navigateTo(
@@ -47,7 +59,7 @@ class SettingsUiPage extends ConsumerWidget {
                   },
                 ),
                 SettingsTile.navigation(
-                  title: const Text('Android Settings Screen'),
+                  title: Text(context.tr!.androidSettingsTitle),
                   leading: const Icon(Icons.settings),
                   onPressed: (context) {
                     Navigation.navigateTo(
@@ -58,7 +70,7 @@ class SettingsUiPage extends ConsumerWidget {
                   },
                 ),
                 SettingsTile.navigation(
-                  title: const Text('Web Settings'),
+                  title: Text(context.tr!.webSettingsTitle),
                   leading: const Icon(Icons.web),
                   onPressed: (context) {
                     Navigation.navigateTo(

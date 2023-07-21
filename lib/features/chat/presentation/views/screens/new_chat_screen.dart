@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../config/app_shared/extensions/extensions.dart';
+import '../../../../../config/cube_config/cube_config.dart';
+
 
 class NewChatScreen extends ConsumerStatefulWidget {
   const NewChatScreen({
@@ -53,7 +54,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
               ],
             )),
         floatingActionButton: FloatingActionButton(
-          heroTag: "New dialog",
+          heroTag: context.tr!.newDialog,
           backgroundColor: Colors.blue,
           onPressed: () => _createDialog(),
           child: const Icon(
@@ -93,7 +94,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
               child: TextField(
                 autofocus: true,
                 controller: _nameFilter,
-                decoration: const InputDecoration(labelText: 'Group Name...'),
+                decoration: InputDecoration(labelText: context.tr!.groupName),
               ),
             )
           ],
@@ -102,7 +103,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
           alignment: Alignment.centerLeft,
           margin: const EdgeInsets.all(16.0),
           child: Text(
-            'Please provide a group name and an optional group icon',
+            context.tr!.groupProvide,
             style: TextStyle(color: Colors.primaries.single),
           ),
         ),
@@ -186,7 +187,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
   _createDialog() {
     log("_createDialog cubeDialog= ${widget.cubeDialog}");
     if (widget.cubeDialog.name == null || widget.cubeDialog.name!.length < 5) {
-      context.showAlert("Enter more than 4 character");
+      context.showAlert(context.tr!.charSet4);
     } else {
       createDialog(widget.cubeDialog).then((createdDialog) {
         context.pushReplacementNamed(
