@@ -56,19 +56,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext? context) {
     return Consumer(builder: (context, ref, child) {
       var network = ref.watch(networkAwareProvider);
       if (network == NetWorkStatus.off) {
         return Center(
-          child: Text(context.tr!.noNetwork),
+          child: Text('${context.tr?.noNetwork}'),
         );
       }
 
       return Scaffold(
         appBar: AppBar(
           title: Text(
-          '${context.tr!.home} $network',
+          '${context.tr?.home} $network',
           style: const TextStyle(color: Colors.black54),
         ),
           titleSpacing: 00.0,
@@ -85,18 +85,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.comment),
-              tooltip: context.tr!.tooltipIconComment,
+              tooltip: context.tr?.tooltipIconComment,
               onPressed: () => context.go('/avisRoute'),
             ), //IconButton
             IconButton(
               icon: const Icon(Icons.settings),
-              tooltip: context.tr!.tooltipIconSettings,
+              tooltip: context.tr?.tooltipIconSettings,
               onPressed: () => context.go('/settingsRoute'),
             ), //IconButton
           ],
           leading: IconButton(
             icon: const Icon(Icons.menu),
-            tooltip: context.tr!.tooltipIconMenu,
+            tooltip: context.tr?.tooltipIconMenu,
             onPressed: () { },
           ),
           systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -107,7 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 duration: const Duration(milliseconds: 1600),
                  //onEnd: () => context.go('/authRoute'),
                  //onEnd: () => context.goNamed('mfaList'),
-                onEnd: () => context.goNamed('devis', extra: "/:2",),
+                //onEnd: () => context.goNamed('devis', extra: "/:2",),
                 top: animate ? 0 : -80,
                 left: animate ? 0 : -80,
                 curve: Curves.elasticInOut,

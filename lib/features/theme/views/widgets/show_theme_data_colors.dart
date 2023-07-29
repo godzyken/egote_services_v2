@@ -178,7 +178,7 @@ class ShowThemeDataColors extends StatelessWidget {
                 textColor: _onColor(theme.scaffoldBackgroundColor, background),
               ),
               ColorCard(
-                label: context.tr!.labelDialog,
+                label: context.tr!.dialog,
                 color: theme.dialogBackgroundColor,
                 textColor: _onColor(theme.dialogBackgroundColor, background),
               ),

@@ -13,16 +13,16 @@ class SettingsUiPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.tr!.settings)),
+      appBar: AppBar(title: Text('${context.tr?.settings}')),
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: Text(context.tr!.general),
+            title: Text('${context.tr?.general}'),
               tiles: [
                 SettingsTile.navigation(
-                    title: Text(context.tr!.abstractSettingsTitle),
+                    title: Text('${context.tr?.abstractSettingsTitle}'),
                   leading: const Icon(CupertinoIcons.wrench),
-                  description: Text(context.tr!.abstractSettingsDescription),
+                  description: Text('${context.tr?.abstractSettingsDescription}'),
                   onPressed: (context) {
                     Navigation.navigateTo(
                       context: context,
@@ -32,7 +32,7 @@ class SettingsUiPage extends ConsumerWidget {
                   },
                 ),
                 SettingsTile.navigation(
-                  title: Text(context.tr!.languageSettingsScreen),
+                  title: Text('${context.tr?.languageSettingsScreen}'),
                   leading: const Icon(CupertinoIcons.globe),
                   onPressed: (context) {
                     Navigation.navigateTo(
@@ -45,10 +45,10 @@ class SettingsUiPage extends ConsumerWidget {
               ],
           ),
           SettingsSection(
-            title: Text(context.tr!.replications),
+            title: Text('${context.tr?.replications}'),
               tiles: [
                 SettingsTile.navigation(
-                  title: Text(context.tr!.iosDevTitle),
+                  title: Text('${context.tr?.iosDevTitle}'),
                   leading: const Icon(CupertinoIcons.settings),
                   onPressed: (context) {
                     Navigation.navigateTo(
@@ -59,7 +59,7 @@ class SettingsUiPage extends ConsumerWidget {
                   },
                 ),
                 SettingsTile.navigation(
-                  title: Text(context.tr!.androidSettingsTitle),
+                  title: Text('${context.tr?.androidSettingsTitle}'),
                   leading: const Icon(Icons.settings),
                   onPressed: (context) {
                     Navigation.navigateTo(
@@ -70,7 +70,7 @@ class SettingsUiPage extends ConsumerWidget {
                   },
                 ),
                 SettingsTile.navigation(
-                  title: Text(context.tr!.webSettingsTitle),
+                  title: Text('${context.tr?.webSettingsTitle}'),
                   leading: const Icon(Icons.web),
                   onPressed: (context) {
                     Navigation.navigateTo(

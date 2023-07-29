@@ -45,11 +45,11 @@ class CustomMenuWidget extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${context.tr!.screenWidth} ${screenWidth.toStringAsFixed(0)}',
+                              '${context.tr!.screenWidth}: ${screenWidth.toStringAsFixed(0)}',
                               style: theme.primaryTextTheme.labelSmall,
                             ),
                             Text(
-                              '${context.tr!.drawerTheme} ${drawerWidth.toStringAsFixed(0)}',
+                              '${context.tr!.drawerTheme}: ${drawerWidth.toStringAsFixed(0)}',
                               style: theme.primaryTextTheme.labelSmall,
                             ),
                           ],

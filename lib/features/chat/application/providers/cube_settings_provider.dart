@@ -26,7 +26,7 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
 
   SharedPrefs preferences = await SharedPrefs.instance.init();
 
-  return settings.init(env.appId, env.authKey, env.authSecret,
+  return await settings.init(env.appId, env.authKey, env.authSecret,
       onSessionRestore: () async {
     return await preferences
         .getUser()

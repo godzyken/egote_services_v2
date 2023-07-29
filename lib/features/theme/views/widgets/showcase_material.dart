@@ -295,7 +295,7 @@ class TextButtonShowcase extends StatelessWidget {
         children: <Widget>[
           TextButton(
             onPressed: () {},
-            child: Text(context.tr!.textButton),
+            child: Text(context.tr!.labelTextButton),
           ),
           TextButton.icon(
             onPressed: () {},
@@ -304,7 +304,7 @@ class TextButtonShowcase extends StatelessWidget {
           ),
           TextButton(
             onPressed: null,
-            child: Text(context.tr!.textButton),
+            child: Text(context.tr!.labelTextButton),
           ),
         ],
       ),
@@ -2141,7 +2141,7 @@ class TabBarForAppBarShowcase extends StatelessWidget {
                       ),
                     ),
                     Tab(
-                      text: context.tr!.tabTasks,
+                      text: context.tr!.labelTasks,
                       icon: const Icon(Icons.beenhere),
                     ),
                     Tab(
@@ -2204,7 +2204,7 @@ class TabBarForBackgroundShowcase extends StatelessWidget {
                       ),
                     ),
                     Tab(
-                      text: context.tr!.tabTasks,
+                      text: context.tr!.labelTasks,
                       icon: const Icon(Icons.beenhere),
                     ),
                     Tab(
@@ -2308,7 +2308,7 @@ class _BottomNavigationBarShowcaseState
                     ),
                     BottomNavigationBarItem(
                       icon: const Icon(Icons.beenhere),
-                      label: context.tr!.tabTasks,
+                      label: context.tr!.labelTasks,
                       // title: Text('Item 2'),
                     ),
                     BottomNavigationBarItem(
@@ -2411,7 +2411,7 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
                     ),
                     NavigationDestination(
                       icon: const Icon(Icons.beenhere),
-                      label: context.tr!.tabTasks,
+                      label: context.tr!.labelTasks,
                     ),
                     NavigationDestination(
                       icon: const Icon(Icons.create_new_folder),
@@ -2537,7 +2537,7 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
                           ),
                           NavigationRailDestination(
                             icon: const Icon(Icons.beenhere),
-                            label: Text(context.tr!.tabTasks),
+                            label: Text(context.tr!.labelTasks),
                           ),
                           NavigationRailDestination(
                             icon: const Icon(Icons.create_new_folder),
@@ -3124,7 +3124,7 @@ class _NavigationDrawerShowcaseState extends State<NavigationDrawerShowcase> {
                   ),
                   NavigationDrawerDestination(
                     icon: const Icon(Icons.beenhere),
-                    label: Text(context.tr!.tabTasks),
+                    label: Text(context.tr!.labelTasks),
                   ),
                   const Divider(),
                   NavigationDrawerDestination(
@@ -3343,14 +3343,14 @@ class _ExpansionTileShowcaseState extends State<ExpansionTileShowcase> {
       child: Column(
         children: <Widget>[
           ExpansionTile(
-            title: Text(context.tr!.expansionTileTitle1),
+            title: Text('${context.tr!.expansionTileTitle} 1'),
             subtitle: Text(context.tr!.expansionTileSubTitle1),
             children: <Widget>[
-              ListTile(title: Text(context.tr!.expansionTileListTitle1)),
+              ListTile(title: Text('${context.tr!.expansionTileListTitle} 1')),
             ],
           ),
           ExpansionTile(
-            title: Text(context.tr!.expansionTileTitle2),
+            title: Text('${context.tr!.expansionTileTitle} 2'),
             subtitle: Text(context.tr!.expansionTileSubTitle2),
             trailing: Icon(
               _customTileExpanded
@@ -3358,18 +3358,18 @@ class _ExpansionTileShowcaseState extends State<ExpansionTileShowcase> {
                   : Icons.arrow_drop_down,
             ),
             children: <Widget>[
-              ListTile(title: Text(context.tr!.expansionTileListTitle2)),
+              ListTile(title: Text('${context.tr!.expansionTileListTitle} 2')),
             ],
             onExpansionChanged: (bool expanded) {
               setState(() => _customTileExpanded = expanded);
             },
           ),
           ExpansionTile(
-            title: Text(context.tr!.expansionTileTitle3),
+            title: Text('${context.tr!.expansionTileTitle} 3'),
             subtitle: Text(context.tr!.expansionTileSubTitle3),
             controlAffinity: ListTileControlAffinity.leading,
             children: <Widget>[
-              ListTile(title: Text(context.tr!.expansionTileListTitle3)),
+              ListTile(title: Text('${context.tr!.expansionTileListTitle} 3')),
             ],
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
+import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
@@ -42,6 +43,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(cubeChatConnectionSettingsProvider);
   container.read(cubeChatConnectionProvider);
   container.read(goRouterProvider);
+  container.read(localizationProvider);
   container.read(cubeProvider);
 
   container.read(authStateChangesProvider);

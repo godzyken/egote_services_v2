@@ -50,7 +50,7 @@ class PasswordField extends ConsumerWidget {
       suffixIcon: suffixIcon,
       errorText: errorText,
       obscureText: obscureText,
-      label: context.tr!.userPassword,
+      label: context.tr!.password,
       inputType: TextInputType.visiblePassword,
       validator: validator,
     );

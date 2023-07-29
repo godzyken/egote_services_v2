@@ -38,18 +38,18 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
               ],
             ),
             SettingsSection(
-              title: Text(context.tr!.displayTitleZoom),
+              title: Text(context.tr!.displayTitleZoom.toUpperCase()),
               tiles: [
                 SettingsTile.navigation(
                   onPressed: (_) {},
                   title: Text(context.tr!.viewTitle),
-                  value: Text(context.tr!.viewValue),
+                  value: Text(context.tr!.tooltipStandard),
                   description: Text(context.tr!.viewDescription),
                 ),
               ],
             ),
             SettingsSection(
-              title: Text(context.tr!.uiAutomationTitle),
+              title: Text(context.tr!.uiAutomationTitle.toUpperCase()),
               tiles: [
                 SettingsTile.switchTile(
                   onToggle: (_) {},
@@ -67,7 +67,7 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
               ],
             ),
             SettingsSection(
-              title: Text(context.tr!.stateResSettings),
+              title: Text(context.tr!.stateResSettings.toUpperCase()),
               tiles: [
                 SettingsTile.switchTile(
                   onToggle: (_) {},
@@ -80,7 +80,7 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
               ],
             ),
             SettingsSection(
-              title: Text(context.tr!.iadDevTitle),
+              title: Text(context.tr!.iadDevTitle.toUpperCase()),
               tiles: [
                 SettingsTile.navigation(
                   title: Text(context.tr!.fillRate),

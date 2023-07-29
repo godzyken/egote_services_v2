@@ -12,7 +12,7 @@ class KeyValueDbListTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String usedDb = ref.watch(usedKeyValueDbProvider).describe;
     return ListTile(
-      title: Text(context.tr!.storage),
+      title: Text('${context.tr?.storage}'),
       subtitle: Text(usedDb),
       trailing: const KeyValueDbToggleButtons(),
       onTap: () {

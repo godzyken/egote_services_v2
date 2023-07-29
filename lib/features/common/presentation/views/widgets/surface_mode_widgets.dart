@@ -206,11 +206,11 @@ class SurfaceModePopupMenu extends StatelessWidget {
 List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme, [bool allModes = true]) =>
     <Widget>[
       Tooltip(
-        message: context.tr!.tooltipMessageLevel,
+        message: context.tr!.blendLevelShortText,
         child: const Icon(Icons.check_box_outline_blank),
       ),
       Tooltip(
-        message: context.tr!.tooltipMessageBgScaffold,
+        message: context.tr!.highBackgroundLowScaffoldShortText,
         child: const Icon(Icons.layers_outlined),
       ),
       Tooltip(
@@ -232,7 +232,7 @@ List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme, [bool allM
       ),
       if (allModes)
         Tooltip(
-          message: context.tr!.tooltipMessageHighScaffold,
+          message: context.tr!.highScaffoldLevelSurfaceShortText,
           child: const Icon(Icons.dynamic_feed_rounded),
         ),
       Tooltip(
@@ -240,7 +240,7 @@ List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme, [bool allM
         child: const RotatedBox(quarterTurns: 2, child: Icon(Icons.horizontal_split)),
       ),
       Tooltip(
-        message: context.tr!.tooltipMessageHighScafLowSur,
+        message: context.tr!.highScaffoldLowSurfacesShortText,
         child: const Icon(Icons.horizontal_split),
       ),
       if (allModes)
@@ -257,7 +257,7 @@ List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme, [bool allM
         ),
       if (allModes)
         Tooltip(
-          message: context.tr!.tooltipMessageHighScafTertiaryContainerDialog,
+          message: context.tr!.highScaffoldLowSurfacesVariantDialogShortText,
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -282,7 +282,7 @@ String _modeShort(final BuildContext context, final FlexSurfaceMode mode) {
     case FlexSurfaceMode.highScaffoldLevelSurface:
       return context.tr!.highScaffoldLevelSurfaceShortText;
     case FlexSurfaceMode.levelSurfacesLowScaffold:
-      return context.tr!.levelSurfacesLowScaffoldShortText;
+      return context.tr!.tooltipMessageLevelSurfaces;
     case FlexSurfaceMode.highScaffoldLowSurfaces:
       return context.tr!.highScaffoldLowSurfacesShortText;
     case FlexSurfaceMode.levelSurfacesLowScaffoldVariantDialog:

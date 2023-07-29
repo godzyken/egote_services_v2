@@ -75,7 +75,7 @@ class _CrossPlatformSettingsScreenState
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
-        title: Text(context.tr!.egoteServicesTitle),
+        title: Text('${context.tr?.egoteServicesTitle}'),
       ),
       drawer: const CustomMenuWidget(),
       // This annotated region will change the Android system navigation bar to
@@ -95,24 +95,24 @@ class _CrossPlatformSettingsScreenState
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text(context.tr!.info, style: medium),
+                child: Text('${context.tr?.info}', style: medium),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text(context.tr!.infoThemeSettings),
+                child: Text('${context.tr?.infoThemeSettings}'),
               ),
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text(context.tr!.persistence, style: medium),
+                child: Text('${context.tr?.persistence}', style: medium),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text(context.tr!.persistenceMemoryDescription),
+                child: Text('${context.tr?.persistenceMemoryDescription}'),
               ),
               const KeyValueDbListTile(),
               ListTile(
-                title: Text(context.tr!.resetSettingsTitle),
+                title: Text('${context.tr?.resetSettingsTitle}'),
                 onTap: () async {
                   final bool? reset = await showDialog<bool?>(
                     context: context,
@@ -128,7 +128,7 @@ class _CrossPlatformSettingsScreenState
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text(context.tr!.themeSettings, style: medium),
+                child: Text('${context.tr?.themeSettings}', style: medium),
               ),
               const ThemeSettings(),
               const Divider(),
@@ -141,7 +141,7 @@ class _CrossPlatformSettingsScreenState
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.edge),
-                child: Text(context.tr!.themeColors, style: medium),
+                child: Text('${context.tr?.themeColors}', style: medium),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),

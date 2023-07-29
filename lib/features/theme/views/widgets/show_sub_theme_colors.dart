@@ -235,7 +235,7 @@ class ShowSubThemeColors extends StatelessWidget {
                 shadowColor: Colors.transparent,
               ),
               ColorCard(
-                label: context.tr!.labelFilledButton,
+                label: context.tr!.filledButton,
                 color: filledButtonColor,
                 textColor: _onColor(filledButtonColor, background),
               ),
@@ -300,7 +300,7 @@ class ShowSubThemeColors extends StatelessWidget {
                 textColor: _onColor(tooltipColor, background),
               ),
               ColorCard(
-                label: context.tr!.labelAppBar,
+                label: context.tr!.appBar,
                 color: appBarColor,
                 textColor: _onColor(appBarColor, background),
               ),

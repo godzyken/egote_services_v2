@@ -142,7 +142,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   height: 16,
                 ),
                 EmailField(
-                  label: context.tr!.userEmail,
+                  label: context.tr!.email,
                   controller: _emailCtrl,
                   hintText: context.tr!.enterUserEmail,
                   onChanged: (email) =>
@@ -155,7 +155,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   height: 16,
                 ),
                 PasswordField(
-                  label: context.tr!.userPassword,
+                  label: context.tr!.password,
                   controller: _passwordCtrl,
                   hintText: context.tr!.enterUserPassword,
                   onChanged: (password) {

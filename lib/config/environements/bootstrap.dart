@@ -1,4 +1,5 @@
 import 'package:egote_services_v2/config/providers.dart' as providers;
+import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,8 +54,14 @@ Future<ProviderContainer> bootstrap() async {
   final container = ProviderContainer(
     overrides: [
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      localizationProvider.overrideWith(
+              (ref) => MultiLang(
+                  ref.read(localeProvider).languageCode)
+      )
     ],
-    observers: [if (F.appFlavor == Flavor.local) _Logger()],
+    observers: [
+      if (F.appFlavor == Flavor.local) _Logger(),
+    ],
   );
 
   final transaction =

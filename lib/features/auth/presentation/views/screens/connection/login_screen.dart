@@ -96,7 +96,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 EmailField(
                   controller: _emailCtrl,
-                  label: context.tr!.userEmail,
+                  label: context.tr!.email,
                   hintText: context.tr!.enterUserEmail,
                   onChanged: (email) => loginController.onEmailChange(email),
                   inputType: TextInputType.emailAddress,
@@ -105,7 +105,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 PasswordField(
                   controller: _passwordCtrl,
-                  label: context.tr!.userPassword,
+                  label: context.tr!.password,
                   hintText: context.tr!.enterUserPassword,
                   onChanged: (password) {
                     setState(() {

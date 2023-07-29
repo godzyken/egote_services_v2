@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/config/providers.dart';
+import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
-import 'package:egote_services_v2/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,6 +14,7 @@ import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
+import 'l10n/app_localizations.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
@@ -29,6 +30,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final router = ref.read(goRouterProvider);
+    final lang = ref.read(localizationProvider);
     return MaterialApp.router(
       title: F.title,
       // routerDelegate: router.routerDelegate,
@@ -41,12 +43,15 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       darkTheme: ref.watch(darkThemeProvider),
       themeMode: ref.watch(Settings.themeModeProvider),
       scrollBehavior: const AppScrollBehavior(),
+      locale: lang,
     );
   }
 
   @override
   void didChangeMetrics() {
     ref.read(drawerWidthProvider.notifier).state = drawerWidth();
+
+    super.didChangeMetrics();
   }
 
   @override
@@ -65,11 +70,15 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         Connectivity().onConnectivityChanged.listen((connectivityType) {
       if (AppLifecycleState.resumed != appState) return;
 
-      if (connectivityType != ConnectivityResult.none) {
+      switch (connectivityType) {
+        case ConnectivityResult.bluetooth:
+        // TODO: Handle this case.
+        case ConnectivityResult.wifi:
+        // TODO: Handle this case.
         log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
         bool isChatDisconnected =
             CubeChatConnection.instance.chatConnectionState ==
-                    CubeChatConnectionState.Closed ||
+                CubeChatConnectionState.Closed ||
                 CubeChatConnection.instance.chatConnectionState ==
                     CubeChatConnectionState.ForceClosed;
 
@@ -77,7 +86,29 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
             CubeChatConnection.instance.currentUser != null) {
           CubeChatConnection.instance.relogin();
         }
+        case ConnectivityResult.ethernet:
+        // TODO: Handle this case.
+        case ConnectivityResult.mobile:
+          log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
+          bool isChatDisconnected =
+              CubeChatConnection.instance.chatConnectionState ==
+                      CubeChatConnectionState.Closed ||
+                  CubeChatConnection.instance.chatConnectionState ==
+                      CubeChatConnectionState.ForceClosed;
+
+          if (isChatDisconnected &&
+              CubeChatConnection.instance.currentUser != null) {
+            CubeChatConnection.instance.relogin();
+          }
+        case ConnectivityResult.none:
+        // TODO: Handle this case.
+          CubeChatConnection.instance.destroy();
+        case ConnectivityResult.vpn:
+        // TODO: Handle this case.
+        case ConnectivityResult.other:
+        // TODO: Handle this case.
       }
+
     });
 
     appState = WidgetsBinding.instance.lifecycleState;
@@ -89,7 +120,43 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     appState = state;
 
-    if (AppLifecycleState.paused == state) {
+    switch (appState) {
+      case null:
+      // TODO: Handle this case.
+      case AppLifecycleState.resumed:
+        SharedPrefs.instance.init().then((sharedPrefs) async {
+          CubeUser? user =
+              await sharedPrefs.getUser().then((savedUser) => savedUser!);
+
+          if (user != null) {
+            if (!CubeChatConnection.instance.isAuthenticated()) {
+              if (LoginType.phone == sharedPrefs.getLoginType()) {
+                if (CubeSessionManager.instance.isActiveSessionValid()) {
+                  user.password =
+                      CubeSessionManager.instance.activeSession?.token;
+                } else {
+                  var phoneAuthSession = await createSessionUsingFirebase(
+                      'projectId', 'accessToken');
+                  user.password = phoneAuthSession.token;
+                }
+              }
+              CubeChatConnection.instance.login(user);
+            } else {
+              CubeChatConnection.instance.markActive();
+            }
+          }
+        });
+      case AppLifecycleState.inactive:
+      // TODO: Handle this case.
+      case AppLifecycleState.paused:
+        if (CubeChatConnection.instance.isAuthenticated()) {
+          CubeChatConnection.instance.markInactive();
+        }
+      case AppLifecycleState.detached:
+      // TODO: Handle this case.
+    }
+
+    /* if (AppLifecycleState.paused == state) {
       if (CubeChatConnection.instance.isAuthenticated()) {
         CubeChatConnection.instance.markInactive();
       }
@@ -116,6 +183,6 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           }
         }
       });
-    }
+    }*/
   }
 }

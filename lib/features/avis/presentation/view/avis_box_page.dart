@@ -44,6 +44,9 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
       'date': '2021-01-01 12:00:00'
     },
   ];
+
+
+
   Widget avisChild(data) {
     return ListView(
       children: [
@@ -129,14 +132,14 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.tr!.avisPage),
+        title: Text('${context.tr?.avisPage}'),
         backgroundColor: Colors.pink,
       ),
       body: CommentBox(
         userImage: CommentBox.commentImageParser(
             imageURLorPath: LocalImages.venomJpg),
-        labelText: context.tr!.comment,
-        errorText: context.tr!.canBeBlank,
+        labelText: context.tr?.comment,
+        errorText: context.tr?.canBeBlank,
         withBorder: false,
         sendButtonMethod: () {
           if (formKey.currentState!.validate()) {

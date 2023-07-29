@@ -59,7 +59,7 @@ class AndroidSettingsScreen extends ConsumerWidget {
               ),
               SettingsTile(
                 onPressed: (context) => toNotificationsScreen(context),
-                title: Text(context.tr!.displayTitle),
+                title: Text(context.tr!.display),
                 enabled: false,
                 description: Text(context.tr!.displayDescription),
                 leading: const Icon(Icons.brightness_6_outlined),

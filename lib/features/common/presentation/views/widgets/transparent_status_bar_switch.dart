@@ -11,7 +11,7 @@ class TransparentStatusBarSwitch extends ConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     return SwitchListTile(
       title: Text(context.tr!.switchNoStatusBar),
-      subtitle: Text(context.tr!.switchOnlyAndroid),
+      subtitle: Text(context.tr!.switchHavent),
       value: ref.watch(Settings.transparentStatusBarProvider),
       onChanged: ref.read(Settings.transparentStatusBarProvider.notifier).set,
     );
