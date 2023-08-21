@@ -15,15 +15,77 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 TravauxEntity _$TravauxEntityFromJson(Map<String, dynamic> json) {
-  return _TravauxEntity.fromJson(json);
+  switch (json['runtimeType']) {
+    case 'default':
+      return _TravauxEntity.fromJson(json);
+    case 'Init':
+      return _TravauxEntityInit.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(json, 'runtimeType', 'TravauxEntity',
+          'Invalid union type "${json['runtimeType']}"!');
+  }
 }
 
 /// @nodoc
 mixin _$TravauxEntity {
-  int get id => throw _privateConstructorUsedError;
-  String get denomination => throw _privateConstructorUsedError;
-  MissionEntity? get missionEntity => throw _privateConstructorUsedError;
-
+  TravauId get id => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)
+        $default, {
+    required TResult Function(TravauId id) Init,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)?
+        $default, {
+    TResult? Function(TravauId id)? Init,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)?
+        $default, {
+    TResult Function(TravauId id)? Init,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_TravauxEntity value) $default, {
+    required TResult Function(_TravauxEntityInit value) Init,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_TravauxEntity value)? $default, {
+    TResult? Function(_TravauxEntityInit value)? Init,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_TravauxEntity value)? $default, {
+    TResult Function(_TravauxEntityInit value)? Init,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $TravauxEntityCopyWith<TravauxEntity> get copyWith =>
@@ -36,9 +98,9 @@ abstract class $TravauxEntityCopyWith<$Res> {
           TravauxEntity value, $Res Function(TravauxEntity) then) =
       _$TravauxEntityCopyWithImpl<$Res, TravauxEntity>;
   @useResult
-  $Res call({int id, String denomination, MissionEntity? missionEntity});
+  $Res call({TravauId id});
 
-  $MissionEntityCopyWith<$Res>? get missionEntity;
+  $TravauIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -55,34 +117,20 @@ class _$TravauxEntityCopyWithImpl<$Res, $Val extends TravauxEntity>
   @override
   $Res call({
     Object? id = null,
-    Object? denomination = null,
-    Object? missionEntity = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      denomination: null == denomination
-          ? _value.denomination
-          : denomination // ignore: cast_nullable_to_non_nullable
-              as String,
-      missionEntity: freezed == missionEntity
-          ? _value.missionEntity
-          : missionEntity // ignore: cast_nullable_to_non_nullable
-              as MissionEntity?,
+              as TravauId,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $MissionEntityCopyWith<$Res>? get missionEntity {
-    if (_value.missionEntity == null) {
-      return null;
-    }
-
-    return $MissionEntityCopyWith<$Res>(_value.missionEntity!, (value) {
-      return _then(_value.copyWith(missionEntity: value) as $Val);
+  $TravauIdCopyWith<$Res> get id {
+    return $TravauIdCopyWith<$Res>(_value.id, (value) {
+      return _then(_value.copyWith(id: value) as $Val);
     });
   }
 }
@@ -95,10 +143,15 @@ abstract class _$$_TravauxEntityCopyWith<$Res>
       __$$_TravauxEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String denomination, MissionEntity? missionEntity});
+  $Res call(
+      {TravauId id,
+      String denomination,
+      List<TypesOfWork> typesOfWorks,
+      List<AreaOfServices> areaOfServices,
+      List<MissionEntity> missionEntity});
 
   @override
-  $MissionEntityCopyWith<$Res>? get missionEntity;
+  $TravauIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -114,21 +167,31 @@ class __$$_TravauxEntityCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? denomination = null,
-    Object? missionEntity = freezed,
+    Object? typesOfWorks = null,
+    Object? areaOfServices = null,
+    Object? missionEntity = null,
   }) {
     return _then(_$_TravauxEntity(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as TravauId,
       denomination: null == denomination
           ? _value.denomination
           : denomination // ignore: cast_nullable_to_non_nullable
               as String,
-      missionEntity: freezed == missionEntity
-          ? _value.missionEntity
+      typesOfWorks: null == typesOfWorks
+          ? _value._typesOfWorks
+          : typesOfWorks // ignore: cast_nullable_to_non_nullable
+              as List<TypesOfWork>,
+      areaOfServices: null == areaOfServices
+          ? _value._areaOfServices
+          : areaOfServices // ignore: cast_nullable_to_non_nullable
+              as List<AreaOfServices>,
+      missionEntity: null == missionEntity
+          ? _value._missionEntity
           : missionEntity // ignore: cast_nullable_to_non_nullable
-              as MissionEntity?,
+              as List<MissionEntity>,
     ));
   }
 }
@@ -138,21 +201,54 @@ class __$$_TravauxEntityCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
   const _$_TravauxEntity(
-      {required this.id, required this.denomination, this.missionEntity});
+      {required this.id,
+      required this.denomination,
+      required final List<TypesOfWork> typesOfWorks,
+      required final List<AreaOfServices> areaOfServices,
+      required final List<MissionEntity> missionEntity,
+      final String? $type})
+      : _typesOfWorks = typesOfWorks,
+        _areaOfServices = areaOfServices,
+        _missionEntity = missionEntity,
+        $type = $type ?? 'default';
 
   factory _$_TravauxEntity.fromJson(Map<String, dynamic> json) =>
       _$$_TravauxEntityFromJson(json);
 
   @override
-  final int id;
+  final TravauId id;
   @override
   final String denomination;
+  final List<TypesOfWork> _typesOfWorks;
   @override
-  final MissionEntity? missionEntity;
+  List<TypesOfWork> get typesOfWorks {
+    if (_typesOfWorks is EqualUnmodifiableListView) return _typesOfWorks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_typesOfWorks);
+  }
+
+  final List<AreaOfServices> _areaOfServices;
+  @override
+  List<AreaOfServices> get areaOfServices {
+    if (_areaOfServices is EqualUnmodifiableListView) return _areaOfServices;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_areaOfServices);
+  }
+
+  final List<MissionEntity> _missionEntity;
+  @override
+  List<MissionEntity> get missionEntity {
+    if (_missionEntity is EqualUnmodifiableListView) return _missionEntity;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_missionEntity);
+  }
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TravauxEntity(id: $id, denomination: $denomination, missionEntity: $missionEntity)';
+    return 'TravauxEntity(id: $id, denomination: $denomination, typesOfWorks: $typesOfWorks, areaOfServices: $areaOfServices, missionEntity: $missionEntity)';
   }
 
   @override
@@ -162,6 +258,8 @@ class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
       ..add(DiagnosticsProperty('type', 'TravauxEntity'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('denomination', denomination))
+      ..add(DiagnosticsProperty('typesOfWorks', typesOfWorks))
+      ..add(DiagnosticsProperty('areaOfServices', areaOfServices))
       ..add(DiagnosticsProperty('missionEntity', missionEntity));
   }
 
@@ -173,19 +271,112 @@ class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.denomination, denomination) ||
                 other.denomination == denomination) &&
-            (identical(other.missionEntity, missionEntity) ||
-                other.missionEntity == missionEntity));
+            const DeepCollectionEquality()
+                .equals(other._typesOfWorks, _typesOfWorks) &&
+            const DeepCollectionEquality()
+                .equals(other._areaOfServices, _areaOfServices) &&
+            const DeepCollectionEquality()
+                .equals(other._missionEntity, _missionEntity));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, denomination, missionEntity);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      denomination,
+      const DeepCollectionEquality().hash(_typesOfWorks),
+      const DeepCollectionEquality().hash(_areaOfServices),
+      const DeepCollectionEquality().hash(_missionEntity));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$_TravauxEntityCopyWith<_$_TravauxEntity> get copyWith =>
       __$$_TravauxEntityCopyWithImpl<_$_TravauxEntity>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)
+        $default, {
+    required TResult Function(TravauId id) Init,
+  }) {
+    return $default(
+        id, denomination, typesOfWorks, areaOfServices, missionEntity);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)?
+        $default, {
+    TResult? Function(TravauId id)? Init,
+  }) {
+    return $default?.call(
+        id, denomination, typesOfWorks, areaOfServices, missionEntity);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)?
+        $default, {
+    TResult Function(TravauId id)? Init,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(
+          id, denomination, typesOfWorks, areaOfServices, missionEntity);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_TravauxEntity value) $default, {
+    required TResult Function(_TravauxEntityInit value) Init,
+  }) {
+    return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_TravauxEntity value)? $default, {
+    TResult? Function(_TravauxEntityInit value)? Init,
+  }) {
+    return $default?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_TravauxEntity value)? $default, {
+    TResult Function(_TravauxEntityInit value)? Init,
+    required TResult orElse(),
+  }) {
+    if ($default != null) {
+      return $default(this);
+    }
+    return orElse();
+  }
 
   @override
   Map<String, dynamic> toJson() {
@@ -197,21 +388,211 @@ class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
 
 abstract class _TravauxEntity implements TravauxEntity {
   const factory _TravauxEntity(
-      {required final int id,
+      {required final TravauId id,
       required final String denomination,
-      final MissionEntity? missionEntity}) = _$_TravauxEntity;
+      required final List<TypesOfWork> typesOfWorks,
+      required final List<AreaOfServices> areaOfServices,
+      required final List<MissionEntity> missionEntity}) = _$_TravauxEntity;
 
   factory _TravauxEntity.fromJson(Map<String, dynamic> json) =
       _$_TravauxEntity.fromJson;
 
   @override
-  int get id;
-  @override
+  TravauId get id;
   String get denomination;
-  @override
-  MissionEntity? get missionEntity;
+  List<TypesOfWork> get typesOfWorks;
+  List<AreaOfServices> get areaOfServices;
+  List<MissionEntity> get missionEntity;
   @override
   @JsonKey(ignore: true)
   _$$_TravauxEntityCopyWith<_$_TravauxEntity> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_TravauxEntityInitCopyWith<$Res>
+    implements $TravauxEntityCopyWith<$Res> {
+  factory _$$_TravauxEntityInitCopyWith(_$_TravauxEntityInit value,
+          $Res Function(_$_TravauxEntityInit) then) =
+      __$$_TravauxEntityInitCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({TravauId id});
+
+  @override
+  $TravauIdCopyWith<$Res> get id;
+}
+
+/// @nodoc
+class __$$_TravauxEntityInitCopyWithImpl<$Res>
+    extends _$TravauxEntityCopyWithImpl<$Res, _$_TravauxEntityInit>
+    implements _$$_TravauxEntityInitCopyWith<$Res> {
+  __$$_TravauxEntityInitCopyWithImpl(
+      _$_TravauxEntityInit _value, $Res Function(_$_TravauxEntityInit) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_$_TravauxEntityInit(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as TravauId,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_TravauxEntityInit
+    with DiagnosticableTreeMixin
+    implements _TravauxEntityInit {
+  _$_TravauxEntityInit({required this.id, final String? $type})
+      : $type = $type ?? 'Init';
+
+  factory _$_TravauxEntityInit.fromJson(Map<String, dynamic> json) =>
+      _$$_TravauxEntityInitFromJson(json);
+
+  @override
+  final TravauId id;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'TravauxEntity.Init(id: $id)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TravauxEntity.Init'))
+      ..add(DiagnosticsProperty('id', id));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_TravauxEntityInit &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_TravauxEntityInitCopyWith<_$_TravauxEntityInit> get copyWith =>
+      __$$_TravauxEntityInitCopyWithImpl<_$_TravauxEntityInit>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)
+        $default, {
+    required TResult Function(TravauId id) Init,
+  }) {
+    return Init(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)?
+        $default, {
+    TResult? Function(TravauId id)? Init,
+  }) {
+    return Init?.call(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            TravauId id,
+            String denomination,
+            List<TypesOfWork> typesOfWorks,
+            List<AreaOfServices> areaOfServices,
+            List<MissionEntity> missionEntity)?
+        $default, {
+    TResult Function(TravauId id)? Init,
+    required TResult orElse(),
+  }) {
+    if (Init != null) {
+      return Init(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_TravauxEntity value) $default, {
+    required TResult Function(_TravauxEntityInit value) Init,
+  }) {
+    return Init(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_TravauxEntity value)? $default, {
+    TResult? Function(_TravauxEntityInit value)? Init,
+  }) {
+    return Init?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_TravauxEntity value)? $default, {
+    TResult Function(_TravauxEntityInit value)? Init,
+    required TResult orElse(),
+  }) {
+    if (Init != null) {
+      return Init(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_TravauxEntityInitToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TravauxEntityInit implements TravauxEntity {
+  factory _TravauxEntityInit({required final TravauId id}) =
+      _$_TravauxEntityInit;
+
+  factory _TravauxEntityInit.fromJson(Map<String, dynamic> json) =
+      _$_TravauxEntityInit.fromJson;
+
+  @override
+  TravauId get id;
+  @override
+  @JsonKey(ignore: true)
+  _$$_TravauxEntityInitCopyWith<_$_TravauxEntityInit> get copyWith =>
       throw _privateConstructorUsedError;
 }

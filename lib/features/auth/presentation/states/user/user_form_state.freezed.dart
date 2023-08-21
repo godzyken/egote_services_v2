@@ -42,10 +42,16 @@ abstract class $UserFormStateCopyWith<$Res> {
   @useResult
   $Res call(
       {UserEntityModel userEntityModel,
-      @JsonKey(defaultValue: 'UserName', includeToJson: false, includeFromJson: false)
-          NameFormz? nameFormz,
-      @JsonKey(defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
-          RoleFormz? roleFormz});
+      @JsonKey(
+          defaultValue: 'UserName',
+          includeToJson: false,
+          includeFromJson: false)
+      NameFormz? nameFormz,
+      @JsonKey(
+          defaultValue: 'UserRole',
+          includeToJson: false,
+          includeFromJson: false)
+      RoleFormz? roleFormz});
 
   $UserEntityModelCopyWith<$Res> get userEntityModel;
 }
@@ -102,10 +108,16 @@ abstract class _$$_UserFormStateCopyWith<$Res>
   @useResult
   $Res call(
       {UserEntityModel userEntityModel,
-      @JsonKey(defaultValue: 'UserName', includeToJson: false, includeFromJson: false)
-          NameFormz? nameFormz,
-      @JsonKey(defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
-          RoleFormz? roleFormz});
+      @JsonKey(
+          defaultValue: 'UserName',
+          includeToJson: false,
+          includeFromJson: false)
+      NameFormz? nameFormz,
+      @JsonKey(
+          defaultValue: 'UserRole',
+          includeToJson: false,
+          includeFromJson: false)
+      RoleFormz? roleFormz});
 
   @override
   $UserEntityModelCopyWith<$Res> get userEntityModel;
@@ -147,10 +159,16 @@ class __$$_UserFormStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UserFormState implements _UserFormState {
   const _$_UserFormState(this.userEntityModel,
-      {@JsonKey(defaultValue: 'UserName', includeToJson: false, includeFromJson: false)
-          this.nameFormz,
-      @JsonKey(defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
-          this.roleFormz});
+      {@JsonKey(
+          defaultValue: 'UserName',
+          includeToJson: false,
+          includeFromJson: false)
+      this.nameFormz,
+      @JsonKey(
+          defaultValue: 'UserRole',
+          includeToJson: false,
+          includeFromJson: false)
+      this.roleFormz});
 
   factory _$_UserFormState.fromJson(Map<String, dynamic> json) =>
       _$$_UserFormStateFromJson(json);
@@ -205,10 +223,16 @@ class _$_UserFormState implements _UserFormState {
 
 abstract class _UserFormState implements UserFormState {
   const factory _UserFormState(final UserEntityModel userEntityModel,
-      {@JsonKey(defaultValue: 'UserName', includeToJson: false, includeFromJson: false)
-          final NameFormz? nameFormz,
-      @JsonKey(defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
-          final RoleFormz? roleFormz}) = _$_UserFormState;
+      {@JsonKey(
+          defaultValue: 'UserName',
+          includeToJson: false,
+          includeFromJson: false)
+      final NameFormz? nameFormz,
+      @JsonKey(
+          defaultValue: 'UserRole',
+          includeToJson: false,
+          includeFromJson: false)
+      final RoleFormz? roleFormz}) = _$_UserFormState;
 
   factory _UserFormState.fromJson(Map<String, dynamic> json) =
       _$_UserFormState.fromJson;

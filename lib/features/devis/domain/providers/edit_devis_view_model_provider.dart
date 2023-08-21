@@ -1,7 +1,9 @@
 import 'package:egote_services_v2/features/common/domain/entities/states/state.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/construction/mission_id.dart';
 import 'package:egote_services_v2/features/devis/domain/entities/construction/superficie_entity.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/construction/travau_id.dart';
 import 'package:egote_services_v2/features/devis/domain/entities/construction/travaux_entity.dart';
-import 'package:egote_services_v2/features/devis/domain/entities/devis/devis_entity.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devis_model_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/app_shared/images/assets_images.dart';
@@ -10,54 +12,62 @@ import '../entities/construction/mission_entity.dart';
 import '../entities/contact/contact_owner_entity.dart';
 
 final editDeviViewModelProvider = StateNotifierProvider<
-    EditDeviViewModelController,
-    State<AsyncValue<DevisEntity>>>((ref) => EditDeviViewModelController());
+        EditDeviViewModelController, State<AsyncValue<DevisModelEntity>>>(
+    (ref) => EditDeviViewModelController());
 
 class EditDeviViewModelController
-    extends StateNotifier<State<AsyncValue<DevisEntity>>> {
-  EditDeviViewModelController([DevisEntity? devisEntity])
+    extends StateNotifier<State<AsyncValue<DevisModelEntity>>> {
+  EditDeviViewModelController([DevisModelEntity? devisModelEntity])
       : super(const State.init());
 
-  DevisEntity initial = DevisEntity.empty();
+  DevisModelEntity initial = DevisModelEntity.empty();
   SuperficieEntity initialSup =
       const SuperficieEntity.initialize(longueur: 0, largeur: 0, hauteur: 0);
-  TravauxEntity initialTra =
-      const TravauxEntity(id: 0, denomination: 'denomination');
+  TravauxEntity initialTra = const TravauxEntity(
+      id: TravauId(id: 0),
+      denomination: 'denomination',
+      typesOfWorks: [],
+      areaOfServices: [],
+      missionEntity: []);
   ContactOwnerEntity initialContact = const ContactOwnerEntity.empty();
   MissionEntity initialMission =
-      const MissionEntity(id: 0, denomination: 'denomination');
+      const MissionEntity(id: MissionId(id: 0), denomination: 'denomination');
 
   bool get edit => initial.toJson().isNotEmpty;
 
-  DevisEntity get devis => initial.when(
-        complete: (id, numDevis, statusModel, typesHabitat, superficieEntity,
-            travauxEntity, contactOwnerEntity, missionEntity) {
+  DevisModelEntity get devis => initial.when(
+        approved: (id, createdAt, validity, client, pro, travauxEntity,
+            quantity, unitPrice, vatRates, amountHt, amountTtc, approval) {
           try {
             state = const State.loading();
 
-            if (id != 0 && numDevis.isNotEmpty) {
-              final DevisEntity newDevis = DevisEntity.complete(
+            if (id != 0 && approval != false) {
+              final DevisModelEntity newDevis = DevisModelEntity.approved(
                   id: id,
-                  numDevis: _numDevis!,
-                  statusModel: _statusModel,
-                  typesHabitat: _constructionModel,
-                  superficieEntity: _superficieEntity,
-                  travauxEntity: _travauxEntity,
-                  contactOwnerEntity: _contactOwnerEntity,
-                  missionEntity: _missionEntity);
+                  createdAt: createdAt,
+                  validity: validity,
+                  client: client,
+                  pro: pro,
+                  travauxEntity: travauxEntity,
+                  quantity: quantity,
+                  unitPrice: unitPrice,
+                  vatRates: vatRates,
+                  amountHt: amountHt,
+                  amountTtc: amountTtc,
+                  approval: approval);
+
               state = State.success(AsyncValue.data(newDevis));
               return newDevis;
             }
-            return DevisEntity.empty();
+            return DevisModelEntity.empty();
           } on Exception catch (e) {
             state = State.error(e);
-            return const DevisEntity.initialize(id: 0, numDevis: '0');
+            return DevisModelEntity.initialize(id: id, createdAt: createdAt);
           }
         },
-        initialize: (id, numDevis) {
-          return DevisEntity.initialize(id: id, numDevis: numDevis);
-        },
-        empty: () => DevisEntity.empty(),
+        initialize: (id, createdAt) =>
+            DevisModelEntity.initialize(id: id, createdAt: createdAt),
+        empty: () => DevisModelEntity.empty(),
       );
 
   String? _numDevis;
@@ -66,44 +76,6 @@ class EditDeviViewModelController
 
   set numDevis(String value) {
     _numDevis = value;
-  }
-
-  StatusModel? _statusModel;
-
-  StatusModel get statusModel {
-    switch (_statusModel) {
-      case null:
-        return _statusModel!;
-      case StatusModel.locataire:
-        _statusModel = StatusModel.locataire;
-        return _statusModel!;
-      case StatusModel.proprietaire:
-        _statusModel = StatusModel.proprietaire;
-        return _statusModel!;
-    }
-  }
-
-  set statusModel(StatusModel value) {
-    _statusModel = value;
-  }
-
-  TypesHabitat? _constructionModel;
-
-  TypesHabitat get constructionModel {
-    switch (_constructionModel) {
-      case TypesHabitat.apartment:
-        _constructionModel = TypesHabitat.apartment;
-        return _constructionModel!;
-      case TypesHabitat.house:
-        _constructionModel = TypesHabitat.house;
-        return _constructionModel!;
-      case null:
-        return _constructionModel!;
-    }
-  }
-
-  set constructionModel(TypesHabitat value) {
-    _constructionModel = value;
   }
 
   int? _long;
@@ -183,8 +155,13 @@ class EditDeviViewModelController
                 phone: phone,
                 email: email),
         pro: (int id, String companyName, String phone, String email,
-                Professions professions) =>
-            ContactOwnerEntity.pro(id, companyName, phone, email, professions),
+                professions) =>
+            ContactOwnerEntity.pro(
+                id: id,
+                companyName: companyName,
+                phone: phone,
+                email: email,
+                professions: professions),
       );
 
   set contactOwnerEntity(ContactOwnerEntity value) {
@@ -213,6 +190,7 @@ class EditDeviViewModelController
                 reason: reason,
                 left: left,
                 isLeft: isLeft),
+        init: (MissionId id) => MissionEntity.init(id: id),
       );
 
   set missionEntity(MissionEntity value) {
@@ -229,8 +207,5 @@ class EditDeviViewModelController
 
   Images get imageLocal => Images.local(images: _localImages!);
 
-  State get _loading => const State.loading();
-
-  bool get enabled =>
-      numDevis.isNotEmpty && travauxEntity.denomination.isNotEmpty;
+  bool get enabled => numDevis.isNotEmpty;
 }

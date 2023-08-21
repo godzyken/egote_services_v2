@@ -498,23 +498,23 @@ class ChatDialogRoute extends GoRouteData {
     if(_cid != cid && _cdid != cdid) {
       return const LoginScreen();
     }
+
     return ChatDialogScreen(key: state.pageKey, cubeUser: currentUser!, cubeDialog: cubeDialog!,);
   }
 }
 
 /// [Other Pages Routes]
 class DevisEditRoute extends GoRouteData {
-  static const path = 'edit_devis/:did';
+  static const path = 'edit_devis/:devisId';
 
-  const DevisEditRoute({required this.did});
+  const DevisEditRoute({required this.devisId});
 
-  final int did;
-
+  final int devisId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final did = state.pathParameters['userId'];
-    return DevisEditScreen(key: state.pageKey, did: did!);
+    final devisId = state.pathParameters['userId'] as String;
+    return DevisEditScreen(key: state.pageKey, devisId: devisId);
   }
 }
 

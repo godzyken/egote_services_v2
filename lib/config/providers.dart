@@ -194,7 +194,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
               GoRoute(
                 path: DevisEditRoute.path,
                 name: 'devis',
-                builder: (context, state) => DevisEditScreen(key: state.pageKey, did: state.pathParameters['userId']!,),
+                builder: (context, state) => DevisEditScreen(key: state.pageKey, devisId: state.pathParameters['devisId'] as String,),
               ),
               GoRoute(
                   path: SettingsUiRoute.path,

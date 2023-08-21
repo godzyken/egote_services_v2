@@ -107,7 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 duration: const Duration(milliseconds: 1600),
                  //onEnd: () => context.go('/authRoute'),
                  //onEnd: () => context.goNamed('mfaList'),
-                //onEnd: () => context.goNamed('devis', extra: "/:2",),
+                onEnd: () => context.goNamed('devis', pathParameters: {'devisId': '123'}),
                 top: animate ? 0 : -80,
                 left: animate ? 0 : -80,
                 curve: Curves.elasticInOut,

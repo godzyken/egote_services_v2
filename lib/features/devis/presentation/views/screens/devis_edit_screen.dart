@@ -1,11 +1,12 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
+import 'package:egote_services_v2/features/devis/domain/providers/edit_devis_view_model_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DevisEditScreen extends ConsumerWidget {
-  final String did;
+  final String devisId;
 
-  const DevisEditScreen({Key? key, required this.did}) : super(key: key);
+  const DevisEditScreen({Key? key, required this.devisId}) : super(key: key);
 
 
   @override
@@ -23,7 +24,11 @@ class DevisEditScreen extends ConsumerWidget {
           child: MaterialButton(
             padding: const EdgeInsets.all(16),
             color: scheme.primary,
-            onPressed: () {},
+            onPressed: () {
+              if (ref.read(editDeviViewModelProvider).isSuccess) {
+                ref.read(editDeviViewModelProvider).data;
+              }
+            },
             child: Text(context.tr!.done.toUpperCase()),
           ),
         ),

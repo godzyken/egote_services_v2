@@ -18,6 +18,8 @@ MissionEntity _$MissionEntityFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'default':
       return _MissionEntity.fromJson(json);
+    case 'init':
+      return _MissionEntityInit.fromJson(json);
     case 'done':
       return _MissionEntityDone.fromJson(json);
     case 'progress':
@@ -33,43 +35,47 @@ MissionEntity _$MissionEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MissionEntity {
-  int get id => throw _privateConstructorUsedError;
-  String get denomination => throw _privateConstructorUsedError;
+  MissionId get id => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String denomination) $default, {
-    required TResult Function(int id, String denomination, DateTime startedAt,
-            DateTime finishedAt, bool doneOk)
+    TResult Function(MissionId id, String denomination) $default, {
+    required TResult Function(MissionId id) init,
+    required TResult Function(MissionId id, String denomination,
+            DateTime startedAt, DateTime finishedAt, bool doneOk)
         done,
-    required TResult Function(int id, String denomination, DateTime startedAt)
+    required TResult Function(
+            MissionId id, String denomination, DateTime startedAt)
         progress,
-    required TResult Function(int id, String denomination, String reason,
+    required TResult Function(MissionId id, String denomination, String reason,
             DateTime left, bool isLeft)
         abandon,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String denomination)? $default, {
-    TResult? Function(int id, String denomination, DateTime startedAt,
+    TResult? Function(MissionId id, String denomination)? $default, {
+    TResult? Function(MissionId id)? init,
+    TResult? Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult? Function(int id, String denomination, DateTime startedAt)?
+    TResult? Function(MissionId id, String denomination, DateTime startedAt)?
         progress,
-    TResult? Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult? Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String denomination)? $default, {
-    TResult Function(int id, String denomination, DateTime startedAt,
+    TResult Function(MissionId id, String denomination)? $default, {
+    TResult Function(MissionId id)? init,
+    TResult Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult Function(int id, String denomination, DateTime startedAt)? progress,
-    TResult Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult Function(MissionId id, String denomination, DateTime startedAt)?
+        progress,
+    TResult Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
     required TResult orElse(),
   }) =>
@@ -77,6 +83,7 @@ mixin _$MissionEntity {
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_MissionEntity value) $default, {
+    required TResult Function(_MissionEntityInit value) init,
     required TResult Function(_MissionEntityDone value) done,
     required TResult Function(_MissionEntityProgress value) progress,
     required TResult Function(_MissionEntityAbandon value) abandon,
@@ -85,6 +92,7 @@ mixin _$MissionEntity {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_MissionEntity value)? $default, {
+    TResult? Function(_MissionEntityInit value)? init,
     TResult? Function(_MissionEntityDone value)? done,
     TResult? Function(_MissionEntityProgress value)? progress,
     TResult? Function(_MissionEntityAbandon value)? abandon,
@@ -93,6 +101,7 @@ mixin _$MissionEntity {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_MissionEntity value)? $default, {
+    TResult Function(_MissionEntityInit value)? init,
     TResult Function(_MissionEntityDone value)? done,
     TResult Function(_MissionEntityProgress value)? progress,
     TResult Function(_MissionEntityAbandon value)? abandon,
@@ -111,7 +120,9 @@ abstract class $MissionEntityCopyWith<$Res> {
           MissionEntity value, $Res Function(MissionEntity) then) =
       _$MissionEntityCopyWithImpl<$Res, MissionEntity>;
   @useResult
-  $Res call({int id, String denomination});
+  $Res call({MissionId id});
+
+  $MissionIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -128,18 +139,21 @@ class _$MissionEntityCopyWithImpl<$Res, $Val extends MissionEntity>
   @override
   $Res call({
     Object? id = null,
-    Object? denomination = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      denomination: null == denomination
-          ? _value.denomination
-          : denomination // ignore: cast_nullable_to_non_nullable
-              as String,
+              as MissionId,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MissionIdCopyWith<$Res> get id {
+    return $MissionIdCopyWith<$Res>(_value.id, (value) {
+      return _then(_value.copyWith(id: value) as $Val);
+    });
   }
 }
 
@@ -151,7 +165,10 @@ abstract class _$$_MissionEntityCopyWith<$Res>
       __$$_MissionEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String denomination});
+  $Res call({MissionId id, String denomination});
+
+  @override
+  $MissionIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -172,7 +189,7 @@ class __$$_MissionEntityCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as MissionId,
       denomination: null == denomination
           ? _value.denomination
           : denomination // ignore: cast_nullable_to_non_nullable
@@ -193,7 +210,7 @@ class _$_MissionEntity implements _MissionEntity {
       _$$_MissionEntityFromJson(json);
 
   @override
-  final int id;
+  final MissionId id;
   @override
   final String denomination;
 
@@ -228,13 +245,15 @@ class _$_MissionEntity implements _MissionEntity {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String denomination) $default, {
-    required TResult Function(int id, String denomination, DateTime startedAt,
-            DateTime finishedAt, bool doneOk)
+    TResult Function(MissionId id, String denomination) $default, {
+    required TResult Function(MissionId id) init,
+    required TResult Function(MissionId id, String denomination,
+            DateTime startedAt, DateTime finishedAt, bool doneOk)
         done,
-    required TResult Function(int id, String denomination, DateTime startedAt)
+    required TResult Function(
+            MissionId id, String denomination, DateTime startedAt)
         progress,
-    required TResult Function(int id, String denomination, String reason,
+    required TResult Function(MissionId id, String denomination, String reason,
             DateTime left, bool isLeft)
         abandon,
   }) {
@@ -244,14 +263,15 @@ class _$_MissionEntity implements _MissionEntity {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String denomination)? $default, {
-    TResult? Function(int id, String denomination, DateTime startedAt,
+    TResult? Function(MissionId id, String denomination)? $default, {
+    TResult? Function(MissionId id)? init,
+    TResult? Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult? Function(int id, String denomination, DateTime startedAt)?
+    TResult? Function(MissionId id, String denomination, DateTime startedAt)?
         progress,
-    TResult? Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult? Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
   }) {
     return $default?.call(id, denomination);
@@ -260,13 +280,15 @@ class _$_MissionEntity implements _MissionEntity {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String denomination)? $default, {
-    TResult Function(int id, String denomination, DateTime startedAt,
+    TResult Function(MissionId id, String denomination)? $default, {
+    TResult Function(MissionId id)? init,
+    TResult Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult Function(int id, String denomination, DateTime startedAt)? progress,
-    TResult Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult Function(MissionId id, String denomination, DateTime startedAt)?
+        progress,
+    TResult Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
     required TResult orElse(),
   }) {
@@ -280,6 +302,7 @@ class _$_MissionEntity implements _MissionEntity {
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_MissionEntity value) $default, {
+    required TResult Function(_MissionEntityInit value) init,
     required TResult Function(_MissionEntityDone value) done,
     required TResult Function(_MissionEntityProgress value) progress,
     required TResult Function(_MissionEntityAbandon value) abandon,
@@ -291,6 +314,7 @@ class _$_MissionEntity implements _MissionEntity {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_MissionEntity value)? $default, {
+    TResult? Function(_MissionEntityInit value)? init,
     TResult? Function(_MissionEntityDone value)? done,
     TResult? Function(_MissionEntityProgress value)? progress,
     TResult? Function(_MissionEntityAbandon value)? abandon,
@@ -302,6 +326,7 @@ class _$_MissionEntity implements _MissionEntity {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_MissionEntity value)? $default, {
+    TResult Function(_MissionEntityInit value)? init,
     TResult Function(_MissionEntityDone value)? done,
     TResult Function(_MissionEntityProgress value)? progress,
     TResult Function(_MissionEntityAbandon value)? abandon,
@@ -323,19 +348,212 @@ class _$_MissionEntity implements _MissionEntity {
 
 abstract class _MissionEntity implements MissionEntity {
   const factory _MissionEntity(
-      {required final int id,
+      {required final MissionId id,
       required final String denomination}) = _$_MissionEntity;
 
   factory _MissionEntity.fromJson(Map<String, dynamic> json) =
       _$_MissionEntity.fromJson;
 
   @override
-  int get id;
-  @override
+  MissionId get id;
   String get denomination;
   @override
   @JsonKey(ignore: true)
   _$$_MissionEntityCopyWith<_$_MissionEntity> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_MissionEntityInitCopyWith<$Res>
+    implements $MissionEntityCopyWith<$Res> {
+  factory _$$_MissionEntityInitCopyWith(_$_MissionEntityInit value,
+          $Res Function(_$_MissionEntityInit) then) =
+      __$$_MissionEntityInitCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({MissionId id});
+
+  @override
+  $MissionIdCopyWith<$Res> get id;
+}
+
+/// @nodoc
+class __$$_MissionEntityInitCopyWithImpl<$Res>
+    extends _$MissionEntityCopyWithImpl<$Res, _$_MissionEntityInit>
+    implements _$$_MissionEntityInitCopyWith<$Res> {
+  __$$_MissionEntityInitCopyWithImpl(
+      _$_MissionEntityInit _value, $Res Function(_$_MissionEntityInit) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_$_MissionEntityInit(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as MissionId,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_MissionEntityInit implements _MissionEntityInit {
+  const _$_MissionEntityInit({required this.id, final String? $type})
+      : $type = $type ?? 'init';
+
+  factory _$_MissionEntityInit.fromJson(Map<String, dynamic> json) =>
+      _$$_MissionEntityInitFromJson(json);
+
+  @override
+  final MissionId id;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'MissionEntity.init(id: $id)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_MissionEntityInit &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_MissionEntityInitCopyWith<_$_MissionEntityInit> get copyWith =>
+      __$$_MissionEntityInitCopyWithImpl<_$_MissionEntityInit>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(MissionId id, String denomination) $default, {
+    required TResult Function(MissionId id) init,
+    required TResult Function(MissionId id, String denomination,
+            DateTime startedAt, DateTime finishedAt, bool doneOk)
+        done,
+    required TResult Function(
+            MissionId id, String denomination, DateTime startedAt)
+        progress,
+    required TResult Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)
+        abandon,
+  }) {
+    return init(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(MissionId id, String denomination)? $default, {
+    TResult? Function(MissionId id)? init,
+    TResult? Function(MissionId id, String denomination, DateTime startedAt,
+            DateTime finishedAt, bool doneOk)?
+        done,
+    TResult? Function(MissionId id, String denomination, DateTime startedAt)?
+        progress,
+    TResult? Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
+        abandon,
+  }) {
+    return init?.call(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(MissionId id, String denomination)? $default, {
+    TResult Function(MissionId id)? init,
+    TResult Function(MissionId id, String denomination, DateTime startedAt,
+            DateTime finishedAt, bool doneOk)?
+        done,
+    TResult Function(MissionId id, String denomination, DateTime startedAt)?
+        progress,
+    TResult Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
+        abandon,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_MissionEntity value) $default, {
+    required TResult Function(_MissionEntityInit value) init,
+    required TResult Function(_MissionEntityDone value) done,
+    required TResult Function(_MissionEntityProgress value) progress,
+    required TResult Function(_MissionEntityAbandon value) abandon,
+  }) {
+    return init(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_MissionEntity value)? $default, {
+    TResult? Function(_MissionEntityInit value)? init,
+    TResult? Function(_MissionEntityDone value)? done,
+    TResult? Function(_MissionEntityProgress value)? progress,
+    TResult? Function(_MissionEntityAbandon value)? abandon,
+  }) {
+    return init?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_MissionEntity value)? $default, {
+    TResult Function(_MissionEntityInit value)? init,
+    TResult Function(_MissionEntityDone value)? done,
+    TResult Function(_MissionEntityProgress value)? progress,
+    TResult Function(_MissionEntityAbandon value)? abandon,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_MissionEntityInitToJson(
+      this,
+    );
+  }
+}
+
+abstract class _MissionEntityInit implements MissionEntity {
+  const factory _MissionEntityInit({required final MissionId id}) =
+      _$_MissionEntityInit;
+
+  factory _MissionEntityInit.fromJson(Map<String, dynamic> json) =
+      _$_MissionEntityInit.fromJson;
+
+  @override
+  MissionId get id;
+  @override
+  @JsonKey(ignore: true)
+  _$$_MissionEntityInitCopyWith<_$_MissionEntityInit> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -348,11 +566,14 @@ abstract class _$$_MissionEntityDoneCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id,
+      {MissionId id,
       String denomination,
       DateTime startedAt,
       DateTime finishedAt,
       bool doneOk});
+
+  @override
+  $MissionIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -376,7 +597,7 @@ class __$$_MissionEntityDoneCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as MissionId,
       denomination: null == denomination
           ? _value.denomination
           : denomination // ignore: cast_nullable_to_non_nullable
@@ -413,7 +634,7 @@ class _$_MissionEntityDone implements _MissionEntityDone {
       _$$_MissionEntityDoneFromJson(json);
 
   @override
-  final int id;
+  final MissionId id;
   @override
   final String denomination;
   @override
@@ -461,13 +682,15 @@ class _$_MissionEntityDone implements _MissionEntityDone {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String denomination) $default, {
-    required TResult Function(int id, String denomination, DateTime startedAt,
-            DateTime finishedAt, bool doneOk)
+    TResult Function(MissionId id, String denomination) $default, {
+    required TResult Function(MissionId id) init,
+    required TResult Function(MissionId id, String denomination,
+            DateTime startedAt, DateTime finishedAt, bool doneOk)
         done,
-    required TResult Function(int id, String denomination, DateTime startedAt)
+    required TResult Function(
+            MissionId id, String denomination, DateTime startedAt)
         progress,
-    required TResult Function(int id, String denomination, String reason,
+    required TResult Function(MissionId id, String denomination, String reason,
             DateTime left, bool isLeft)
         abandon,
   }) {
@@ -477,14 +700,15 @@ class _$_MissionEntityDone implements _MissionEntityDone {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String denomination)? $default, {
-    TResult? Function(int id, String denomination, DateTime startedAt,
+    TResult? Function(MissionId id, String denomination)? $default, {
+    TResult? Function(MissionId id)? init,
+    TResult? Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult? Function(int id, String denomination, DateTime startedAt)?
+    TResult? Function(MissionId id, String denomination, DateTime startedAt)?
         progress,
-    TResult? Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult? Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
   }) {
     return done?.call(id, denomination, startedAt, finishedAt, doneOk);
@@ -493,13 +717,15 @@ class _$_MissionEntityDone implements _MissionEntityDone {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String denomination)? $default, {
-    TResult Function(int id, String denomination, DateTime startedAt,
+    TResult Function(MissionId id, String denomination)? $default, {
+    TResult Function(MissionId id)? init,
+    TResult Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult Function(int id, String denomination, DateTime startedAt)? progress,
-    TResult Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult Function(MissionId id, String denomination, DateTime startedAt)?
+        progress,
+    TResult Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
     required TResult orElse(),
   }) {
@@ -513,6 +739,7 @@ class _$_MissionEntityDone implements _MissionEntityDone {
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_MissionEntity value) $default, {
+    required TResult Function(_MissionEntityInit value) init,
     required TResult Function(_MissionEntityDone value) done,
     required TResult Function(_MissionEntityProgress value) progress,
     required TResult Function(_MissionEntityAbandon value) abandon,
@@ -524,6 +751,7 @@ class _$_MissionEntityDone implements _MissionEntityDone {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_MissionEntity value)? $default, {
+    TResult? Function(_MissionEntityInit value)? init,
     TResult? Function(_MissionEntityDone value)? done,
     TResult? Function(_MissionEntityProgress value)? progress,
     TResult? Function(_MissionEntityAbandon value)? abandon,
@@ -535,6 +763,7 @@ class _$_MissionEntityDone implements _MissionEntityDone {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_MissionEntity value)? $default, {
+    TResult Function(_MissionEntityInit value)? init,
     TResult Function(_MissionEntityDone value)? done,
     TResult Function(_MissionEntityProgress value)? progress,
     TResult Function(_MissionEntityAbandon value)? abandon,
@@ -556,7 +785,7 @@ class _$_MissionEntityDone implements _MissionEntityDone {
 
 abstract class _MissionEntityDone implements MissionEntity {
   const factory _MissionEntityDone(
-      {required final int id,
+      {required final MissionId id,
       required final String denomination,
       required final DateTime startedAt,
       required final DateTime finishedAt,
@@ -566,8 +795,7 @@ abstract class _MissionEntityDone implements MissionEntity {
       _$_MissionEntityDone.fromJson;
 
   @override
-  int get id;
-  @override
+  MissionId get id;
   String get denomination;
   DateTime get startedAt;
   DateTime get finishedAt;
@@ -586,7 +814,10 @@ abstract class _$$_MissionEntityProgressCopyWith<$Res>
       __$$_MissionEntityProgressCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String denomination, DateTime startedAt});
+  $Res call({MissionId id, String denomination, DateTime startedAt});
+
+  @override
+  $MissionIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -608,7 +839,7 @@ class __$$_MissionEntityProgressCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as MissionId,
       denomination: null == denomination
           ? _value.denomination
           : denomination // ignore: cast_nullable_to_non_nullable
@@ -635,7 +866,7 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
       _$$_MissionEntityProgressFromJson(json);
 
   @override
-  final int id;
+  final MissionId id;
   @override
   final String denomination;
   @override
@@ -675,13 +906,15 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String denomination) $default, {
-    required TResult Function(int id, String denomination, DateTime startedAt,
-            DateTime finishedAt, bool doneOk)
+    TResult Function(MissionId id, String denomination) $default, {
+    required TResult Function(MissionId id) init,
+    required TResult Function(MissionId id, String denomination,
+            DateTime startedAt, DateTime finishedAt, bool doneOk)
         done,
-    required TResult Function(int id, String denomination, DateTime startedAt)
+    required TResult Function(
+            MissionId id, String denomination, DateTime startedAt)
         progress,
-    required TResult Function(int id, String denomination, String reason,
+    required TResult Function(MissionId id, String denomination, String reason,
             DateTime left, bool isLeft)
         abandon,
   }) {
@@ -691,14 +924,15 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String denomination)? $default, {
-    TResult? Function(int id, String denomination, DateTime startedAt,
+    TResult? Function(MissionId id, String denomination)? $default, {
+    TResult? Function(MissionId id)? init,
+    TResult? Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult? Function(int id, String denomination, DateTime startedAt)?
+    TResult? Function(MissionId id, String denomination, DateTime startedAt)?
         progress,
-    TResult? Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult? Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
   }) {
     return progress?.call(id, denomination, startedAt);
@@ -707,13 +941,15 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String denomination)? $default, {
-    TResult Function(int id, String denomination, DateTime startedAt,
+    TResult Function(MissionId id, String denomination)? $default, {
+    TResult Function(MissionId id)? init,
+    TResult Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult Function(int id, String denomination, DateTime startedAt)? progress,
-    TResult Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult Function(MissionId id, String denomination, DateTime startedAt)?
+        progress,
+    TResult Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
     required TResult orElse(),
   }) {
@@ -727,6 +963,7 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_MissionEntity value) $default, {
+    required TResult Function(_MissionEntityInit value) init,
     required TResult Function(_MissionEntityDone value) done,
     required TResult Function(_MissionEntityProgress value) progress,
     required TResult Function(_MissionEntityAbandon value) abandon,
@@ -738,6 +975,7 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_MissionEntity value)? $default, {
+    TResult? Function(_MissionEntityInit value)? init,
     TResult? Function(_MissionEntityDone value)? done,
     TResult? Function(_MissionEntityProgress value)? progress,
     TResult? Function(_MissionEntityAbandon value)? abandon,
@@ -749,6 +987,7 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_MissionEntity value)? $default, {
+    TResult Function(_MissionEntityInit value)? init,
     TResult Function(_MissionEntityDone value)? done,
     TResult Function(_MissionEntityProgress value)? progress,
     TResult Function(_MissionEntityAbandon value)? abandon,
@@ -770,7 +1009,7 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
 
 abstract class _MissionEntityProgress implements MissionEntity {
   const factory _MissionEntityProgress(
-      {required final int id,
+      {required final MissionId id,
       required final String denomination,
       required final DateTime startedAt}) = _$_MissionEntityProgress;
 
@@ -778,8 +1017,7 @@ abstract class _MissionEntityProgress implements MissionEntity {
       _$_MissionEntityProgress.fromJson;
 
   @override
-  int get id;
-  @override
+  MissionId get id;
   String get denomination;
   DateTime get startedAt;
   @override
@@ -797,7 +1035,14 @@ abstract class _$$_MissionEntityAbandonCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id, String denomination, String reason, DateTime left, bool isLeft});
+      {MissionId id,
+      String denomination,
+      String reason,
+      DateTime left,
+      bool isLeft});
+
+  @override
+  $MissionIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
@@ -821,7 +1066,7 @@ class __$$_MissionEntityAbandonCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as MissionId,
       denomination: null == denomination
           ? _value.denomination
           : denomination // ignore: cast_nullable_to_non_nullable
@@ -858,7 +1103,7 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
       _$$_MissionEntityAbandonFromJson(json);
 
   @override
-  final int id;
+  final MissionId id;
   @override
   final String denomination;
   @override
@@ -904,13 +1149,15 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String denomination) $default, {
-    required TResult Function(int id, String denomination, DateTime startedAt,
-            DateTime finishedAt, bool doneOk)
+    TResult Function(MissionId id, String denomination) $default, {
+    required TResult Function(MissionId id) init,
+    required TResult Function(MissionId id, String denomination,
+            DateTime startedAt, DateTime finishedAt, bool doneOk)
         done,
-    required TResult Function(int id, String denomination, DateTime startedAt)
+    required TResult Function(
+            MissionId id, String denomination, DateTime startedAt)
         progress,
-    required TResult Function(int id, String denomination, String reason,
+    required TResult Function(MissionId id, String denomination, String reason,
             DateTime left, bool isLeft)
         abandon,
   }) {
@@ -920,14 +1167,15 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String denomination)? $default, {
-    TResult? Function(int id, String denomination, DateTime startedAt,
+    TResult? Function(MissionId id, String denomination)? $default, {
+    TResult? Function(MissionId id)? init,
+    TResult? Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult? Function(int id, String denomination, DateTime startedAt)?
+    TResult? Function(MissionId id, String denomination, DateTime startedAt)?
         progress,
-    TResult? Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult? Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
   }) {
     return abandon?.call(id, denomination, reason, left, isLeft);
@@ -936,13 +1184,15 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String denomination)? $default, {
-    TResult Function(int id, String denomination, DateTime startedAt,
+    TResult Function(MissionId id, String denomination)? $default, {
+    TResult Function(MissionId id)? init,
+    TResult Function(MissionId id, String denomination, DateTime startedAt,
             DateTime finishedAt, bool doneOk)?
         done,
-    TResult Function(int id, String denomination, DateTime startedAt)? progress,
-    TResult Function(int id, String denomination, String reason, DateTime left,
-            bool isLeft)?
+    TResult Function(MissionId id, String denomination, DateTime startedAt)?
+        progress,
+    TResult Function(MissionId id, String denomination, String reason,
+            DateTime left, bool isLeft)?
         abandon,
     required TResult orElse(),
   }) {
@@ -956,6 +1206,7 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
     TResult Function(_MissionEntity value) $default, {
+    required TResult Function(_MissionEntityInit value) init,
     required TResult Function(_MissionEntityDone value) done,
     required TResult Function(_MissionEntityProgress value) progress,
     required TResult Function(_MissionEntityAbandon value) abandon,
@@ -967,6 +1218,7 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
     TResult? Function(_MissionEntity value)? $default, {
+    TResult? Function(_MissionEntityInit value)? init,
     TResult? Function(_MissionEntityDone value)? done,
     TResult? Function(_MissionEntityProgress value)? progress,
     TResult? Function(_MissionEntityAbandon value)? abandon,
@@ -978,6 +1230,7 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_MissionEntity value)? $default, {
+    TResult Function(_MissionEntityInit value)? init,
     TResult Function(_MissionEntityDone value)? done,
     TResult Function(_MissionEntityProgress value)? progress,
     TResult Function(_MissionEntityAbandon value)? abandon,
@@ -999,7 +1252,7 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
 
 abstract class _MissionEntityAbandon implements MissionEntity {
   const factory _MissionEntityAbandon(
-      {required final int id,
+      {required final MissionId id,
       required final String denomination,
       required final String reason,
       required final DateTime left,
@@ -1009,8 +1262,7 @@ abstract class _MissionEntityAbandon implements MissionEntity {
       _$_MissionEntityAbandon.fromJson;
 
   @override
-  int get id;
-  @override
+  MissionId get id;
   String get denomination;
   String get reason;
   DateTime get left;

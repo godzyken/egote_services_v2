@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 
 import '../../../../../config/app_shared/extensions/extensions.dart';
 import '../../../../../config/cube_config/cube_config.dart';
-import '../../../domain/models/entities/message_state.dart';
 import 'chat_screens.dart';
 
 class BodySelectedDialogLayout extends ConsumerStatefulWidget {
@@ -305,7 +304,7 @@ class _BodySelectedDialogLayoutState
 
         dialogItem.data.lastMessage = null;
       } else {
-        dialogItem.data.lastMessage = const MessageState.sent() as String?;
+        dialogItem.data.lastMessage = MessageState.sent as String?;
       }
 
       dialogItem.data.lastMessageDateSent = msg.dateSent;
@@ -338,11 +337,11 @@ class _BodySelectedDialogLayoutState
   }
 
   void onMessageDelivered(MessageStatus messageStatus) {
-    _updateLastMessageState(messageStatus, const MessageState.delivered());
+    _updateLastMessageState(messageStatus, MessageState.delivered);
   }
 
   void onMessageRead(MessageStatus messageStatus) {
-    _updateLastMessageState(messageStatus, const MessageState.read());
+    _updateLastMessageState(messageStatus, MessageState.read);
 
     if (messageStatus.userId == widget.currentUser.id &&
         unreadMessages.containsKey(messageStatus.dialogId)) {

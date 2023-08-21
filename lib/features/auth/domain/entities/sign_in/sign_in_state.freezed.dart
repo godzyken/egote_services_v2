@@ -50,12 +50,21 @@ abstract class $SignInStateCopyWith<$Res> {
       _$SignInStateCopyWithImpl<$Res, SignInState>;
   @useResult
   $Res call(
-      {@JsonKey(defaultValue: 'EmailFormz.pure()', includeFromJson: false, includeToJson: false)
-          EmailFormz? emailFormz,
-      @JsonKey(defaultValue: 'PasswordFormz.pure()', includeFromJson: false, includeToJson: false)
-          PasswordFormz? passwordFormz,
-      @JsonKey(defaultValue: FormzSubmissionStatus.initial, includeFromJson: false, includeToJson: false)
-          FormzSubmissionStatus? status,
+      {@JsonKey(
+          defaultValue: 'EmailFormz.pure()',
+          includeFromJson: false,
+          includeToJson: false)
+      EmailFormz? emailFormz,
+      @JsonKey(
+          defaultValue: 'PasswordFormz.pure()',
+          includeFromJson: false,
+          includeToJson: false)
+      PasswordFormz? passwordFormz,
+      @JsonKey(
+          defaultValue: FormzSubmissionStatus.initial,
+          includeFromJson: false,
+          includeToJson: false)
+      FormzSubmissionStatus? status,
       String? errorMessage});
 }
 
@@ -107,12 +116,21 @@ abstract class _$$_SignInStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(defaultValue: 'EmailFormz.pure()', includeFromJson: false, includeToJson: false)
-          EmailFormz? emailFormz,
-      @JsonKey(defaultValue: 'PasswordFormz.pure()', includeFromJson: false, includeToJson: false)
-          PasswordFormz? passwordFormz,
-      @JsonKey(defaultValue: FormzSubmissionStatus.initial, includeFromJson: false, includeToJson: false)
-          FormzSubmissionStatus? status,
+      {@JsonKey(
+          defaultValue: 'EmailFormz.pure()',
+          includeFromJson: false,
+          includeToJson: false)
+      EmailFormz? emailFormz,
+      @JsonKey(
+          defaultValue: 'PasswordFormz.pure()',
+          includeFromJson: false,
+          includeToJson: false)
+      PasswordFormz? passwordFormz,
+      @JsonKey(
+          defaultValue: FormzSubmissionStatus.initial,
+          includeFromJson: false,
+          includeToJson: false)
+      FormzSubmissionStatus? status,
       String? errorMessage});
 }
 
@@ -158,12 +176,21 @@ class __$$_SignInStateCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _$_SignInState implements _SignInState {
   const _$_SignInState(
-      {@JsonKey(defaultValue: 'EmailFormz.pure()', includeFromJson: false, includeToJson: false)
-          this.emailFormz,
-      @JsonKey(defaultValue: 'PasswordFormz.pure()', includeFromJson: false, includeToJson: false)
-          this.passwordFormz,
-      @JsonKey(defaultValue: FormzSubmissionStatus.initial, includeFromJson: false, includeToJson: false)
-          this.status,
+      {@JsonKey(
+          defaultValue: 'EmailFormz.pure()',
+          includeFromJson: false,
+          includeToJson: false)
+      this.emailFormz,
+      @JsonKey(
+          defaultValue: 'PasswordFormz.pure()',
+          includeFromJson: false,
+          includeToJson: false)
+      this.passwordFormz,
+      @JsonKey(
+          defaultValue: FormzSubmissionStatus.initial,
+          includeFromJson: false,
+          includeToJson: false)
+      this.status,
       this.errorMessage});
 
   factory _$_SignInState.fromJson(Map<String, dynamic> json) =>
@@ -230,12 +257,21 @@ class _$_SignInState implements _SignInState {
 
 abstract class _SignInState implements SignInState {
   const factory _SignInState(
-      {@JsonKey(defaultValue: 'EmailFormz.pure()', includeFromJson: false, includeToJson: false)
-          final EmailFormz? emailFormz,
-      @JsonKey(defaultValue: 'PasswordFormz.pure()', includeFromJson: false, includeToJson: false)
-          final PasswordFormz? passwordFormz,
-      @JsonKey(defaultValue: FormzSubmissionStatus.initial, includeFromJson: false, includeToJson: false)
-          final FormzSubmissionStatus? status,
+      {@JsonKey(
+          defaultValue: 'EmailFormz.pure()',
+          includeFromJson: false,
+          includeToJson: false)
+      final EmailFormz? emailFormz,
+      @JsonKey(
+          defaultValue: 'PasswordFormz.pure()',
+          includeFromJson: false,
+          includeToJson: false)
+      final PasswordFormz? passwordFormz,
+      @JsonKey(
+          defaultValue: FormzSubmissionStatus.initial,
+          includeFromJson: false,
+          includeToJson: false)
+      final FormzSubmissionStatus? status,
       final String? errorMessage}) = _$_SignInState;
 
   factory _SignInState.fromJson(Map<String, dynamic> json) =

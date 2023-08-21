@@ -7,6 +7,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart'
     as platform_utils;
+import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,7 +22,6 @@ import 'package:universal_io/io.dart';
 import '../../../../../config/cube_config/cube_config.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../application/managers/chat_manager.dart';
-import '../../../domain/models/entities/message_state.dart';
 import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
@@ -346,13 +346,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
       if (messageIsRead()) {
         log("[getReadDeliveredWidget] if messageIsRead");
-        return getMessageStateWidget(const MessageState.read());
+        return getMessageStateWidget(MessageState.read);
       } else if (messageIsDelivered()) {
         log("[getReadDeliveredWidget] if messageIsDelivered");
-        return getMessageStateWidget(const MessageState.delivered());
+        return getMessageStateWidget(MessageState.delivered);
       } else {
         log("[getReadDeliveredWidget] sent");
-        return getMessageStateWidget(const MessageState.sent());
+        return getMessageStateWidget(MessageState.sent);
       }
     }
 
@@ -898,12 +898,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   void _initCubeChat() {
     log("_initCubeChat");
-    if (CubeChatConnection.instance.isAuthenticated()) {
+    if (ref.watch(cubeChatConnectionProvider).isAuthenticated()) {
       log("[_initCubeChat] isAuthenticated");
       _initChatListeners();
     } else {
       log("[_initCubeChat] not authenticated");
-      CubeChatConnection.instance.connectionStateStream.listen((state) {
+      ref.watch(cubeChatConnectionProvider).connectionStateStream.listen((state) {
         log("[_initCubeChat] state $state");
         if (CubeChatConnectionState.Ready == state) {
           _initChatListeners();

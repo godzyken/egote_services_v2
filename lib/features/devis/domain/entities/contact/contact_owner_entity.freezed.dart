@@ -43,7 +43,7 @@ mixin _$ContactOwnerEntity {
             String phone, String email)
         client,
     required TResult Function(int id, String companyName, String phone,
-            String email, Professions professions)
+            String email, List<Professions> professions)
         pro,
   }) =>
       throw _privateConstructorUsedError;
@@ -57,7 +57,7 @@ mixin _$ContactOwnerEntity {
             String email)?
         client,
     TResult? Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
   }) =>
       throw _privateConstructorUsedError;
@@ -71,7 +71,7 @@ mixin _$ContactOwnerEntity {
             String email)?
         client,
     TResult Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
     required TResult orElse(),
   }) =>
@@ -246,7 +246,7 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
             String phone, String email)
         client,
     required TResult Function(int id, String companyName, String phone,
-            String email, Professions professions)
+            String email, List<Professions> professions)
         pro,
   }) {
     return $default(id, firstName, lastName, phone, email);
@@ -263,7 +263,7 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
             String email)?
         client,
     TResult? Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
   }) {
     return $default?.call(id, firstName, lastName, phone, email);
@@ -280,7 +280,7 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
             String email)?
         client,
     TResult Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
     required TResult orElse(),
   }) {
@@ -411,7 +411,7 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
             String phone, String email)
         client,
     required TResult Function(int id, String companyName, String phone,
-            String email, Professions professions)
+            String email, List<Professions> professions)
         pro,
   }) {
     return empty();
@@ -428,7 +428,7 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
             String email)?
         client,
     TResult? Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
   }) {
     return empty?.call();
@@ -445,7 +445,7 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
             String email)?
         client,
     TResult Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
     required TResult orElse(),
   }) {
@@ -631,7 +631,7 @@ class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
             String phone, String email)
         client,
     required TResult Function(int id, String companyName, String phone,
-            String email, Professions professions)
+            String email, List<Professions> professions)
         pro,
   }) {
     return client(id, firstName, lastName, phone, email);
@@ -648,7 +648,7 @@ class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
             String email)?
         client,
     TResult? Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
   }) {
     return client?.call(id, firstName, lastName, phone, email);
@@ -665,7 +665,7 @@ class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
             String email)?
         client,
     TResult Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
     required TResult orElse(),
   }) {
@@ -752,7 +752,7 @@ abstract class _$$_ContactOwnerEntityProCopyWith<$Res> {
       String companyName,
       String phone,
       String email,
-      Professions professions});
+      List<Professions> professions});
 }
 
 /// @nodoc
@@ -773,26 +773,26 @@ class __$$_ContactOwnerEntityProCopyWithImpl<$Res>
     Object? professions = null,
   }) {
     return _then(_$_ContactOwnerEntityPro(
-      null == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      null == companyName
+      companyName: null == companyName
           ? _value.companyName
           : companyName // ignore: cast_nullable_to_non_nullable
               as String,
-      null == phone
+      phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
-      null == email
+      email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      null == professions
-          ? _value.professions
+      professions: null == professions
+          ? _value._professions
           : professions // ignore: cast_nullable_to_non_nullable
-              as Professions,
+              as List<Professions>,
     ));
   }
 }
@@ -801,9 +801,14 @@ class __$$_ContactOwnerEntityProCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
   const _$_ContactOwnerEntityPro(
-      this.id, this.companyName, this.phone, this.email, this.professions,
-      {final String? $type})
-      : $type = $type ?? 'pro';
+      {required this.id,
+      required this.companyName,
+      required this.phone,
+      required this.email,
+      required final List<Professions> professions,
+      final String? $type})
+      : _professions = professions,
+        $type = $type ?? 'pro';
 
   factory _$_ContactOwnerEntityPro.fromJson(Map<String, dynamic> json) =>
       _$$_ContactOwnerEntityProFromJson(json);
@@ -816,8 +821,13 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
   final String phone;
   @override
   final String email;
+  final List<Professions> _professions;
   @override
-  final Professions professions;
+  List<Professions> get professions {
+    if (_professions is EqualUnmodifiableListView) return _professions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_professions);
+  }
 
   @JsonKey(name: 'runtimeType')
   final String $type;
@@ -837,14 +847,14 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
                 other.companyName == companyName) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.professions, professions) ||
-                other.professions == professions));
+            const DeepCollectionEquality()
+                .equals(other._professions, _professions));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, companyName, phone, email, professions);
+  int get hashCode => Object.hash(runtimeType, id, companyName, phone, email,
+      const DeepCollectionEquality().hash(_professions));
 
   @JsonKey(ignore: true)
   @override
@@ -864,7 +874,7 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
             String phone, String email)
         client,
     required TResult Function(int id, String companyName, String phone,
-            String email, Professions professions)
+            String email, List<Professions> professions)
         pro,
   }) {
     return pro(id, companyName, phone, email, professions);
@@ -881,7 +891,7 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
             String email)?
         client,
     TResult? Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
   }) {
     return pro?.call(id, companyName, phone, email, professions);
@@ -898,7 +908,7 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
             String email)?
         client,
     TResult Function(int id, String companyName, String phone, String email,
-            Professions professions)?
+            List<Professions> professions)?
         pro,
     required TResult orElse(),
   }) {
@@ -955,11 +965,11 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
 
 abstract class _ContactOwnerEntityPro implements ContactOwnerEntity {
   const factory _ContactOwnerEntityPro(
-      final int id,
-      final String companyName,
-      final String phone,
-      final String email,
-      final Professions professions) = _$_ContactOwnerEntityPro;
+      {required final int id,
+      required final String companyName,
+      required final String phone,
+      required final String email,
+      required final List<Professions> professions}) = _$_ContactOwnerEntityPro;
 
   factory _ContactOwnerEntityPro.fromJson(Map<String, dynamic> json) =
       _$_ContactOwnerEntityPro.fromJson;
@@ -968,7 +978,7 @@ abstract class _ContactOwnerEntityPro implements ContactOwnerEntity {
   String get companyName;
   String get phone;
   String get email;
-  Professions get professions;
+  List<Professions> get professions;
   @JsonKey(ignore: true)
   _$$_ContactOwnerEntityProCopyWith<_$_ContactOwnerEntityPro> get copyWith =>
       throw _privateConstructorUsedError;

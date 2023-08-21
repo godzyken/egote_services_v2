@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../chat/domain/models/entities/message_state.dart';
 
 Widget getAvatarTextWidget(bool condition, String? text, {double? fontSize}) {
   if (condition) {

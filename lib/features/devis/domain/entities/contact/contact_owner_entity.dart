@@ -25,54 +25,16 @@ class ContactOwnerEntity with _$ContactOwnerEntity {
   }) = _ContactOwnerEntityClient;
 
   const factory ContactOwnerEntity.pro(
-      int id,
-      String companyName,
-      String phone,
-      String email,
-      Professions professions
-      ) = _ContactOwnerEntityPro;
+      {required int id,
+      required String companyName,
+      required String phone,
+      required String email,
+      required List<Professions> professions}) = _ContactOwnerEntityPro;
 
   factory ContactOwnerEntity.fromJson(Map<String, dynamic> json) =>
       _$ContactOwnerEntityFromJson(json);
 }
 
-//Metiers {
-//   inconnue,
-//   vitrierMiroitier,
-//   CouvreursCharpentiers,
-//   Peintres,
-//   Plombiers,
-//   Ebenistes,
-//   Menuisiers,
-//   Electriciens,
-//   Architectes,
-//   ArchitectesInterrieur,
-//   EntrepriseRenovation,
-//   EntrepriseBatiment,
-//   Facadiers,
-//   FerroniersMetalliersZingueurs,
-//   Macons,
-//   Plaquistes,
-//   JardiniersPaysagistes,
-//   Piscinistes,
-//   Terrassiers,
-//   Frigoristes,
-//   Chauffagistes,
-//   Fumistes,
-//   EntrepriseNettoyage,
-//   ProfSecuEntreprise,
-//   Cuisinistes,
-//   Diagnostiqueurq,
-//   Carreleurs,
-//   MarbriresTailleursPierre,
-//   EntrepriseRevetementSol,
-//   EntrepriseDemolitionEvacutaion,
-//   Ascensoristes,
-//   ProfTraitementNuisibles,
-//   EtancheursEntrepriseisolation,
-//   Bricoleurs,
-//   Serruriers
-//}
 @JsonEnum()
 enum Professions {
   unknown,

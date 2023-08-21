@@ -47,12 +47,21 @@ abstract class $SignUpStateCopyWith<$Res> {
       _$SignUpStateCopyWithImpl<$Res, SignUpState>;
   @useResult
   $Res call(
-      {@JsonKey(defaultValue: 'NameFormz', includeToJson: false, includeFromJson: false)
-          NameFormz? nameFormz,
-      @JsonKey(defaultValue: 'EmailFormz', includeFromJson: false, includeToJson: false)
-          EmailFormz? emailFormz,
-      @JsonKey(defaultValue: 'PasswordFormz', includeFromJson: false, includeToJson: false)
-          PasswordFormz? passwordFormz,
+      {@JsonKey(
+          defaultValue: 'NameFormz',
+          includeToJson: false,
+          includeFromJson: false)
+      NameFormz? nameFormz,
+      @JsonKey(
+          defaultValue: 'EmailFormz',
+          includeFromJson: false,
+          includeToJson: false)
+      EmailFormz? emailFormz,
+      @JsonKey(
+          defaultValue: 'PasswordFormz',
+          includeFromJson: false,
+          includeToJson: false)
+      PasswordFormz? passwordFormz,
       FormzSubmissionStatus? status,
       String? errorMessage});
 }
@@ -110,12 +119,21 @@ abstract class _$$_SignUpStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(defaultValue: 'NameFormz', includeToJson: false, includeFromJson: false)
-          NameFormz? nameFormz,
-      @JsonKey(defaultValue: 'EmailFormz', includeFromJson: false, includeToJson: false)
-          EmailFormz? emailFormz,
-      @JsonKey(defaultValue: 'PasswordFormz', includeFromJson: false, includeToJson: false)
-          PasswordFormz? passwordFormz,
+      {@JsonKey(
+          defaultValue: 'NameFormz',
+          includeToJson: false,
+          includeFromJson: false)
+      NameFormz? nameFormz,
+      @JsonKey(
+          defaultValue: 'EmailFormz',
+          includeFromJson: false,
+          includeToJson: false)
+      EmailFormz? emailFormz,
+      @JsonKey(
+          defaultValue: 'PasswordFormz',
+          includeFromJson: false,
+          includeToJson: false)
+      PasswordFormz? passwordFormz,
       FormzSubmissionStatus? status,
       String? errorMessage});
 }
@@ -167,12 +185,21 @@ class __$$_SignUpStateCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _$_SignUpState implements _SignUpState {
   const _$_SignUpState(
-      {@JsonKey(defaultValue: 'NameFormz', includeToJson: false, includeFromJson: false)
-          this.nameFormz,
-      @JsonKey(defaultValue: 'EmailFormz', includeFromJson: false, includeToJson: false)
-          this.emailFormz,
-      @JsonKey(defaultValue: 'PasswordFormz', includeFromJson: false, includeToJson: false)
-          this.passwordFormz,
+      {@JsonKey(
+          defaultValue: 'NameFormz',
+          includeToJson: false,
+          includeFromJson: false)
+      this.nameFormz,
+      @JsonKey(
+          defaultValue: 'EmailFormz',
+          includeFromJson: false,
+          includeToJson: false)
+      this.emailFormz,
+      @JsonKey(
+          defaultValue: 'PasswordFormz',
+          includeFromJson: false,
+          includeToJson: false)
+      this.passwordFormz,
       this.status = FormzSubmissionStatus.initial,
       this.errorMessage});
 
@@ -241,12 +268,21 @@ class _$_SignUpState implements _SignUpState {
 
 abstract class _SignUpState implements SignUpState {
   const factory _SignUpState(
-      {@JsonKey(defaultValue: 'NameFormz', includeToJson: false, includeFromJson: false)
-          final NameFormz? nameFormz,
-      @JsonKey(defaultValue: 'EmailFormz', includeFromJson: false, includeToJson: false)
-          final EmailFormz? emailFormz,
-      @JsonKey(defaultValue: 'PasswordFormz', includeFromJson: false, includeToJson: false)
-          final PasswordFormz? passwordFormz,
+      {@JsonKey(
+          defaultValue: 'NameFormz',
+          includeToJson: false,
+          includeFromJson: false)
+      final NameFormz? nameFormz,
+      @JsonKey(
+          defaultValue: 'EmailFormz',
+          includeFromJson: false,
+          includeToJson: false)
+      final EmailFormz? emailFormz,
+      @JsonKey(
+          defaultValue: 'PasswordFormz',
+          includeFromJson: false,
+          includeToJson: false)
+      final PasswordFormz? passwordFormz,
       final FormzSubmissionStatus? status,
       final String? errorMessage}) = _$_SignUpState;
 
