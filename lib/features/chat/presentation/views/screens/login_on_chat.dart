@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
-import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart' as platform_utils;
+import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart'
+    as platform_utils;
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/application/providers/auth_providers.dart';
@@ -31,7 +32,7 @@ class LoginOnChat extends ConsumerStatefulWidget {
 
 enum FormType { login, register }
 
-class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
+class _LoginOnChatState extends ConsumerState<LoginOnChat> {
   final TextEditingController _loginFilter = TextEditingController();
   final TextEditingController _passwordFilter = TextEditingController();
   String _login = "";
@@ -109,10 +110,9 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
         alignment: FractionalOffset.center,
         child: Column(
           children: [
-            ConstrainedBox(constraints: const BoxConstraints(maxWidth: 350),
-              child: Assets.lottie.image.logoTchat1022x1024.image(
-                height: 200
-              ),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 350),
+              child: Assets.lottie.image.logoTchat1022x1024.image(height: 200),
             ),
             Container(
               margin: const EdgeInsets.only(left: 8),
@@ -133,13 +133,13 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
 
   _initLoginWidgets() {
     return FutureBuilder(
-        future: getFilterChipsWidgets(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return snapshot.data!;
-          }
-          return const SizedBox.shrink();
-        },
+      future: getFilterChipsWidgets(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return snapshot.data!;
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 
@@ -182,11 +182,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
               onPressed: (index) {
                 setState(() {
                   for (int i = 0; i < loginEmailSelection.length; i++) {
-                   if (i == index) {
-                     loginEmailSelection[i] = true;
-                   } else {
-                     loginEmailSelection[i] = false;
-                   }
+                    if (i == index) {
+                      loginEmailSelection[i] = true;
+                    } else {
+                      loginEmailSelection[i] = false;
+                    }
                   }
                   isEmailSelected = loginEmailSelection[1];
                 });
@@ -194,8 +194,8 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
               isSelected: loginEmailSelection,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 4, horizontal: 6.0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 6.0),
                   child: Text(
                     context.tr!.byLogin,
                     style: TextStyle(
@@ -203,8 +203,8 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 4, horizontal: 6.0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 6.0),
                   child: Text(
                     context.tr!.byEmail,
                     style: TextStyle(
@@ -219,8 +219,12 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
                 ? TextInputType.emailAddress
                 : TextInputType.text,
             controller: _loginFilter,
-            hintText: isEmailSelected ? context.tr!.enterUserEmail : context.tr!.login,
-            onChanged: (value) => isEmailSelected ? loginController.onEmailChange(value) : nameController.onNameChange(value),
+            hintText: isEmailSelected
+                ? context.tr!.enterUserEmail
+                : context.tr!.login,
+            onChanged: (value) => isEmailSelected
+                ? loginController.onEmailChange(value)
+                : nameController.onNameChange(value),
             label: isEmailSelected ? context.tr!.email : context.tr!.login,
           ),
           PasswordField(
@@ -246,37 +250,37 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
       constraints: const BoxConstraints(maxWidth: 400),
       child: _form == FormType.login
           ? Container(
-        margin: const EdgeInsets.only(top: 8),
-        child: Column(
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: _loginPressed,
-              child: Text(context.tr!.login),
-            ),
-            TextButton(
-              onPressed: _formChange,
-              child: Text(context.tr!.haventAccount),
-            ),
-            ...createCIPButtons(),
-          ],
-        ),
-      )
+              margin: const EdgeInsets.only(top: 8),
+              child: Column(
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: _loginPressed,
+                    child: Text(context.tr!.login),
+                  ),
+                  TextButton(
+                    onPressed: _formChange,
+                    child: Text(context.tr!.haventAccount),
+                  ),
+                  ...createCIPButtons(),
+                ],
+              ),
+            )
           : Container(
-        margin: const EdgeInsets.only(top: 8),
-        child: Column(
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: _createAccountPressed,
-              child: Text(context.tr!.createAccount),
+              margin: const EdgeInsets.only(top: 8),
+              child: Column(
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: _createAccountPressed,
+                    child: Text(context.tr!.createAccount),
+                  ),
+                  TextButton(
+                    onPressed: _formChange,
+                    child: Text(context.tr!.haveAccount),
+                  ),
+                  ...createCIPButtons(),
+                ],
+              ),
             ),
-            TextButton(
-              onPressed: _formChange,
-              child: Text(context.tr!.haveAccount),
-            ),
-            ...createCIPButtons(),
-          ],
-        ),
-      ),
     );
   }
 
@@ -361,7 +365,8 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
       try {
         await createSession(user).then((cubeSession) {
           if (cubeSession.timestamp != null) {
-            state..startSession(cubeSession, _isLoginContinues)
+            state
+              ..startSession(cubeSession, _isLoginContinues)
               ..getLoginType()
               ..getSubscriptionToken()
               ..getSubscriptionId()
@@ -372,10 +377,10 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
 
             PushNotificationsManager.instance.init();
 
-           return user.id == cubeSession.userId ? user : null;
+            return user.id == cubeSession.userId ? user : null;
           }
-        }
-        ).onError((ExceptionCause error, stackTrace) => handleError(error, stackTrace));
+        }).onError((ExceptionCause error, stackTrace) =>
+            handleError(error, stackTrace));
       } on Exception catch (error) {
         _processLoginError(context, error);
         rethrow;
@@ -388,14 +393,15 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
           user, isEmailSelected ? LoginType.email : LoginType.login);
       PushNotificationsManager.instance.init();
       signIn(user).then((result) {
-        _loginToCubeChat(context, user);
+        _loginToCubeChat(context, result);
       });
     }).catchError((exception) {
-       _processLoginError(context, exception);
+      _processLoginError(context, exception);
     });
   }
 
-  _loginToCC(BuildContext context, CubeUser user, {bool saveUser = false}) async {
+  _loginToCC(BuildContext context, CubeUser user,
+      {bool saveUser = false}) async {
     log("_loginToCC user: $user");
     if (_isLoginContinues) return;
     setState(() {
@@ -428,34 +434,50 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
       _isLoginContinues = true;
     });
 
+    var phoneAuthToken =
+        await ref.watch(firebaseAuthProvider).currentUser?.getIdToken();
+
     Future<CubeUser>? signInFuture;
     if (loginType == LoginType.phone) {
-      var phoneAuthToken = await ref.watch(firebaseAuthProvider).currentUser?.getIdToken();
-      if (phoneAuthToken == null) {
+      if (accessToken(phoneAuthToken!).isEmpty) {
         setState(() {
           _isLoginContinues = false;
         });
 
-        ErrorWidget('Your Phone authentication session was expired, please refresh it by second login using your phone number');
+        ErrorWidget(
+            'Your Phone authentication session was expired, please refresh it by second login using your phone number');
         return;
       }
 
-      signInFuture = createSession().then((cubeSession) {
-        return signInUsingFirebase(
-            DefaultFirebaseOptions.currentPlatform.projectId,
-            phoneAuthToken)
+      signInFuture = createSessionUsingFirebasePhone(
+              projectId, accessToken(phoneAuthToken))
+          .then((cubeSession) {
+        return signInUsingFirebasePhone(projectId, accessToken(phoneAuthToken))
             .then((cubeUser) {
           return SharedPrefs.instance.init().then((sharedPrefs) {
             sharedPrefs.saveNewUser(cubeUser, LoginType.phone);
             return cubeUser
-              ..password = ref.read(cubeSessionManagerProvider).activeSession?.token;
-          }).onError((ExceptionCause error, stackTrace) => handleError(error, stackTrace));
-        }).onError((ExceptionCause error, stackTrace) => handleError(error, stackTrace));
-      }).onError((ExceptionCause error, stackTrace) => handleError(error, stackTrace));
+              ..password =
+                  ref.read(cubeSessionManagerProvider).activeSession?.token;
+          }).onError((ExceptionCause error, stackTrace) =>
+              handleError(error, stackTrace));
+        }).onError((ExceptionCause error, stackTrace) =>
+                handleError(error, stackTrace));
+      }).onError((ExceptionCause error, stackTrace) =>
+              handleError(error, stackTrace));
     } else if (loginType == LoginType.login || loginType == LoginType.email) {
-      signInFuture = SharedPrefs.instance.init().then((sharedPrefs) {
-        return sharedPrefs.getUser().then((savedUser) =>  savedUser!);
-      }).onError((ExceptionCause error, stackTrace) => handleError(error, stackTrace));
+      signInFuture = createSessionUsingFirebaseEmail(
+              projectId, accessToken(phoneAuthToken!))
+          .then((cubeSession) {
+        return signInUsingFirebaseEmail(projectId, accessToken(phoneAuthToken))
+            .then((cubeUser) => SharedPrefs.instance.init().then((sharedPrefs) {
+                  return sharedPrefs.getUser().then(
+                      (savedUser) => savedUser!..password = cubeUser.password);
+                }).onError((ExceptionCause error, stackTrace) =>
+                    handleError(error, stackTrace)))
+            .onError((ExceptionCause error, stackTrace) =>
+                handleError(error, stackTrace));
+      });
     }
 
     signInFuture?.then((cubeUser) {
@@ -466,6 +488,10 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
       _processLoginError(context, error);
     });
   }
+
+  String accessToken(String phoneAuthToken) => phoneAuthToken;
+
+  String get projectId => DefaultFirebaseOptions.currentPlatform.projectId;
 
   _loginToCubeChat(BuildContext context, CubeUser user) {
     log("_loginToCubeChat user $user");
@@ -481,7 +507,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
     });
   }
 
-  void  _processLoginError(BuildContext context, Exception? exception) {
+  void _processLoginError(BuildContext context, Exception? exception) {
     log("Login error $exception");
     setState(() {
       _isLoginContinues = false;
@@ -500,11 +526,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
       log("getNotificationAppLaunchDetails, payload: $payload");
 
       var dialogId;
-      if (payload == null) {
+      if (accessToken(payload!) == null) {
         dialogId = SharedPrefs.instance.getSelectedDialogId();
         log("getNotificationAppLaunchDetails, selectedDialogId: $dialogId");
       } else {
-        Map<String, dynamic> payloadObject = jsonDecode(payload);
+        Map<String, dynamic> payloadObject = jsonDecode(accessToken(payload));
         dialogId = payloadObject['dialog_id'];
       }
 
@@ -529,20 +555,24 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
   }
 
   void navigateToNextScreen(CubeUser cubeUser, CubeDialog? dialog) {
-    SharedPrefs.instance.saveSelectedDialogId('');
+    final cid =
+        SharedPrefs.instance.saveSelectedDialogId(dialog!.id.toString());
     context.pushReplacementNamed(
       'select_dialog',
-      extra: {USER_ARG_NAME: cubeUser, DIALOG_ARG_NAME: dialog},
+      pathParameters: {'cid': cid},
+      extra: {USER_ARG_NAME: cubeUser.fullName, DIALOG_ARG_NAME: dialog.name},
     );
 
-    if (dialog != null && !platform_utils.isDesktop()) {
-      context.pushNamed('chat_dialog',
-          extra: {USER_ARG_NAME: cubeUser, DIALOG_ARG_NAME: dialog});
+    if (dialog.dialogId != null && !platform_utils.isDesktop()) {
+      context.pushNamed('chat_dialog', extra: {
+        USER_ARG_NAME: cubeUser.fullName,
+        DIALOG_ARG_NAME: dialog.name
+      });
     }
   }
 
   handleError(ExceptionCause? object, StackTrace stackTrace) {
-    if(object!.exception && object.stackTrace) {
+    if (object!.exception && object.stackTrace) {
       stackTrace = object.stackTrace;
 
       log('HandleError: ${object.exception}  with stackTrace : $stackTrace');
@@ -551,6 +581,4 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat>  {
 
     return;
   }
-
-
 }

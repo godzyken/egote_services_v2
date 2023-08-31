@@ -74,18 +74,18 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         case ConnectivityResult.bluetooth:
         // TODO: Handle this case.
         case ConnectivityResult.wifi:
-        // TODO: Handle this case.
-        log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-        bool isChatDisconnected =
-            CubeChatConnection.instance.chatConnectionState ==
-                CubeChatConnectionState.Closed ||
-                CubeChatConnection.instance.chatConnectionState ==
-                    CubeChatConnectionState.ForceClosed;
+          // TODO: Handle this case.
+          log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
+          bool isChatDisconnected =
+              CubeChatConnection.instance.chatConnectionState ==
+                      CubeChatConnectionState.Closed ||
+                  CubeChatConnection.instance.chatConnectionState ==
+                      CubeChatConnectionState.ForceClosed;
 
-        if (isChatDisconnected &&
-            CubeChatConnection.instance.currentUser != null) {
-          CubeChatConnection.instance.relogin();
-        }
+          if (isChatDisconnected &&
+              CubeChatConnection.instance.currentUser != null) {
+            CubeChatConnection.instance.relogin();
+          }
         case ConnectivityResult.ethernet:
         // TODO: Handle this case.
         case ConnectivityResult.mobile:
@@ -101,14 +101,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
             CubeChatConnection.instance.relogin();
           }
         case ConnectivityResult.none:
-        // TODO: Handle this case.
+          // TODO: Handle this case.
           CubeChatConnection.instance.destroy();
         case ConnectivityResult.vpn:
         // TODO: Handle this case.
         case ConnectivityResult.other:
         // TODO: Handle this case.
       }
-
     });
 
     appState = WidgetsBinding.instance.lifecycleState;
@@ -135,7 +134,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                   user.password =
                       CubeSessionManager.instance.activeSession?.token;
                 } else {
-                  var phoneAuthSession = await createSessionUsingFirebase(
+                  var phoneAuthSession = await createSessionUsingFirebasePhone(
                       'projectId', 'accessToken');
                   user.password = phoneAuthSession.token;
                 }
@@ -154,35 +153,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         }
       case AppLifecycleState.detached:
       // TODO: Handle this case.
+      case AppLifecycleState.hidden:
+      // TODO: Handle this case.
     }
-
-    /* if (AppLifecycleState.paused == state) {
-      if (CubeChatConnection.instance.isAuthenticated()) {
-        CubeChatConnection.instance.markInactive();
-      }
-    } else if (AppLifecycleState.resumed == state) {
-      SharedPrefs.instance.init().then((sharedPrefs) async {
-        CubeUser? user =
-            await sharedPrefs.getUser().then((savedUser) => savedUser!);
-
-        if (user != null) {
-          if (!CubeChatConnection.instance.isAuthenticated()) {
-            if (LoginType.phone == sharedPrefs.getLoginType()) {
-              if (CubeSessionManager.instance.isActiveSessionValid()) {
-                user.password =
-                    CubeSessionManager.instance.activeSession?.token;
-              } else {
-                var phoneAuthSession = await createSessionUsingFirebase(
-                    'projectId', 'accessToken');
-                user.password = phoneAuthSession.token;
-              }
-            }
-            CubeChatConnection.instance.login(user);
-          } else {
-            CubeChatConnection.instance.markActive();
-          }
-        }
-      });
-    }*/
   }
 }

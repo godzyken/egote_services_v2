@@ -229,15 +229,21 @@ class AuthRepository implements AuthRepositoryInterface {
     final supabase.Session? data = response.session;
     final supabase.User? user = response.user;
 
+    final createdAt = DateTime.parse(user!.createdAt);
+    final updatedAt = DateTime.parse(user.updatedAt!);
+    final emailConfirmedAt = DateTime.parse(user.emailConfirmedAt!);
+    final phoneConfirmedAt = DateTime.parse(user.phoneConfirmedAt!);
+    final lastSignInAt = DateTime.parse(user.lastSignInAt!);
+
     final UserEntityModel userEntityModel = UserEntityModel.create(
         name!,
-        user!.role!,
+        user.role!,
         false,
-        DateTime(int.parse(user.createdAt)),
-        DateTime(int.parse(user.updatedAt!)),
-        DateTime(int.parse(user.emailConfirmedAt!)),
-        DateTime(int.parse(user.phoneConfirmedAt!)),
-        DateTime(int.parse(user.lastSignInAt!)),
+        createdAt,
+        updatedAt,
+        emailConfirmedAt,
+        phoneConfirmedAt,
+        lastSignInAt,
     );
 
     await authClient

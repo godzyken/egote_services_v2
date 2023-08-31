@@ -369,9 +369,9 @@ class _BodySelectedDialogLayoutState
         .firstWhere((dlg) => dlg.data.dialogId == messageStatus.dialogId)
         .data;
 
-    if (messageStatus.messageId == dialog.lastMessageUserId &&
+    if (messageStatus.messageId == dialog.lastMessageUserId!.toString() &&
         messageStatus.userId != widget.currentUser.id) {
-      if (dialog.lastMessage != state) {
+      if (dialog.lastMessage != state.value) {
         setState(() {
           dialog.lastMessage = state.toString();
         });

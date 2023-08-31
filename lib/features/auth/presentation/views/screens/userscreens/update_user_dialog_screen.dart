@@ -16,7 +16,7 @@ class _UpdateUserDialogScreenState extends ConsumerState<UpdateUserDialogScreen>
   @override
   Widget build(BuildContext context) {
     final authController = ref.watch(loginControllerNotifierProvider);
-    return AlertDialog(
+    return AlertDialog.adaptive(
       title: Text(context.tr!.updateProfile),
       content: SingleChildScrollView(
         child: ListBody(

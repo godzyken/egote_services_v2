@@ -13,6 +13,7 @@ import '../../../../../config/environements/flavors.dart';
 import '../../../../../config/providers/cube/cube_providers.dart';
 import '../../../../config/cube_config/cube_config.dart';
 import '../../data/data_sources/local/pref_util.dart';
+import '../../infrastructure/repositories/cube_repository.dart';
 
 final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   final configFile = await rootBundle.loadString(F.envFileName);
@@ -24,14 +25,19 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   settings.isDebugEnabled = true;
   await settings.setEndpoints(settings.apiEndpoint, settings.chatEndpoint);
 
-  SharedPrefs preferences = await SharedPrefs.instance.init();
-
-  return await settings.init(env.appId, env.authKey, env.authSecret,
+  await settings.init(env.appId, env.authKey, env.authSecret,
       onSessionRestore: () async {
+    SharedPrefs preferences = await SharedPrefs.instance.init();
+
+    if (LoginType.phone == preferences.getLoginType()) {
+      return ref.read(cubeRepositoryProvider).createPhoneAuthSession();
+    }
+
     return await preferences
-        .getUser()
-        .then((savedUser) => createSession(savedUser!));
+        .getUser().then((value) => ref.read(cubeRepositoryProvider).restoreSession());
   });
+
+  return settings;
 }, dependencies: [cubeSettingsProvider], name: 'Cube settings init provider');
 
 final cubeUserControllerProvider =

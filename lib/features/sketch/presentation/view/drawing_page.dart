@@ -14,7 +14,6 @@ class DrawingPage extends ConsumerStatefulWidget {
 class _DrawingPageState extends ConsumerState<DrawingPage> {
   late final Future<LottieComposition> _composition;
 
-
   @override
   void initState() {
     super.initState();
@@ -34,7 +33,5 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
       }
     },);
   }
-
-
 }
 

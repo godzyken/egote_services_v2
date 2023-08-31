@@ -33,4 +33,5 @@ abstract class CubeRepositoryInterface {
 
   Future<CubeFile> getUploadingImageFuture(FilePickerResult result);
 
+  Future<CubeSession> createPhoneAuthSession();
 }

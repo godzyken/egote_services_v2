@@ -167,9 +167,9 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
   }
 
   _showConfirmDeleteUserDialog() async {
-    final bool res = await showDialog(
+    final bool res = await showAdaptiveDialog(
         context: context,
-        builder: (_) => AlertDialog(
+        builder: (context) => AlertDialog.adaptive(
           content: Text(context.tr!.deleteUser),
           actions: [
             TextButton(

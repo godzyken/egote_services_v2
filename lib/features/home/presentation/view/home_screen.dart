@@ -10,8 +10,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../gen/assets.gen.dart';
 
-
-
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -20,28 +18,18 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-
   bool animate = false;
 
   int index = 0;
   late Timer _timer;
 
   final imageWidgets = [
-    Assets.lottie.image.maisonIndiv.image(
-      key: const Key('1'),
-      fit: BoxFit.scaleDown,
-      height: 300
-    ),
-    Assets.lottie.archive.amenagement.exterieur.piscines.piscineSussargue1.image(
-        key: const Key('2'),
-        fit: BoxFit.scaleDown,
-        height: 300
-    ),
-    Assets.lottie.image.appartement.image(
-        key: const Key('3'),
-        fit: BoxFit.scaleDown,
-        height: 300
-    ),
+    Assets.lottie.image.maisonIndiv
+        .image(key: const Key('1'), fit: BoxFit.scaleDown, height: 300),
+    Assets.lottie.archive.amenagement.exterieur.piscines.piscineSussargue1
+        .image(key: const Key('2'), fit: BoxFit.scaleDown, height: 300),
+    Assets.lottie.image.appartement
+        .image(key: const Key('3'), fit: BoxFit.scaleDown, height: 300),
   ];
 
   @override
@@ -68,9 +56,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-          '${context.tr?.home} $network',
-          style: const TextStyle(color: Colors.black54),
-        ),
+            '${context.tr?.home} $network',
+            style: const TextStyle(color: Colors.black54),
+          ),
           titleSpacing: 00.0,
           centerTitle: true,
           toolbarHeight: 60.2,
@@ -97,7 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           leading: IconButton(
             icon: const Icon(Icons.menu),
             tooltip: context.tr?.tooltipIconMenu,
-            onPressed: () { },
+            onPressed: () {},
           ),
           systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
@@ -105,26 +93,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             AnimatedPositioned(
                 duration: const Duration(milliseconds: 1600),
-                 //onEnd: () => context.go('/authRoute'),
-                 //onEnd: () => context.goNamed('mfaList'),
-                onEnd: () => context.goNamed('devis', pathParameters: {'devisId': '123'}),
+                onEnd: () => context.go('/chatRoute'),
+                //onEnd: () => context.go('/authRoute'),
+                //onEnd: () => context.goNamed('mfaList'),
+                //onEnd: () => context.goNamed('devis', pathParameters: {'devisId': '123'}),
                 top: animate ? 0 : -80,
                 left: animate ? 0 : -80,
                 curve: Curves.elasticInOut,
                 child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 1600),
-                    opacity: animate ? 1 : 0,
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 5000),
-                      reverseDuration: const Duration(milliseconds: 500),
-                      transitionBuilder: (child, animation) => ScaleTransition(
-                        scale: animation,
-                        child: child,
-                      ),
-                      switchInCurve: Curves.decelerate,
-                      switchOutCurve: Curves.elasticOut,
-                      child: imageWidgets[index],
+                  duration: const Duration(milliseconds: 1600),
+                  opacity: animate ? 1 : 0,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 5000),
+                    reverseDuration: const Duration(milliseconds: 500),
+                    transitionBuilder: (child, animation) => ScaleTransition(
+                      scale: animation,
+                      child: child,
                     ),
+                    switchInCurve: Curves.decelerate,
+                    switchOutCurve: Curves.elasticOut,
+                    child: imageWidgets[index],
+                  ),
                 )),
             AnimatedPositioned(
                 duration: const Duration(milliseconds: 1600),
@@ -132,19 +121,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 left: animate ? 0 : -30,
                 curve: Curves.fastLinearToSlowEaseIn,
                 child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 1600),
-                    opacity: animate ? 1 : 0,
-                    child: Assets.lottie.image.logoBatServices.image(
-                      width: 250,
-                      height: 250,
-                    ),
-                )
-            ),
+                  duration: const Duration(milliseconds: 1600),
+                  opacity: animate ? 1 : 0,
+                  child: Assets.lottie.image.logoBatServices.image(
+                    width: 250,
+                    height: 250,
+                  ),
+                )),
             // GestureDetector(
             //     onHorizontalDragEnd: (details) => context.goNamed('userList'),
             //     child: child
             // ),
-
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -157,7 +144,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
     });
   }
-
 
   @override
   void dispose() {

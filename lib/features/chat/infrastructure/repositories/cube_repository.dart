@@ -24,9 +24,7 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<Either<Failure, CubeSession>> createGuestUserSession(
-      bool isGuest,
-      String fullName
-      ) {
+      bool isGuest, String fullName) {
     // TODO: implement createGuestUserSession
     throw UnimplementedError();
   }
@@ -34,51 +32,28 @@ class CubeRepository implements CubeRepositoryInterface {
   @override
   Future<CubeUser>? setSession(String token) async {
     var idToken = await authRepository.setSession(token);
-    return createSession()
-        .then(
-            (cubeSession) {
-              return signInUsingFirebase(
-                  DefaultFirebaseOptions
-                      .currentPlatform
-                      .projectId,
-                  idToken.toString()
-              )
-                  .then(
-                      (cubeUser) {
-                        return SharedPrefs
-                            .instance
-                            .init()
-                            .then(
-                                (sharedPrefs) {
-                                  sharedPrefs.saveNewUser(cubeUser, LoginType.login);
-                                  return cubeUser
-                                    ..password = CubeSessionManager
-                                        .instance
-                                        .activeSession?.token;
-                                });
-                      }
-              );
-            }
-    );
+    return createSession().then((cubeSession) {
+      return signInUsingFirebaseEmail(
+              DefaultFirebaseOptions.currentPlatform.projectId,
+              idToken.toString())
+          .then((cubeUser) {
+        return SharedPrefs.instance.init().then((sharedPrefs) {
+          sharedPrefs.saveNewUser(cubeUser, LoginType.login);
+          return cubeUser
+            ..password = CubeSessionManager.instance.activeSession?.token;
+        });
+      });
+    });
   }
 
   @override
   Future<Either<Failure, CubeSession>> createUserSession(
-      String login,
-      String password
-      ) async {
-
-
-    return createSession()
-        .then(
-            (value) {
-              return signInByLogin(login, password).then(
-                      (value) {
-                        return right(CubeSessionManager.instance.activeSession!);
-                      });
-            },
-        onError: left(Failure.badRequest())
-    );
+      String login, String password) async {
+    return createSession().then((value) {
+      return signInByLogin(login, password).then((value) {
+        return right(CubeSessionManager.instance.activeSession!);
+      });
+    }, onError: left(Failure.badRequest()));
   }
 
   @override
@@ -89,10 +64,7 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<Either<Failure, bool>> signInWithSocialProviders(
-      String socialProvider,
-      String accessToken,
-      String accessTokenSecret
-      ) {
+      String socialProvider, String accessToken, String accessTokenSecret) {
     // TODO: implement signInWithSocialProviders
     throw UnimplementedError();
   }
@@ -105,9 +77,7 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<Either<Failure, CubeSession>> updateUserSession(
-      String something,
-      String password
-      ) {
+      String something, String password) {
     // TODO: implement updateUserSession
     throw UnimplementedError();
   }
@@ -116,21 +86,16 @@ class CubeRepository implements CubeRepositoryInterface {
   Future<CubeFile> getUploadingImageFuture(FilePickerResult result) async {
     // there possible to upload the file as an array of bytes,
     // but here showed two ways just as an example
-    if(kIsWeb){
-      return uploadRawFile(
-          result.files.single.bytes!,
-          result.files.single.name,
-          isPublic: true,
-          onProgress: (progress) {
-            log("uploadImageFile progress= $progress");
-          });
+    if (kIsWeb) {
+      return uploadRawFile(result.files.single.bytes!, result.files.single.name,
+          isPublic: true, onProgress: (progress) {
+        log("uploadImageFile progress= $progress");
+      });
     } else {
-      return uploadFile(
-          File(result.files.single.path!),
-          isPublic: true,
+      return uploadFile(File(result.files.single.path!), isPublic: true,
           onProgress: (progress) {
-            log("uploadImageFile progress= $progress");
-          });
+        log("uploadImageFile progress= $progress");
+      });
     }
   }
 
@@ -138,12 +103,32 @@ class CubeRepository implements CubeRepositoryInterface {
     getUnreadMessagesCount().then((value) => updateBadgeCount(value['total']));
   }
 
+  @override
+  Future<CubeSession> createPhoneAuthSession() async {
+    var phoneAuthIdToken = await auth.currentUser?.getIdToken();
+
+    if (phoneAuthIdToken == null) {
+      var accessToken = auth.currentUser!.refreshToken;
+      return createSessionUsingFirebaseEmail(
+              DefaultFirebaseOptions.currentPlatform.projectId,
+              accessToken!)
+          .then((cubeSession) {
+        return CubeSessionManager.instance.activeSession!;
+      });
+    }
+
+    return createSessionUsingFirebasePhone(
+            DefaultFirebaseOptions.currentPlatform.projectId, phoneAuthIdToken)
+        .then(
+            (cubeSession) => CubeSessionManager.instance.activeSession!);
+  }
 }
 
 final cubeRepositoryProvider = Provider.autoDispose<CubeRepository>(
-      (ref) {
-        final authRepository = ref.read(authRepositoryProvider);
-        final auth = ref.read(firebaseAuthProvider);
+  (ref) {
+    final authRepository = ref.read(authRepositoryProvider);
+    final auth = ref.read(firebaseAuthProvider);
 
-        return CubeRepository(authRepository, auth);
-      },);
+    return CubeRepository(authRepository, auth);
+  },
+);

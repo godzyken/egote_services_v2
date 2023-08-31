@@ -128,7 +128,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                   ]),
               GoRoute(
                   path: UserHomeRoute.path,
-                  name: 'UserHome',
+                  name: 'user_home',
                   builder: (context, state) => UserHomeScreen(
                       key: state.pageKey, pid: state.pathParameters['userId']!),
                   routes: [
@@ -171,7 +171,8 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                         path: SelectDialogRoute.path,
                         name: 'select_dialog',
                         builder: (context, state) => SelectDialogScreen(
-                            currentUser: ref.watch(cubeUserControllerProvider.select((value) => value!))),
+                            currentUser: ref.watch(cubeUserControllerProvider.select((value) => value!))
+                        ),
                         routes: [
                           GoRoute(
                               path: ChatDialogRoute.path, 

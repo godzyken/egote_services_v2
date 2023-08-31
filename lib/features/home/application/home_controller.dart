@@ -55,4 +55,5 @@ class HomeControllerNotifier extends StateNotifier<NetWorkStatus> {
 
 final networkAwareProvider =
     StateNotifierProvider<HomeControllerNotifier, NetWorkStatus>(
-        (ref) => HomeControllerNotifier());
+        (ref) => HomeControllerNotifier(),
+        name: "Network aware provider state determine network status");

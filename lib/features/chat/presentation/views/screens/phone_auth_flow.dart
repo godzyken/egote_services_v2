@@ -1,4 +1,6 @@
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
+import 'package:egote_services_v2/firebase_options.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,9 +54,14 @@ class VerifyPhoneNumber extends ConsumerWidget {
                               log('[AuthStateChangeAction] SignedIn');
                               state.user?.getIdToken().then((idToken) {
                                 SharedPrefs.instance.saveLoginType(LoginType.phone);
-                                Navigator.of(ctx3, rootNavigator: true)
-                                    .pushNamedAndRemoveUntil(
-                                    'loginToChat', (route) => false);
+                                signInUsingFirebasePhone(
+                                    DefaultFirebaseOptions.currentPlatform.projectId,
+                                    idToken!
+                                ).then(
+                                        (value) =>  Navigator.of(ctx3, rootNavigator: true)
+                                            .pushNamedAndRemoveUntil('loginToChat',
+                                                (route) => route.isFirst)
+                                        ).catchError((onError) => context.showAlert(onError.toString()));
                               });
                             }),
                             AuthStateChangeAction<CredentialLinked>((ctx3, state) {
