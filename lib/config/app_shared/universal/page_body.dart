@@ -58,17 +58,13 @@ class PageBody extends StatelessWidget {
     return Scrollbar(
       controller: controller,
       child: GestureDetector(
-        // This allows us to un-focus a widget, typically a TextField with focus
-        // by tapping somewhere outside it. It is no longer needed on desktop
-        // builds, it is done automatically there, but not on tablet and phone
-        // app. In this demo we want it on them too.
         onTap: () => FocusScope.of(context).unfocus(),
         child: Center(
           child: ConstrainedBox(
             constraints: constraints,
             child: ScrollConfiguration(
               behavior:
-              ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
               child: Padding(
                 padding: padding,
                 child: child,

@@ -17,33 +17,39 @@ final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
       options: DefaultFirebaseOptions.currentPlatform);
 });
 
-final firebaseAuthProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
+final firebaseAuthProvider =
+    Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
-final firebaseDatabaseProvider = Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
+final firebaseDatabaseProvider =
+    Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
 
 final firebaseFirestoreProvider = Provider((ref) => FirebaseFirestore.instance);
 
 final firebaseMessagingProvider = Provider((ref) => FirebaseMessaging.instance);
 
 final emulatorSettingsProvider = Provider((ref) {
-  final emulator = ref.watch(firebaseFirestoreProvider).useFirestoreEmulator('10.2.2', 8080);
-
-  ref.watch(firebaseFirestoreProvider).settings = const Settings(
+  final fire = ref.watch(firebaseFirestoreProvider);
+  fire.settings = const Settings(
     host: kIsWeb ? 'localhost' : '10.2.2',
     sslEnabled: true,
     ignoreUndefinedProperties: false,
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
 
+  final emulator = fire.useFirestoreEmulator('10.2.2', 8080);
+
   return emulator;
 });
 
 // <---------------- Stream<User?> Providers --------------------> //
-final authStateChangesProvider = StreamProvider((ref) => ref.watch(firebaseAuthProvider).authStateChanges());
+final authStateChangesProvider =
+    StreamProvider((ref) => ref.watch(firebaseAuthProvider).authStateChanges());
 
-final idTokenChangesProvider = StreamProvider((ref) => ref.watch(firebaseAuthProvider).idTokenChanges());
+final idTokenChangesProvider =
+    StreamProvider((ref) => ref.watch(firebaseAuthProvider).idTokenChanges());
 
-final userChangesProvider = StreamProvider((ref) => ref.watch(firebaseAuthProvider).userChanges());
+final userChangesProvider =
+    StreamProvider((ref) => ref.watch(firebaseAuthProvider).userChanges());
 
 final authStreamProvider = StreamProvider.autoDispose<User?>((ref) {
   return ref.watch(firebaseAuthProvider).authStateChanges().map((user) {
@@ -97,6 +103,6 @@ final fireDatabaseProvider = Provider<FirebaseDatabase?>((ref) {
 
   return auth.asData?.value?.uid != null
       ? FirebaseDatabase.instanceFor(
-      app: database.app, databaseURL: database.databaseURL)
+          app: database.app, databaseURL: database.databaseURL)
       : null;
 });

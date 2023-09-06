@@ -12,7 +12,6 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../../common/presentation/extensions/extensions.dart';
 
-
 class AuthRepository implements AuthRepositoryInterface {
   AuthRepository(this.authTokenLocalDataSource, this.client);
 
@@ -34,7 +33,23 @@ class AuthRepository implements AuthRepositoryInterface {
           // TODO: Handle this case.
           break;
         case supabase.AuthChangeEvent.signedIn:
-          callback(UserModel.fromJson(session!.user.toJson()));
+          callback(UserModel.unComplete(
+              id: UserId(value: int.tryParse(session!.user.id)!),
+              userEntityModel: UserEntityModel.fromJson(session.user.toJson()),
+              authUser: AuthUser(
+                  id: session.user.id,
+                  appMetadata: session.user.appMetadata,
+                  userMetadata: session.user.userMetadata!,
+                  aud: session.user.aud,
+                  email: session.user.email,
+                  phone: session.user.phone,
+                  createdAt: session.user.createdAt,
+                  role: session.user.role!,
+                  updatedAt: session.user.updatedAt!,
+                  confirmedAt: session.user.confirmationSentAt,
+                  phoneConfirmedAt: session.user.phoneConfirmedAt,
+                  emailConfirmedAt: session.user.emailConfirmedAt,
+                  lastSignInAt: session.user.lastSignInAt)));
           break;
         case supabase.AuthChangeEvent.signedOut:
           callback(null);
@@ -69,43 +84,43 @@ class AuthRepository implements AuthRepositoryInterface {
 
     if (myChannel.isJoining) {
       myChannel
-          .on(
-        supabase.RealtimeListenTypes.postgresChanges,
-        supabase.ChannelFilter(
-            event: '*',
-            schema: 'public',
-            table: 'chat'), (payload, [ref]) {
-        developer.log('Change received: ${payload.toString()}');
-      },)
-          .on(supabase.RealtimeListenTypes.presence,
-          supabase.ChannelFilter(event: 'sync'), (payload, [ref]) {
-            final onlineUsers = myChannel.presenceState();
-            developer.log('Change received: $onlineUsers && ${payload.toString()}');
-          })
-          .on(supabase.RealtimeListenTypes.presence,
-          supabase.ChannelFilter(event: 'join'), (payload, [ref]) {
+        ..on(
+          supabase.RealtimeListenTypes.postgresChanges,
+          supabase.ChannelFilter(event: '*', schema: 'public', table: 'chat'),
+          (payload, [ref]) {
             developer.log('Change received: ${payload.toString()}');
-          })
-          .on(supabase.RealtimeListenTypes.presence,
-          supabase.ChannelFilter(event: 'leave'), (payload, [ref]) {
-            developer.log('Change received: ${payload.toString()}');
-          })
-          .subscribe(((status, [_]) async {
-        if (status == 'SUBSCRIBED') {
-          final status = await myChannel
-              .track({'online_at': DateTime.now().toIso8601String()});
-          switch (status) {
-            case supabase.ChannelResponse.ok:
-              isOnLine();
-              break;
-            case supabase.ChannelResponse.timedOut:
-            // TODO: Handle this case.
-              break;
-            case supabase.ChannelResponse.rateLimited:
-            // TODO: Handle this case.
+          },
+        )
+        ..on(supabase.RealtimeListenTypes.presence,
+            supabase.ChannelFilter(event: 'sync'), (payload, [ref]) {
+          final onlineUsers = myChannel.presenceState();
+          developer
+              .log('Change received: $onlineUsers && ${payload.toString()}');
+        })
+        ..on(supabase.RealtimeListenTypes.presence,
+            supabase.ChannelFilter(event: 'join'), (payload, [ref]) {
+          developer.log('Change received: ${payload.toString()}');
+        })
+        ..on(supabase.RealtimeListenTypes.presence,
+            supabase.ChannelFilter(event: 'leave'), (payload, [ref]) {
+          developer.log('Change received: ${payload.toString()}');
+        })
+        ..subscribe(((status, [_]) async {
+          if (status == 'SUBSCRIBED') {
+            final status = await myChannel
+                .track({'online_at': DateTime.now().toIso8601String()});
+            switch (status) {
+              case supabase.ChannelResponse.ok:
+                isOnLine();
+                break;
+              case supabase.ChannelResponse.timedOut:
+                // TODO: Handle this case.
+                break;
+              case supabase.ChannelResponse.rateLimited:
+              // TODO: Handle this case.
+            }
           }
-        }
-      }));
+        }));
 
       return right(true);
     }
@@ -114,21 +129,21 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, UserModel>> restoreSession() async  {
+  Future<Either<Failure, UserModel>> restoreSession() async {
     final res = authTokenLocalDataSource.get();
     if (res.isLeft()) {
       return left(Failure.empty());
     }
 
-    final response = await authClient.auth.recoverSession(res.getOrElse((_) => ''));
+    final response =
+        await authClient.auth.recoverSession(res.getOrElse((l) => l.error));
     final data = response.session;
 
     if (data != null || response.user == null) {
       await authTokenLocalDataSource.remove();
       return left(Failure.unauthorized());
     }
-    await authTokenLocalDataSource
-        .store(data!.persistSessionString ?? '');
+    await authTokenLocalDataSource.store(data!.persistSessionString ?? '');
     return right(UserModel.fromJson(data.user.toJson()));
   }
 
@@ -150,10 +165,8 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, bool>> signInWithGoogle() async {
-    final res = await client.signInWithOAuth(
-        supabase.Provider.google,
-        redirectTo: 'io.supabase.flutter://reset-callback/'
-    );
+    final res = await client.signInWithOAuth(supabase.Provider.google,
+        redirectTo: 'io.supabase.flutter://reset-callback/');
     if (!res) {
       developer.log('signInWithGoogle() error: $res');
       return left(Failure.badRequest());
@@ -171,7 +184,8 @@ class AuthRepository implements AuthRepositoryInterface {
       email: email,
       password: password!,
     );
-    developer.log('signInWithPassword response : ${res.session!.toJson()}\n ${res.user!.toJson()}');
+    developer.log(
+        'signInWithPassword response : ${res.session!.toJson()}\n ${res.user!.toJson()}');
     await authTokenLocalDataSource
         .store(res.session?.persistSessionString ?? '');
 
@@ -179,10 +193,8 @@ class AuthRepository implements AuthRepositoryInterface {
     final supabase.User? user = res.user;
 
     do {
-
       await authTokenLocalDataSource.remove();
       left(Failure.unauthorized());
-
     } while (session != null && user == null);
 
     return right(session!.user);
@@ -216,14 +228,15 @@ class AuthRepository implements AuthRepositoryInterface {
       password: password,
       data: {'name': name},
       //emailRedirectTo: kIsWeb ? https://qrco.de/be782E : 'https://www.godzy.egote-services-v2/signup/enroll',
-      emailRedirectTo: kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
+      emailRedirectTo:
+          kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
     );
 
     developer.log('reponse api signup: ${response.user}');
 
     if (response.user != null) {
       await authTokenLocalDataSource
-        .store(response.session?.persistSessionString ?? '');
+          .store(response.session?.persistSessionString ?? '');
     }
 
     final supabase.Session? data = response.session;
@@ -236,27 +249,26 @@ class AuthRepository implements AuthRepositoryInterface {
     final lastSignInAt = DateTime.parse(user.lastSignInAt!);
 
     final UserEntityModel userEntityModel = UserEntityModel.create(
-        name!,
-        user.role!,
-        false,
-        createdAt,
-        updatedAt,
-        emailConfirmedAt,
-        phoneConfirmedAt,
-        lastSignInAt,
+      name!,
+      user.role!,
+      false,
+      createdAt,
+      updatedAt,
+      emailConfirmedAt,
+      phoneConfirmedAt,
+      lastSignInAt,
     );
 
-    await authClient
-        .from('auth_users_table')
-        .insert(userEntityModel);
+    await authClient.from('auth_users_table').insert(userEntityModel);
 
     if (data != null) {
       await setSession(data.accessToken);
       await authTokenLocalDataSource.remove();
       await authClient
           .from('auth_users_table')
-          .delete().match({'id': userEntityModel.id});
-
+          .delete()
+          .match({'id': userEntityModel.id});
+    } else {
       return left(Failure.unauthorized());
     }
 
@@ -264,12 +276,10 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, supabase.AuthResponse>> verifyCode(String email, String code) async{
+  Future<Either<Failure, supabase.AuthResponse>> verifyCode(
+      String email, String code) async {
     final res = await client.verifyOTP(
-        email: email,
-        token: code,
-        type: supabase.OtpType.signup
-    );
+        email: email, token: code, type: supabase.OtpType.signup);
     developer.log('reponse api verify code: $res');
 
     if (res.user != null) {
@@ -279,16 +289,14 @@ class AuthRepository implements AuthRepositoryInterface {
     final supabase.Session? session = res.session;
     final supabase.User? user = res.user;
 
-    await client.signInWithOtp(
-        email: res.user!.email,
-        shouldCreateUser: true
-    );
+    await client.signInWithOtp(email: res.user!.email, shouldCreateUser: true);
 
     if (session != null || user == null) {
       await authTokenLocalDataSource.remove();
       await authClient
           .from('auth_users_table')
-          .delete().match({'id': user!.id});
+          .delete()
+          .match({'id': user!.id});
 
       return left(Failure.unauthorized());
     }
@@ -296,25 +304,23 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, UserEntityModel>> createUserEntityModel(UserName name) async {
+  Future<Either<Failure, UserEntityModel>> createUserEntityModel(
+      UserName name) async {
     final now = DateTimeX.current.toIso8601String();
-    
+
     final n = name.value.getOrElse((l) => '');
-    
+
     final entity = UserEntityModel.create(
-        n, 
-        'role', 
-        false, 
-        DateTime.parse(now), 
-        DateTime.parse(now), 
-        DateTime.parse(now), 
-        DateTime.parse(now), 
-        DateTime.parse(now)
-    );
-    
-    final res = await authClient
-        .from(_table)
-        .insert(entity.toJson());
+        n,
+        'role',
+        false,
+        DateTime.parse(now),
+        DateTime.parse(now),
+        DateTime.parse(now),
+        DateTime.parse(now),
+        DateTime.parse(now));
+
+    final res = await authClient.from(_table).insert(entity.toJson());
 
     if (res.toEither) {
       return left(Failure.unauthorized());
@@ -322,5 +328,4 @@ class AuthRepository implements AuthRepositoryInterface {
 
     return right(UserEntityModel.fromJson(res));
   }
-
 }

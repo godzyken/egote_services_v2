@@ -245,7 +245,7 @@ class GroupScreenState extends DetailsScreenState {
   final TextEditingController _nameFilter = TextEditingController();
   String? _photoUrl = "";
   String _name = "";
-  Set<int?> _usersToRemove = {};
+  final Set<int?> _usersToRemove = {};
   List<int>? _usersToAdd;
 
   GroupScreenState() : super() {
@@ -501,21 +501,19 @@ class GroupScreenState extends DetailsScreenState {
                 ),
               ),
             ),
-            Container(
-              child: Checkbox(
-                value: _usersToRemove
-                    .contains(_occupants.values.elementAt(index).id),
-                onChanged: ((checked) {
-                  setState(() {
-                    if (checked!) {
-                      _usersToRemove.add(_occupants.values.elementAt(index).id);
-                    } else {
-                      _usersToRemove
-                          .remove(_occupants.values.elementAt(index).id);
-                    }
-                  });
-                }),
-              ),
+            Checkbox(
+              value: _usersToRemove
+                  .contains(_occupants.values.elementAt(index).id),
+              onChanged: ((checked) {
+                setState(() {
+                  if (checked!) {
+                    _usersToRemove.add(_occupants.values.elementAt(index).id);
+                  } else {
+                    _usersToRemove
+                        .remove(_occupants.values.elementAt(index).id);
+                  }
+                });
+              }),
             ),
           ],
         ),

@@ -18,36 +18,44 @@ import '../../infrastructure/repositories/cube_repository.dart';
 final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   final configFile = await rootBundle.loadString(F.envFileName);
   final env =
-      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
   final settings = ref.watch(cubeSettingsProvider);
 
+  settings.applicationId = env.appId;
+  settings.authorizationKey = env.authKey;
+  settings.authorizationSecret = env.authSecret;
+  settings.applicationId = env.appId;
   settings.isDebugEnabled = true;
+  settings.isJoinEnabled = true;
+
   await settings.setEndpoints(settings.apiEndpoint, settings.chatEndpoint);
 
   await settings.init(env.appId, env.authKey, env.authSecret,
       onSessionRestore: () async {
-    SharedPrefs preferences = await SharedPrefs.instance.init();
+        SharedPrefs preferences = await SharedPrefs.instance.init();
 
-    if (LoginType.phone == preferences.getLoginType()) {
-      return ref.read(cubeRepositoryProvider).createPhoneAuthSession();
-    }
+        if (LoginType.phone == preferences.getLoginType()) {
+          return ref.read(cubeRepositoryProvider).createPhoneAuthSession();
+        }
 
-    return await preferences
-        .getUser().then((value) => ref.read(cubeRepositoryProvider).restoreSession());
-  });
+        return await preferences
+            .getUser().then((value) =>
+            ref.read(cubeRepositoryProvider).restoreSession());
+      });
 
   return settings;
 }, dependencies: [cubeSettingsProvider], name: 'Cube settings init provider');
 
+
 final cubeUserControllerProvider =
-    StateNotifierProvider<CubeUserController, CubeUser?>(
+StateNotifierProvider<CubeUserController, CubeUser?>(
         (ref) => CubeUserController(ref),
-        dependencies: [autoAuthControllerProvider, userNotifierProvider],
-        name: 'cube user authentication state notifier');
+    dependencies: [autoAuthControllerProvider, userNotifierProvider],
+    name: 'cube user authentication state notifier');
 
 final filterLoginTypeStateNotifier =
-    StateNotifierProvider.autoDispose<FilterLoginTypeView, LoginType>(
+StateNotifierProvider.autoDispose<FilterLoginTypeView, LoginType>(
         (ref) => FilterLoginTypeView());
 
 class FilterLoginTypeView extends StateNotifier<LoginType> {

@@ -7,6 +7,7 @@ import '../../features/auth/domain/entities/entities_extension.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
 import '../../features/devis/presentation/views/screens/devis_edit_screen.dart';
+import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
 import '../../features/home/presentation/widget/godzylogo.dart';
 import '../../features/settings/presentation/view/gallery/gallery.dart';
@@ -51,6 +52,10 @@ part 'routes.g.dart';
       path: DevisEditRoute.path,
       name: 'devis',
     ),
+    TypedGoRoute<DevisListRoute>(
+      path: DevisListRoute.path,
+      name: 'devisList',
+    ),
     TypedGoRoute<ChatRoute>(
         path: ChatRoute.path,
         name: 'chat',
@@ -65,7 +70,7 @@ part 'routes.g.dart';
                 )
               ]
           )
-      ]
+        ]
     ),
     TypedGoRoute<SettingsUiRoute>(
         path: SettingsUiRoute.path,
@@ -472,7 +477,7 @@ class SelectDialogRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    if(_cid != cid) {
+    if (_cid != cid) {
       return const LoginScreen();
     }
 
@@ -487,19 +492,22 @@ class ChatDialogRoute extends GoRouteData {
 
   int cid;
   CubeUser? currentUser;
+
   int? get _cid => cid = currentUser!.id!;
 
   int cdid;
   CubeDialog? cubeDialog;
+
   int? get _cdid => cdid = cubeDialog!.id!;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    if(_cid != cid && _cdid != cdid) {
+    if (_cid != cid && _cdid != cdid) {
       return const LoginScreen();
     }
 
-    return ChatDialogScreen(key: state.pageKey, cubeUser: currentUser!, cubeDialog: cubeDialog!,);
+    return ChatDialogScreen(
+      key: state.pageKey, cubeUser: currentUser!, cubeDialog: cubeDialog!,);
   }
 }
 
@@ -515,6 +523,17 @@ class DevisEditRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     final devisId = state.pathParameters['userId'] as String;
     return DevisEditScreen(key: state.pageKey, devisId: devisId);
+  }
+}
+
+class DevisListRoute extends GoRouteData {
+  static const path = 'devisList';
+
+  const DevisListRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return DevisListScreen(key: state.pageKey);
   }
 }
 

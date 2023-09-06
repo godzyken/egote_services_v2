@@ -7,10 +7,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../../config/cube_config/cube_config.dart';
 
 class BodyNewChatLayout extends ConsumerStatefulWidget {
-  const BodyNewChatLayout({
-    Key? key,
-    required this.currentUser
-  }) : super(key: key);
+  const BodyNewChatLayout({Key? key, required this.currentUser})
+      : super(key: key);
 
   final CubeUser currentUser;
 
@@ -19,9 +17,8 @@ class BodyNewChatLayout extends ConsumerStatefulWidget {
 }
 
 class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
-
   List<CubeUser> userList = [];
-  Set<int> _selectedUsers = {};
+  final Set<int> _selectedUsers = {};
   var _isUsersContinues = false;
   var _isPrivateDialog = true;
   String? userToSearch;
@@ -79,20 +76,16 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
   }
 
   Widget _buildTextFields() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            child: TextField(
-                autofocus: true,
-                textInputAction: TextInputAction.search,
-                decoration: InputDecoration(labelText: context.tr!.searchUsers),
-                onSubmitted: (value) {
-                  _searchUser(value.trim());
-                }),
-          ),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        TextField(
+            autofocus: true,
+            textInputAction: TextInputAction.search,
+            decoration: InputDecoration(labelText: context.tr!.searchUsers),
+            onSubmitted: (value) {
+              _searchUser(value.trim());
+            }),
+      ],
     );
   }
 
@@ -194,12 +187,10 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
                   ),
                 ),
               ),
-              Container(
-                child: Icon(
-                  Icons.arrow_forward,
-                  size: 25.0,
-                  color: Colors.primaries.single,
-                ),
+              Icon(
+                Icons.arrow_forward,
+                size: 25.0,
+                color: Colors.primaries.single,
               ),
             ],
           ),
@@ -234,19 +225,17 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
                   ),
                 ),
               ),
-              Container(
-                child: Checkbox(
-                  value: _selectedUsers.contains(userList[index].id),
-                  onChanged: ((checked) {
-                    setState(() {
-                      if (checked!) {
-                        _selectedUsers.add(userList[index].id!);
-                      } else {
-                        _selectedUsers.remove(userList[index].id);
-                      }
-                    });
-                  }),
-                ),
+              Checkbox(
+                value: _selectedUsers.contains(userList[index].id),
+                onChanged: ((checked) {
+                  setState(() {
+                    if (checked!) {
+                      _selectedUsers.add(userList[index].id!);
+                    } else {
+                      _selectedUsers.remove(userList[index].id);
+                    }
+                  });
+                }),
               ),
             ],
           ),
@@ -278,7 +267,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
     log("_createDialog with users= $users");
     if (isGroup) {
       CubeDialog newDialog =
-      CubeDialog(CubeDialogType.GROUP, occupantsIds: users.toList());
+          CubeDialog(CubeDialogType.GROUP, occupantsIds: users.toList());
       List<CubeUser> usersToAdd = users
           .map((id) => userList.firstWhere((user) => user.id == id))
           .toList();
@@ -290,7 +279,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
       });
     } else {
       CubeDialog newDialog =
-      CubeDialog(CubeDialogType.PRIVATE, occupantsIds: users.toList());
+          CubeDialog(CubeDialogType.PRIVATE, occupantsIds: users.toList());
       createDialog(newDialog).then((createdDialog) {
         context.pushReplacementNamed('chat_dialog', extra: {
           USER_ARG_NAME: widget.currentUser,

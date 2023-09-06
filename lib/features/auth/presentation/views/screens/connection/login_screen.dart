@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 
+import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/features/auth/application/providers/auth_providers.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/auth_controller_state.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/screens/auth_screens.dart';
@@ -22,8 +23,8 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'login');
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(debugLabel: 'login');
   final _emailCtrl = TextEditingController();
   final _nameCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
@@ -32,9 +33,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isSubmitting = false;
 
   _LoginScreenState() {
-    _emailCtrl.addListener(() => ref.watch(loginControllerNotifierProvider).emailFormz);
-    _passwordCtrl.addListener(() => ref.watch(loginControllerNotifierProvider).passwordFormz);
-    _nameCtrl.addListener(() => ref.watch(autoAuthControllerProvider)?.userEntityModel.name.toString() == _nameCtrl.text.toString());
+    _emailCtrl.addListener(
+        () => ref.watch(loginControllerNotifierProvider).emailFormz);
+    _passwordCtrl.addListener(
+        () => ref.watch(loginControllerNotifierProvider).passwordFormz);
+    _nameCtrl.addListener(() =>
+        ref
+            .watch(autoAuthControllerProvider)
+            ?.userEntityModel
+            .name
+            .toString() ==
+        _nameCtrl.text.toString());
   }
 
   Future<void> _login() async {
@@ -43,15 +52,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _isSubmitting = true;
       });
 
-      await ref.read(authStateProvider.notifier)
+      await ref
+          .read(authStateProvider.notifier)
           .onSignInWithPassword(_emailCtrl.text, _passwordCtrl.text);
-
     } on AuthException catch (e) {
       developer.log(e.statusCode.toString());
-      context.showAlert(e.message);
+      catchAuthException(e);
     } catch (e) {
       developer.log(e.toString());
-      context.showAlert(e.toString());
+      catchException(e);
     }
 
     setState(() {
@@ -59,9 +68,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
   }
 
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> catchException(
+          Object e) =>
+      context.showAlert(e.toString());
+
+  void catchAuthException(AuthException e) {
+    context.showAlert(e.message);
+  }
+
   @override
   void initState() {
-
     _isSubmitting = false;
 
     super.initState();
@@ -123,26 +139,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 SubmitButton(
                   context.tr!.submit,
                   enabled: _isSubmitting,
-                  onPressed: isLoading ? null : () async {
-                    if (_formKey.currentState!.validate()) {
-                      await _login();
-                      if(mounted) {
-                        context.showAlert(context.tr!.checkInbox);
-                        context.goNamed(
-                            'verify',
-                            extra: VerificationScreenParams(
-                                email: _emailCtrl.text,
-                                password: _passwordCtrl.text,
-                                name: _nameCtrl.text
-                            )
-                        );
-                      }
-                    } else {
-                      setState(() {
-                        _autovalidateMode = AutovalidateMode.always;
-                      });
-                    }
-                  },
+                  onPressed: onPressedSubmitButton(isLoading, context),
                 ),
               ],
             ),
@@ -152,6 +149,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
+  Future<void> Function()? onPressedSubmitButton(
+      bool isLoading, BuildContext context) {
+    DatadogSdk.instance.rum
+        ?.addUserAction(RumUserActionType.tap, 'Submit to login');
+    return isLoading
+        ? null
+        : () async {
+            if (_formKey.currentState!.validate()) {
+              await _login();
+              if (mounted) {
+                context.showAlert(context.tr!.checkInbox);
+                context.goNamed('verify',
+                    extra: VerificationScreenParams(
+                        email: _emailCtrl.text,
+                        password: _passwordCtrl.text,
+                        name: _nameCtrl.text));
+              }
+            } else {
+              setState(() {
+                _autovalidateMode = AutovalidateMode.always;
+              });
+            }
+          };
+  }
 
   @override
   void dispose() {
@@ -160,6 +181,5 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _emailCtrl.dispose();
     _nameCtrl.dispose();
     _passwordCtrl.dispose();
-
   }
 }

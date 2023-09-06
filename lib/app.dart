@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
@@ -31,25 +32,29 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final router = ref.read(goRouterProvider);
     final lang = ref.read(localizationProvider);
-    return MaterialApp.router(
-      title: F.title,
-      // routerDelegate: router.routerDelegate,
-      // routeInformationParser: router.routeInformationParser,
-      // routeInformationProvider: router.routeInformationProvider,
-      routerConfig: router,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: ref.watch(lightThemeProvider),
-      darkTheme: ref.watch(darkThemeProvider),
-      themeMode: ref.watch(Settings.themeModeProvider),
-      scrollBehavior: const AppScrollBehavior(),
-      locale: lang,
-    );
+    return RumUserActionDetector(
+        rum: DatadogSdk.instance.rum,
+        child: MaterialApp.router(
+          title: F.title,
+          // routerDelegate: router.routerDelegate,
+          // routeInformationParser: router.routeInformationParser,
+          // routeInformationProvider: router.routeInformationProvider,
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          theme: ref.watch(lightThemeProvider),
+          darkTheme: ref.watch(darkThemeProvider),
+          themeMode: ref.watch(Settings.themeModeProvider),
+          scrollBehavior: const AppScrollBehavior(),
+          locale: lang,
+        ));
   }
 
   @override
   void didChangeMetrics() {
-    ref.read(drawerWidthProvider.notifier).state = drawerWidth();
+    ref
+        .read(drawerWidthProvider.notifier)
+        .state = drawerWidth();
 
     super.didChangeMetrics();
   }
@@ -68,47 +73,49 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
     connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen((connectivityType) {
-      if (AppLifecycleState.resumed != appState) return;
+          if (AppLifecycleState.resumed != appState) return;
 
-      switch (connectivityType) {
-        case ConnectivityResult.bluetooth:
-        // TODO: Handle this case.
-        case ConnectivityResult.wifi:
-          // TODO: Handle this case.
-          log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-          bool isChatDisconnected =
-              CubeChatConnection.instance.chatConnectionState ==
-                      CubeChatConnectionState.Closed ||
+          switch (connectivityType) {
+            case ConnectivityResult.bluetooth:
+            // TODO: Handle this case.
+            case ConnectivityResult.wifi:
+            // TODO: Handle this case.
+              log("chatConnectionState = ${CubeChatConnection.instance
+                  .chatConnectionState}");
+              bool isChatDisconnected =
                   CubeChatConnection.instance.chatConnectionState ==
-                      CubeChatConnectionState.ForceClosed;
-
-          if (isChatDisconnected &&
-              CubeChatConnection.instance.currentUser != null) {
-            CubeChatConnection.instance.relogin();
-          }
-        case ConnectivityResult.ethernet:
-        // TODO: Handle this case.
-        case ConnectivityResult.mobile:
-          log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-          bool isChatDisconnected =
-              CubeChatConnection.instance.chatConnectionState ==
                       CubeChatConnectionState.Closed ||
-                  CubeChatConnection.instance.chatConnectionState ==
-                      CubeChatConnectionState.ForceClosed;
+                      CubeChatConnection.instance.chatConnectionState ==
+                          CubeChatConnectionState.ForceClosed;
 
-          if (isChatDisconnected &&
-              CubeChatConnection.instance.currentUser != null) {
-            CubeChatConnection.instance.relogin();
+              if (isChatDisconnected &&
+                  CubeChatConnection.instance.currentUser != null) {
+                CubeChatConnection.instance.relogin();
+              }
+            case ConnectivityResult.ethernet:
+            // TODO: Handle this case.
+            case ConnectivityResult.mobile:
+              log("chatConnectionState = ${CubeChatConnection.instance
+                  .chatConnectionState}");
+              bool isChatDisconnected =
+                  CubeChatConnection.instance.chatConnectionState ==
+                      CubeChatConnectionState.Closed ||
+                      CubeChatConnection.instance.chatConnectionState ==
+                          CubeChatConnectionState.ForceClosed;
+
+              if (isChatDisconnected &&
+                  CubeChatConnection.instance.currentUser != null) {
+                CubeChatConnection.instance.relogin();
+              }
+            case ConnectivityResult.none:
+            // TODO: Handle this case.
+              CubeChatConnection.instance.destroy();
+            case ConnectivityResult.vpn:
+            // TODO: Handle this case.
+            case ConnectivityResult.other:
+            // TODO: Handle this case.
           }
-        case ConnectivityResult.none:
-          // TODO: Handle this case.
-          CubeChatConnection.instance.destroy();
-        case ConnectivityResult.vpn:
-        // TODO: Handle this case.
-        case ConnectivityResult.other:
-        // TODO: Handle this case.
-      }
-    });
+        });
 
     appState = WidgetsBinding.instance.lifecycleState;
 
@@ -125,7 +132,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         SharedPrefs.instance.init().then((sharedPrefs) async {
           CubeUser? user =
-              await sharedPrefs.getUser().then((savedUser) => savedUser!);
+          await sharedPrefs.getUser().then((savedUser) => savedUser!);
 
           if (user != null) {
             if (!CubeChatConnection.instance.isAuthenticated()) {

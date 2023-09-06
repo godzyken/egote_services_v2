@@ -8,14 +8,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
 
-
 class NewChatScreen extends ConsumerStatefulWidget {
-  const NewChatScreen({
-    Key? key,
-    required this.currentUser,
-    required this.cubeDialog,
-    required this.users
-  }) : super(key: key);
+  const NewChatScreen(
+      {Key? key,
+      required this.currentUser,
+      required this.cubeDialog,
+      required this.users})
+      : super(key: key);
 
   final CubeUser currentUser;
   final CubeDialog cubeDialog;
@@ -27,7 +26,6 @@ class NewChatScreen extends ConsumerStatefulWidget {
 
 class _NewChatScreenState extends ConsumerState<NewChatScreen> {
   final TextEditingController _nameFilter = TextEditingController();
-
 
   @override
   void initState() {
@@ -118,8 +116,8 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
 
     if (result == null) return;
 
-    var uploadImageFuture = ref.watch(cubeRepositoryProvider)
-        .getUploadingImageFuture(result);
+    var uploadImageFuture =
+        ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);
 
     uploadImageFuture.then((cubeFile) {
       var url = cubeFile.getPublicUrl();
@@ -133,7 +131,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
   }
 
   _buildDialogOccupants() {
-    _getListItemTile(BuildContext context, int index) {
+    getListItemTile(BuildContext context, int index) {
       return Container(
         child: Column(
           children: <Widget>[
@@ -162,19 +160,19 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
       );
     }
 
-    _getOccupants() {
+    getOccupants() {
       return ListView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         scrollDirection: Axis.horizontal,
         itemCount: widget.cubeDialog.occupantsIds!.length,
-        itemBuilder: _getListItemTile,
+        itemBuilder: getListItemTile,
       );
     }
 
     return Container(
       child: Expanded(
-        child: _getOccupants(),
+        child: getOccupants(),
       ),
     );
   }
@@ -190,8 +188,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
       context.showAlert(context.tr!.charSet4);
     } else {
       createDialog(widget.cubeDialog).then((createdDialog) {
-        context.pushReplacementNamed(
-            'chat_dialog', extra: {
+        context.pushReplacementNamed('chat_dialog', extra: {
           USER_ARG_NAME: widget.currentUser,
           DIALOG_ARG_NAME: createdDialog
         });

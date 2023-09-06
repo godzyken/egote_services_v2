@@ -77,25 +77,25 @@ class ColoredText extends StatelessWidget {
   /// that follow, will not be rendered. Otherwise, it will be shown with the
   /// given overflow option.
   const ColoredText(
-      String this.data, {
-        super.key,
-        this.color,
-        this.fontSize,
-        this.fontWeight,
-        this.style,
-        this.strutStyle,
-        this.textAlign,
-        this.textDirection,
-        this.locale,
-        this.softWrap,
-        this.overflow,
-        this.textScaleFactor,
-        this.maxLines,
-        this.semanticsLabel,
-        this.textWidthBasis,
-        this.textHeightBehavior,
-        this.selectionColor,
-      }) : textSpan = null;
+    String this.data, {
+    super.key,
+    this.color,
+    this.fontSize,
+    this.fontWeight,
+    this.style,
+    this.strutStyle,
+    this.textAlign,
+    this.textDirection,
+    this.locale,
+    this.softWrap,
+    this.overflow,
+    this.textScaleFactor,
+    this.maxLines,
+    this.semanticsLabel,
+    this.textWidthBasis,
+    this.textHeightBehavior,
+    this.selectionColor,
+  }) : textSpan = null;
 
   /// Creates a colored text widget with a [InlineSpan].
   ///
@@ -108,25 +108,25 @@ class ColoredText extends StatelessWidget {
   ///
   /// See [RichText] which provides a lower-level way to draw text.
   const ColoredText.rich(
-      InlineSpan this.textSpan, {
-        super.key,
-        this.color,
-        this.fontSize,
-        this.fontWeight,
-        this.style,
-        this.strutStyle,
-        this.textAlign,
-        this.textDirection,
-        this.locale,
-        this.softWrap,
-        this.overflow,
-        this.textScaleFactor,
-        this.maxLines,
-        this.semanticsLabel,
-        this.textWidthBasis,
-        this.textHeightBehavior,
-        this.selectionColor,
-      }) : data = null;
+    InlineSpan this.textSpan, {
+    super.key,
+    this.color,
+    this.fontSize,
+    this.fontWeight,
+    this.style,
+    this.strutStyle,
+    this.textAlign,
+    this.textDirection,
+    this.locale,
+    this.softWrap,
+    this.overflow,
+    this.textScaleFactor,
+    this.maxLines,
+    this.semanticsLabel,
+    this.textWidthBasis,
+    this.textHeightBehavior,
+    this.selectionColor,
+  }) : data = null;
 
   /// The text to display.
   ///
@@ -227,7 +227,7 @@ class ColoredText extends StatelessWidget {
   /// the specified font size.
   ///
   /// The value given to the constructor as textScaleFactor. If null, will
-  /// use the [MediaQueryData.textScaleFactor] obtained from the ambient
+  /// use the [MediaQueryData.textScaler] obtained from the ambient
   /// [MediaQuery], or 1.0 if there is no [MediaQuery] in scope.
   final double? textScaleFactor;
 
@@ -301,9 +301,10 @@ class ColoredText extends StatelessWidget {
       locale: locale,
       softWrap: softWrap ?? defaultTextStyle.softWrap,
       overflow:
-      overflow ?? effectiveTextStyle.overflow ?? defaultTextStyle.overflow,
-      textScaleFactor: textScaleFactor ?? MediaQuery.textScaleFactorOf(context),
+          overflow ?? effectiveTextStyle.overflow ?? defaultTextStyle.overflow,
       maxLines: maxLines ?? defaultTextStyle.maxLines,
+      textScaler: TextScaler.linear(
+          textScaleFactor ?? MediaQuery.maybeDevicePixelRatioOf(context)!),
       strutStyle: strutStyle,
       textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
       textHeightBehavior: textHeightBehavior ??

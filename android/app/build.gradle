@@ -24,12 +24,12 @@ if (flutterVersionName == null) {
 
 android {
     namespace 'com.godzy.egote_services_v2'
-    compileSdk 33
+    compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -42,12 +42,14 @@ android {
 
     defaultConfig {
         applicationId "com.godzy.egote_services_v2"
-        minSdk 28
+        minSdk 21
         targetSdk 33
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        signingConfig signingConfigs.debug
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -63,4 +65,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}

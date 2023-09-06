@@ -8,10 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
-
 class MFAEnrollScreen extends ConsumerStatefulWidget {
-  const  MFAEnrollScreen({
-    Key? key, required this.params,
+  const MFAEnrollScreen({
+    Key? key,
+    required this.params,
   }) : super(key: key);
 
   final VerificationScreenParams params;
@@ -21,20 +21,23 @@ class MFAEnrollScreen extends ConsumerStatefulWidget {
 }
 
 class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
-
   @override
   Widget build(BuildContext context) {
-    final _enrollFuture = ref.read(supabaseClientProvider).auth.mfa.enroll();
+    final enrollFuture = ref.read(supabaseClientProvider).auth.mfa.enroll();
 
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder(
-        future: _enrollFuture,
+        future: enrollFuture,
         builder: (context, snapshot) {
-          if(snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()),);
-          } else if(!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator(),);
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          } else if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
           final response = snapshot.data!;
 
@@ -43,32 +46,27 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
           final factorId = response.id;
 
           return ListView(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 20
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             children: [
               Text(context.tr!.openViaQr),
               const SizedBox(height: 16),
-              Assets.lottie.models.frame.svg(
-                  package: qrCodeUrl,
-                  height: 150,
-                  width: 150
-              ),
+              Assets.lottie.models.frame
+                  .svg(package: qrCodeUrl, height: 150, width: 150),
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Expanded(child: Text(context.tr!.secret, style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold
-                  ),)),
+                  Expanded(
+                      child: Text(
+                    context.tr!.secret,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  )),
                   IconButton(
                       onPressed: () {
                         Clipboard.setData(ClipboardData(text: secret));
                         context.showAlert(context.tr!.copiedClipBoard);
                       },
-                      icon: const Icon(Icons.copy)
-                  ),
+                      icon: const Icon(Icons.copy)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -91,10 +89,9 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
                           .auth
                           .mfa
                           .verify(
-                          factorId: factorId,
-                          challengeId: challenge.id,
-                          code: code
-                      );
+                              factorId: factorId,
+                              challengeId: challenge.id,
+                              code: code);
 
                       await ref
                           .read(supabaseClientProvider)
@@ -104,8 +101,7 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
                       if (mounted) {
                         final String location = context.namedLocation(
                             'user_home',
-                            pathParameters: {'pid': client.user.id}
-                        );
+                            pathParameters: {'pid': client.user.id});
                         context.go(location);
                       }
                     } on AuthException catch (error) {
@@ -115,8 +111,7 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
                     }
                   },
                   inputType: TextInputType.number,
-                  label: context.tr!.enterCode
-              ),
+                  label: context.tr!.enterCode),
             ],
           );
         },

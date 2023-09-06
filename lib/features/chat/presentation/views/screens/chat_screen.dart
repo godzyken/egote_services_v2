@@ -65,8 +65,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   List<CubeMessage> oldMessages = [];
 
-  List<CubeMessage> _unreadMessages = [];
-  List<CubeMessage> _unsentMessages = [];
+  final List<CubeMessage> _unreadMessages = [];
+  final List<CubeMessage> _unsentMessages = [];
 
   late FocusNode _editMessageFocusNode;
 
@@ -135,7 +135,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     var uploadImageFuture =
         ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);
-    var imageData;
+    Uint8List imageData;
 
     if (kIsWeb) {
       imageData = result.files.single.bytes!;
@@ -594,14 +594,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                         borderRadius: const BorderRadius.all(
                                           Radius.circular(8.0),
                                         ),
-                                            clipBehavior: Clip.hardEdge,
-                                            child: Image.asset(
-                                              'images/img_not_available.jpeg',
-                                              width: 200.0,
-                                              height: 200.0,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                                        clipBehavior: Clip.hardEdge,
+                                        child: Image.asset(
+                                          'images/img_not_available.jpeg',
+                                          width: 200.0,
+                                          height: 200.0,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                       imageUrl: message.attachments!.first.url!,
                                       width: 200.0,
                                       height: 200.0,
@@ -903,7 +903,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _initChatListeners();
     } else {
       log("[_initCubeChat] not authenticated");
-      ref.watch(cubeChatConnectionProvider).connectionStateStream.listen((state) {
+      ref
+          .watch(cubeChatConnectionProvider)
+          .connectionStateStream
+          .listen((state) {
         log("[_initCubeChat] state $state");
         if (CubeChatConnectionState.Ready == state) {
           _initChatListeners();
@@ -985,29 +988,70 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   void onConnectivityChanged(ConnectivityResult connectivityType) {
     log("[ChatScreenState] connectivityType changed to '$connectivityType'");
+    setState(() {
+      isLoading = true;
+    });
 
-    if (connectivityType == ConnectivityResult.wifi ||
-        connectivityType == ConnectivityResult.mobile) {
-      setState(() {
-        isLoading = true;
-      });
-
-      getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
-              DateTime.now().millisecondsSinceEpoch ~/ 1000)
-          .then((newMessages) {
-        setState(() {
-          if (newMessages.length == messagesPerPage) {
-            oldMessages = List.from(listMessage);
-            listMessage = newMessages;
-          } else {
-            listMessage.insertAll(0, newMessages);
-          }
+    switch (connectivityType) {
+      case ConnectivityResult.bluetooth:
+      // TODO: Handle this case.
+      case ConnectivityResult.wifi:
+        getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
+                DateTime.now().millisecondsSinceEpoch ~/ 1000)
+            .then((newMessages) {
+          setState(() {
+            if (newMessages.length == messagesPerPage) {
+              oldMessages = List.from(listMessage);
+              listMessage = newMessages;
+            } else {
+              listMessage.insertAll(0, newMessages);
+            }
+          });
+        }).whenComplete(() {
+          setState(() {
+            isLoading = false;
+          });
         });
-      }).whenComplete(() {
-        setState(() {
-          isLoading = false;
+      case ConnectivityResult.ethernet:
+      // TODO: Handle this case.
+      case ConnectivityResult.mobile:
+        getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
+                DateTime.now().millisecondsSinceEpoch ~/ 1000)
+            .then((newMessages) {
+          setState(() {
+            if (newMessages.length == messagesPerPage) {
+              oldMessages = List.from(listMessage);
+              listMessage = newMessages;
+            } else {
+              listMessage.insertAll(0, newMessages);
+            }
+          });
+        }).whenComplete(() {
+          setState(() {
+            isLoading = false;
+          });
         });
-      });
+      case ConnectivityResult.none:
+      // TODO: Handle this case.
+      case ConnectivityResult.vpn:
+        getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
+                DateTime.now().millisecondsSinceEpoch ~/ 1000)
+            .then((newMessages) {
+          setState(() {
+            if (newMessages.length == messagesPerPage) {
+              oldMessages = List.from(listMessage);
+              listMessage = newMessages;
+            } else {
+              listMessage.insertAll(0, newMessages);
+            }
+          });
+        }).whenComplete(() {
+          setState(() {
+            isLoading = false;
+          });
+        });
+      case ConnectivityResult.other:
+      // TODO: Handle this case.
     }
   }
 

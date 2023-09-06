@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 typedef VoidAsyncValue = AsyncValue<void>;
 
-extension AsyncValueUi on VoidAsyncValue {
+/*extension AsyncValueUi on VoidAsyncValue {
   bool get isLoading => this is AsyncLoading<void>;
 
   void showSnackBarOnError(BuildContext context) =>
@@ -12,4 +11,4 @@ extension AsyncValueUi on VoidAsyncValue {
           SnackBar(content: Text(error.toString())),
         );
       });
-}
+}*/

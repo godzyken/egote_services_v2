@@ -6,10 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
 
 class AddOccupantScreen extends ConsumerStatefulWidget {
-  const AddOccupantScreen({
-    Key? key,
-    required this.cubeUser
-  }) : super(key: key);
+  const AddOccupantScreen({Key? key, required this.cubeUser}) : super(key: key);
 
   final CubeUser cubeUser;
 
@@ -19,7 +16,6 @@ class AddOccupantScreen extends ConsumerStatefulWidget {
 
 class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
   late final CubeUser currentUser;
-
 
   @override
   void initState() {
@@ -59,11 +55,10 @@ class BodyLayout extends ConsumerStatefulWidget {
 class _BodyLayoutState extends ConsumerState<BodyLayout> {
   late final CubeUser currentUser;
   List<CubeUser> userList = [];
-  Set<int> _selectedUsers = {};
+  final Set<int> _selectedUsers = {};
   var _isUsersContinues = false;
   String? userToSearch;
   String userMsg = " ";
-
 
   @override
   void initState() {
@@ -110,34 +105,31 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
         ),
       ),
       floatingActionButton: Visibility(
-        visible: _selectedUsers.isNotEmpty,
+          visible: _selectedUsers.isNotEmpty,
           child: FloatingActionButton(
             heroTag: context.tr!.updateDialog,
-              backgroundColor: Colors.blue,
-              onPressed: () => _updateDialog(context, _selectedUsers.toList()),
-              child: const Icon(Icons.check, color: Colors.white,
-              ),
-          )
-      ),
+            backgroundColor: Colors.blue,
+            onPressed: () => _updateDialog(context, _selectedUsers.toList()),
+            child: const Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+          )),
     );
   }
 
   Widget _buildTextFields() {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            child: TextField(
-              autofocus: true,
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(labelText: context.tr!.searchUsers),
-              onSubmitted: (value) {
-                _searchUser(value.trim());
-              },
-            ),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        TextField(
+          autofocus: true,
+          textInputAction: TextInputAction.search,
+          decoration: InputDecoration(labelText: context.tr!.searchUsers),
+          onSubmitted: (value) {
+            _searchUser(value.trim());
+          },
+        )
+      ],
     );
   }
 
@@ -149,7 +141,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
       userList.clear();
     }
 
-    if ( _isUsersContinues) {
+    if (_isUsersContinues) {
       if (userToSearch != null && userToSearch!.isNotEmpty) {
         getUsersByFullName(userToSearch!).then((users) {
           log("getUsers: $users");
@@ -161,7 +153,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
               userMsg = context.tr!.userNotFound;
             }
           });
-        }).catchError((onError){
+        }).catchError((onError) {
           log("getUsers catchError: $onError");
           setState(() {
             clearValues();
@@ -200,7 +192,8 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
                     Container(
                       alignment: Alignment.centerLeft,
                       margin: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
-                      child: Text('${context.tr!.userName}: ${userList[index].fullName}',
+                      child: Text(
+                        '${context.tr!.userName}: ${userList[index].fullName}',
                         style: TextStyle(color: Colors.primaries.single),
                       ),
                     ),
@@ -208,19 +201,17 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
                 ),
               ),
             ),
-            Container(
-              child: Checkbox(
-                value: _selectedUsers.contains(userList[index].id),
-                onChanged: ((checked) {
-                  setState(() {
-                    if (checked!) {
-                      _selectedUsers.add(userList[index].id!);
-                    } else {
-                      _selectedUsers.remove(userList[index].id);
-                    }
-                  });
-                }),
-              ),
+            Checkbox(
+              value: _selectedUsers.contains(userList[index].id),
+              onChanged: ((checked) {
+                setState(() {
+                  if (checked!) {
+                    _selectedUsers.add(userList[index].id!);
+                  } else {
+                    _selectedUsers.remove(userList[index].id);
+                  }
+                });
+              }),
             ),
           ],
         ),
@@ -246,4 +237,3 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
     context.pop(users);
   }
 }
-

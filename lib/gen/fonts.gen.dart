@@ -10,6 +10,9 @@
 class FontFamily {
   FontFamily._();
 
+  /// Font family: FlexIcons
+  static const String flexIcons = 'FlexIcons';
+
   /// Font family: Pacifico
   static const String pacifico = 'Pacifico';
 }

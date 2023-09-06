@@ -23,8 +23,8 @@ class SignUpScreen extends ConsumerStatefulWidget {
 }
 
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: '_signup');
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(debugLabel: '_signup');
   final _usernameCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
@@ -40,15 +40,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         _isSubmitting = true;
       });
 
-      await ref.read(authRepositoryProvider)
+      await ref
+          .read(authRepositoryProvider)
           .signUp(_emailCtrl.text, _usernameCtrl.text, _passwordCtrl.text);
-
     } on AuthException catch (e) {
       developer.log(e.statusCode.toString());
-      context.showAlert(e.message);
+      errorAuthExceptionCatch(e);
     } catch (e) {
       developer.log(e.toString());
-      context.showAlert(e.toString());
+      errorCatch(e);
     }
 
     setState(() {
@@ -56,14 +56,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     });
   }
 
+  void errorCatch(Object e) {
+    context.showAlert(e.toString());
+  }
+
+  void errorAuthExceptionCatch(AuthException e) {
+    context.showAlert(e.message);
+  }
+
   @override
   void initState() {
-
     _isSubmitting = false;
 
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -86,8 +92,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       next.maybeWhen(
         data: (data) {
           if (data == null) return null;
-          ref.read(userListViewModelStateNotifierProvider.notifier)
-          .createUser(
+          ref.read(userListViewModelStateNotifierProvider.notifier).createUser(
               data.userEntityModel.name,
               data.userEntityModel.role,
               data.userEntityModel.isComplete,
@@ -95,13 +100,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               data.userEntityModel.updatedAt,
               data.userEntityModel.emailConfirmedAt,
               data.userEntityModel.phoneConfirmedAt,
-              data.userEntityModel.lastSignInAt
-          );
+              data.userEntityModel.lastSignInAt);
           context.pop();
         },
-        orElse: () {
-
-      },);
+        orElse: () {},
+      );
     });
     final res = ref.watch(authProvider);
 
@@ -116,101 +119,99 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         title: Text(context.tr!.create),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: _autovalidateMode,
-            child: Column(
-              children: [
-                NameField(
-                  label: context.tr!.userName,
-                  hintText: context.tr!.enterUsername,
-                  controller: _usernameCtrl,
-                  onChanged: (name) {
-                    if (name.isNotEmpty) {
-                      _name = UserName(name);
-                      signUpController.onNameChange(name);
-                    }
-                  },
-                  inputType: TextInputType.name,
-                  validator: (value) => name?.error?.getMessage(),
-                  onEditingComplete: isLoading ? null : () => ref.read(authProvider.notifier).handle(_name!),
-                  errorText: name?.displayError?.getMessage(),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                EmailField(
-                  label: context.tr!.email,
-                  controller: _emailCtrl,
-                  hintText: context.tr!.enterUserEmail,
-                  onChanged: (email) =>
-                      signUpController.onEmailChange(email),
-                  inputType: TextInputType.emailAddress,
-                  validator: (value) => email?.error?.getMessage(),
-                  errorText: email?.displayError?.getMessage(),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                PasswordField(
-                  label: context.tr!.password,
-                  controller: _passwordCtrl,
-                  hintText: context.tr!.enterUserPassword,
-                  onChanged: (password) {
-                    setState(() {
-                      _isSubmitting = true;
-                    });
-                    signUpController.onPasswordChange(password);
-                    },
-                  inputType: TextInputType.visiblePassword,
-                  validator: (value) => password?.error?.getMessage(),
-                  errorText: password?.displayError?.getMessage(),
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                SubmitButton(
-                  context.tr!.submit,
-                  enabled: _isSubmitting,
-                  onPressed: isLoading ? null :  () async {
-                    if (_formKey.currentState!.validate()) {
-                      await _createAccount();
-                      if(mounted) {
-                        context.showAlert(context.tr!.checkInbox);
-                        context.goNamed(
-                            'enroll',
-                            extra: VerificationScreenParams(
-                                email: _emailCtrl.text,
-                                password: _passwordCtrl.text,
-                                name: _usernameCtrl.text
-                            )
-                        );
-                      }
-                    } else {
-                      setState(() {
-                        _autovalidateMode = AutovalidateMode.always;
-                      });
-                    }
-                  },
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                TextButton(
-                    onPressed: () {
-                      final String location = context.namedLocation('login');
-                      return context.go(location);
-                    },
-                    child: Text(context.tr!.alreadyHave),
-                ),
-              ],
-            ),
+          child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          autovalidateMode: _autovalidateMode,
+          child: Column(
+            children: [
+              NameField(
+                label: context.tr!.userName,
+                hintText: context.tr!.enterUsername,
+                controller: _usernameCtrl,
+                onChanged: (name) {
+                  if (name.isNotEmpty) {
+                    _name = UserName(name);
+                    signUpController.onNameChange(name);
+                  }
+                },
+                inputType: TextInputType.name,
+                validator: (value) => name?.error?.getMessage(),
+                onEditingComplete: isLoading
+                    ? null
+                    : () => ref.read(authProvider.notifier).handle(_name!),
+                errorText: name?.displayError?.getMessage(),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              EmailField(
+                label: context.tr!.email,
+                controller: _emailCtrl,
+                hintText: context.tr!.enterUserEmail,
+                onChanged: (email) => signUpController.onEmailChange(email),
+                inputType: TextInputType.emailAddress,
+                validator: (value) => email?.error?.getMessage(),
+                errorText: email?.displayError?.getMessage(),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              PasswordField(
+                label: context.tr!.password,
+                controller: _passwordCtrl,
+                hintText: context.tr!.enterUserPassword,
+                onChanged: (password) {
+                  setState(() {
+                    _isSubmitting = true;
+                  });
+                  signUpController.onPasswordChange(password);
+                },
+                inputType: TextInputType.visiblePassword,
+                validator: (value) => password?.error?.getMessage(),
+                errorText: password?.displayError?.getMessage(),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              SubmitButton(
+                context.tr!.submit,
+                enabled: _isSubmitting,
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        if (_formKey.currentState!.validate()) {
+                          await _createAccount();
+                          if (mounted) {
+                            context.showAlert(context.tr!.checkInbox);
+                            context.goNamed('enroll',
+                                extra: VerificationScreenParams(
+                                    email: _emailCtrl.text,
+                                    password: _passwordCtrl.text,
+                                    name: _usernameCtrl.text));
+                          }
+                        } else {
+                          setState(() {
+                            _autovalidateMode = AutovalidateMode.always;
+                          });
+                        }
+                      },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              TextButton(
+                onPressed: () {
+                  final String location = context.namedLocation('login');
+                  return context.go(location);
+                },
+                child: Text(context.tr!.alreadyHave),
+              ),
+            ],
           ),
-        )
-      ),
+        ),
+      )),
     );
   }
-
 }

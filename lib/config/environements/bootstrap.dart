@@ -55,9 +55,7 @@ Future<ProviderContainer> bootstrap() async {
     overrides: [
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       localizationProvider.overrideWith(
-              (ref) => MultiLang(
-                  ref.read(localeProvider).languageCode)
-      )
+          (ref) => MultiLang(ref.read(localeProvider).languageCode)),
     ],
     observers: [
       if (F.appFlavor == Flavor.local) _Logger(),
@@ -84,32 +82,56 @@ Future<ProviderContainer> bootstrap() async {
   };
 
   try {
-    const PartialStackFrame elementInflateWidget = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'Element', method: 'inflateWidget');
-    const PartialStackFrame elementUpdateChild = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'Element', method: 'updateChild');
-    const PartialStackFrame elementRebuild = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'Element', method: 'rebuild');
-    const PartialStackFrame componentElementPerformRebuild = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'ComponentElement', method: 'performRebuild');
-    const PartialStackFrame componentElementFirstBuild = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'ComponentElement', method: '_firstBuild');
-    const PartialStackFrame componentElementMount = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'ComponentElement', method: 'mount');
-    const PartialStackFrame statefulElementFirstBuild = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'StatefulElement', method: '_firstBuild');
-    const PartialStackFrame singleChildMount = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'SingleChildRenderObjectElement', method: 'mount');
-    const PartialStackFrame statefulElementRebuild = PartialStackFrame(package: 'package:flutter/src/widgets/framework.dart', className: 'StatefulElement', method: 'performRebuild');
+    const PartialStackFrame elementInflateWidget = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'Element',
+        method: 'inflateWidget');
+    const PartialStackFrame elementUpdateChild = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'Element',
+        method: 'updateChild');
+    const PartialStackFrame elementRebuild = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'Element',
+        method: 'rebuild');
+    const PartialStackFrame componentElementPerformRebuild = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'ComponentElement',
+        method: 'performRebuild');
+    const PartialStackFrame componentElementFirstBuild = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'ComponentElement',
+        method: '_firstBuild');
+    const PartialStackFrame componentElementMount = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'ComponentElement',
+        method: 'mount');
+    const PartialStackFrame statefulElementFirstBuild = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'StatefulElement',
+        method: '_firstBuild');
+    const PartialStackFrame singleChildMount = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'SingleChildRenderObjectElement',
+        method: 'mount');
+    const PartialStackFrame statefulElementRebuild = PartialStackFrame(
+        package: 'package:flutter/src/widgets/framework.dart',
+        className: 'StatefulElement',
+        method: 'performRebuild');
 
     const String replacementString = '...     Normal element mounting';
-    FlutterError.addDefaultStackFilter(const RepetitiveStackFrameFilter(
-        frames: <PartialStackFrame>[
-          elementInflateWidget,
-          elementUpdateChild,
-          elementRebuild,
-          componentElementPerformRebuild,
-          componentElementFirstBuild,
-          componentElementMount,
-          statefulElementFirstBuild,
-          singleChildMount,
-          statefulElementRebuild,
-        ],
-        replacement: replacementString
-    )
-    );
+    FlutterError.addDefaultStackFilter(
+        const RepetitiveStackFrameFilter(frames: <PartialStackFrame>[
+      elementInflateWidget,
+      elementUpdateChild,
+      elementRebuild,
+      componentElementPerformRebuild,
+      componentElementFirstBuild,
+      componentElementMount,
+      statefulElementFirstBuild,
+      singleChildMount,
+      statefulElementRebuild,
+    ], replacement: replacementString));
   } catch (exception, stack_Trace) {
     await Sentry.captureException(
       exception,

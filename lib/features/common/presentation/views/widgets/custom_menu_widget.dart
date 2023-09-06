@@ -15,7 +15,8 @@ class CustomMenuWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final double drawerWidth = theme.drawerTheme.width ?? (theme.useMaterial3 ? 360 : 304);
+    final double drawerWidth =
+        theme.drawerTheme.width ?? (theme.useMaterial3 ? 360 : 304);
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Drawer(
@@ -31,16 +32,17 @@ class CustomMenuWidget extends ConsumerWidget {
                   children: [
                     DrawerHeader(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: AlignmentDirectional.topStart,
-                            end: AlignmentDirectional.bottomEnd,
-                            colors: [
-                              theme.colorScheme.primary,
-                              theme.primaryColorLight,
-                            ],
-                          ),
-                          image: const DecorationImage(image: AssetImage(LocalImages.earthAugmentedImage))
-                        ),
+                            gradient: LinearGradient(
+                              begin: AlignmentDirectional.topStart,
+                              end: AlignmentDirectional.bottomEnd,
+                              colors: [
+                                theme.colorScheme.primary,
+                                theme.primaryColorLight,
+                              ],
+                            ),
+                            image: const DecorationImage(
+                                image: AssetImage(
+                                    LocalImages.earthAugmentedImage))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -53,8 +55,7 @@ class CustomMenuWidget extends ConsumerWidget {
                               style: theme.primaryTextTheme.labelSmall,
                             ),
                           ],
-                        )
-                    ),
+                        )),
                     const UseMaterial3Switch(),
                     const Divider(),
                     UseSubThemesListTile(
@@ -64,7 +65,7 @@ class CustomMenuWidget extends ConsumerWidget {
                     ThemeModeListTile(title: Text(context.tr!.theme)),
                     const Divider(),
                     ListTile(
-                      onTap: () => context.go('/user_home/:pid'),
+                      onTap: () => context.pushReplacement('/'),
                       leading: const Icon(Icons.home),
                       title: Text(context.tr!.home),
                     ),
@@ -101,10 +102,7 @@ class CustomMenuWidget extends ConsumerWidget {
                         child: Text(context.tr!.termsOfService),
                       ),
                     ),
-                  ]
-              )
-          )
-      ),
+                  ]))),
     );
   }
 
@@ -116,22 +114,18 @@ class CustomMenuWidget extends ConsumerWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(
-            width: 128.0,
-            height: 128.0,
-            margin: const EdgeInsets.only(
-              top: 24.0,
-              bottom: 64.0,
-            ),
-            clipBehavior: Clip.antiAlias,
-            decoration: const BoxDecoration(
-              color: Colors.black26,
-              shape: BoxShape.circle,
-            ),
-            child: Assets.lottie.models.earthAugmentedImage.image(
-
-            )
-          ),
-
+              width: 128.0,
+              height: 128.0,
+              margin: const EdgeInsets.only(
+                top: 24.0,
+                bottom: 64.0,
+              ),
+              clipBehavior: Clip.antiAlias,
+              decoration: const BoxDecoration(
+                color: Colors.black26,
+                shape: BoxShape.circle,
+              ),
+              child: Assets.lottie.models.earthAugmentedImage.image()),
           const Divider(),
           ListTile(
             onTap: () => context.go('/user_home/:pid'),
@@ -174,4 +168,3 @@ class CustomMenuWidget extends ConsumerWidget {
     );
   }
 }
-

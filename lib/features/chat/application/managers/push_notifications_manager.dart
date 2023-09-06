@@ -18,13 +18,11 @@ import '../../../../config/app_shared/extensions/extensions.dart';
 import '../../../../config/cube_config/cube_config.dart';
 import '../../data/data_sources/local/pref_util.dart';
 
-
-
 class PushNotificationsManager {
   static const TAG = "PushNotificationsManager";
 
   static final PushNotificationsManager _instance =
-  PushNotificationsManager._internal();
+      PushNotificationsManager._internal();
 
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -50,9 +48,9 @@ class PushNotificationsManager {
         alert: true, badge: true, sound: true);
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('ic_launcher_foreground');
+        AndroidInitializationSettings('ic_launcher_foreground');
     final DarwinInitializationSettings initializationSettingsIOS =
-    DarwinInitializationSettings(
+        DarwinInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,
@@ -60,10 +58,10 @@ class PushNotificationsManager {
     );
 
     final InitializationSettings initializationSettings =
-    InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS,
-        macOS: const DarwinInitializationSettings());
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS,
+            macOS: const DarwinInitializationSettings());
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse:
@@ -126,9 +124,10 @@ class PushNotificationsManager {
     CreateSubscriptionParameters parameters = CreateSubscriptionParameters();
     parameters.pushToken = token;
 
-    bool isProduction = kIsWeb ? true : const bool.fromEnvironment('dart.vm.product');
+    bool isProduction =
+        kIsWeb ? true : const bool.fromEnvironment('dart.vm.product');
     parameters.environment =
-    isProduction ? CubeEnvironment.PRODUCTION : CubeEnvironment.DEVELOPMENT;
+        isProduction ? CubeEnvironment.PRODUCTION : CubeEnvironment.DEVELOPMENT;
 
     if (Platform.isAndroid || kIsWeb || Platform.isIOS || Platform.isMacOS) {
       parameters.channel = NotificationsChannels.GCM;
@@ -137,7 +136,7 @@ class PushNotificationsManager {
 
     var deviceInfoPlugin = DeviceInfoPlugin();
 
-    var deviceId;
+    String? deviceId;
 
     if (kIsWeb) {
       var webBrowserInfo = await deviceInfoPlugin.webBrowserInfo;
@@ -153,7 +152,9 @@ class PushNotificationsManager {
       deviceId = macOsInfo.computerName;
     }
 
-    parameters.udid = deviceId ?? const Uuid().v4;
+    String? newUuid = const Uuid().v4.toString();
+
+    parameters.udid = deviceId ?? newUuid;
 
     var packageInfo = await PackageInfo.fromPlatform();
     parameters.bundleIdentifier = packageInfo.packageName;
@@ -209,17 +210,16 @@ showNotification(RemoteMessage message) {
   Map<String, dynamic> data = message.data;
 
   NotificationDetails buildNotificationDetails(
-      int? badge,
-      String threadIdentifier,
-      ) {
+    int? badge,
+    String threadIdentifier,
+  ) {
     final DarwinNotificationDetails darwinNotificationDetails =
-    DarwinNotificationDetails(
+        DarwinNotificationDetails(
       badgeNumber: badge,
       threadIdentifier: threadIdentifier,
     );
 
-    const androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'messages_channel_id',
       'Chat messages',
       channelDescription: 'Chat messages will be received here',
@@ -252,7 +252,7 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
   log('[onBackgroundMessage] message: ${message.data}',
       PushNotificationsManager.TAG);
   showNotification(message);
-  if(!Platform.isIOS) {
+  if (!Platform.isIOS) {
     updateBadgeCount(int.tryParse(message.data['badge'].toString()));
   }
   return Future.value();
@@ -267,7 +267,8 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
 
   if (payload != null) {
     return SharedPrefs.instance.init().then((sharedPrefs) async {
-      CubeUser? user = await sharedPrefs.getUser().then((savedUser) => savedUser);
+      CubeUser? user =
+          await sharedPrefs.getUser().then((savedUser) => savedUser);
 
       Map<String, dynamic> payloadObject = jsonDecode(payload);
       String? dialogId = payloadObject['dialog_id'];

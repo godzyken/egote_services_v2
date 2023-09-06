@@ -382,7 +382,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         }).onError((ExceptionCause error, stackTrace) =>
             handleError(error, stackTrace));
       } on Exception catch (error) {
-        _processLoginError(context, error);
+        _processLoginError(error);
         rethrow;
       }
     }
@@ -396,7 +396,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         _loginToCubeChat(context, result);
       });
     }).catchError((exception) {
-      _processLoginError(context, exception);
+      _processLoginError(exception);
     });
   }
 
@@ -423,61 +423,59 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
       _loginToCubeChat(context, user);
     }).catchError((error) {
-      _processLoginError(context, error);
+      _processLoginError(error);
     });
   }
 
   _loginToCCWithSavedUser(LoginType loginType) async {
     log("[_loginToCCWithSavedUser] user: $loginType");
     if (_isLoginContinues) return;
-    setState(() {
-      _isLoginContinues = true;
-    });
-
-    var phoneAuthToken =
-        await ref.watch(firebaseAuthProvider).currentUser?.getIdToken();
 
     Future<CubeUser>? signInFuture;
-    if (loginType == LoginType.phone) {
-      if (accessToken(phoneAuthToken!).isEmpty) {
-        setState(() {
-          _isLoginContinues = false;
+
+    var accessToken =
+        await ref.watch(firebaseAuthProvider).currentUser!.getIdToken(true);
+
+    if (accessToken!.isEmpty) {
+      _isLoginContinues = false;
+      return ErrorWidget(
+          'Your Phone authentication session was expired, please refresh it by second login using your phone number');
+    }
+
+    switch (loginType) {
+      case LoginType.login:
+      // TODO: Handle this case.
+      case LoginType.email:
+        signInFuture = createSessionUsingFirebaseEmail(projectId, accessToken)
+            .then((cubeSession) {
+          return signInUsingFirebaseEmail(projectId, accessToken)
+              .then((cubeUser) => SharedPrefs.instance
+                      .init()
+                      .then((sharedPrefs) {
+                    return sharedPrefs.getUser().then((savedUser) =>
+                        savedUser!..password = cubeUser.password);
+                  }).onError((ExceptionCause error, stackTrace) =>
+                          handleError(error, stackTrace)))
+              .onError((ExceptionCause error, stackTrace) =>
+                  handleError(error, stackTrace));
         });
-
-        ErrorWidget(
-            'Your Phone authentication session was expired, please refresh it by second login using your phone number');
-        return;
-      }
-
-      signInFuture = createSessionUsingFirebasePhone(
-              projectId, accessToken(phoneAuthToken))
-          .then((cubeSession) {
-        return signInUsingFirebasePhone(projectId, accessToken(phoneAuthToken))
-            .then((cubeUser) {
-          return SharedPrefs.instance.init().then((sharedPrefs) {
-            sharedPrefs.saveNewUser(cubeUser, LoginType.phone);
-            return cubeUser
-              ..password =
-                  ref.read(cubeSessionManagerProvider).activeSession?.token;
+      case LoginType.phone:
+        signInFuture = createSessionUsingFirebasePhone(projectId, accessToken)
+            .then((cubeSession) {
+          return signInUsingFirebasePhone(projectId, cubeSession.token!)
+              .then((cubeUser) {
+            return SharedPrefs.instance.init().then((sharedPrefs) {
+              sharedPrefs.saveNewUser(cubeUser, LoginType.phone);
+              return cubeUser
+                ..password =
+                    ref.read(cubeSessionManagerProvider).activeSession?.token;
+            }).onError((ExceptionCause error, stackTrace) =>
+                handleError(error, stackTrace));
           }).onError((ExceptionCause error, stackTrace) =>
-              handleError(error, stackTrace));
-        }).onError((ExceptionCause error, stackTrace) =>
-                handleError(error, stackTrace));
-      }).onError((ExceptionCause error, stackTrace) =>
-              handleError(error, stackTrace));
-    } else if (loginType == LoginType.login || loginType == LoginType.email) {
-      signInFuture = createSessionUsingFirebaseEmail(
-              projectId, accessToken(phoneAuthToken!))
-          .then((cubeSession) {
-        return signInUsingFirebaseEmail(projectId, accessToken(phoneAuthToken))
-            .then((cubeUser) => SharedPrefs.instance.init().then((sharedPrefs) {
-                  return sharedPrefs.getUser().then(
-                      (savedUser) => savedUser!..password = cubeUser.password);
-                }).onError((ExceptionCause error, stackTrace) =>
-                    handleError(error, stackTrace)))
-            .onError((ExceptionCause error, stackTrace) =>
-                handleError(error, stackTrace));
-      });
+                  handleError(error, stackTrace));
+        });
+      case LoginType.facebook:
+      // TODO: Handle this case.
     }
 
     signInFuture?.then((cubeUser) {
@@ -485,11 +483,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
       _loginToCubeChat(context, cubeUser);
     }).catchError((error) {
-      _processLoginError(context, error);
+      _processLoginError(error);
     });
   }
 
-  String accessToken(String phoneAuthToken) => phoneAuthToken;
+  String getToken(String accessToken) => accessToken;
 
   String get projectId => DefaultFirebaseOptions.currentPlatform.projectId;
 
@@ -503,11 +501,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       _isLoginContinues = false;
       _goDialogScreen(context, cubeUser);
     }).catchError((error) {
-      _processLoginError(context, error);
+      _processLoginError(error);
     });
   }
 
-  void _processLoginError(BuildContext context, Exception? exception) {
+  void _processLoginError(Exception? exception) {
     log("Login error $exception");
     setState(() {
       _isLoginContinues = false;
@@ -526,11 +524,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       log("getNotificationAppLaunchDetails, payload: $payload");
 
       var dialogId;
-      if (accessToken(payload!) == null) {
+      if (getToken(payload!).isEmpty) {
         dialogId = SharedPrefs.instance.getSelectedDialogId();
         log("getNotificationAppLaunchDetails, selectedDialogId: $dialogId");
       } else {
-        Map<String, dynamic> payloadObject = jsonDecode(accessToken(payload));
+        Map<String, dynamic> payloadObject = jsonDecode(getToken(payload));
         dialogId = payloadObject['dialog_id'];
       }
 
@@ -538,7 +536,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         getDialogs({'id': dialogId}).then((dialogs) {
           if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
             CubeDialog dialog = dialogs.items.first;
-            navigateToNextScreen(cubeUser, dialog);
+            if (mounted) {
+              setState(() {
+                navigateToNextScreen(cubeUser, dialog);
+              });
+            }
           } else {
             navigateToNextScreen(cubeUser, null);
           }
@@ -550,7 +552,6 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       }
     }).catchError((onError) {
       log("getNotificationAppLaunchDetails ERROR: $onError");
-      navigateToNextScreen(cubeUser, null);
     });
   }
 
@@ -576,7 +577,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       stackTrace = object.stackTrace;
 
       log('HandleError: ${object.exception}  with stackTrace : $stackTrace');
-      return _processLoginError(context, object.exception);
+      return _processLoginError(object.exception);
     }
 
     return;

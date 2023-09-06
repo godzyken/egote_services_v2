@@ -61,7 +61,7 @@ Widget getAvatarWidget(String? imageUrl, String? name, double radius,
 }
 
 Widget getMessageStateWidget(MessageState state) {
-  var result;
+  Widget result;
 
   switch (state) {
     case MessageState.read:

@@ -14,6 +14,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
+  /// File path: assets/fonts/FlexIcons.ttf
+  String get flexIcons => 'assets/fonts/FlexIcons.ttf';
+
   /// File path: assets/fonts/OFL.txt
   String get ofl => 'assets/fonts/OFL.txt';
 
@@ -21,7 +24,7 @@ class $AssetsFontsGen {
   String get pacificoRegular => 'assets/fonts/Pacifico-Regular.ttf';
 
   /// List of all assets
-  List<String> get values => [ofl, pacificoRegular];
+  List<String> get values => [flexIcons, ofl, pacificoRegular];
 }
 
 class $AssetsJsonGen {
@@ -44,7 +47,9 @@ class $AssetsLottieGen {
   const $AssetsLottieGen();
 
   $AssetsLottieArchiveGen get archive => const $AssetsLottieArchiveGen();
+
   $AssetsLottieImageGen get image => const $AssetsLottieImageGen();
+
   $AssetsLottieModelsGen get models => const $AssetsLottieModelsGen();
 }
 
@@ -239,6 +244,7 @@ class $AssetsLottieArchiveAmenagementGen {
 
   $AssetsLottieArchiveAmenagementExterieurGen get exterieur =>
       const $AssetsLottieArchiveAmenagementExterieurGen();
+
   $AssetsLottieArchiveAmenagementInterrieurGen get interrieur =>
       const $AssetsLottieArchiveAmenagementInterrieurGen();
 }
