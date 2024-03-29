@@ -7,8 +7,8 @@ import 'package:go_router/go_router.dart';
 
 class ListMfaScreen extends ConsumerWidget {
   const ListMfaScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

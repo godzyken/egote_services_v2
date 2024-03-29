@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class AndroidNotificationsScreen extends ConsumerStatefulWidget {
-  const AndroidNotificationsScreen({Key? key}) : super(key: key);
+  const AndroidNotificationsScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

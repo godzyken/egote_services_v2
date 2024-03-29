@@ -9,8 +9,8 @@ import '../../../../../config/app_shared/images/list_local.dart';
 
 class CustomMenuWidget extends ConsumerWidget {
   const CustomMenuWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

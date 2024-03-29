@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   emoji_picker_flutter
   flutter_localization
   flutter_webrtc
+  gtk
   sentry_flutter
   url_launcher_linux
 )

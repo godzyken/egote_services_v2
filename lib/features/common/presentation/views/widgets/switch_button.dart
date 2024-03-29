@@ -8,8 +8,7 @@ const _kTextStyle = TextStyle(
 );
 
 class SwitchButton extends ConsumerWidget {
-  const SwitchButton({Key? key, required this.showSignIn, required this.onTap})
-      : super(key: key);
+  const SwitchButton({super.key, required this.showSignIn, required this.onTap});
 
   final bool showSignIn;
   final VoidCallback onTap;

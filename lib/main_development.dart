@@ -18,11 +18,12 @@ void main() async {
       flavor: F.appFlavor!.name,
       loggingConfiguration: LoggingConfiguration(),
       rumConfiguration: RumConfiguration(
-          applicationId: '99911285-5746-429f-8168-b7b05c9db5fb'),
+        applicationId: '99911285-5746-429f-8168-b7b05c9db5fb',
+      ),
       firstPartyHosts: ['zngannbhansflbwydrgw.supabase.co']);
   await DatadogSdk.runApp(configuration, () async {
     runApp(UncontrolledProviderScope(
         container: await bootstrap(),
-        child: const SentryScreenshotWidget(child: MyApp())));
+        child: SentryScreenshotWidget(child: const MyApp())));
   });
 }

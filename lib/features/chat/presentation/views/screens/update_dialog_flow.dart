@@ -8,10 +8,10 @@ import '../../../../../config/cube_config/cube_config.dart';
 
 class UpdateDialog extends ConsumerWidget {
   const UpdateDialog({
-    Key? key,
+    super.key,
     required this.currentUser,
     required this.currentDialog
-  }) : super(key: key);
+  });
 
   final CubeUser currentUser;
   final CubeDialog currentDialog;

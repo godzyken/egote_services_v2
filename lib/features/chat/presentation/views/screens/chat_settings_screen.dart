@@ -14,9 +14,9 @@ import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatSettingsScreen extends ConsumerWidget {
   const ChatSettingsScreen({
-    Key? key,
+    super.key,
     required this.currentUser
-  }) : super(key: key);
+  });
 
   final CubeUser currentUser;
 

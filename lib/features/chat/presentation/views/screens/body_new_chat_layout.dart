@@ -7,8 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../config/cube_config/cube_config.dart';
 
 class BodyNewChatLayout extends ConsumerStatefulWidget {
-  const BodyNewChatLayout({Key? key, required this.currentUser})
-      : super(key: key);
+  const BodyNewChatLayout({super.key, required this.currentUser});
 
   final CubeUser currentUser;
 
@@ -112,7 +111,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
         icon: Icon(
           getIcon(),
           size: 25.0,
-          color: Colors.primaries.single,
+          color: Colors.blue,
         ),
         onPressed: () {
           setState(() {

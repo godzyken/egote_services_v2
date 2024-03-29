@@ -16,7 +16,7 @@ import '../../widgets/platform_popup_menu.dart';
 
 
 class CrossPlatformSettingsScreen extends ConsumerStatefulWidget {
-  const CrossPlatformSettingsScreen({Key? key}) : super(key: key);
+  const CrossPlatformSettingsScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

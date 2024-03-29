@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:egote_services_v2/features/chat/application/providers/cube_settings_provider.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:egote_services_v2/features/home/application/home_controller.dart';
 import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
@@ -11,7 +12,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../gen/assets.gen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -93,9 +94,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             AnimatedPositioned(
                 duration: const Duration(milliseconds: 1600),
-                onEnd: () => context.go('/chatRoute'),
+                //onEnd: () => context.go('/chatRoute'),
                 //onEnd: () => context.go('/authRoute'),
                 //onEnd: () => context.goNamed('mfaList'),
+                onEnd: () => context.goNamed('select_dialog', pathParameters: {
+                      'cid':
+                          ref.watch(cubeUserControllerProvider)!.id.toString()
+                    }),
                 //onEnd: () => context.goNamed('devis', pathParameters: {'devisId': '123'}),
                 //onEnd: () => context.goNamed('devisList'),
                 top: animate ? 0 : -80,

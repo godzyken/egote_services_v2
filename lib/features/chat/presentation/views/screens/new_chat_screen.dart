@@ -10,11 +10,10 @@ import '../../../../../config/cube_config/cube_config.dart';
 
 class NewChatScreen extends ConsumerStatefulWidget {
   const NewChatScreen(
-      {Key? key,
+      {super.key,
       required this.currentUser,
       required this.cubeDialog,
-      required this.users})
-      : super(key: key);
+      required this.users});
 
   final CubeUser currentUser;
   final CubeDialog cubeDialog;

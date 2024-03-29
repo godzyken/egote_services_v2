@@ -11,8 +11,7 @@ import '../../../../../config/providers/firebase/firebase_providers.dart';
 import 'auth_screens.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
-  const ProfileScreen({Key? key, required this.uid, required this.pid})
-      : super(key: key);
+  const ProfileScreen({super.key, required this.uid, required this.pid});
 
   final String uid;
   final String pid;
@@ -51,7 +50,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         final data = (await ref
             .watch(supabaseClientProvider)
             .from('auth_users_table')
-            .select<Map<String, dynamic>>()
+            .select('*')
             .eq('id', userId)
             .single());
 

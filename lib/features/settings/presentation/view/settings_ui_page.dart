@@ -8,7 +8,7 @@ import '../../../common/application/navigation/navigation.dart';
 import 'gallery/gallery.dart';
 
 class SettingsUiPage extends ConsumerWidget {
-  const SettingsUiPage({Key? key}) : super(key: key);
+  const SettingsUiPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

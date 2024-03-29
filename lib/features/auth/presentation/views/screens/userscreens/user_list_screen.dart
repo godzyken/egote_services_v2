@@ -10,7 +10,7 @@ import '../../widgets/widgets_extensions.dart';
 
 
 class UserListScreen extends ConsumerWidget {
-  UserListScreen({Key? key}) : super(key: key);
+  UserListScreen({super.key});
 
   final _filteredUserListProvider = filteredUserListProvider;
   final _userListProvider = userListViewModelStateNotifierProvider;

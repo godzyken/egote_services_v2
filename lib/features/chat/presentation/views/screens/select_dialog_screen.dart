@@ -7,11 +7,11 @@ import '../../../../../config/app_shared/extensions/platform_utils.dart';
 
 class SelectDialogScreen extends ConsumerWidget {
   const SelectDialogScreen({
-    Key? key,
+    super.key,
     required this.currentUser,
     this.onDialogSelectedCallback,
     this.selectedDialog,
-  }) : super(key: key);
+  });
 
   final CubeUser currentUser;
   final Function(CubeDialog)? onDialogSelectedCallback;

@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/app_shared/images/list_local.dart';
 
 class AvisBoxPage extends ConsumerStatefulWidget {
-  const AvisBoxPage({Key? key}) : super(key: key);
+  const AvisBoxPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AvisBoxPageState();
@@ -45,18 +45,65 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
     },
   ];
 
-
-
   Widget avisChild(data) {
     return ListView(
       children: [
         for (var i = 0; i < data.length; i++)
-          Padding(padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
-          child: ListTile(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
+            child: ListTile(
+              leading: GestureDetector(
+                onTap: () {
+                  developer.log('avis clicked');
+                },
+                child: Container(
+                  height: 50.0,
+                  width: 50.0,
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: CommentBox.commentImageParser(
+                        imageURLorPath: data[i]['pic']),
+                  ),
+                ),
+              ),
+              title: Text(
+                data[i]['name'],
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(data[i]['message']),
+              trailing: Text(
+                data[i]['date'],
+                style: const TextStyle(fontSize: 10),
+              ),
+            ),
+          )
+      ],
+    );
+  }
+
+  Widget avisPosted() {
+    final privatePostsFuture =
+        ref.watch(supabaseClientProvider).from('avis_posts').select('*');
+    return FutureBuilder(
+      future: privatePostsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text(snapshot.error.toString()));
+        }
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final data = snapshot.data!;
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) => ListTile(
             leading: GestureDetector(
-              onTap: () {
-                developer.log('avis clicked');
-              },
+              onTap: () {},
               child: Container(
                 height: 50.0,
                 width: 50.0,
@@ -67,64 +114,20 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: CommentBox.commentImageParser(
-                    imageURLorPath: data[i]['pic']
-                  ),
+                      imageURLorPath: data[index]['pic']),
                 ),
               ),
             ),
-            title: Text(data[i]['name'],
-              style: const TextStyle(fontWeight: FontWeight.bold),),
-            subtitle: Text(data[i]['message']),
-            trailing: Text(data[i]['date'], style: const TextStyle(fontSize: 10),),
-          ),)
-      ],
-    );
-  }
-
-  Widget avisPosted()   {
-    final privatePostsFuture =
-    ref.watch(supabaseClientProvider).from('avis_posts').select<List<Map<String, dynamic>>>();
-    return FutureBuilder(
-        future: privatePostsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
-          }
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final data = snapshot.data!;
-          return ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) =>
-                ListTile(
-                  leading: GestureDetector(
-                    onTap: () {
-
-                    },
-                    child: Container(
-                      height: 50.0,
-                      width: 50.0,
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                      ),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: CommentBox.commentImageParser(
-                            imageURLorPath: data[index]['pic']
-                        ),
-                      ),
-                    ),
-                  ),
-                  title: Text(data[index]['name'],
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(data[index]['message']),
-                  trailing: Text(data[index]['created_at'], style: const TextStyle(fontSize: 10),),
-                ),
-          );
-        },
+            title: Text(data[index]['name'],
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(data[index]['message']),
+            trailing: Text(
+              data[index]['created_at'],
+              style: const TextStyle(fontSize: 10),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -136,8 +139,8 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
         backgroundColor: Colors.pink,
       ),
       body: CommentBox(
-        userImage: CommentBox.commentImageParser(
-            imageURLorPath: LocalImages.venomJpg),
+        userImage:
+            CommentBox.commentImageParser(imageURLorPath: LocalImages.venomJpg),
         labelText: context.tr?.comment,
         errorText: context.tr?.canBeBlank,
         withBorder: false,
@@ -147,7 +150,8 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
             setState(() {
               var value = {
                 'name': 'New User',
-                'pic': 'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
+                'pic':
+                    'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
                 'message': controller.text,
                 'date': '2021-01-01 12:00:00'
               };

@@ -105,28 +105,26 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
   }
 
   Widget _buildLogoField() {
-    return Container(
-      child: Align(
-        alignment: FractionalOffset.center,
-        child: Column(
-          children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 350),
-              child: Assets.lottie.image.logoTchat1022x1024.image(height: 200),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 8),
-              height: 18,
-              width: 18,
-              child: Visibility(
-                visible: _isLoginContinues,
-                child: const CircularProgressIndicator(
-                  strokeWidth: 2,
-                ),
+    return Align(
+      alignment: FractionalOffset.center,
+      child: Column(
+        children: [
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 350),
+            child: Assets.lottie.image.logoTchat1022x1024.image(height: 200),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 8),
+            height: 18,
+            width: 18,
+            child: Visibility(
+              visible: _isLoginContinues,
+              child: const CircularProgressIndicator(
+                strokeWidth: 2,
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -433,8 +431,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
     Future<CubeUser>? signInFuture;
 
-    var accessToken =
-        await ref.watch(firebaseAuthProvider).currentUser!.getIdToken(true);
+    var accessToken = await ref.watch(firebaseAuthProvider.select((auth) => auth
+        .currentUser
+        ?.getIdToken()
+        .onError((ExceptionCause error, stackTrace) =>
+            handleError(error, stackTrace))));
 
     if (accessToken!.isEmpty) {
       _isLoginContinues = false;
@@ -556,18 +557,17 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
   }
 
   void navigateToNextScreen(CubeUser cubeUser, CubeDialog? dialog) {
-    final cid =
-        SharedPrefs.instance.saveSelectedDialogId(dialog!.id.toString());
+    final cid = SharedPrefs.instance.getSelectedDialogId();
     context.pushReplacementNamed(
       'select_dialog',
-      pathParameters: {'cid': cid},
-      extra: {USER_ARG_NAME: cubeUser.fullName, DIALOG_ARG_NAME: dialog.name},
+      pathParameters: {'cid': cid!},
+      extra: {USER_ARG_NAME: cubeUser.fullName, DIALOG_ARG_NAME: dialog?.name},
     );
 
-    if (dialog.dialogId != null && !platform_utils.isDesktop()) {
+    if (dialog?.dialogId != null && !platform_utils.isDesktop()) {
       context.pushNamed('chat_dialog', extra: {
         USER_ARG_NAME: cubeUser.fullName,
-        DIALOG_ARG_NAME: dialog.name
+        DIALOG_ARG_NAME: dialog?.name
       });
     }
   }

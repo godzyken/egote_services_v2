@@ -7,10 +7,10 @@ import '../../../../../config/app_shared/extensions/extensions.dart';
 
 class ChatDialogScreen extends ConsumerWidget {
   const ChatDialogScreen({
-    Key? key,
+    super.key,
     required this.cubeUser,
     required this.cubeDialog,
-  }) : super(key: key);
+  });
 
   final CubeUser cubeUser;
   final CubeDialog cubeDialog;

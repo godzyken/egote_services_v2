@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileWidget extends ConsumerWidget {
-  const ProfileWidget({Key? key, required this.imagePath, required this.onClicked,}) : super(key: key);
+  const ProfileWidget({super.key, required this.imagePath, required this.onClicked,});
 
   final String imagePath;
   final VoidCallback onClicked;

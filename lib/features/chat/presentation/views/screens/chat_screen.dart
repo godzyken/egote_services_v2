@@ -25,8 +25,7 @@ import '../../../application/managers/chat_manager.dart';
 import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
-  const ChatScreen({Key? key, required this.cubeUser, required this.cubeDialog})
-      : super(key: key);
+  const ChatScreen({super.key, required this.cubeUser, required this.cubeDialog});
 
   final CubeUser cubeUser;
   final CubeDialog cubeDialog;
@@ -1116,7 +1115,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                 ],
                               )),
                         )));
-              }).toList()
+              })
             ],
           ));
     });

@@ -5,9 +5,9 @@ import 'package:photo_view/photo_view.dart';
 
 class FullPhoto extends ConsumerWidget {
   const FullPhoto({
-    Key? key,
+    super.key,
     required this.url
-  }) : super(key: key);
+  });
 
   final String url;
 
@@ -25,8 +25,8 @@ class FullPhoto extends ConsumerWidget {
 
 class FullPhotoScreen extends ConsumerStatefulWidget {
   const FullPhotoScreen({
-    Key? key, required this.url
-  }) : super(key: key);
+    super.key, required this.url
+  });
 
   final String url;
 

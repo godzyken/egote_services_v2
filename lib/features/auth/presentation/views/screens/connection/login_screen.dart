@@ -15,8 +15,8 @@ import '../../widgets/widgets_extensions.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ConsumerState createState() => _LoginScreenState();

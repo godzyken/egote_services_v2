@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
 
 class AddOccupantScreen extends ConsumerStatefulWidget {
-  const AddOccupantScreen({Key? key, required this.cubeUser}) : super(key: key);
+  const AddOccupantScreen({super.key, required this.cubeUser});
 
   final CubeUser cubeUser;
 

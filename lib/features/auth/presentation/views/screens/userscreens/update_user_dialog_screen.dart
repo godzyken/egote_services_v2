@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../application/providers/auth_providers.dart';
 
 class UpdateUserDialogScreen extends ConsumerStatefulWidget {
-  const UpdateUserDialogScreen({Key? key}) : super(key: key);
+  const UpdateUserDialogScreen({super.key});
 
   @override
   ConsumerState<UpdateUserDialogScreen> createState() => _UpdateUserDialogScreenState();

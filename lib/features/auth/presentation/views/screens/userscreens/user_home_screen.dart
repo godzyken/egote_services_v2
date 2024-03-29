@@ -11,7 +11,7 @@ import '../../widgets/profile_widget.dart';
 
 
 class UserHomeScreen extends ConsumerStatefulWidget {
-  const UserHomeScreen({Key? key, required this.pid}) : super(key: key);
+  const UserHomeScreen({super.key, required this.pid});
 
   final String pid;
 

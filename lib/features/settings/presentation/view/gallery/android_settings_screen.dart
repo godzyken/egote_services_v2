@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class AndroidSettingsScreen extends ConsumerWidget {
-  const AndroidSettingsScreen({Key? key}) : super(key: key);
+  const AndroidSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

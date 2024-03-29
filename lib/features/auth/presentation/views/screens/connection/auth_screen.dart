@@ -8,7 +8,7 @@ import '../../../states/auth/auth_state.dart';
 
 
 class AuthScreen extends ConsumerWidget {
-  const AuthScreen({Key? key}) : super(key: key);
+  const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

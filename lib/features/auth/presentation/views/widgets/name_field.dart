@@ -5,7 +5,7 @@ import '../../../../common/presentation/extensions/extensions.dart';
 
 class NameField extends ConsumerWidget {
   const NameField({
-    Key? key,
+    super.key,
     required this.label,
     this.controller,
     this.focusNode,
@@ -17,7 +17,7 @@ class NameField extends ConsumerWidget {
     this.inputType = TextInputType.name,
     this.onChanged,
     this.validator,
-  }) : super(key: key);
+  });
   final String label;
   final TextEditingController? controller;
   final FocusNode? focusNode;

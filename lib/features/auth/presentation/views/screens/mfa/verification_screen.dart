@@ -21,7 +21,7 @@ class VerificationScreenParams {
 }
 
 class VerificationScreen extends ConsumerStatefulWidget {
-  const VerificationScreen({Key? key, required this.params}) : super(key: key);
+  const VerificationScreen({super.key, required this.params});
 
   final VerificationScreenParams params;
 

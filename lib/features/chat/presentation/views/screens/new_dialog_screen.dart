@@ -7,10 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'chat_screens.dart';
 
 class CreateChatScreen extends ConsumerWidget {
-  const CreateChatScreen({
-    Key? key,
-    required this.cubeUser
-  }) : super(key: key);
+  const CreateChatScreen({super.key, required this.cubeUser});
 
   final CubeUser cubeUser;
 
@@ -20,12 +17,14 @@ class CreateChatScreen extends ConsumerWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () => context.pop,
-            icon: const Icon(Icons.close, color: Colors.white,)
-        ),
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
+            )),
         automaticallyImplyLeading: false,
         title: Text(context.tr!.searchUsers),
       ),
-      body: BodyNewChatLayout(currentUser: cubeUser, key: key,),
+      body: BodyNewChatLayout(currentUser: cubeUser),
     );
   }
 }

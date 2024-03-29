@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../common/domain/failures/failure.dart';
 
 class AuthTokenLocalDataSource {
-   AuthTokenLocalDataSource(this._prefs);
+  AuthTokenLocalDataSource(this._prefs);
 
   final SharedPreferences _prefs;
 
@@ -12,7 +12,7 @@ class AuthTokenLocalDataSource {
 
   Either<Failure, String> get() {
     final v = _prefs.getString(_key);
-    if (v == null) {
+    if (v!.isEmpty) {
       return left(Failure.empty());
     }
 

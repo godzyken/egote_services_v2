@@ -16,12 +16,14 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
     lastState = const perso.AuthState.unauthenticated(
         status: perso.AuthStatus.unauthenticated);
 
-    _subscription = _repository.authClient.auth.onAuthStateChange.listen((event) {
+    _subscription =
+        _repository.authClient.auth.onAuthStateChange.listen((event) {
       _onUserChanged(event);
     });
   }
 
-  StreamController<supabase.AuthResponse> controller = StreamController<supabase.AuthResponse>();
+  StreamController<supabase.AuthResponse> controller =
+      StreamController<supabase.AuthResponse>();
 
   late perso.AuthState lastState;
 
@@ -39,25 +41,23 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
     }
   }
 
-  void  _onUserChanged(supabase.AuthState authState) {
+  void _onUserChanged(supabase.AuthState authState) {
     final supabase.AuthChangeEvent event = authState.event;
     final supabase.Session? session = authState.session;
 
     state = const perso.AuthState.unauthenticated(
-          status: perso.AuthStatus.unauthenticated);
+        status: perso.AuthStatus.unauthenticated);
 
-    switch(event) {
-
+    switch (event) {
       case supabase.AuthChangeEvent.passwordRecovery:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
       case supabase.AuthChangeEvent.signedIn:
         _user = session?.user;
         state = perso.AuthState.authenticated(
             status: validator(_user)!,
             userEntity: UserModel.complete(
-                id: UserId(value: int.parse(_user!.id)),
-                userEntityModel: UserEntityModel.fromJson(
-                    _user!.toJson()),
+                id: UserId(value: int.tryParse(_user!.id)!),
+                userEntityModel: UserEntityModel.fromJson(_user!.toJson()),
                 authUser: supabase.AuthUser(
                     id: _user!.id,
                     appMetadata: _user!.appMetadata,
@@ -67,8 +67,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
                     phone: _user!.phone,
                     createdAt: _user!.createdAt,
                     role: _user!.role!,
-                    updatedAt: _user!.updatedAt!
-                ),
+                    updatedAt: _user!.updatedAt!),
                 cubeUser: CubeUser()));
       case supabase.AuthChangeEvent.signedOut:
         session?.user;
@@ -82,8 +81,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
             status: validator(_user)!,
             userEntity: UserModel.complete(
                 id: UserId(value: int.parse(_user!.id)),
-                userEntityModel: UserEntityModel.fromJson(
-                    _user!.toJson()),
+                userEntityModel: UserEntityModel.fromJson(_user!.toJson()),
                 authUser: supabase.AuthUser(
                     id: _user!.id,
                     appMetadata: _user!.appMetadata,
@@ -93,48 +91,47 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
                     phone: _user!.phone,
                     createdAt: _user!.createdAt,
                     role: _user!.role!,
-                    updatedAt: _user!.updatedAt!
-                ),
+                    updatedAt: _user!.updatedAt!),
                 cubeUser: CubeUser()));
       case supabase.AuthChangeEvent.userUpdated:
         _user = session?.user;
         state = perso.AuthState.authenticated(
-          status: validator(_user)!,
-          userEntity: UserModel.complete(
-              id: UserId(value: int.parse(_user!.id)),
-              userEntityModel: UserEntityModel.fromJson(
-                  _user!.toJson()),
-              authUser: supabase.AuthUser(
-                  id: _user!.id,
-                  appMetadata: _user!.appMetadata,
-                  userMetadata: _user!.userMetadata!,
-                  aud: _user!.aud,
-                  email: _user!.email,
-                  phone: _user!.phone,
-                  createdAt: _user!.createdAt,
-                  role: _user!.role!,
-                  updatedAt: _user!.updatedAt!
-              ),
-              cubeUser: CubeUser()));
+            status: validator(_user)!,
+            userEntity: UserModel.complete(
+                id: UserId(value: int.parse(_user!.id)),
+                userEntityModel: UserEntityModel.fromJson(_user!.toJson()),
+                authUser: supabase.AuthUser(
+                    id: _user!.id,
+                    appMetadata: _user!.appMetadata,
+                    userMetadata: _user!.userMetadata!,
+                    aud: _user!.aud,
+                    email: _user!.email,
+                    phone: _user!.phone,
+                    createdAt: _user!.createdAt,
+                    role: _user!.role!,
+                    updatedAt: _user!.updatedAt!),
+                cubeUser: CubeUser()));
       case supabase.AuthChangeEvent.userDeleted:
         _user = null;
         state = const perso.AuthState.unauthenticated(
             status: perso.AuthStatus.unauthenticated);
       case supabase.AuthChangeEvent.mfaChallengeVerified:
-        // TODO: Handle this case.
+      // TODO: Handle this case.
+      case supabase.AuthChangeEvent.initialSession:
+      // TODO: Handle this case.
     }
   }
 
-  Future<perso.AuthState?> onSignInWithPassword(String email, String password) async {
+  Future<perso.AuthState?> onSignInWithPassword(
+      String email, String password) async {
     final userModel = await _repository.signInWithPassword(email, password);
     do {
-
       state = perso.AuthState.authenticated(
           status: validator(userModel.toNullable())!,
           userEntity: UserModel.complete(
               id: UserId(value: int.parse(userModel.toNullable()!.id)),
-              userEntityModel: UserEntityModel.fromJson(
-                  userModel.toNullable()!.toJson()),
+              userEntityModel:
+                  UserEntityModel.fromJson(userModel.toNullable()!.toJson()),
               authUser: supabase.AuthUser(
                   id: userModel.toNullable()!.id,
                   appMetadata: userModel.toNullable()!.appMetadata,
@@ -144,11 +141,8 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
                   phone: userModel.toNullable()!.phone,
                   createdAt: userModel.toNullable()!.createdAt,
                   role: userModel.toNullable()!.role!,
-                  updatedAt: userModel.toNullable()!.updatedAt!
-              ),
-              cubeUser: CubeUser()
-          )
-      );
+                  updatedAt: userModel.toNullable()!.updatedAt!),
+              cubeUser: CubeUser()));
     } while (userModel.exists((r) => r.id.isNotEmpty));
 
     state = const perso.AuthState.unauthenticated(
@@ -168,8 +162,8 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
   }
 }
 
-final authStateProvider =
-    StateNotifierProvider.autoDispose<AuthControllerStateNotifier, perso.AuthState>(
-        (ref) => AuthControllerStateNotifier(ref.watch(authRepositoryProvider)),
-        dependencies: [authRepositoryProvider],
-        name: 'auth controller state notifier');
+final authStateProvider = StateNotifierProvider.autoDispose<
+        AuthControllerStateNotifier, perso.AuthState>(
+    (ref) => AuthControllerStateNotifier(ref.watch(authRepositoryProvider)),
+    dependencies: [authRepositoryProvider],
+    name: 'auth controller state notifier');

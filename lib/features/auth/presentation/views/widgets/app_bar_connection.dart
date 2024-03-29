@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 
 class AppBarConnection extends ConsumerWidget {
   const AppBarConnection({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -11,8 +11,7 @@ import '../../../../../config/cube_config/cube_config.dart';
 
 class ChatDetailsScreen extends ConsumerWidget {
   const ChatDetailsScreen(
-      {Key? key, required this.cubeUser, required this.cubeDialog})
-      : super(key: key);
+      {super.key, required this.cubeUser, required this.cubeDialog});
 
   final CubeUser cubeUser;
   final CubeDialog cubeDialog;
@@ -92,8 +91,7 @@ class ChatDetailsScreen extends ConsumerWidget {
 }
 
 class DetailsScreen extends ConsumerStatefulWidget {
-  DetailsScreen({Key? key, required this.cubeUser, required this.cubeDialog})
-      : super(key: key);
+  DetailsScreen({super.key, required this.cubeUser, required this.cubeDialog});
 
   final CubeUser cubeUser;
   CubeDialog cubeDialog;

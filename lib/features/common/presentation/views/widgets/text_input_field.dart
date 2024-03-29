@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TextInputField extends ConsumerWidget {
   const TextInputField({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.onChanged,
     this.errorText,
@@ -18,7 +18,7 @@ class TextInputField extends ConsumerWidget {
     this.decoration,
     this.onFieldSubmitted,
     this.maxLength,
-  }) : super(key: key);
+  });
 
   final String label;
   final TextEditingController? controller;

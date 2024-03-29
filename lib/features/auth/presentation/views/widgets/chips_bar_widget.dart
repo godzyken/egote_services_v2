@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChipsBarWidget extends ConsumerWidget {
-  ChipsBarWidget({Key? key}) : super(key: key);
+  ChipsBarWidget({super.key});
 
   final _provider = filterKindViewModelStateNotifierProvider;
 

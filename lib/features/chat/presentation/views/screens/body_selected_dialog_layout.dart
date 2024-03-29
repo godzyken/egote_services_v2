@@ -14,12 +14,11 @@ import '../../../../../config/cube_config/cube_config.dart';
 import 'chat_screens.dart';
 
 class BodySelectedDialogLayout extends ConsumerStatefulWidget {
-  const BodySelectedDialogLayout({
-    Key? key,
-    required this.currentUser,
-    this.selectedDialog,
-    this.onDialogSelectedCallback
-  }) : super(key: key);
+  const BodySelectedDialogLayout(
+      {super.key,
+      required this.currentUser,
+      this.selectedDialog,
+      this.onDialogSelectedCallback});
 
   final CubeUser currentUser;
   final Function(CubeDialog)? onDialogSelectedCallback;
@@ -31,7 +30,6 @@ class BodySelectedDialogLayout extends ConsumerStatefulWidget {
 
 class _BodySelectedDialogLayoutState
     extends ConsumerState<BodySelectedDialogLayout> {
-
   List<ListItem<CubeDialog>> dialogList = [];
   var _isDialogContinues = true;
 
@@ -54,7 +52,8 @@ class _BodySelectedDialogLayoutState
         padding: const EdgeInsets.only(top: 2),
         child: Column(
           children: [
-            Visibility(child: Container(
+            Visibility(
+                child: Container(
               margin: const EdgeInsets.all(40),
               alignment: FractionalOffset.center,
               child: const CircularProgressIndicator(
@@ -78,7 +77,8 @@ class _BodySelectedDialogLayoutState
   }
 
   void _createNewDialog(BuildContext context) async {
-    showModal(context: context, child: CreateDialog(currentUser: widget.currentUser));
+    showModal(
+        context: context, child: CreateDialog(currentUser: widget.currentUser));
   }
 
   void _processGetDialogError(exception) {
@@ -86,7 +86,7 @@ class _BodySelectedDialogLayoutState
     setState(() {
       _isDialogContinues = false;
     });
-    ErrorScreen(error: exception, key: context.widget.key);
+    ErrorScreen(error: exception.toString(), key: context.widget.key);
   }
 
   Widget _getDialogsList(BuildContext context) {
@@ -154,7 +154,7 @@ class _BodySelectedDialogLayoutState
 
     return Container(
       color: selectedDialog != null &&
-          selectedDialog!.dialogId == dialogList[index].data.dialogId
+              selectedDialog!.dialogId == dialogList[index].data.dialogId
           ? const Color.fromARGB(100, 168, 228, 160)
           : null,
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -171,7 +171,8 @@ class _BodySelectedDialogLayoutState
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        dialogList[index].data.name ?? context.tr!.dialogUnknown,
+                        dialogList[index].data.name ??
+                            context.tr!.dialogUnknown,
                         style: TextStyle(
                             color: Colors.primaries.single,
                             fontWeight: FontWeight.bold,
@@ -214,10 +215,16 @@ class _BodySelectedDialogLayoutState
               children: [
                 Row(
                   children: [
-                    getMessageStateWidget(
-                        dialogList[index].data.lastMessageDateSent as MessageState),
+                    getMessageStateWidget(dialogList[index]
+                        .data
+                        .lastMessageDateSent as MessageState),
                     Text(
-                      DateFormat('MMM dd').format(dialogList[index].data.lastMessageDateSent != null ? DateTime.fromMillisecondsSinceEpoch(dialogList[index].data.lastMessageDateSent! * 1000) : dialogList[index].data.updatedAt!),
+                      DateFormat('MMM dd').format(
+                          dialogList[index].data.lastMessageDateSent != null
+                              ? DateTime.fromMillisecondsSinceEpoch(
+                                  dialogList[index].data.lastMessageDateSent! *
+                                      1000)
+                              : dialogList[index].data.updatedAt!),
                       style: TextStyle(color: Colors.primaries.single),
                     ),
                   ],
@@ -227,7 +234,8 @@ class _BodySelectedDialogLayoutState
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2, horizontal: 6),
                       decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(10.0)),
@@ -285,7 +293,7 @@ class _BodySelectedDialogLayoutState
     ref.watch(cubeRepositoryProvider).refreshBadgeCount();
 
     ListItem<CubeDialog>? dialogItem =
-    dialogList.firstWhere((dlg) => dlg.data.dialogId == msg.dialogId);
+        dialogList.firstWhere((dlg) => dlg.data.dialogId == msg.dialogId);
 
     setState(() {
       dialogItem.data.lastMessage = msg.body;
@@ -293,9 +301,9 @@ class _BodySelectedDialogLayoutState
 
       if (msg.senderId != widget.currentUser.id) {
         dialogItem.data.unreadMessageCount =
-        dialogItem.data.unreadMessageCount == null
-            ? 1
-            : dialogItem.data.unreadMessageCount! + 1;
+            dialogItem.data.unreadMessageCount == null
+                ? 1
+                : dialogItem.data.unreadMessageCount! + 1;
 
         unreadMessages[msg.dialogId!] = <String>{
           ...unreadMessages[msg.dialogId] ?? [],
@@ -346,16 +354,15 @@ class _BodySelectedDialogLayoutState
     if (messageStatus.userId == widget.currentUser.id &&
         unreadMessages.containsKey(messageStatus.dialogId)) {
       if (unreadMessages[messageStatus.dialogId]
-          ?.remove(messageStatus.messageId) ??
+              ?.remove(messageStatus.messageId) ??
           false) {
         setState(() {
           var dialog = dialogList
-              .firstWhere(
-                  (dlg) => dlg.data.dialogId == messageStatus.dialogId)
+              .firstWhere((dlg) => dlg.data.dialogId == messageStatus.dialogId)
               .data;
 
           dialog.unreadMessageCount = dialog.unreadMessageCount == null ||
-              dialog.unreadMessageCount == 0
+                  dialog.unreadMessageCount == 0
               ? 0
               : dialog.unreadMessageCount! - 1;
         });

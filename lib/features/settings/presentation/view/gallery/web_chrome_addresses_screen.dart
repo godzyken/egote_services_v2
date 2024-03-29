@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class WebChromeAddressesScreen extends ConsumerStatefulWidget {
-  const WebChromeAddressesScreen({Key? key}) : super(key: key);
+  const WebChromeAddressesScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

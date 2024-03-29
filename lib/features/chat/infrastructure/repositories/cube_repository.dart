@@ -53,7 +53,7 @@ class CubeRepository implements CubeRepositoryInterface {
       return signInByLogin(login, password).then((value) {
         return right(CubeSessionManager.instance.activeSession!);
       });
-    }, onError: left(Failure.badRequest()));
+    }, onError: left(Failure.badRequest()).call);
   }
 
   @override
@@ -126,7 +126,7 @@ class CubeRepository implements CubeRepositoryInterface {
 
 final cubeRepositoryProvider = Provider.autoDispose<CubeRepository>(
   (ref) {
-    final authRepository = ref.read(authRepositoryProvider);
+    final authRepository = ref.read(                                                                                                                                                                                                                                                                                                                                                                                                                                    authRepositoryProvider);
     final auth = ref.read(firebaseAuthProvider);
 
     return CubeRepository(authRepository, auth);

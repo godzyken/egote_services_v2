@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class IosDeveloperScreen extends ConsumerStatefulWidget {
-  const IosDeveloperScreen({Key? key}) : super(key: key);
+  const IosDeveloperScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _IosDeveloperScreenState();

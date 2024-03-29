@@ -8,9 +8,9 @@ import 'chat_screens.dart';
 
 class CreateDialog extends ConsumerWidget {
   const CreateDialog({
-    Key? key,
+    super.key,
     required this.currentUser
-  }) : super(key: key);
+  });
   final CubeUser currentUser;
 
   @override

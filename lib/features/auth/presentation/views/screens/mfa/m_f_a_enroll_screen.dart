@@ -10,9 +10,9 @@ import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 class MFAEnrollScreen extends ConsumerStatefulWidget {
   const MFAEnrollScreen({
-    Key? key,
+    super.key,
     required this.params,
-  }) : super(key: key);
+  });
 
   final VerificationScreenParams params;
 

@@ -7,7 +7,7 @@ import '../../../../common/application/navigation/navigation.dart';
 import 'gallery.dart';
 
 class WebChromeSettings extends ConsumerWidget {
-  const WebChromeSettings({Key? key}) : super(key: key);
+  const WebChromeSettings({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -5,7 +5,7 @@ import '../../../../common/presentation/extensions/extensions.dart';
 
 class EmailField extends ConsumerWidget {
   const EmailField({
-    Key? key,
+    super.key,
     required this.label,
     this.controller,
     this.focusNode,
@@ -17,7 +17,7 @@ class EmailField extends ConsumerWidget {
     this.inputType = TextInputType.emailAddress,
     this.onChanged,
     this.validator,
-  }) : super(key: key);
+  });
 
   final String? label;
   final TextEditingController? controller;

@@ -1,4 +1,5 @@
 /// TYPE	        Prix minimum au m² /	Prix maximum au m²
+library;
 //  Brique	      100 € /	150 €
 //  Bois double	  125 € /	375 €
 //  Métal	        125 € /	175 €

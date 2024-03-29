@@ -7,11 +7,11 @@ import 'new_chat_screen.dart';
 
 class NewGroupDialogScreen extends ConsumerWidget {
   const NewGroupDialogScreen({
-    Key? key,
+    super.key,
     required this.currentUser,
     required this.cubeDialog,
     required this.users
-  }) : super(key: key);
+  });
 
   final CubeUser currentUser;
   final CubeDialog cubeDialog;

@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class DevisEditScreen extends ConsumerWidget {
   final String devisId;
 
-  const DevisEditScreen({Key? key, required this.devisId}) : super(key: key);
+  const DevisEditScreen({super.key, required this.devisId});
 
 
   @override
