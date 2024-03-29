@@ -26,45 +26,45 @@ class AuthRepository implements AuthRepositoryInterface {
 
   final cuberUserModel = CubeUser();
 
+  final realTimeChanelConfig =
+      const supabase.RealtimeChannelConfig(key: '', self: true, ack: true);
+
   @override
-  void authStateChange(void Function(UserModel? userEntity) callback)
+  void authStateChange(void Function(UserModel? userEntity) callback) {
+    // TODO: implement authStateChange
+  }
 
   @override
   Future<Either<Failure, bool>> isOnLine() async {
-    const realTimeChanelConfig = supabase.RealtimeChannelConfig(
-        key: '',
-        self: true,
-        ack: true
-    );
-
     final myChannel = authClient
         .channel('base_de_test', opts: realTimeChanelConfig)
         .onPostgresChanges(
-        event: PostgresChangeEvent.all,
-        schema: 'public',
-        table: 'chat',
-        filter: PostgresChangeFilter(
-          type: PostgresChangeFilterType.eq,
-          column: 'room_id',
-          value: 200,
-        ),
-        callback: (payload, [ref]) {
-          developer.log('Change received: ${payload.toString()}');
-        })
-        .subscribe((status, [_]) async =>
-    switch (status) {
-    // TODO: Handle this case.
-      RealtimeSubscribeStatus.subscribed => developer.log('SUBSCRIBED'),
-    // TODO: Handle this case.
-      RealtimeSubscribeStatus.channelError => developer.log('CHANNEL-ERROR'),
-    // TODO: Handle this case.
-      RealtimeSubscribeStatus.closed => developer.log('CHANNEL-CLOSED'),
-    // TODO: Handle this case.
-      RealtimeSubscribeStatus.timedOut => developer.log('CHANNEL-TIMEOUT'),
+            event: PostgresChangeEvent.all,
+            schema: 'public',
+            table: 'chat',
+            filter: PostgresChangeFilter(
+              type: PostgresChangeFilterType.eq,
+              column: 'room_id',
+              value: 200,
+            ),
+            callback: (payload, [ref]) {
+              developer.log('Change received: ${payload.toString()}');
+            })
+        .subscribe((status, [_]) async {
+      switch (status) {
+        case RealtimeSubscribeStatus.subscribed:
+        // TODO: Handle this case.
+        case RealtimeSubscribeStatus.channelError:
+        // TODO: Handle this case.
+        case RealtimeSubscribeStatus.closed:
+        // TODO: Handle this case.
+        case RealtimeSubscribeStatus.timedOut:
+        // TODO: Handle this case.
+      }
     });
 
-    if (myChannel.presence.inPendingSyncState()) {
-      /*    myChannel.onPostgresChanges(
+    if (!myChannel.presence.inPendingSyncState()) {
+      myChannel.onPostgresChanges(
           event: PostgresChangeEvent.delete,
           schema: 'public',
           callback: (payload) {
@@ -76,48 +76,25 @@ class AuthRepository implements AuthRepositoryInterface {
           schema: 'public',
           callback: (payload) {
             developer.log('channel insert payload: ${payload.toString()}');
-          });*/
+          });
 
-      await myChannel
-          .track({'online_at': DateTime.now().toIso8601String()})
-          .then(
+      developer.log('isOnline(): $myChannel');
+      return await myChannel
+          .track({'online_at': DateTime.now().toIso8601String()}).then(
               (res) async {
-            switch (res) {
-              case ChannelResponse.ok:
-                return right(true);
-              case ChannelResponse.timedOut:
-                return left(Failure.unprocessableEntity(
-                    message: 'Channel connection! Time Out!'));
-              case ChannelResponse.rateLimited:
-                return left(Failure.empty());
-              case ChannelResponse.error:
-                return left(Failure.badRequest());
-            }
-          },
-          onError: (error) =>
-              left(Failure.badRequest()));
-      return right(true);
+        switch (res) {
+          case ChannelResponse.ok:
+            return right(true);
+          case ChannelResponse.timedOut:
+            return left(Failure.unprocessableEntity(
+                message: 'Channel connection! Time Out!:$res'));
+          case ChannelResponse.rateLimited:
+            return left(Failure.empty());
+          case ChannelResponse.error:
+            return left(Failure.badRequest());
+        }
+      }, onError: (error) => left(Failure.badRequest()));
     }
-
-
-    await myChannel
-        .track({'online_at': DateTime.now().toIso8601String()})
-        .then(
-            (res) async {
-          switch (res) {
-            case ChannelResponse.ok:
-              return right(true);
-            case ChannelResponse.timedOut:
-              return left(Failure.unprocessableEntity(
-                  message: 'Channel connection! Time Out!'));
-            case ChannelResponse.rateLimited:
-              return left(Failure.empty());
-            case ChannelResponse.error:
-              return left(Failure.badRequest());
-          }
-        },
-        onError: (error) =>
-            left(Failure.badRequest()));
 
     return right(true);
   }
@@ -170,8 +147,8 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, supabase.User>> signInWithPassword(String? email,
-      String? password) async {
+  Future<Either<Failure, supabase.User>> signInWithPassword(
+      String? email, String? password) async {
     developer.log('signInWithPassword()');
 
     final res = await client.signInWithPassword(
@@ -179,8 +156,7 @@ class AuthRepository implements AuthRepositoryInterface {
       password: password!,
     );
     developer.log(
-        'signInWithPassword response : ${res.session!.toJson()}\n ${res.user!
-            .toJson()}');
+        'signInWithPassword response : ${res.session!.toJson()}\n ${res.user!.toJson()}');
     await authTokenLocalDataSource
         .store(res.session?.providerRefreshToken ?? '');
 
@@ -216,15 +192,15 @@ class AuthRepository implements AuthRepositoryInterface {
   ///   required String [password],
   ///   String? [phone],
   @override
-  Future<Either<Failure, UserModel>> signUp(String? email, String? name,
-      String password) async {
+  Future<Either<Failure, UserModel>> signUp(
+      String? email, String? name, String password) async {
     final response = await client.signUp(
       email: email,
       password: password,
       data: {'name': name},
       //emailRedirectTo: kIsWeb ? https://qrco.de/be782E : 'https://www.godzy.egote-services-v2/signup/enroll',
       emailRedirectTo:
-      kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
+          kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
     );
 
     developer.log('reponse api signup: ${response.user}');
@@ -271,8 +247,8 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, supabase.AuthResponse>> verifyCode(String email,
-      String code) async {
+  Future<Either<Failure, supabase.AuthResponse>> verifyCode(
+      String email, String code) async {
     final res = await client.verifyOTP(
         email: email, token: code, type: supabase.OtpType.signup);
     developer.log('response api verify code: $res');
@@ -317,7 +293,7 @@ class AuthRepository implements AuthRepositoryInterface {
           DateTime.parse(now));
 
       final res =
-      await authClient.from(_table).insert(entity.toJson()).select();
+          await authClient.from(_table).insert(entity.toJson()).select();
 
       return right(UserEntityModel.fromJson(convertChangeData(res, {})));
     } on supabase.AuthException catch (e) {
@@ -334,33 +310,31 @@ class AuthRepository implements AuthRepositoryInterface {
     try {
       switch (type) {
         case GenerateLinkType.signup:
-          final res = await authClient.auth.admin.generateLink(type: type,
+          final res = await authClient.auth.admin.generateLink(
+              type: type,
               email: cuberUserModel.email!,
               password: cuberUserModel.password);
 
           final actionLink = res.properties.actionLink;
 
-          cubeUserCallBack(
-              CubeUser(
-                  avatar: cuberUserModel.avatar ?? actionLink,
-                  customData: cuberUserModel.customData ?? actionLink,
-                  customDataClass: cuberUserModel.customDataClass ?? actionLink,
-                  email: cuberUserModel.email ?? actionLink,
-                  facebookId: cuberUserModel.facebookId ?? actionLink,
-                  id: int.tryParse(authClient.auth.currentUser!.id),
-                  fullName: cuberUserModel.fullName ?? actionLink,
-                  isGuest: cuberUserModel.isGuest,
-                  login: cuberUserModel.login ?? actionLink,
-                  oldPassword: cuberUserModel.oldPassword ?? actionLink,
-                  password: cuberUserModel.password ?? actionLink,
-                  phone: cuberUserModel.phone ?? actionLink,
-                  tags: cuberUserModel.tags,
-                  timeZone: cuberUserModel.timeZone,
-                  website: cuberUserModel.website ?? actionLink,
-                  twitterId: cuberUserModel.twitterId ?? actionLink,
-                  externalId: int.tryParse(authClient.auth.currentUser!.id)
-              )
-          );
+          cubeUserCallBack(CubeUser(
+              avatar: cuberUserModel.avatar ?? actionLink,
+              customData: cuberUserModel.customData ?? actionLink,
+              customDataClass: cuberUserModel.customDataClass ?? actionLink,
+              email: cuberUserModel.email ?? actionLink,
+              facebookId: cuberUserModel.facebookId ?? actionLink,
+              id: int.tryParse(authClient.auth.currentUser!.id),
+              fullName: cuberUserModel.fullName ?? actionLink,
+              isGuest: cuberUserModel.isGuest,
+              login: cuberUserModel.login ?? actionLink,
+              oldPassword: cuberUserModel.oldPassword ?? actionLink,
+              password: cuberUserModel.password ?? actionLink,
+              phone: cuberUserModel.phone ?? actionLink,
+              tags: cuberUserModel.tags,
+              timeZone: cuberUserModel.timeZone,
+              website: cuberUserModel.website ?? actionLink,
+              twitterId: cuberUserModel.twitterId ?? actionLink,
+              externalId: int.tryParse(authClient.auth.currentUser!.id)));
         case GenerateLinkType.invite:
         // TODO: Handle this case.
         case GenerateLinkType.magiclink:
@@ -368,35 +342,30 @@ class AuthRepository implements AuthRepositoryInterface {
         case GenerateLinkType.recovery:
         // TODO: Handle this case.
         case GenerateLinkType.emailChangeCurrent:
-        // TODO: Handle this case.
+          // TODO: Handle this case.
           final UserResponse res = await authClient.auth.admin.updateUserById(
-              cuberUserModel.id.toString(), attributes: AdminUserAttributes(
-              email: cuberUserModel.email,
-              emailConfirm: true
-          ));
+              cuberUserModel.id.toString(),
+              attributes: AdminUserAttributes(
+                  email: cuberUserModel.email, emailConfirm: true));
 
-          final user = authClient.from('auth_users_table').stream(
-              primaryKey: ['id']
-          ).listen((event) {
+          final user = authClient
+              .from('auth_users_table')
+              .stream(primaryKey: ['id']).listen((event) {
             final data = event;
 
             data.first.difference(Eq.eqString, res.user!.toJson());
           });
 
           while (user.isPaused) {
-            await Future.delayed(const Duration(seconds: 30), () =>
-            {
-              user.pause()
-            });
+            await Future.delayed(
+                const Duration(seconds: 30), () => {user.pause()});
           }
 
           user.resume();
 
           user.asFuture(res.user);
 
-          cubeUserCallBack(
-              cuberUserModel
-          );
+          cubeUserCallBack(cuberUserModel);
 
           return right(cuberUserModel);
         case GenerateLinkType.emailChangeNew:
