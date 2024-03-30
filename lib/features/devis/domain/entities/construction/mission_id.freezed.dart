@@ -12,7 +12,7 @@ part of 'mission_id.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 MissionId _$MissionIdFromJson(Map<String, dynamic> json) {
   return _MissionId.fromJson(json);
@@ -61,21 +61,22 @@ class _$MissionIdCopyWithImpl<$Res, $Val extends MissionId>
 }
 
 /// @nodoc
-abstract class _$$_MissionIdCopyWith<$Res> implements $MissionIdCopyWith<$Res> {
-  factory _$$_MissionIdCopyWith(
-          _$_MissionId value, $Res Function(_$_MissionId) then) =
-      __$$_MissionIdCopyWithImpl<$Res>;
+abstract class _$$MissionIdImplCopyWith<$Res>
+    implements $MissionIdCopyWith<$Res> {
+  factory _$$MissionIdImplCopyWith(
+          _$MissionIdImpl value, $Res Function(_$MissionIdImpl) then) =
+      __$$MissionIdImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id});
 }
 
 /// @nodoc
-class __$$_MissionIdCopyWithImpl<$Res>
-    extends _$MissionIdCopyWithImpl<$Res, _$_MissionId>
-    implements _$$_MissionIdCopyWith<$Res> {
-  __$$_MissionIdCopyWithImpl(
-      _$_MissionId _value, $Res Function(_$_MissionId) _then)
+class __$$MissionIdImplCopyWithImpl<$Res>
+    extends _$MissionIdCopyWithImpl<$Res, _$MissionIdImpl>
+    implements _$$MissionIdImplCopyWith<$Res> {
+  __$$MissionIdImplCopyWithImpl(
+      _$MissionIdImpl _value, $Res Function(_$MissionIdImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -83,7 +84,7 @@ class __$$_MissionIdCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$_MissionId(
+    return _then(_$MissionIdImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -94,11 +95,11 @@ class __$$_MissionIdCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MissionId with DiagnosticableTreeMixin implements _MissionId {
-  const _$_MissionId({required this.id});
+class _$MissionIdImpl with DiagnosticableTreeMixin implements _MissionId {
+  const _$MissionIdImpl({required this.id});
 
-  factory _$_MissionId.fromJson(Map<String, dynamic> json) =>
-      _$$_MissionIdFromJson(json);
+  factory _$MissionIdImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MissionIdImplFromJson(json);
 
   @override
   final int id;
@@ -117,10 +118,10 @@ class _$_MissionId with DiagnosticableTreeMixin implements _MissionId {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MissionId &&
+            other is _$MissionIdImpl &&
             (identical(other.id, id) || other.id == id));
   }
 
@@ -131,27 +132,27 @@ class _$_MissionId with DiagnosticableTreeMixin implements _MissionId {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MissionIdCopyWith<_$_MissionId> get copyWith =>
-      __$$_MissionIdCopyWithImpl<_$_MissionId>(this, _$identity);
+  _$$MissionIdImplCopyWith<_$MissionIdImpl> get copyWith =>
+      __$$MissionIdImplCopyWithImpl<_$MissionIdImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MissionIdToJson(
+    return _$$MissionIdImplToJson(
       this,
     );
   }
 }
 
 abstract class _MissionId implements MissionId {
-  const factory _MissionId({required final int id}) = _$_MissionId;
+  const factory _MissionId({required final int id}) = _$MissionIdImpl;
 
   factory _MissionId.fromJson(Map<String, dynamic> json) =
-      _$_MissionId.fromJson;
+      _$MissionIdImpl.fromJson;
 
   @override
   int get id;
   @override
   @JsonKey(ignore: true)
-  _$$_MissionIdCopyWith<_$_MissionId> get copyWith =>
+  _$$MissionIdImplCopyWith<_$MissionIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

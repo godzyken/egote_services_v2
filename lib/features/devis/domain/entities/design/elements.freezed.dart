@@ -12,7 +12,7 @@ part of 'elements.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ElementsEntityModel _$ElementsEntityModelFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -137,11 +137,11 @@ class _$ElementsEntityModelCopyWithImpl<$Res, $Val extends ElementsEntityModel>
 }
 
 /// @nodoc
-abstract class _$$_ElementsEntityModelCopyWith<$Res>
+abstract class _$$ElementsEntityModelImplCopyWith<$Res>
     implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$_ElementsEntityModelCopyWith(_$_ElementsEntityModel value,
-          $Res Function(_$_ElementsEntityModel) then) =
-      __$$_ElementsEntityModelCopyWithImpl<$Res>;
+  factory _$$ElementsEntityModelImplCopyWith(_$ElementsEntityModelImpl value,
+          $Res Function(_$ElementsEntityModelImpl) then) =
+      __$$ElementsEntityModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -153,11 +153,11 @@ abstract class _$$_ElementsEntityModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ElementsEntityModelCopyWithImpl<$Res>
-    extends _$ElementsEntityModelCopyWithImpl<$Res, _$_ElementsEntityModel>
-    implements _$$_ElementsEntityModelCopyWith<$Res> {
-  __$$_ElementsEntityModelCopyWithImpl(_$_ElementsEntityModel _value,
-      $Res Function(_$_ElementsEntityModel) _then)
+class __$$ElementsEntityModelImplCopyWithImpl<$Res>
+    extends _$ElementsEntityModelCopyWithImpl<$Res, _$ElementsEntityModelImpl>
+    implements _$$ElementsEntityModelImplCopyWith<$Res> {
+  __$$ElementsEntityModelImplCopyWithImpl(_$ElementsEntityModelImpl _value,
+      $Res Function(_$ElementsEntityModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -169,7 +169,7 @@ class __$$_ElementsEntityModelCopyWithImpl<$Res>
     Object? polygones = freezed,
     Object? volumes = freezed,
   }) {
-    return _then(_$_ElementsEntityModel(
+    return _then(_$ElementsEntityModelImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -196,8 +196,8 @@ class __$$_ElementsEntityModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElementsEntityModel implements _ElementsEntityModel {
-  const _$_ElementsEntityModel(
+class _$ElementsEntityModelImpl implements _ElementsEntityModel {
+  const _$ElementsEntityModelImpl(
       {required this.id,
       required this.name,
       this.figures,
@@ -206,8 +206,8 @@ class _$_ElementsEntityModel implements _ElementsEntityModel {
       final String? $type})
       : $type = $type ?? 'default';
 
-  factory _$_ElementsEntityModel.fromJson(Map<String, dynamic> json) =>
-      _$$_ElementsEntityModelFromJson(json);
+  factory _$ElementsEntityModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElementsEntityModelImplFromJson(json);
 
   @override
   final int id;
@@ -229,10 +229,10 @@ class _$_ElementsEntityModel implements _ElementsEntityModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElementsEntityModel &&
+            other is _$ElementsEntityModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.figures, figures) || other.figures == figures) &&
@@ -249,8 +249,8 @@ class _$_ElementsEntityModel implements _ElementsEntityModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ElementsEntityModelCopyWith<_$_ElementsEntityModel> get copyWith =>
-      __$$_ElementsEntityModelCopyWithImpl<_$_ElementsEntityModel>(
+  _$$ElementsEntityModelImplCopyWith<_$ElementsEntityModelImpl> get copyWith =>
+      __$$ElementsEntityModelImplCopyWithImpl<_$ElementsEntityModelImpl>(
           this, _$identity);
 
   @override
@@ -336,7 +336,7 @@ class _$_ElementsEntityModel implements _ElementsEntityModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElementsEntityModelToJson(
+    return _$$ElementsEntityModelImplToJson(
       this,
     );
   }
@@ -348,10 +348,10 @@ abstract class _ElementsEntityModel implements ElementsEntityModel {
       required final String name,
       final Figures? figures,
       final Polygones? polygones,
-      final Volumes? volumes}) = _$_ElementsEntityModel;
+      final Volumes? volumes}) = _$ElementsEntityModelImpl;
 
   factory _ElementsEntityModel.fromJson(Map<String, dynamic> json) =
-      _$_ElementsEntityModel.fromJson;
+      _$ElementsEntityModelImpl.fromJson;
 
   @override
   int get id;
@@ -362,30 +362,30 @@ abstract class _ElementsEntityModel implements ElementsEntityModel {
   Volumes? get volumes;
   @override
   @JsonKey(ignore: true)
-  _$$_ElementsEntityModelCopyWith<_$_ElementsEntityModel> get copyWith =>
+  _$$ElementsEntityModelImplCopyWith<_$ElementsEntityModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ElementsEntityModelFiguresCopyWith<$Res>
+abstract class _$$ElementsEntityModelFiguresImplCopyWith<$Res>
     implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$_ElementsEntityModelFiguresCopyWith(
-          _$_ElementsEntityModelFigures value,
-          $Res Function(_$_ElementsEntityModelFigures) then) =
-      __$$_ElementsEntityModelFiguresCopyWithImpl<$Res>;
+  factory _$$ElementsEntityModelFiguresImplCopyWith(
+          _$ElementsEntityModelFiguresImpl value,
+          $Res Function(_$ElementsEntityModelFiguresImpl) then) =
+      __$$ElementsEntityModelFiguresImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id, String name, Figures figures});
 }
 
 /// @nodoc
-class __$$_ElementsEntityModelFiguresCopyWithImpl<$Res>
+class __$$ElementsEntityModelFiguresImplCopyWithImpl<$Res>
     extends _$ElementsEntityModelCopyWithImpl<$Res,
-        _$_ElementsEntityModelFigures>
-    implements _$$_ElementsEntityModelFiguresCopyWith<$Res> {
-  __$$_ElementsEntityModelFiguresCopyWithImpl(
-      _$_ElementsEntityModelFigures _value,
-      $Res Function(_$_ElementsEntityModelFigures) _then)
+        _$ElementsEntityModelFiguresImpl>
+    implements _$$ElementsEntityModelFiguresImplCopyWith<$Res> {
+  __$$ElementsEntityModelFiguresImplCopyWithImpl(
+      _$ElementsEntityModelFiguresImpl _value,
+      $Res Function(_$ElementsEntityModelFiguresImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -395,7 +395,7 @@ class __$$_ElementsEntityModelFiguresCopyWithImpl<$Res>
     Object? name = null,
     Object? figures = null,
   }) {
-    return _then(_$_ElementsEntityModelFigures(
+    return _then(_$ElementsEntityModelFiguresImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -414,16 +414,17 @@ class __$$_ElementsEntityModelFiguresCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElementsEntityModelFigures implements _ElementsEntityModelFigures {
-  const _$_ElementsEntityModelFigures(
+class _$ElementsEntityModelFiguresImpl implements _ElementsEntityModelFigures {
+  const _$ElementsEntityModelFiguresImpl(
       {required this.id,
       required this.name,
       this.figures = Figures.cercle,
       final String? $type})
       : $type = $type ?? 'figures';
 
-  factory _$_ElementsEntityModelFigures.fromJson(Map<String, dynamic> json) =>
-      _$$_ElementsEntityModelFiguresFromJson(json);
+  factory _$ElementsEntityModelFiguresImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$ElementsEntityModelFiguresImplFromJson(json);
 
   @override
   final int id;
@@ -442,10 +443,10 @@ class _$_ElementsEntityModelFigures implements _ElementsEntityModelFigures {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElementsEntityModelFigures &&
+            other is _$ElementsEntityModelFiguresImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.figures, figures) || other.figures == figures));
@@ -458,9 +459,9 @@ class _$_ElementsEntityModelFigures implements _ElementsEntityModelFigures {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ElementsEntityModelFiguresCopyWith<_$_ElementsEntityModelFigures>
-      get copyWith => __$$_ElementsEntityModelFiguresCopyWithImpl<
-          _$_ElementsEntityModelFigures>(this, _$identity);
+  _$$ElementsEntityModelFiguresImplCopyWith<_$ElementsEntityModelFiguresImpl>
+      get copyWith => __$$ElementsEntityModelFiguresImplCopyWithImpl<
+          _$ElementsEntityModelFiguresImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -545,7 +546,7 @@ class _$_ElementsEntityModelFigures implements _ElementsEntityModelFigures {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElementsEntityModelFiguresToJson(
+    return _$$ElementsEntityModelFiguresImplToJson(
       this,
     );
   }
@@ -555,10 +556,10 @@ abstract class _ElementsEntityModelFigures implements ElementsEntityModel {
   const factory _ElementsEntityModelFigures(
       {required final int id,
       required final String name,
-      final Figures figures}) = _$_ElementsEntityModelFigures;
+      final Figures figures}) = _$ElementsEntityModelFiguresImpl;
 
   factory _ElementsEntityModelFigures.fromJson(Map<String, dynamic> json) =
-      _$_ElementsEntityModelFigures.fromJson;
+      _$ElementsEntityModelFiguresImpl.fromJson;
 
   @override
   int get id;
@@ -567,30 +568,30 @@ abstract class _ElementsEntityModelFigures implements ElementsEntityModel {
   Figures get figures;
   @override
   @JsonKey(ignore: true)
-  _$$_ElementsEntityModelFiguresCopyWith<_$_ElementsEntityModelFigures>
+  _$$ElementsEntityModelFiguresImplCopyWith<_$ElementsEntityModelFiguresImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ElementsEntityModelPolygonesCopyWith<$Res>
+abstract class _$$ElementsEntityModelPolygonesImplCopyWith<$Res>
     implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$_ElementsEntityModelPolygonesCopyWith(
-          _$_ElementsEntityModelPolygones value,
-          $Res Function(_$_ElementsEntityModelPolygones) then) =
-      __$$_ElementsEntityModelPolygonesCopyWithImpl<$Res>;
+  factory _$$ElementsEntityModelPolygonesImplCopyWith(
+          _$ElementsEntityModelPolygonesImpl value,
+          $Res Function(_$ElementsEntityModelPolygonesImpl) then) =
+      __$$ElementsEntityModelPolygonesImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id, String name, Polygones polygones});
 }
 
 /// @nodoc
-class __$$_ElementsEntityModelPolygonesCopyWithImpl<$Res>
+class __$$ElementsEntityModelPolygonesImplCopyWithImpl<$Res>
     extends _$ElementsEntityModelCopyWithImpl<$Res,
-        _$_ElementsEntityModelPolygones>
-    implements _$$_ElementsEntityModelPolygonesCopyWith<$Res> {
-  __$$_ElementsEntityModelPolygonesCopyWithImpl(
-      _$_ElementsEntityModelPolygones _value,
-      $Res Function(_$_ElementsEntityModelPolygones) _then)
+        _$ElementsEntityModelPolygonesImpl>
+    implements _$$ElementsEntityModelPolygonesImplCopyWith<$Res> {
+  __$$ElementsEntityModelPolygonesImplCopyWithImpl(
+      _$ElementsEntityModelPolygonesImpl _value,
+      $Res Function(_$ElementsEntityModelPolygonesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -600,7 +601,7 @@ class __$$_ElementsEntityModelPolygonesCopyWithImpl<$Res>
     Object? name = null,
     Object? polygones = null,
   }) {
-    return _then(_$_ElementsEntityModelPolygones(
+    return _then(_$ElementsEntityModelPolygonesImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -619,16 +620,18 @@ class __$$_ElementsEntityModelPolygonesCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElementsEntityModelPolygones implements _ElementsEntityModelPolygones {
-  const _$_ElementsEntityModelPolygones(
+class _$ElementsEntityModelPolygonesImpl
+    implements _ElementsEntityModelPolygones {
+  const _$ElementsEntityModelPolygonesImpl(
       {required this.id,
       required this.name,
       this.polygones = Polygones.quadrilatere,
       final String? $type})
       : $type = $type ?? 'polygones';
 
-  factory _$_ElementsEntityModelPolygones.fromJson(Map<String, dynamic> json) =>
-      _$$_ElementsEntityModelPolygonesFromJson(json);
+  factory _$ElementsEntityModelPolygonesImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$ElementsEntityModelPolygonesImplFromJson(json);
 
   @override
   final int id;
@@ -647,10 +650,10 @@ class _$_ElementsEntityModelPolygones implements _ElementsEntityModelPolygones {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElementsEntityModelPolygones &&
+            other is _$ElementsEntityModelPolygonesImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.polygones, polygones) ||
@@ -664,9 +667,10 @@ class _$_ElementsEntityModelPolygones implements _ElementsEntityModelPolygones {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ElementsEntityModelPolygonesCopyWith<_$_ElementsEntityModelPolygones>
-      get copyWith => __$$_ElementsEntityModelPolygonesCopyWithImpl<
-          _$_ElementsEntityModelPolygones>(this, _$identity);
+  _$$ElementsEntityModelPolygonesImplCopyWith<
+          _$ElementsEntityModelPolygonesImpl>
+      get copyWith => __$$ElementsEntityModelPolygonesImplCopyWithImpl<
+          _$ElementsEntityModelPolygonesImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -751,7 +755,7 @@ class _$_ElementsEntityModelPolygones implements _ElementsEntityModelPolygones {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElementsEntityModelPolygonesToJson(
+    return _$$ElementsEntityModelPolygonesImplToJson(
       this,
     );
   }
@@ -761,10 +765,10 @@ abstract class _ElementsEntityModelPolygones implements ElementsEntityModel {
   const factory _ElementsEntityModelPolygones(
       {required final int id,
       required final String name,
-      final Polygones polygones}) = _$_ElementsEntityModelPolygones;
+      final Polygones polygones}) = _$ElementsEntityModelPolygonesImpl;
 
   factory _ElementsEntityModelPolygones.fromJson(Map<String, dynamic> json) =
-      _$_ElementsEntityModelPolygones.fromJson;
+      _$ElementsEntityModelPolygonesImpl.fromJson;
 
   @override
   int get id;
@@ -773,30 +777,31 @@ abstract class _ElementsEntityModelPolygones implements ElementsEntityModel {
   Polygones get polygones;
   @override
   @JsonKey(ignore: true)
-  _$$_ElementsEntityModelPolygonesCopyWith<_$_ElementsEntityModelPolygones>
+  _$$ElementsEntityModelPolygonesImplCopyWith<
+          _$ElementsEntityModelPolygonesImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ElementsEntityModelVolumesCopyWith<$Res>
+abstract class _$$ElementsEntityModelVolumesImplCopyWith<$Res>
     implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$_ElementsEntityModelVolumesCopyWith(
-          _$_ElementsEntityModelVolumes value,
-          $Res Function(_$_ElementsEntityModelVolumes) then) =
-      __$$_ElementsEntityModelVolumesCopyWithImpl<$Res>;
+  factory _$$ElementsEntityModelVolumesImplCopyWith(
+          _$ElementsEntityModelVolumesImpl value,
+          $Res Function(_$ElementsEntityModelVolumesImpl) then) =
+      __$$ElementsEntityModelVolumesImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id, String name, Volumes volumes});
 }
 
 /// @nodoc
-class __$$_ElementsEntityModelVolumesCopyWithImpl<$Res>
+class __$$ElementsEntityModelVolumesImplCopyWithImpl<$Res>
     extends _$ElementsEntityModelCopyWithImpl<$Res,
-        _$_ElementsEntityModelVolumes>
-    implements _$$_ElementsEntityModelVolumesCopyWith<$Res> {
-  __$$_ElementsEntityModelVolumesCopyWithImpl(
-      _$_ElementsEntityModelVolumes _value,
-      $Res Function(_$_ElementsEntityModelVolumes) _then)
+        _$ElementsEntityModelVolumesImpl>
+    implements _$$ElementsEntityModelVolumesImplCopyWith<$Res> {
+  __$$ElementsEntityModelVolumesImplCopyWithImpl(
+      _$ElementsEntityModelVolumesImpl _value,
+      $Res Function(_$ElementsEntityModelVolumesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -806,7 +811,7 @@ class __$$_ElementsEntityModelVolumesCopyWithImpl<$Res>
     Object? name = null,
     Object? volumes = null,
   }) {
-    return _then(_$_ElementsEntityModelVolumes(
+    return _then(_$ElementsEntityModelVolumesImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -825,16 +830,17 @@ class __$$_ElementsEntityModelVolumesCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElementsEntityModelVolumes implements _ElementsEntityModelVolumes {
-  const _$_ElementsEntityModelVolumes(
+class _$ElementsEntityModelVolumesImpl implements _ElementsEntityModelVolumes {
+  const _$ElementsEntityModelVolumesImpl(
       {required this.id,
       required this.name,
       this.volumes = Volumes.cube,
       final String? $type})
       : $type = $type ?? 'volumes';
 
-  factory _$_ElementsEntityModelVolumes.fromJson(Map<String, dynamic> json) =>
-      _$$_ElementsEntityModelVolumesFromJson(json);
+  factory _$ElementsEntityModelVolumesImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$ElementsEntityModelVolumesImplFromJson(json);
 
   @override
   final int id;
@@ -853,10 +859,10 @@ class _$_ElementsEntityModelVolumes implements _ElementsEntityModelVolumes {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElementsEntityModelVolumes &&
+            other is _$ElementsEntityModelVolumesImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.volumes, volumes) || other.volumes == volumes));
@@ -869,9 +875,9 @@ class _$_ElementsEntityModelVolumes implements _ElementsEntityModelVolumes {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ElementsEntityModelVolumesCopyWith<_$_ElementsEntityModelVolumes>
-      get copyWith => __$$_ElementsEntityModelVolumesCopyWithImpl<
-          _$_ElementsEntityModelVolumes>(this, _$identity);
+  _$$ElementsEntityModelVolumesImplCopyWith<_$ElementsEntityModelVolumesImpl>
+      get copyWith => __$$ElementsEntityModelVolumesImplCopyWithImpl<
+          _$ElementsEntityModelVolumesImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -956,7 +962,7 @@ class _$_ElementsEntityModelVolumes implements _ElementsEntityModelVolumes {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElementsEntityModelVolumesToJson(
+    return _$$ElementsEntityModelVolumesImplToJson(
       this,
     );
   }
@@ -966,10 +972,10 @@ abstract class _ElementsEntityModelVolumes implements ElementsEntityModel {
   const factory _ElementsEntityModelVolumes(
       {required final int id,
       required final String name,
-      final Volumes volumes}) = _$_ElementsEntityModelVolumes;
+      final Volumes volumes}) = _$ElementsEntityModelVolumesImpl;
 
   factory _ElementsEntityModelVolumes.fromJson(Map<String, dynamic> json) =
-      _$_ElementsEntityModelVolumes.fromJson;
+      _$ElementsEntityModelVolumesImpl.fromJson;
 
   @override
   int get id;
@@ -978,6 +984,6 @@ abstract class _ElementsEntityModelVolumes implements ElementsEntityModel {
   Volumes get volumes;
   @override
   @JsonKey(ignore: true)
-  _$$_ElementsEntityModelVolumesCopyWith<_$_ElementsEntityModelVolumes>
+  _$$ElementsEntityModelVolumesImplCopyWith<_$ElementsEntityModelVolumesImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

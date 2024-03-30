@@ -12,7 +12,7 @@ part of 'sign_up_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 SignUpState _$SignUpStateFromJson(Map<String, dynamic> json) {
   return _SignUpState.fromJson(json);
@@ -111,11 +111,11 @@ class _$SignUpStateCopyWithImpl<$Res, $Val extends SignUpState>
 }
 
 /// @nodoc
-abstract class _$$_SignUpStateCopyWith<$Res>
+abstract class _$$SignUpStateImplCopyWith<$Res>
     implements $SignUpStateCopyWith<$Res> {
-  factory _$$_SignUpStateCopyWith(
-          _$_SignUpState value, $Res Function(_$_SignUpState) then) =
-      __$$_SignUpStateCopyWithImpl<$Res>;
+  factory _$$SignUpStateImplCopyWith(
+          _$SignUpStateImpl value, $Res Function(_$SignUpStateImpl) then) =
+      __$$SignUpStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -139,11 +139,11 @@ abstract class _$$_SignUpStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_SignUpStateCopyWithImpl<$Res>
-    extends _$SignUpStateCopyWithImpl<$Res, _$_SignUpState>
-    implements _$$_SignUpStateCopyWith<$Res> {
-  __$$_SignUpStateCopyWithImpl(
-      _$_SignUpState _value, $Res Function(_$_SignUpState) _then)
+class __$$SignUpStateImplCopyWithImpl<$Res>
+    extends _$SignUpStateCopyWithImpl<$Res, _$SignUpStateImpl>
+    implements _$$SignUpStateImplCopyWith<$Res> {
+  __$$SignUpStateImplCopyWithImpl(
+      _$SignUpStateImpl _value, $Res Function(_$SignUpStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -155,7 +155,7 @@ class __$$_SignUpStateCopyWithImpl<$Res>
     Object? status = freezed,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$_SignUpState(
+    return _then(_$SignUpStateImpl(
       nameFormz: freezed == nameFormz
           ? _value.nameFormz
           : nameFormz // ignore: cast_nullable_to_non_nullable
@@ -183,8 +183,8 @@ class __$$_SignUpStateCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$_SignUpState implements _SignUpState {
-  const _$_SignUpState(
+class _$SignUpStateImpl implements _SignUpState {
+  const _$SignUpStateImpl(
       {@JsonKey(
           defaultValue: 'NameFormz',
           includeToJson: false,
@@ -203,8 +203,8 @@ class _$_SignUpState implements _SignUpState {
       this.status = FormzSubmissionStatus.initial,
       this.errorMessage});
 
-  factory _$_SignUpState.fromJson(Map<String, dynamic> json) =>
-      _$$_SignUpStateFromJson(json);
+  factory _$SignUpStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SignUpStateImplFromJson(json);
 
   @override
   @JsonKey(
@@ -232,10 +232,10 @@ class _$_SignUpState implements _SignUpState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SignUpState &&
+            other is _$SignUpStateImpl &&
             (identical(other.nameFormz, nameFormz) ||
                 other.nameFormz == nameFormz) &&
             (identical(other.emailFormz, emailFormz) ||
@@ -255,12 +255,12 @@ class _$_SignUpState implements _SignUpState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SignUpStateCopyWith<_$_SignUpState> get copyWith =>
-      __$$_SignUpStateCopyWithImpl<_$_SignUpState>(this, _$identity);
+  _$$SignUpStateImplCopyWith<_$SignUpStateImpl> get copyWith =>
+      __$$SignUpStateImplCopyWithImpl<_$SignUpStateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SignUpStateToJson(
+    return _$$SignUpStateImplToJson(
       this,
     );
   }
@@ -284,10 +284,10 @@ abstract class _SignUpState implements SignUpState {
           includeToJson: false)
       final PasswordFormz? passwordFormz,
       final FormzSubmissionStatus? status,
-      final String? errorMessage}) = _$_SignUpState;
+      final String? errorMessage}) = _$SignUpStateImpl;
 
   factory _SignUpState.fromJson(Map<String, dynamic> json) =
-      _$_SignUpState.fromJson;
+      _$SignUpStateImpl.fromJson;
 
   @override
   @JsonKey(
@@ -309,6 +309,6 @@ abstract class _SignUpState implements SignUpState {
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)
-  _$$_SignUpStateCopyWith<_$_SignUpState> get copyWith =>
+  _$$SignUpStateImplCopyWith<_$SignUpStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

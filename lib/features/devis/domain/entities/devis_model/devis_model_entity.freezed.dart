@@ -12,7 +12,7 @@ part of 'devis_model_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 DevisModelEntity _$DevisModelEntityFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -136,10 +136,10 @@ class _$DevisModelEntityCopyWithImpl<$Res, $Val extends DevisModelEntity>
 }
 
 /// @nodoc
-abstract class _$$_DevisModelEntityCopyWith<$Res> {
-  factory _$$_DevisModelEntityCopyWith(
-          _$_DevisModelEntity value, $Res Function(_$_DevisModelEntity) then) =
-      __$$_DevisModelEntityCopyWithImpl<$Res>;
+abstract class _$$DevisModelEntityImplCopyWith<$Res> {
+  factory _$$DevisModelEntityImplCopyWith(_$DevisModelEntityImpl value,
+          $Res Function(_$DevisModelEntityImpl) then) =
+      __$$DevisModelEntityImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {DevisId id,
@@ -161,11 +161,11 @@ abstract class _$$_DevisModelEntityCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_DevisModelEntityCopyWithImpl<$Res>
-    extends _$DevisModelEntityCopyWithImpl<$Res, _$_DevisModelEntity>
-    implements _$$_DevisModelEntityCopyWith<$Res> {
-  __$$_DevisModelEntityCopyWithImpl(
-      _$_DevisModelEntity _value, $Res Function(_$_DevisModelEntity) _then)
+class __$$DevisModelEntityImplCopyWithImpl<$Res>
+    extends _$DevisModelEntityCopyWithImpl<$Res, _$DevisModelEntityImpl>
+    implements _$$DevisModelEntityImplCopyWith<$Res> {
+  __$$DevisModelEntityImplCopyWithImpl(_$DevisModelEntityImpl _value,
+      $Res Function(_$DevisModelEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -184,7 +184,7 @@ class __$$_DevisModelEntityCopyWithImpl<$Res>
     Object? amountTtc = null,
     Object? approval = null,
   }) {
-    return _then(_$_DevisModelEntity(
+    return _then(_$DevisModelEntityImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -263,10 +263,10 @@ class __$$_DevisModelEntityCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DevisModelEntity
+class _$DevisModelEntityImpl
     with DiagnosticableTreeMixin
     implements _DevisModelEntity {
-  const _$_DevisModelEntity(
+  const _$DevisModelEntityImpl(
       {required this.id,
       required this.createdAt,
       required this.validity,
@@ -283,8 +283,8 @@ class _$_DevisModelEntity
       : _travauxEntity = travauxEntity,
         $type = $type ?? 'approved';
 
-  factory _$_DevisModelEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_DevisModelEntityFromJson(json);
+  factory _$DevisModelEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DevisModelEntityImplFromJson(json);
 
   @override
   final DevisId id;
@@ -345,10 +345,10 @@ class _$_DevisModelEntity
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DevisModelEntity &&
+            other is _$DevisModelEntityImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -392,8 +392,9 @@ class _$_DevisModelEntity
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DevisModelEntityCopyWith<_$_DevisModelEntity> get copyWith =>
-      __$$_DevisModelEntityCopyWithImpl<_$_DevisModelEntity>(this, _$identity);
+  _$$DevisModelEntityImplCopyWith<_$DevisModelEntityImpl> get copyWith =>
+      __$$DevisModelEntityImplCopyWithImpl<_$DevisModelEntityImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -507,7 +508,7 @@ class _$_DevisModelEntity
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DevisModelEntityToJson(
+    return _$$DevisModelEntityImplToJson(
       this,
     );
   }
@@ -526,10 +527,10 @@ abstract class _DevisModelEntity implements DevisModelEntity {
       required final double vatRates,
       required final double amountHt,
       required final double amountTtc,
-      required final bool approval}) = _$_DevisModelEntity;
+      required final bool approval}) = _$DevisModelEntityImpl;
 
   factory _DevisModelEntity.fromJson(Map<String, dynamic> json) =
-      _$_DevisModelEntity.fromJson;
+      _$DevisModelEntityImpl.fromJson;
 
   DevisId get id;
   DateTime get createdAt;
@@ -544,16 +545,16 @@ abstract class _DevisModelEntity implements DevisModelEntity {
   double get amountTtc;
   bool get approval;
   @JsonKey(ignore: true)
-  _$$_DevisModelEntityCopyWith<_$_DevisModelEntity> get copyWith =>
+  _$$DevisModelEntityImplCopyWith<_$DevisModelEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_DevisModelEntityInitializeCopyWith<$Res> {
-  factory _$$_DevisModelEntityInitializeCopyWith(
-          _$_DevisModelEntityInitialize value,
-          $Res Function(_$_DevisModelEntityInitialize) then) =
-      __$$_DevisModelEntityInitializeCopyWithImpl<$Res>;
+abstract class _$$DevisModelEntityInitializeImplCopyWith<$Res> {
+  factory _$$DevisModelEntityInitializeImplCopyWith(
+          _$DevisModelEntityInitializeImpl value,
+          $Res Function(_$DevisModelEntityInitializeImpl) then) =
+      __$$DevisModelEntityInitializeImplCopyWithImpl<$Res>;
   @useResult
   $Res call({DevisId id, DateTime createdAt});
 
@@ -561,12 +562,13 @@ abstract class _$$_DevisModelEntityInitializeCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_DevisModelEntityInitializeCopyWithImpl<$Res>
-    extends _$DevisModelEntityCopyWithImpl<$Res, _$_DevisModelEntityInitialize>
-    implements _$$_DevisModelEntityInitializeCopyWith<$Res> {
-  __$$_DevisModelEntityInitializeCopyWithImpl(
-      _$_DevisModelEntityInitialize _value,
-      $Res Function(_$_DevisModelEntityInitialize) _then)
+class __$$DevisModelEntityInitializeImplCopyWithImpl<$Res>
+    extends _$DevisModelEntityCopyWithImpl<$Res,
+        _$DevisModelEntityInitializeImpl>
+    implements _$$DevisModelEntityInitializeImplCopyWith<$Res> {
+  __$$DevisModelEntityInitializeImplCopyWithImpl(
+      _$DevisModelEntityInitializeImpl _value,
+      $Res Function(_$DevisModelEntityInitializeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -575,7 +577,7 @@ class __$$_DevisModelEntityInitializeCopyWithImpl<$Res>
     Object? id = null,
     Object? createdAt = null,
   }) {
-    return _then(_$_DevisModelEntityInitialize(
+    return _then(_$DevisModelEntityInitializeImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -598,15 +600,16 @@ class __$$_DevisModelEntityInitializeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DevisModelEntityInitialize
+class _$DevisModelEntityInitializeImpl
     with DiagnosticableTreeMixin
     implements _DevisModelEntityInitialize {
-  _$_DevisModelEntityInitialize(
+  _$DevisModelEntityInitializeImpl(
       {required this.id, required this.createdAt, final String? $type})
       : $type = $type ?? 'initialize';
 
-  factory _$_DevisModelEntityInitialize.fromJson(Map<String, dynamic> json) =>
-      _$$_DevisModelEntityInitializeFromJson(json);
+  factory _$DevisModelEntityInitializeImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$DevisModelEntityInitializeImplFromJson(json);
 
   @override
   final DevisId id;
@@ -631,10 +634,10 @@ class _$_DevisModelEntityInitialize
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DevisModelEntityInitialize &&
+            other is _$DevisModelEntityInitializeImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
@@ -647,9 +650,9 @@ class _$_DevisModelEntityInitialize
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DevisModelEntityInitializeCopyWith<_$_DevisModelEntityInitialize>
-      get copyWith => __$$_DevisModelEntityInitializeCopyWithImpl<
-          _$_DevisModelEntityInitialize>(this, _$identity);
+  _$$DevisModelEntityInitializeImplCopyWith<_$DevisModelEntityInitializeImpl>
+      get copyWith => __$$DevisModelEntityInitializeImplCopyWithImpl<
+          _$DevisModelEntityInitializeImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -760,7 +763,7 @@ class _$_DevisModelEntityInitialize
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DevisModelEntityInitializeToJson(
+    return _$$DevisModelEntityInitializeImplToJson(
       this,
     );
   }
@@ -769,43 +772,44 @@ class _$_DevisModelEntityInitialize
 abstract class _DevisModelEntityInitialize implements DevisModelEntity {
   factory _DevisModelEntityInitialize(
       {required final DevisId id,
-      required final DateTime createdAt}) = _$_DevisModelEntityInitialize;
+      required final DateTime createdAt}) = _$DevisModelEntityInitializeImpl;
 
   factory _DevisModelEntityInitialize.fromJson(Map<String, dynamic> json) =
-      _$_DevisModelEntityInitialize.fromJson;
+      _$DevisModelEntityInitializeImpl.fromJson;
 
   DevisId get id;
   DateTime get createdAt;
   @JsonKey(ignore: true)
-  _$$_DevisModelEntityInitializeCopyWith<_$_DevisModelEntityInitialize>
+  _$$DevisModelEntityInitializeImplCopyWith<_$DevisModelEntityInitializeImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_DevisModelEntityEmptyCopyWith<$Res> {
-  factory _$$_DevisModelEntityEmptyCopyWith(_$_DevisModelEntityEmpty value,
-          $Res Function(_$_DevisModelEntityEmpty) then) =
-      __$$_DevisModelEntityEmptyCopyWithImpl<$Res>;
+abstract class _$$DevisModelEntityEmptyImplCopyWith<$Res> {
+  factory _$$DevisModelEntityEmptyImplCopyWith(
+          _$DevisModelEntityEmptyImpl value,
+          $Res Function(_$DevisModelEntityEmptyImpl) then) =
+      __$$DevisModelEntityEmptyImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_DevisModelEntityEmptyCopyWithImpl<$Res>
-    extends _$DevisModelEntityCopyWithImpl<$Res, _$_DevisModelEntityEmpty>
-    implements _$$_DevisModelEntityEmptyCopyWith<$Res> {
-  __$$_DevisModelEntityEmptyCopyWithImpl(_$_DevisModelEntityEmpty _value,
-      $Res Function(_$_DevisModelEntityEmpty) _then)
+class __$$DevisModelEntityEmptyImplCopyWithImpl<$Res>
+    extends _$DevisModelEntityCopyWithImpl<$Res, _$DevisModelEntityEmptyImpl>
+    implements _$$DevisModelEntityEmptyImplCopyWith<$Res> {
+  __$$DevisModelEntityEmptyImplCopyWithImpl(_$DevisModelEntityEmptyImpl _value,
+      $Res Function(_$DevisModelEntityEmptyImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_DevisModelEntityEmpty
+class _$DevisModelEntityEmptyImpl
     with DiagnosticableTreeMixin
     implements _DevisModelEntityEmpty {
-  _$_DevisModelEntityEmpty({final String? $type}) : $type = $type ?? 'empty';
+  _$DevisModelEntityEmptyImpl({final String? $type}) : $type = $type ?? 'empty';
 
-  factory _$_DevisModelEntityEmpty.fromJson(Map<String, dynamic> json) =>
-      _$$_DevisModelEntityEmptyFromJson(json);
+  factory _$DevisModelEntityEmptyImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DevisModelEntityEmptyImplFromJson(json);
 
   @JsonKey(name: 'runtimeType')
   final String $type;
@@ -822,9 +826,10 @@ class _$_DevisModelEntityEmpty
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_DevisModelEntityEmpty);
+        (other.runtimeType == runtimeType &&
+            other is _$DevisModelEntityEmptyImpl);
   }
 
   @JsonKey(ignore: true)
@@ -940,15 +945,15 @@ class _$_DevisModelEntityEmpty
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DevisModelEntityEmptyToJson(
+    return _$$DevisModelEntityEmptyImplToJson(
       this,
     );
   }
 }
 
 abstract class _DevisModelEntityEmpty implements DevisModelEntity {
-  factory _DevisModelEntityEmpty() = _$_DevisModelEntityEmpty;
+  factory _DevisModelEntityEmpty() = _$DevisModelEntityEmptyImpl;
 
   factory _DevisModelEntityEmpty.fromJson(Map<String, dynamic> json) =
-      _$_DevisModelEntityEmpty.fromJson;
+      _$DevisModelEntityEmptyImpl.fromJson;
 }

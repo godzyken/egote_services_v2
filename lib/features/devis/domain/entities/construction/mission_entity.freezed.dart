@@ -12,7 +12,7 @@ part of 'mission_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 MissionEntity _$MissionEntityFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -158,11 +158,11 @@ class _$MissionEntityCopyWithImpl<$Res, $Val extends MissionEntity>
 }
 
 /// @nodoc
-abstract class _$$_MissionEntityCopyWith<$Res>
+abstract class _$$MissionEntityImplCopyWith<$Res>
     implements $MissionEntityCopyWith<$Res> {
-  factory _$$_MissionEntityCopyWith(
-          _$_MissionEntity value, $Res Function(_$_MissionEntity) then) =
-      __$$_MissionEntityCopyWithImpl<$Res>;
+  factory _$$MissionEntityImplCopyWith(
+          _$MissionEntityImpl value, $Res Function(_$MissionEntityImpl) then) =
+      __$$MissionEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({MissionId id, String denomination});
@@ -172,11 +172,11 @@ abstract class _$$_MissionEntityCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_MissionEntityCopyWithImpl<$Res>
-    extends _$MissionEntityCopyWithImpl<$Res, _$_MissionEntity>
-    implements _$$_MissionEntityCopyWith<$Res> {
-  __$$_MissionEntityCopyWithImpl(
-      _$_MissionEntity _value, $Res Function(_$_MissionEntity) _then)
+class __$$MissionEntityImplCopyWithImpl<$Res>
+    extends _$MissionEntityCopyWithImpl<$Res, _$MissionEntityImpl>
+    implements _$$MissionEntityImplCopyWith<$Res> {
+  __$$MissionEntityImplCopyWithImpl(
+      _$MissionEntityImpl _value, $Res Function(_$MissionEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -185,7 +185,7 @@ class __$$_MissionEntityCopyWithImpl<$Res>
     Object? id = null,
     Object? denomination = null,
   }) {
-    return _then(_$_MissionEntity(
+    return _then(_$MissionEntityImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -201,13 +201,13 @@ class __$$_MissionEntityCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_MissionEntity implements _MissionEntity {
-  const _$_MissionEntity(
+class _$MissionEntityImpl implements _MissionEntity {
+  const _$MissionEntityImpl(
       {required this.id, required this.denomination, final String? $type})
       : $type = $type ?? 'default';
 
-  factory _$_MissionEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_MissionEntityFromJson(json);
+  factory _$MissionEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MissionEntityImplFromJson(json);
 
   @override
   final MissionId id;
@@ -223,10 +223,10 @@ class _$_MissionEntity implements _MissionEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MissionEntity &&
+            other is _$MissionEntityImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.denomination, denomination) ||
                 other.denomination == denomination));
@@ -239,8 +239,8 @@ class _$_MissionEntity implements _MissionEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MissionEntityCopyWith<_$_MissionEntity> get copyWith =>
-      __$$_MissionEntityCopyWithImpl<_$_MissionEntity>(this, _$identity);
+  _$$MissionEntityImplCopyWith<_$MissionEntityImpl> get copyWith =>
+      __$$MissionEntityImplCopyWithImpl<_$MissionEntityImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -340,7 +340,7 @@ class _$_MissionEntity implements _MissionEntity {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MissionEntityToJson(
+    return _$$MissionEntityImplToJson(
       this,
     );
   }
@@ -349,26 +349,26 @@ class _$_MissionEntity implements _MissionEntity {
 abstract class _MissionEntity implements MissionEntity {
   const factory _MissionEntity(
       {required final MissionId id,
-      required final String denomination}) = _$_MissionEntity;
+      required final String denomination}) = _$MissionEntityImpl;
 
   factory _MissionEntity.fromJson(Map<String, dynamic> json) =
-      _$_MissionEntity.fromJson;
+      _$MissionEntityImpl.fromJson;
 
   @override
   MissionId get id;
   String get denomination;
   @override
   @JsonKey(ignore: true)
-  _$$_MissionEntityCopyWith<_$_MissionEntity> get copyWith =>
+  _$$MissionEntityImplCopyWith<_$MissionEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_MissionEntityInitCopyWith<$Res>
+abstract class _$$MissionEntityInitImplCopyWith<$Res>
     implements $MissionEntityCopyWith<$Res> {
-  factory _$$_MissionEntityInitCopyWith(_$_MissionEntityInit value,
-          $Res Function(_$_MissionEntityInit) then) =
-      __$$_MissionEntityInitCopyWithImpl<$Res>;
+  factory _$$MissionEntityInitImplCopyWith(_$MissionEntityInitImpl value,
+          $Res Function(_$MissionEntityInitImpl) then) =
+      __$$MissionEntityInitImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({MissionId id});
@@ -378,11 +378,11 @@ abstract class _$$_MissionEntityInitCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_MissionEntityInitCopyWithImpl<$Res>
-    extends _$MissionEntityCopyWithImpl<$Res, _$_MissionEntityInit>
-    implements _$$_MissionEntityInitCopyWith<$Res> {
-  __$$_MissionEntityInitCopyWithImpl(
-      _$_MissionEntityInit _value, $Res Function(_$_MissionEntityInit) _then)
+class __$$MissionEntityInitImplCopyWithImpl<$Res>
+    extends _$MissionEntityCopyWithImpl<$Res, _$MissionEntityInitImpl>
+    implements _$$MissionEntityInitImplCopyWith<$Res> {
+  __$$MissionEntityInitImplCopyWithImpl(_$MissionEntityInitImpl _value,
+      $Res Function(_$MissionEntityInitImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -390,7 +390,7 @@ class __$$_MissionEntityInitCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$_MissionEntityInit(
+    return _then(_$MissionEntityInitImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -401,12 +401,12 @@ class __$$_MissionEntityInitCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MissionEntityInit implements _MissionEntityInit {
-  const _$_MissionEntityInit({required this.id, final String? $type})
+class _$MissionEntityInitImpl implements _MissionEntityInit {
+  const _$MissionEntityInitImpl({required this.id, final String? $type})
       : $type = $type ?? 'init';
 
-  factory _$_MissionEntityInit.fromJson(Map<String, dynamic> json) =>
-      _$$_MissionEntityInitFromJson(json);
+  factory _$MissionEntityInitImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MissionEntityInitImplFromJson(json);
 
   @override
   final MissionId id;
@@ -420,10 +420,10 @@ class _$_MissionEntityInit implements _MissionEntityInit {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MissionEntityInit &&
+            other is _$MissionEntityInitImpl &&
             (identical(other.id, id) || other.id == id));
   }
 
@@ -434,8 +434,8 @@ class _$_MissionEntityInit implements _MissionEntityInit {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MissionEntityInitCopyWith<_$_MissionEntityInit> get copyWith =>
-      __$$_MissionEntityInitCopyWithImpl<_$_MissionEntityInit>(
+  _$$MissionEntityInitImplCopyWith<_$MissionEntityInitImpl> get copyWith =>
+      __$$MissionEntityInitImplCopyWithImpl<_$MissionEntityInitImpl>(
           this, _$identity);
 
   @override
@@ -536,7 +536,7 @@ class _$_MissionEntityInit implements _MissionEntityInit {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MissionEntityInitToJson(
+    return _$$MissionEntityInitImplToJson(
       this,
     );
   }
@@ -544,25 +544,25 @@ class _$_MissionEntityInit implements _MissionEntityInit {
 
 abstract class _MissionEntityInit implements MissionEntity {
   const factory _MissionEntityInit({required final MissionId id}) =
-      _$_MissionEntityInit;
+      _$MissionEntityInitImpl;
 
   factory _MissionEntityInit.fromJson(Map<String, dynamic> json) =
-      _$_MissionEntityInit.fromJson;
+      _$MissionEntityInitImpl.fromJson;
 
   @override
   MissionId get id;
   @override
   @JsonKey(ignore: true)
-  _$$_MissionEntityInitCopyWith<_$_MissionEntityInit> get copyWith =>
+  _$$MissionEntityInitImplCopyWith<_$MissionEntityInitImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_MissionEntityDoneCopyWith<$Res>
+abstract class _$$MissionEntityDoneImplCopyWith<$Res>
     implements $MissionEntityCopyWith<$Res> {
-  factory _$$_MissionEntityDoneCopyWith(_$_MissionEntityDone value,
-          $Res Function(_$_MissionEntityDone) then) =
-      __$$_MissionEntityDoneCopyWithImpl<$Res>;
+  factory _$$MissionEntityDoneImplCopyWith(_$MissionEntityDoneImpl value,
+          $Res Function(_$MissionEntityDoneImpl) then) =
+      __$$MissionEntityDoneImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -577,11 +577,11 @@ abstract class _$$_MissionEntityDoneCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_MissionEntityDoneCopyWithImpl<$Res>
-    extends _$MissionEntityCopyWithImpl<$Res, _$_MissionEntityDone>
-    implements _$$_MissionEntityDoneCopyWith<$Res> {
-  __$$_MissionEntityDoneCopyWithImpl(
-      _$_MissionEntityDone _value, $Res Function(_$_MissionEntityDone) _then)
+class __$$MissionEntityDoneImplCopyWithImpl<$Res>
+    extends _$MissionEntityCopyWithImpl<$Res, _$MissionEntityDoneImpl>
+    implements _$$MissionEntityDoneImplCopyWith<$Res> {
+  __$$MissionEntityDoneImplCopyWithImpl(_$MissionEntityDoneImpl _value,
+      $Res Function(_$MissionEntityDoneImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -593,7 +593,7 @@ class __$$_MissionEntityDoneCopyWithImpl<$Res>
     Object? finishedAt = null,
     Object? doneOk = null,
   }) {
-    return _then(_$_MissionEntityDone(
+    return _then(_$MissionEntityDoneImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -620,8 +620,8 @@ class __$$_MissionEntityDoneCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MissionEntityDone implements _MissionEntityDone {
-  const _$_MissionEntityDone(
+class _$MissionEntityDoneImpl implements _MissionEntityDone {
+  const _$MissionEntityDoneImpl(
       {required this.id,
       required this.denomination,
       required this.startedAt,
@@ -630,8 +630,8 @@ class _$_MissionEntityDone implements _MissionEntityDone {
       final String? $type})
       : $type = $type ?? 'done';
 
-  factory _$_MissionEntityDone.fromJson(Map<String, dynamic> json) =>
-      _$$_MissionEntityDoneFromJson(json);
+  factory _$MissionEntityDoneImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MissionEntityDoneImplFromJson(json);
 
   @override
   final MissionId id;
@@ -653,10 +653,10 @@ class _$_MissionEntityDone implements _MissionEntityDone {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MissionEntityDone &&
+            other is _$MissionEntityDoneImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.denomination, denomination) ||
                 other.denomination == denomination) &&
@@ -675,8 +675,8 @@ class _$_MissionEntityDone implements _MissionEntityDone {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MissionEntityDoneCopyWith<_$_MissionEntityDone> get copyWith =>
-      __$$_MissionEntityDoneCopyWithImpl<_$_MissionEntityDone>(
+  _$$MissionEntityDoneImplCopyWith<_$MissionEntityDoneImpl> get copyWith =>
+      __$$MissionEntityDoneImplCopyWithImpl<_$MissionEntityDoneImpl>(
           this, _$identity);
 
   @override
@@ -777,7 +777,7 @@ class _$_MissionEntityDone implements _MissionEntityDone {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MissionEntityDoneToJson(
+    return _$$MissionEntityDoneImplToJson(
       this,
     );
   }
@@ -789,10 +789,10 @@ abstract class _MissionEntityDone implements MissionEntity {
       required final String denomination,
       required final DateTime startedAt,
       required final DateTime finishedAt,
-      required final bool doneOk}) = _$_MissionEntityDone;
+      required final bool doneOk}) = _$MissionEntityDoneImpl;
 
   factory _MissionEntityDone.fromJson(Map<String, dynamic> json) =
-      _$_MissionEntityDone.fromJson;
+      _$MissionEntityDoneImpl.fromJson;
 
   @override
   MissionId get id;
@@ -802,16 +802,17 @@ abstract class _MissionEntityDone implements MissionEntity {
   bool get doneOk;
   @override
   @JsonKey(ignore: true)
-  _$$_MissionEntityDoneCopyWith<_$_MissionEntityDone> get copyWith =>
+  _$$MissionEntityDoneImplCopyWith<_$MissionEntityDoneImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_MissionEntityProgressCopyWith<$Res>
+abstract class _$$MissionEntityProgressImplCopyWith<$Res>
     implements $MissionEntityCopyWith<$Res> {
-  factory _$$_MissionEntityProgressCopyWith(_$_MissionEntityProgress value,
-          $Res Function(_$_MissionEntityProgress) then) =
-      __$$_MissionEntityProgressCopyWithImpl<$Res>;
+  factory _$$MissionEntityProgressImplCopyWith(
+          _$MissionEntityProgressImpl value,
+          $Res Function(_$MissionEntityProgressImpl) then) =
+      __$$MissionEntityProgressImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({MissionId id, String denomination, DateTime startedAt});
@@ -821,11 +822,11 @@ abstract class _$$_MissionEntityProgressCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_MissionEntityProgressCopyWithImpl<$Res>
-    extends _$MissionEntityCopyWithImpl<$Res, _$_MissionEntityProgress>
-    implements _$$_MissionEntityProgressCopyWith<$Res> {
-  __$$_MissionEntityProgressCopyWithImpl(_$_MissionEntityProgress _value,
-      $Res Function(_$_MissionEntityProgress) _then)
+class __$$MissionEntityProgressImplCopyWithImpl<$Res>
+    extends _$MissionEntityCopyWithImpl<$Res, _$MissionEntityProgressImpl>
+    implements _$$MissionEntityProgressImplCopyWith<$Res> {
+  __$$MissionEntityProgressImplCopyWithImpl(_$MissionEntityProgressImpl _value,
+      $Res Function(_$MissionEntityProgressImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -835,7 +836,7 @@ class __$$_MissionEntityProgressCopyWithImpl<$Res>
     Object? denomination = null,
     Object? startedAt = null,
   }) {
-    return _then(_$_MissionEntityProgress(
+    return _then(_$MissionEntityProgressImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -854,16 +855,16 @@ class __$$_MissionEntityProgressCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MissionEntityProgress implements _MissionEntityProgress {
-  const _$_MissionEntityProgress(
+class _$MissionEntityProgressImpl implements _MissionEntityProgress {
+  const _$MissionEntityProgressImpl(
       {required this.id,
       required this.denomination,
       required this.startedAt,
       final String? $type})
       : $type = $type ?? 'progress';
 
-  factory _$_MissionEntityProgress.fromJson(Map<String, dynamic> json) =>
-      _$$_MissionEntityProgressFromJson(json);
+  factory _$MissionEntityProgressImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MissionEntityProgressImplFromJson(json);
 
   @override
   final MissionId id;
@@ -881,10 +882,10 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MissionEntityProgress &&
+            other is _$MissionEntityProgressImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.denomination, denomination) ||
                 other.denomination == denomination) &&
@@ -899,9 +900,9 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MissionEntityProgressCopyWith<_$_MissionEntityProgress> get copyWith =>
-      __$$_MissionEntityProgressCopyWithImpl<_$_MissionEntityProgress>(
-          this, _$identity);
+  _$$MissionEntityProgressImplCopyWith<_$MissionEntityProgressImpl>
+      get copyWith => __$$MissionEntityProgressImplCopyWithImpl<
+          _$MissionEntityProgressImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1001,7 +1002,7 @@ class _$_MissionEntityProgress implements _MissionEntityProgress {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MissionEntityProgressToJson(
+    return _$$MissionEntityProgressImplToJson(
       this,
     );
   }
@@ -1011,10 +1012,10 @@ abstract class _MissionEntityProgress implements MissionEntity {
   const factory _MissionEntityProgress(
       {required final MissionId id,
       required final String denomination,
-      required final DateTime startedAt}) = _$_MissionEntityProgress;
+      required final DateTime startedAt}) = _$MissionEntityProgressImpl;
 
   factory _MissionEntityProgress.fromJson(Map<String, dynamic> json) =
-      _$_MissionEntityProgress.fromJson;
+      _$MissionEntityProgressImpl.fromJson;
 
   @override
   MissionId get id;
@@ -1022,16 +1023,16 @@ abstract class _MissionEntityProgress implements MissionEntity {
   DateTime get startedAt;
   @override
   @JsonKey(ignore: true)
-  _$$_MissionEntityProgressCopyWith<_$_MissionEntityProgress> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$MissionEntityProgressImplCopyWith<_$MissionEntityProgressImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_MissionEntityAbandonCopyWith<$Res>
+abstract class _$$MissionEntityAbandonImplCopyWith<$Res>
     implements $MissionEntityCopyWith<$Res> {
-  factory _$$_MissionEntityAbandonCopyWith(_$_MissionEntityAbandon value,
-          $Res Function(_$_MissionEntityAbandon) then) =
-      __$$_MissionEntityAbandonCopyWithImpl<$Res>;
+  factory _$$MissionEntityAbandonImplCopyWith(_$MissionEntityAbandonImpl value,
+          $Res Function(_$MissionEntityAbandonImpl) then) =
+      __$$MissionEntityAbandonImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1046,11 +1047,11 @@ abstract class _$$_MissionEntityAbandonCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_MissionEntityAbandonCopyWithImpl<$Res>
-    extends _$MissionEntityCopyWithImpl<$Res, _$_MissionEntityAbandon>
-    implements _$$_MissionEntityAbandonCopyWith<$Res> {
-  __$$_MissionEntityAbandonCopyWithImpl(_$_MissionEntityAbandon _value,
-      $Res Function(_$_MissionEntityAbandon) _then)
+class __$$MissionEntityAbandonImplCopyWithImpl<$Res>
+    extends _$MissionEntityCopyWithImpl<$Res, _$MissionEntityAbandonImpl>
+    implements _$$MissionEntityAbandonImplCopyWith<$Res> {
+  __$$MissionEntityAbandonImplCopyWithImpl(_$MissionEntityAbandonImpl _value,
+      $Res Function(_$MissionEntityAbandonImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1062,7 +1063,7 @@ class __$$_MissionEntityAbandonCopyWithImpl<$Res>
     Object? left = null,
     Object? isLeft = null,
   }) {
-    return _then(_$_MissionEntityAbandon(
+    return _then(_$MissionEntityAbandonImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1089,8 +1090,8 @@ class __$$_MissionEntityAbandonCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MissionEntityAbandon implements _MissionEntityAbandon {
-  const _$_MissionEntityAbandon(
+class _$MissionEntityAbandonImpl implements _MissionEntityAbandon {
+  const _$MissionEntityAbandonImpl(
       {required this.id,
       required this.denomination,
       required this.reason,
@@ -1099,8 +1100,8 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
       final String? $type})
       : $type = $type ?? 'abandon';
 
-  factory _$_MissionEntityAbandon.fromJson(Map<String, dynamic> json) =>
-      _$$_MissionEntityAbandonFromJson(json);
+  factory _$MissionEntityAbandonImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MissionEntityAbandonImplFromJson(json);
 
   @override
   final MissionId id;
@@ -1122,10 +1123,10 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MissionEntityAbandon &&
+            other is _$MissionEntityAbandonImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.denomination, denomination) ||
                 other.denomination == denomination) &&
@@ -1142,9 +1143,10 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MissionEntityAbandonCopyWith<_$_MissionEntityAbandon> get copyWith =>
-      __$$_MissionEntityAbandonCopyWithImpl<_$_MissionEntityAbandon>(
-          this, _$identity);
+  _$$MissionEntityAbandonImplCopyWith<_$MissionEntityAbandonImpl>
+      get copyWith =>
+          __$$MissionEntityAbandonImplCopyWithImpl<_$MissionEntityAbandonImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1244,7 +1246,7 @@ class _$_MissionEntityAbandon implements _MissionEntityAbandon {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MissionEntityAbandonToJson(
+    return _$$MissionEntityAbandonImplToJson(
       this,
     );
   }
@@ -1256,10 +1258,10 @@ abstract class _MissionEntityAbandon implements MissionEntity {
       required final String denomination,
       required final String reason,
       required final DateTime left,
-      required final bool isLeft}) = _$_MissionEntityAbandon;
+      required final bool isLeft}) = _$MissionEntityAbandonImpl;
 
   factory _MissionEntityAbandon.fromJson(Map<String, dynamic> json) =
-      _$_MissionEntityAbandon.fromJson;
+      _$MissionEntityAbandonImpl.fromJson;
 
   @override
   MissionId get id;
@@ -1269,6 +1271,6 @@ abstract class _MissionEntityAbandon implements MissionEntity {
   bool get isLeft;
   @override
   @JsonKey(ignore: true)
-  _$$_MissionEntityAbandonCopyWith<_$_MissionEntityAbandon> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$MissionEntityAbandonImplCopyWith<_$MissionEntityAbandonImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

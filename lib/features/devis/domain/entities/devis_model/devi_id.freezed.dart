@@ -12,7 +12,7 @@ part of 'devi_id.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 DevisId _$DevisIdFromJson(Map<String, dynamic> json) {
   return _DevisId.fromJson(json);
@@ -60,20 +60,21 @@ class _$DevisIdCopyWithImpl<$Res, $Val extends DevisId>
 }
 
 /// @nodoc
-abstract class _$$_DevisIdCopyWith<$Res> implements $DevisIdCopyWith<$Res> {
-  factory _$$_DevisIdCopyWith(
-          _$_DevisId value, $Res Function(_$_DevisId) then) =
-      __$$_DevisIdCopyWithImpl<$Res>;
+abstract class _$$DevisIdImplCopyWith<$Res> implements $DevisIdCopyWith<$Res> {
+  factory _$$DevisIdImplCopyWith(
+          _$DevisIdImpl value, $Res Function(_$DevisIdImpl) then) =
+      __$$DevisIdImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id});
 }
 
 /// @nodoc
-class __$$_DevisIdCopyWithImpl<$Res>
-    extends _$DevisIdCopyWithImpl<$Res, _$_DevisId>
-    implements _$$_DevisIdCopyWith<$Res> {
-  __$$_DevisIdCopyWithImpl(_$_DevisId _value, $Res Function(_$_DevisId) _then)
+class __$$DevisIdImplCopyWithImpl<$Res>
+    extends _$DevisIdCopyWithImpl<$Res, _$DevisIdImpl>
+    implements _$$DevisIdImplCopyWith<$Res> {
+  __$$DevisIdImplCopyWithImpl(
+      _$DevisIdImpl _value, $Res Function(_$DevisIdImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -81,7 +82,7 @@ class __$$_DevisIdCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$_DevisId(
+    return _then(_$DevisIdImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -92,11 +93,11 @@ class __$$_DevisIdCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DevisId with DiagnosticableTreeMixin implements _DevisId {
-  const _$_DevisId({required this.id});
+class _$DevisIdImpl with DiagnosticableTreeMixin implements _DevisId {
+  const _$DevisIdImpl({required this.id});
 
-  factory _$_DevisId.fromJson(Map<String, dynamic> json) =>
-      _$$_DevisIdFromJson(json);
+  factory _$DevisIdImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DevisIdImplFromJson(json);
 
   @override
   final int id;
@@ -115,10 +116,10 @@ class _$_DevisId with DiagnosticableTreeMixin implements _DevisId {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DevisId &&
+            other is _$DevisIdImpl &&
             (identical(other.id, id) || other.id == id));
   }
 
@@ -129,26 +130,26 @@ class _$_DevisId with DiagnosticableTreeMixin implements _DevisId {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DevisIdCopyWith<_$_DevisId> get copyWith =>
-      __$$_DevisIdCopyWithImpl<_$_DevisId>(this, _$identity);
+  _$$DevisIdImplCopyWith<_$DevisIdImpl> get copyWith =>
+      __$$DevisIdImplCopyWithImpl<_$DevisIdImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DevisIdToJson(
+    return _$$DevisIdImplToJson(
       this,
     );
   }
 }
 
 abstract class _DevisId implements DevisId {
-  const factory _DevisId({required final int id}) = _$_DevisId;
+  const factory _DevisId({required final int id}) = _$DevisIdImpl;
 
-  factory _DevisId.fromJson(Map<String, dynamic> json) = _$_DevisId.fromJson;
+  factory _DevisId.fromJson(Map<String, dynamic> json) = _$DevisIdImpl.fromJson;
 
   @override
   int get id;
   @override
   @JsonKey(ignore: true)
-  _$$_DevisIdCopyWith<_$_DevisId> get copyWith =>
+  _$$DevisIdImplCopyWith<_$DevisIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'superficie_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 SuperficieEntity _$SuperficieEntityFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -114,22 +114,23 @@ class _$SuperficieEntityCopyWithImpl<$Res, $Val extends SuperficieEntity>
 }
 
 /// @nodoc
-abstract class _$$_SuperficieEntityInitializeCopyWith<$Res> {
-  factory _$$_SuperficieEntityInitializeCopyWith(
-          _$_SuperficieEntityInitialize value,
-          $Res Function(_$_SuperficieEntityInitialize) then) =
-      __$$_SuperficieEntityInitializeCopyWithImpl<$Res>;
+abstract class _$$SuperficieEntityInitializeImplCopyWith<$Res> {
+  factory _$$SuperficieEntityInitializeImplCopyWith(
+          _$SuperficieEntityInitializeImpl value,
+          $Res Function(_$SuperficieEntityInitializeImpl) then) =
+      __$$SuperficieEntityInitializeImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int longueur, int largeur, int? hauteur});
 }
 
 /// @nodoc
-class __$$_SuperficieEntityInitializeCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res, _$_SuperficieEntityInitialize>
-    implements _$$_SuperficieEntityInitializeCopyWith<$Res> {
-  __$$_SuperficieEntityInitializeCopyWithImpl(
-      _$_SuperficieEntityInitialize _value,
-      $Res Function(_$_SuperficieEntityInitialize) _then)
+class __$$SuperficieEntityInitializeImplCopyWithImpl<$Res>
+    extends _$SuperficieEntityCopyWithImpl<$Res,
+        _$SuperficieEntityInitializeImpl>
+    implements _$$SuperficieEntityInitializeImplCopyWith<$Res> {
+  __$$SuperficieEntityInitializeImplCopyWithImpl(
+      _$SuperficieEntityInitializeImpl _value,
+      $Res Function(_$SuperficieEntityInitializeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -139,7 +140,7 @@ class __$$_SuperficieEntityInitializeCopyWithImpl<$Res>
     Object? largeur = null,
     Object? hauteur = freezed,
   }) {
-    return _then(_$_SuperficieEntityInitialize(
+    return _then(_$SuperficieEntityInitializeImpl(
       longueur: null == longueur
           ? _value.longueur
           : longueur // ignore: cast_nullable_to_non_nullable
@@ -158,8 +159,8 @@ class __$$_SuperficieEntityInitializeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SuperficieEntityInitialize extends _SuperficieEntityInitialize {
-  const _$_SuperficieEntityInitialize(
+class _$SuperficieEntityInitializeImpl extends _SuperficieEntityInitialize {
+  const _$SuperficieEntityInitializeImpl(
       {required this.longueur,
       required this.largeur,
       this.hauteur,
@@ -167,8 +168,9 @@ class _$_SuperficieEntityInitialize extends _SuperficieEntityInitialize {
       : $type = $type ?? 'initialize',
         super._();
 
-  factory _$_SuperficieEntityInitialize.fromJson(Map<String, dynamic> json) =>
-      _$$_SuperficieEntityInitializeFromJson(json);
+  factory _$SuperficieEntityInitializeImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$SuperficieEntityInitializeImplFromJson(json);
 
   @override
   final int longueur;
@@ -186,10 +188,10 @@ class _$_SuperficieEntityInitialize extends _SuperficieEntityInitialize {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SuperficieEntityInitialize &&
+            other is _$SuperficieEntityInitializeImpl &&
             (identical(other.longueur, longueur) ||
                 other.longueur == longueur) &&
             (identical(other.largeur, largeur) || other.largeur == largeur) &&
@@ -203,9 +205,9 @@ class _$_SuperficieEntityInitialize extends _SuperficieEntityInitialize {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SuperficieEntityInitializeCopyWith<_$_SuperficieEntityInitialize>
-      get copyWith => __$$_SuperficieEntityInitializeCopyWithImpl<
-          _$_SuperficieEntityInitialize>(this, _$identity);
+  _$$SuperficieEntityInitializeImplCopyWith<_$SuperficieEntityInitializeImpl>
+      get copyWith => __$$SuperficieEntityInitializeImplCopyWithImpl<
+          _$SuperficieEntityInitializeImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -290,7 +292,7 @@ class _$_SuperficieEntityInitialize extends _SuperficieEntityInitialize {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SuperficieEntityInitializeToJson(
+    return _$$SuperficieEntityInitializeImplToJson(
       this,
     );
   }
@@ -300,35 +302,35 @@ abstract class _SuperficieEntityInitialize extends SuperficieEntity {
   const factory _SuperficieEntityInitialize(
       {required final int longueur,
       required final int largeur,
-      final int? hauteur}) = _$_SuperficieEntityInitialize;
+      final int? hauteur}) = _$SuperficieEntityInitializeImpl;
   const _SuperficieEntityInitialize._() : super._();
 
   factory _SuperficieEntityInitialize.fromJson(Map<String, dynamic> json) =
-      _$_SuperficieEntityInitialize.fromJson;
+      _$SuperficieEntityInitializeImpl.fromJson;
 
   int get longueur;
   int get largeur;
   int? get hauteur;
   @JsonKey(ignore: true)
-  _$$_SuperficieEntityInitializeCopyWith<_$_SuperficieEntityInitialize>
+  _$$SuperficieEntityInitializeImplCopyWith<_$SuperficieEntityInitializeImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_SuperficieEntityDataCopyWith<$Res> {
-  factory _$$_SuperficieEntityDataCopyWith(_$_SuperficieEntityData value,
-          $Res Function(_$_SuperficieEntityData) then) =
-      __$$_SuperficieEntityDataCopyWithImpl<$Res>;
+abstract class _$$SuperficieEntityDataImplCopyWith<$Res> {
+  factory _$$SuperficieEntityDataImplCopyWith(_$SuperficieEntityDataImpl value,
+          $Res Function(_$SuperficieEntityDataImpl) then) =
+      __$$SuperficieEntityDataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int longueur, int largeur, int? hauteur});
 }
 
 /// @nodoc
-class __$$_SuperficieEntityDataCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res, _$_SuperficieEntityData>
-    implements _$$_SuperficieEntityDataCopyWith<$Res> {
-  __$$_SuperficieEntityDataCopyWithImpl(_$_SuperficieEntityData _value,
-      $Res Function(_$_SuperficieEntityData) _then)
+class __$$SuperficieEntityDataImplCopyWithImpl<$Res>
+    extends _$SuperficieEntityCopyWithImpl<$Res, _$SuperficieEntityDataImpl>
+    implements _$$SuperficieEntityDataImplCopyWith<$Res> {
+  __$$SuperficieEntityDataImplCopyWithImpl(_$SuperficieEntityDataImpl _value,
+      $Res Function(_$SuperficieEntityDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -338,7 +340,7 @@ class __$$_SuperficieEntityDataCopyWithImpl<$Res>
     Object? largeur = null,
     Object? hauteur = freezed,
   }) {
-    return _then(_$_SuperficieEntityData(
+    return _then(_$SuperficieEntityDataImpl(
       longueur: null == longueur
           ? _value.longueur
           : longueur // ignore: cast_nullable_to_non_nullable
@@ -357,8 +359,8 @@ class __$$_SuperficieEntityDataCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SuperficieEntityData extends _SuperficieEntityData {
-  const _$_SuperficieEntityData(
+class _$SuperficieEntityDataImpl extends _SuperficieEntityData {
+  const _$SuperficieEntityDataImpl(
       {required this.longueur,
       required this.largeur,
       this.hauteur,
@@ -366,8 +368,8 @@ class _$_SuperficieEntityData extends _SuperficieEntityData {
       : $type = $type ?? 'default',
         super._();
 
-  factory _$_SuperficieEntityData.fromJson(Map<String, dynamic> json) =>
-      _$$_SuperficieEntityDataFromJson(json);
+  factory _$SuperficieEntityDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SuperficieEntityDataImplFromJson(json);
 
   @override
   final int longueur;
@@ -385,10 +387,10 @@ class _$_SuperficieEntityData extends _SuperficieEntityData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SuperficieEntityData &&
+            other is _$SuperficieEntityDataImpl &&
             (identical(other.longueur, longueur) ||
                 other.longueur == longueur) &&
             (identical(other.largeur, largeur) || other.largeur == largeur) &&
@@ -402,9 +404,10 @@ class _$_SuperficieEntityData extends _SuperficieEntityData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SuperficieEntityDataCopyWith<_$_SuperficieEntityData> get copyWith =>
-      __$$_SuperficieEntityDataCopyWithImpl<_$_SuperficieEntityData>(
-          this, _$identity);
+  _$$SuperficieEntityDataImplCopyWith<_$SuperficieEntityDataImpl>
+      get copyWith =>
+          __$$SuperficieEntityDataImplCopyWithImpl<_$SuperficieEntityDataImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -489,7 +492,7 @@ class _$_SuperficieEntityData extends _SuperficieEntityData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SuperficieEntityDataToJson(
+    return _$$SuperficieEntityDataImplToJson(
       this,
     );
   }
@@ -499,35 +502,35 @@ abstract class _SuperficieEntityData extends SuperficieEntity {
   const factory _SuperficieEntityData(
       {required final int longueur,
       required final int largeur,
-      final int? hauteur}) = _$_SuperficieEntityData;
+      final int? hauteur}) = _$SuperficieEntityDataImpl;
   const _SuperficieEntityData._() : super._();
 
   factory _SuperficieEntityData.fromJson(Map<String, dynamic> json) =
-      _$_SuperficieEntityData.fromJson;
+      _$SuperficieEntityDataImpl.fromJson;
 
   int get longueur;
   int get largeur;
   int? get hauteur;
   @JsonKey(ignore: true)
-  _$$_SuperficieEntityDataCopyWith<_$_SuperficieEntityData> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SuperficieEntityDataImplCopyWith<_$SuperficieEntityDataImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_SuperficieEntityAirCopyWith<$Res> {
-  factory _$$_SuperficieEntityAirCopyWith(_$_SuperficieEntityAir value,
-          $Res Function(_$_SuperficieEntityAir) then) =
-      __$$_SuperficieEntityAirCopyWithImpl<$Res>;
+abstract class _$$SuperficieEntityAirImplCopyWith<$Res> {
+  factory _$$SuperficieEntityAirImplCopyWith(_$SuperficieEntityAirImpl value,
+          $Res Function(_$SuperficieEntityAirImpl) then) =
+      __$$SuperficieEntityAirImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int surface});
 }
 
 /// @nodoc
-class __$$_SuperficieEntityAirCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res, _$_SuperficieEntityAir>
-    implements _$$_SuperficieEntityAirCopyWith<$Res> {
-  __$$_SuperficieEntityAirCopyWithImpl(_$_SuperficieEntityAir _value,
-      $Res Function(_$_SuperficieEntityAir) _then)
+class __$$SuperficieEntityAirImplCopyWithImpl<$Res>
+    extends _$SuperficieEntityCopyWithImpl<$Res, _$SuperficieEntityAirImpl>
+    implements _$$SuperficieEntityAirImplCopyWith<$Res> {
+  __$$SuperficieEntityAirImplCopyWithImpl(_$SuperficieEntityAirImpl _value,
+      $Res Function(_$SuperficieEntityAirImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -535,7 +538,7 @@ class __$$_SuperficieEntityAirCopyWithImpl<$Res>
   $Res call({
     Object? surface = null,
   }) {
-    return _then(_$_SuperficieEntityAir(
+    return _then(_$SuperficieEntityAirImpl(
       surface: null == surface
           ? _value.surface
           : surface // ignore: cast_nullable_to_non_nullable
@@ -546,13 +549,13 @@ class __$$_SuperficieEntityAirCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SuperficieEntityAir extends _SuperficieEntityAir {
-  const _$_SuperficieEntityAir({required this.surface, final String? $type})
+class _$SuperficieEntityAirImpl extends _SuperficieEntityAir {
+  const _$SuperficieEntityAirImpl({required this.surface, final String? $type})
       : $type = $type ?? 'surface',
         super._();
 
-  factory _$_SuperficieEntityAir.fromJson(Map<String, dynamic> json) =>
-      _$$_SuperficieEntityAirFromJson(json);
+  factory _$SuperficieEntityAirImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SuperficieEntityAirImplFromJson(json);
 
   @override
   final int surface;
@@ -566,10 +569,10 @@ class _$_SuperficieEntityAir extends _SuperficieEntityAir {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SuperficieEntityAir &&
+            other is _$SuperficieEntityAirImpl &&
             (identical(other.surface, surface) || other.surface == surface));
   }
 
@@ -580,8 +583,8 @@ class _$_SuperficieEntityAir extends _SuperficieEntityAir {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SuperficieEntityAirCopyWith<_$_SuperficieEntityAir> get copyWith =>
-      __$$_SuperficieEntityAirCopyWithImpl<_$_SuperficieEntityAir>(
+  _$$SuperficieEntityAirImplCopyWith<_$SuperficieEntityAirImpl> get copyWith =>
+      __$$SuperficieEntityAirImplCopyWithImpl<_$SuperficieEntityAirImpl>(
           this, _$identity);
 
   @override
@@ -667,7 +670,7 @@ class _$_SuperficieEntityAir extends _SuperficieEntityAir {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SuperficieEntityAirToJson(
+    return _$$SuperficieEntityAirImplToJson(
       this,
     );
   }
@@ -675,35 +678,36 @@ class _$_SuperficieEntityAir extends _SuperficieEntityAir {
 
 abstract class _SuperficieEntityAir extends SuperficieEntity {
   const factory _SuperficieEntityAir({required final int surface}) =
-      _$_SuperficieEntityAir;
+      _$SuperficieEntityAirImpl;
   const _SuperficieEntityAir._() : super._();
 
   factory _SuperficieEntityAir.fromJson(Map<String, dynamic> json) =
-      _$_SuperficieEntityAir.fromJson;
+      _$SuperficieEntityAirImpl.fromJson;
 
   int get surface;
   @JsonKey(ignore: true)
-  _$$_SuperficieEntityAirCopyWith<_$_SuperficieEntityAir> get copyWith =>
+  _$$SuperficieEntityAirImplCopyWith<_$SuperficieEntityAirImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_SuperficieEntityPerimetreCopyWith<$Res> {
-  factory _$$_SuperficieEntityPerimetreCopyWith(
-          _$_SuperficieEntityPerimetre value,
-          $Res Function(_$_SuperficieEntityPerimetre) then) =
-      __$$_SuperficieEntityPerimetreCopyWithImpl<$Res>;
+abstract class _$$SuperficieEntityPerimetreImplCopyWith<$Res> {
+  factory _$$SuperficieEntityPerimetreImplCopyWith(
+          _$SuperficieEntityPerimetreImpl value,
+          $Res Function(_$SuperficieEntityPerimetreImpl) then) =
+      __$$SuperficieEntityPerimetreImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int perimetre});
 }
 
 /// @nodoc
-class __$$_SuperficieEntityPerimetreCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res, _$_SuperficieEntityPerimetre>
-    implements _$$_SuperficieEntityPerimetreCopyWith<$Res> {
-  __$$_SuperficieEntityPerimetreCopyWithImpl(
-      _$_SuperficieEntityPerimetre _value,
-      $Res Function(_$_SuperficieEntityPerimetre) _then)
+class __$$SuperficieEntityPerimetreImplCopyWithImpl<$Res>
+    extends _$SuperficieEntityCopyWithImpl<$Res,
+        _$SuperficieEntityPerimetreImpl>
+    implements _$$SuperficieEntityPerimetreImplCopyWith<$Res> {
+  __$$SuperficieEntityPerimetreImplCopyWithImpl(
+      _$SuperficieEntityPerimetreImpl _value,
+      $Res Function(_$SuperficieEntityPerimetreImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -711,7 +715,7 @@ class __$$_SuperficieEntityPerimetreCopyWithImpl<$Res>
   $Res call({
     Object? perimetre = null,
   }) {
-    return _then(_$_SuperficieEntityPerimetre(
+    return _then(_$SuperficieEntityPerimetreImpl(
       perimetre: null == perimetre
           ? _value.perimetre
           : perimetre // ignore: cast_nullable_to_non_nullable
@@ -722,14 +726,14 @@ class __$$_SuperficieEntityPerimetreCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SuperficieEntityPerimetre extends _SuperficieEntityPerimetre {
-  const _$_SuperficieEntityPerimetre(
+class _$SuperficieEntityPerimetreImpl extends _SuperficieEntityPerimetre {
+  const _$SuperficieEntityPerimetreImpl(
       {required this.perimetre, final String? $type})
       : $type = $type ?? 'perimetre',
         super._();
 
-  factory _$_SuperficieEntityPerimetre.fromJson(Map<String, dynamic> json) =>
-      _$$_SuperficieEntityPerimetreFromJson(json);
+  factory _$SuperficieEntityPerimetreImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SuperficieEntityPerimetreImplFromJson(json);
 
   @override
   final int perimetre;
@@ -743,10 +747,10 @@ class _$_SuperficieEntityPerimetre extends _SuperficieEntityPerimetre {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SuperficieEntityPerimetre &&
+            other is _$SuperficieEntityPerimetreImpl &&
             (identical(other.perimetre, perimetre) ||
                 other.perimetre == perimetre));
   }
@@ -758,9 +762,9 @@ class _$_SuperficieEntityPerimetre extends _SuperficieEntityPerimetre {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SuperficieEntityPerimetreCopyWith<_$_SuperficieEntityPerimetre>
-      get copyWith => __$$_SuperficieEntityPerimetreCopyWithImpl<
-          _$_SuperficieEntityPerimetre>(this, _$identity);
+  _$$SuperficieEntityPerimetreImplCopyWith<_$SuperficieEntityPerimetreImpl>
+      get copyWith => __$$SuperficieEntityPerimetreImplCopyWithImpl<
+          _$SuperficieEntityPerimetreImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -845,7 +849,7 @@ class _$_SuperficieEntityPerimetre extends _SuperficieEntityPerimetre {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SuperficieEntityPerimetreToJson(
+    return _$$SuperficieEntityPerimetreImplToJson(
       this,
     );
   }
@@ -853,33 +857,35 @@ class _$_SuperficieEntityPerimetre extends _SuperficieEntityPerimetre {
 
 abstract class _SuperficieEntityPerimetre extends SuperficieEntity {
   const factory _SuperficieEntityPerimetre({required final int perimetre}) =
-      _$_SuperficieEntityPerimetre;
+      _$SuperficieEntityPerimetreImpl;
   const _SuperficieEntityPerimetre._() : super._();
 
   factory _SuperficieEntityPerimetre.fromJson(Map<String, dynamic> json) =
-      _$_SuperficieEntityPerimetre.fromJson;
+      _$SuperficieEntityPerimetreImpl.fromJson;
 
   int get perimetre;
   @JsonKey(ignore: true)
-  _$$_SuperficieEntityPerimetreCopyWith<_$_SuperficieEntityPerimetre>
+  _$$SuperficieEntityPerimetreImplCopyWith<_$SuperficieEntityPerimetreImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_SuperficieEntityVolumeCopyWith<$Res> {
-  factory _$$_SuperficieEntityVolumeCopyWith(_$_SuperficieEntityVolume value,
-          $Res Function(_$_SuperficieEntityVolume) then) =
-      __$$_SuperficieEntityVolumeCopyWithImpl<$Res>;
+abstract class _$$SuperficieEntityVolumeImplCopyWith<$Res> {
+  factory _$$SuperficieEntityVolumeImplCopyWith(
+          _$SuperficieEntityVolumeImpl value,
+          $Res Function(_$SuperficieEntityVolumeImpl) then) =
+      __$$SuperficieEntityVolumeImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int volume});
 }
 
 /// @nodoc
-class __$$_SuperficieEntityVolumeCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res, _$_SuperficieEntityVolume>
-    implements _$$_SuperficieEntityVolumeCopyWith<$Res> {
-  __$$_SuperficieEntityVolumeCopyWithImpl(_$_SuperficieEntityVolume _value,
-      $Res Function(_$_SuperficieEntityVolume) _then)
+class __$$SuperficieEntityVolumeImplCopyWithImpl<$Res>
+    extends _$SuperficieEntityCopyWithImpl<$Res, _$SuperficieEntityVolumeImpl>
+    implements _$$SuperficieEntityVolumeImplCopyWith<$Res> {
+  __$$SuperficieEntityVolumeImplCopyWithImpl(
+      _$SuperficieEntityVolumeImpl _value,
+      $Res Function(_$SuperficieEntityVolumeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -887,7 +893,7 @@ class __$$_SuperficieEntityVolumeCopyWithImpl<$Res>
   $Res call({
     Object? volume = null,
   }) {
-    return _then(_$_SuperficieEntityVolume(
+    return _then(_$SuperficieEntityVolumeImpl(
       volume: null == volume
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
@@ -898,13 +904,14 @@ class __$$_SuperficieEntityVolumeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SuperficieEntityVolume extends _SuperficieEntityVolume {
-  const _$_SuperficieEntityVolume({required this.volume, final String? $type})
+class _$SuperficieEntityVolumeImpl extends _SuperficieEntityVolume {
+  const _$SuperficieEntityVolumeImpl(
+      {required this.volume, final String? $type})
       : $type = $type ?? 'volume',
         super._();
 
-  factory _$_SuperficieEntityVolume.fromJson(Map<String, dynamic> json) =>
-      _$$_SuperficieEntityVolumeFromJson(json);
+  factory _$SuperficieEntityVolumeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SuperficieEntityVolumeImplFromJson(json);
 
   @override
   final int volume;
@@ -918,10 +925,10 @@ class _$_SuperficieEntityVolume extends _SuperficieEntityVolume {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SuperficieEntityVolume &&
+            other is _$SuperficieEntityVolumeImpl &&
             (identical(other.volume, volume) || other.volume == volume));
   }
 
@@ -932,9 +939,9 @@ class _$_SuperficieEntityVolume extends _SuperficieEntityVolume {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SuperficieEntityVolumeCopyWith<_$_SuperficieEntityVolume> get copyWith =>
-      __$$_SuperficieEntityVolumeCopyWithImpl<_$_SuperficieEntityVolume>(
-          this, _$identity);
+  _$$SuperficieEntityVolumeImplCopyWith<_$SuperficieEntityVolumeImpl>
+      get copyWith => __$$SuperficieEntityVolumeImplCopyWithImpl<
+          _$SuperficieEntityVolumeImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1019,7 +1026,7 @@ class _$_SuperficieEntityVolume extends _SuperficieEntityVolume {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SuperficieEntityVolumeToJson(
+    return _$$SuperficieEntityVolumeImplToJson(
       this,
     );
   }
@@ -1027,14 +1034,14 @@ class _$_SuperficieEntityVolume extends _SuperficieEntityVolume {
 
 abstract class _SuperficieEntityVolume extends SuperficieEntity {
   const factory _SuperficieEntityVolume({required final int volume}) =
-      _$_SuperficieEntityVolume;
+      _$SuperficieEntityVolumeImpl;
   const _SuperficieEntityVolume._() : super._();
 
   factory _SuperficieEntityVolume.fromJson(Map<String, dynamic> json) =
-      _$_SuperficieEntityVolume.fromJson;
+      _$SuperficieEntityVolumeImpl.fromJson;
 
   int get volume;
   @JsonKey(ignore: true)
-  _$$_SuperficieEntityVolumeCopyWith<_$_SuperficieEntityVolume> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SuperficieEntityVolumeImplCopyWith<_$SuperficieEntityVolumeImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

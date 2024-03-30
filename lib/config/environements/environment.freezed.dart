@@ -12,7 +12,7 @@ part of 'environment.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Environment _$EnvironmentFromJson(Map<String, dynamic> json) {
   return _Environment.fromJson(json);
@@ -107,11 +107,11 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
 }
 
 /// @nodoc
-abstract class _$$_EnvironmentCopyWith<$Res>
+abstract class _$$EnvironmentImplCopyWith<$Res>
     implements $EnvironmentCopyWith<$Res> {
-  factory _$$_EnvironmentCopyWith(
-          _$_Environment value, $Res Function(_$_Environment) then) =
-      __$$_EnvironmentCopyWithImpl<$Res>;
+  factory _$$EnvironmentImplCopyWith(
+          _$EnvironmentImpl value, $Res Function(_$EnvironmentImpl) then) =
+      __$$EnvironmentImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -125,11 +125,11 @@ abstract class _$$_EnvironmentCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_EnvironmentCopyWithImpl<$Res>
-    extends _$EnvironmentCopyWithImpl<$Res, _$_Environment>
-    implements _$$_EnvironmentCopyWith<$Res> {
-  __$$_EnvironmentCopyWithImpl(
-      _$_Environment _value, $Res Function(_$_Environment) _then)
+class __$$EnvironmentImplCopyWithImpl<$Res>
+    extends _$EnvironmentCopyWithImpl<$Res, _$EnvironmentImpl>
+    implements _$$EnvironmentImplCopyWith<$Res> {
+  __$$EnvironmentImplCopyWithImpl(
+      _$EnvironmentImpl _value, $Res Function(_$EnvironmentImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -143,7 +143,7 @@ class __$$_EnvironmentCopyWithImpl<$Res>
     Object? authSecret = null,
     Object? vapidKey = null,
   }) {
-    return _then(_$_Environment(
+    return _then(_$EnvironmentImpl(
       supabaseUrl: null == supabaseUrl
           ? _value.supabaseUrl
           : supabaseUrl // ignore: cast_nullable_to_non_nullable
@@ -179,8 +179,8 @@ class __$$_EnvironmentCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Environment implements _Environment {
-  const _$_Environment(
+class _$EnvironmentImpl implements _Environment {
+  const _$EnvironmentImpl(
       {required this.supabaseUrl,
       required this.supabaseAnonKey,
       this.supabaseAuthCallbackUrlHostname,
@@ -189,8 +189,8 @@ class _$_Environment implements _Environment {
       required this.authSecret,
       required this.vapidKey});
 
-  factory _$_Environment.fromJson(Map<String, dynamic> json) =>
-      _$$_EnvironmentFromJson(json);
+  factory _$EnvironmentImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EnvironmentImplFromJson(json);
 
   @override
   final String supabaseUrl;
@@ -213,10 +213,10 @@ class _$_Environment implements _Environment {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Environment &&
+            other is _$EnvironmentImpl &&
             (identical(other.supabaseUrl, supabaseUrl) ||
                 other.supabaseUrl == supabaseUrl) &&
             (identical(other.supabaseAnonKey, supabaseAnonKey) ||
@@ -241,12 +241,12 @@ class _$_Environment implements _Environment {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EnvironmentCopyWith<_$_Environment> get copyWith =>
-      __$$_EnvironmentCopyWithImpl<_$_Environment>(this, _$identity);
+  _$$EnvironmentImplCopyWith<_$EnvironmentImpl> get copyWith =>
+      __$$EnvironmentImplCopyWithImpl<_$EnvironmentImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EnvironmentToJson(
+    return _$$EnvironmentImplToJson(
       this,
     );
   }
@@ -260,10 +260,10 @@ abstract class _Environment implements Environment {
       required final String appId,
       required final String authKey,
       required final String authSecret,
-      required final String vapidKey}) = _$_Environment;
+      required final String vapidKey}) = _$EnvironmentImpl;
 
   factory _Environment.fromJson(Map<String, dynamic> json) =
-      _$_Environment.fromJson;
+      _$EnvironmentImpl.fromJson;
 
   @override
   String get supabaseUrl;
@@ -281,6 +281,6 @@ abstract class _Environment implements Environment {
   String get vapidKey;
   @override
   @JsonKey(ignore: true)
-  _$$_EnvironmentCopyWith<_$_Environment> get copyWith =>
+  _$$EnvironmentImplCopyWith<_$EnvironmentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

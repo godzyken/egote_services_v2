@@ -12,7 +12,7 @@ part of 'user_list_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UserList {
@@ -56,21 +56,22 @@ class _$UserListCopyWithImpl<$Res, $Val extends UserList>
 }
 
 /// @nodoc
-abstract class _$$_UserListCopyWith<$Res> implements $UserListCopyWith<$Res> {
-  factory _$$_UserListCopyWith(
-          _$_UserList value, $Res Function(_$_UserList) then) =
-      __$$_UserListCopyWithImpl<$Res>;
+abstract class _$$UserListImplCopyWith<$Res>
+    implements $UserListCopyWith<$Res> {
+  factory _$$UserListImplCopyWith(
+          _$UserListImpl value, $Res Function(_$UserListImpl) then) =
+      __$$UserListImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<UserEntityModel> values});
 }
 
 /// @nodoc
-class __$$_UserListCopyWithImpl<$Res>
-    extends _$UserListCopyWithImpl<$Res, _$_UserList>
-    implements _$$_UserListCopyWith<$Res> {
-  __$$_UserListCopyWithImpl(
-      _$_UserList _value, $Res Function(_$_UserList) _then)
+class __$$UserListImplCopyWithImpl<$Res>
+    extends _$UserListCopyWithImpl<$Res, _$UserListImpl>
+    implements _$$UserListImplCopyWith<$Res> {
+  __$$UserListImplCopyWithImpl(
+      _$UserListImpl _value, $Res Function(_$UserListImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -78,7 +79,7 @@ class __$$_UserListCopyWithImpl<$Res>
   $Res call({
     Object? values = null,
   }) {
-    return _then(_$_UserList(
+    return _then(_$UserListImpl(
       values: null == values
           ? _value._values
           : values // ignore: cast_nullable_to_non_nullable
@@ -89,8 +90,8 @@ class __$$_UserListCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UserList extends _UserList {
-  const _$_UserList({required final List<UserEntityModel> values})
+class _$UserListImpl extends _UserList {
+  const _$UserListImpl({required final List<UserEntityModel> values})
       : _values = values,
         super._();
 
@@ -108,10 +109,10 @@ class _$_UserList extends _UserList {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserList &&
+            other is _$UserListImpl &&
             const DeepCollectionEquality().equals(other._values, _values));
   }
 
@@ -122,19 +123,19 @@ class _$_UserList extends _UserList {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserListCopyWith<_$_UserList> get copyWith =>
-      __$$_UserListCopyWithImpl<_$_UserList>(this, _$identity);
+  _$$UserListImplCopyWith<_$UserListImpl> get copyWith =>
+      __$$UserListImplCopyWithImpl<_$UserListImpl>(this, _$identity);
 }
 
 abstract class _UserList extends UserList {
   const factory _UserList({required final List<UserEntityModel> values}) =
-      _$_UserList;
+      _$UserListImpl;
   const _UserList._() : super._();
 
   @override
   List<UserEntityModel> get values;
   @override
   @JsonKey(ignore: true)
-  _$$_UserListCopyWith<_$_UserList> get copyWith =>
+  _$$UserListImplCopyWith<_$UserListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

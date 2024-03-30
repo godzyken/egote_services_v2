@@ -12,7 +12,7 @@ part of 'auth_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AuthState {
@@ -134,10 +134,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
 }
 
 /// @nodoc
-abstract class _$$_$AuthStateTrueCopyWith<$Res> {
-  factory _$$_$AuthStateTrueCopyWith(
-          _$_$AuthStateTrue value, $Res Function(_$_$AuthStateTrue) then) =
-      __$$_$AuthStateTrueCopyWithImpl<$Res>;
+abstract class _$$$AuthStateTrueImplCopyWith<$Res> {
+  factory _$$$AuthStateTrueImplCopyWith(_$$AuthStateTrueImpl value,
+          $Res Function(_$$AuthStateTrueImpl) then) =
+      __$$$AuthStateTrueImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {@JsonKey(
@@ -156,11 +156,11 @@ abstract class _$$_$AuthStateTrueCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_$AuthStateTrueCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$_$AuthStateTrue>
-    implements _$$_$AuthStateTrueCopyWith<$Res> {
-  __$$_$AuthStateTrueCopyWithImpl(
-      _$_$AuthStateTrue _value, $Res Function(_$_$AuthStateTrue) _then)
+class __$$$AuthStateTrueImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$$AuthStateTrueImpl>
+    implements _$$$AuthStateTrueImplCopyWith<$Res> {
+  __$$$AuthStateTrueImplCopyWithImpl(
+      _$$AuthStateTrueImpl _value, $Res Function(_$$AuthStateTrueImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -169,7 +169,7 @@ class __$$_$AuthStateTrueCopyWithImpl<$Res>
     Object? status = null,
     Object? userEntity = null,
   }) {
-    return _then(_$_$AuthStateTrue(
+    return _then(_$$AuthStateTrueImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -192,8 +192,8 @@ class __$$_$AuthStateTrueCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_$AuthStateTrue implements _$AuthStateTrue {
-  const _$_$AuthStateTrue(
+class _$$AuthStateTrueImpl implements _$AuthStateTrue {
+  const _$$AuthStateTrueImpl(
       {@JsonKey(
           defaultValue: 'AuthStatus',
           includeFromJson: true,
@@ -224,10 +224,10 @@ class _$_$AuthStateTrue implements _$AuthStateTrue {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_$AuthStateTrue &&
+            other is _$$AuthStateTrueImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.userEntity, userEntity) ||
                 other.userEntity == userEntity));
@@ -239,8 +239,9 @@ class _$_$AuthStateTrue implements _$AuthStateTrue {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_$AuthStateTrueCopyWith<_$_$AuthStateTrue> get copyWith =>
-      __$$_$AuthStateTrueCopyWithImpl<_$_$AuthStateTrue>(this, _$identity);
+  _$$$AuthStateTrueImplCopyWith<_$$AuthStateTrueImpl> get copyWith =>
+      __$$$AuthStateTrueImplCopyWithImpl<_$$AuthStateTrueImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -377,7 +378,7 @@ abstract class _$AuthStateTrue implements AuthState {
           defaultValue: 'UserEntity',
           includeToJson: true,
           includeFromJson: true)
-      required final UserModel userEntity}) = _$_$AuthStateTrue;
+      required final UserModel userEntity}) = _$$AuthStateTrueImpl;
 
   @JsonKey(
       defaultValue: 'AuthStatus',
@@ -389,15 +390,15 @@ abstract class _$AuthStateTrue implements AuthState {
       defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)
   UserModel get userEntity;
   @JsonKey(ignore: true)
-  _$$_$AuthStateTrueCopyWith<_$_$AuthStateTrue> get copyWith =>
+  _$$$AuthStateTrueImplCopyWith<_$$AuthStateTrueImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_$AuthStateFalseCopyWith<$Res> {
-  factory _$$_$AuthStateFalseCopyWith(
-          _$_$AuthStateFalse value, $Res Function(_$_$AuthStateFalse) then) =
-      __$$_$AuthStateFalseCopyWithImpl<$Res>;
+abstract class _$$$AuthStateFalseImplCopyWith<$Res> {
+  factory _$$$AuthStateFalseImplCopyWith(_$$AuthStateFalseImpl value,
+          $Res Function(_$$AuthStateFalseImpl) then) =
+      __$$$AuthStateFalseImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {@JsonKey(
@@ -408,11 +409,11 @@ abstract class _$$_$AuthStateFalseCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_$AuthStateFalseCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$_$AuthStateFalse>
-    implements _$$_$AuthStateFalseCopyWith<$Res> {
-  __$$_$AuthStateFalseCopyWithImpl(
-      _$_$AuthStateFalse _value, $Res Function(_$_$AuthStateFalse) _then)
+class __$$$AuthStateFalseImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$$AuthStateFalseImpl>
+    implements _$$$AuthStateFalseImplCopyWith<$Res> {
+  __$$$AuthStateFalseImplCopyWithImpl(
+      _$$AuthStateFalseImpl _value, $Res Function(_$$AuthStateFalseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -420,7 +421,7 @@ class __$$_$AuthStateFalseCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
   }) {
-    return _then(_$_$AuthStateFalse(
+    return _then(_$$AuthStateFalseImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -431,8 +432,8 @@ class __$$_$AuthStateFalseCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_$AuthStateFalse implements _$AuthStateFalse {
-  const _$_$AuthStateFalse(
+class _$$AuthStateFalseImpl implements _$AuthStateFalse {
+  const _$$AuthStateFalseImpl(
       {@JsonKey(
           defaultValue: 'AuthStatus',
           includeFromJson: true,
@@ -450,10 +451,10 @@ class _$_$AuthStateFalse implements _$AuthStateFalse {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_$AuthStateFalse &&
+            other is _$$AuthStateFalseImpl &&
             (identical(other.status, status) || other.status == status));
   }
 
@@ -463,8 +464,9 @@ class _$_$AuthStateFalse implements _$AuthStateFalse {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_$AuthStateFalseCopyWith<_$_$AuthStateFalse> get copyWith =>
-      __$$_$AuthStateFalseCopyWithImpl<_$_$AuthStateFalse>(this, _$identity);
+  _$$$AuthStateFalseImplCopyWith<_$$AuthStateFalseImpl> get copyWith =>
+      __$$$AuthStateFalseImplCopyWithImpl<_$$AuthStateFalseImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -595,36 +597,36 @@ abstract class _$AuthStateFalse implements AuthState {
           defaultValue: 'AuthStatus',
           includeFromJson: true,
           includeToJson: true)
-      required final AuthStatus status}) = _$_$AuthStateFalse;
+      required final AuthStatus status}) = _$$AuthStateFalseImpl;
 
   @JsonKey(
       defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true)
   AuthStatus get status;
   @JsonKey(ignore: true)
-  _$$_$AuthStateFalseCopyWith<_$_$AuthStateFalse> get copyWith =>
+  _$$$AuthStateFalseImplCopyWith<_$$AuthStateFalseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_AuthStateCopyWith<$Res> {
-  factory _$$_AuthStateCopyWith(
-          _$_AuthState value, $Res Function(_$_AuthState) then) =
-      __$$_AuthStateCopyWithImpl<$Res>;
+abstract class _$$AuthStateImplCopyWith<$Res> {
+  factory _$$AuthStateImplCopyWith(
+          _$AuthStateImpl value, $Res Function(_$AuthStateImpl) then) =
+      __$$AuthStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_AuthStateCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$_AuthState>
-    implements _$$_AuthStateCopyWith<$Res> {
-  __$$_AuthStateCopyWithImpl(
-      _$_AuthState _value, $Res Function(_$_AuthState) _then)
+class __$$AuthStateImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthStateImpl>
+    implements _$$AuthStateImplCopyWith<$Res> {
+  __$$AuthStateImplCopyWithImpl(
+      _$AuthStateImpl _value, $Res Function(_$AuthStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_AuthState implements _AuthState {
-  const _$_AuthState();
+class _$AuthStateImpl implements _AuthState {
+  const _$AuthStateImpl();
 
   @override
   String toString() {
@@ -632,9 +634,9 @@ class _$_AuthState implements _AuthState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_AuthState);
+        (other.runtimeType == runtimeType && other is _$AuthStateImpl);
   }
 
   @override
@@ -764,5 +766,5 @@ class _$_AuthState implements _AuthState {
 }
 
 abstract class _AuthState implements AuthState {
-  const factory _AuthState() = _$_AuthState;
+  const factory _AuthState() = _$AuthStateImpl;
 }

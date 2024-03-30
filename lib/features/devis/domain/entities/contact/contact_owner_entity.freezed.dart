@@ -12,7 +12,7 @@ part of 'contact_owner_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ContactOwnerEntity _$ContactOwnerEntityFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -123,21 +123,21 @@ class _$ContactOwnerEntityCopyWithImpl<$Res, $Val extends ContactOwnerEntity>
 }
 
 /// @nodoc
-abstract class _$$_ContactOwnerEntityCopyWith<$Res> {
-  factory _$$_ContactOwnerEntityCopyWith(_$_ContactOwnerEntity value,
-          $Res Function(_$_ContactOwnerEntity) then) =
-      __$$_ContactOwnerEntityCopyWithImpl<$Res>;
+abstract class _$$ContactOwnerEntityImplCopyWith<$Res> {
+  factory _$$ContactOwnerEntityImplCopyWith(_$ContactOwnerEntityImpl value,
+          $Res Function(_$ContactOwnerEntityImpl) then) =
+      __$$ContactOwnerEntityImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {int id, String firstName, String lastName, String phone, String email});
 }
 
 /// @nodoc
-class __$$_ContactOwnerEntityCopyWithImpl<$Res>
-    extends _$ContactOwnerEntityCopyWithImpl<$Res, _$_ContactOwnerEntity>
-    implements _$$_ContactOwnerEntityCopyWith<$Res> {
-  __$$_ContactOwnerEntityCopyWithImpl(
-      _$_ContactOwnerEntity _value, $Res Function(_$_ContactOwnerEntity) _then)
+class __$$ContactOwnerEntityImplCopyWithImpl<$Res>
+    extends _$ContactOwnerEntityCopyWithImpl<$Res, _$ContactOwnerEntityImpl>
+    implements _$$ContactOwnerEntityImplCopyWith<$Res> {
+  __$$ContactOwnerEntityImplCopyWithImpl(_$ContactOwnerEntityImpl _value,
+      $Res Function(_$ContactOwnerEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -149,7 +149,7 @@ class __$$_ContactOwnerEntityCopyWithImpl<$Res>
     Object? phone = null,
     Object? email = null,
   }) {
-    return _then(_$_ContactOwnerEntity(
+    return _then(_$ContactOwnerEntityImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -177,8 +177,8 @@ class __$$_ContactOwnerEntityCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_ContactOwnerEntity implements _ContactOwnerEntity {
-  const _$_ContactOwnerEntity(
+class _$ContactOwnerEntityImpl implements _ContactOwnerEntity {
+  const _$ContactOwnerEntityImpl(
       {required this.id,
       required this.firstName,
       required this.lastName,
@@ -187,8 +187,8 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
       final String? $type})
       : $type = $type ?? 'default';
 
-  factory _$_ContactOwnerEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_ContactOwnerEntityFromJson(json);
+  factory _$ContactOwnerEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ContactOwnerEntityImplFromJson(json);
 
   @override
   final int id;
@@ -210,10 +210,10 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ContactOwnerEntity &&
+            other is _$ContactOwnerEntityImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
@@ -231,8 +231,8 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ContactOwnerEntityCopyWith<_$_ContactOwnerEntity> get copyWith =>
-      __$$_ContactOwnerEntityCopyWithImpl<_$_ContactOwnerEntity>(
+  _$$ContactOwnerEntityImplCopyWith<_$ContactOwnerEntityImpl> get copyWith =>
+      __$$ContactOwnerEntityImplCopyWithImpl<_$ContactOwnerEntityImpl>(
           this, _$identity);
 
   @override
@@ -329,7 +329,7 @@ class _$_ContactOwnerEntity implements _ContactOwnerEntity {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ContactOwnerEntityToJson(
+    return _$$ContactOwnerEntityImplToJson(
       this,
     );
   }
@@ -341,10 +341,10 @@ abstract class _ContactOwnerEntity implements ContactOwnerEntity {
       required final String firstName,
       required final String lastName,
       required final String phone,
-      required final String email}) = _$_ContactOwnerEntity;
+      required final String email}) = _$ContactOwnerEntityImpl;
 
   factory _ContactOwnerEntity.fromJson(Map<String, dynamic> json) =
-      _$_ContactOwnerEntity.fromJson;
+      _$ContactOwnerEntityImpl.fromJson;
 
   int get id;
   String get firstName;
@@ -352,34 +352,37 @@ abstract class _ContactOwnerEntity implements ContactOwnerEntity {
   String get phone;
   String get email;
   @JsonKey(ignore: true)
-  _$$_ContactOwnerEntityCopyWith<_$_ContactOwnerEntity> get copyWith =>
+  _$$ContactOwnerEntityImplCopyWith<_$ContactOwnerEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ContactOwnerEntityEmptyCopyWith<$Res> {
-  factory _$$_ContactOwnerEntityEmptyCopyWith(_$_ContactOwnerEntityEmpty value,
-          $Res Function(_$_ContactOwnerEntityEmpty) then) =
-      __$$_ContactOwnerEntityEmptyCopyWithImpl<$Res>;
+abstract class _$$ContactOwnerEntityEmptyImplCopyWith<$Res> {
+  factory _$$ContactOwnerEntityEmptyImplCopyWith(
+          _$ContactOwnerEntityEmptyImpl value,
+          $Res Function(_$ContactOwnerEntityEmptyImpl) then) =
+      __$$ContactOwnerEntityEmptyImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_ContactOwnerEntityEmptyCopyWithImpl<$Res>
-    extends _$ContactOwnerEntityCopyWithImpl<$Res, _$_ContactOwnerEntityEmpty>
-    implements _$$_ContactOwnerEntityEmptyCopyWith<$Res> {
-  __$$_ContactOwnerEntityEmptyCopyWithImpl(_$_ContactOwnerEntityEmpty _value,
-      $Res Function(_$_ContactOwnerEntityEmpty) _then)
+class __$$ContactOwnerEntityEmptyImplCopyWithImpl<$Res>
+    extends _$ContactOwnerEntityCopyWithImpl<$Res,
+        _$ContactOwnerEntityEmptyImpl>
+    implements _$$ContactOwnerEntityEmptyImplCopyWith<$Res> {
+  __$$ContactOwnerEntityEmptyImplCopyWithImpl(
+      _$ContactOwnerEntityEmptyImpl _value,
+      $Res Function(_$ContactOwnerEntityEmptyImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
-  const _$_ContactOwnerEntityEmpty({final String? $type})
+class _$ContactOwnerEntityEmptyImpl implements _ContactOwnerEntityEmpty {
+  const _$ContactOwnerEntityEmptyImpl({final String? $type})
       : $type = $type ?? 'empty';
 
-  factory _$_ContactOwnerEntityEmpty.fromJson(Map<String, dynamic> json) =>
-      _$$_ContactOwnerEntityEmptyFromJson(json);
+  factory _$ContactOwnerEntityEmptyImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ContactOwnerEntityEmptyImplFromJson(json);
 
   @JsonKey(name: 'runtimeType')
   final String $type;
@@ -390,10 +393,10 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ContactOwnerEntityEmpty);
+            other is _$ContactOwnerEntityEmptyImpl);
   }
 
   @JsonKey(ignore: true)
@@ -494,36 +497,38 @@ class _$_ContactOwnerEntityEmpty implements _ContactOwnerEntityEmpty {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ContactOwnerEntityEmptyToJson(
+    return _$$ContactOwnerEntityEmptyImplToJson(
       this,
     );
   }
 }
 
 abstract class _ContactOwnerEntityEmpty implements ContactOwnerEntity {
-  const factory _ContactOwnerEntityEmpty() = _$_ContactOwnerEntityEmpty;
+  const factory _ContactOwnerEntityEmpty() = _$ContactOwnerEntityEmptyImpl;
 
   factory _ContactOwnerEntityEmpty.fromJson(Map<String, dynamic> json) =
-      _$_ContactOwnerEntityEmpty.fromJson;
+      _$ContactOwnerEntityEmptyImpl.fromJson;
 }
 
 /// @nodoc
-abstract class _$$_ContactOwnerEntityClientCopyWith<$Res> {
-  factory _$$_ContactOwnerEntityClientCopyWith(
-          _$_ContactOwnerEntityClient value,
-          $Res Function(_$_ContactOwnerEntityClient) then) =
-      __$$_ContactOwnerEntityClientCopyWithImpl<$Res>;
+abstract class _$$ContactOwnerEntityClientImplCopyWith<$Res> {
+  factory _$$ContactOwnerEntityClientImplCopyWith(
+          _$ContactOwnerEntityClientImpl value,
+          $Res Function(_$ContactOwnerEntityClientImpl) then) =
+      __$$ContactOwnerEntityClientImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {int id, String firstName, String lastName, String phone, String email});
 }
 
 /// @nodoc
-class __$$_ContactOwnerEntityClientCopyWithImpl<$Res>
-    extends _$ContactOwnerEntityCopyWithImpl<$Res, _$_ContactOwnerEntityClient>
-    implements _$$_ContactOwnerEntityClientCopyWith<$Res> {
-  __$$_ContactOwnerEntityClientCopyWithImpl(_$_ContactOwnerEntityClient _value,
-      $Res Function(_$_ContactOwnerEntityClient) _then)
+class __$$ContactOwnerEntityClientImplCopyWithImpl<$Res>
+    extends _$ContactOwnerEntityCopyWithImpl<$Res,
+        _$ContactOwnerEntityClientImpl>
+    implements _$$ContactOwnerEntityClientImplCopyWith<$Res> {
+  __$$ContactOwnerEntityClientImplCopyWithImpl(
+      _$ContactOwnerEntityClientImpl _value,
+      $Res Function(_$ContactOwnerEntityClientImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -535,7 +540,7 @@ class __$$_ContactOwnerEntityClientCopyWithImpl<$Res>
     Object? phone = null,
     Object? email = null,
   }) {
-    return _then(_$_ContactOwnerEntityClient(
+    return _then(_$ContactOwnerEntityClientImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -562,8 +567,8 @@ class __$$_ContactOwnerEntityClientCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
-  const _$_ContactOwnerEntityClient(
+class _$ContactOwnerEntityClientImpl implements _ContactOwnerEntityClient {
+  const _$ContactOwnerEntityClientImpl(
       {required this.id,
       required this.firstName,
       required this.lastName,
@@ -572,8 +577,8 @@ class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
       final String? $type})
       : $type = $type ?? 'client';
 
-  factory _$_ContactOwnerEntityClient.fromJson(Map<String, dynamic> json) =>
-      _$$_ContactOwnerEntityClientFromJson(json);
+  factory _$ContactOwnerEntityClientImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ContactOwnerEntityClientImplFromJson(json);
 
   @override
   final int id;
@@ -595,10 +600,10 @@ class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ContactOwnerEntityClient &&
+            other is _$ContactOwnerEntityClientImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
@@ -616,9 +621,9 @@ class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ContactOwnerEntityClientCopyWith<_$_ContactOwnerEntityClient>
-      get copyWith => __$$_ContactOwnerEntityClientCopyWithImpl<
-          _$_ContactOwnerEntityClient>(this, _$identity);
+  _$$ContactOwnerEntityClientImplCopyWith<_$ContactOwnerEntityClientImpl>
+      get copyWith => __$$ContactOwnerEntityClientImplCopyWithImpl<
+          _$ContactOwnerEntityClientImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -714,7 +719,7 @@ class _$_ContactOwnerEntityClient implements _ContactOwnerEntityClient {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ContactOwnerEntityClientToJson(
+    return _$$ContactOwnerEntityClientImplToJson(
       this,
     );
   }
@@ -726,10 +731,10 @@ abstract class _ContactOwnerEntityClient implements ContactOwnerEntity {
       required final String firstName,
       required final String lastName,
       required final String phone,
-      required final String email}) = _$_ContactOwnerEntityClient;
+      required final String email}) = _$ContactOwnerEntityClientImpl;
 
   factory _ContactOwnerEntityClient.fromJson(Map<String, dynamic> json) =
-      _$_ContactOwnerEntityClient.fromJson;
+      _$ContactOwnerEntityClientImpl.fromJson;
 
   int get id;
   String get firstName;
@@ -737,15 +742,16 @@ abstract class _ContactOwnerEntityClient implements ContactOwnerEntity {
   String get phone;
   String get email;
   @JsonKey(ignore: true)
-  _$$_ContactOwnerEntityClientCopyWith<_$_ContactOwnerEntityClient>
+  _$$ContactOwnerEntityClientImplCopyWith<_$ContactOwnerEntityClientImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ContactOwnerEntityProCopyWith<$Res> {
-  factory _$$_ContactOwnerEntityProCopyWith(_$_ContactOwnerEntityPro value,
-          $Res Function(_$_ContactOwnerEntityPro) then) =
-      __$$_ContactOwnerEntityProCopyWithImpl<$Res>;
+abstract class _$$ContactOwnerEntityProImplCopyWith<$Res> {
+  factory _$$ContactOwnerEntityProImplCopyWith(
+          _$ContactOwnerEntityProImpl value,
+          $Res Function(_$ContactOwnerEntityProImpl) then) =
+      __$$ContactOwnerEntityProImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {int id,
@@ -756,11 +762,11 @@ abstract class _$$_ContactOwnerEntityProCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ContactOwnerEntityProCopyWithImpl<$Res>
-    extends _$ContactOwnerEntityCopyWithImpl<$Res, _$_ContactOwnerEntityPro>
-    implements _$$_ContactOwnerEntityProCopyWith<$Res> {
-  __$$_ContactOwnerEntityProCopyWithImpl(_$_ContactOwnerEntityPro _value,
-      $Res Function(_$_ContactOwnerEntityPro) _then)
+class __$$ContactOwnerEntityProImplCopyWithImpl<$Res>
+    extends _$ContactOwnerEntityCopyWithImpl<$Res, _$ContactOwnerEntityProImpl>
+    implements _$$ContactOwnerEntityProImplCopyWith<$Res> {
+  __$$ContactOwnerEntityProImplCopyWithImpl(_$ContactOwnerEntityProImpl _value,
+      $Res Function(_$ContactOwnerEntityProImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -772,7 +778,7 @@ class __$$_ContactOwnerEntityProCopyWithImpl<$Res>
     Object? email = null,
     Object? professions = null,
   }) {
-    return _then(_$_ContactOwnerEntityPro(
+    return _then(_$ContactOwnerEntityProImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -799,8 +805,8 @@ class __$$_ContactOwnerEntityProCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
-  const _$_ContactOwnerEntityPro(
+class _$ContactOwnerEntityProImpl implements _ContactOwnerEntityPro {
+  const _$ContactOwnerEntityProImpl(
       {required this.id,
       required this.companyName,
       required this.phone,
@@ -810,8 +816,8 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
       : _professions = professions,
         $type = $type ?? 'pro';
 
-  factory _$_ContactOwnerEntityPro.fromJson(Map<String, dynamic> json) =>
-      _$$_ContactOwnerEntityProFromJson(json);
+  factory _$ContactOwnerEntityProImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ContactOwnerEntityProImplFromJson(json);
 
   @override
   final int id;
@@ -838,10 +844,10 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ContactOwnerEntityPro &&
+            other is _$ContactOwnerEntityProImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.companyName, companyName) ||
                 other.companyName == companyName) &&
@@ -859,9 +865,9 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ContactOwnerEntityProCopyWith<_$_ContactOwnerEntityPro> get copyWith =>
-      __$$_ContactOwnerEntityProCopyWithImpl<_$_ContactOwnerEntityPro>(
-          this, _$identity);
+  _$$ContactOwnerEntityProImplCopyWith<_$ContactOwnerEntityProImpl>
+      get copyWith => __$$ContactOwnerEntityProImplCopyWithImpl<
+          _$ContactOwnerEntityProImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -957,7 +963,7 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ContactOwnerEntityProToJson(
+    return _$$ContactOwnerEntityProImplToJson(
       this,
     );
   }
@@ -965,14 +971,15 @@ class _$_ContactOwnerEntityPro implements _ContactOwnerEntityPro {
 
 abstract class _ContactOwnerEntityPro implements ContactOwnerEntity {
   const factory _ContactOwnerEntityPro(
-      {required final int id,
-      required final String companyName,
-      required final String phone,
-      required final String email,
-      required final List<Professions> professions}) = _$_ContactOwnerEntityPro;
+          {required final int id,
+          required final String companyName,
+          required final String phone,
+          required final String email,
+          required final List<Professions> professions}) =
+      _$ContactOwnerEntityProImpl;
 
   factory _ContactOwnerEntityPro.fromJson(Map<String, dynamic> json) =
-      _$_ContactOwnerEntityPro.fromJson;
+      _$ContactOwnerEntityProImpl.fromJson;
 
   int get id;
   String get companyName;
@@ -980,6 +987,6 @@ abstract class _ContactOwnerEntityPro implements ContactOwnerEntity {
   String get email;
   List<Professions> get professions;
   @JsonKey(ignore: true)
-  _$$_ContactOwnerEntityProCopyWith<_$_ContactOwnerEntityPro> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ContactOwnerEntityProImplCopyWith<_$ContactOwnerEntityProImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

@@ -11,7 +11,7 @@ import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' as fd;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +25,8 @@ import '../../../application/managers/chat_manager.dart';
 import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
-  const ChatScreen({super.key, required this.cubeUser, required this.cubeDialog});
+  const ChatScreen(
+      {super.key, required this.cubeUser, required this.cubeDialog});
 
   final CubeUser cubeUser;
   final CubeDialog cubeDialog;
@@ -38,7 +39,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final Map<int?, CubeUser?> _occupants = {};
 
   late bool isLoading;
-  late StreamSubscription<ConnectivityResult> connectivityStateSubscription;
+  late StreamSubscription<List<ConnectivityResult>>
+      connectivityStateSubscription;
   String? imageUrl;
   List<CubeMessage> listMessage = [];
   Timer? typingTimer;
@@ -71,8 +73,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onBackPress,
+    return PopScope(
+      onPopInvoked: onBackPress,
       child: SafeArea(
         child: Stack(
           children: <Widget>[
@@ -136,7 +138,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);
     Uint8List imageData;
 
-    if (kIsWeb) {
+    if (fd.kIsWeb) {
       imageData = result.files.single.bytes!;
     } else {
       imageData = File(result.files.single.path!).readAsBytesSync();
@@ -867,10 +869,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
-  Future<bool> onBackPress() {
+  void onBackPress(bool) {
     //TODO: fix that too
-    return Navigator.pushNamedAndRemoveUntil<bool>(
-        context, 'select_dialog', (r) => false,
+    Navigator.pushNamedAndRemoveUntil(context, 'select_dialog', (r) => false,
         arguments: {USER_ARG_NAME: widget.cubeUser}).then((value) {
       return true;
     });
@@ -985,72 +986,76 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
-  void onConnectivityChanged(ConnectivityResult connectivityType) {
+  void onConnectivityChanged(List<ConnectivityResult>? connectivityType) {
     log("[ChatScreenState] connectivityType changed to '$connectivityType'");
     setState(() {
       isLoading = true;
     });
-
-    switch (connectivityType) {
-      case ConnectivityResult.bluetooth:
-      // TODO: Handle this case.
-      case ConnectivityResult.wifi:
-        getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
-                DateTime.now().millisecondsSinceEpoch ~/ 1000)
-            .then((newMessages) {
-          setState(() {
-            if (newMessages.length == messagesPerPage) {
-              oldMessages = List.from(listMessage);
-              listMessage = newMessages;
-            } else {
-              listMessage.insertAll(0, newMessages);
-            }
+    for (var conn in connectivityType!) {
+      switch (connectivityType.single) {
+        case ConnectivityResult.bluetooth:
+          conn = ConnectivityResult.bluetooth;
+        case ConnectivityResult.wifi:
+          conn = ConnectivityResult.wifi;
+          getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
+                  DateTime.now().millisecondsSinceEpoch ~/ 1000)
+              .then((newMessages) {
+            setState(() {
+              if (newMessages.length == messagesPerPage) {
+                oldMessages = List.from(listMessage);
+                listMessage = newMessages;
+              } else {
+                listMessage.insertAll(0, newMessages);
+              }
+            });
+          }).whenComplete(() {
+            setState(() {
+              isLoading = false;
+            });
           });
-        }).whenComplete(() {
-          setState(() {
-            isLoading = false;
+        case ConnectivityResult.ethernet:
+          conn = ConnectivityResult.ethernet;
+        case ConnectivityResult.mobile:
+          conn = ConnectivityResult.mobile;
+          getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
+                  DateTime.now().millisecondsSinceEpoch ~/ 1000)
+              .then((newMessages) {
+            setState(() {
+              if (newMessages.length == messagesPerPage) {
+                oldMessages = List.from(listMessage);
+                listMessage = newMessages;
+              } else {
+                listMessage.insertAll(0, newMessages);
+              }
+            });
+          }).whenComplete(() {
+            setState(() {
+              isLoading = false;
+            });
           });
-        });
-      case ConnectivityResult.ethernet:
-      // TODO: Handle this case.
-      case ConnectivityResult.mobile:
-        getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
-                DateTime.now().millisecondsSinceEpoch ~/ 1000)
-            .then((newMessages) {
-          setState(() {
-            if (newMessages.length == messagesPerPage) {
-              oldMessages = List.from(listMessage);
-              listMessage = newMessages;
-            } else {
-              listMessage.insertAll(0, newMessages);
-            }
+        case ConnectivityResult.none:
+          conn = ConnectivityResult.none;
+        case ConnectivityResult.vpn:
+          conn = ConnectivityResult.vpn;
+          getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
+                  DateTime.now().millisecondsSinceEpoch ~/ 1000)
+              .then((newMessages) {
+            setState(() {
+              if (newMessages.length == messagesPerPage) {
+                oldMessages = List.from(listMessage);
+                listMessage = newMessages;
+              } else {
+                listMessage.insertAll(0, newMessages);
+              }
+            });
+          }).whenComplete(() {
+            setState(() {
+              isLoading = false;
+            });
           });
-        }).whenComplete(() {
-          setState(() {
-            isLoading = false;
-          });
-        });
-      case ConnectivityResult.none:
-      // TODO: Handle this case.
-      case ConnectivityResult.vpn:
-        getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
-                DateTime.now().millisecondsSinceEpoch ~/ 1000)
-            .then((newMessages) {
-          setState(() {
-            if (newMessages.length == messagesPerPage) {
-              oldMessages = List.from(listMessage);
-              listMessage = newMessages;
-            } else {
-              listMessage.insertAll(0, newMessages);
-            }
-          });
-        }).whenComplete(() {
-          setState(() {
-            isLoading = false;
-          });
-        });
-      case ConnectivityResult.other:
-      // TODO: Handle this case.
+        case ConnectivityResult.other:
+          conn = ConnectivityResult.other;
+      }
     }
   }
 
@@ -1102,7 +1107,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(reaction,
-                                      style: kIsWeb
+                                      style: fd.kIsWeb
                                           ? const TextStyle(
                                               color: Colors.green,
                                               fontFamily: 'NotoColorEmoji')
@@ -1135,13 +1140,30 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   height: 400,
                   child: EmojiPicker(
                     config: const Config(
-                      emojiTextStyle: kIsWeb
+                      height: 256,
+                      checkPlatformCompatibility: true,
+                      swapCategoryAndBottomBar: false,
+                      skinToneConfig: SkinToneConfig(
+                          indicatorColor: Colors.green,
+                          dialogBackgroundColor: Colors.white,
+                          enabled: true),
+                      categoryViewConfig: CategoryViewConfig(
+                          tabBarHeight: 46.0,
+                          tabIndicatorAnimDuration: Duration(milliseconds: 300),
+                          initCategory: Category.RECENT),
+                      bottomActionBarConfig: BottomActionBarConfig(),
+                      searchViewConfig: SearchViewConfig(),
+                      emojiViewConfig: EmojiViewConfig(
+                          columns: 7,
+                          recentsLimit: 28,
+                          emojiSizeMax: 28 * (fd.kIsWeb ? 1.2 : 1.0),
+                          backgroundColor: Colors.white,
+                          loadingIndicator: SizedBox.shrink(),
+                          buttonMode: ButtonMode.MATERIAL),
+                      emojiTextStyle: fd.kIsWeb
                           ? TextStyle(
                               color: Colors.green, fontFamily: 'NotoColorEmoji')
                           : null,
-                      iconColorSelected: Colors.green,
-                      indicatorColor: Colors.green,
-                      bgColor: Colors.white,
                     ),
                     onEmojiSelected: (category, emoji) {
                       context.pop(emoji);
@@ -1221,15 +1243,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   FocusNode createEditMessageFocusNode() {
     return FocusNode(
-      onKey: (FocusNode node, RawKeyEvent evt) {
-        if (!evt.isShiftPressed && evt.logicalKey == LogicalKeyboardKey.enter) {
-          if (evt is RawKeyDownEvent) {
+      onKeyEvent: (node, event) {
+        if (!event.synthesized &&
+            event.logicalKey == LogicalKeyboardKey.enter) {
+          if (event is KeyDownEvent) {
             onSendChatMessage(textEditingController.text);
           }
           _editMessageFocusNode.requestFocus();
           return KeyEventResult.handled;
-        } else if (evt.logicalKey == LogicalKeyboardKey.enter) {
-          if (evt is RawKeyDownEvent) {
+        } else if (event.logicalKey == LogicalKeyboardKey.enter) {
+          if (event is KeyDownEvent) {
             setState(() {
               textEditingController.text = '${textEditingController.text}\n';
               textEditingController.selection = TextSelection.collapsed(

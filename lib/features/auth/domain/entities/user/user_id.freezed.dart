@@ -12,7 +12,7 @@ part of 'user_id.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 UserId _$UserIdFromJson(Map<String, dynamic> json) {
   return _UserId.fromJson(json);
@@ -60,19 +60,21 @@ class _$UserIdCopyWithImpl<$Res, $Val extends UserId>
 }
 
 /// @nodoc
-abstract class _$$_UserIdCopyWith<$Res> implements $UserIdCopyWith<$Res> {
-  factory _$$_UserIdCopyWith(_$_UserId value, $Res Function(_$_UserId) then) =
-      __$$_UserIdCopyWithImpl<$Res>;
+abstract class _$$UserIdImplCopyWith<$Res> implements $UserIdCopyWith<$Res> {
+  factory _$$UserIdImplCopyWith(
+          _$UserIdImpl value, $Res Function(_$UserIdImpl) then) =
+      __$$UserIdImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int value});
 }
 
 /// @nodoc
-class __$$_UserIdCopyWithImpl<$Res>
-    extends _$UserIdCopyWithImpl<$Res, _$_UserId>
-    implements _$$_UserIdCopyWith<$Res> {
-  __$$_UserIdCopyWithImpl(_$_UserId _value, $Res Function(_$_UserId) _then)
+class __$$UserIdImplCopyWithImpl<$Res>
+    extends _$UserIdCopyWithImpl<$Res, _$UserIdImpl>
+    implements _$$UserIdImplCopyWith<$Res> {
+  __$$UserIdImplCopyWithImpl(
+      _$UserIdImpl _value, $Res Function(_$UserIdImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +82,7 @@ class __$$_UserIdCopyWithImpl<$Res>
   $Res call({
     Object? value = null,
   }) {
-    return _then(_$_UserId(
+    return _then(_$UserIdImpl(
       value: null == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -91,11 +93,11 @@ class __$$_UserIdCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserId implements _UserId {
-  const _$_UserId({required this.value});
+class _$UserIdImpl implements _UserId {
+  const _$UserIdImpl({required this.value});
 
-  factory _$_UserId.fromJson(Map<String, dynamic> json) =>
-      _$$_UserIdFromJson(json);
+  factory _$UserIdImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserIdImplFromJson(json);
 
   @override
   final int value;
@@ -106,10 +108,10 @@ class _$_UserId implements _UserId {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserId &&
+            other is _$UserIdImpl &&
             (identical(other.value, value) || other.value == value));
   }
 
@@ -120,26 +122,26 @@ class _$_UserId implements _UserId {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserIdCopyWith<_$_UserId> get copyWith =>
-      __$$_UserIdCopyWithImpl<_$_UserId>(this, _$identity);
+  _$$UserIdImplCopyWith<_$UserIdImpl> get copyWith =>
+      __$$UserIdImplCopyWithImpl<_$UserIdImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserIdToJson(
+    return _$$UserIdImplToJson(
       this,
     );
   }
 }
 
 abstract class _UserId implements UserId {
-  const factory _UserId({required final int value}) = _$_UserId;
+  const factory _UserId({required final int value}) = _$UserIdImpl;
 
-  factory _UserId.fromJson(Map<String, dynamic> json) = _$_UserId.fromJson;
+  factory _UserId.fromJson(Map<String, dynamic> json) = _$UserIdImpl.fromJson;
 
   @override
   int get value;
   @override
   @JsonKey(ignore: true)
-  _$$_UserIdCopyWith<_$_UserId> get copyWith =>
+  _$$UserIdImplCopyWith<_$UserIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

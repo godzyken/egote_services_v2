@@ -12,7 +12,7 @@ part of 'user_form_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 UserFormState _$UserFormStateFromJson(Map<String, dynamic> json) {
   return _UserFormState.fromJson(json);
@@ -99,11 +99,11 @@ class _$UserFormStateCopyWithImpl<$Res, $Val extends UserFormState>
 }
 
 /// @nodoc
-abstract class _$$_UserFormStateCopyWith<$Res>
+abstract class _$$UserFormStateImplCopyWith<$Res>
     implements $UserFormStateCopyWith<$Res> {
-  factory _$$_UserFormStateCopyWith(
-          _$_UserFormState value, $Res Function(_$_UserFormState) then) =
-      __$$_UserFormStateCopyWithImpl<$Res>;
+  factory _$$UserFormStateImplCopyWith(
+          _$UserFormStateImpl value, $Res Function(_$UserFormStateImpl) then) =
+      __$$UserFormStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -124,11 +124,11 @@ abstract class _$$_UserFormStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UserFormStateCopyWithImpl<$Res>
-    extends _$UserFormStateCopyWithImpl<$Res, _$_UserFormState>
-    implements _$$_UserFormStateCopyWith<$Res> {
-  __$$_UserFormStateCopyWithImpl(
-      _$_UserFormState _value, $Res Function(_$_UserFormState) _then)
+class __$$UserFormStateImplCopyWithImpl<$Res>
+    extends _$UserFormStateCopyWithImpl<$Res, _$UserFormStateImpl>
+    implements _$$UserFormStateImplCopyWith<$Res> {
+  __$$UserFormStateImplCopyWithImpl(
+      _$UserFormStateImpl _value, $Res Function(_$UserFormStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -138,7 +138,7 @@ class __$$_UserFormStateCopyWithImpl<$Res>
     Object? nameFormz = freezed,
     Object? roleFormz = freezed,
   }) {
-    return _then(_$_UserFormState(
+    return _then(_$UserFormStateImpl(
       null == userEntityModel
           ? _value.userEntityModel
           : userEntityModel // ignore: cast_nullable_to_non_nullable
@@ -157,8 +157,8 @@ class __$$_UserFormStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserFormState implements _UserFormState {
-  const _$_UserFormState(this.userEntityModel,
+class _$UserFormStateImpl implements _UserFormState {
+  const _$UserFormStateImpl(this.userEntityModel,
       {@JsonKey(
           defaultValue: 'UserName',
           includeToJson: false,
@@ -170,8 +170,8 @@ class _$_UserFormState implements _UserFormState {
           includeFromJson: false)
       this.roleFormz});
 
-  factory _$_UserFormState.fromJson(Map<String, dynamic> json) =>
-      _$$_UserFormStateFromJson(json);
+  factory _$UserFormStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserFormStateImplFromJson(json);
 
   @override
   final UserEntityModel userEntityModel;
@@ -190,10 +190,10 @@ class _$_UserFormState implements _UserFormState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserFormState &&
+            other is _$UserFormStateImpl &&
             (identical(other.userEntityModel, userEntityModel) ||
                 other.userEntityModel == userEntityModel) &&
             (identical(other.nameFormz, nameFormz) ||
@@ -210,12 +210,12 @@ class _$_UserFormState implements _UserFormState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserFormStateCopyWith<_$_UserFormState> get copyWith =>
-      __$$_UserFormStateCopyWithImpl<_$_UserFormState>(this, _$identity);
+  _$$UserFormStateImplCopyWith<_$UserFormStateImpl> get copyWith =>
+      __$$UserFormStateImplCopyWithImpl<_$UserFormStateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserFormStateToJson(
+    return _$$UserFormStateImplToJson(
       this,
     );
   }
@@ -232,10 +232,10 @@ abstract class _UserFormState implements UserFormState {
           defaultValue: 'UserRole',
           includeToJson: false,
           includeFromJson: false)
-      final RoleFormz? roleFormz}) = _$_UserFormState;
+      final RoleFormz? roleFormz}) = _$UserFormStateImpl;
 
   factory _UserFormState.fromJson(Map<String, dynamic> json) =
-      _$_UserFormState.fromJson;
+      _$UserFormStateImpl.fromJson;
 
   @override
   UserEntityModel get userEntityModel;
@@ -249,6 +249,6 @@ abstract class _UserFormState implements UserFormState {
   RoleFormz? get roleFormz;
   @override
   @JsonKey(ignore: true)
-  _$$_UserFormStateCopyWith<_$_UserFormState> get copyWith =>
+  _$$UserFormStateImplCopyWith<_$UserFormStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

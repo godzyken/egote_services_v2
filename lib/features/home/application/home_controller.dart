@@ -9,7 +9,7 @@ class HomeControllerNotifier extends StateNotifier<NetWorkStatus> {
   HomeControllerNotifier() : super(NetWorkStatus.notDetermined) {
     lastResult = NetWorkStatus.notDetermined;
     Connectivity().onConnectivityChanged.listen((event) {
-      NetWorkStatus newState;
+      NetWorkStatus? newState;
 
       switch (event) {
         case ConnectivityResult.bluetooth:
@@ -43,7 +43,7 @@ class HomeControllerNotifier extends StateNotifier<NetWorkStatus> {
       }
 
       if (newState != state) {
-        state = newState;
+        state = newState!;
       }
     });
   }

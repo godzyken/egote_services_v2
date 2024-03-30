@@ -25,7 +25,8 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
-  late StreamSubscription<ConnectivityResult> connectivityStateSubscription;
+  late StreamSubscription<List<ConnectivityResult>>
+      connectivityStateSubscription;
   AppLifecycleState? appState;
 
   @override
@@ -52,9 +53,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeMetrics() {
-    ref
-        .read(drawerWidthProvider.notifier)
-        .state = drawerWidth();
+    ref.read(drawerWidthProvider.notifier).state = drawerWidth();
 
     super.didChangeMetrics();
   }
@@ -73,49 +72,47 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
     connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen((connectivityType) {
-          if (AppLifecycleState.resumed != appState) return;
+      if (AppLifecycleState.resumed != appState) return;
 
-          switch (connectivityType) {
-            case ConnectivityResult.bluetooth:
-            // TODO: Handle this case.
-            case ConnectivityResult.wifi:
-            // TODO: Handle this case.
-              log("chatConnectionState = ${CubeChatConnection.instance
-                  .chatConnectionState}");
-              bool isChatDisconnected =
-                  CubeChatConnection.instance.chatConnectionState ==
+      switch (connectivityType) {
+        case ConnectivityResult.bluetooth:
+        // TODO: Handle this case.
+        case ConnectivityResult.wifi:
+          // TODO: Handle this case.
+          log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
+          bool isChatDisconnected =
+              CubeChatConnection.instance.chatConnectionState ==
                       CubeChatConnectionState.Closed ||
-                      CubeChatConnection.instance.chatConnectionState ==
-                          CubeChatConnectionState.ForceClosed;
-
-              if (isChatDisconnected &&
-                  CubeChatConnection.instance.currentUser != null) {
-                CubeChatConnection.instance.relogin();
-              }
-            case ConnectivityResult.ethernet:
-            // TODO: Handle this case.
-            case ConnectivityResult.mobile:
-              log("chatConnectionState = ${CubeChatConnection.instance
-                  .chatConnectionState}");
-              bool isChatDisconnected =
                   CubeChatConnection.instance.chatConnectionState ==
-                      CubeChatConnectionState.Closed ||
-                      CubeChatConnection.instance.chatConnectionState ==
-                          CubeChatConnectionState.ForceClosed;
+                      CubeChatConnectionState.ForceClosed;
 
-              if (isChatDisconnected &&
-                  CubeChatConnection.instance.currentUser != null) {
-                CubeChatConnection.instance.relogin();
-              }
-            case ConnectivityResult.none:
-            // TODO: Handle this case.
-              CubeChatConnection.instance.destroy();
-            case ConnectivityResult.vpn:
-            // TODO: Handle this case.
-            case ConnectivityResult.other:
-            // TODO: Handle this case.
+          if (isChatDisconnected &&
+              CubeChatConnection.instance.currentUser != null) {
+            CubeChatConnection.instance.relogin();
           }
-        });
+        case ConnectivityResult.ethernet:
+        // TODO: Handle this case.
+        case ConnectivityResult.mobile:
+          log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
+          bool isChatDisconnected =
+              CubeChatConnection.instance.chatConnectionState ==
+                      CubeChatConnectionState.Closed ||
+                  CubeChatConnection.instance.chatConnectionState ==
+                      CubeChatConnectionState.ForceClosed;
+
+          if (isChatDisconnected &&
+              CubeChatConnection.instance.currentUser != null) {
+            CubeChatConnection.instance.relogin();
+          }
+        case ConnectivityResult.none:
+          // TODO: Handle this case.
+          CubeChatConnection.instance.destroy();
+        case ConnectivityResult.vpn:
+        // TODO: Handle this case.
+        case ConnectivityResult.other:
+        // TODO: Handle this case.
+      }
+    });
 
     appState = WidgetsBinding.instance.lifecycleState;
 
@@ -124,15 +121,11 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    appState = state;
-
-    switch (appState) {
-      case null:
-      // TODO: Handle this case.
+    switch (state) {
       case AppLifecycleState.resumed:
         SharedPrefs.instance.init().then((sharedPrefs) async {
           CubeUser? user =
-          await sharedPrefs.getUser().then((savedUser) => savedUser!);
+              await sharedPrefs.getUser().then((savedUser) => savedUser!);
 
           if (user != null) {
             if (!CubeChatConnection.instance.isAuthenticated()) {

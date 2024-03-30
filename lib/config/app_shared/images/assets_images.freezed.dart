@@ -12,7 +12,7 @@ part of 'assets_images.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Images _$ImagesFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -97,20 +97,20 @@ class _$ImagesCopyWithImpl<$Res, $Val extends Images>
 }
 
 /// @nodoc
-abstract class _$$_ImagesWebCopyWith<$Res> {
-  factory _$$_ImagesWebCopyWith(
-          _$_ImagesWeb value, $Res Function(_$_ImagesWeb) then) =
-      __$$_ImagesWebCopyWithImpl<$Res>;
+abstract class _$$ImagesWebImplCopyWith<$Res> {
+  factory _$$ImagesWebImplCopyWith(
+          _$ImagesWebImpl value, $Res Function(_$ImagesWebImpl) then) =
+      __$$ImagesWebImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String name});
 }
 
 /// @nodoc
-class __$$_ImagesWebCopyWithImpl<$Res>
-    extends _$ImagesCopyWithImpl<$Res, _$_ImagesWeb>
-    implements _$$_ImagesWebCopyWith<$Res> {
-  __$$_ImagesWebCopyWithImpl(
-      _$_ImagesWeb _value, $Res Function(_$_ImagesWeb) _then)
+class __$$ImagesWebImplCopyWithImpl<$Res>
+    extends _$ImagesCopyWithImpl<$Res, _$ImagesWebImpl>
+    implements _$$ImagesWebImplCopyWith<$Res> {
+  __$$ImagesWebImplCopyWithImpl(
+      _$ImagesWebImpl _value, $Res Function(_$ImagesWebImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -118,7 +118,7 @@ class __$$_ImagesWebCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
   }) {
-    return _then(_$_ImagesWeb(
+    return _then(_$ImagesWebImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -129,12 +129,12 @@ class __$$_ImagesWebCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ImagesWeb implements _ImagesWeb {
-  const _$_ImagesWeb({required this.name, final String? $type})
+class _$ImagesWebImpl implements _ImagesWeb {
+  const _$ImagesWebImpl({required this.name, final String? $type})
       : $type = $type ?? 'web';
 
-  factory _$_ImagesWeb.fromJson(Map<String, dynamic> json) =>
-      _$$_ImagesWebFromJson(json);
+  factory _$ImagesWebImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ImagesWebImplFromJson(json);
 
   @override
   final String name;
@@ -148,10 +148,10 @@ class _$_ImagesWeb implements _ImagesWeb {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ImagesWeb &&
+            other is _$ImagesWebImpl &&
             (identical(other.name, name) || other.name == name));
   }
 
@@ -162,8 +162,8 @@ class _$_ImagesWeb implements _ImagesWeb {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ImagesWebCopyWith<_$_ImagesWeb> get copyWith =>
-      __$$_ImagesWebCopyWithImpl<_$_ImagesWeb>(this, _$identity);
+  _$$ImagesWebImplCopyWith<_$ImagesWebImpl> get copyWith =>
+      __$$ImagesWebImplCopyWithImpl<_$ImagesWebImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -236,39 +236,39 @@ class _$_ImagesWeb implements _ImagesWeb {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ImagesWebToJson(
+    return _$$ImagesWebImplToJson(
       this,
     );
   }
 }
 
 abstract class _ImagesWeb implements Images {
-  const factory _ImagesWeb({required final String name}) = _$_ImagesWeb;
+  const factory _ImagesWeb({required final String name}) = _$ImagesWebImpl;
 
   factory _ImagesWeb.fromJson(Map<String, dynamic> json) =
-      _$_ImagesWeb.fromJson;
+      _$ImagesWebImpl.fromJson;
 
   String get name;
   @JsonKey(ignore: true)
-  _$$_ImagesWebCopyWith<_$_ImagesWeb> get copyWith =>
+  _$$ImagesWebImplCopyWith<_$ImagesWebImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ImagesLocalCopyWith<$Res> {
-  factory _$$_ImagesLocalCopyWith(
-          _$_ImagesLocal value, $Res Function(_$_ImagesLocal) then) =
-      __$$_ImagesLocalCopyWithImpl<$Res>;
+abstract class _$$ImagesLocalImplCopyWith<$Res> {
+  factory _$$ImagesLocalImplCopyWith(
+          _$ImagesLocalImpl value, $Res Function(_$ImagesLocalImpl) then) =
+      __$$ImagesLocalImplCopyWithImpl<$Res>;
   @useResult
   $Res call({@AssetsImageConverter() List<LocalImages> images});
 }
 
 /// @nodoc
-class __$$_ImagesLocalCopyWithImpl<$Res>
-    extends _$ImagesCopyWithImpl<$Res, _$_ImagesLocal>
-    implements _$$_ImagesLocalCopyWith<$Res> {
-  __$$_ImagesLocalCopyWithImpl(
-      _$_ImagesLocal _value, $Res Function(_$_ImagesLocal) _then)
+class __$$ImagesLocalImplCopyWithImpl<$Res>
+    extends _$ImagesCopyWithImpl<$Res, _$ImagesLocalImpl>
+    implements _$$ImagesLocalImplCopyWith<$Res> {
+  __$$ImagesLocalImplCopyWithImpl(
+      _$ImagesLocalImpl _value, $Res Function(_$ImagesLocalImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -276,7 +276,7 @@ class __$$_ImagesLocalCopyWithImpl<$Res>
   $Res call({
     Object? images = null,
   }) {
-    return _then(_$_ImagesLocal(
+    return _then(_$ImagesLocalImpl(
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
@@ -287,15 +287,15 @@ class __$$_ImagesLocalCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ImagesLocal implements _ImagesLocal {
-  const _$_ImagesLocal(
+class _$ImagesLocalImpl implements _ImagesLocal {
+  const _$ImagesLocalImpl(
       {@AssetsImageConverter() required final List<LocalImages> images,
       final String? $type})
       : _images = images,
         $type = $type ?? 'local';
 
-  factory _$_ImagesLocal.fromJson(Map<String, dynamic> json) =>
-      _$$_ImagesLocalFromJson(json);
+  factory _$ImagesLocalImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ImagesLocalImplFromJson(json);
 
   final List<LocalImages> _images;
   @override
@@ -315,10 +315,10 @@ class _$_ImagesLocal implements _ImagesLocal {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ImagesLocal &&
+            other is _$ImagesLocalImpl &&
             const DeepCollectionEquality().equals(other._images, _images));
   }
 
@@ -330,8 +330,8 @@ class _$_ImagesLocal implements _ImagesLocal {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ImagesLocalCopyWith<_$_ImagesLocal> get copyWith =>
-      __$$_ImagesLocalCopyWithImpl<_$_ImagesLocal>(this, _$identity);
+  _$$ImagesLocalImplCopyWith<_$ImagesLocalImpl> get copyWith =>
+      __$$ImagesLocalImplCopyWithImpl<_$ImagesLocalImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -404,7 +404,7 @@ class _$_ImagesLocal implements _ImagesLocal {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ImagesLocalToJson(
+    return _$$ImagesLocalImplToJson(
       this,
     );
   }
@@ -413,33 +413,33 @@ class _$_ImagesLocal implements _ImagesLocal {
 abstract class _ImagesLocal implements Images {
   const factory _ImagesLocal(
           {@AssetsImageConverter() required final List<LocalImages> images}) =
-      _$_ImagesLocal;
+      _$ImagesLocalImpl;
 
   factory _ImagesLocal.fromJson(Map<String, dynamic> json) =
-      _$_ImagesLocal.fromJson;
+      _$ImagesLocalImpl.fromJson;
 
   @AssetsImageConverter()
   List<LocalImages> get images;
   @JsonKey(ignore: true)
-  _$$_ImagesLocalCopyWith<_$_ImagesLocal> get copyWith =>
+  _$$ImagesLocalImplCopyWith<_$ImagesLocalImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ImagesErrorCopyWith<$Res> {
-  factory _$$_ImagesErrorCopyWith(
-          _$_ImagesError value, $Res Function(_$_ImagesError) then) =
-      __$$_ImagesErrorCopyWithImpl<$Res>;
+abstract class _$$ImagesErrorImplCopyWith<$Res> {
+  factory _$$ImagesErrorImplCopyWith(
+          _$ImagesErrorImpl value, $Res Function(_$ImagesErrorImpl) then) =
+      __$$ImagesErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String error, String message});
 }
 
 /// @nodoc
-class __$$_ImagesErrorCopyWithImpl<$Res>
-    extends _$ImagesCopyWithImpl<$Res, _$_ImagesError>
-    implements _$$_ImagesErrorCopyWith<$Res> {
-  __$$_ImagesErrorCopyWithImpl(
-      _$_ImagesError _value, $Res Function(_$_ImagesError) _then)
+class __$$ImagesErrorImplCopyWithImpl<$Res>
+    extends _$ImagesCopyWithImpl<$Res, _$ImagesErrorImpl>
+    implements _$$ImagesErrorImplCopyWith<$Res> {
+  __$$ImagesErrorImplCopyWithImpl(
+      _$ImagesErrorImpl _value, $Res Function(_$ImagesErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -448,7 +448,7 @@ class __$$_ImagesErrorCopyWithImpl<$Res>
     Object? error = null,
     Object? message = null,
   }) {
-    return _then(_$_ImagesError(
+    return _then(_$ImagesErrorImpl(
       error: null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -463,13 +463,13 @@ class __$$_ImagesErrorCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ImagesError implements _ImagesError {
-  const _$_ImagesError(
+class _$ImagesErrorImpl implements _ImagesError {
+  const _$ImagesErrorImpl(
       {required this.error, required this.message, final String? $type})
       : $type = $type ?? 'error';
 
-  factory _$_ImagesError.fromJson(Map<String, dynamic> json) =>
-      _$$_ImagesErrorFromJson(json);
+  factory _$ImagesErrorImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ImagesErrorImplFromJson(json);
 
   @override
   final String error;
@@ -485,10 +485,10 @@ class _$_ImagesError implements _ImagesError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ImagesError &&
+            other is _$ImagesErrorImpl &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.message, message) || other.message == message));
   }
@@ -500,8 +500,8 @@ class _$_ImagesError implements _ImagesError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ImagesErrorCopyWith<_$_ImagesError> get copyWith =>
-      __$$_ImagesErrorCopyWithImpl<_$_ImagesError>(this, _$identity);
+  _$$ImagesErrorImplCopyWith<_$ImagesErrorImpl> get copyWith =>
+      __$$ImagesErrorImplCopyWithImpl<_$ImagesErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -574,7 +574,7 @@ class _$_ImagesError implements _ImagesError {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ImagesErrorToJson(
+    return _$$ImagesErrorImplToJson(
       this,
     );
   }
@@ -583,15 +583,15 @@ class _$_ImagesError implements _ImagesError {
 abstract class _ImagesError implements Images {
   const factory _ImagesError(
       {required final String error,
-      required final String message}) = _$_ImagesError;
+      required final String message}) = _$ImagesErrorImpl;
 
   factory _ImagesError.fromJson(Map<String, dynamic> json) =
-      _$_ImagesError.fromJson;
+      _$ImagesErrorImpl.fromJson;
 
   String get error;
   String get message;
   @JsonKey(ignore: true)
-  _$$_ImagesErrorCopyWith<_$_ImagesError> get copyWith =>
+  _$$ImagesErrorImplCopyWith<_$ImagesErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -689,22 +689,22 @@ class _$ImagesAssetsCopyWithImpl<$Res, $Val extends ImagesAssets>
 }
 
 /// @nodoc
-abstract class _$$_ImagesAssetsLoadingCopyWith<$Res>
+abstract class _$$ImagesAssetsLoadingImplCopyWith<$Res>
     implements $ImagesAssetsCopyWith<$Res> {
-  factory _$$_ImagesAssetsLoadingCopyWith(_$_ImagesAssetsLoading value,
-          $Res Function(_$_ImagesAssetsLoading) then) =
-      __$$_ImagesAssetsLoadingCopyWithImpl<$Res>;
+  factory _$$ImagesAssetsLoadingImplCopyWith(_$ImagesAssetsLoadingImpl value,
+          $Res Function(_$ImagesAssetsLoadingImpl) then) =
+      __$$ImagesAssetsLoadingImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<Images> images, bool isLoading});
 }
 
 /// @nodoc
-class __$$_ImagesAssetsLoadingCopyWithImpl<$Res>
-    extends _$ImagesAssetsCopyWithImpl<$Res, _$_ImagesAssetsLoading>
-    implements _$$_ImagesAssetsLoadingCopyWith<$Res> {
-  __$$_ImagesAssetsLoadingCopyWithImpl(_$_ImagesAssetsLoading _value,
-      $Res Function(_$_ImagesAssetsLoading) _then)
+class __$$ImagesAssetsLoadingImplCopyWithImpl<$Res>
+    extends _$ImagesAssetsCopyWithImpl<$Res, _$ImagesAssetsLoadingImpl>
+    implements _$$ImagesAssetsLoadingImplCopyWith<$Res> {
+  __$$ImagesAssetsLoadingImplCopyWithImpl(_$ImagesAssetsLoadingImpl _value,
+      $Res Function(_$ImagesAssetsLoadingImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -713,7 +713,7 @@ class __$$_ImagesAssetsLoadingCopyWithImpl<$Res>
     Object? images = null,
     Object? isLoading = null,
   }) {
-    return _then(_$_ImagesAssetsLoading(
+    return _then(_$ImagesAssetsLoadingImpl(
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
@@ -728,8 +728,8 @@ class __$$_ImagesAssetsLoadingCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ImagesAssetsLoading extends _ImagesAssetsLoading {
-  const _$_ImagesAssetsLoading(
+class _$ImagesAssetsLoadingImpl extends _ImagesAssetsLoading {
+  const _$ImagesAssetsLoadingImpl(
       {required final List<Images> images,
       required this.isLoading,
       final String? $type})
@@ -737,8 +737,8 @@ class _$_ImagesAssetsLoading extends _ImagesAssetsLoading {
         $type = $type ?? 'loading',
         super._();
 
-  factory _$_ImagesAssetsLoading.fromJson(Map<String, dynamic> json) =>
-      _$$_ImagesAssetsLoadingFromJson(json);
+  factory _$ImagesAssetsLoadingImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ImagesAssetsLoadingImplFromJson(json);
 
   final List<Images> _images;
   @override
@@ -760,10 +760,10 @@ class _$_ImagesAssetsLoading extends _ImagesAssetsLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ImagesAssetsLoading &&
+            other is _$ImagesAssetsLoadingImpl &&
             const DeepCollectionEquality().equals(other._images, _images) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading));
@@ -777,8 +777,8 @@ class _$_ImagesAssetsLoading extends _ImagesAssetsLoading {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ImagesAssetsLoadingCopyWith<_$_ImagesAssetsLoading> get copyWith =>
-      __$$_ImagesAssetsLoadingCopyWithImpl<_$_ImagesAssetsLoading>(
+  _$$ImagesAssetsLoadingImplCopyWith<_$ImagesAssetsLoadingImpl> get copyWith =>
+      __$$ImagesAssetsLoadingImplCopyWithImpl<_$ImagesAssetsLoadingImpl>(
           this, _$identity);
 
   @override
@@ -845,7 +845,7 @@ class _$_ImagesAssetsLoading extends _ImagesAssetsLoading {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ImagesAssetsLoadingToJson(
+    return _$$ImagesAssetsLoadingImplToJson(
       this,
     );
   }
@@ -854,38 +854,38 @@ class _$_ImagesAssetsLoading extends _ImagesAssetsLoading {
 abstract class _ImagesAssetsLoading extends ImagesAssets {
   const factory _ImagesAssetsLoading(
       {required final List<Images> images,
-      required final bool isLoading}) = _$_ImagesAssetsLoading;
+      required final bool isLoading}) = _$ImagesAssetsLoadingImpl;
   const _ImagesAssetsLoading._() : super._();
 
   factory _ImagesAssetsLoading.fromJson(Map<String, dynamic> json) =
-      _$_ImagesAssetsLoading.fromJson;
+      _$ImagesAssetsLoadingImpl.fromJson;
 
   List<Images> get images;
   @override
   bool get isLoading;
   @override
   @JsonKey(ignore: true)
-  _$$_ImagesAssetsLoadingCopyWith<_$_ImagesAssetsLoading> get copyWith =>
+  _$$ImagesAssetsLoadingImplCopyWith<_$ImagesAssetsLoadingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ImagesAssetsFailedCopyWith<$Res>
+abstract class _$$ImagesAssetsFailedImplCopyWith<$Res>
     implements $ImagesAssetsCopyWith<$Res> {
-  factory _$$_ImagesAssetsFailedCopyWith(_$_ImagesAssetsFailed value,
-          $Res Function(_$_ImagesAssetsFailed) then) =
-      __$$_ImagesAssetsFailedCopyWithImpl<$Res>;
+  factory _$$ImagesAssetsFailedImplCopyWith(_$ImagesAssetsFailedImpl value,
+          $Res Function(_$ImagesAssetsFailedImpl) then) =
+      __$$ImagesAssetsFailedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool isLoading, String message});
 }
 
 /// @nodoc
-class __$$_ImagesAssetsFailedCopyWithImpl<$Res>
-    extends _$ImagesAssetsCopyWithImpl<$Res, _$_ImagesAssetsFailed>
-    implements _$$_ImagesAssetsFailedCopyWith<$Res> {
-  __$$_ImagesAssetsFailedCopyWithImpl(
-      _$_ImagesAssetsFailed _value, $Res Function(_$_ImagesAssetsFailed) _then)
+class __$$ImagesAssetsFailedImplCopyWithImpl<$Res>
+    extends _$ImagesAssetsCopyWithImpl<$Res, _$ImagesAssetsFailedImpl>
+    implements _$$ImagesAssetsFailedImplCopyWith<$Res> {
+  __$$ImagesAssetsFailedImplCopyWithImpl(_$ImagesAssetsFailedImpl _value,
+      $Res Function(_$ImagesAssetsFailedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -894,7 +894,7 @@ class __$$_ImagesAssetsFailedCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? message = null,
   }) {
-    return _then(_$_ImagesAssetsFailed(
+    return _then(_$ImagesAssetsFailedImpl(
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -909,14 +909,14 @@ class __$$_ImagesAssetsFailedCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ImagesAssetsFailed extends _ImagesAssetsFailed {
-  const _$_ImagesAssetsFailed(
+class _$ImagesAssetsFailedImpl extends _ImagesAssetsFailed {
+  const _$ImagesAssetsFailedImpl(
       {required this.isLoading, required this.message, final String? $type})
       : $type = $type ?? 'failed',
         super._();
 
-  factory _$_ImagesAssetsFailed.fromJson(Map<String, dynamic> json) =>
-      _$$_ImagesAssetsFailedFromJson(json);
+  factory _$ImagesAssetsFailedImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ImagesAssetsFailedImplFromJson(json);
 
   @override
   final bool isLoading;
@@ -932,10 +932,10 @@ class _$_ImagesAssetsFailed extends _ImagesAssetsFailed {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ImagesAssetsFailed &&
+            other is _$ImagesAssetsFailedImpl &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.message, message) || other.message == message));
@@ -948,8 +948,8 @@ class _$_ImagesAssetsFailed extends _ImagesAssetsFailed {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ImagesAssetsFailedCopyWith<_$_ImagesAssetsFailed> get copyWith =>
-      __$$_ImagesAssetsFailedCopyWithImpl<_$_ImagesAssetsFailed>(
+  _$$ImagesAssetsFailedImplCopyWith<_$ImagesAssetsFailedImpl> get copyWith =>
+      __$$ImagesAssetsFailedImplCopyWithImpl<_$ImagesAssetsFailedImpl>(
           this, _$identity);
 
   @override
@@ -1016,7 +1016,7 @@ class _$_ImagesAssetsFailed extends _ImagesAssetsFailed {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ImagesAssetsFailedToJson(
+    return _$$ImagesAssetsFailedImplToJson(
       this,
     );
   }
@@ -1025,17 +1025,17 @@ class _$_ImagesAssetsFailed extends _ImagesAssetsFailed {
 abstract class _ImagesAssetsFailed extends ImagesAssets {
   const factory _ImagesAssetsFailed(
       {required final bool isLoading,
-      required final String message}) = _$_ImagesAssetsFailed;
+      required final String message}) = _$ImagesAssetsFailedImpl;
   const _ImagesAssetsFailed._() : super._();
 
   factory _ImagesAssetsFailed.fromJson(Map<String, dynamic> json) =
-      _$_ImagesAssetsFailed.fromJson;
+      _$ImagesAssetsFailedImpl.fromJson;
 
   @override
   bool get isLoading;
   String get message;
   @override
   @JsonKey(ignore: true)
-  _$$_ImagesAssetsFailedCopyWith<_$_ImagesAssetsFailed> get copyWith =>
+  _$$ImagesAssetsFailedImplCopyWith<_$ImagesAssetsFailedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'travaux_entity_states.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 TravauxEntityStates _$TravauxEntityStatesFromJson(Map<String, dynamic> json) {
   return _TravauxEntityStates.fromJson(json);
@@ -62,22 +62,22 @@ class _$TravauxEntityStatesCopyWithImpl<$Res, $Val extends TravauxEntityStates>
 }
 
 /// @nodoc
-abstract class _$$_TravauxEntityStatesCopyWith<$Res>
+abstract class _$$TravauxEntityStatesImplCopyWith<$Res>
     implements $TravauxEntityStatesCopyWith<$Res> {
-  factory _$$_TravauxEntityStatesCopyWith(_$_TravauxEntityStates value,
-          $Res Function(_$_TravauxEntityStates) then) =
-      __$$_TravauxEntityStatesCopyWithImpl<$Res>;
+  factory _$$TravauxEntityStatesImplCopyWith(_$TravauxEntityStatesImpl value,
+          $Res Function(_$TravauxEntityStatesImpl) then) =
+      __$$TravauxEntityStatesImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<TravauxEntity> travaux});
 }
 
 /// @nodoc
-class __$$_TravauxEntityStatesCopyWithImpl<$Res>
-    extends _$TravauxEntityStatesCopyWithImpl<$Res, _$_TravauxEntityStates>
-    implements _$$_TravauxEntityStatesCopyWith<$Res> {
-  __$$_TravauxEntityStatesCopyWithImpl(_$_TravauxEntityStates _value,
-      $Res Function(_$_TravauxEntityStates) _then)
+class __$$TravauxEntityStatesImplCopyWithImpl<$Res>
+    extends _$TravauxEntityStatesCopyWithImpl<$Res, _$TravauxEntityStatesImpl>
+    implements _$$TravauxEntityStatesImplCopyWith<$Res> {
+  __$$TravauxEntityStatesImplCopyWithImpl(_$TravauxEntityStatesImpl _value,
+      $Res Function(_$TravauxEntityStatesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -85,7 +85,7 @@ class __$$_TravauxEntityStatesCopyWithImpl<$Res>
   $Res call({
     Object? travaux = null,
   }) {
-    return _then(_$_TravauxEntityStates(
+    return _then(_$TravauxEntityStatesImpl(
       travaux: null == travaux
           ? _value._travaux
           : travaux // ignore: cast_nullable_to_non_nullable
@@ -97,14 +97,14 @@ class __$$_TravauxEntityStatesCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_TravauxEntityStates
+class _$TravauxEntityStatesImpl
     with DiagnosticableTreeMixin
     implements _TravauxEntityStates {
-  const _$_TravauxEntityStates({required final List<TravauxEntity> travaux})
+  const _$TravauxEntityStatesImpl({required final List<TravauxEntity> travaux})
       : _travaux = travaux;
 
-  factory _$_TravauxEntityStates.fromJson(Map<String, dynamic> json) =>
-      _$$_TravauxEntityStatesFromJson(json);
+  factory _$TravauxEntityStatesImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TravauxEntityStatesImplFromJson(json);
 
   final List<TravauxEntity> _travaux;
   @override
@@ -128,10 +128,10 @@ class _$_TravauxEntityStates
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TravauxEntityStates &&
+            other is _$TravauxEntityStatesImpl &&
             const DeepCollectionEquality().equals(other._travaux, _travaux));
   }
 
@@ -143,13 +143,13 @@ class _$_TravauxEntityStates
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TravauxEntityStatesCopyWith<_$_TravauxEntityStates> get copyWith =>
-      __$$_TravauxEntityStatesCopyWithImpl<_$_TravauxEntityStates>(
+  _$$TravauxEntityStatesImplCopyWith<_$TravauxEntityStatesImpl> get copyWith =>
+      __$$TravauxEntityStatesImplCopyWithImpl<_$TravauxEntityStatesImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TravauxEntityStatesToJson(
+    return _$$TravauxEntityStatesImplToJson(
       this,
     );
   }
@@ -157,15 +157,15 @@ class _$_TravauxEntityStates
 
 abstract class _TravauxEntityStates implements TravauxEntityStates {
   const factory _TravauxEntityStates(
-      {required final List<TravauxEntity> travaux}) = _$_TravauxEntityStates;
+      {required final List<TravauxEntity> travaux}) = _$TravauxEntityStatesImpl;
 
   factory _TravauxEntityStates.fromJson(Map<String, dynamic> json) =
-      _$_TravauxEntityStates.fromJson;
+      _$TravauxEntityStatesImpl.fromJson;
 
   @override
   List<TravauxEntity> get travaux;
   @override
   @JsonKey(ignore: true)
-  _$$_TravauxEntityStatesCopyWith<_$_TravauxEntityStates> get copyWith =>
+  _$$TravauxEntityStatesImplCopyWith<_$TravauxEntityStatesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

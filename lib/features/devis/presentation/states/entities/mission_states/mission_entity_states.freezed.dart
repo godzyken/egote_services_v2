@@ -12,7 +12,7 @@ part of 'mission_entity_states.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 MissionEntityStates _$MissionEntityStatesFromJson(Map<String, dynamic> json) {
   return _MissionEntityStates.fromJson(json);
@@ -62,22 +62,22 @@ class _$MissionEntityStatesCopyWithImpl<$Res, $Val extends MissionEntityStates>
 }
 
 /// @nodoc
-abstract class _$$_MissionEntityStatesCopyWith<$Res>
+abstract class _$$MissionEntityStatesImplCopyWith<$Res>
     implements $MissionEntityStatesCopyWith<$Res> {
-  factory _$$_MissionEntityStatesCopyWith(_$_MissionEntityStates value,
-          $Res Function(_$_MissionEntityStates) then) =
-      __$$_MissionEntityStatesCopyWithImpl<$Res>;
+  factory _$$MissionEntityStatesImplCopyWith(_$MissionEntityStatesImpl value,
+          $Res Function(_$MissionEntityStatesImpl) then) =
+      __$$MissionEntityStatesImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<MissionEntity> missionEntities});
 }
 
 /// @nodoc
-class __$$_MissionEntityStatesCopyWithImpl<$Res>
-    extends _$MissionEntityStatesCopyWithImpl<$Res, _$_MissionEntityStates>
-    implements _$$_MissionEntityStatesCopyWith<$Res> {
-  __$$_MissionEntityStatesCopyWithImpl(_$_MissionEntityStates _value,
-      $Res Function(_$_MissionEntityStates) _then)
+class __$$MissionEntityStatesImplCopyWithImpl<$Res>
+    extends _$MissionEntityStatesCopyWithImpl<$Res, _$MissionEntityStatesImpl>
+    implements _$$MissionEntityStatesImplCopyWith<$Res> {
+  __$$MissionEntityStatesImplCopyWithImpl(_$MissionEntityStatesImpl _value,
+      $Res Function(_$MissionEntityStatesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -85,7 +85,7 @@ class __$$_MissionEntityStatesCopyWithImpl<$Res>
   $Res call({
     Object? missionEntities = null,
   }) {
-    return _then(_$_MissionEntityStates(
+    return _then(_$MissionEntityStatesImpl(
       missionEntities: null == missionEntities
           ? _value._missionEntities
           : missionEntities // ignore: cast_nullable_to_non_nullable
@@ -97,15 +97,15 @@ class __$$_MissionEntityStatesCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_MissionEntityStates
+class _$MissionEntityStatesImpl
     with DiagnosticableTreeMixin
     implements _MissionEntityStates {
-  const _$_MissionEntityStates(
+  const _$MissionEntityStatesImpl(
       {required final List<MissionEntity> missionEntities})
       : _missionEntities = missionEntities;
 
-  factory _$_MissionEntityStates.fromJson(Map<String, dynamic> json) =>
-      _$$_MissionEntityStatesFromJson(json);
+  factory _$MissionEntityStatesImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MissionEntityStatesImplFromJson(json);
 
   final List<MissionEntity> _missionEntities;
   @override
@@ -129,10 +129,10 @@ class _$_MissionEntityStates
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MissionEntityStates &&
+            other is _$MissionEntityStatesImpl &&
             const DeepCollectionEquality()
                 .equals(other._missionEntities, _missionEntities));
   }
@@ -145,13 +145,13 @@ class _$_MissionEntityStates
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MissionEntityStatesCopyWith<_$_MissionEntityStates> get copyWith =>
-      __$$_MissionEntityStatesCopyWithImpl<_$_MissionEntityStates>(
+  _$$MissionEntityStatesImplCopyWith<_$MissionEntityStatesImpl> get copyWith =>
+      __$$MissionEntityStatesImplCopyWithImpl<_$MissionEntityStatesImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MissionEntityStatesToJson(
+    return _$$MissionEntityStatesImplToJson(
       this,
     );
   }
@@ -160,15 +160,15 @@ class _$_MissionEntityStates
 abstract class _MissionEntityStates implements MissionEntityStates {
   const factory _MissionEntityStates(
           {required final List<MissionEntity> missionEntities}) =
-      _$_MissionEntityStates;
+      _$MissionEntityStatesImpl;
 
   factory _MissionEntityStates.fromJson(Map<String, dynamic> json) =
-      _$_MissionEntityStates.fromJson;
+      _$MissionEntityStatesImpl.fromJson;
 
   @override
   List<MissionEntity> get missionEntities;
   @override
   @JsonKey(ignore: true)
-  _$$_MissionEntityStatesCopyWith<_$_MissionEntityStates> get copyWith =>
+  _$$MissionEntityStatesImplCopyWith<_$MissionEntityStatesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

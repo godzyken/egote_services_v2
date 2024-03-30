@@ -12,7 +12,7 @@ part of 'travau_id.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 TravauId _$TravauIdFromJson(Map<String, dynamic> json) {
   return _TravauId.fromJson(json);
@@ -61,21 +61,22 @@ class _$TravauIdCopyWithImpl<$Res, $Val extends TravauId>
 }
 
 /// @nodoc
-abstract class _$$_TravauIdCopyWith<$Res> implements $TravauIdCopyWith<$Res> {
-  factory _$$_TravauIdCopyWith(
-          _$_TravauId value, $Res Function(_$_TravauId) then) =
-      __$$_TravauIdCopyWithImpl<$Res>;
+abstract class _$$TravauIdImplCopyWith<$Res>
+    implements $TravauIdCopyWith<$Res> {
+  factory _$$TravauIdImplCopyWith(
+          _$TravauIdImpl value, $Res Function(_$TravauIdImpl) then) =
+      __$$TravauIdImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id});
 }
 
 /// @nodoc
-class __$$_TravauIdCopyWithImpl<$Res>
-    extends _$TravauIdCopyWithImpl<$Res, _$_TravauId>
-    implements _$$_TravauIdCopyWith<$Res> {
-  __$$_TravauIdCopyWithImpl(
-      _$_TravauId _value, $Res Function(_$_TravauId) _then)
+class __$$TravauIdImplCopyWithImpl<$Res>
+    extends _$TravauIdCopyWithImpl<$Res, _$TravauIdImpl>
+    implements _$$TravauIdImplCopyWith<$Res> {
+  __$$TravauIdImplCopyWithImpl(
+      _$TravauIdImpl _value, $Res Function(_$TravauIdImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -83,7 +84,7 @@ class __$$_TravauIdCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$_TravauId(
+    return _then(_$TravauIdImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -94,11 +95,11 @@ class __$$_TravauIdCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TravauId implements _TravauId {
-  const _$_TravauId({required this.id});
+class _$TravauIdImpl implements _TravauId {
+  const _$TravauIdImpl({required this.id});
 
-  factory _$_TravauId.fromJson(Map<String, dynamic> json) =>
-      _$$_TravauIdFromJson(json);
+  factory _$TravauIdImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TravauIdImplFromJson(json);
 
   @override
   final int id;
@@ -109,10 +110,10 @@ class _$_TravauId implements _TravauId {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TravauId &&
+            other is _$TravauIdImpl &&
             (identical(other.id, id) || other.id == id));
   }
 
@@ -123,26 +124,27 @@ class _$_TravauId implements _TravauId {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TravauIdCopyWith<_$_TravauId> get copyWith =>
-      __$$_TravauIdCopyWithImpl<_$_TravauId>(this, _$identity);
+  _$$TravauIdImplCopyWith<_$TravauIdImpl> get copyWith =>
+      __$$TravauIdImplCopyWithImpl<_$TravauIdImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TravauIdToJson(
+    return _$$TravauIdImplToJson(
       this,
     );
   }
 }
 
 abstract class _TravauId implements TravauId {
-  const factory _TravauId({required final int id}) = _$_TravauId;
+  const factory _TravauId({required final int id}) = _$TravauIdImpl;
 
-  factory _TravauId.fromJson(Map<String, dynamic> json) = _$_TravauId.fromJson;
+  factory _TravauId.fromJson(Map<String, dynamic> json) =
+      _$TravauIdImpl.fromJson;
 
   @override
   int get id;
   @override
   @JsonKey(ignore: true)
-  _$$_TravauIdCopyWith<_$_TravauId> get copyWith =>
+  _$$TravauIdImplCopyWith<_$TravauIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

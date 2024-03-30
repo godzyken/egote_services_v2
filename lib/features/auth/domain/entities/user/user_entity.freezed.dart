@@ -12,7 +12,7 @@ part of 'user_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 UserEntityModel _$UserEntityModelFromJson(Map<String, dynamic> json) {
   return _UserEntityModel.fromJson(json);
@@ -129,11 +129,11 @@ class _$UserEntityModelCopyWithImpl<$Res, $Val extends UserEntityModel>
 }
 
 /// @nodoc
-abstract class _$$_UserEntityModelCopyWith<$Res>
+abstract class _$$UserEntityModelImplCopyWith<$Res>
     implements $UserEntityModelCopyWith<$Res> {
-  factory _$$_UserEntityModelCopyWith(
-          _$_UserEntityModel value, $Res Function(_$_UserEntityModel) then) =
-      __$$_UserEntityModelCopyWithImpl<$Res>;
+  factory _$$UserEntityModelImplCopyWith(_$UserEntityModelImpl value,
+          $Res Function(_$UserEntityModelImpl) then) =
+      __$$UserEntityModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -152,11 +152,11 @@ abstract class _$$_UserEntityModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UserEntityModelCopyWithImpl<$Res>
-    extends _$UserEntityModelCopyWithImpl<$Res, _$_UserEntityModel>
-    implements _$$_UserEntityModelCopyWith<$Res> {
-  __$$_UserEntityModelCopyWithImpl(
-      _$_UserEntityModel _value, $Res Function(_$_UserEntityModel) _then)
+class __$$UserEntityModelImplCopyWithImpl<$Res>
+    extends _$UserEntityModelCopyWithImpl<$Res, _$UserEntityModelImpl>
+    implements _$$UserEntityModelImplCopyWith<$Res> {
+  __$$UserEntityModelImplCopyWithImpl(
+      _$UserEntityModelImpl _value, $Res Function(_$UserEntityModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -172,7 +172,7 @@ class __$$_UserEntityModelCopyWithImpl<$Res>
     Object? phoneConfirmedAt = null,
     Object? lastSignInAt = null,
   }) {
-    return _then(_$_UserEntityModel(
+    return _then(_$UserEntityModelImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -216,8 +216,8 @@ class __$$_UserEntityModelCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_UserEntityModel extends _UserEntityModel {
-  const _$_UserEntityModel(
+class _$UserEntityModelImpl extends _UserEntityModel {
+  const _$UserEntityModelImpl(
       {required this.id,
       required this.name,
       required this.role,
@@ -229,8 +229,8 @@ class _$_UserEntityModel extends _UserEntityModel {
       required this.lastSignInAt})
       : super._();
 
-  factory _$_UserEntityModel.fromJson(Map<String, dynamic> json) =>
-      _$$_UserEntityModelFromJson(json);
+  factory _$UserEntityModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserEntityModelImplFromJson(json);
 
   @override
   final UserId id;
@@ -257,10 +257,10 @@ class _$_UserEntityModel extends _UserEntityModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserEntityModel &&
+            other is _$UserEntityModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.role, role) || other.role == role) &&
@@ -286,12 +286,13 @@ class _$_UserEntityModel extends _UserEntityModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserEntityModelCopyWith<_$_UserEntityModel> get copyWith =>
-      __$$_UserEntityModelCopyWithImpl<_$_UserEntityModel>(this, _$identity);
+  _$$UserEntityModelImplCopyWith<_$UserEntityModelImpl> get copyWith =>
+      __$$UserEntityModelImplCopyWithImpl<_$UserEntityModelImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserEntityModelToJson(
+    return _$$UserEntityModelImplToJson(
       this,
     );
   }
@@ -307,11 +308,11 @@ abstract class _UserEntityModel extends UserEntityModel {
       required final DateTime updatedAt,
       required final DateTime emailConfirmedAt,
       required final DateTime phoneConfirmedAt,
-      required final DateTime lastSignInAt}) = _$_UserEntityModel;
+      required final DateTime lastSignInAt}) = _$UserEntityModelImpl;
   const _UserEntityModel._() : super._();
 
   factory _UserEntityModel.fromJson(Map<String, dynamic> json) =
-      _$_UserEntityModel.fromJson;
+      _$UserEntityModelImpl.fromJson;
 
   @override
   UserId get id;
@@ -333,7 +334,7 @@ abstract class _UserEntityModel extends UserEntityModel {
   DateTime get lastSignInAt;
   @override
   @JsonKey(ignore: true)
-  _$$_UserEntityModelCopyWith<_$_UserEntityModel> get copyWith =>
+  _$$UserEntityModelImplCopyWith<_$UserEntityModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -403,10 +404,10 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
 }
 
 /// @nodoc
-abstract class _$$UsersDataCopyWith<$Res> {
-  factory _$$UsersDataCopyWith(
-          _$UsersData value, $Res Function(_$UsersData) then) =
-      __$$UsersDataCopyWithImpl<$Res>;
+abstract class _$$UsersDataImplCopyWith<$Res> {
+  factory _$$UsersDataImplCopyWith(
+          _$UsersDataImpl value, $Res Function(_$UsersDataImpl) then) =
+      __$$UsersDataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({UserList userList});
 
@@ -414,11 +415,11 @@ abstract class _$$UsersDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$UsersDataCopyWithImpl<$Res>
-    extends _$UsersCopyWithImpl<$Res, _$UsersData>
-    implements _$$UsersDataCopyWith<$Res> {
-  __$$UsersDataCopyWithImpl(
-      _$UsersData _value, $Res Function(_$UsersData) _then)
+class __$$UsersDataImplCopyWithImpl<$Res>
+    extends _$UsersCopyWithImpl<$Res, _$UsersDataImpl>
+    implements _$$UsersDataImplCopyWith<$Res> {
+  __$$UsersDataImplCopyWithImpl(
+      _$UsersDataImpl _value, $Res Function(_$UsersDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -426,7 +427,7 @@ class __$$UsersDataCopyWithImpl<$Res>
   $Res call({
     Object? userList = null,
   }) {
-    return _then(_$UsersData(
+    return _then(_$UsersDataImpl(
       null == userList
           ? _value.userList
           : userList // ignore: cast_nullable_to_non_nullable
@@ -445,8 +446,8 @@ class __$$UsersDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UsersData implements UsersData {
-  const _$UsersData(this.userList);
+class _$UsersDataImpl implements UsersData {
+  const _$UsersDataImpl(this.userList);
 
   @override
   final UserList userList;
@@ -457,10 +458,10 @@ class _$UsersData implements UsersData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UsersData &&
+            other is _$UsersDataImpl &&
             (identical(other.userList, userList) ||
                 other.userList == userList));
   }
@@ -471,8 +472,8 @@ class _$UsersData implements UsersData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UsersDataCopyWith<_$UsersData> get copyWith =>
-      __$$UsersDataCopyWithImpl<_$UsersData>(this, _$identity);
+  _$$UsersDataImplCopyWith<_$UsersDataImpl> get copyWith =>
+      __$$UsersDataImplCopyWithImpl<_$UsersDataImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -544,34 +545,34 @@ class _$UsersData implements UsersData {
 }
 
 abstract class UsersData implements Users {
-  const factory UsersData(final UserList userList) = _$UsersData;
+  const factory UsersData(final UserList userList) = _$UsersDataImpl;
 
   UserList get userList;
   @JsonKey(ignore: true)
-  _$$UsersDataCopyWith<_$UsersData> get copyWith =>
+  _$$UsersDataImplCopyWith<_$UsersDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UsersLoadingCopyWith<$Res> {
-  factory _$$UsersLoadingCopyWith(
-          _$UsersLoading value, $Res Function(_$UsersLoading) then) =
-      __$$UsersLoadingCopyWithImpl<$Res>;
+abstract class _$$UsersLoadingImplCopyWith<$Res> {
+  factory _$$UsersLoadingImplCopyWith(
+          _$UsersLoadingImpl value, $Res Function(_$UsersLoadingImpl) then) =
+      __$$UsersLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$UsersLoadingCopyWithImpl<$Res>
-    extends _$UsersCopyWithImpl<$Res, _$UsersLoading>
-    implements _$$UsersLoadingCopyWith<$Res> {
-  __$$UsersLoadingCopyWithImpl(
-      _$UsersLoading _value, $Res Function(_$UsersLoading) _then)
+class __$$UsersLoadingImplCopyWithImpl<$Res>
+    extends _$UsersCopyWithImpl<$Res, _$UsersLoadingImpl>
+    implements _$$UsersLoadingImplCopyWith<$Res> {
+  __$$UsersLoadingImplCopyWithImpl(
+      _$UsersLoadingImpl _value, $Res Function(_$UsersLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$UsersLoading implements UsersLoading {
-  const _$UsersLoading();
+class _$UsersLoadingImpl implements UsersLoading {
+  const _$UsersLoadingImpl();
 
   @override
   String toString() {
@@ -579,9 +580,9 @@ class _$UsersLoading implements UsersLoading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$UsersLoading);
+        (other.runtimeType == runtimeType && other is _$UsersLoadingImpl);
   }
 
   @override
@@ -657,24 +658,24 @@ class _$UsersLoading implements UsersLoading {
 }
 
 abstract class UsersLoading implements Users {
-  const factory UsersLoading() = _$UsersLoading;
+  const factory UsersLoading() = _$UsersLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$UsersErrorCopyWith<$Res> {
-  factory _$$UsersErrorCopyWith(
-          _$UsersError value, $Res Function(_$UsersError) then) =
-      __$$UsersErrorCopyWithImpl<$Res>;
+abstract class _$$UsersErrorImplCopyWith<$Res> {
+  factory _$$UsersErrorImplCopyWith(
+          _$UsersErrorImpl value, $Res Function(_$UsersErrorImpl) then) =
+      __$$UsersErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Object error, StackTrace stackTrace});
 }
 
 /// @nodoc
-class __$$UsersErrorCopyWithImpl<$Res>
-    extends _$UsersCopyWithImpl<$Res, _$UsersError>
-    implements _$$UsersErrorCopyWith<$Res> {
-  __$$UsersErrorCopyWithImpl(
-      _$UsersError _value, $Res Function(_$UsersError) _then)
+class __$$UsersErrorImplCopyWithImpl<$Res>
+    extends _$UsersCopyWithImpl<$Res, _$UsersErrorImpl>
+    implements _$$UsersErrorImplCopyWith<$Res> {
+  __$$UsersErrorImplCopyWithImpl(
+      _$UsersErrorImpl _value, $Res Function(_$UsersErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -683,7 +684,7 @@ class __$$UsersErrorCopyWithImpl<$Res>
     Object? error = null,
     Object? stackTrace = null,
   }) {
-    return _then(_$UsersError(
+    return _then(_$UsersErrorImpl(
       null == error ? _value.error : error,
       null == stackTrace
           ? _value.stackTrace
@@ -695,8 +696,8 @@ class __$$UsersErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UsersError implements UsersError {
-  const _$UsersError(this.error, this.stackTrace);
+class _$UsersErrorImpl implements UsersError {
+  const _$UsersErrorImpl(this.error, this.stackTrace);
 
   @override
   final Object error;
@@ -709,10 +710,10 @@ class _$UsersError implements UsersError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UsersError &&
+            other is _$UsersErrorImpl &&
             const DeepCollectionEquality().equals(other.error, error) &&
             (identical(other.stackTrace, stackTrace) ||
                 other.stackTrace == stackTrace));
@@ -725,8 +726,8 @@ class _$UsersError implements UsersError {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UsersErrorCopyWith<_$UsersError> get copyWith =>
-      __$$UsersErrorCopyWithImpl<_$UsersError>(this, _$identity);
+  _$$UsersErrorImplCopyWith<_$UsersErrorImpl> get copyWith =>
+      __$$UsersErrorImplCopyWithImpl<_$UsersErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -799,12 +800,12 @@ class _$UsersError implements UsersError {
 
 abstract class UsersError implements Users {
   const factory UsersError(final Object error, final StackTrace stackTrace) =
-      _$UsersError;
+      _$UsersErrorImpl;
 
   Object get error;
   StackTrace get stackTrace;
   @JsonKey(ignore: true)
-  _$$UsersErrorCopyWith<_$UsersError> get copyWith =>
+  _$$UsersErrorImplCopyWith<_$UsersErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -948,11 +949,11 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
 }
 
 /// @nodoc
-abstract class _$$_UserModelCompleteCopyWith<$Res>
+abstract class _$$UserModelCompleteImplCopyWith<$Res>
     implements $UserModelCopyWith<$Res> {
-  factory _$$_UserModelCompleteCopyWith(_$_UserModelComplete value,
-          $Res Function(_$_UserModelComplete) then) =
-      __$$_UserModelCompleteCopyWithImpl<$Res>;
+  factory _$$UserModelCompleteImplCopyWith(_$UserModelCompleteImpl value,
+          $Res Function(_$UserModelCompleteImpl) then) =
+      __$$UserModelCompleteImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -968,11 +969,11 @@ abstract class _$$_UserModelCompleteCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UserModelCompleteCopyWithImpl<$Res>
-    extends _$UserModelCopyWithImpl<$Res, _$_UserModelComplete>
-    implements _$$_UserModelCompleteCopyWith<$Res> {
-  __$$_UserModelCompleteCopyWithImpl(
-      _$_UserModelComplete _value, $Res Function(_$_UserModelComplete) _then)
+class __$$UserModelCompleteImplCopyWithImpl<$Res>
+    extends _$UserModelCopyWithImpl<$Res, _$UserModelCompleteImpl>
+    implements _$$UserModelCompleteImplCopyWith<$Res> {
+  __$$UserModelCompleteImplCopyWithImpl(_$UserModelCompleteImpl _value,
+      $Res Function(_$UserModelCompleteImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -983,7 +984,7 @@ class __$$_UserModelCompleteCopyWithImpl<$Res>
     Object? authUser = null,
     Object? cubeUser = null,
   }) {
-    return _then(_$_UserModelComplete(
+    return _then(_$UserModelCompleteImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1006,8 +1007,8 @@ class __$$_UserModelCompleteCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserModelComplete implements _UserModelComplete {
-  const _$_UserModelComplete(
+class _$UserModelCompleteImpl implements _UserModelComplete {
+  const _$UserModelCompleteImpl(
       {required this.id,
       required this.userEntityModel,
       @UserConverter() required this.authUser,
@@ -1015,8 +1016,8 @@ class _$_UserModelComplete implements _UserModelComplete {
       final String? $type})
       : $type = $type ?? 'Complete';
 
-  factory _$_UserModelComplete.fromJson(Map<String, dynamic> json) =>
-      _$$_UserModelCompleteFromJson(json);
+  factory _$UserModelCompleteImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserModelCompleteImplFromJson(json);
 
   @override
   final UserId id;
@@ -1037,10 +1038,10 @@ class _$_UserModelComplete implements _UserModelComplete {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserModelComplete &&
+            other is _$UserModelCompleteImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userEntityModel, userEntityModel) ||
                 other.userEntityModel == userEntityModel) &&
@@ -1058,8 +1059,8 @@ class _$_UserModelComplete implements _UserModelComplete {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserModelCompleteCopyWith<_$_UserModelComplete> get copyWith =>
-      __$$_UserModelCompleteCopyWithImpl<_$_UserModelComplete>(
+  _$$UserModelCompleteImplCopyWith<_$UserModelCompleteImpl> get copyWith =>
+      __$$UserModelCompleteImplCopyWithImpl<_$UserModelCompleteImpl>(
           this, _$identity);
 
   @override
@@ -1138,7 +1139,7 @@ class _$_UserModelComplete implements _UserModelComplete {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserModelCompleteToJson(
+    return _$$UserModelCompleteImplToJson(
       this,
     );
   }
@@ -1149,10 +1150,10 @@ abstract class _UserModelComplete implements UserModel {
       {required final UserId id,
       required final UserEntityModel userEntityModel,
       @UserConverter() required final AuthUser authUser,
-      required final CubeUser cubeUser}) = _$_UserModelComplete;
+      required final CubeUser cubeUser}) = _$UserModelCompleteImpl;
 
   factory _UserModelComplete.fromJson(Map<String, dynamic> json) =
-      _$_UserModelComplete.fromJson;
+      _$UserModelCompleteImpl.fromJson;
 
   @override
   UserId get id;
@@ -1164,16 +1165,16 @@ abstract class _UserModelComplete implements UserModel {
   CubeUser get cubeUser;
   @override
   @JsonKey(ignore: true)
-  _$$_UserModelCompleteCopyWith<_$_UserModelComplete> get copyWith =>
+  _$$UserModelCompleteImplCopyWith<_$UserModelCompleteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_UserModelUnCompleteCopyWith<$Res>
+abstract class _$$UserModelUnCompleteImplCopyWith<$Res>
     implements $UserModelCopyWith<$Res> {
-  factory _$$_UserModelUnCompleteCopyWith(_$_UserModelUnComplete value,
-          $Res Function(_$_UserModelUnComplete) then) =
-      __$$_UserModelUnCompleteCopyWithImpl<$Res>;
+  factory _$$UserModelUnCompleteImplCopyWith(_$UserModelUnCompleteImpl value,
+          $Res Function(_$UserModelUnCompleteImpl) then) =
+      __$$UserModelUnCompleteImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1188,11 +1189,11 @@ abstract class _$$_UserModelUnCompleteCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UserModelUnCompleteCopyWithImpl<$Res>
-    extends _$UserModelCopyWithImpl<$Res, _$_UserModelUnComplete>
-    implements _$$_UserModelUnCompleteCopyWith<$Res> {
-  __$$_UserModelUnCompleteCopyWithImpl(_$_UserModelUnComplete _value,
-      $Res Function(_$_UserModelUnComplete) _then)
+class __$$UserModelUnCompleteImplCopyWithImpl<$Res>
+    extends _$UserModelCopyWithImpl<$Res, _$UserModelUnCompleteImpl>
+    implements _$$UserModelUnCompleteImplCopyWith<$Res> {
+  __$$UserModelUnCompleteImplCopyWithImpl(_$UserModelUnCompleteImpl _value,
+      $Res Function(_$UserModelUnCompleteImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1202,7 +1203,7 @@ class __$$_UserModelUnCompleteCopyWithImpl<$Res>
     Object? userEntityModel = null,
     Object? authUser = null,
   }) {
-    return _then(_$_UserModelUnComplete(
+    return _then(_$UserModelUnCompleteImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1221,16 +1222,16 @@ class __$$_UserModelUnCompleteCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserModelUnComplete implements _UserModelUnComplete {
-  const _$_UserModelUnComplete(
+class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
+  const _$UserModelUnCompleteImpl(
       {required this.id,
       required this.userEntityModel,
       @UserConverter() required this.authUser,
       final String? $type})
       : $type = $type ?? 'UnComplete';
 
-  factory _$_UserModelUnComplete.fromJson(Map<String, dynamic> json) =>
-      _$$_UserModelUnCompleteFromJson(json);
+  factory _$UserModelUnCompleteImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserModelUnCompleteImplFromJson(json);
 
   @override
   final UserId id;
@@ -1249,10 +1250,10 @@ class _$_UserModelUnComplete implements _UserModelUnComplete {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserModelUnComplete &&
+            other is _$UserModelUnCompleteImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userEntityModel, userEntityModel) ||
                 other.userEntityModel == userEntityModel) &&
@@ -1267,8 +1268,8 @@ class _$_UserModelUnComplete implements _UserModelUnComplete {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserModelUnCompleteCopyWith<_$_UserModelUnComplete> get copyWith =>
-      __$$_UserModelUnCompleteCopyWithImpl<_$_UserModelUnComplete>(
+  _$$UserModelUnCompleteImplCopyWith<_$UserModelUnCompleteImpl> get copyWith =>
+      __$$UserModelUnCompleteImplCopyWithImpl<_$UserModelUnCompleteImpl>(
           this, _$identity);
 
   @override
@@ -1347,7 +1348,7 @@ class _$_UserModelUnComplete implements _UserModelUnComplete {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserModelUnCompleteToJson(
+    return _$$UserModelUnCompleteImplToJson(
       this,
     );
   }
@@ -1358,10 +1359,10 @@ abstract class _UserModelUnComplete implements UserModel {
           {required final UserId id,
           required final UserEntityModel userEntityModel,
           @UserConverter() required final AuthUser authUser}) =
-      _$_UserModelUnComplete;
+      _$UserModelUnCompleteImpl;
 
   factory _UserModelUnComplete.fromJson(Map<String, dynamic> json) =
-      _$_UserModelUnComplete.fromJson;
+      _$UserModelUnCompleteImpl.fromJson;
 
   @override
   UserId get id;
@@ -1372,6 +1373,6 @@ abstract class _UserModelUnComplete implements UserModel {
   AuthUser get authUser;
   @override
   @JsonKey(ignore: true)
-  _$$_UserModelUnCompleteCopyWith<_$_UserModelUnComplete> get copyWith =>
+  _$$UserModelUnCompleteImplCopyWith<_$UserModelUnCompleteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

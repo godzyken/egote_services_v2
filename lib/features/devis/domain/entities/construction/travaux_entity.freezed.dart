@@ -12,7 +12,7 @@ part of 'travaux_entity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 TravauxEntity _$TravauxEntityFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -136,11 +136,11 @@ class _$TravauxEntityCopyWithImpl<$Res, $Val extends TravauxEntity>
 }
 
 /// @nodoc
-abstract class _$$_TravauxEntityCopyWith<$Res>
+abstract class _$$TravauxEntityImplCopyWith<$Res>
     implements $TravauxEntityCopyWith<$Res> {
-  factory _$$_TravauxEntityCopyWith(
-          _$_TravauxEntity value, $Res Function(_$_TravauxEntity) then) =
-      __$$_TravauxEntityCopyWithImpl<$Res>;
+  factory _$$TravauxEntityImplCopyWith(
+          _$TravauxEntityImpl value, $Res Function(_$TravauxEntityImpl) then) =
+      __$$TravauxEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -155,11 +155,11 @@ abstract class _$$_TravauxEntityCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_TravauxEntityCopyWithImpl<$Res>
-    extends _$TravauxEntityCopyWithImpl<$Res, _$_TravauxEntity>
-    implements _$$_TravauxEntityCopyWith<$Res> {
-  __$$_TravauxEntityCopyWithImpl(
-      _$_TravauxEntity _value, $Res Function(_$_TravauxEntity) _then)
+class __$$TravauxEntityImplCopyWithImpl<$Res>
+    extends _$TravauxEntityCopyWithImpl<$Res, _$TravauxEntityImpl>
+    implements _$$TravauxEntityImplCopyWith<$Res> {
+  __$$TravauxEntityImplCopyWithImpl(
+      _$TravauxEntityImpl _value, $Res Function(_$TravauxEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -171,7 +171,7 @@ class __$$_TravauxEntityCopyWithImpl<$Res>
     Object? areaOfServices = null,
     Object? missionEntity = null,
   }) {
-    return _then(_$_TravauxEntity(
+    return _then(_$TravauxEntityImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -199,8 +199,10 @@ class __$$_TravauxEntityCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
-  const _$_TravauxEntity(
+class _$TravauxEntityImpl
+    with DiagnosticableTreeMixin
+    implements _TravauxEntity {
+  const _$TravauxEntityImpl(
       {required this.id,
       required this.denomination,
       required final List<TypesOfWork> typesOfWorks,
@@ -212,8 +214,8 @@ class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
         _missionEntity = missionEntity,
         $type = $type ?? 'default';
 
-  factory _$_TravauxEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_TravauxEntityFromJson(json);
+  factory _$TravauxEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TravauxEntityImplFromJson(json);
 
   @override
   final TravauId id;
@@ -264,10 +266,10 @@ class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TravauxEntity &&
+            other is _$TravauxEntityImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.denomination, denomination) ||
                 other.denomination == denomination) &&
@@ -292,8 +294,8 @@ class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TravauxEntityCopyWith<_$_TravauxEntity> get copyWith =>
-      __$$_TravauxEntityCopyWithImpl<_$_TravauxEntity>(this, _$identity);
+  _$$TravauxEntityImplCopyWith<_$TravauxEntityImpl> get copyWith =>
+      __$$TravauxEntityImplCopyWithImpl<_$TravauxEntityImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -380,7 +382,7 @@ class _$_TravauxEntity with DiagnosticableTreeMixin implements _TravauxEntity {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TravauxEntityToJson(
+    return _$$TravauxEntityImplToJson(
       this,
     );
   }
@@ -392,10 +394,10 @@ abstract class _TravauxEntity implements TravauxEntity {
       required final String denomination,
       required final List<TypesOfWork> typesOfWorks,
       required final List<AreaOfServices> areaOfServices,
-      required final List<MissionEntity> missionEntity}) = _$_TravauxEntity;
+      required final List<MissionEntity> missionEntity}) = _$TravauxEntityImpl;
 
   factory _TravauxEntity.fromJson(Map<String, dynamic> json) =
-      _$_TravauxEntity.fromJson;
+      _$TravauxEntityImpl.fromJson;
 
   @override
   TravauId get id;
@@ -405,16 +407,16 @@ abstract class _TravauxEntity implements TravauxEntity {
   List<MissionEntity> get missionEntity;
   @override
   @JsonKey(ignore: true)
-  _$$_TravauxEntityCopyWith<_$_TravauxEntity> get copyWith =>
+  _$$TravauxEntityImplCopyWith<_$TravauxEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_TravauxEntityInitCopyWith<$Res>
+abstract class _$$TravauxEntityInitImplCopyWith<$Res>
     implements $TravauxEntityCopyWith<$Res> {
-  factory _$$_TravauxEntityInitCopyWith(_$_TravauxEntityInit value,
-          $Res Function(_$_TravauxEntityInit) then) =
-      __$$_TravauxEntityInitCopyWithImpl<$Res>;
+  factory _$$TravauxEntityInitImplCopyWith(_$TravauxEntityInitImpl value,
+          $Res Function(_$TravauxEntityInitImpl) then) =
+      __$$TravauxEntityInitImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({TravauId id});
@@ -424,11 +426,11 @@ abstract class _$$_TravauxEntityInitCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_TravauxEntityInitCopyWithImpl<$Res>
-    extends _$TravauxEntityCopyWithImpl<$Res, _$_TravauxEntityInit>
-    implements _$$_TravauxEntityInitCopyWith<$Res> {
-  __$$_TravauxEntityInitCopyWithImpl(
-      _$_TravauxEntityInit _value, $Res Function(_$_TravauxEntityInit) _then)
+class __$$TravauxEntityInitImplCopyWithImpl<$Res>
+    extends _$TravauxEntityCopyWithImpl<$Res, _$TravauxEntityInitImpl>
+    implements _$$TravauxEntityInitImplCopyWith<$Res> {
+  __$$TravauxEntityInitImplCopyWithImpl(_$TravauxEntityInitImpl _value,
+      $Res Function(_$TravauxEntityInitImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -436,7 +438,7 @@ class __$$_TravauxEntityInitCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$_TravauxEntityInit(
+    return _then(_$TravauxEntityInitImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -447,14 +449,14 @@ class __$$_TravauxEntityInitCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TravauxEntityInit
+class _$TravauxEntityInitImpl
     with DiagnosticableTreeMixin
     implements _TravauxEntityInit {
-  _$_TravauxEntityInit({required this.id, final String? $type})
+  _$TravauxEntityInitImpl({required this.id, final String? $type})
       : $type = $type ?? 'Init';
 
-  factory _$_TravauxEntityInit.fromJson(Map<String, dynamic> json) =>
-      _$$_TravauxEntityInitFromJson(json);
+  factory _$TravauxEntityInitImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TravauxEntityInitImplFromJson(json);
 
   @override
   final TravauId id;
@@ -476,10 +478,10 @@ class _$_TravauxEntityInit
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TravauxEntityInit &&
+            other is _$TravauxEntityInitImpl &&
             (identical(other.id, id) || other.id == id));
   }
 
@@ -490,8 +492,8 @@ class _$_TravauxEntityInit
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TravauxEntityInitCopyWith<_$_TravauxEntityInit> get copyWith =>
-      __$$_TravauxEntityInitCopyWithImpl<_$_TravauxEntityInit>(
+  _$$TravauxEntityInitImplCopyWith<_$TravauxEntityInitImpl> get copyWith =>
+      __$$TravauxEntityInitImplCopyWithImpl<_$TravauxEntityInitImpl>(
           this, _$identity);
 
   @override
@@ -576,7 +578,7 @@ class _$_TravauxEntityInit
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TravauxEntityInitToJson(
+    return _$$TravauxEntityInitImplToJson(
       this,
     );
   }
@@ -584,15 +586,15 @@ class _$_TravauxEntityInit
 
 abstract class _TravauxEntityInit implements TravauxEntity {
   factory _TravauxEntityInit({required final TravauId id}) =
-      _$_TravauxEntityInit;
+      _$TravauxEntityInitImpl;
 
   factory _TravauxEntityInit.fromJson(Map<String, dynamic> json) =
-      _$_TravauxEntityInit.fromJson;
+      _$TravauxEntityInitImpl.fromJson;
 
   @override
   TravauId get id;
   @override
   @JsonKey(ignore: true)
-  _$$_TravauxEntityInitCopyWith<_$_TravauxEntityInit> get copyWith =>
+  _$$TravauxEntityInitImplCopyWith<_$TravauxEntityInitImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

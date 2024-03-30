@@ -12,7 +12,7 @@ part of 'failure.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Failure {
@@ -87,25 +87,25 @@ class _$FailureCopyWithImpl<$Res, $Val extends Failure>
 }
 
 /// @nodoc
-abstract class _$$_EmptyFailureCopyWith<$Res> {
-  factory _$$_EmptyFailureCopyWith(
-          _$_EmptyFailure value, $Res Function(_$_EmptyFailure) then) =
-      __$$_EmptyFailureCopyWithImpl<$Res>;
+abstract class _$$EmptyFailureImplCopyWith<$Res> {
+  factory _$$EmptyFailureImplCopyWith(
+          _$EmptyFailureImpl value, $Res Function(_$EmptyFailureImpl) then) =
+      __$$EmptyFailureImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_EmptyFailureCopyWithImpl<$Res>
-    extends _$FailureCopyWithImpl<$Res, _$_EmptyFailure>
-    implements _$$_EmptyFailureCopyWith<$Res> {
-  __$$_EmptyFailureCopyWithImpl(
-      _$_EmptyFailure _value, $Res Function(_$_EmptyFailure) _then)
+class __$$EmptyFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$EmptyFailureImpl>
+    implements _$$EmptyFailureImplCopyWith<$Res> {
+  __$$EmptyFailureImplCopyWithImpl(
+      _$EmptyFailureImpl _value, $Res Function(_$EmptyFailureImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_EmptyFailure extends _EmptyFailure {
-  _$_EmptyFailure() : super._();
+class _$EmptyFailureImpl extends _EmptyFailure {
+  _$EmptyFailureImpl() : super._();
 
   @override
   String toString() {
@@ -113,9 +113,9 @@ class _$_EmptyFailure extends _EmptyFailure {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_EmptyFailure);
+        (other.runtimeType == runtimeType && other is _$EmptyFailureImpl);
   }
 
   @override
@@ -198,27 +198,27 @@ class _$_EmptyFailure extends _EmptyFailure {
 }
 
 abstract class _EmptyFailure extends Failure {
-  factory _EmptyFailure() = _$_EmptyFailure;
+  factory _EmptyFailure() = _$EmptyFailureImpl;
   _EmptyFailure._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_UnprocessableEntityFailureCopyWith<$Res> {
-  factory _$$_UnprocessableEntityFailureCopyWith(
-          _$_UnprocessableEntityFailure value,
-          $Res Function(_$_UnprocessableEntityFailure) then) =
-      __$$_UnprocessableEntityFailureCopyWithImpl<$Res>;
+abstract class _$$UnprocessableEntityFailureImplCopyWith<$Res> {
+  factory _$$UnprocessableEntityFailureImplCopyWith(
+          _$UnprocessableEntityFailureImpl value,
+          $Res Function(_$UnprocessableEntityFailureImpl) then) =
+      __$$UnprocessableEntityFailureImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$_UnprocessableEntityFailureCopyWithImpl<$Res>
-    extends _$FailureCopyWithImpl<$Res, _$_UnprocessableEntityFailure>
-    implements _$$_UnprocessableEntityFailureCopyWith<$Res> {
-  __$$_UnprocessableEntityFailureCopyWithImpl(
-      _$_UnprocessableEntityFailure _value,
-      $Res Function(_$_UnprocessableEntityFailure) _then)
+class __$$UnprocessableEntityFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$UnprocessableEntityFailureImpl>
+    implements _$$UnprocessableEntityFailureImplCopyWith<$Res> {
+  __$$UnprocessableEntityFailureImplCopyWithImpl(
+      _$UnprocessableEntityFailureImpl _value,
+      $Res Function(_$UnprocessableEntityFailureImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -226,7 +226,7 @@ class __$$_UnprocessableEntityFailureCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$_UnprocessableEntityFailure(
+    return _then(_$UnprocessableEntityFailureImpl(
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -237,8 +237,8 @@ class __$$_UnprocessableEntityFailureCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UnprocessableEntityFailure extends _UnprocessableEntityFailure {
-  _$_UnprocessableEntityFailure({required this.message}) : super._();
+class _$UnprocessableEntityFailureImpl extends _UnprocessableEntityFailure {
+  _$UnprocessableEntityFailureImpl({required this.message}) : super._();
 
   @override
   final String message;
@@ -249,10 +249,10 @@ class _$_UnprocessableEntityFailure extends _UnprocessableEntityFailure {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UnprocessableEntityFailure &&
+            other is _$UnprocessableEntityFailureImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -262,9 +262,9 @@ class _$_UnprocessableEntityFailure extends _UnprocessableEntityFailure {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UnprocessableEntityFailureCopyWith<_$_UnprocessableEntityFailure>
-      get copyWith => __$$_UnprocessableEntityFailureCopyWithImpl<
-          _$_UnprocessableEntityFailure>(this, _$identity);
+  _$$UnprocessableEntityFailureImplCopyWith<_$UnprocessableEntityFailureImpl>
+      get copyWith => __$$UnprocessableEntityFailureImplCopyWithImpl<
+          _$UnprocessableEntityFailureImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -344,35 +344,35 @@ class _$_UnprocessableEntityFailure extends _UnprocessableEntityFailure {
 
 abstract class _UnprocessableEntityFailure extends Failure {
   factory _UnprocessableEntityFailure({required final String message}) =
-      _$_UnprocessableEntityFailure;
+      _$UnprocessableEntityFailureImpl;
   _UnprocessableEntityFailure._() : super._();
 
   String get message;
   @JsonKey(ignore: true)
-  _$$_UnprocessableEntityFailureCopyWith<_$_UnprocessableEntityFailure>
+  _$$UnprocessableEntityFailureImplCopyWith<_$UnprocessableEntityFailureImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_UnauthorizedFailureCopyWith<$Res> {
-  factory _$$_UnauthorizedFailureCopyWith(_$_UnauthorizedFailure value,
-          $Res Function(_$_UnauthorizedFailure) then) =
-      __$$_UnauthorizedFailureCopyWithImpl<$Res>;
+abstract class _$$UnauthorizedFailureImplCopyWith<$Res> {
+  factory _$$UnauthorizedFailureImplCopyWith(_$UnauthorizedFailureImpl value,
+          $Res Function(_$UnauthorizedFailureImpl) then) =
+      __$$UnauthorizedFailureImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_UnauthorizedFailureCopyWithImpl<$Res>
-    extends _$FailureCopyWithImpl<$Res, _$_UnauthorizedFailure>
-    implements _$$_UnauthorizedFailureCopyWith<$Res> {
-  __$$_UnauthorizedFailureCopyWithImpl(_$_UnauthorizedFailure _value,
-      $Res Function(_$_UnauthorizedFailure) _then)
+class __$$UnauthorizedFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$UnauthorizedFailureImpl>
+    implements _$$UnauthorizedFailureImplCopyWith<$Res> {
+  __$$UnauthorizedFailureImplCopyWithImpl(_$UnauthorizedFailureImpl _value,
+      $Res Function(_$UnauthorizedFailureImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_UnauthorizedFailure extends _UnauthorizedFailure {
-  _$_UnauthorizedFailure() : super._();
+class _$UnauthorizedFailureImpl extends _UnauthorizedFailure {
+  _$UnauthorizedFailureImpl() : super._();
 
   @override
   String toString() {
@@ -380,9 +380,10 @@ class _$_UnauthorizedFailure extends _UnauthorizedFailure {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_UnauthorizedFailure);
+        (other.runtimeType == runtimeType &&
+            other is _$UnauthorizedFailureImpl);
   }
 
   @override
@@ -465,30 +466,30 @@ class _$_UnauthorizedFailure extends _UnauthorizedFailure {
 }
 
 abstract class _UnauthorizedFailure extends Failure {
-  factory _UnauthorizedFailure() = _$_UnauthorizedFailure;
+  factory _UnauthorizedFailure() = _$UnauthorizedFailureImpl;
   _UnauthorizedFailure._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_BadRequestFailureCopyWith<$Res> {
-  factory _$$_BadRequestFailureCopyWith(_$_BadRequestFailure value,
-          $Res Function(_$_BadRequestFailure) then) =
-      __$$_BadRequestFailureCopyWithImpl<$Res>;
+abstract class _$$BadRequestFailureImplCopyWith<$Res> {
+  factory _$$BadRequestFailureImplCopyWith(_$BadRequestFailureImpl value,
+          $Res Function(_$BadRequestFailureImpl) then) =
+      __$$BadRequestFailureImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_BadRequestFailureCopyWithImpl<$Res>
-    extends _$FailureCopyWithImpl<$Res, _$_BadRequestFailure>
-    implements _$$_BadRequestFailureCopyWith<$Res> {
-  __$$_BadRequestFailureCopyWithImpl(
-      _$_BadRequestFailure _value, $Res Function(_$_BadRequestFailure) _then)
+class __$$BadRequestFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$BadRequestFailureImpl>
+    implements _$$BadRequestFailureImplCopyWith<$Res> {
+  __$$BadRequestFailureImplCopyWithImpl(_$BadRequestFailureImpl _value,
+      $Res Function(_$BadRequestFailureImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_BadRequestFailure extends _BadRequestFailure {
-  _$_BadRequestFailure() : super._();
+class _$BadRequestFailureImpl extends _BadRequestFailure {
+  _$BadRequestFailureImpl() : super._();
 
   @override
   String toString() {
@@ -496,9 +497,9 @@ class _$_BadRequestFailure extends _BadRequestFailure {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_BadRequestFailure);
+        (other.runtimeType == runtimeType && other is _$BadRequestFailureImpl);
   }
 
   @override
@@ -581,6 +582,6 @@ class _$_BadRequestFailure extends _BadRequestFailure {
 }
 
 abstract class _BadRequestFailure extends Failure {
-  factory _BadRequestFailure() = _$_BadRequestFailure;
+  factory _BadRequestFailure() = _$BadRequestFailureImpl;
   _BadRequestFailure._() : super._();
 }

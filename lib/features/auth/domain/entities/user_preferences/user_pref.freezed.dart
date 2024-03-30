@@ -12,7 +12,7 @@ part of 'user_pref.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UserPreferences {
@@ -89,11 +89,11 @@ class _$UserPreferencesCopyWithImpl<$Res, $Val extends UserPreferences>
 }
 
 /// @nodoc
-abstract class _$$_UserPreferencesCopyWith<$Res>
+abstract class _$$UserPreferencesImplCopyWith<$Res>
     implements $UserPreferencesCopyWith<$Res> {
-  factory _$$_UserPreferencesCopyWith(
-          _$_UserPreferences value, $Res Function(_$_UserPreferences) then) =
-      __$$_UserPreferencesCopyWithImpl<$Res>;
+  factory _$$UserPreferencesImplCopyWith(_$UserPreferencesImpl value,
+          $Res Function(_$UserPreferencesImpl) then) =
+      __$$UserPreferencesImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -107,11 +107,11 @@ abstract class _$$_UserPreferencesCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UserPreferencesCopyWithImpl<$Res>
-    extends _$UserPreferencesCopyWithImpl<$Res, _$_UserPreferences>
-    implements _$$_UserPreferencesCopyWith<$Res> {
-  __$$_UserPreferencesCopyWithImpl(
-      _$_UserPreferences _value, $Res Function(_$_UserPreferences) _then)
+class __$$UserPreferencesImplCopyWithImpl<$Res>
+    extends _$UserPreferencesCopyWithImpl<$Res, _$UserPreferencesImpl>
+    implements _$$UserPreferencesImplCopyWith<$Res> {
+  __$$UserPreferencesImplCopyWithImpl(
+      _$UserPreferencesImpl _value, $Res Function(_$UserPreferencesImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -122,7 +122,7 @@ class __$$_UserPreferencesCopyWithImpl<$Res>
     Object? about = null,
     Object? isDarkMode = null,
   }) {
-    return _then(_$_UserPreferences(
+    return _then(_$UserPreferencesImpl(
       userEntityModel: null == userEntityModel
           ? _value.userEntityModel
           : userEntityModel // ignore: cast_nullable_to_non_nullable
@@ -145,8 +145,8 @@ class __$$_UserPreferencesCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UserPreferences implements _UserPreferences {
-  const _$_UserPreferences(
+class _$UserPreferencesImpl implements _UserPreferences {
+  const _$UserPreferencesImpl(
       {required this.userEntityModel,
       required this.themeMode,
       required this.about,
@@ -167,10 +167,10 @@ class _$_UserPreferences implements _UserPreferences {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserPreferences &&
+            other is _$UserPreferencesImpl &&
             (identical(other.userEntityModel, userEntityModel) ||
                 other.userEntityModel == userEntityModel) &&
             (identical(other.themeMode, themeMode) ||
@@ -187,8 +187,9 @@ class _$_UserPreferences implements _UserPreferences {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserPreferencesCopyWith<_$_UserPreferences> get copyWith =>
-      __$$_UserPreferencesCopyWithImpl<_$_UserPreferences>(this, _$identity);
+  _$$UserPreferencesImplCopyWith<_$UserPreferencesImpl> get copyWith =>
+      __$$UserPreferencesImplCopyWithImpl<_$UserPreferencesImpl>(
+          this, _$identity);
 }
 
 abstract class _UserPreferences implements UserPreferences {
@@ -196,7 +197,7 @@ abstract class _UserPreferences implements UserPreferences {
       {required final UserEntityModel userEntityModel,
       required final ThemeMode themeMode,
       required final String about,
-      required final bool isDarkMode}) = _$_UserPreferences;
+      required final bool isDarkMode}) = _$UserPreferencesImpl;
 
   @override
   UserEntityModel get userEntityModel;
@@ -208,6 +209,6 @@ abstract class _UserPreferences implements UserPreferences {
   bool get isDarkMode;
   @override
   @JsonKey(ignore: true)
-  _$$_UserPreferencesCopyWith<_$_UserPreferences> get copyWith =>
+  _$$UserPreferencesImplCopyWith<_$UserPreferencesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
