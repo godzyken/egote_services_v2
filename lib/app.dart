@@ -1,21 +1,22 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:connectycube_sdk/connectycube_chat.dart';
+//import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
-import 'config/cube_config/cube_config.dart';
+// import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
+import 'features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
-import 'l10n/app_localizations.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
@@ -70,7 +71,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    connectivityStateSubscription =
+    /*  connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen((connectivityType) {
       if (AppLifecycleState.resumed != appState) return;
 
@@ -112,11 +113,42 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         case ConnectivityResult.other:
         // TODO: Handle this case.
       }
-    });
+    });*/
+    late final initCube = initConnectyCube();
+
+    initCube.asStream();
 
     appState = WidgetsBinding.instance.lifecycleState;
 
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  Future<List<ConnectivityResult>> initConnectyCube() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    // This condition is for demo purposes only to explain every connection type.
+    // Use conditions which work for your requirements.
+    if (connectivityResult.contains(ConnectivityResult.mobile)) {
+      // Mobile network available.
+    } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
+      // Wi-fi is available.
+      // Note for Android:
+      // When both mobile and Wi-Fi are turned on system will return Wi-Fi only as active network type
+    } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
+      // Ethernet connection available.
+    } else if (connectivityResult.contains(ConnectivityResult.vpn)) {
+      // Vpn connection active.
+      // Note for iOS and macOS:
+      // There is no separate network interface type for [vpn].
+      // It returns [other] on any device (also simulator)
+    } else if (connectivityResult.contains(ConnectivityResult.bluetooth)) {
+      // Bluetooth connection available.
+    } else if (connectivityResult.contains(ConnectivityResult.other)) {
+      // Connected to a network which is not in the above mentioned networks.
+    } else if (connectivityResult.contains(ConnectivityResult.none)) {
+      // No available network types
+    }
+
+    return connectivityResult;
   }
 
   @override
@@ -124,11 +156,11 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         SharedPrefs.instance.init().then((sharedPrefs) async {
-          CubeUser? user =
+          CubeUserMig? user =
               await sharedPrefs.getUser().then((savedUser) => savedUser!);
 
           if (user != null) {
-            if (!CubeChatConnection.instance.isAuthenticated()) {
+            /*   if (!CubeChatConnection.instance.isAuthenticated()) {
               if (LoginType.phone == sharedPrefs.getLoginType()) {
                 if (CubeSessionManager.instance.isActiveSessionValid()) {
                   user.password =
@@ -142,15 +174,15 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
               CubeChatConnection.instance.login(user);
             } else {
               CubeChatConnection.instance.markActive();
-            }
+            }*/
           }
         });
       case AppLifecycleState.inactive:
       // TODO: Handle this case.
       case AppLifecycleState.paused:
-        if (CubeChatConnection.instance.isAuthenticated()) {
+      /*if (CubeChatConnection.instance.isAuthenticated()) {
           CubeChatConnection.instance.markInactive();
-        }
+        }*/
       case AppLifecycleState.detached:
       // TODO: Handle this case.
       case AppLifecycleState.hidden:

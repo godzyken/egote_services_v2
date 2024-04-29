@@ -1,5 +1,6 @@
-import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:connectycube_sdk/connectycube_sdk.dart';
+// import 'package:connectycube_sdk/connectycube_chat.dart';
+// import 'package:connectycube_sdk/connectycube_sdk.dart';
+/*
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // <---------------- Cube Instances Providers -------------------> //
@@ -20,3 +21,4 @@ final cubeChatConnectionSettingsProvider = Provider<CubeChatConnectionSettings>(
 final cubeProvider = Provider<CubeProvider>((_) => CubeProvider());
 
 final cubeEntityProvider = Provider<CubeEntity>((ref) => CubeEntity());
+*/

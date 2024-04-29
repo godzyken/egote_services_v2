@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 
-import 'package:connectycube_sdk/connectycube_calls.dart';
+// import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/repository/auth_repository_interface.dart';
@@ -10,6 +10,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
+import '../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import '../../../common/presentation/extensions/extensions.dart';
 
 class AuthRepository implements AuthRepositoryInterface {
@@ -24,7 +25,7 @@ class AuthRepository implements AuthRepositoryInterface {
 
   final supabase.GenerateLinkType type;
 
-  final cuberUserModel = CubeUser();
+  final cuberUserModel = const CubeUserMig();
 
   final realTimeChanelConfig =
       const supabase.RealtimeChannelConfig(key: '', self: true, ack: true);
@@ -305,8 +306,8 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, CubeUser>> cubeUserStateChange(
-      void Function(CubeUser? cubeUser) cubeUserCallBack) async {
+  Future<Either<Failure, CubeUserMig>> cubeUserStateChange(
+      void Function(CubeUserMig? cubeUser) cubeUserCallBack) async {
     try {
       switch (type) {
         case GenerateLinkType.signup:
@@ -317,7 +318,7 @@ class AuthRepository implements AuthRepositoryInterface {
 
           final actionLink = res.properties.actionLink;
 
-          cubeUserCallBack(CubeUser(
+          cubeUserCallBack(CubeUserMig(
               avatar: cuberUserModel.avatar ?? actionLink,
               customData: cuberUserModel.customData ?? actionLink,
               customDataClass: cuberUserModel.customDataClass ?? actionLink,
@@ -374,7 +375,7 @@ class AuthRepository implements AuthRepositoryInterface {
         // TODO: Handle this case.
       }
 
-      return right(CubeUser(
+      return right(CubeUserMig(
         email: cuberUserModel.email,
       ));
     } catch (e) {

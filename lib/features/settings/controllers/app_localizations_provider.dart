@@ -9,11 +9,11 @@ import '../../../l10n/app_localizations.dart';
 final appLocalizationsProvider = Provider<AppLocalizations>((ref) {
   // set the initial locale
   ref.state = lookupAppLocalizations(basicLocaleListResolution(
-      [ui.window.locale], AppLocalizations.supportedLocales));
+      [const ui.Locale.fromSubtags()], AppLocalizations.supportedLocales));
   // update afterwards
   final observer = _LocaleObserver((locales) {
     ref.state = lookupAppLocalizations(basicLocaleListResolution(
-        [ui.window.locale], AppLocalizations.supportedLocales));
+        [const ui.Locale.fromSubtags()], AppLocalizations.supportedLocales));
   });
   final binding = WidgetsBinding.instance;
   binding.addObserver(observer);

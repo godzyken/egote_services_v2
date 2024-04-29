@@ -1,9 +1,10 @@
-import 'package:connectycube_sdk/connectycube_chat.dart';
+// import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
-import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
+// import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
+import 'package:egote_services_v2/config/providers/webrtc/webrtc_provider.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +20,7 @@ import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
+import '../features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
 import '../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../features/home/presentation/view/home_screen.dart';
@@ -31,8 +33,9 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(firebaseInitProvider.future);
   await container.read(supabaseInitProvider.future);
   await container.read(userFutureProvider.future);
+  await container.read(webrtcInitProvider.future);
 
-  container.read(cubeSettingsInitProvider.future);
+  // container.read(cubeSettingsInitProvider.future);
 
   container.read(sharedPreferencesProvider);
   container.read(firebaseDatabaseProvider);
@@ -41,13 +44,13 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(emulatorSettingsProvider);
   container.read(geoFlutterFireProvider);
   container.read(firebaseAuthProvider);
-  container.read(cubeUserControllerProvider);
-  container.read(cubeSessionManagerProvider);
-  container.read(cubeChatConnectionSettingsProvider);
-  container.read(cubeChatConnectionProvider);
+  // container.read(cubeUserControllerProvider);
+  // container.read(cubeSessionManagerProvider);
+  // container.read(cubeChatConnectionSettingsProvider);
+  // container.read(cubeChatConnectionProvider);
   container.read(goRouterProvider);
   container.read(localizationProvider);
-  container.read(cubeProvider);
+  // container.read(cubeProvider);
 
   container.read(authStateChangesProvider);
   container.read(authStateProvider);
@@ -185,7 +188,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                             path: ChatDialogRoute.path,
                             name: 'chat_dialog',
                             builder: (context, state) {
-                              CubeDialog? cubeDialog;
+                              CubeDialogMig? cubeDialog;
                               return ChatDialogScreen(
                                   cubeUser: ref.watch(cubeUserControllerProvider
                                       .select((value) => value!)),

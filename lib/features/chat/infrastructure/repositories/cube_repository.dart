@@ -1,18 +1,11 @@
-import 'package:connectycube_sdk/connectycube_sdk.dart';
+// import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
-import 'package:egote_services_v2/features/chat/data/data_sources/local/pref_util.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
-import 'package:egote_services_v2/firebase_options.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/src/either.dart';
-import 'package:universal_io/io.dart';
 
-import '../../../../config/app_shared/extensions/extensions.dart';
-import '../../../../config/cube_config/cube_config.dart';
 import '../../../auth/domain/providers/auth_repository_provider.dart';
 import '../../domain/repository/cube_repository_interface.dart';
 
@@ -22,7 +15,7 @@ class CubeRepository implements CubeRepositoryInterface {
   final AuthRepository authRepository;
   final FirebaseAuth auth;
 
-  @override
+/*  @override
   Future<Either<Failure, CubeSession>> createGuestUserSession(
       bool isGuest, String fullName) {
     // TODO: implement createGuestUserSession
@@ -30,7 +23,7 @@ class CubeRepository implements CubeRepositoryInterface {
   }
 
   @override
-  Future<CubeUser>? setSession(String token) async {
+  Future<CubeUserMig>? setSession(String token) async {
     var idToken = await authRepository.setSession(token);
     return createSession().then((cubeSession) {
       return signInUsingFirebaseEmail(
@@ -60,7 +53,7 @@ class CubeRepository implements CubeRepositoryInterface {
   Future<CubeSession> restoreSession() {
     // TODO: implement restoreSession
     throw UnimplementedError();
-  }
+  }*/
 
   @override
   Future<Either<Failure, bool>> signInWithSocialProviders(
@@ -75,7 +68,7 @@ class CubeRepository implements CubeRepositoryInterface {
     throw UnimplementedError();
   }
 
-  @override
+/*@override
   Future<Either<Failure, CubeSession>> updateUserSession(
       String something, String password) {
     // TODO: implement updateUserSession
@@ -110,8 +103,7 @@ class CubeRepository implements CubeRepositoryInterface {
     if (phoneAuthIdToken == null) {
       var accessToken = auth.currentUser!.refreshToken;
       return createSessionUsingFirebaseEmail(
-              DefaultFirebaseOptions.currentPlatform.projectId,
-              accessToken!)
+              DefaultFirebaseOptions.currentPlatform.projectId, accessToken!)
           .then((cubeSession) {
         return CubeSessionManager.instance.activeSession!;
       });
@@ -119,14 +111,13 @@ class CubeRepository implements CubeRepositoryInterface {
 
     return createSessionUsingFirebasePhone(
             DefaultFirebaseOptions.currentPlatform.projectId, phoneAuthIdToken)
-        .then(
-            (cubeSession) => CubeSessionManager.instance.activeSession!);
-  }
+        .then((cubeSession) => CubeSessionManager.instance.activeSession!);
+  }*/
 }
 
 final cubeRepositoryProvider = Provider.autoDispose<CubeRepository>(
   (ref) {
-    final authRepository = ref.read(                                                                                                                                                                                                                                                                                                                                                                                                                                    authRepositoryProvider);
+    final authRepository = ref.read(authRepositoryProvider);
     final auth = ref.read(firebaseAuthProvider);
 
     return CubeRepository(authRepository, auth);

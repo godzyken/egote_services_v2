@@ -1,26 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:connectycube_sdk/connectycube_chat.dart';
+// import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
+import '../../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
+import '../../../../chat/domain/models/entities/message_state/message_state.dart';
 
 Widget getAvatarTextWidget(bool condition, String? text, {double? fontSize}) {
   if (condition) {
     return const SizedBox.shrink();
   } else {
     return Text(
-      isEmpty(text) ? '?' : text!,
+      text!.isEmpty ? '?' : text,
       style: TextStyle(fontSize: fontSize ?? 30, color: Colors.green),
     );
   }
 }
 
-Widget getUserAvatarWidget(CubeUser? cubeUser, double radius,
+Widget getUserAvatarWidget(CubeUserMig? cubeUser, double radius,
     {Widget? placeholder, Widget? errorWidget}) {
   return getAvatarWidget(cubeUser?.avatar, cubeUser?.fullName, radius,
       placeholder: placeholder, errorWidget: errorWidget);
 }
 
-Widget getDialogAvatarWidget(CubeDialog? cubeDialog, double radius,
+Widget getDialogAvatarWidget(CubeDialogMig? cubeDialog, double radius,
     {Widget? placeholder, Widget? errorWidget}) {
   return getAvatarWidget(cubeDialog?.photo, cubeDialog?.name, radius,
       placeholder: placeholder, errorWidget: errorWidget);
@@ -60,6 +63,64 @@ Widget getAvatarWidget(String? imageUrl, String? name, double radius,
   );
 }
 
+/*Widget getMessageStateWidget(MessageState state) {
+  Widget result;
+
+  switch (state) {
+    case MessageState.read:
+      result = const Stack(children: <Widget>[
+        Icon(
+          Icons.check_rounded,
+          size: 15.0,
+          color: Colors.green,
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            left: 4,
+          ),
+          child: Icon(
+            Icons.check_rounded,
+            size: 15.0,
+            color: Colors.green,
+          ),
+        )
+      ]);
+
+      break;
+    case MessageState.delivered:
+      result = const Stack(children: <Widget>[
+        Icon(
+          Icons.check_rounded,
+          size: 15.0,
+          color: Colors.grey,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 4),
+          child: Icon(
+            Icons.check_rounded,
+            size: 15.0,
+            color: Colors.grey,
+          ),
+        )
+      ]);
+
+      break;
+    case MessageState.sent:
+      result = const Icon(
+        Icons.check_rounded,
+        size: 15.0,
+        color: Colors.grey,
+      );
+
+      break;
+    default:
+      result = const SizedBox.shrink();
+
+      break;
+  }
+
+  return result;
+}*/
 Widget getMessageStateWidget(MessageState state) {
   Widget result;
 
@@ -72,7 +133,9 @@ Widget getMessageStateWidget(MessageState state) {
           color: Colors.green,
         ),
         Padding(
-          padding: EdgeInsets.only(left: 4,),
+          padding: EdgeInsets.only(
+            left: 4,
+          ),
           child: Icon(
             Icons.check_rounded,
             size: 15.0,

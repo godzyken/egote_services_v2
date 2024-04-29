@@ -1,4 +1,4 @@
-import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +9,7 @@ import 'chat_screens.dart';
 class CreateChatScreen extends ConsumerWidget {
   const CreateChatScreen({super.key, required this.cubeUser});
 
-  final CubeUser cubeUser;
+  final CubeUserMig cubeUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

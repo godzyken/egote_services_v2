@@ -1,38 +1,65 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:developer' as developer;
 
-class CubeDialogController extends StateNotifier<CubeDialog?> {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+
+import '../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
+
+// TODO: Migration, `CubeDialog` est remplacé par 'CubeDialogMig'
+class CubeDialogController extends StateNotifier<CubeDialogMig?> {
   CubeDialogController(this._ref) : super(null) {
     _initialize();
   }
 
   final Ref _ref;
 
-  Future<void> _initialize() async {}
+  Future<void> _initialize() async {
+    _ref.notifyListeners();
+  }
 
-  createNewGroupDialog() async {
-    CubeDialog newGroupDialog = CubeDialog(
-      CubeDialogType.GROUP,
-    );
+  Future<RTCDataChannelState> channelInit(int? id) async {
+    RTCDataChannelInit channelInit = RTCDataChannelInit();
+    if (channelInit.id == id) {
+      return rtcDataChannelStateForString(state!.name!);
+    } else {
+      return rtcDataChannelStateForString(channelInit.protocol);
+    }
+  }
 
-    await createDialog(newGroupDialog)
-        .then((createdDialog) => null)
-        .catchError((onError) => null);
+  Future<int?> createNewGroupDialog(CubeDialogMig newGroupDialog) async {
+    CubeDialogMig groupDialog = CubeDialogMig(
+        CubeDialogTypeMig.GROUP(newGroupDialog.type).id,
+        dialogId: newGroupDialog.dialogId,
+        name: newGroupDialog.name);
+
+    return await createNewGroupDialog(groupDialog)
+        .then((createdDialog) => groupDialog.type)
+        .catchError((onError) => onError);
   }
 }
 
-class CubeDialogStateController extends StateNotifier<CubeChatConnectionState> {
-  CubeDialogStateController(this.ref) : super(CubeChatConnectionState.Idle);
+class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
+  CubeDialogStateController(this.ref)
+      : super(RTCDataChannelState.RTCDataChannelClosed);
 
   final Ref ref;
 
   connectionStateStream() async {
-    var cubeChatConnectionStateSubscription =
-        CubeChatConnection.instance.connectionStateStream.listen((state) {
-      log("New chat connection state is $state");
+    final cubeChatConnectionStateSubscription =
+        createLocalMediaStream('Subscribe')
+            .asStream()
+            .listen((mediaStream) async {
+      developer.log("New chat connection state is $mediaStream");
 
-      switch (state) {
+      final tracks = mediaStream.getTracks();
+
+      for (var track in tracks) {
+        if (tracks.isEmpty) {
+          return await mediaStream.addTrack(track);
+        }
+      }
+
+      /*switch (state) {
         case CubeChatConnectionState.Idle:
         // TODO: instance of connection was created.
         case CubeChatConnectionState.Connecting:
@@ -61,11 +88,13 @@ class CubeDialogStateController extends StateNotifier<CubeChatConnectionState> {
             }
           });
           break;
-      }
+      }*/
     });
+
+    return cubeChatConnectionStateSubscription.resume();
   }
 
-  reconnection() {
+/*reconnection() {
     CubeChatConnectionSettings chatConnectionSettings =
         CubeChatConnectionSettings.instance;
     chatConnectionSettings.reconnectionTimeout = 5000;
@@ -83,5 +112,5 @@ class CubeDialogStateController extends StateNotifier<CubeChatConnectionState> {
         }
       }
     });
-  }
+  }*/
 }

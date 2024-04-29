@@ -2,6 +2,9 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
+    //id "com.google.firebase.crashlytics"
+    //id "kotlin-dsl"
 }
 
 def localProperties = new Properties()
@@ -64,4 +67,9 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation("io.github.nefilim.githubactions:kotlin-dsl:0.1.1")
+    implementation("androidx.bluetooth:bluetooth:1.0.0-alpha02")
+    implementation("com.android.tools.build:gradle-api:8.3.1")
+    apply plugin: "com.google.gms.google-services"
+}

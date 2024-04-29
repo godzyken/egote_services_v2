@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectycube_sdk/connectycube_calls.dart';
+//import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/adapter/user/user_converter.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
 
 part 'user_entity.freezed.dart';
 part 'user_entity.g.dart';
@@ -29,6 +31,7 @@ class UserEntityModel with _$UserEntityModel {
   const UserEntityModel._();
 
   UserEntityModel complete() => copyWith(isComplete: true);
+
   UserEntityModel uncomplete() => copyWith(isComplete: false);
 
   @FreezedUnionValue('FromFirestore')
@@ -49,40 +52,39 @@ class UserEntityModel with _$UserEntityModel {
 
   @FreezedUnionValue('Create')
   factory UserEntityModel.create(
-      String name,
-      String role,
-      bool isComplete,
-      DateTime createdAt,
-      DateTime updatedAt,
-      DateTime emailConfirmedAt,
-      DateTime phoneConfirmedAt,
-      DateTime lastSignInAt,
-      ) {
+    String name,
+    String role,
+    bool isComplete,
+    DateTime createdAt,
+    DateTime updatedAt,
+    DateTime emailConfirmedAt,
+    DateTime phoneConfirmedAt,
+    DateTime lastSignInAt,
+  ) {
     return UserEntityModel(
-      id: UserId(value: int.parse(_uuid.v4())),
-      name: name,
-      role: role,
-      isComplete: isComplete,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      emailConfirmedAt: emailConfirmedAt,
-      phoneConfirmedAt: phoneConfirmedAt,
-      lastSignInAt: lastSignInAt
-    );
+        id: UserId(value: int.parse(_uuid.v4())),
+        name: name,
+        role: role,
+        isComplete: isComplete,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        emailConfirmedAt: emailConfirmedAt,
+        phoneConfirmedAt: phoneConfirmedAt,
+        lastSignInAt: lastSignInAt);
   }
 
   @FreezedUnionValue('Empty')
   factory UserEntityModel.empty() => UserEntityModel(
-    id: const UserId(value: 0),
-    name: '',
-    role: '',
-    isComplete: false,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    emailConfirmedAt: DateTime.now(),
-    phoneConfirmedAt: DateTime.now(),
-    lastSignInAt: DateTime.now(),
-  );
+        id: const UserId(value: 0),
+        name: '',
+        role: '',
+        isComplete: false,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        emailConfirmedAt: DateTime.now(),
+        phoneConfirmedAt: DateTime.now(),
+        lastSignInAt: DateTime.now(),
+      );
 
   factory UserEntityModel.fromJson(Map<String, dynamic> json) =>
       _$UserEntityModelFromJson(json);
@@ -91,10 +93,11 @@ class UserEntityModel with _$UserEntityModel {
 @freezed
 class Users with _$Users {
   const factory Users.data(
-      UserList userList,
-      ) = UsersData;
+    UserList userList,
+  ) = UsersData;
 
   const factory Users.loading() = UsersLoading;
+
   const factory Users.error(Object error, StackTrace stackTrace) = UsersError;
 }
 
@@ -105,7 +108,7 @@ class UserModel with _$UserModel {
     required UserId id,
     required UserEntityModel userEntityModel,
     @UserConverter() required AuthUser authUser,
-    required CubeUser cubeUser,
+    required CubeUserMig cubeUser,
   }) = _UserModelComplete;
 
   @FreezedUnionValue('UnComplete')

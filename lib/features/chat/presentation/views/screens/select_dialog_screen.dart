@@ -1,4 +1,5 @@
-import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:egote_services_v2/features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
+import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,45 +14,43 @@ class SelectDialogScreen extends ConsumerWidget {
     this.selectedDialog,
   });
 
-  final CubeUser currentUser;
-  final Function(CubeDialog)? onDialogSelectedCallback;
-  final CubeDialog? selectedDialog;
+  final CubeUserMig currentUser;
+  final Function(CubeDialogMig)? onDialogSelectedCallback;
+  final CubeDialogMig? selectedDialog;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return WillPopScope(
-        child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-              title: Text(
-                'Logged in as ${currentUser.fullName ?? currentUser.login ?? currentUser.email}',
-              ),
-            actions: [
-              IconButton(
-                  onPressed: () => _openSettings(context),
-                  icon: const Icon(Icons.settings, color: Colors.white,)
-              ),
-            ],
+    return PopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Logged in as ${currentUser.fullName ?? currentUser.login ?? currentUser.email}',
           ),
-          body: BodySelectedDialogLayout(
-              currentUser: currentUser,
-              selectedDialog: selectedDialog,
-              onDialogSelectedCallback: onDialogSelectedCallback
-          ),
+          actions: [
+            IconButton(
+                onPressed: () => _openSettings(context),
+                icon: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                )),
+          ],
         ),
-        onWillPop: () => _onBackPressed(),
+        body: BodySelectedDialogLayout(
+            currentUser: currentUser,
+            selectedDialog: selectedDialog,
+            onDialogSelectedCallback: onDialogSelectedCallback),
+      ),
+      onPopInvoked: (isPop) => _onBackPressed(isPop),
     );
   }
 
-
-  Future<bool> _onBackPressed() {
+  Future<bool> _onBackPressed(bool isPop) {
     return Future.value(true);
   }
 
   _openSettings(BuildContext context) {
     showModal(
-        context: context,
-        child: ChatSettingsScreen(currentUser: currentUser)
-    );
+        context: context, child: ChatSettingsScreen(currentUser: currentUser));
   }
 }

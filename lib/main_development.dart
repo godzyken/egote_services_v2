@@ -9,21 +9,21 @@ import 'config/environements/flavors.dart';
 
 void main() async {
   F.appFlavor = Flavor.development;
-  final configuration = DdSdkConfiguration(
+  final configuration = DatadogConfiguration(
       clientToken: 'pub8f8371ed662182de9c831bb02d76a453',
       env: F.appFlavor.toString(),
       site: DatadogSite.eu1,
-      trackingConsent: TrackingConsent.granted,
       nativeCrashReportEnabled: true,
       flavor: F.appFlavor!.name,
-      loggingConfiguration: LoggingConfiguration(),
-      rumConfiguration: RumConfiguration(
+      loggingConfiguration: DatadogLoggingConfiguration(),
+      rumConfiguration: DatadogRumConfiguration(
         applicationId: '99911285-5746-429f-8168-b7b05c9db5fb',
       ),
       firstPartyHosts: ['zngannbhansflbwydrgw.supabase.co']);
-  await DatadogSdk.runApp(configuration, () async {
-    runApp(UncontrolledProviderScope(
-        container: await bootstrap(),
-        child: SentryScreenshotWidget(child: const MyApp())));
-  });
+  await DatadogSdk.runApp(
+      configuration,
+      TrackingConsent.granted,
+      () async => runApp(UncontrolledProviderScope(
+          container: await bootstrap(),
+          child: SentryScreenshotWidget(child: const MyApp()))));
 }

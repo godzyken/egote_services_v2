@@ -1,9 +1,9 @@
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 class LanguageSettingsScreen extends ConsumerStatefulWidget {
   const LanguageSettingsScreen({super.key});
@@ -14,15 +14,33 @@ class LanguageSettingsScreen extends ConsumerStatefulWidget {
 
 class _LanguageSettingsScreenState
     extends ConsumerState<LanguageSettingsScreen> {
-  final FlutterLocalization _localization = FlutterLocalization.instance;
+  final FlutterLocalNotificationsPlugin _localization =
+      FlutterLocalNotificationsPlugin();
 
-
+  AndroidInitializationSettings? _androidInitializationSettings;
+  DarwinInitializationSettings? _darwinInitializationSettings;
+  LinuxInitializationSettings? _linuxInitializationSettings;
 
   @override
   void initState() {
     super.initState();
 
-    _localization.init(
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: _androidInitializationSettings,
+            iOS: _darwinInitializationSettings,
+            macOS: _darwinInitializationSettings,
+            linux: _linuxInitializationSettings);
+
+    _localization.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) =>
+          _receiveNotificationResponse(details),
+      onDidReceiveBackgroundNotificationResponse: (details) =>
+          _receiveBackgroundNotificationResponse(details),
+    );
+
+    /*    _localization.init(
         mapLocales: [
           MapLocale('en', AppLocale.EN,
               countryCode: 'US', fontFamily: 'Font EN'),
@@ -31,15 +49,18 @@ class _LanguageSettingsScreenState
           MapLocale('fr', AppLocale.FR,
               countryCode: 'FR', fontFamily: 'Font FR'),
         ], initLanguageCode: 'fr');
-    _localization.onTranslatedLanguage = _onTranslatedLanguage;
+    _localization.onTranslatedLanguage = _onTranslatedLanguage;*/
   }
 
-  void _onTranslatedLanguage(Locale? locale) {
+  void _receiveNotificationResponse(NotificationResponse? response) {}
+
+  void _receiveBackgroundNotificationResponse(NotificationResponse? response) {}
+
+  /* void _onTranslatedLanguage(Locale? locale) {
     setState(() {
       _localization.translate(locale!.languageCode, save: true);
     });
-  }
-
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +78,12 @@ class _LanguageSettingsScreenState
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    child: Text('English', locale: lang,),
+                    child: Text(
+                      'English',
+                      locale: lang,
+                    ),
                     onPressed: () {
-                      _localization.translate('en');
+                      //_localization.periodicallyShow('en');
                       setState(() {
                         ref.read(localizationProvider.notifier).en();
                       });
@@ -71,7 +95,7 @@ class _LanguageSettingsScreenState
                   child: ElevatedButton(
                     child: const Text('Español'),
                     onPressed: () {
-                      _localization.translate('es');
+                      //_localization.translate('es');
                       setState(() {
                         ref.read(localizationProvider.notifier).es();
                       });
@@ -83,7 +107,7 @@ class _LanguageSettingsScreenState
                   child: ElevatedButton(
                     child: const Text('Français'),
                     onPressed: () {
-                      _localization.translate('fr', save: false);
+                      //_localization.translate('fr', save: false);
                       setState(() {
                         ref.read(localizationProvider.notifier).fr();
                       });
@@ -93,17 +117,17 @@ class _LanguageSettingsScreenState
               ],
             ),
             const SizedBox(height: 16.0),
-            ItemWidget(
+            /*        ItemWidget(
               title: 'Current Language',
-              content: _localization.getLanguageName(),
+              content: //_localization.getLanguageName(),
             ),
             ItemWidget(
               title: 'Font Family',
-              content: _localization.fontFamily,
+              content: //_localization.fontFamily,
             ),
             ItemWidget(
               title: 'Locale Identifier',
-              content: _localization.currentLocale.localeIdentifier,
+              content: //_localization.currentLocale.localeIdentifier,
             ),
             ItemWidget(
               title: 'String Format',
@@ -118,8 +142,8 @@ class _LanguageSettingsScreenState
                 AppLocale.thisIs,
                 [AppLocale.title, 'LATEST'],
               ),
-            ),
-          /*  const Padding(
+            ),*/
+            /*  const Padding(
               padding: EdgeInsets.all(8.0),
               child: Center(
                 child: TextField(
@@ -135,21 +159,26 @@ class _LanguageSettingsScreenState
 }
 
 mixin AppLocale {
-
   static const String title = 'title';
   static const String thisIs = 'thisIs';
 
   static Map<String, dynamic> EN = {
-    title: localizationProvider.notifier.select((value) => Future.value(value.title)),
-    thisIs: localizationProvider.notifier.select((value) => Future.value(value.title))
+    title: localizationProvider.notifier
+        .select((value) => Future.value(value.title)),
+    thisIs: localizationProvider.notifier
+        .select((value) => Future.value(value.title))
   };
   static Map<String, dynamic> ES = {
-    title: localizationProvider.notifier.select((value) => Future.value(value.title)),
-    thisIs: localizationProvider.notifier.select((value) => Future.value(value.title))
+    title: localizationProvider.notifier
+        .select((value) => Future.value(value.title)),
+    thisIs: localizationProvider.notifier
+        .select((value) => Future.value(value.title))
   };
   static Map<String, dynamic> FR = {
-    title: localizationProvider.notifier.select((value) => Future.value(value.title)),
-    thisIs: localizationProvider.notifier.select((value) => Future.value(value.title))
+    title: localizationProvider.notifier
+        .select((value) => Future.value(value.title)),
+    thisIs: localizationProvider.notifier
+        .select((value) => Future.value(value.title))
   };
 }
 

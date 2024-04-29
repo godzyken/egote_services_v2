@@ -9,7 +9,6 @@ import 'package:egote_services_v2/features/auth/presentation/controller/user_not
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
-import 'package:uni_links/uni_links.dart';
 
 class AuthController extends StateNotifier<AsyncValue<UserModel?>> {
   AuthController(this._repository) : super(const AsyncValue.loading()) {
@@ -53,23 +52,26 @@ class AuthController extends StateNotifier<AsyncValue<UserModel?>> {
   Future<void> _handleInitialDeepLink() async {
     try {
       state = const AsyncValue.loading();
-      final initialLink = await getInitialLink();
-      if (!(initialLink?.contains('refresh_token') ?? false)) {
-        return;
+      final initialLink =
+          await getInitialLink(state.requireValue?.authUser.actionLink);
+      if (state.isRefreshing) {
+        if (!(initialLink?.contains('refresh_token') ?? false)) {
+          return;
+        }
+        final refreshTokenQueryParams = initialLink
+            ?.split('&')
+            .firstWhere((element) => element.contains('refresh_token'));
+
+        final refreshToken = refreshTokenQueryParams
+            ?.substring(refreshTokenQueryParams.indexOf('=') + 1);
+
+        if (refreshToken == null) return;
+
+        final res = await _repository.client.setSession(refreshToken);
+        state = AsyncValue.data(UserModel.fromJson(res.user!.toJson()));
+        res.session?.refreshToken;
+        _updateAuthState();
       }
-
-      final refreshTokenQueryParams = initialLink
-          ?.split('&')
-          .firstWhere((element) => element.contains('refresh_token'));
-
-      final refreshToken = refreshTokenQueryParams
-          ?.substring(refreshTokenQueryParams.indexOf('=') + 1);
-
-      if (refreshToken == null) return;
-
-      final res = await _repository.client.setSession(refreshToken);
-      state = AsyncValue.data(UserModel.fromJson(res.user!.toJson()));
-      _updateAuthState();
     } on PlatformException catch (e) {
       developer.log('PlatformException: ${e.code}',
           error: e.code, name: e.details);
@@ -89,6 +91,18 @@ class AuthController extends StateNotifier<AsyncValue<UserModel?>> {
       (l) => AsyncValue.error(l.error, StackTrace.fromString(l.toString())),
       (r) => AsyncValue.data(UserModel.fromJson(r.toJson())),
     );
+  }
+
+  Future<String?> getInitialLink(String? refreshToken) async {
+    final res = await _repository.client.setSession(refreshToken!);
+    if (res.session!.isExpired) return res.session?.providerRefreshToken;
+    if (state.isRefreshing || state.asData!.hasValue) {
+      if (state.asData?.value?.authUser.id == res.session?.user.id) {
+        return res.session?.accessToken;
+      }
+      return res.session?.refreshToken;
+    }
+    return res.session?.providerToken;
   }
 }
 
@@ -148,7 +162,7 @@ class AutoAuthController extends StateNotifier<UserModel?> {
             role: 'role',
             updatedAt: 'updatedAt'));
     try {
-      final initialLink = await getInitialLink();
+      final initialLink = await getInitialLink(state?.authUser.actionLink);
       if (!(initialLink?.contains('refresh_token') ?? false)) {
         return;
       }
@@ -174,5 +188,10 @@ class AutoAuthController extends StateNotifier<UserModel?> {
 
   Future<void> signOut() async {
     await _repository.signOut();
+  }
+
+  Future<String?> getInitialLink(String? refreshToken) async {
+    final res = await _repository.client.setSession(refreshToken!);
+    return res.session?.refreshToken;
   }
 }

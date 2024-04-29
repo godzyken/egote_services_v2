@@ -28,6 +28,7 @@ mixin _$Environment {
   String get authKey => throw _privateConstructorUsedError;
   String get authSecret => throw _privateConstructorUsedError;
   String get vapidKey => throw _privateConstructorUsedError;
+  String get outPoint => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +49,8 @@ abstract class $EnvironmentCopyWith<$Res> {
       String appId,
       String authKey,
       String authSecret,
-      String vapidKey});
+      String vapidKey,
+      String outPoint});
 }
 
 /// @nodoc
@@ -71,6 +73,7 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
     Object? authKey = null,
     Object? authSecret = null,
     Object? vapidKey = null,
+    Object? outPoint = null,
   }) {
     return _then(_value.copyWith(
       supabaseUrl: null == supabaseUrl
@@ -102,6 +105,10 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
           ? _value.vapidKey
           : vapidKey // ignore: cast_nullable_to_non_nullable
               as String,
+      outPoint: null == outPoint
+          ? _value.outPoint
+          : outPoint // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -121,7 +128,8 @@ abstract class _$$EnvironmentImplCopyWith<$Res>
       String appId,
       String authKey,
       String authSecret,
-      String vapidKey});
+      String vapidKey,
+      String outPoint});
 }
 
 /// @nodoc
@@ -142,6 +150,7 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
     Object? authKey = null,
     Object? authSecret = null,
     Object? vapidKey = null,
+    Object? outPoint = null,
   }) {
     return _then(_$EnvironmentImpl(
       supabaseUrl: null == supabaseUrl
@@ -173,6 +182,10 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
           ? _value.vapidKey
           : vapidKey // ignore: cast_nullable_to_non_nullable
               as String,
+      outPoint: null == outPoint
+          ? _value.outPoint
+          : outPoint // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -187,7 +200,8 @@ class _$EnvironmentImpl implements _Environment {
       required this.appId,
       required this.authKey,
       required this.authSecret,
-      required this.vapidKey});
+      required this.vapidKey,
+      required this.outPoint});
 
   factory _$EnvironmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$EnvironmentImplFromJson(json);
@@ -206,10 +220,12 @@ class _$EnvironmentImpl implements _Environment {
   final String authSecret;
   @override
   final String vapidKey;
+  @override
+  final String outPoint;
 
   @override
   String toString() {
-    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey)';
+    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outPoint: $outPoint)';
   }
 
   @override
@@ -230,13 +246,23 @@ class _$EnvironmentImpl implements _Environment {
             (identical(other.authSecret, authSecret) ||
                 other.authSecret == authSecret) &&
             (identical(other.vapidKey, vapidKey) ||
-                other.vapidKey == vapidKey));
+                other.vapidKey == vapidKey) &&
+            (identical(other.outPoint, outPoint) ||
+                other.outPoint == outPoint));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, supabaseUrl, supabaseAnonKey,
-      supabaseAuthCallbackUrlHostname, appId, authKey, authSecret, vapidKey);
+  int get hashCode => Object.hash(
+      runtimeType,
+      supabaseUrl,
+      supabaseAnonKey,
+      supabaseAuthCallbackUrlHostname,
+      appId,
+      authKey,
+      authSecret,
+      vapidKey,
+      outPoint);
 
   @JsonKey(ignore: true)
   @override
@@ -260,7 +286,8 @@ abstract class _Environment implements Environment {
       required final String appId,
       required final String authKey,
       required final String authSecret,
-      required final String vapidKey}) = _$EnvironmentImpl;
+      required final String vapidKey,
+      required final String outPoint}) = _$EnvironmentImpl;
 
   factory _Environment.fromJson(Map<String, dynamic> json) =
       _$EnvironmentImpl.fromJson;
@@ -279,6 +306,8 @@ abstract class _Environment implements Environment {
   String get authSecret;
   @override
   String get vapidKey;
+  @override
+  String get outPoint;
   @override
   @JsonKey(ignore: true)
   _$$EnvironmentImplCopyWith<_$EnvironmentImpl> get copyWith =>

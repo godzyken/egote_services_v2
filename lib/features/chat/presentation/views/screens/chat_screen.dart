@@ -1,96 +1,102 @@
 import 'dart:async';
 import 'dart:developer' as dev;
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:collection/collection.dart' show IterableExtension;
+//import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:collection/collection.dart' show IterableExtension;
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:connectycube_sdk/connectycube_sdk.dart';
-import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart'
-    as platform_utils;
-import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
-import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart' as fd;
+// import 'package:connectycube_sdk/connectycube_sdk.dart';
+// import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart'
+// as platform_utils;
+// import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
+//import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
+//import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:file_picker/file_picker.dart' as fp;
+//import 'package:flutter/foundation.dart' as fd;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:universal_io/io.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+
+//import 'package:go_router/go_router.dart';
+//import 'package:intl/intl.dart';
+//import 'package:universal_io/io.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
-import '../../../../../gen/assets.gen.dart';
-import '../../../application/managers/chat_manager.dart';
-import '../../../infrastructure/repositories/cube_repository.dart';
+import '../../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
+import '../../../domain/models/entities/cube_user/cube_user_mig.dart';
+
+//import '../../../../../gen/assets.gen.dart';
+//import '../../../application/managers/chat_manager.dart';
+//import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen(
       {super.key, required this.cubeUser, required this.cubeDialog});
 
-  final CubeUser cubeUser;
-  final CubeDialog cubeDialog;
+  final CubeUserMig cubeUser;
+  final CubeDialogMig cubeDialog;
 
   @override
   ConsumerState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
-  final Map<int?, CubeUser?> _occupants = {};
+  //final Map<int?, CubeUserMig?> _occupants = {};
 
   late bool isLoading;
   late StreamSubscription<List<ConnectivityResult>>
       connectivityStateSubscription;
   String? imageUrl;
-  List<CubeMessage> listMessage = [];
+  List<RTCDataChannelMessage> listMessage = [];
   Timer? typingTimer;
   bool isTyping = false;
   String userStatus = '';
 
-  static const int messagesPerPage = 50;
-  static const int TYPING_TIMEOUT = 700;
-  static const int STOP_TYPING_TIMEOUT = 2000;
+  //static const int messagesPerPage = 50;
+  //static const int TYPING_TIMEOUT = 700;
+  //static const int STOP_TYPING_TIMEOUT = 2000;
 
-  int _sendIsTypingTime = DateTime.now().millisecondsSinceEpoch;
+  //int _sendIsTypingTime = DateTime.now().millisecondsSinceEpoch;
   int lastPartSize = 0;
-  Timer? _sendStopTypingTimer;
+
+  //Timer? _sendStopTypingTimer;
 
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController listScrollController = ScrollController();
 
-  StreamSubscription<CubeMessage>? msgSubscription;
-  StreamSubscription<MessageStatus>? deliveredSubscription;
-  StreamSubscription<MessageStatus>? readSubscription;
-  StreamSubscription<TypingStatus>? typingSubscription;
-  StreamSubscription<MessageReaction>? reactionsSubscription;
+  StreamSubscription<RTCDataChannelMessage>? msgSubscription;
+  StreamSubscription<RTCDataChannelMessage>? deliveredSubscription;
+  StreamSubscription<RTCDataChannelMessage>? readSubscription;
+  StreamSubscription<RTCDataChannelMessage>? typingSubscription;
+  StreamSubscription<RTCDataChannelMessage>? reactionsSubscription;
 
-  List<CubeMessage> oldMessages = [];
+  List<RTCDataChannelMessage> oldMessages = [];
 
-  final List<CubeMessage> _unreadMessages = [];
-  final List<CubeMessage> _unsentMessages = [];
+  //final List<RTCDataChannelMessage> _unreadMessages = [];
+  //final List<RTCDataChannelMessage> _unsentMessages = [];
 
   late FocusNode _editMessageFocusNode;
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: onBackPress,
-      child: SafeArea(
+      onPopInvoked: (bool) {}, //onBackPress,
+      child: const SafeArea(
         child: Stack(
           children: <Widget>[
             Column(
               children: <Widget>[
                 // List of messages
-                buildListMessage(),
+                //buildListMessage(),
                 //Typing content
-                buildTyping(),
+                //buildTyping(),
                 // Input content
-                buildInput(),
+                //buildInput(),
               ],
             ),
 
             // Loading
-            buildLoading()
+            //buildLoading()
           ],
         ),
       ),
@@ -101,13 +107,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void initState() {
     super.initState();
 
-    _initCubeChat();
+    //_initCubeChat();
 
     isLoading = false;
     imageUrl = '';
-    listScrollController.addListener(onScrollChanged);
-    connectivityStateSubscription =
-        Connectivity().onConnectivityChanged.listen(onConnectivityChanged);
+    //listScrollController.addListener(onScrollChanged);
+    // connectivityStateSubscription = Connectivity().onConnectivityChanged.listen(onConnectivityChanged);
     _editMessageFocusNode = createEditMessageFocusNode();
   }
 
@@ -124,8 +129,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void openGallery() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
+    fp.FilePickerResult? result = await fp.FilePicker.platform.pickFiles(
+      type: fp.FileType.image,
     );
 
     if (result == null) return;
@@ -134,9 +139,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       isLoading = true;
     });
 
-    var uploadImageFuture =
-        ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);
-    Uint8List imageData;
+    //var uploadImageFuture = ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);
+    /* Uint8List imageData;
 
     if (fd.kIsWeb) {
       imageData = result.files.single.bytes!;
@@ -144,12 +148,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       imageData = File(result.files.single.path!).readAsBytesSync();
     }
 
-    var decodedImage = await decodeImageFromList(imageData);
+    var decodedImage = await decodeImageFromList(imageData);*/ /*
 
-    uploadImageFile(uploadImageFuture, decodedImage);
+    //uploadImageFile(uploadImageFuture, decodedImage);*/
   }
 
-  Future uploadImageFile(Future<CubeFile> uploadAction, imageData) async {
+/*  Future uploadImageFile(Future<CubeFile> uploadAction, imageData) async {
     uploadAction.then((cubeFile) {
       onSendChatAttachment(cubeFile, imageData);
     }).catchError((ex) {
@@ -158,32 +162,32 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       });
       context.showAlert('This file is not an image');
     });
+  }*/
+
+  void onReceiveMessage(MediaStream message) {
+    dev.log("onReceiveMessage message= $message");
+    if (message.id != widget.cubeDialog.dialogId) return;
+
+    //addMessageToListView(message);
   }
 
-  void onReceiveMessage(CubeMessage message) {
-    log("onReceiveMessage message= $message");
-    if (message.dialogId != widget.cubeDialog.dialogId) return;
-
-    addMessageToListView(message);
-  }
-
-  void onDeliveredMessage(MessageStatus status) {
-    log("onDeliveredMessage message= $status");
-    updateReadDeliveredStatusMessage(status, false);
+/*  void onDeliveredMessage(MessageStatus status) {
+    dev.log("onDeliveredMessage message= $status");
+    //updateReadDeliveredStatusMessage(status, false);
   }
 
   void onReadMessage(MessageStatus status) {
-    log("onReadMessage message= ${status.messageId}");
-    updateReadDeliveredStatusMessage(status, true);
-  }
+    dev.log("onReadMessage message= ${status.messageId}");
+    //updateReadDeliveredStatusMessage(status, true);
+  }*/
 
-  void onReactionReceived(MessageReaction reaction) {
-    log("onReactionReceived message= ${reaction.messageId}");
+/*  void onReactionReceived(MessageReaction reaction) {
+    dev.log("onReactionReceived message= ${reaction.messageId}");
     _updateMessageReactions(reaction);
   }
 
   void onTypingMessage(TypingStatus status) {
-    log("TypingStatus message= ${status.userId}");
+    dev.log("TypingStatus message= ${status.userId}");
     if (status.userId == widget.cubeUser.id ||
         (status.dialogId != null &&
             status.dialogId != widget.cubeDialog.dialogId)) {
@@ -202,7 +206,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       });
     }
     startTypingTimer();
-  }
+  }*/
 
   startTypingTimer() {
     typingTimer?.cancel();
@@ -213,7 +217,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
-  void onSendChatMessage(String content) {
+/*  void onSendChatMessage(String content) {
     if (content.trim() != '') {
       final message = createCubeMsg();
       message.body = content.trim();
@@ -221,9 +225,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     } else {
       context.showAlert('Nothing to send');
     }
-  }
+  }*/
 
-  void onSendChatAttachment(CubeFile cubeFile, imageData) async {
+  /* void onSendChatAttachment(CubeFile cubeFile, imageData) async {
     final attachment = CubeAttachment();
     attachment.id = cubeFile.uid;
     attachment.type = CubeAttachmentType.IMAGE_TYPE;
@@ -245,7 +249,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void onSendMessage(CubeMessage message) async {
-    log("onSendMessage message= $message");
+    dev.log("onSendMessage message= $message");
     textEditingController.clear();
     await widget.cubeDialog.sendMessage(message);
     message.senderId = widget.cubeUser.id;
@@ -259,7 +263,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   updateReadDeliveredStatusMessage(MessageStatus status, bool isRead) {
-    log('[updateReadDeliveredStatusMessage]');
+    dev.log('[updateReadDeliveredStatusMessage]');
     setState(() {
       CubeMessage? msg =
           listMessage.firstWhere((msg) => msg.messageId == status.messageId);
@@ -273,7 +277,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             : msg.deliveredIds?.add(status.userId);
       }
 
-      log('[updateReadDeliveredStatusMessage] status updated for $msg');
+      dev.log('[updateReadDeliveredStatusMessage] status updated for $msg');
     });
   }
 
@@ -320,9 +324,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
 
     Widget getReadDeliveredWidget() {
-      log("[getReadDeliveredWidget]");
+      dev.log("[getReadDeliveredWidget]");
       bool messageIsRead() {
-        log("[getReadDeliveredWidget] messageIsRead");
+        dev.log("[getReadDeliveredWidget] messageIsRead");
         if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
           return message.readIds != null &&
               (message.recipientId == null ||
@@ -334,7 +338,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       }
 
       bool messageIsDelivered() {
-        log("[getReadDeliveredWidget] messageIsDelivered");
+        dev.log("[getReadDeliveredWidget] messageIsDelivered");
         if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
           return message.deliveredIds != null &&
               (message.recipientId == null ||
@@ -346,13 +350,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       }
 
       if (messageIsRead()) {
-        log("[getReadDeliveredWidget] if messageIsRead");
+        dev.log("[getReadDeliveredWidget] if messageIsRead");
         return getMessageStateWidget(MessageState.read);
       } else if (messageIsDelivered()) {
-        log("[getReadDeliveredWidget] if messageIsDelivered");
+        dev.log("[getReadDeliveredWidget] if messageIsDelivered");
         return getMessageStateWidget(MessageState.delivered);
       } else {
-        log("[getReadDeliveredWidget] sent");
+        dev.log("[getReadDeliveredWidget] sent");
         return getMessageStateWidget(MessageState.sent);
       }
     }
@@ -695,7 +699,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     } else {
       return false;
     }
-  }
+  }*/
 
   Widget buildLoading() {
     return Positioned(
@@ -738,7 +742,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               child: IconButton(
                 icon: const Icon(Icons.image),
                 onPressed: () {
-                  openGallery();
+                  //openGallery();
                 },
                 color: Colors.primaries.single,
               ),
@@ -748,7 +752,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // Edit text
           Flexible(
             child: TextField(
-              autofocus: platform_utils.isDesktop(),
+              //autofocus: platform_utils.isDesktop(),
+              autofocus: true,
               focusNode: _editMessageFocusNode,
               keyboardType: TextInputType.multiline,
               maxLines: null,
@@ -759,7 +764,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 hintStyle: TextStyle(color: Colors.grey),
               ),
               onChanged: (text) {
-                sendIsTypingStatus();
+                //sendIsTypingStatus();
               },
             ),
           ),
@@ -771,7 +776,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 8.0),
               child: IconButton(
                 icon: const Icon(Icons.send),
-                onPressed: () => onSendChatMessage(textEditingController.text),
+                onPressed: () {},
+                //onSendChatMessage(textEditingController.text),
                 color: Colors.primaries.single,
               ),
             ),
@@ -781,7 +787,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  Widget buildListMessage() {
+/*  Widget buildListMessage() {
     getWidgetMessages(listMessage) {
       return ListView.builder(
         padding: const EdgeInsets.all(10.0),
@@ -829,9 +835,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       completer.completeError(error);
     }
     return completer.future;
-  }
+  }*/
 
-  void onScrollChanged() {
+/*  void onScrollChanged() {
     if ((listScrollController.position.pixels ==
             listScrollController.position.maxScrollExtent) &&
         messagesPerPage >= lastPartSize) {
@@ -867,7 +873,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
       });
     }
-  }
+  }*/
 
   void onBackPress(bool) {
     //TODO: fix that too
@@ -877,8 +883,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
-  _initChatListeners() {
-    log("[_initChatListeners]");
+  /* _initChatListeners() {
+    dev.log("[_initChatListeners]");
     msgSubscription = CubeChatConnection
         .instance.chatMessagesManager!.chatMessagesStream
         .listen(onReceiveMessage);
@@ -897,17 +903,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void _initCubeChat() {
-    log("_initCubeChat");
+    dev.log("_initCubeChat");
     if (ref.watch(cubeChatConnectionProvider).isAuthenticated()) {
-      log("[_initCubeChat] isAuthenticated");
+      dev.log("[_initCubeChat] isAuthenticated");
       _initChatListeners();
     } else {
-      log("[_initCubeChat] not authenticated");
+      dev.log("[_initCubeChat] not authenticated");
       ref
           .watch(cubeChatConnectionProvider)
           .connectionStateStream
           .listen((state) {
-        log("[_initCubeChat] state $state");
+        dev.log("[_initCubeChat] state $state");
         if (CubeChatConnectionState.Ready == state) {
           _initChatListeners();
 
@@ -987,7 +993,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void onConnectivityChanged(List<ConnectivityResult>? connectivityType) {
-    log("[ChatScreenState] connectivityType changed to '$connectivityType'");
+    dev.log(
+        "[ChatScreenState] connectivityType changed to '$connectivityType'");
     setState(() {
       isLoading = true;
     });
@@ -1170,7 +1177,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     },
                   )));
         }).then((emoji) {
-      log("onEmojiSelected emoji: ${emoji?.emoji}");
+      dev.log("onEmojiSelected emoji: ${emoji?.emoji}");
       if (emoji != null) {
         _performReaction(emoji, message);
       }
@@ -1193,7 +1200,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void _updateMessageReactions(MessageReaction reaction) {
-    log('[_updateMessageReactions]');
+    dev.log('[_updateMessageReactions]');
     setState(() {
       CubeMessage? msg = listMessage
           .firstWhereOrNull((msg) => msg.messageId == reaction.messageId);
@@ -1239,7 +1246,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
       }
     });
-  }
+  }*/
 
   FocusNode createEditMessageFocusNode() {
     return FocusNode(
@@ -1247,7 +1254,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         if (!event.synthesized &&
             event.logicalKey == LogicalKeyboardKey.enter) {
           if (event is KeyDownEvent) {
-            onSendChatMessage(textEditingController.text);
+            //onSendChatMessage(textEditingController.text);
           }
           _editMessageFocusNode.requestFocus();
           return KeyEventResult.handled;

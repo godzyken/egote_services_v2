@@ -1,4 +1,4 @@
-import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,11 +7,9 @@ import '../../../../common/application/navigation/navigation.dart';
 import 'chat_screens.dart';
 
 class CreateDialog extends ConsumerWidget {
-  const CreateDialog({
-    super.key,
-    required this.currentUser
-  });
-  final CubeUser currentUser;
+  const CreateDialog({super.key, required this.currentUser});
+
+  final CubeUserMig currentUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +18,7 @@ class CreateDialog extends ConsumerWidget {
         initialRoute: 'search_users',
         onGenerateRoute: (RouteSettings settings) {
           Map<String, dynamic>? args =
-          settings.arguments as Map<String, dynamic>?;
+              settings.arguments as Map<String, dynamic>?;
 
           Widget page;
 

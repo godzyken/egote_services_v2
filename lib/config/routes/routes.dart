@@ -1,4 +1,5 @@
-import 'package:connectycube_sdk/connectycube_chat.dart';
+// import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/domain/entities/entities_extension.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
+import '../../features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
+import '../../features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import '../../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
@@ -27,17 +30,13 @@ part 'routes.g.dart';
         name: 'user_home',
         routes: [
           TypedGoRoute<PersonRoute>(
-              path: PersonRoute.path,
-              name: 'person',
-              routes: []),
+              path: PersonRoute.path, name: 'person', routes: []),
           TypedGoRoute<UserListRoute>(
               path: UserListRoute.path,
               name: 'userList',
               routes: [
                 TypedGoRoute<AddUserFormRoute>(
-                    path: AddUserFormRoute.path,
-                    name: 'userForm'
-                ),
+                    path: AddUserFormRoute.path, name: 'userForm'),
               ]),
         ]),
     TypedGoRoute<GodzyLogoRoute>(
@@ -56,22 +55,15 @@ part 'routes.g.dart';
       path: DevisListRoute.path,
       name: 'devisList',
     ),
-    TypedGoRoute<ChatRoute>(
-        path: ChatRoute.path,
-        name: 'chat',
-        routes: [
-          TypedGoRoute<SelectDialogRoute>(
-              path: SelectDialogRoute.path,
-              name: 'select_dialog',
-              routes: [
-                TypedGoRoute<ChatDialogRoute>(
-                    path: ChatDialogRoute.path,
-                    name: 'chat_dialog'
-                )
-              ]
-          )
-        ]
-    ),
+    TypedGoRoute<ChatRoute>(path: ChatRoute.path, name: 'chat', routes: [
+      TypedGoRoute<SelectDialogRoute>(
+          path: SelectDialogRoute.path,
+          name: 'select_dialog',
+          routes: [
+            TypedGoRoute<ChatDialogRoute>(
+                path: ChatDialogRoute.path, name: 'chat_dialog')
+          ])
+    ]),
     TypedGoRoute<SettingsUiRoute>(
         path: SettingsUiRoute.path,
         name: 'settingsRoute',
@@ -452,7 +444,6 @@ class ThemeShowcaseRoute extends GoRouteData {
   }
 }
 
-
 class ChatRoute extends GoRouteData {
   static const path = 'chatRoute';
 
@@ -460,7 +451,9 @@ class ChatRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return LoginOnChat(key: state.pageKey,);
+    return LoginOnChat(
+      key: state.pageKey,
+    );
   }
 }
 
@@ -471,7 +464,7 @@ class SelectDialogRoute extends GoRouteData {
 
   SelectDialogRoute({required this.cid});
 
-  CubeUser? currentUser;
+  CubeUserMig? currentUser;
 
   int? get _cid => cid = currentUser!.id!;
 
@@ -481,7 +474,10 @@ class SelectDialogRoute extends GoRouteData {
       return const LoginScreen();
     }
 
-    return SelectDialogScreen(key: state.pageKey, currentUser: currentUser!,);
+    return SelectDialogScreen(
+      key: state.pageKey,
+      currentUser: currentUser!,
+    );
   }
 }
 
@@ -491,14 +487,14 @@ class ChatDialogRoute extends GoRouteData {
   ChatDialogRoute({required this.cid, required this.cdid});
 
   int cid;
-  CubeUser? currentUser;
+  CubeUserMig? currentUser;
 
   int? get _cid => cid = currentUser!.id!;
 
   int cdid;
-  CubeDialog? cubeDialog;
+  CubeDialogMig? cubeDialog;
 
-  int? get _cdid => cdid = cubeDialog!.id!;
+  int? get _cdid => cdid = cubeDialog!.type!;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -507,7 +503,10 @@ class ChatDialogRoute extends GoRouteData {
     }
 
     return ChatDialogScreen(
-      key: state.pageKey, cubeUser: currentUser!, cubeDialog: cubeDialog!,);
+      key: state.pageKey,
+      cubeUser: currentUser!,
+      cubeDialog: cubeDialog!,
+    );
   }
 }
 

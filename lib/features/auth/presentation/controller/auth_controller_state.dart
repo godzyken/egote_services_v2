@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:connectycube_sdk/connectycube_calls.dart';
+// import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
@@ -8,6 +8,8 @@ import 'package:egote_services_v2/features/auth/presentation/states/auth/auth_st
     as perso;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+
+import '../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
 
 class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
   AuthControllerStateNotifier(this._repository)
@@ -68,7 +70,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
                     createdAt: _user!.createdAt,
                     role: _user!.role!,
                     updatedAt: _user!.updatedAt!),
-                cubeUser: CubeUser()));
+                cubeUser: const CubeUserMig()));
       case supabase.AuthChangeEvent.signedOut:
         session?.user;
         onSignOut();
@@ -92,7 +94,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
                     createdAt: _user!.createdAt,
                     role: _user!.role!,
                     updatedAt: _user!.updatedAt!),
-                cubeUser: CubeUser()));
+                cubeUser: const CubeUserMig()));
       case supabase.AuthChangeEvent.userUpdated:
         _user = session?.user;
         state = perso.AuthState.authenticated(
@@ -110,7 +112,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
                     createdAt: _user!.createdAt,
                     role: _user!.role!,
                     updatedAt: _user!.updatedAt!),
-                cubeUser: CubeUser()));
+                cubeUser: const CubeUserMig()));
       case supabase.AuthChangeEvent.userDeleted:
         _user = null;
         state = const perso.AuthState.unauthenticated(
@@ -142,7 +144,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
                   createdAt: userModel.toNullable()!.createdAt,
                   role: userModel.toNullable()!.role!,
                   updatedAt: userModel.toNullable()!.updatedAt!),
-              cubeUser: CubeUser()));
+              cubeUser: const CubeUserMig()));
     } while (userModel.exists((r) => r.id.isNotEmpty));
 
     state = const perso.AuthState.unauthenticated(

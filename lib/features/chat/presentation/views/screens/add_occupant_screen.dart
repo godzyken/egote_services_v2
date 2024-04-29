@@ -1,4 +1,7 @@
-import 'package:connectycube_sdk/connectycube_chat.dart';
+// import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'dart:developer';
+
+import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,26 +9,32 @@ import 'package:go_router/go_router.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
 
 class AddOccupantScreen extends ConsumerStatefulWidget {
-  const AddOccupantScreen({super.key, required this.cubeUser});
+  const AddOccupantScreen(
+      {super.key, required this.cubeUser, required this.id});
 
-  final CubeUser cubeUser;
+  final int id;
+  final CubeUserMig cubeUser;
 
   @override
   ConsumerState createState() => _AddOccupantScreenState();
 }
 
 class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
-  late final CubeUser currentUser;
+  late final CubeUserMig currentUser;
+  late int idCopy;
 
   @override
   void initState() {
     super.initState();
-    currentUser = CubeUser();
+    idCopy = widget.id;
+    currentUser = widget.cubeUser;
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (context) => _onBackPressed(context),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
@@ -33,18 +42,17 @@ class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
         ),
         body: BodyLayout(currentUser),
       ),
-      onWillPop: () => _onBackPressed(context),
     );
   }
 
-  Future<bool> _onBackPressed(BuildContext context) {
+  _onBackPressed(bool isPop) {
     context.pop(context);
     return Future.value(false);
   }
 }
 
 class BodyLayout extends ConsumerStatefulWidget {
-  final CubeUser currentUser;
+  final CubeUserMig currentUser;
 
   const BodyLayout(this.currentUser, {super.key});
 
@@ -53,8 +61,8 @@ class BodyLayout extends ConsumerStatefulWidget {
 }
 
 class _BodyLayoutState extends ConsumerState<BodyLayout> {
-  late final CubeUser currentUser;
-  List<CubeUser> userList = [];
+  late final CubeUserMig currentUser;
+  List<CubeUserMig> userList = [];
   final Set<int> _selectedUsers = {};
   var _isUsersContinues = false;
   String? userToSearch;
@@ -64,7 +72,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
   void initState() {
     super.initState();
     _isUsersContinues = false;
-    currentUser = CubeUser();
+    currentUser = const CubeUserMig();
   }
 
   _searchUser(value) {
@@ -143,7 +151,10 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
 
     if (_isUsersContinues) {
       if (userToSearch != null && userToSearch!.isNotEmpty) {
-        getUsersByFullName(userToSearch!).then((users) {
+        setState(() {
+          clearValues();
+        });
+        /* getUsersByFullName(userToSearch!).then((users) {
           log("getUsers: $users");
           setState(() {
             clearValues();
@@ -159,7 +170,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
             clearValues();
             userMsg = context.tr!.userNotFound;
           });
-        });
+        });*/
       }
     }
     if (userList.isEmpty) {

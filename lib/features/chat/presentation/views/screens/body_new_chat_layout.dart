@@ -1,22 +1,30 @@
-import 'package:connectycube_sdk/connectycube_sdk.dart';
+//import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'dart:developer';
+
+import 'package:egote_services_v2/features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
+import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
 
+typedef DlgProc = Dialog Function(Dialog, int, BodyNewChatLayout,
+    {CubeUserMig x, AsyncValueGetter<CubeUserMig> guest});
+
 class BodyNewChatLayout extends ConsumerStatefulWidget {
   const BodyNewChatLayout({super.key, required this.currentUser});
 
-  final CubeUser currentUser;
+  final CubeUserMig currentUser;
 
   @override
   ConsumerState createState() => _BodyNewChatLayoutState();
 }
 
 class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
-  List<CubeUser> userList = [];
+  List<CubeUserMig> userList = [];
   final Set<int> _selectedUsers = {};
   var _isUsersContinues = false;
   var _isPrivateDialog = true;
@@ -133,7 +141,10 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
 
     if (_isUsersContinues) {
       if (userToSearch != null && userToSearch!.isNotEmpty) {
-        getUsersByFullName(userToSearch!).then((users) {
+        setState(() {
+          clearValues();
+        });
+        /*     getUsersByFullName(userToSearch!).then((users) {
           log("getusers: $users");
           setState(() {
             clearValues();
@@ -145,7 +156,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
             clearValues();
             userMsg = context.tr!.userNotFound;
           });
-        });
+        });*/
       }
     }
     if (userList.isEmpty) {
@@ -265,9 +276,10 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
   void _createDialog(BuildContext context, Set<int> users, bool isGroup) async {
     log("_createDialog with users= $users");
     if (isGroup) {
-      CubeDialog newDialog =
-          CubeDialog(CubeDialogType.GROUP, occupantsIds: users.toList());
-      List<CubeUser> usersToAdd = users
+      CubeDialogMig newDialog = CubeDialogMig(
+          const CubeDialogTypeMig.GROUP(2).id,
+          occupantsIds: users.toList());
+      List<CubeUserMig> usersToAdd = users
           .map((id) => userList.firstWhere((user) => user.id == id))
           .toList();
 
@@ -277,8 +289,9 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
         SELECTED_USERS_ARG_NAME: usersToAdd,
       });
     } else {
-      CubeDialog newDialog =
-          CubeDialog(CubeDialogType.PRIVATE, occupantsIds: users.toList());
+      /* CubeDialogMig newDialog = CubeDialogMig(
+          const CubeDialogTypeMig.PRIVATE(1).id,
+          occupantsIds: users.toList());
       createDialog(newDialog).then((createdDialog) {
         context.pushReplacementNamed('chat_dialog', extra: {
           USER_ARG_NAME: widget.currentUser,
@@ -286,14 +299,14 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
         });
       }).catchError((error) {
         _processCreateDialogError(error);
-      });
+      });*/
     }
   }
 
-  void _processCreateDialogError(exception) {
+/*  void _processCreateDialogError(exception) {
     log("Login error $exception");
     context.showAlert(exception);
-  }
+  }*/
 
   @override
   void initState() {

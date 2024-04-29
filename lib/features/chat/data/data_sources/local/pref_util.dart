@@ -1,12 +1,11 @@
-
 import 'dart:async';
 import 'dart:developer' as developer;
 
-import 'package:connectycube_sdk/connectycube_calls.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
+import '../../../domain/models/entities/cube_user/cube_user_mig.dart';
 
 const String prefLoginType = "pref_login_type";
 const String prefUserLogin = "pref_user_login";
@@ -20,8 +19,6 @@ const String prefSubscriptionToken = "pref_subscription_token";
 const String prefSubscriptionId = "pref_subscription_id";
 const String prefSelectedDialogId = "pref_selected_dialog_id";
 
-
-
 class SharedPrefs {
   static final SharedPrefs _instance = SharedPrefs._internal();
   late SharedPreferences prefs;
@@ -31,7 +28,6 @@ class SharedPrefs {
   bool inited = false;
 
   static SharedPrefs get instance => _instance;
-
 
   Future<SharedPrefs> init() async {
     Completer<SharedPrefs> completer = Completer();
@@ -49,10 +45,10 @@ class SharedPrefs {
     return completer.future;
   }
 
-  saveNewUser(CubeUser cubeUser,  LoginType loginType) {
+  saveNewUser(CubeUserMig cubeUser, LoginType loginType) {
     prefs.clear();
 
-    prefs.setString(prefLoginType, describeEnum(loginType));
+    prefs.setString(prefLoginType, loginType.name);
 
     if (cubeUser.login != null) prefs.setString(prefUserLogin, cubeUser.login!);
     if (cubeUser.email != null) prefs.setString(prefUserEmail, cubeUser.email!);
@@ -69,17 +65,19 @@ class SharedPrefs {
     }
   }
 
-  startSession(CubeSession cubeSession, bool isStart) async {
+  /* startSession(CubeSession cubeSession, bool isStart) async {
     prefs.clear();
-    await Future.delayed(Duration(minutes: cubeSession.tokenExpirationDate!.minute));
+    await Future.delayed(
+        Duration(minutes: cubeSession.tokenExpirationDate!.minute));
     if (cubeSession.timestamp != 0 && isStart) {
       prefs.setInt(cubeSession.token!, cubeSession.timestamp!);
-    } else if (cubeSession.timestamp == cubeSession.tokenExpirationDate!.minute) {
+    } else if (cubeSession.timestamp ==
+        cubeSession.tokenExpirationDate!.minute) {
       prefs.clear();
     }
-  }
+  }*/
 
-  updateUser(CubeUser cubeUser) {
+  updateUser(CubeUserMig cubeUser) {
     if (cubeUser.password != null) {
       prefs.setString(prefUserPsw, cubeUser.password!);
     }
@@ -94,17 +92,17 @@ class SharedPrefs {
     }
   }
 
-  Future<CubeUser?> getUser() {
+  Future<CubeUserMig?> getUser() {
     if (prefs.getString(prefUserLogin) == null &&
         prefs.getString(prefUserEmail) == null) return Future.value();
-    var user = CubeUser();
-    user.login = prefs.getString(prefUserLogin);
+    var user = const CubeUserMig();
+/*    user.login = prefs.getString(prefUserLogin);
     user.email = prefs.getString(prefUserEmail);
     user.phone = prefs.getString(prefUserPhone);
     user.password = prefs.getString(prefUserPsw);
     user.fullName = prefs.getString(prefUserName);
     user.id = prefs.getInt(prefUserId);
-    user.avatar = prefs.getString(prefUserAvatar);
+    user.avatar = prefs.getString(prefUserAvatar);*/
     return Future.value(user);
   }
 
@@ -112,14 +110,14 @@ class SharedPrefs {
     var savedLoginType = prefs.getString(prefLoginType);
     if (savedLoginType == null) return null;
 
-    var loginType = LoginType.values.firstWhere(
-            (element) => describeEnum(element) == savedLoginType);
+    var loginType = LoginType.values
+        .firstWhere((element) => element.name == savedLoginType);
 
     return loginType;
   }
 
   saveLoginType(LoginType loginType) {
-    prefs.setString(prefLoginType, describeEnum(loginType));
+    prefs.setString(prefLoginType, loginType.name);
   }
 
   Future<bool> deleteUser() {

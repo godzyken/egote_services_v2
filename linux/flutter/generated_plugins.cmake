@@ -5,7 +5,6 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_webview_auth
   emoji_picker_flutter
-  flutter_localization
   flutter_webrtc
   gtk
   sentry_flutter

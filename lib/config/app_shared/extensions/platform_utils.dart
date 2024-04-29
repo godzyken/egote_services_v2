@@ -1,7 +1,8 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app_badger/flutter_app_badger.dart';
+//import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_io/io.dart';
 
@@ -21,10 +22,10 @@ void showModal({
           return Dialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            child: RawKeyboardListener(
-              focusNode: FocusNode(onKey: (FocusNode node, RawKeyEvent evt) {
+            child: KeyboardListener(
+              focusNode: FocusNode(onKeyEvent: (FocusNode node, KeyEvent evt) {
                 if (evt.logicalKey == LogicalKeyboardKey.escape) {
-                  if (evt is RawKeyDownEvent) {
+                  if (evt is KeyDownEvent) {
                     context.pop(context);
                     return KeyEventResult.handled;
                   }
@@ -61,12 +62,44 @@ void showModal({
 }
 
 void updateBadgeCount(int? count) {
-  FlutterAppBadger.isAppBadgeSupported().then((isBadgesSupported) {
+  /* FlutterAppBadger.isAppBadgeSupported().then((isBadgesSupported) {
     if (isBadgesSupported) {
       if (count == null || count == 0) {
         FlutterAppBadger.removeBadge();
       } else {
         FlutterAppBadger.updateBadgeCount(count);
+      }
+    }
+  });*/
+
+  badges.BadgeState().createTicker((elapsed) {
+    if (elapsed.isNegative) {
+      if (count == null || count == 0) {
+        const badges.Badge(
+          showBadge: false,
+        );
+      } else {
+        badges.Badge(
+          badgeStyle: badges.BadgeStyle(
+            shape: badges.BadgeShape.square,
+            badgeColor: Colors.blue,
+            padding: const EdgeInsets.all(5),
+            borderRadius: BorderRadius.circular(4),
+            borderSide: const BorderSide(color: Colors.white, width: 2),
+            borderGradient: const badges.BadgeGradient.linear(
+                colors: [Colors.red, Colors.black]),
+            badgeGradient: const badges.BadgeGradient.linear(
+              colors: [Colors.blue, Colors.yellow],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            elevation: 0,
+          ),
+          showBadge: true,
+          badgeAnimation: const badges.BadgeAnimation.scale(
+              appearanceDisappearanceFadeAnimationEnabled: true),
+          child: Text('$count : Badge'),
+        );
       }
     }
   });

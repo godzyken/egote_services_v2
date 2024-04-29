@@ -151,8 +151,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> Function()? onPressedSubmitButton(
       bool isLoading, BuildContext context) {
-    DatadogSdk.instance.rum
-        ?.addUserAction(RumUserActionType.tap, 'Submit to login');
+    DatadogSdk.instance.rum?.addAction(RumActionType.tap, 'Submit to login');
     return isLoading
         ? null
         : () async {

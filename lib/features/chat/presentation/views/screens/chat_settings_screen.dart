@@ -1,24 +1,17 @@
-import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'dart:developer';
+
+import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../config/providers/cube/cube_providers.dart';
-import '../../../../../config/providers/firebase/firebase_providers.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
-import '../../../application/managers/push_notifications_manager.dart';
-import '../../../data/data_sources/local/pref_util.dart';
-import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatSettingsScreen extends ConsumerWidget {
-  const ChatSettingsScreen({
-    super.key,
-    required this.currentUser
-  });
+  const ChatSettingsScreen({super.key, required this.currentUser});
 
-  final CubeUser currentUser;
+  final CubeUserMig currentUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,10 +21,14 @@ class ChatSettingsScreen extends ConsumerWidget {
           onPressed: () {
             context.pop();
           },
-          icon: const Icon(Icons.close, color: Colors.white,),
+          icon: const Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
         ),
         automaticallyImplyLeading: false,
-        title: Text(context.tr!.chatSettings,
+        title: Text(
+          context.tr!.chatSettings,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -42,7 +39,7 @@ class ChatSettingsScreen extends ConsumerWidget {
 }
 
 class BodySettingsLayout extends ConsumerStatefulWidget {
-  final CubeUser currentUser;
+  final CubeUserMig currentUser;
 
   const BodySettingsLayout(this.currentUser, {super.key});
 
@@ -51,7 +48,6 @@ class BodySettingsLayout extends ConsumerStatefulWidget {
 }
 
 class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
-
   var _isUsersContinues = false;
   String? _avatarUrl = "";
   final TextEditingController _loginFilter = TextEditingController();
@@ -62,35 +58,35 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   String _email = "";
 
   _BodyLayoutState() {
-      _loginFilter.addListener(_loginListen);
-      _nameFilter.addListener(_nameListen);
-      _emailFilter.addListener(_emailListen);
-      _nameFilter.text = widget.currentUser.fullName ?? '';
-      _loginFilter.text = widget.currentUser.login ?? '';
-      _emailFilter.text = widget.currentUser.email ?? '';
+    _loginFilter.addListener(_loginListen);
+    _nameFilter.addListener(_nameListen);
+    _emailFilter.addListener(_emailListen);
+    _nameFilter.text = widget.currentUser.fullName ?? '';
+    _loginFilter.text = widget.currentUser.login ?? '';
+    _emailFilter.text = widget.currentUser.email ?? '';
   }
 
   void _loginListen() {
     if (_loginFilter.text.isEmpty) {
-    _login = "";
+      _login = "";
     } else {
-    _login = _loginFilter.text.trim();
+      _login = _loginFilter.text.trim();
     }
   }
 
   void _nameListen() {
     if (_nameFilter.text.isEmpty) {
-    _name = "";
+      _name = "";
     } else {
-    _name = _nameFilter.text.trim();
+      _name = _nameFilter.text.trim();
     }
   }
 
   void _emailListen() {
     if (_emailFilter.text.isEmpty) {
-    _email = "";
+      _email = "";
     } else {
-    _email = _emailFilter.text.trim();
+      _email = _emailFilter.text.trim();
     }
   }
 
@@ -100,7 +96,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       body: SingleChildScrollView(
         child: Center(
           child: ConstrainedBox(
-            constraints:  const BoxConstraints(maxWidth: 400),
+            constraints: const BoxConstraints(maxWidth: 400),
             child: Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(60),
@@ -169,43 +165,37 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
 
     if (result == null) return;
 
-    var uploadImageFuture = ref.watch(cubeRepositoryProvider)
+    /*var uploadImageFuture = ref.watch(cubeRepositoryProvider)
         .getUploadingImageFuture(result);
 
     uploadImageFuture.then((cubeFile) {
       _avatarUrl = cubeFile.getPublicUrl();
       setState(() {
-        widget.currentUser.avatar = _avatarUrl;
+        var lastUser = widget.currentUser;
+        var lastUserAvatarUrl = lastUser.avatar;
+        lastUserAvatarUrl = _avatarUrl;
       });
     }).catchError((exception) {
       _processUpdateUserError(exception);
-    });
+    });*/
   }
 
   Widget _buildTextFields() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            child: TextField(
-              controller: _nameFilter,
-              decoration: InputDecoration(labelText: context.tr!.changeName),
-            ),
-          ),
-          Container(
-            child: TextField(
-              controller: _loginFilter,
-              decoration: InputDecoration(labelText: context.tr!.changeLogin),
-            ),
-          ),
-          Container(
-            child: TextField(
-              controller: _emailFilter,
-              decoration: InputDecoration(labelText: context.tr!.changeEmail),
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        TextField(
+          controller: _nameFilter,
+          decoration: InputDecoration(labelText: context.tr!.changeName),
+        ),
+        TextField(
+          controller: _loginFilter,
+          decoration: InputDecoration(labelText: context.tr!.changeLogin),
+        ),
+        TextField(
+          controller: _emailFilter,
+          decoration: InputDecoration(labelText: context.tr!.changeEmail),
+        ),
+      ],
     );
   }
 
@@ -260,8 +250,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   }
 
   void _updateUser() {
-    log(
-        '_updateUser user with login: $_login, name: $_name, e-mail: $_email');
+    log('_updateUser user with login: $_login, name: $_name, e-mail: $_email');
     if (_login.isEmpty &&
         _name.isEmpty &&
         _avatarUrl!.isEmpty &&
@@ -269,16 +258,16 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       context.showAlert(context.tr!.nothingToSave);
       return;
     }
-    var userToUpdate = CubeUser()..id = widget.currentUser.id;
+/*    var userToUpdate = const CubeUserMig()..id = widget.currentUser.id;
 
     if (_name.isNotEmpty) userToUpdate.fullName = _name;
     if (_login.isNotEmpty) userToUpdate.login = _login;
     if (_email.isNotEmpty) userToUpdate.email = _email;
-    if (_avatarUrl!.isNotEmpty) userToUpdate.avatar = _avatarUrl;
+    if (_avatarUrl!.isNotEmpty) userToUpdate.avatar = _avatarUrl;*/
     setState(() {
       _isUsersContinues = true;
     });
-    updateUser(userToUpdate).then((user) {
+/*    updateUser(userToUpdate).then((user) {
       SharedPrefs.instance.updateUser(user);
       context.showAlert(context.tr!.success);
       setState(() {
@@ -286,7 +275,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       });
     }).catchError((exception) {
       _processUpdateUserError(exception);
-    });
+    });*/
   }
 
   void _logout() {
@@ -307,7 +296,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
             TextButton(
               child: Text(context.tr!.ok),
               onPressed: () {
-                signOut().then(
+                /*           signOut().then(
                       (voidValue) {
                     context.pop(context); // cancel current Dialog
                   },
@@ -323,7 +312,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
                   SharedPrefs.instance.deleteUser();
                   context.pop(context); // cancel current screen
                   _navigateToLoginScreen();
-                });
+                });*/
               },
             ),
           ],
@@ -354,7 +343,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
             TextButton(
               child: Text(context.tr!.ok),
               onPressed: () async {
-                CubeChatConnection.instance.destroy();
+                /*  CubeChatConnection.instance.destroy();
                 await SharedPrefs.instance.deleteUser();
 
                 deleteUser(widget.currentUser.id!).then(
@@ -371,7 +360,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
                      context.pop();
                    });
                   _navigateToLoginScreen();
-                });
+                });*/
               },
             ),
           ],
@@ -380,7 +369,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     );
   }
 
-  _navigateToLoginScreen() {
+/*  _navigateToLoginScreen() {
     context.pushReplacementNamed('login');
   }
 
@@ -390,6 +379,5 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       _isUsersContinues = false;
     });
     ErrorScreen(error: exception, key: context.widget.key);
-  }
-
+  }*/
 }

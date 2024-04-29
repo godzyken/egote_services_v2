@@ -1,4 +1,4 @@
-import 'package:connectycube_sdk/connectycube_calls.dart';
+// import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
+import '../../../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import '../../../../domain/providers/auth_repository_provider.dart';
 
 class VerificationScreenParams {
@@ -126,7 +127,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                       role: l.error,
                       updatedAt: l.error,
                     ),
-                    cubeUser: CubeUser()));
+                    cubeUser: const CubeUserMig()));
 
                 final client = code.getOrElse((l) => AuthResponse(
                     user: user.authUser,
