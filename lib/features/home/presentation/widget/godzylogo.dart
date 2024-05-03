@@ -1,8 +1,9 @@
+import 'dart:math' as math;
+
 import 'package:egote_services_v2/config/app_shared/images/list_local.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sky_engine/math/math.dart' as math;
 
 class Godzylogo extends ConsumerWidget {
   const Godzylogo({super.key});

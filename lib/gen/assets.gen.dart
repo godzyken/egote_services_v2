@@ -3,13 +3,13 @@
 ///  FlutterGen
 /// *****************************************************
 
-import 'package:flutter/services.dart';
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 
 class $AssetsFontsGen {
   const $AssetsFontsGen();
@@ -39,17 +39,19 @@ class $AssetsJsonGen {
   /// File path: assets/json/production.config.json
   String get productionConfig => 'assets/json/production.config.json';
 
+  /// File path: assets/json/settings.config.json
+  String get settingsConfig => 'assets/json/settings.config.json';
+
   /// List of all assets
-  List<String> get values => [developmentConfig, localConfig, productionConfig];
+  List<String> get values =>
+      [developmentConfig, localConfig, productionConfig, settingsConfig];
 }
 
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
   $AssetsLottieArchiveGen get archive => const $AssetsLottieArchiveGen();
-
   $AssetsLottieImageGen get image => const $AssetsLottieImageGen();
-
   $AssetsLottieModelsGen get models => const $AssetsLottieModelsGen();
 }
 
@@ -244,7 +246,6 @@ class $AssetsLottieArchiveAmenagementGen {
 
   $AssetsLottieArchiveAmenagementExterieurGen get exterieur =>
       const $AssetsLottieArchiveAmenagementExterieurGen();
-
   $AssetsLottieArchiveAmenagementInterrieurGen get interrieur =>
       const $AssetsLottieArchiveAmenagementInterrieurGen();
 }

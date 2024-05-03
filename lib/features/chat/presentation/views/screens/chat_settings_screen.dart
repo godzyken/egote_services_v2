@@ -200,52 +200,50 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   }
 
   Widget _buildButtons() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          const SizedBox(
-            height: 6,
+    return Column(
+      children: <Widget>[
+        const SizedBox(
+          height: 6,
+        ),
+        ElevatedButton(
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(120, 36),
           ),
-          ElevatedButton(
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(120, 36),
-            ),
-            onPressed: _updateUser,
-            child: Text(context.tr!.save),
+          onPressed: _updateUser,
+          child: Text(context.tr!.save),
+        ),
+        const SizedBox(
+          height: 6,
+        ),
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(160, 36),
           ),
-          const SizedBox(
-            height: 6,
+          icon: const Icon(
+            Icons.logout,
           ),
-          OutlinedButton.icon(
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(160, 36),
-            ),
-            icon: const Icon(
-              Icons.logout,
-            ),
-            label: Text(context.tr!.signOut),
-            onPressed: _logout,
+          label: Text(context.tr!.signOut),
+          onPressed: _logout,
+        ),
+        const SizedBox(
+          height: 6,
+        ),
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: Colors.red.shade300,
+            minimumSize: const Size(160, 36),
           ),
-          const SizedBox(
-            height: 6,
+          icon: const Icon(
+            Icons.delete,
+            color: Colors.red,
           ),
-          OutlinedButton.icon(
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.red.shade300,
-              minimumSize: const Size(160, 36),
-            ),
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-            label: Text(
-              context.tr!.deleteUser,
-              style: const TextStyle(color: Colors.red),
-            ),
-            onPressed: _deleteUserPressed,
+          label: Text(
+            context.tr!.deleteUser,
+            style: const TextStyle(color: Colors.red),
           ),
-        ],
-      ),
+          onPressed: _deleteUserPressed,
+        ),
+      ],
     );
   }
 

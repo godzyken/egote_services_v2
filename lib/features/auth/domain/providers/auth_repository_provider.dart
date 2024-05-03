@@ -12,7 +12,8 @@ import '../../infrastructure/repositories/auth_repository.dart';
 final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
   final prefs = ref.read(sharedPreferencesProvider);
   final client = ref.watch(supabaseClientProvider).auth;
-  final link = ref.watch(generateLinkTypeProvider).single;
+  final link =
+      ref.watch(generateLinkTypeProvider.select((value) => value.single));
 
   return AuthRepository(AuthTokenLocalDataSource(prefs), client, link);
 },

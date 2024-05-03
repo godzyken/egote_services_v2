@@ -489,7 +489,7 @@ class Settings {
   /// can also use the principle shown here as a way to make just computed dark
   /// themes from light scheme color definitions, just pick a saturation level
   /// that you think work well enough and use that as the dark scheme color
-  /// input instead. There is an example of this in the FlexColorScheme package
+  /// input instead. There is an godzy of this in the FlexColorScheme package
   /// tutorial as well.
   static final NotifierProvider<SettingsEntry<bool>, bool>
   darkComputeThemeProvider = NotifierProvider<SettingsEntry<bool>, bool>(
@@ -606,7 +606,7 @@ class Settings {
   /// This would be better and safer represented as an enum entry, but we
   /// did not want to create yet another enum storage adapter. You can of course
   /// store the enums as ints and convert in the app too. This may serve as an
-  /// example of that, until I change it to an enum :)
+  /// godzy of that, until I change it to an enum :)
   ///
   /// Defaults to [_usedFlexTone].
   static final NotifierProvider<SettingsEntry<int>, int> usedFlexToneProvider =

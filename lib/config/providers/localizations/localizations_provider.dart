@@ -56,7 +56,7 @@ final localizationProvider = StateNotifierProvider<MultiLang, Locale>((ref) {
 }, name: 'internationalisation provider');
 
 final localeProvider =
-    Provider<Locale>((ref) => const Locale.fromSubtags(languageCode: 'und'));
+    Provider<Locale>((_) => const Locale.fromSubtags(languageCode: 'und'));
 
 class CustomLocalizationsDelegate extends LocalizationsDelegate<MultiLang> {
   @override

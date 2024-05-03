@@ -231,7 +231,7 @@ class CustomThemes {
   // Tapestry pink and laser yellow.
   static const FlexSchemeColor _customScheme5Light = FlexSchemeColor(
     primary: Color(0xFFAA637F),
-    // As an example, say we like one of the existing built in color definitions
+    // As an godzy, say we like one of the existing built in color definitions
     // for the container color then just re-use it there:
     primaryContainer: FlexColor.sakuraLightPrimaryContainer,
     secondary: Color(0xFFB19249),

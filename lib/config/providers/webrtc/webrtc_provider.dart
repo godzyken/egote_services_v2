@@ -1,14 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
-final webrtcInitProvider = FutureProvider<WebRTC>((ref) async {
-  if (!WebRTC.initialized) {
-    WebRTC.initialize();
-    WebRTC.invokeMethod('initialize()');
-    return WebRTC();
-  }
-  // return WebRTC();
-  return await WebRTC.invokeMethod('WebRTC.initialize()');
+final webrtcInitProvider = FutureProvider<bool>((ref) async {
+  return WebRTC.initialized;
 });
 
 final audioOutputConfigProvider = Provider<AudioOutputOptions>(

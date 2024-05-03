@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
+import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,9 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final router = ref.read(goRouterProvider);
     final lang = ref.read(localizationProvider);
+    final datadog = ref.read(datadogInstanceProvider);
     return RumUserActionDetector(
-        rum: DatadogSdk.instance.rum,
+        rum: datadog.rum,
         child: MaterialApp.router(
           title: F.title,
           // routerDelegate: router.routerDelegate,
@@ -54,7 +56,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeMetrics() {
-    ref.read(drawerWidthProvider.notifier).state = drawerWidth();
+    ref.read(drawerWidthProvider.notifier).state = drawerWidth(context);
 
     super.didChangeMetrics();
   }
@@ -190,3 +192,14 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     }
   }
 }
+
+/*
+roles/serviceusage.apiKeysAdmin
+
+gcloud projects add-iam-policy-binding PROJECT_ID --member="user:isgodzy@gmail.com" --role=ROLE
+
+alias gcurl='curl -H "Authorization: Bearer $(gcloud auth print-access-token)" -H "Content-Type: application/json"'
+
+gcurl https://apikeys.googleapis.com/v2/projects/YOUR_PROJECT_NUMBER/locations/global/keys
+
+ */

@@ -4,7 +4,7 @@ import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
-import 'package:egote_services_v2/config/providers/webrtc/webrtc_provider.dart';
+import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,7 +33,8 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(firebaseInitProvider.future);
   await container.read(supabaseInitProvider.future);
   await container.read(userFutureProvider.future);
-  await container.read(webrtcInitProvider.future);
+  //await container.read(webrtcInitProvider.future);
+  await container.read(datadogProvider.future);
 
   // container.read(cubeSettingsInitProvider.future);
 

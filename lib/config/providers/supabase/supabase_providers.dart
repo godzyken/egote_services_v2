@@ -16,9 +16,9 @@ import '../../environements/flavors.dart';
 // <---------------- Supabase Instances Providers -------------------> //
 
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
-  final configFile = await rootBundle.loadString(F.envFileName);
+  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
   final env =
-  Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
   final client = supabase.GoTrueClient(
     url: env.supabaseUrl,
@@ -39,59 +39,47 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
       eventsPerSecond: 2,
     ),
     headers: client.headers,
-
   );
 }, name: 'Initialisation de supabase provider');
 
 final supabaseProvider =
-Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
+    Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
 
 final supabaseClientProvider = Provider<supabase.SupabaseClient>(
-        (ref) =>
-    ref
-        .read(supabaseInitProvider)
-        .asData!
-        .value
-        .client,
+    (ref) => ref.read(supabaseInitProvider).asData!.value.client,
     dependencies: [supabaseProvider, supabaseInitProvider],
     name: 'Supabase Client Provider');
 
 final supabaseAuthUserProvider =
-Provider<supabase.AuthUser>((ref) =>
-    supabase.AuthUser(
-      id: '',
-      email: '',
-      appMetadata: {},
-      aud: '',
-      createdAt: '',
-      phone: '',
-      role: '',
-      updatedAt: '',
-      userMetadata: {},
-      lastSignInAt: '',
-      emailConfirmedAt: '',
-      phoneConfirmedAt: '',
-      confirmedAt: '',
-    ));
+    Provider<supabase.AuthUser>((ref) => supabase.AuthUser(
+          id: '',
+          email: '',
+          appMetadata: {},
+          aud: '',
+          createdAt: '',
+          phone: '',
+          role: '',
+          updatedAt: '',
+          userMetadata: {},
+          lastSignInAt: '',
+          emailConfirmedAt: '',
+          phoneConfirmedAt: '',
+          confirmedAt: '',
+        ));
 
 final supabaseSocketChannelProvider =
-Provider((ref) =>
-ref
-    .watch(supabaseProvider)
-    .client
-    .realtime
-    .transport);
+    Provider((ref) => ref.watch(supabaseProvider).client.realtime.transport);
 
 final supabaseRealtimeErrorProvider =
-Provider<supabase.SupabaseRealtimeError>((ref) {
+    Provider<supabase.SupabaseRealtimeError>((ref) {
   return supabase.SupabaseRealtimeError();
 });
 
 final supabaseChannelRProvider = Provider((ref) {
   final client =
-  ref.watch(supabaseClientProvider.select((value) => value.realtime));
+      ref.watch(supabaseClientProvider.select((value) => value.realtime));
   supabase.SupabaseRealtimeError realtimeError =
-  ref.watch(supabaseRealtimeErrorProvider);
+      ref.watch(supabaseRealtimeErrorProvider);
 
   ref.onDispose(() {
     client.onOpen(() {
@@ -146,10 +134,10 @@ final supabaseChannelRProvider = Provider((ref) {
   });
 });
 final supabaseChannelResponseProvider =
-Provider((ref) => supabase.ChannelResponse);
+    Provider((ref) => supabase.ChannelResponse);
 
-final supabaseChannelFilterProvider = Provider((ref) =>
-supabase.RealtimeChannel);
+final supabaseChannelFilterProvider =
+    Provider((ref) => supabase.RealtimeChannel);
 
 final linksTypeProvider = StateProvider((_) => supabase.GenerateLinkType);
 

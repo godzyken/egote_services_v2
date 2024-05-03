@@ -11,7 +11,7 @@ class Environment with _$Environment {
   /// [appId] is the application id for CubeSettings
   /// [authKey] is the authorization key for CubeSettings
   /// [authSecret] is the authorization secret for CubeSettings
-  /// [outPoint] is the connectycube outpoint v2
+  /// [outpoint] is the connectycube outpoint v2
 
   const factory Environment({
     required String supabaseUrl,
@@ -21,7 +21,7 @@ class Environment with _$Environment {
     required String authKey,
     required String authSecret,
     required String vapidKey,
-    required String outPoint,
+    required String outpoint,
   }) = _Environment;
 
   ///

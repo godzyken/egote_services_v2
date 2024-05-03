@@ -27,3 +27,12 @@ void main() async {
           container: await bootstrap(),
           child: SentryScreenshotWidget(child: const MyApp()))));
 }
+
+// @pragma(
+//     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) {
+//     log("Native called background task: $task"); //simpleTask will be emitted here.
+//     return Future.value(true);
+//   });
+// }
