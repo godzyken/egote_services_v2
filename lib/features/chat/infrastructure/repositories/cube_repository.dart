@@ -78,7 +78,7 @@ class CubeRepository implements CubeRepositoryInterface {
   @override
   Future<CubeFile> getUploadingImageFuture(FilePickerResult result) async {
     // there possible to upload the file as an array of bytes,
-    // but here showed two ways just as an example
+    // but here showed two ways just as an godzy
     if (kIsWeb) {
       return uploadRawFile(result.files.single.bytes!, result.files.single.name,
           isPublic: true, onProgress: (progress) {

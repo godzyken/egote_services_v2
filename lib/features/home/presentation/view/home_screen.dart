@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:egote_services_v2/features/chat/application/providers/cube_settings_provider.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:egote_services_v2/features/home/application/home_controller.dart';
 import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
@@ -98,8 +97,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 //onEnd: () => context.go('/authRoute'),
                 //onEnd: () => context.goNamed('mfaList'),
                 onEnd: () => context.goNamed('select_dialog', pathParameters: {
-                      'cid':
-                          ref.watch(cubeUserControllerProvider)!.id.toString()
+                      'cid': 'idMetry'
+                      // ref.watch(cubeUserControllerProvider)!.id.toString()
                     }),
                 //onEnd: () => context.goNamed('devis', pathParameters: {'devisId': '123'}),
                 //onEnd: () => context.goNamed('devisList'),

@@ -7,7 +7,6 @@ import '../../../../settings/controllers/settings.dart';
 import '../../../models/custom_themes.dart';
 import '../../../models/flex_tone.dart';
 
-
 /// The light [ThemeData] provider.
 ///
 /// It is a simple [Provider], using our AppTheme.light function using
@@ -18,14 +17,14 @@ import '../../../models/flex_tone.dart';
 /// of the watched [Settings] providers state is updated, the [MaterialApp]
 /// will get new [ThemeData] and be rebuilt with the new theme applied.
 final Provider<ThemeData> lightThemeProvider = Provider<ThemeData>(
-      (ProviderRef<ThemeData> ref) {
+  (ProviderRef<ThemeData> ref) {
     // Make an always valid FlexTones config getter from our unsafe int.
     final bool useSeed = ref.watch(Settings.usePrimaryKeyColorProvider);
     final int flexTone = ref.watch(Settings.usedFlexToneProvider);
     final int usedFlexTone =
-    flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
-        ? 0
-        : flexTone;
+        flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
+            ? 0
+            : flexTone;
 
     return CustomThemes.light(
       useMaterial3: ref.watch(Settings.useMaterial3Provider),
@@ -59,14 +58,14 @@ final Provider<ThemeData> lightThemeProvider = Provider<ThemeData>(
 ///
 /// Same setup as the [lightThemeProvider], we just have a few more properties.
 final Provider<ThemeData> darkThemeProvider = Provider<ThemeData>(
-      (ProviderRef<ThemeData> ref) {
+  (ProviderRef<ThemeData> ref) {
     // Make an always valid FlexTones config getter from our unsafe int.
     final bool useSeed = ref.watch(Settings.usePrimaryKeyColorProvider);
     final int flexTone = ref.watch(Settings.usedFlexToneProvider);
     final int usedFlexTone =
-    flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
-        ? 0
-        : flexTone;
+        flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
+            ? 0
+            : flexTone;
 
     return CustomThemes.dark(
       useMaterial3: ref.watch(Settings.useMaterial3Provider),

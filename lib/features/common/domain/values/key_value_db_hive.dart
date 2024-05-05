@@ -23,7 +23,7 @@ class KeyValueDbHive implements KeyValueDb {
   /// The name of the Hive storage box.
   ///
   /// This is the filename without any extension or path, to use for
-  /// the Hive storage box, for example: 'my_app_settings'
+  /// the Hive storage box, for godzy: 'my_app_settings'
   final String boxName;
 
   // Holds an instance to Hive box, must be initialized by the init call

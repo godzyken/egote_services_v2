@@ -6,7 +6,7 @@ import 'package:egote_services_v2/features/auth/presentation/controller/user_not
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:realtime_client/src/constants.dart';
+import 'package:realtime_client/src/constants.dart' hide Constants;
 import 'package:supabase_auth_ui/supabase_auth_ui.dart' as supabase;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -16,9 +16,9 @@ import '../../environements/flavors.dart';
 // <---------------- Supabase Instances Providers -------------------> //
 
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
-  final configFile = await rootBundle.loadString(F.envFileName);
+  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
   final env =
-  Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
   final client = supabase.GoTrueClient(
     url: env.supabaseUrl,
@@ -39,59 +39,50 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
       eventsPerSecond: 2,
     ),
     headers: client.headers,
-
   );
 }, name: 'Initialisation de supabase provider');
 
 final supabaseProvider =
-Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
+    Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
 
-final supabaseClientProvider = Provider<supabase.SupabaseClient>(
-        (ref) =>
-    ref
-        .read(supabaseInitProvider)
-        .asData!
-        .value
-        .client,
+final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
+  final supaInit = ref.watch(supabaseInitProvider);
+  final client = supaInit.value?.client;
+  return client!;
+},
     dependencies: [supabaseProvider, supabaseInitProvider],
     name: 'Supabase Client Provider');
 
 final supabaseAuthUserProvider =
-Provider<supabase.AuthUser>((ref) =>
-    supabase.AuthUser(
-      id: '',
-      email: '',
-      appMetadata: {},
-      aud: '',
-      createdAt: '',
-      phone: '',
-      role: '',
-      updatedAt: '',
-      userMetadata: {},
-      lastSignInAt: '',
-      emailConfirmedAt: '',
-      phoneConfirmedAt: '',
-      confirmedAt: '',
-    ));
+    Provider<supabase.AuthUser>((ref) => supabase.AuthUser(
+          id: '',
+          email: '',
+          appMetadata: {},
+          aud: '',
+          createdAt: '',
+          phone: '',
+          role: '',
+          updatedAt: '',
+          userMetadata: {},
+          lastSignInAt: '',
+          emailConfirmedAt: '',
+          phoneConfirmedAt: '',
+          confirmedAt: '',
+        ));
 
 final supabaseSocketChannelProvider =
-Provider((ref) =>
-ref
-    .watch(supabaseProvider)
-    .client
-    .realtime
-    .transport);
+    Provider((ref) => ref.watch(supabaseProvider).client.realtime.transport);
 
 final supabaseRealtimeErrorProvider =
-Provider<supabase.SupabaseRealtimeError>((ref) {
+    Provider<supabase.SupabaseRealtimeError>((ref) {
   return supabase.SupabaseRealtimeError();
 });
 
 final supabaseChannelRProvider = Provider((ref) {
   final client =
-  ref.watch(supabaseClientProvider.select((value) => value.realtime));
+      ref.watch(supabaseClientProvider.select((value) => value.realtime));
   supabase.SupabaseRealtimeError realtimeError =
-  ref.watch(supabaseRealtimeErrorProvider);
+      ref.watch(supabaseRealtimeErrorProvider);
 
   ref.onDispose(() {
     client.onOpen(() {
@@ -99,37 +90,52 @@ final supabaseChannelRProvider = Provider((ref) {
       try {
         final listChannels = client
             .getChannels()
-            .where((element) => element.topic.contains('room_status'))
+            .where((element) => element.presence.channel.canPush)
             .toList();
         final options = client.connState;
         final socket = client.conn;
 
         for (var chan in listChannels) {
-          if (chan.socket.connState != null) {
-            if (chan.joinedOnce) {
-              Stream? streamChannel = socket?.stream;
-              client.conn?.sink.addStream(streamChannel!);
-              client.onConnMessage(chan.joinRef);
+          if (options != null) {
+            switch (options) {
+              case SocketStates.connecting:
+                if (chan.canPush) {
+                  Stream? streamChannel = socket?.stream;
+                  client.conn?.sink.addStream(streamChannel!);
+                  client.onConnMessage('hello 3wi Body!');
+                  chan.presenceState();
+                } else {
+                  chan.unsubscribe();
+                  socket?.stream;
+                }
+              case SocketStates.open:
+                if (chan.canPush) {
+                  Stream? streamChannel = socket?.stream;
+                  client.conn?.sink.addStream(streamChannel!);
+                  client.onConnMessage('hello 3wi Body!');
+                  chan.subscribe();
+                } else {
+                  chan.unsubscribe();
+                }
+              case SocketStates.closing:
+                client.conn?.sink
+                    .close(socket?.closeCode, realtimeError.message.toString());
+                client.onConnMessage('Goodb8 3wi Body! ${socket?.closeReason}');
+
+                chan.unsubscribe();
+
+              case SocketStates.closed:
+                client.conn?.sink
+                    .close(socket?.closeCode, realtimeError.message.toString());
+                client.onConnMessage('Goodb8 3wi Body! ${socket?.closeReason}');
+
+                chan.unsubscribe();
+                socket?.stream;
+              case SocketStates.disconnected:
+                chan.unsubscribe();
             }
-            chan.unsubscribe();
-            socket?.stream;
           }
           client.removeChannel(chan);
-        }
-
-        switch (options) {
-          case null:
-          // TODO: Handle this case.
-          case SocketStates.connecting:
-          // TODO: Handle this case.
-          case SocketStates.open:
-          // TODO: Handle this case.
-          case SocketStates.closing:
-          // TODO: Handle this case.
-          case SocketStates.closed:
-          // TODO: Handle this case.
-          case SocketStates.disconnected:
-          // TODO: Handle this case.
         }
       } on supabase.SupabaseRealtimeError catch (e) {
         realtimeError = e;
@@ -146,10 +152,10 @@ final supabaseChannelRProvider = Provider((ref) {
   });
 });
 final supabaseChannelResponseProvider =
-Provider((ref) => supabase.ChannelResponse);
+    Provider((ref) => supabase.ChannelResponse);
 
-final supabaseChannelFilterProvider = Provider((ref) =>
-supabase.RealtimeChannel);
+final supabaseChannelFilterProvider =
+    Provider((ref) => supabase.RealtimeChannel);
 
 final linksTypeProvider = StateProvider((_) => supabase.GenerateLinkType);
 
@@ -173,10 +179,26 @@ final supabaseUsersListProvider = Provider<List<supabase.SupabaseAuth>>((ref) {
   final auths = ref.watch(su)
 },);*/
 
-final filterConnection = StateProvider((_) {
-  final state1 = _.watch(supabaseInitProvider);
+final filterConnection = StateProvider<List<int>>((_) {
+  final state1 =
+      _.watch(supabaseInitProvider.future).timeout(const Duration(days: 2));
   final state2 = _.watch(supabaseClientProvider);
   final state3 = _.watch(userNotifierProvider);
+
+  final stateList = <int, String>{
+    1: state1.toString(),
+    2: state2.auth.currentUser!.id,
+    3: state3.role
+  };
+
+  var list = <int>[];
+
+  stateList.forEach((key, value) {
+    var checkList = list.add(key);
+    return checkList;
+  });
+
+  return list;
 });
 
 final countProvider = StateProvider<int>((ref) {

@@ -2,9 +2,8 @@
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 // import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
-import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
-import 'package:egote_services_v2/config/providers/webrtc/webrtc_provider.dart';
+import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +15,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/domain/providers/auth_repository_provider.dart';
-import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
@@ -33,7 +31,9 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(firebaseInitProvider.future);
   await container.read(supabaseInitProvider.future);
   await container.read(userFutureProvider.future);
-  await container.read(webrtcInitProvider.future);
+  //await container.read(webrtcInitProvider.future);
+  await container.read(datadogProvider.future);
+  await container.read(datadogConfigProvider.future);
 
   // container.read(cubeSettingsInitProvider.future);
 
@@ -49,13 +49,13 @@ Future<void> initializeProvider(ProviderContainer container) async {
   // container.read(cubeChatConnectionSettingsProvider);
   // container.read(cubeChatConnectionProvider);
   container.read(goRouterProvider);
-  container.read(localizationProvider);
+  // container.read(localizationProvider);
   // container.read(cubeProvider);
 
-  container.read(authStateChangesProvider);
-  container.read(authStateProvider);
-  container.read(idTokenChangesProvider);
-  container.read(userChangesProvider);
+  // container.read(authStateChangesProvider);
+  // container.read(authStateProvider);
+  // container.read(idTokenChangesProvider);
+  // container.read(userChangesProvider);
 
   container.read(fireDatabaseProvider);
 

@@ -39,7 +39,11 @@ class PushNotificationsManager {
     developer.log('[init], $TAG');
     final firebaseMessaging = _ref!.watch(firebaseMessagingProvider);
 
-    await firebaseMessaging.setAutoInitEnabled(true);
+    await firebaseMessaging.setAutoInitEnabled(true).whenComplete(
+      () {
+        return _ref?.refresh(firebaseAuthProvider);
+      },
+    );
 
     await firebaseMessaging.requestPermission(
         alert: true, badge: true, sound: true);

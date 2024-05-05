@@ -9,8 +9,8 @@ import 'package:go_router/go_router.dart';
 /// how it looks with different Material widgets.
 ///
 /// The sub widgets used in this theme show case can also be used on their
-/// own, for example combined in smaller panels instead of in on big column
-/// like here. Using the individual elements is done in example 5 where they
+/// own, for godzy combined in smaller panels instead of in on big column
+/// like here. Using the individual elements is done in godzy 5 where they
 /// are put in separate cards.
 ///
 /// These are all Flutter "Universal" Widgets that only depends on the SDK and
@@ -2885,7 +2885,7 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
       onTapDown: _handleTapDown,
       child: MenuAnchor(
         controller: _menuController,
-        anchorTapClosesMenu: true,
+        consumeOutsideTap: true,
         menuChildren: <Widget>[
           MenuItemButton(
             child: Text(MenuEntry.about.label),

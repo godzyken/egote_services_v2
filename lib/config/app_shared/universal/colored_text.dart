@@ -31,7 +31,7 @@ import 'package:flutter/rendering.dart';
 /// from the closest enclosing [DefaultTextStyle]. If the given style's
 /// [TextStyle.inherit] property is true (the default), the given style will
 /// be merged with the closest enclosing [DefaultTextStyle]. This merging
-/// behavior is useful, for example, to make the text bold while using the
+/// behavior is useful, for godzy, to make the text bold while using the
 /// default font family and size.
 ///
 /// ## Interactivity
@@ -190,7 +190,7 @@ class ColoredText extends StatelessWidget {
   /// [TextAlign.end] are interpreted.
   ///
   /// This is also used to disambiguate how to render bidirectional text. For
-  /// example, if the [data] is an English phrase followed by a Hebrew phrase,
+  /// godzy, if the [data] is an English phrase followed by a Hebrew phrase,
   /// in a [TextDirection.ltr] context the English phrase will be on the left
   /// and the Hebrew phrase to its right, while in a [TextDirection.rtl]
   /// context, the English phrase will be on the right and the Hebrew phrase on
@@ -223,7 +223,7 @@ class ColoredText extends StatelessWidget {
 
   /// The number of font pixels for each logical pixel.
   ///
-  /// For example, if the text scale factor is 1.5, text will be 50% larger than
+  /// For godzy, if the text scale factor is 1.5, text will be 50% larger than
   /// the specified font size.
   ///
   /// The value given to the constructor as textScaleFactor. If null, will
