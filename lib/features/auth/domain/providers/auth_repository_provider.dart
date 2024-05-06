@@ -12,8 +12,8 @@ import '../../infrastructure/repositories/auth_repository.dart';
 final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
   final client = ref.watch(supabaseClientProvider).auth;
-  final links = ref.watch(generateLinkTypeProvider);
-  for (var link in links) {
+  final link = ref.watch(generateLinkTypeNotifierProvider);
+  /*for (var link in links) {
     try {
       client.startAutoRefresh();
       prefs.reload();
@@ -28,14 +28,28 @@ final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
         print('Auth Repository error: $e');
       }
     }
+  }*/
+  try {
+    client.startAutoRefresh();
+    prefs.reload();
+
+    return AuthRepository(AuthTokenLocalDataSource(prefs), client, link);
+  } on FlutterError catch (e) {
+    ref.onCancel(() {
+      client.startAutoRefresh();
+      prefs.reload();
+    });
+    if (kDebugMode) {
+      print('Auth Repository error: $e');
+    }
   }
 
   ref.keepAlive();
-  return AuthRepository(AuthTokenLocalDataSource(prefs), client, links.first);
+  return AuthRepository(AuthTokenLocalDataSource(prefs), client, link);
 }, dependencies: [
   sharedPreferencesProvider,
   supabaseClientProvider,
-  generateLinkTypeProvider
+  generateLinkTypeNotifierProvider
 ], name: 'Auth repository provider');
 
 final authStateListenable = ValueNotifier<bool>(false);
