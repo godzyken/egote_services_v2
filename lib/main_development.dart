@@ -6,20 +6,30 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'app.dart';
 import 'config/environements/bootstrap.dart';
 import 'config/environements/flavors.dart';
+import 'config/providers/watchdog/datadog_config.dart';
 
 void main() async {
   F.appFlavor = Flavor.development;
   final configuration = DatadogConfiguration(
-      clientToken: 'pub8f8371ed662182de9c831bb02d76a453',
-      env: F.appFlavor.toString(),
+      clientToken: datadogConfigProvider
+          .selectAsync((data) => AsyncValue.data(data.clientToken))
+          .toString(),
+      env: datadogConfigProvider
+          .selectAsync((data) => AsyncValue.data(data.env))
+          .toString(),
       site: DatadogSite.eu1,
       nativeCrashReportEnabled: true,
-      flavor: F.appFlavor!.name,
       loggingConfiguration: DatadogLoggingConfiguration(),
       rumConfiguration: DatadogRumConfiguration(
         applicationId: '99911285-5746-429f-8168-b7b05c9db5fb',
+        sessionSamplingRate: 50.0,
       ),
-      firstPartyHosts: ['zngannbhansflbwydrgw.supabase.co']);
+      firstPartyHosts: [
+        datadogConfigProvider
+            .selectAsync(
+                (data) => AsyncValue.data(data.firstPartyHosts.toList()))
+            .toString()
+      ]);
   await DatadogSdk.runApp(
       configuration,
       TrackingConsent.granted,

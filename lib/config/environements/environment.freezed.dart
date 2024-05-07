@@ -29,6 +29,10 @@ mixin _$Environment {
   String get authSecret => throw _privateConstructorUsedError;
   String get vapidKey => throw _privateConstructorUsedError;
   String get outpoint => throw _privateConstructorUsedError;
+  String get clientToken => throw _privateConstructorUsedError;
+  String get site => throw _privateConstructorUsedError;
+  String get applicationId => throw _privateConstructorUsedError;
+  List<String>? get firstPartyHost => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,7 +54,11 @@ abstract class $EnvironmentCopyWith<$Res> {
       String authKey,
       String authSecret,
       String vapidKey,
-      String outpoint});
+      String outpoint,
+      String clientToken,
+      String site,
+      String applicationId,
+      List<String>? firstPartyHost});
 }
 
 /// @nodoc
@@ -74,6 +82,10 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
     Object? authSecret = null,
     Object? vapidKey = null,
     Object? outpoint = null,
+    Object? clientToken = null,
+    Object? site = null,
+    Object? applicationId = null,
+    Object? firstPartyHost = freezed,
   }) {
     return _then(_value.copyWith(
       supabaseUrl: null == supabaseUrl
@@ -109,6 +121,22 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
           ? _value.outpoint
           : outpoint // ignore: cast_nullable_to_non_nullable
               as String,
+      clientToken: null == clientToken
+          ? _value.clientToken
+          : clientToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      site: null == site
+          ? _value.site
+          : site // ignore: cast_nullable_to_non_nullable
+              as String,
+      applicationId: null == applicationId
+          ? _value.applicationId
+          : applicationId // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstPartyHost: freezed == firstPartyHost
+          ? _value.firstPartyHost
+          : firstPartyHost // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 }
@@ -129,7 +157,11 @@ abstract class _$$EnvironmentImplCopyWith<$Res>
       String authKey,
       String authSecret,
       String vapidKey,
-      String outpoint});
+      String outpoint,
+      String clientToken,
+      String site,
+      String applicationId,
+      List<String>? firstPartyHost});
 }
 
 /// @nodoc
@@ -151,6 +183,10 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
     Object? authSecret = null,
     Object? vapidKey = null,
     Object? outpoint = null,
+    Object? clientToken = null,
+    Object? site = null,
+    Object? applicationId = null,
+    Object? firstPartyHost = freezed,
   }) {
     return _then(_$EnvironmentImpl(
       supabaseUrl: null == supabaseUrl
@@ -186,6 +222,22 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
           ? _value.outpoint
           : outpoint // ignore: cast_nullable_to_non_nullable
               as String,
+      clientToken: null == clientToken
+          ? _value.clientToken
+          : clientToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      site: null == site
+          ? _value.site
+          : site // ignore: cast_nullable_to_non_nullable
+              as String,
+      applicationId: null == applicationId
+          ? _value.applicationId
+          : applicationId // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstPartyHost: freezed == firstPartyHost
+          ? _value._firstPartyHost
+          : firstPartyHost // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -201,7 +253,12 @@ class _$EnvironmentImpl implements _Environment {
       required this.authKey,
       required this.authSecret,
       required this.vapidKey,
-      required this.outpoint});
+      required this.outpoint,
+      required this.clientToken,
+      required this.site,
+      required this.applicationId,
+      required final List<String>? firstPartyHost})
+      : _firstPartyHost = firstPartyHost;
 
   factory _$EnvironmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$EnvironmentImplFromJson(json);
@@ -222,10 +279,25 @@ class _$EnvironmentImpl implements _Environment {
   final String vapidKey;
   @override
   final String outpoint;
+  @override
+  final String clientToken;
+  @override
+  final String site;
+  @override
+  final String applicationId;
+  final List<String>? _firstPartyHost;
+  @override
+  List<String>? get firstPartyHost {
+    final value = _firstPartyHost;
+    if (value == null) return null;
+    if (_firstPartyHost is EqualUnmodifiableListView) return _firstPartyHost;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outpoint: $outpoint)';
+    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outpoint: $outpoint, clientToken: $clientToken, site: $site, applicationId: $applicationId, firstPartyHost: $firstPartyHost)';
   }
 
   @override
@@ -248,7 +320,14 @@ class _$EnvironmentImpl implements _Environment {
             (identical(other.vapidKey, vapidKey) ||
                 other.vapidKey == vapidKey) &&
             (identical(other.outpoint, outpoint) ||
-                other.outpoint == outpoint));
+                other.outpoint == outpoint) &&
+            (identical(other.clientToken, clientToken) ||
+                other.clientToken == clientToken) &&
+            (identical(other.site, site) || other.site == site) &&
+            (identical(other.applicationId, applicationId) ||
+                other.applicationId == applicationId) &&
+            const DeepCollectionEquality()
+                .equals(other._firstPartyHost, _firstPartyHost));
   }
 
   @JsonKey(ignore: true)
@@ -262,7 +341,11 @@ class _$EnvironmentImpl implements _Environment {
       authKey,
       authSecret,
       vapidKey,
-      outpoint);
+      outpoint,
+      clientToken,
+      site,
+      applicationId,
+      const DeepCollectionEquality().hash(_firstPartyHost));
 
   @JsonKey(ignore: true)
   @override
@@ -287,7 +370,11 @@ abstract class _Environment implements Environment {
       required final String authKey,
       required final String authSecret,
       required final String vapidKey,
-      required final String outpoint}) = _$EnvironmentImpl;
+      required final String outpoint,
+      required final String clientToken,
+      required final String site,
+      required final String applicationId,
+      required final List<String>? firstPartyHost}) = _$EnvironmentImpl;
 
   factory _Environment.fromJson(Map<String, dynamic> json) =
       _$EnvironmentImpl.fromJson;
@@ -308,6 +395,14 @@ abstract class _Environment implements Environment {
   String get vapidKey;
   @override
   String get outpoint;
+  @override
+  String get clientToken;
+  @override
+  String get site;
+  @override
+  String get applicationId;
+  @override
+  List<String>? get firstPartyHost;
   @override
   @JsonKey(ignore: true)
   _$$EnvironmentImplCopyWith<_$EnvironmentImpl> get copyWith =>

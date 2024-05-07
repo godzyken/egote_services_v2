@@ -45,9 +45,6 @@ final emulatorSettingsProvider = Provider((ref) {
 final authStateChangesProvider =
     StreamProvider((ref) => ref.watch(firebaseAuthProvider).authStateChanges());
 
-final idTokenChangesProvider =
-    StreamProvider((ref) => ref.watch(firebaseAuthProvider).idTokenChanges());
-
 final userChangesProvider =
     StreamProvider((ref) => ref.watch(firebaseAuthProvider).userChanges());
 

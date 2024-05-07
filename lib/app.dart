@@ -56,7 +56,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeMetrics() {
-    ref.read(drawerWidthProvider.notifier).state = drawerWidth(context);
+    ref.read(drawerWidthProvider.notifier).state = drawerWidth();
 
     super.didChangeMetrics();
   }

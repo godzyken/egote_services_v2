@@ -30,6 +30,9 @@ class $AssetsFontsGen {
 class $AssetsJsonGen {
   const $AssetsJsonGen();
 
+  /// File path: assets/json/datadog.json
+  String get datadog => 'assets/json/datadog.json';
+
   /// File path: assets/json/development.config.json
   String get developmentConfig => 'assets/json/development.config.json';
 
@@ -39,12 +42,12 @@ class $AssetsJsonGen {
   /// File path: assets/json/production.config.json
   String get productionConfig => 'assets/json/production.config.json';
 
-  /// File path: assets/json/settings.config.json
-  String get settingsConfig => 'assets/json/settings.config.json';
+  /// File path: assets/json/settings.json
+  String get settings => 'assets/json/settings.json';
 
   /// List of all assets
   List<String> get values =>
-      [developmentConfig, localConfig, productionConfig, settingsConfig];
+      [datadog, developmentConfig, localConfig, productionConfig, settings];
 }
 
 class $AssetsLottieGen {

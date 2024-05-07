@@ -206,7 +206,7 @@ class AddUserFormRoute extends GoRouteData {
   ],
 )
 class AuthRoute extends GoRouteData {
-  static const path = 'authRoute';
+  static const path = '/authRoute';
 
   const AuthRoute();
 

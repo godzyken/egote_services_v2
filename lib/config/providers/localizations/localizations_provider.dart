@@ -51,7 +51,7 @@ class MultiLang extends StateNotifier<Locale> {
 }
 
 final localizationProvider = StateNotifierProvider<MultiLang, Locale>((ref) {
-  final localeName = ref.read(localeProvider).languageCode;
+  final localeName = ref.refresh(localeProvider).languageCode;
   return MultiLang(localeName);
 }, name: 'internationalisation provider');
 

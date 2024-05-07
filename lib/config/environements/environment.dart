@@ -12,6 +12,10 @@ class Environment with _$Environment {
   /// [authKey] is the authorization key for CubeSettings
   /// [authSecret] is the authorization secret for CubeSettings
   /// [outpoint] is the connectycube outpoint v2
+  /// [clientToken] is the token for datadog initialisation
+  /// [site] is the datadog site location
+  /// [applicationId] is the id app for datadog
+  /// [firstPartyHost] is the uri entre point to datadog analise
 
   const factory Environment({
     required String supabaseUrl,
@@ -22,6 +26,10 @@ class Environment with _$Environment {
     required String authSecret,
     required String vapidKey,
     required String outpoint,
+    required String clientToken,
+    required String site,
+    required String applicationId,
+    required List<String>? firstPartyHost,
   }) = _Environment;
 
   ///

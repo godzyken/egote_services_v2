@@ -1,26 +1,17 @@
+import 'dart:convert';
+
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
+import 'package:egote_services_v2/config/environements/environment.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../environements/flavors.dart';
 
 final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
-  final configuration = ref.watch(datadogConfigProvider);
+  final configuration = await ref.watch(datadogConfigProvider.future);
   final trackingConsent = ref.watch(trackingConsentProvider);
   final dogData = ref.watch(datadogInstanceProvider);
-  if (dogData case final initDatadog) {
-    if (trackingConsent.isGranted) {
-      final consent = trackingConsent.changeAccessRight(true);
-      await initDatadog.initialize(configuration, consent);
-      return initDatadog;
-    } else if (trackingConsent.isNotGranted) {
-      final nonConsent = trackingConsent.changeAccessRight(false);
-      await initDatadog.initialize(configuration, nonConsent);
-
-      initDatadog.clearAllData();
-      return initDatadog;
-    }
-  }
 
   final originalOnError = FlutterError.onError;
   FlutterError.onError = (details) {
@@ -46,6 +37,27 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
   logger?.info("Some relevant information?");
   logger?.warn("An important warning…");
   logger?.error("An error was met!");
+
+  if (dogData case final initDatadog) {
+    if (trackingConsent.mounted) {
+      try {
+        final consent = trackingConsent._trackingConsent.first;
+        await initDatadog.initialize(configuration, consent);
+        return initDatadog;
+      } on FlutterError catch (e) {
+        // TODO
+        if (kDebugMode) {
+          print('Datadog Provider error: $e');
+        }
+      }
+    } else {
+      final nonConsent = trackingConsent._trackingConsent.last;
+      await initDatadog.initialize(configuration, nonConsent);
+
+      initDatadog.clearAllData();
+      return initDatadog;
+    }
+  }
   return dogData;
 }, dependencies: [
   datadogConfigProvider,
@@ -56,52 +68,58 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
 final datadogInstanceProvider =
     Provider<DatadogSdk>((ref) => DatadogSdk.instance);
 
-final datadogConfigProvider = Provider<DatadogConfiguration>((ref) {
+final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
   F.appFlavor = Flavor.development;
 
   //
   // 724eebdc5988eb21aec8ddcbd1cee6ff
   //
   // a67cd81c-d62a-4681-b809-ea6f650205bf
+  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
+  final env =
+      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
   final config = DatadogConfiguration(
-      clientToken: "pub8f8371ed662182de9c831bb02d76a453",
+      clientToken: env.clientToken,
       env: F.appFlavor.toString(),
       site: DatadogSite.eu1,
       nativeCrashReportEnabled: true,
-      flavor: F.appFlavor!.name,
       loggingConfiguration: DatadogLoggingConfiguration(),
       rumConfiguration: DatadogRumConfiguration(
-        applicationId: "99911285-5746-429f-8168-b7b05c9db5fb",
+        applicationId: env.applicationId,
       ),
-      firstPartyHosts: ["zngannbhansflbwydrgw.supabase.co"]);
+      firstPartyHosts: env.firstPartyHost);
   return config;
 });
 
 final trackingConsentProvider = StateProvider<TrackingContentChangeNotifier>(
     (_) => TrackingContentChangeNotifier());
 
-class TrackingContentChangeNotifier extends StateNotifier<bool> {
+class TrackingContentChangeNotifier
+    extends StateNotifier<List<TrackingConsent>> {
   final _trackingConsent = TrackingConsent.values;
 
-  TrackingContentChangeNotifier() : super(false) {
+  TrackingContentChangeNotifier() : super(TrackingConsent.values) {
     _init();
   }
 
-  bool get isGranted => TrackingConsent.granted == _trackingConsent;
-
-  bool get isNotGranted => TrackingConsent.notGranted == _trackingConsent;
-
   changeAccessRight(bool value) {
-    state = value;
-    if (state == true) _trackingConsent == isGranted;
-    if (state == false) _trackingConsent == isNotGranted;
-    return state;
+    for (var c in state) {
+      switch (value) {
+        case false:
+          c = TrackingConsent.notGranted;
+          return c;
+        case true:
+          c = TrackingConsent.granted;
+          return c;
+        default:
+          return c = state.last;
+      }
+    }
+    return state.last == _trackingConsent.single;
   }
 
   _init() {
-    _trackingConsent == TrackingConsent.pending;
-    state == isNotGranted;
-    changeAccessRight(state);
+    changeAccessRight;
   }
 }

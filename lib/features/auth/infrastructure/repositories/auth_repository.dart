@@ -144,6 +144,7 @@ class AuthRepository implements AuthRepositoryInterface {
       return left(Failure.badRequest());
     }
     developer.log('signInWithGoogle() success: $res');
+
     return right(true);
   }
 

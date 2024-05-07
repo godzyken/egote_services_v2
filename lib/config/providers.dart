@@ -2,7 +2,6 @@
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 // import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
-import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
@@ -12,11 +11,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart' as ui;
 
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/domain/providers/auth_repository_provider.dart';
-import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
@@ -35,6 +34,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(userFutureProvider.future);
   //await container.read(webrtcInitProvider.future);
   await container.read(datadogProvider.future);
+  await container.read(datadogConfigProvider.future);
 
   // container.read(cubeSettingsInitProvider.future);
 
@@ -50,13 +50,13 @@ Future<void> initializeProvider(ProviderContainer container) async {
   // container.read(cubeChatConnectionSettingsProvider);
   // container.read(cubeChatConnectionProvider);
   container.read(goRouterProvider);
-  container.read(localizationProvider);
+  // container.read(localizationProvider);
   // container.read(cubeProvider);
 
-  container.read(authStateChangesProvider);
-  container.read(authStateProvider);
-  container.read(idTokenChangesProvider);
-  container.read(userChangesProvider);
+  // container.read(authStateChangesProvider);
+  // container.read(authStateProvider);
+  // container.read(idTokenChangesProvider);
+  // container.read(userChangesProvider);
 
   container.read(fireDatabaseProvider);
 
@@ -80,60 +80,6 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
               ),
           routes: [
             GoRoute(
-                path: AuthRoute.path,
-                name: 'auth',
-                builder: (context, state) => AuthScreen(
-                      key: state.pageKey,
-                    ),
-                routes: [
-                  GoRoute(
-                      path: LoginRoute.path,
-                      name: 'login',
-                      builder: (context, state) => LoginScreen(
-                            key: state.pageKey,
-                          ),
-                      routes: [
-                        GoRoute(
-                          path: VerificationRoute.path,
-                          name: 'verify',
-                          builder: (context, state) {
-                            VerificationScreenParams params =
-                                state.extra as VerificationScreenParams;
-                            return VerificationScreen(params: params);
-                          },
-                        )
-                      ]),
-                  GoRoute(
-                      path: SignUpRoute.path,
-                      name: 'sign_up',
-                      builder: (context, state) => SignUpScreen(
-                            key: state.pageKey,
-                          ),
-                      routes: [
-                        GoRoute(
-                          path: MFAEnrollRoute.path,
-                          name: 'enroll',
-                          builder: (context, state) {
-                            VerificationScreenParams params =
-                                state.extra as VerificationScreenParams;
-                            // var params = const VerificationScreenParams(
-                            //     name: 'karl',
-                            //     email: 'isgodzy@msn.com',
-                            //     password: 'bondamanmanw');
-
-                            return MFAEnrollScreen(params: params);
-                          },
-                        ),
-                      ]),
-                  GoRoute(
-                    path: ListMfaRoute.path,
-                    name: 'mfaList',
-                    builder: (context, state) => ListMfaScreen(
-                      key: state.pageKey,
-                    ),
-                  ),
-                ]),
-            GoRoute(
                 path: UserHomeRoute.path,
                 name: 'user_home',
                 builder: (context, state) => UserHomeScreen(
@@ -147,10 +93,9 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                       return ProfileScreen(
                           key: state.pageKey,
                           uid: ref.watch(authStateChangesProvider).value!.uid,
-                          pid: ref
-                              .watch(cubeUserControllerProvider)!
-                              .id
-                              .toString());
+                          pid:
+                              '1335' //ref.watch(cubeUserControllerProvider)!.id.toString()
+                          );
                     },
                   ),
                   GoRoute(
@@ -248,43 +193,95 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                   ),
                 ]),
           ]),
+      GoRoute(
+          path: AuthRoute.path,
+          name: 'authRoute',
+          builder: (context, state) => AuthScreen(
+                key: state.pageKey,
+              ),
+          routes: [
+            GoRoute(
+                path: LoginRoute.path,
+                name: 'login',
+                builder: (context, state) => LoginScreen(
+                      key: state.pageKey,
+                    ),
+                routes: [
+                  GoRoute(
+                    path: VerificationRoute.path,
+                    name: 'verify',
+                    builder: (context, state) {
+                      VerificationScreenParams params =
+                          state.extra as VerificationScreenParams;
+                      return VerificationScreen(params: params);
+                    },
+                  )
+                ]),
+            GoRoute(
+                path: SignUpRoute.path,
+                name: 'sign_up',
+                builder: (context, state) => SignUpScreen(
+                      key: state.pageKey,
+                    ),
+                routes: [
+                  GoRoute(
+                    path: MFAEnrollRoute.path,
+                    name: 'enroll',
+                    builder: (context, state) {
+                      VerificationScreenParams params =
+                          state.extra as VerificationScreenParams;
+                      // var params = const VerificationScreenParams(
+                      //     name: 'karl',
+                      //     email: 'isgodzy@msn.com',
+                      //     password: 'bondamanmanw');
+
+                      return MFAEnrollScreen(params: params);
+                    },
+                  ),
+                ]),
+            GoRoute(
+              path: ListMfaRoute.path,
+              name: 'mfaList',
+              builder: (context, state) => ListMfaScreen(
+                key: state.pageKey,
+              ),
+            ),
+          ]),
     ],
     errorBuilder: (context, state) =>
         ErrorScreen(error: state.error.toString()),
     redirect: (context, state) async {
-      /* final supabase = ref.watch(supabaseClientProvider);
-    // Any users can visit the /auth route
-    if (state.location.contains('auth') == true) {
-      return null;
-    }
-
-    final session = supabase.auth.currentSession;
-    // A user without a session should be redirected to the sign_up screen
-    if (session == null) {
-      return AuthRoute.path;
-    }
-
-    final assuranceLevelData = supabase
-        .auth
-        .mfa
-        .getAuthenticatorAssuranceLevel();
-
-    final nextLevel = supabase.auth
-        .mfa
-        .getAuthenticatorAssuranceLevel().nextLevel;
-    // The user has not setup MFA yet, so send them to enroll MFA page.
-    if (assuranceLevelData.currentLevel == ui.AuthenticatorAssuranceLevels.aal1) {
-      await supabase.auth.refreshSession();
-      if(nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
-        // The user has already setup MFA, but haven't login via MFA
-        // Redirect them to the verify screen
-        return VerificationRoute.path;
-      } else {
-        // The user has not yet setup MFA
-        // Redirect them to the enrollment screen
-        return MFAEnrollRoute.path;
+      final supabase = ref.watch(supabaseClientProvider);
+      // Any users can visit the /auth route
+      if (state.matchedLocation.contains('auth') == true) {
+        return null;
       }
-    }*/
+
+      final session = supabase.auth.currentSession;
+      // A user without a session should be redirected to the sign_up screen
+      if (session == null) {
+        return AuthRoute.path;
+      }
+
+      final assuranceLevelData =
+          supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+
+      final nextLevel =
+          supabase.auth.mfa.getAuthenticatorAssuranceLevel().nextLevel;
+      // The user has not setup MFA yet, so send them to enroll MFA page.
+      if (assuranceLevelData.currentLevel ==
+          ui.AuthenticatorAssuranceLevels.aal1) {
+        await supabase.auth.refreshSession();
+        if (nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
+          // The user has already setup MFA, but haven't login via MFA
+          // Redirect them to the verify screen
+          return VerificationRoute.path;
+        } else {
+          // The user has not yet setup MFA
+          // Redirect them to the enrollment screen
+          return MFAEnrollRoute.path;
+        }
+      }
 
       return null;
     },
