@@ -8,11 +8,12 @@ class UpdateUserDialogScreen extends ConsumerStatefulWidget {
   const UpdateUserDialogScreen({super.key});
 
   @override
-  ConsumerState<UpdateUserDialogScreen> createState() => _UpdateUserDialogScreenState();
+  ConsumerState<UpdateUserDialogScreen> createState() =>
+      _UpdateUserDialogScreenState();
 }
 
-class _UpdateUserDialogScreenState extends ConsumerState<UpdateUserDialogScreen> {
-
+class _UpdateUserDialogScreenState
+    extends ConsumerState<UpdateUserDialogScreen> {
   @override
   Widget build(BuildContext context) {
     final authController = ref.watch(loginControllerNotifierProvider);
@@ -22,22 +23,24 @@ class _UpdateUserDialogScreenState extends ConsumerState<UpdateUserDialogScreen>
         child: ListBody(
           children: <Widget>[
             TextFormField(
-              controller: TextEditingController(text: authController.passwordFormz!.value),
+              controller: TextEditingController(
+                  text: authController.passwordFormz!.value),
               autocorrect: false,
               decoration: InputDecoration(labelText: context.tr!.password),
             ),
             TextFormField(
-              controller: TextEditingController(text: authController.emailFormz!.value),
+              controller:
+                  TextEditingController(text: authController.emailFormz!.value),
               decoration: InputDecoration(labelText: context.tr!.email),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               autocorrect: false,
               validator: (String? value) {
                 if (value!.isNotEmpty) {
-                  var uri = Uri.parse(value);
+                  /* var uri = Uri.parse(value);
                   if (uri.isAbsolute) {
                     //TODO: get the data with dart:io or http and check it here
                     return null;
-                  }
+                  }*/
                   return context.tr!.faultyUrl;
                 }
                 return null;

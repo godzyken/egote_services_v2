@@ -49,7 +49,7 @@ class BodySettingsLayout extends ConsumerStatefulWidget {
 
 class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   var _isUsersContinues = false;
-  String? _avatarUrl = "";
+  String? _avatarUrl;
   final TextEditingController _loginFilter = TextEditingController();
   final TextEditingController _nameFilter = TextEditingController();
   final TextEditingController _emailFilter = TextEditingController();
@@ -61,16 +61,20 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     _loginFilter.addListener(_loginListen);
     _nameFilter.addListener(_nameListen);
     _emailFilter.addListener(_emailListen);
-    _nameFilter.text = widget.currentUser.fullName ?? '';
-    _loginFilter.text = widget.currentUser.login ?? '';
-    _emailFilter.text = widget.currentUser.email ?? '';
+    setState(() {
+      _nameFilter.text = widget.currentUser.fullName ?? '';
+      _loginFilter.text = widget.currentUser.login ?? '';
+      _emailFilter.text = widget.currentUser.email ?? '';
+    });
   }
 
   void _loginListen() {
     if (_loginFilter.text.isEmpty) {
       _login = "";
     } else {
-      _login = _loginFilter.text.trim();
+      setState(() {
+        _login = _loginFilter.text.trim();
+      });
     }
   }
 
@@ -78,7 +82,9 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     if (_nameFilter.text.isEmpty) {
       _name = "";
     } else {
-      _name = _nameFilter.text.trim();
+      setState(() {
+        _name = _nameFilter.text.trim();
+      });
     }
   }
 
@@ -86,7 +92,9 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     if (_emailFilter.text.isEmpty) {
       _email = "";
     } else {
-      _email = _emailFilter.text.trim();
+      setState(() {
+        _email = _emailFilter.text.trim();
+      });
     }
   }
 

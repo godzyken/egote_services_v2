@@ -6,7 +6,7 @@ import 'package:egote_services_v2/features/common/presentation/extensions/extens
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../application/providers/auth_providers.dart';
 import '../../../../domain/providers/auth_repository_provider.dart';

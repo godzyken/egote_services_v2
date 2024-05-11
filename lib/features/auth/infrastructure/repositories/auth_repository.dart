@@ -7,8 +7,8 @@ import 'package:egote_services_v2/features/auth/domain/repository/auth_repositor
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import '../../../common/presentation/extensions/extensions.dart';
@@ -33,6 +33,22 @@ class AuthRepository implements AuthRepositoryInterface {
   @override
   void authStateChange(void Function(UserModel? userEntity) callback) {
     // TODO: implement authStateChange
+    final myChannel = authClient.channel('base_de_test');
+
+    myChannel
+        .onPresenceSync((payload) {})
+        .onPresenceJoin((payload) {})
+        .onPresenceLeave((payload) {})
+        .subscribe(
+      (status, error) async {
+        if (status == supabase.RealtimeSubscribeStatus.subscribed) {
+          await myChannel
+              .track({'online_at': DateTime.now().toIso8601String()});
+        } else {
+          developer.log('authStateChange() error: $error');
+        }
+      },
+    );
   }
 
   @override
@@ -49,7 +65,10 @@ class AuthRepository implements AuthRepositoryInterface {
               value: 200,
             ),
             callback: (payload, [ref]) {
-              developer.log('Change received: ${payload.toString()}');
+              final newRecord = payload.newRecord;
+              final oldRecord = payload.oldRecord;
+              developer.log(
+                  'Postgres old record: $oldRecord & Change received: $newRecord');
             })
         .subscribe((status, [_]) async {
       switch (status) {
@@ -138,7 +157,9 @@ class AuthRepository implements AuthRepositoryInterface {
   @override
   Future<Either<Failure, bool>> signInWithGoogle() async {
     final res = await client.signInWithOAuth(supabase.OAuthProvider.google,
+        authScreenLaunchMode: LaunchMode.inAppWebView,
         redirectTo: 'io.supabase.flutter://reset-callback/');
+
     if (!res) {
       developer.log('signInWithGoogle() error: $res');
       return left(Failure.badRequest());
@@ -298,8 +319,8 @@ class AuthRepository implements AuthRepositoryInterface {
           await authClient.from(_table).insert(entity.toJson()).select();
 
       return right(UserEntityModel.fromJson(convertChangeData(res, {})));
-    } on supabase.AuthException catch (e) {
-      int? statusCode = int.tryParse(e.statusCode!);
+    } on supabase.PostgrestException catch (e) {
+      int? statusCode = int.tryParse(e.code!);
 
       developer.ServiceExtensionResponse.error(statusCode!, e.message);
       return left(Failure.unauthorized());

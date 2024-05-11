@@ -7,8 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realtime_client/src/constants.dart' hide Constants;
-import 'package:supabase_auth_ui/supabase_auth_ui.dart' as supabase;
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../environements/environment.dart';
 import '../../environements/flavors.dart';
@@ -30,16 +29,20 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
   );
 
   return await supabase.Supabase.initialize(
-    url: env.supabaseUrl,
-    anonKey: env.supabaseAnonKey,
-    // authFlowType: supabase.AuthFlowType.pkce,
-    debug: kDebugMode,
-    // authCallbackUrlHostname: env.supabaseAuthCallbackUrlHostname,
-    realtimeClientOptions: const RealtimeClientOptions(
-      eventsPerSecond: 2,
-    ),
-    headers: client.headers,
-  );
+      url: env.supabaseUrl,
+      anonKey: env.supabaseAnonKey,
+      headers: client.headers,
+      authOptions: const supabase.FlutterAuthClientOptions(
+          authFlowType: supabase.AuthFlowType.pkce),
+      // authCallbackUrlHostname: env.supabaseAuthCallbackUrlHostname,
+      realtimeClientOptions: const supabase.RealtimeClientOptions(
+        logLevel: RealtimeLogLevel.info,
+        eventsPerSecond: 2,
+      ),
+      storageOptions: const supabase.StorageClientOptions(
+        retryAttempts: 10,
+      ),
+      debug: kDebugMode);
 }, name: 'Initialisation de supabase provider');
 
 final supabaseProvider =

@@ -4,7 +4,7 @@ import 'dart:developer' as developer;
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../domain/models/entities/cube_user/cube_user_mig.dart';
 

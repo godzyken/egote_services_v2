@@ -8,7 +8,7 @@ import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthController extends StateNotifier<AsyncValue<UserModel?>> {
   AuthController(this._repository) : super(const AsyncValue.loading()) {

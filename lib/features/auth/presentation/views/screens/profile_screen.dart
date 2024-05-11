@@ -5,7 +5,7 @@ import 'package:egote_services_v2/features/common/presentation/extensions/extens
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart' as supa_user_exception;
+import 'package:supabase_flutter/supabase_flutter.dart' as supa_user_exception;
 
 import '../../../../../config/providers/firebase/firebase_providers.dart';
 import 'auth_screens.dart';
@@ -60,9 +60,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         });
       }
     } on supa_user_exception.PostgrestException catch (error) {
-      context.showAlert(error.message);
+      if (mounted) {
+        context.showAlert(error.message);
+      }
     } catch (e) {
-      context.showAlert(e.toString());
+      if (mounted) {
+        context.showAlert(e.toString());
+      }
     } finally {
       if (mounted) {
         setState(() {
@@ -129,7 +133,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         }
       }
     } catch (e) {
-      context.showAlert(e.toString());
+      if (mounted) {
+        context.showAlert(e.toString());
+      }
     }
 
     setState(() {

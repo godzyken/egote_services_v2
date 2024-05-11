@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart' as ui;
+import 'package:supabase_flutter/supabase_flutter.dart' as ui;
 
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
@@ -259,7 +259,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
 
       final session = supabase.auth.currentSession;
       // A user without a session should be redirected to the sign_up screen
-      if (session == null) {
+      if (session == null || session.isExpired == true) {
         return AuthRoute.path;
       }
 
