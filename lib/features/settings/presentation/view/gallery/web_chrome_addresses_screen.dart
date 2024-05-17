@@ -11,7 +11,8 @@ class WebChromeAddressesScreen extends ConsumerStatefulWidget {
       _WebChromeAddressesScreenState();
 }
 
-class _WebChromeAddressesScreenState extends ConsumerState<WebChromeAddressesScreen> {
+class _WebChromeAddressesScreenState
+    extends ConsumerState<WebChromeAddressesScreen> {
   bool _toggle = true;
 
   @override
@@ -26,9 +27,9 @@ class _WebChromeAddressesScreenState extends ConsumerState<WebChromeAddressesScr
             tiles: [
               SettingsTile.switchTile(
                 initialValue: _toggle,
-                onToggle: (_) {
+                onToggle: (yeh) {
                   setState(() {
-                    _toggle = _;
+                    _toggle = yeh;
                   });
                 },
                 trailing: const Icon(Icons.info),

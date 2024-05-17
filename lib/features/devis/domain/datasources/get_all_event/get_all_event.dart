@@ -3,8 +3,8 @@ import 'package:egote_services_v2/features/devis/domain/services/check_out_servi
 import 'package:fpdart/fpdart.dart';
 
 final getAllEvent = ReaderTask<CheckoutService, GetAllEventState>.Do(
-  (_) async {
-    final executeQuery = await _(
+  (rd) async {
+    final executeQuery = await rd(
       ReaderTask(
         (checkoutService) async => TaskEither.tryCatch(
           () => checkoutService.getAll,
@@ -13,7 +13,7 @@ final getAllEvent = ReaderTask<CheckoutService, GetAllEventState>.Do(
       ),
     );
 
-    return _(ReaderTask(
+    return rd(ReaderTask(
       (_) => executeQuery
           .match<GetAllEventState>(
             identity,

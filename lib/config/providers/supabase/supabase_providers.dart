@@ -182,11 +182,11 @@ final supabaseUsersListProvider = Provider<List<supabase.SupabaseAuth>>((ref) {
   final auths = ref.watch(su)
 },);*/
 
-final filterConnection = StateProvider<List<int>>((_) {
+final filterConnection = StateProvider<List<int>>((ref) {
   final state1 =
-      _.watch(supabaseInitProvider.future).timeout(const Duration(days: 2));
-  final state2 = _.watch(supabaseClientProvider);
-  final state3 = _.watch(userNotifierProvider);
+      ref.watch(supabaseInitProvider.future).timeout(const Duration(days: 2));
+  final state2 = ref.watch(supabaseClientProvider);
+  final state3 = ref.watch(userNotifierProvider);
 
   final stateList = <int, String>{
     1: state1.toString(),

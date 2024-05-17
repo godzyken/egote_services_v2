@@ -405,4 +405,32 @@ class AuthRepository implements AuthRepositoryInterface {
       return left(Failure.unprocessableEntity(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> signInWithApple() async {
+/*    final rawNonce = await authClient.auth.generateRawNonce();
+    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
+    final credential = await supabase.Supabase.instance.client.auth.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: hashedNonce,
+    );
+
+    final idToken = credential.identityToken;
+    if (idToken == null) {
+      throw const AuthException(
+        'Could not find ID Token from generated credential.',
+      );
+    }
+
+    return signInWithIdToken(
+      provider: OAuthProvider.apple,
+      idToken: idToken,
+      nonce: rawNonce,
+    );*/
+    return left(Failure.empty());
+  }
 }

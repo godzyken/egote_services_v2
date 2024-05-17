@@ -1,5 +1,11 @@
 {
   "hosting": {
-    "source": "./egoteback.web.app"
+    "source": "./egoteback.web.app",
+    "public": "",
+    "redirects": [ {
+      "source": "/__/auth",
+      "destination": "/login",
+      "type": 301
+    } ]
   }
 }

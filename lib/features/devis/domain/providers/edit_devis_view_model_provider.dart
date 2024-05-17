@@ -36,14 +36,14 @@ class EditDeviViewModelController
   bool get edit => initial.toJson().isNotEmpty;
 
   DevisModelEntity get devis => initial.when(
-        approved: (id, createdAt, validity, client, pro, travauxEntity,
+        approved: (devis, createdAt, validity, client, pro, travauxEntity,
             quantity, unitPrice, vatRates, amountHt, amountTtc, approval) {
           try {
             state = const State.loading();
 
-            if (id != 0 && approval != false) {
+            if (devis.id != 0 && approval != false) {
               final DevisModelEntity newDevis = DevisModelEntity.approved(
-                  id: id,
+                  id: devis,
                   createdAt: createdAt,
                   validity: validity,
                   client: client,
@@ -62,7 +62,7 @@ class EditDeviViewModelController
             return DevisModelEntity.empty();
           } on Exception catch (e) {
             state = State.error(e);
-            return DevisModelEntity.initialize(id: id, createdAt: createdAt);
+            return DevisModelEntity.initialize(id: devis, createdAt: createdAt);
           }
         },
         initialize: (id, createdAt) =>

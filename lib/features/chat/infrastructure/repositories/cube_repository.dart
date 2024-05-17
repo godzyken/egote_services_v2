@@ -4,7 +4,7 @@ import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/src/either.dart';
+import 'package:fpdart/fpdart.dart';
 
 import '../../../auth/domain/providers/auth_repository_provider.dart';
 import '../../domain/repository/cube_repository_interface.dart';

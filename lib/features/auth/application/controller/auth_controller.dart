@@ -120,8 +120,19 @@ class AutoAuthController extends StateNotifier<UserModel?> {
 
   Future<void> _initialize() async {
     final res = await _repository.restoreSession();
-    state = res.fold((l) => null, (r) => r);
-    _updateAuthState();
+    final db = _ref.watch(firebaseFirestoreProvider).doc('auth_users_table');
+    while (doc.isBroadcast) {
+      state = res.fold((l) => null, (r) {
+        try {
+          db.set(r.toJson(), SetOptions(merge: true));
+          return r;
+        } on FirebaseException catch (e) {
+          developer.log("Initialize autoauthcontroller() error: ${e.message}");
+        }
+      });
+
+      _updateAuthState();
+    }
 
     if (state == null) {
       await Future.delayed(const Duration(seconds: 3));

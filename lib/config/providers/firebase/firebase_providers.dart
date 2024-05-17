@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,16 +31,25 @@ final firebaseMessagingProvider = Provider((ref) => FirebaseMessaging.instance);
 
 final emulatorSettingsProvider = Provider((ref) {
   final fire = ref.watch(firebaseFirestoreProvider);
-  fire.settings = const Settings(
-    host: kIsWeb ? 'localhost' : '10.2.2',
-    sslEnabled: true,
-    ignoreUndefinedProperties: false,
-    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
-  );
+  try {
+    fire.settings = const Settings(
+      host: kIsWeb ? 'localhost' : '10.2.2',
+      sslEnabled: true,
+      ignoreUndefinedProperties: false,
+      cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+    );
 
-  final emulator = fire.useFirestoreEmulator('10.2.2', 8080);
+    fire.enableNetwork();
+    fire.waitForPendingWrites();
+    fire.snapshotsInSync();
 
-  return emulator;
+    final emulator = fire.useFirestoreEmulator('10.2.2', 8080);
+
+    return emulator;
+  } on FirebaseException catch (e) {
+    log('Error emulator settings provider : $e');
+    fire.terminate();
+  }
 });
 
 // <---------------- Stream<User?> Providers --------------------> //
