@@ -134,7 +134,8 @@ class _BodySelectedDialogLayoutState
   Widget _getListItemTile(BuildContext context, int index) {
     Widget getDialogIcon() {
       var dialog = dialogList[index].data;
-      if (dialog.type == CubeDialogTypeMig.PRIVATE) {
+      if (dialog.type == 1) {
+        var typeMigPrivate = CubeDialogTypeMig.PRIVATE(dialog.type);
         return const Icon(
           Icons.person,
           size: 40.0,

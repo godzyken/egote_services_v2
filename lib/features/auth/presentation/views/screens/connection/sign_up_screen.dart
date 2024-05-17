@@ -81,7 +81,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     final signUpController = ref.watch(signUpProvider.notifier);
 
     final name = ref.watch(signUpProvider).nameFormz;

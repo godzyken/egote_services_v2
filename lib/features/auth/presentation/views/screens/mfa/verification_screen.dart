@@ -39,14 +39,17 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
 
   Future<void> _resendCode() async {
     try {
-      setState(() {
-        _isSubmitting = true;
-      });
-
       await ref.read(authRepositoryProvider).signUp(
           widget.params.email, widget.params.name, widget.params.password);
+      if (mounted) {
+        setState(() {
+          _isSubmitting = true;
+        });
+      }
     } catch (e) {
-      context.showAlert(e.toString());
+      if (mounted) {
+        context.showAlert(e.toString());
+      }
     }
     setState(() {
       _isSubmitting = false;
@@ -68,7 +71,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.tr!.verification),
@@ -139,10 +142,14 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
 
                   final String location = context.namedLocation('user_home',
                       pathParameters: {'pid': client.user!.id});
-                  context.go(location);
+                  setState(() {
+                    context.go(location);
+                  });
                 }
               } catch (e) {
-                context.showAlert(e.toString());
+                if (mounted) {
+                  context.showAlert(e.toString());
+                }
               }
               setState(() {
                 _isSubmitting = false;

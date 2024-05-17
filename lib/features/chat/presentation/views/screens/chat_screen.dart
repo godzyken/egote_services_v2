@@ -80,7 +80,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (bool) {}, //onBackPress,
+      onPopInvoked: (isLoading) {}, //onBackPress,
       child: const SafeArea(
         child: Stack(
           children: <Widget>[
@@ -875,7 +875,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }*/
 
-  void onBackPress(bool) {
+  void onBackPress(isLoading) {
     //TODO: fix that too
     Navigator.pushNamedAndRemoveUntil(context, 'select_dialog', (r) => false,
         arguments: {USER_ARG_NAME: widget.cubeUser}).then((value) {

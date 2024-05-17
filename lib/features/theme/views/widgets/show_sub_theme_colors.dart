@@ -80,27 +80,27 @@ class ShowSubThemeColors extends StatelessWidget {
 
     // Get the themed or default color of all shown components' colors.
     final Color elevatedButtonColor = theme
-        .elevatedButtonTheme.style?.backgroundColor
-        ?.resolve(<MaterialState>{}) ??
+            .elevatedButtonTheme.style?.backgroundColor
+            ?.resolve(<WidgetState>{}) ??
         (useMaterial3 ? colorScheme.surface : colorScheme.primary);
     final Color elevatedForegroundButtonColor = theme
-        .elevatedButtonTheme.style?.foregroundColor
-        ?.resolve(<MaterialState>{}) ??
+            .elevatedButtonTheme.style?.foregroundColor
+            ?.resolve(<WidgetState>{}) ??
         (useMaterial3 ? colorScheme.primary : colorScheme.onPrimary);
     final Color filledButtonColor = theme
-        .filledButtonTheme.style?.backgroundColor
-        ?.resolve(<MaterialState>{}) ??
+            .filledButtonTheme.style?.backgroundColor
+            ?.resolve(<WidgetState>{}) ??
         colorScheme.primary;
     final Color tonalButtonColor = theme
-        .filledButtonTheme.style?.backgroundColor
-        ?.resolve(<MaterialState>{}) ??
+            .filledButtonTheme.style?.backgroundColor
+            ?.resolve(<WidgetState>{}) ??
         colorScheme.secondaryContainer;
     final Color outlinedButtonColor = theme
-        .outlinedButtonTheme.style?.foregroundColor
-        ?.resolve(<MaterialState>{}) ??
+            .outlinedButtonTheme.style?.foregroundColor
+            ?.resolve(<WidgetState>{}) ??
         colorScheme.primary;
     final Color textButtonColor = theme.textButtonTheme.style?.foregroundColor
-        ?.resolve(<MaterialState>{}) ??
+            ?.resolve(<WidgetState>{}) ??
         colorScheme.primary;
     final Color toggleButtonsColor =
         theme.toggleButtonsTheme.color ?? colorScheme.primary;
@@ -115,19 +115,19 @@ class ShowSubThemeColors extends StatelessWidget {
                 ? theme.colorScheme.onPrimaryContainer
                 : _onColor(floatingActionButtonColor, background));
     final Color switchColor = theme.switchTheme.thumbColor
-        ?.resolve(<MaterialState>{MaterialState.selected}) ??
+            ?.resolve(<WidgetState>{WidgetState.selected}) ??
         (theme.useMaterial3 ? colorScheme.primary : colorScheme.secondary);
     final Color checkboxColor = theme.checkboxTheme.fillColor
-        ?.resolve(<MaterialState>{MaterialState.selected}) ??
+            ?.resolve(<WidgetState>{WidgetState.selected}) ??
         (theme.useMaterial3 ? colorScheme.primary : colorScheme.secondary);
     final Color radioColor = theme.radioTheme.fillColor
-        ?.resolve(<MaterialState>{MaterialState.selected}) ??
+            ?.resolve(<WidgetState>{WidgetState.selected}) ??
         (theme.useMaterial3 ? colorScheme.primary : colorScheme.secondary);
     final Color circleAvatarColor = useMaterial3
         ? theme.colorScheme.primaryContainer
         : isDark
-        ? theme.primaryColorLight
-        : theme.primaryColorDark;
+            ? theme.primaryColorLight
+            : theme.primaryColorDark;
     final Color onCircleAvatarColor = useMaterial3
         ? theme.colorScheme.onPrimaryContainer
         : _onColor(circleAvatarColor, background);
@@ -139,12 +139,12 @@ class ShowSubThemeColors extends StatelessWidget {
     final Decoration? tooltipDecoration = theme.tooltipTheme.decoration;
     final Color tooltipColor = tooltipDecoration is BoxDecoration
         ? tooltipDecoration.color ??
-        (isDark
-            ? Colors.white.withOpacity(0.9)
-            : Colors.grey[700]!.withOpacity(0.9))
+            (isDark
+                ? Colors.white.withOpacity(0.9)
+                : Colors.grey[700]!.withOpacity(0.9))
         : (isDark
-        ? Colors.white.withOpacity(0.9)
-        : Colors.grey[700]!.withOpacity(0.9));
+            ? Colors.white.withOpacity(0.9)
+            : Colors.grey[700]!.withOpacity(0.9));
     final Color appBarColor = theme.appBarTheme.backgroundColor ??
         (isDark ? colorScheme.surface : colorScheme.primary);
     final Color tabBarColor = theme.tabBarTheme.labelColor ??
@@ -154,7 +154,7 @@ class ShowSubThemeColors extends StatelessWidget {
     final Color defaultSnackBackgroundColor = isDark
         ? colorScheme.onSurface
         : Color.alphaBlend(
-        colorScheme.onSurface.withOpacity(0.80), colorScheme.surface);
+            colorScheme.onSurface.withOpacity(0.80), colorScheme.surface);
     final Color snackBarColor =
         theme.snackBarTheme.backgroundColor ?? defaultSnackBackgroundColor;
     final Color snackForeground = theme.snackBarTheme.contentTextStyle?.color ??
@@ -162,19 +162,18 @@ class ShowSubThemeColors extends StatelessWidget {
             ? Colors.black
             : Colors.white);
     final Color bottomNavBarColor =
-        theme.bottomNavigationBarTheme.backgroundColor ??
-            colorScheme.background;
+        theme.bottomNavigationBarTheme.backgroundColor ?? colorScheme.surface;
     final Color bottomNavBarItemColor =
         theme.bottomNavigationBarTheme.selectedItemColor ??
             (isDark ? colorScheme.secondary : colorScheme.primary);
     final Color navigationBarColor = theme.navigationBarTheme.backgroundColor ??
         (useMaterial3
             ? ElevationOverlay.colorWithOverlay(
-            colorScheme.surface, colorScheme.primary, 3.0)
+                colorScheme.surface, colorScheme.primary, 3.0)
             : ElevationOverlay.colorWithOverlay(
-            colorScheme.surface, colorScheme.onSurface, 3.0));
+                colorScheme.surface, colorScheme.onSurface, 3.0));
     final Color navigationBarItemColor = theme.navigationBarTheme.iconTheme
-        ?.resolve(<MaterialState>{MaterialState.selected})?.color ??
+            ?.resolve(<WidgetState>{WidgetState.selected})?.color ??
         (useMaterial3
             ? colorScheme.onSecondaryContainer
             : colorScheme.onSurface);
@@ -186,7 +185,7 @@ class ShowSubThemeColors extends StatelessWidget {
     final Color navigationRailColor =
         theme.navigationRailTheme.backgroundColor ?? colorScheme.surface;
     final Color navigationRailItemColor = theme
-        .navigationRailTheme.selectedIconTheme?.color ??
+            .navigationRailTheme.selectedIconTheme?.color ??
         (useMaterial3 ? colorScheme.onSecondaryContainer : colorScheme.primary);
     final Color navigationRailIndicatorColor =
         theme.navigationRailTheme.indicatorColor ??
@@ -197,7 +196,7 @@ class ShowSubThemeColors extends StatelessWidget {
         (isDark ? Colors.white : Colors.black);
     final Color primTextColor = theme.primaryTextTheme.titleMedium?.color ??
         (ThemeData.estimateBrightnessForColor(colorScheme.primary) ==
-            Brightness.dark
+                Brightness.dark
             ? Colors.white
             : Colors.black);
 

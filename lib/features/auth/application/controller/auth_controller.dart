@@ -125,10 +125,12 @@ class AutoAuthController extends StateNotifier<UserModel?> {
       state = res.fold((l) => null, (r) {
         try {
           db.set(r.toJson(), SetOptions(merge: true));
-          return r;
+          developer
+              .log("User Data register successfully: ${r.id} in ${db.path}");
         } on FirebaseException catch (e) {
-          developer.log("Initialize autoauthcontroller() error: ${e.message}");
+          developer.log("Initialize autoAuthController() error: ${e.message}");
         }
+        return null;
       });
 
       _updateAuthState();
@@ -151,6 +153,7 @@ class AutoAuthController extends StateNotifier<UserModel?> {
           userEntityModel: _ref.watch(userNotifierProvider),
           authUser: _ref.watch(autoAuthControllerProvider)!.authUser,
           cubeUser: cubeUser);
+      _updateAuthState();
     });
   }
 

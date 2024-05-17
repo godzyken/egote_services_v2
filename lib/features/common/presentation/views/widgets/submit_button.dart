@@ -9,13 +9,13 @@ class SubmitButton extends ConsumerWidget {
   final double fontSize;
 
   const SubmitButton(
-      this.text, {
-        super.key,
-        this.height = 42,
-        this.onPressed,
-        this.enabled = true,
-        this.fontSize = 16,
-      });
+    this.text, {
+    super.key,
+    this.height = 42,
+    this.onPressed,
+    this.enabled = true,
+    this.fontSize = 16,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,12 +28,12 @@ class SubmitButton extends ConsumerWidget {
       ),
       child: ElevatedButton(
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),
           ),
-          minimumSize: MaterialStateProperty.all(
+          minimumSize: WidgetStatePropertyAll(
               Size(MediaQuery.of(context).size.width - 40, height)),
         ),
         onPressed: enabled ? onPressed : null,

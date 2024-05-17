@@ -22,7 +22,7 @@ class MFAEnrollScreen extends ConsumerStatefulWidget {
 
 class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     final enrollFuture = ref.read(supabaseClientProvider).auth.mfa.enroll();
 
     return Scaffold(
@@ -102,12 +102,23 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
                         final String location = context.namedLocation(
                             'user_home',
                             pathParameters: {'pid': client.user.id});
-                        context.go(location);
+
+                        setState(() {
+                          context.go(location);
+                        });
                       }
                     } on AuthException catch (error) {
-                      context.showAlert(error.message);
+                      if (mounted) {
+                        setState(() {
+                          context.showAlert(error.message);
+                        });
+                      }
                     } catch (error) {
-                      context.showAlert(error.toString());
+                      if (mounted) {
+                        setState(() {
+                          context.showAlert(error.toString());
+                        });
+                      }
                     }
                   },
                   inputType: TextInputType.number,

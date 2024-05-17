@@ -18,7 +18,7 @@ import '../../../../config/app_shared/insets/app_insets.dart';
 /// all the Widgets in this file be dropped into any application. They are
 /// however not so generally reusable.
 class ShowColorSchemeColors extends StatelessWidget {
-  const  ShowColorSchemeColors({super.key, this.onBackgroundColor});
+  const ShowColorSchemeColors({super.key, this.onBackgroundColor});
 
   /// The color of the background the color widget are being drawn on.
   ///
@@ -83,20 +83,20 @@ class ShowColorSchemeColors extends StatelessWidget {
     // Warning label for scaffold background when it uses to much blend.
     final String surfaceTooHigh = isDark
         ? _isLight(theme.colorScheme.surface)
-        ? context.tr!.tooHigh
-        : ''
+            ? context.tr!.tooHigh
+            : ''
         : _isDark(theme.colorScheme.surface)
-        ? context.tr!.tooHigh
-        : '';
+            ? context.tr!.tooHigh
+            : '';
 
     // Warning label for scaffold background when it uses to much blend.
     final String backTooHigh = isDark
-        ? _isLight(theme.colorScheme.background)
-        ? context.tr!.tooHigh
-        : ''
-        : _isDark(theme.colorScheme.background)
-        ? context.tr!.tooHigh
-        : '';
+        ? _isLight(theme.colorScheme.surface)
+            ? context.tr!.tooHigh
+            : ''
+        : _isDark(theme.colorScheme.surface)
+            ? context.tr!.tooHigh
+            : '';
 
     // Wrap this widget branch in a custom theme where card has a border outline
     // if it did not have one, but retains in ambient themed border radius.
@@ -205,13 +205,13 @@ class ShowColorSchemeColors extends StatelessWidget {
               ),
               ColorCard(
                 label: '${context.tr!.labelBackground}$backTooHigh',
-                color: colorScheme.background,
-                textColor: colorScheme.onBackground,
+                color: colorScheme.surface,
+                textColor: colorScheme.surface,
               ),
               ColorCard(
                 label: context.tr!.labelOnBackground,
-                color: colorScheme.onBackground,
-                textColor: colorScheme.background,
+                color: colorScheme.surface,
+                textColor: colorScheme.surface,
               ),
               ColorCard(
                 label: '${context.tr!.labelSurface}$surfaceTooHigh',
@@ -225,18 +225,18 @@ class ShowColorSchemeColors extends StatelessWidget {
               ),
               ColorCard(
                 label: context.tr!.labelSurfaceVariant,
-                color: colorScheme.surfaceVariant,
+                color: colorScheme.surfaceContainerHighest,
                 textColor: colorScheme.onSurfaceVariant,
               ),
               ColorCard(
                 label: context.tr!.labelOnSurfaceVariant,
                 color: colorScheme.onSurfaceVariant,
-                textColor: colorScheme.surfaceVariant,
+                textColor: colorScheme.surfaceContainerHighest,
               ),
               ColorCard(
                 label: context.tr!.labelOutline,
                 color: colorScheme.outline,
-                textColor: colorScheme.background,
+                textColor: colorScheme.surface,
               ),
               ColorCard(
                 label: context.tr!.labelShadow,

@@ -28,11 +28,11 @@ class AppBarStylePopupMenu extends StatelessWidget {
   final Color? customScaffoldColor;
 
   Color _appBarStyleColor(
-      final FlexAppBarStyle? style,
-      final ColorScheme colorScheme,
-      final bool isLight,
-      final bool useMaterial3,
-      ) {
+    final FlexAppBarStyle? style,
+    final ColorScheme colorScheme,
+    final bool isLight,
+    final bool useMaterial3,
+  ) {
     switch (style) {
       case FlexAppBarStyle.primary:
         return colorScheme.primary;
@@ -43,9 +43,9 @@ class AppBarStylePopupMenu extends StatelessWidget {
       case FlexAppBarStyle.surface:
         return colorScheme.surface;
       case FlexAppBarStyle.background:
-        return colorScheme.background;
+        return colorScheme.surface;
       case FlexAppBarStyle.scaffoldBackground:
-        return customScaffoldColor ?? colorScheme.background;
+        return customScaffoldColor ?? colorScheme.surface;
       case FlexAppBarStyle.custom:
         return customAppBarColor ?? colorScheme.tertiaryContainer;
       case null:
@@ -64,10 +64,10 @@ class AppBarStylePopupMenu extends StatelessWidget {
   }
 
   String _explainAppBarStyle(
-      final FlexAppBarStyle? style,
-      final bool isLight,
-      final bool useMaterial3,
-      ) {
+    final FlexAppBarStyle? style,
+    final bool isLight,
+    final bool useMaterial3,
+  ) {
     switch (style) {
       case FlexAppBarStyle.primary:
         return isLight ? 'Primary color (M2 default)' : 'Primary color';
@@ -134,13 +134,13 @@ class AppBarStylePopupMenu extends StatelessWidget {
                 backgroundColor: i >= FlexAppBarStyle.values.length
                     ? _appBarStyleColor(null, scheme, isLight, useM3)
                     : _appBarStyleColor(
-                  FlexAppBarStyle.values[i],
-                  scheme,
-                  isLight,
-                  useM3,
-                ),
+                        FlexAppBarStyle.values[i],
+                        scheme,
+                        isLight,
+                        useM3,
+                      ),
                 borderColor: index == i ||
-                    (i >= FlexAppBarStyle.values.length && useDefault)
+                        (i >= FlexAppBarStyle.values.length && useDefault)
                     ? scheme.primary
                     : scheme.outline,
                 selected: index == i ||
@@ -148,19 +148,19 @@ class AppBarStylePopupMenu extends StatelessWidget {
                 defaultOption: i >= FlexAppBarStyle.values.length,
               ),
               title: i >= FlexAppBarStyle.values.length
-              // If we reached max length make default label.
+                  // If we reached max length make default label.
                   ? Text(popupLabelDefault ?? labelForDefault, style: txtStyle)
                   : Text(
-                FlexAppBarStyle.values[i].name.sentenceCase(),
-                style: txtStyle,
-              ),
+                      FlexAppBarStyle.values[i].name.sentenceCase(),
+                      style: txtStyle,
+                    ),
             ),
           )
       ],
       child: ListTile(
         enabled: enabled,
         contentPadding:
-        contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
+            contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
         title: title,
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,11 +172,11 @@ class AppBarStylePopupMenu extends StatelessWidget {
         trailing: ColorSchemeBox(
           backgroundColor: enabled && !useDefault
               ? _appBarStyleColor(
-            FlexAppBarStyle.values[index],
-            scheme,
-            isLight,
-            useM3,
-          )
+                  FlexAppBarStyle.values[index],
+                  scheme,
+                  isLight,
+                  useM3,
+                )
               : _appBarStyleColor(null, scheme, isLight, useM3),
           borderColor: index == FlexAppBarStyle.custom.index
               ? Colors.transparent

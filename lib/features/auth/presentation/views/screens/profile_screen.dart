@@ -144,25 +144,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     return ref.watch(authStateChangesProvider).when(
-        data: (_) => _isLoading
-            ? userModelComplete(_, context)
-            : authUserComplete(_, context),
+        data: (user) => _isLoading
+            ? userModelComplete(user, context)
+            : authUserComplete(user, context),
         error: (error, stackTrace) => ErrorScreen(error: stackTrace.toString()),
         loading: () => const Center(
               child: CircularProgressIndicator(),
             ));
   }
 
-  Scaffold authUserComplete(User? _, BuildContext context) {
+  Scaffold authUserComplete(User? user, BuildContext _) {
     return Scaffold(
       appBar: AppBar(
         title: _userEntityModel!.isComplete
             ? ProfileWidget(
-                imagePath: _!.photoURL!,
+                imagePath: user!.photoURL!,
                 onClicked: () {
-                  // Todo: _!.updatePhotoUrl()
+                  // Todo: user!.updatePhotoUrl()
                 },
               )
             : Text(context.tr!.noData),
@@ -185,29 +185,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(bottom: 8),
-                child: Image.network(_!.photoURL!),
+                child: Image.network(user!.photoURL!),
               ),
-              Text('${_.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
-                  '${context.tr!.email}: ${_.email} (${context.tr!.verified}: ${_.emailVerified})\n\n'
-                  '${context.tr!.phoneNumber}: ${_.phoneNumber}\n\n'
-                  '${context.tr!.name}: ${_.displayName}\n\n\n'
-                  'ID: ${_.uid}\n\n'
-                  '${context.tr!.tenantId}: ${_.tenantId}\n\n'
-                  '${context.tr!.refresh} ${context.tr!.token}: ${_.refreshToken}\n\n\n'
-                  '${context.tr!.created}: ${_.metadata.creationTime.toString()}\n\n'
-                  '${context.tr!.lastLogin}: ${_.metadata.lastSignInTime}\n\n'),
+              Text(
+                  '${user.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
+                  '${context.tr!.email}: ${user.email} (${context.tr!.verified}: ${user.emailVerified})\n\n'
+                  '${context.tr!.phoneNumber}: ${user.phoneNumber}\n\n'
+                  '${context.tr!.name}: ${user.displayName}\n\n\n'
+                  'ID: ${user.uid}\n\n'
+                  '${context.tr!.tenantId}: ${user.tenantId}\n\n'
+                  '${context.tr!.refresh} ${context.tr!.token}: ${user.refreshToken}\n\n\n'
+                  '${context.tr!.created}: ${user.metadata.creationTime.toString()}\n\n'
+                  '${context.tr!.lastLogin}: ${user.metadata.lastSignInTime}\n\n'),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    _.providerData.first.providerId,
+                    user.providerData.first.providerId,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
-                  for (var provider in _.providerData)
+                  for (var provider in user.providerData)
                     Dismissible(
                       key: Key(provider.uid!),
-                      onDismissed: (action) => _.unlink(provider.providerId),
+                      onDismissed: (action) => user.unlink(provider.providerId),
                       child: Card(
                         color: Colors.grey[300],
                         child: ListTile(
@@ -215,7 +216,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ? IconButton(
                                   icon: const Icon(Icons.remove),
                                   onPressed: () =>
-                                      _.unlink(provider.providerId))
+                                      user.unlink(provider.providerId))
                               : Image.network(provider.photoURL!),
                           title: Text(provider.providerId),
                           subtitle: Text(
@@ -229,7 +230,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ],
               ),
               Visibility(
-                  visible: !_.isAnonymous,
+                  visible: !user.isAnonymous,
                   child: Container(
                     margin: const EdgeInsets.only(top: 8),
                     alignment: Alignment.center,
@@ -237,7 +238,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         IconButton(
-                          onPressed: () => _.reload(),
+                          onPressed: () => user.reload(),
                           icon: const Icon(Icons.refresh),
                         ),
                         IconButton(
@@ -249,7 +250,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           icon: const Icon(Icons.text_snippet),
                         ),
                         IconButton(
-                          onPressed: () => _.delete(),
+                          onPressed: () => user.delete(),
                           icon: const Icon(Icons.delete_forever),
                         ),
                       ],
@@ -262,14 +263,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Scaffold userModelComplete(User? _, BuildContext context) {
+  Scaffold userModelComplete(User? user, BuildContext _) {
     return Scaffold(
       appBar: AppBar(
         title: _userEntityModel!.isComplete
             ? ProfileWidget(
-                imagePath: _!.photoURL!,
+                imagePath: user!.photoURL!,
                 onClicked: () {
-                  // Todo: _!.updatePhotoUrl()
+                  // Todo: user!.updatePhotoUrl()
                 },
               )
             : Text(context.tr!.noData),
@@ -292,29 +293,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(bottom: 8),
-                child: Image.network(_!.photoURL!),
+                child: Image.network(user!.photoURL!),
               ),
-              Text('${_.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
-                  '${context.tr!.email}: ${_.email} (${context.tr!.verified}: ${_.emailVerified})\n\n'
-                  '${context.tr!.phoneNumber}: ${_.phoneNumber}\n\n'
+              Text(
+                  '${user.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
+                  '${context.tr!.email}: ${user.email} (${context.tr!.verified}: ${user.emailVerified})\n\n'
+                  '${context.tr!.phoneNumber}: ${user.phoneNumber}\n\n'
                   '${context.tr!.name}: ${_userEntityModel!.name}\n\n\n'
                   'ID: ${_userEntityModel!.id}\n\n'
-                  '${context.tr!.tenantId}: ${_.tenantId}\n\n'
-                  '${context.tr!.refresh} ${context.tr!.token}: ${_.refreshToken}\n\n\n'
+                  '${context.tr!.tenantId}: ${user.tenantId}\n\n'
+                  '${context.tr!.refresh} ${context.tr!.token}: ${user.refreshToken}\n\n\n'
                   '${context.tr!.created}: ${_userEntityModel!.createdAt}\n\n'
                   '${context.tr!.lastLogin}: ${_userEntityModel!.lastSignInAt}\n\n'),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    _.providerData.first.providerId,
+                    user.providerData.first.providerId,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
-                  for (var provider in _.providerData)
+                  for (var provider in user.providerData)
                     Dismissible(
                       key: Key(provider.uid!),
-                      onDismissed: (action) => _.unlink(provider.providerId),
+                      onDismissed: (action) => user.unlink(provider.providerId),
                       child: Card(
                         color: Colors.grey[300],
                         child: ListTile(
@@ -322,7 +324,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ? IconButton(
                                   icon: const Icon(Icons.remove),
                                   onPressed: () =>
-                                      _.unlink(provider.providerId))
+                                      user.unlink(provider.providerId))
                               : Image.network(provider.photoURL!),
                           title: Text(provider.providerId),
                           subtitle: Text(
@@ -336,7 +338,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ],
               ),
               Visibility(
-                  visible: !_.isAnonymous,
+                  visible: !user.isAnonymous,
                   child: Container(
                     margin: const EdgeInsets.only(top: 8),
                     alignment: Alignment.center,
@@ -344,7 +346,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         IconButton(
-                          onPressed: () => _.reload(),
+                          onPressed: () => user.reload(),
                           icon: const Icon(Icons.refresh),
                         ),
                         IconButton(
@@ -356,7 +358,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           icon: const Icon(Icons.text_snippet),
                         ),
                         IconButton(
-                          onPressed: () => _.delete(),
+                          onPressed: () => user.delete(),
                           icon: const Icon(Icons.delete_forever),
                         ),
                       ],

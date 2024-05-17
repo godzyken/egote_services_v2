@@ -94,28 +94,28 @@ class ShowThemeDataColors extends StatelessWidget {
     // Warning label for scaffold background when it uses to much blend.
     final String scaffoldTooHigh = isDark
         ? _isLight(theme.scaffoldBackgroundColor)
-        ? context.tr!.tooHigh
-        : ''
+            ? context.tr!.tooHigh
+            : ''
         : _isDark(theme.scaffoldBackgroundColor)
-        ? context.tr!.tooHigh
-        : '';
+            ? context.tr!.tooHigh
+            : '';
     // Warning label for scaffold background when it uses to much blend.
     final String surfaceTooHigh = isDark
         ? _isLight(theme.colorScheme.surface)
-        ? context.tr!.tooHigh
-        : ''
+            ? context.tr!.tooHigh
+            : ''
         : _isDark(theme.colorScheme.surface)
-        ? context.tr!.tooHigh
-        : '';
+            ? context.tr!.tooHigh
+            : '';
 
     // Warning label for scaffold background when it uses to much blend.
     final String backTooHigh = isDark
-        ? _isLight(theme.colorScheme.background)
-        ? context.tr!.tooHigh
-        : ''
-        : _isDark(theme.colorScheme.background)
-        ? context.tr!.tooHigh
-        : '';
+        ? _isLight(theme.colorScheme.surface)
+            ? context.tr!.tooHigh
+            : ''
+        : _isDark(theme.colorScheme.surface)
+            ? context.tr!.tooHigh
+            : '';
 
     // Wrap this widget branch in a custom theme where card has a border outline
     // if it did not have one, but retains in ambient themed border radius.

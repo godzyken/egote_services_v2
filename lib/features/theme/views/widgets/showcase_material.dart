@@ -567,14 +567,14 @@ class _SwitchShowcaseState extends State<SwitchShowcase> {
             },
           ),
           Switch(
-            thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                    (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.selected)) {
-                    return const Icon(Icons.check);
-                  }
-                  // All other states will use the default thumbIcon.
-                  return const Icon(Icons.close);
-                }),
+            thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.selected)) {
+                return const Icon(Icons.check);
+              }
+              // All other states will use the default thumbIcon.
+              return const Icon(Icons.close);
+            }),
             value: isOn1,
             onChanged: (bool value) {
               setState(() {
@@ -732,7 +732,8 @@ class _SliderShowcaseState extends State<SliderShowcase> {
         children: <Widget>[
           ListTile(
             dense: true,
-            title: Text('${context.tr!.sliderStepped} (${value.toStringAsFixed(0)})'),
+            title: Text(
+                '${context.tr!.sliderStepped} (${value.toStringAsFixed(0)})'),
             subtitle: Slider(
               max: 30,
               divisions: 31,
@@ -747,7 +748,8 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title: Text('${context.tr!.sliderContinuous} (${value.toStringAsFixed(2)})'),
+            title: Text(
+                '${context.tr!.sliderContinuous} (${value.toStringAsFixed(2)})'),
             subtitle: Slider(
               max: 30,
               label: value.toStringAsFixed(0),
@@ -761,8 +763,8 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title:
-            Text('${context.tr!.sliderSteppedDisabled} (${value.toStringAsFixed(0)})'),
+            title: Text(
+                '${context.tr!.sliderSteppedDisabled} (${value.toStringAsFixed(0)})'),
             subtitle: Slider(
               max: 30,
               divisions: 31,
@@ -849,7 +851,8 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title: Text('${context.tr!.rangeSliderSteppedDisabled} (${RangeLabels(
+            title:
+                Text('${context.tr!.rangeSliderSteppedDisabled} (${RangeLabels(
               values.start.toStringAsFixed(0),
               values.end.toStringAsFixed(0),
             )})'),
@@ -866,7 +869,8 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title: Text('${context.tr!.rangeSliderContinuousDisabled} (${RangeLabels(
+            title: Text(
+                '${context.tr!.rangeSliderContinuousDisabled} (${RangeLabels(
               values.start.toStringAsFixed(2),
               values.end.toStringAsFixed(2),
             )})'),
@@ -940,11 +944,16 @@ class PopupMenuButtonShowcase extends StatelessWidget {
         onSelected: (_) {},
         position: PopupMenuPosition.under,
         itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-          PopupMenuItem<int>(value: 1, child: Text('${context.tr!.optionText} 1')),
-          PopupMenuItem<int>(value: 2, child: Text('${context.tr!.optionText} 2')),
-          PopupMenuItem<int>(value: 3, child: Text('${context.tr!.optionText} 3')),
-          PopupMenuItem<int>(value: 4, child: Text('${context.tr!.optionText} 4')),
-          PopupMenuItem<int>(value: 5, child: Text('${context.tr!.optionText} 5')),
+          PopupMenuItem<int>(
+              value: 1, child: Text('${context.tr!.optionText} 1')),
+          PopupMenuItem<int>(
+              value: 2, child: Text('${context.tr!.optionText} 2')),
+          PopupMenuItem<int>(
+              value: 3, child: Text('${context.tr!.optionText} 3')),
+          PopupMenuItem<int>(
+              value: 4, child: Text('${context.tr!.optionText} 4')),
+          PopupMenuItem<int>(
+              value: 5, child: Text('${context.tr!.optionText} 5')),
         ],
         icon: const Icon(Icons.more_vert),
       ),
@@ -964,12 +973,14 @@ class PopupMenuButtonTilesShowcase extends StatelessWidget {
         itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
           PopupMenuItem<int>(
               value: 1,
-              child:
-              ListTile(leading: const Icon(Icons.alarm), title: Text(context.tr!.alarm))),
+              child: ListTile(
+                  leading: const Icon(Icons.alarm),
+                  title: Text(context.tr!.alarm))),
           PopupMenuItem<int>(
               value: 2,
               child: ListTile(
-                  leading: const Icon(Icons.cabin), title: Text(context.tr!.woodCabin))),
+                  leading: const Icon(Icons.cabin),
+                  title: Text(context.tr!.woodCabin))),
           PopupMenuItem<int>(
               value: 3,
               child: ListTile(
@@ -1498,10 +1509,10 @@ class _IconToggleButtonState extends State<IconToggleButton> {
     final ColorScheme colors = Theme.of(context).colorScheme;
     final VoidCallback? onPressed = widget.isEnabled
         ? () {
-      setState(() {
-        selected = !selected;
-      });
-    }
+            setState(() {
+              selected = !selected;
+            });
+          }
         : null;
     final ButtonStyle? style = widget.getDefaultStyle?.call(selected, colors);
 
@@ -1520,7 +1531,7 @@ class _IconToggleButtonState extends State<IconToggleButton> {
 ButtonStyle enabledFilledButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
     foregroundColor: selected ? colors.onPrimary : colors.primary,
-    backgroundColor: selected ? colors.primary : colors.surfaceVariant,
+    backgroundColor: selected ? colors.primary : colors.surfaceContainerHighest,
     disabledForegroundColor: colors.onSurface.withOpacity(0.38),
     disabledBackgroundColor: colors.onSurface.withOpacity(0.12),
     hoverColor: selected
@@ -1545,9 +1556,9 @@ ButtonStyle disabledFilledButtonStyle(bool selected, ColorScheme colors) {
 ButtonStyle enabledFilledTonalButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
     foregroundColor:
-    selected ? colors.onSecondaryContainer : colors.onSurfaceVariant,
+        selected ? colors.onSecondaryContainer : colors.onSurfaceVariant,
     backgroundColor:
-    selected ? colors.secondaryContainer : colors.surfaceVariant,
+        selected ? colors.secondaryContainer : colors.surfaceContainerHighest,
     hoverColor: selected
         ? colors.onSecondaryContainer.withOpacity(0.08)
         : colors.onSurfaceVariant.withOpacity(0.08),
@@ -1581,12 +1592,11 @@ ButtonStyle enabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
         : colors.onSurface.withOpacity(0.12),
     side: BorderSide(color: colors.outline),
   ).copyWith(
-    foregroundColor:
-    MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
+    foregroundColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+      if (states.contains(WidgetState.selected)) {
         return colors.onInverseSurface;
       }
-      if (states.contains(MaterialState.pressed)) {
+      if (states.contains(WidgetState.pressed)) {
         return colors.onSurface;
       }
       return null;
@@ -1598,7 +1608,7 @@ ButtonStyle disabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
     disabledForegroundColor: colors.onSurface.withOpacity(0.38),
     disabledBackgroundColor:
-    selected ? colors.onSurface.withOpacity(0.12) : null,
+        selected ? colors.onSurface.withOpacity(0.12) : null,
     side: selected ? null : BorderSide(color: colors.outline.withOpacity(0.12)),
   );
 }
@@ -1804,9 +1814,7 @@ class _TextInputFieldState extends State<TextInputField> {
             decoration: InputDecoration(
               hintText: context.tr!.showcaseHintText,
               labelText: context.tr!.showcaseLabelTextUnder,
-              errorText: _errorState1
-                  ? context.tr!.showcaseErrorText
-                  : null,
+              errorText: _errorState1 ? context.tr!.showcaseErrorText : null,
             ),
           ),
           const SizedBox(height: 16),
@@ -1827,9 +1835,7 @@ class _TextInputFieldState extends State<TextInputField> {
               hintText: context.tr!.showcaseHintText,
               labelText: '${context.tr!.showcaseLabelTextOutline}, '
                   '${context.tr!.filledSetTrue}',
-              errorText: _errorState2
-                  ? context.tr!.showcaseErrorText
-                  : null,
+              errorText: _errorState2 ? context.tr!.showcaseErrorText : null,
             ),
           ),
           const SizedBox(height: 16),
@@ -1851,9 +1857,7 @@ class _TextInputFieldState extends State<TextInputField> {
               labelText: context.tr!.showcaseLabelTextOutline,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: const Icon(Icons.info),
-              errorText: _errorState3
-                  ? context.tr!.showcaseErrorText
-                  : null,
+              errorText: _errorState3 ? context.tr!.showcaseErrorText : null,
             ),
           ),
           const SizedBox(height: 16),
@@ -1909,7 +1913,8 @@ class AppBarShowcase extends StatelessWidget {
                     icon: const Icon(Icons.menu),
                     onPressed: () {},
                   ),
-                  title: Text('${context.tr!.tooltipStandard} ${context.tr!.appBar}'),
+                  title: Text(
+                      '${context.tr!.tooltipStandard} ${context.tr!.appBar}'),
                   actions: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.search),
@@ -2113,8 +2118,8 @@ class TabBarForAppBarShowcase extends StatelessWidget {
         (isDark
             ? colorScheme.surface
             : useM3
-            ? colorScheme.surface
-            : colorScheme.primary);
+                ? colorScheme.surface
+                : colorScheme.primary);
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
@@ -2520,7 +2525,7 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
                         extended: isExtended,
                         minExtendedWidth: 150,
                         labelType:
-                        isExtended ? NavigationRailLabelType.none : null,
+                            isExtended ? NavigationRailLabelType.none : null,
                         selectedIndex: buttonIndex,
                         onDestinationSelected: (int value) {
                           setState(() {
@@ -2555,8 +2560,7 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
                         children: <Widget>[
                           SwitchListTile(
                             title: Text(context.tr!.expandCollapseTitle),
-                            subtitle:
-                            Text(context.tr!.expandCollapseSubTitle),
+                            subtitle: Text(context.tr!.expandCollapseSubTitle),
                             value: isExtended,
                             onChanged: (bool value) {
                               setState(() {
@@ -2602,7 +2606,7 @@ class MenuBarShowcase extends StatelessWidget {
     return Shortcuts(
       shortcuts: const <ShortcutActivator, Intent>{
         SingleActivator(LogicalKeyboardKey.keyT, control: true):
-        VoidCallbackIntent(debugDumpApp),
+            VoidCallbackIntent(debugDumpApp),
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2647,12 +2651,13 @@ class MenuBarShowcase extends StatelessWidget {
                             MenuItemButton(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                   SnackBar(
+                                  SnackBar(
                                     content: Text('${context.tr!.save}!'),
                                   ),
                                 );
                               },
-                              child: MenuAcceleratorLabel('&${context.tr!.saveNow}'),
+                              child: MenuAcceleratorLabel(
+                                  '&${context.tr!.saveNow}'),
                             ),
                             MenuItemButton(
                               onPressed: () {
@@ -2662,7 +2667,8 @@ class MenuBarShowcase extends StatelessWidget {
                                   ),
                                 );
                               },
-                              child: MenuAcceleratorLabel('&${context.tr!.loadNow}'),
+                              child: MenuAcceleratorLabel(
+                                  '&${context.tr!.loadNow}'),
                             ),
                           ],
                           child: Text(context.tr!.file),
@@ -2710,7 +2716,8 @@ class MenuBarShowcase extends StatelessWidget {
                               ),
                             );
                           },
-                          child: MenuAcceleratorLabel('&${context.tr!.underline}'),
+                          child:
+                              MenuAcceleratorLabel('&${context.tr!.underline}'),
                         ),
                       ],
                       child: MenuAcceleratorLabel('&${context.tr!.style}'),
@@ -2719,7 +2726,8 @@ class MenuBarShowcase extends StatelessWidget {
                       menuChildren: <Widget>[
                         MenuItemButton(
                           onPressed: null,
-                          child: MenuAcceleratorLabel('&${context.tr!.disabledItem}'),
+                          child: MenuAcceleratorLabel(
+                              '&${context.tr!.disabledItem}'),
                         ),
                         MenuItemButton(
                           onPressed: () {
@@ -2846,7 +2854,7 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
     // be registered to apply to the entire app. Menus don't register their
     // shortcuts, they only display the shortcut hint text.
     final Map<ShortcutActivator, Intent> shortcuts =
-    <ShortcutActivator, Intent>{
+        <ShortcutActivator, Intent>{
       for (final MenuEntry item in MenuEntry.values)
         if (item.shortcut != null)
           item.shortcut!: VoidCallbackIntent(() => _activate(item)),
@@ -3190,7 +3198,8 @@ class ListTileShowcase extends StatelessWidget {
           ListTile(
             enabled: false,
             leading: const Icon(Icons.info),
-            title: Text('${context.tr!.showcaseListTileTitle} ${context.tr!.disabledMin}'),
+            title: Text(
+                '${context.tr!.showcaseListTileTitle} ${context.tr!.disabledMin}'),
             subtitle: Text(context.tr!.showcaseListTileSelectedSubTitle),
             trailing: Text(context.tr!.showcaseListTileTrailing),
             onTap: () {},
@@ -3389,7 +3398,7 @@ class ExpansionPanelListShowcase extends StatefulWidget {
 class _ExpansionPanelListShowcaseState
     extends State<ExpansionPanelListShowcase> {
   final List<ExpansionPanelShowcaseItems> _items =
-  ExpansionPanelShowcaseItems.generateItems(6);
+      ExpansionPanelShowcaseItems.generateItems(6);
 
   @override
   Widget build(BuildContext context) {
@@ -3401,7 +3410,7 @@ class _ExpansionPanelListShowcaseState
           });
         },
         children:
-        _items.map<ExpansionPanel>((ExpansionPanelShowcaseItems item) {
+            _items.map<ExpansionPanel>((ExpansionPanelShowcaseItems item) {
           return ExpansionPanel(
             headerBuilder: (BuildContext context, bool isExpanded) {
               return ListTile(
@@ -3415,15 +3424,15 @@ class _ExpansionPanelListShowcaseState
                   : Text(context.tr!.expansionPanelFixed),
               trailing: item.id > 2
                   ? IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  setState(() {
-                    _items.removeWhere(
-                            (ExpansionPanelShowcaseItems currentItem) =>
-                        item == currentItem);
-                  });
-                },
-              )
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          _items.removeWhere(
+                              (ExpansionPanelShowcaseItems currentItem) =>
+                                  item == currentItem);
+                        });
+                      },
+                    )
                   : null,
             ),
             isExpanded: item.isExpanded,
@@ -3450,13 +3459,13 @@ class ExpansionPanelShowcaseItems {
 
   static List<ExpansionPanelShowcaseItems> generateItems(int numberOfItems) {
     return List<ExpansionPanelShowcaseItems>.generate(numberOfItems,
-            (int index) {
-          return ExpansionPanelShowcaseItems(
-            id: index,
-            headerValue: 'ExpansionPanelList tile $index',
-            expandedValue: 'This is ExpansionPanel item number $index',
-          );
-        });
+        (int index) {
+      return ExpansionPanelShowcaseItems(
+        id: index,
+        headerValue: 'ExpansionPanelList tile $index',
+        expandedValue: 'This is ExpansionPanel item number $index',
+      );
+    });
   }
 }
 
@@ -3493,17 +3502,17 @@ class _AlertDialogExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool useMaterial3 = Theme.of(context).useMaterial3;
-    final String cancel = useMaterial3 ? context.tr!.cancel : context.tr!.cancel.toUpperCase();
-    final String allow = useMaterial3 ? context.tr!.allow : context.tr!.allow.toUpperCase();
+    final String cancel =
+        useMaterial3 ? context.tr!.cancel : context.tr!.cancel.toUpperCase();
+    final String allow =
+        useMaterial3 ? context.tr!.allow : context.tr!.allow.toUpperCase();
 
     return AlertDialog(
       title: Text(context.tr!.allowLocServ),
       content: Text(context.tr!.allowLocServText),
       actions: <Widget>[
-        TextButton(
-            onPressed: () => context.pop(), child: Text(cancel)),
-        TextButton(
-            onPressed: () => context.pop(), child: Text(allow)),
+        TextButton(onPressed: () => context.pop(), child: Text(cancel)),
+        TextButton(onPressed: () => context.pop(), child: Text(allow)),
       ],
     );
   }
@@ -3684,21 +3693,21 @@ class SnackBarShowcase extends StatelessWidget {
 
     final Color defaultBackgroundColor = isLight
         ? useMaterial3
-        ? colorScheme.inverseSurface
-        : Color.alphaBlend(
-        colorScheme.onSurface.withOpacity(0.80), colorScheme.surface)
+            ? colorScheme.inverseSurface
+            : Color.alphaBlend(
+                colorScheme.onSurface.withOpacity(0.80), colorScheme.surface)
         : colorScheme.onSurface;
     final Color snackBackground =
         theme.snackBarTheme.backgroundColor ?? defaultBackgroundColor;
 
     final Color snackForeground =
-    ThemeData.estimateBrightnessForColor(snackBackground) ==
-        Brightness.light
-        ? Colors.black
-        : Colors.white;
+        ThemeData.estimateBrightnessForColor(snackBackground) ==
+                Brightness.light
+            ? Colors.black
+            : Colors.white;
 
     final Color defaultActionColor =
-    useMaterial3 ? colorScheme.inversePrimary : colorScheme.secondary;
+        useMaterial3 ? colorScheme.inversePrimary : colorScheme.secondary;
     final Color snackActionColor =
         theme.snackBarTheme.actionTextColor ?? defaultActionColor;
 
@@ -3708,7 +3717,7 @@ class SnackBarShowcase extends StatelessWidget {
             .titleMedium!
             .copyWith(color: snackForeground);
     final TextStyle snackActionStyle = theme.snackBarTheme.contentTextStyle
-        ?.copyWith(color: snackActionColor) ??
+            ?.copyWith(color: snackActionColor) ??
         ThemeData(brightness: Brightness.light)
             .textTheme
             .titleMedium!
@@ -4087,7 +4096,8 @@ class MaterialShowcase extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(context.tr!.materialShowcaseTypeCardSurface2,
+                  child: Text(
+                    context.tr!.materialShowcaseTypeCardSurface2,
                     textAlign: TextAlign.center,
                     style: denseHeader,
                   ),
@@ -4178,10 +4188,10 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                     child: Text(
-                      context.tr!.cardShowcaseElevate1Text1,
-                      textAlign: TextAlign.center,
-                      style: denseHeader,
-                    )),
+                  context.tr!.cardShowcaseElevate1Text1,
+                  textAlign: TextAlign.center,
+                  style: denseHeader,
+                )),
               ),
             ),
           ),
@@ -4319,10 +4329,10 @@ class CardShowcase extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                     child: Text(
-                      context.tr!.cardShowcaseElevate10Text3,
-                      textAlign: TextAlign.center,
-                      style: denseHeader,
-                    )),
+                  context.tr!.cardShowcaseElevate10Text3,
+                  textAlign: TextAlign.center,
+                  style: denseHeader,
+                )),
               ),
             ),
           ),
@@ -4362,84 +4372,84 @@ class TextThemeColumnShowcase extends StatelessWidget {
       children: <Widget>[
         Text('${context.tr!.font}: ${textTheme.titleSmall!.fontFamily}',
             style:
-            textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
+                textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
         Text(
           '${context.tr!.display} ${context.tr!.large} '
-              '(${textTheme.displayLarge!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.displayLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.displayLarge,
         ),
         Text(
           '${context.tr!.display} ${context.tr!.medium} '
-              '(${textTheme.displayMedium!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.displayMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.displayMedium,
         ),
         Text(
           '${context.tr!.display} ${context.tr!.small} '
-              '(${textTheme.displaySmall!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.displaySmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.displaySmall,
         ),
         const SizedBox(height: 12),
         Text(
           '${context.tr!.headline} ${context.tr!.large} '
-              '(${textTheme.headlineLarge!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.headlineLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.headlineLarge,
         ),
         Text(
           '${context.tr!.headline} ${context.tr!.medium} '
-              '(${textTheme.headlineMedium!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.headlineMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.headlineMedium,
         ),
         Text(
           '${context.tr!.headline} ${context.tr!.small} '
-              '(${textTheme.headlineSmall!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.headlineSmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.headlineSmall,
         ),
         const SizedBox(height: 12),
         Text(
           '${context.tr!.title} ${context.tr!.large} '
-              '(${textTheme.titleLarge!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.titleLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.titleLarge,
         ),
         Text(
           '${context.tr!.title} ${context.tr!.medium} '
-              '(${textTheme.titleMedium!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.titleMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.titleMedium,
         ),
         Text(
           '${context.tr!.title} ${context.tr!.small} '
-              '(${textTheme.titleSmall!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.titleSmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.titleSmall,
         ),
         const SizedBox(height: 12),
         Text(
           '${context.tr!.body} ${context.tr!.large} '
-              '(${textTheme.bodyLarge!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.bodyLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.bodyLarge,
         ),
         Text(
           '${context.tr!.body} ${context.tr!.medium} '
-              '(${textTheme.bodyMedium!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.bodyMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.bodyMedium,
         ),
         Text(
           '${context.tr!.body} ${context.tr!.small} '
-              '(${textTheme.bodySmall!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.bodySmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.bodySmall,
         ),
         const SizedBox(height: 12),
         Text(
           '${context.tr!.label} ${context.tr!.large} '
-              '(${textTheme.labelLarge!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.labelLarge!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.labelLarge,
         ),
         Text(
           '${context.tr!.label} ${context.tr!.medium} '
-              '(${textTheme.labelMedium!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.labelMedium!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.labelMedium,
         ),
         Text(
           '${context.tr!.label} ${context.tr!.small} '
-              '(${textTheme.labelSmall!.fontSize!.toStringAsFixed(0)})',
+          '(${textTheme.labelSmall!.fontSize!.toStringAsFixed(0)})',
           style: textTheme.labelSmall,
         ),
       ],

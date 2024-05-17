@@ -3,10 +3,10 @@ import 'dart:developer' as developer;
 
 import 'package:egote_services_v2/features/auth/data/data_sources/database/source_base.dart';
 import 'package:egote_services_v2/features/auth/data/entities/users_entity.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as firebasePath;
 import 'package:sqflite/sqflite.dart';
 
-class AuthUserDatabaseImpl implements  SourceBase {
+class AuthUserDatabaseImpl implements SourceBase {
   static final AuthUserDatabaseImpl instance = AuthUserDatabaseImpl._init();
   static const _databaseName = 'auth_users_database';
   static const _tableName = 'auth_users_table';
@@ -37,7 +37,7 @@ class AuthUserDatabaseImpl implements  SourceBase {
     if (_database != null) return _database!;
     try {
       var databasePath = await getDatabasesPath();
-      String p = path.join(databasePath, _databaseName);
+      String p = firebasePath.join(databasePath, _databaseName);
       return openDatabase(p,
           onConfigure: (db) => _onConfigure(db),
           onOpen: (db) => _onOpen(db),

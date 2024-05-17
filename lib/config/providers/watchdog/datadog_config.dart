@@ -71,10 +71,6 @@ final datadogInstanceProvider =
 final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
   F.appFlavor = Flavor.development;
 
-  //
-  // 724eebdc5988eb21aec8ddcbd1cee6ff
-  //
-  // a67cd81c-d62a-4681-b809-ea6f650205bf
   final configFile = await rootBundle.loadString(F.envFileName, cache: false);
   final env =
       Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
