@@ -1,4 +1,0 @@
--keepattributes *Annotation*
--keep public class com.godzy.egote_services_v2.MainActivity
--keepattributes LineNumberTable,SourceFile
--renamesourcefileattribute SourceFile

@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'dart:developer' as dev;
+
+//import 'dart:developer' as dev;
 
 //import 'package:cached_network_image/cached_network_image.dart';
 //import 'package:collection/collection.dart' show IterableExtension;
@@ -15,7 +16,8 @@ import 'package:file_picker/file_picker.dart' as fp;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
+
+//import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 //import 'package:go_router/go_router.dart';
 //import 'package:intl/intl.dart';
@@ -47,7 +49,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   late StreamSubscription<List<ConnectivityResult>>
       connectivityStateSubscription;
   String? imageUrl;
-  List<RTCDataChannelMessage> listMessage = [];
+
+  // à changer avec le commit du 29/04/2024
+  List<CubeDialogTypeMig> listMessage = [];
   Timer? typingTimer;
   bool isTyping = false;
   String userStatus = '';
@@ -64,13 +68,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController listScrollController = ScrollController();
 
-  StreamSubscription<RTCDataChannelMessage>? msgSubscription;
-  StreamSubscription<RTCDataChannelMessage>? deliveredSubscription;
-  StreamSubscription<RTCDataChannelMessage>? readSubscription;
-  StreamSubscription<RTCDataChannelMessage>? typingSubscription;
-  StreamSubscription<RTCDataChannelMessage>? reactionsSubscription;
+  StreamSubscription<CubeDialogTypeMig>? msgSubscription;
+  StreamSubscription<CubeDialogTypeMig>? deliveredSubscription;
+  StreamSubscription<CubeDialogTypeMig>? readSubscription;
+  StreamSubscription<CubeDialogTypeMig>? typingSubscription;
+  StreamSubscription<CubeDialogTypeMig>? reactionsSubscription;
 
-  List<RTCDataChannelMessage> oldMessages = [];
+  List<CubeDialogTypeMig> oldMessages = [];
 
   //final List<RTCDataChannelMessage> _unreadMessages = [];
   //final List<RTCDataChannelMessage> _unsentMessages = [];
@@ -164,12 +168,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }*/
 
-  void onReceiveMessage(MediaStream message) {
+/*  void onReceiveMessage(MediaStream message) {
     dev.log("onReceiveMessage message= $message");
     if (message.id != widget.cubeDialog.dialogId) return;
 
     //addMessageToListView(message);
-  }
+  }*/
 
 /*  void onDeliveredMessage(MessageStatus status) {
     dev.log("onDeliveredMessage message= $status");

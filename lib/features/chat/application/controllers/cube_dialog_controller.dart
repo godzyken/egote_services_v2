@@ -1,11 +1,4 @@
-import 'dart:developer' as developer;
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
-
-import '../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-
-// TODO: Migration, `CubeDialog` est remplacé par 'CubeDialogMig'
+/*// TODO: Migration, `CubeDialog` est remplacé par 'CubeDialogMig'
 class CubeDialogController extends StateNotifier<CubeDialogMig?> {
   CubeDialogController(this._ref) : super(null) {
     _initialize();
@@ -59,7 +52,7 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
         }
       }
 
-      /*switch (state) {
+      */ /*switch (state) {
         case CubeChatConnectionState.Idle:
         // TODO: instance of connection was created.
         case CubeChatConnectionState.Connecting:
@@ -88,13 +81,13 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
             }
           });
           break;
-      }*/
+      }*/ /*
     });
 
     return cubeChatConnectionStateSubscription.resume();
   }
 
-/*reconnection() {
+*/ /*reconnection() {
     CubeChatConnectionSettings chatConnectionSettings =
         CubeChatConnectionSettings.instance;
     chatConnectionSettings.reconnectionTimeout = 5000;
@@ -112,5 +105,5 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
         }
       }
     });
-  }*/
-}
+  }*/ /*
+}*/

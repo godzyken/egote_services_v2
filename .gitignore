@@ -41,6 +41,7 @@ app.*.map.json
 *.g.dart
 *.frezzed.dart
 firebase_options.dart
+*.lockfile
 
 # Android Studio will place build artifacts here
 /android/app/debug

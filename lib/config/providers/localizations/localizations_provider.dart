@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:intl/intl.dart';
 
 class MultiLang extends StateNotifier<Locale> {
@@ -25,9 +24,9 @@ class MultiLang extends StateNotifier<Locale> {
     return Localizations.of<MultiLang>(context, MultiLang)!;
   }
 
-  static initializeMessages(String localeName) async {
-    return await createLocalMediaStream(localeName);
-  }
+  // static initializeMessages(String localeName) async {
+  //   return await createLocalMediaStream(localeName);
+  // }
 
   static const _localizedValues = <String, Map<String, String>>{
     'en': {

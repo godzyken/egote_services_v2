@@ -1,78 +1,11 @@
 [versions]
-agp = "8.4.0"
-kotlin = "1.9.24"
-coreKtx = "1.13.1"
-junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-appcompat = "1.6.1"
-material = "1.12.0"
-firebaseBom = "33.0.0"
-firebaseCore = "21.1.1"
-firebaseMessagingKtx = "24.0.0"
-firebaseDatabaseKtx = "21.0.0"
-firebaseFirestoreKtx = "25.0.0"
-firebaseAuthKtx = "23.0.0"
-composeAuth = "2.4.1"
-fabric = "1.4.8"
-annotations = "0.1.0"
-kotlinCompilerEmbeddable = "1.9.24"
-lifecycleCommon = "2.8.0"
-supportAnnotations = "28.0.0"
-devFlutter = "1.0.0"
-vectordrawable = "1.0.0"
-coreKtxVersion = "2.2.2"
-workRuntime = "2.9.0"
-workRuntimeKtx = "2.9.0"
-workRxjava3 = "2.9.0"
-workGcm = "2.9.0"
-workMultiprocess = "2.9.0"
-workTesting = "2.9.0"
-comAndroidLibraryGradlePlugin = "8.6.0-alpha02"
-googleGmsGoogleServices = "4.4.1"
-firebaseAuth = "23.0.0"
-comGoogleFirebaseCrashlyticsGradlePlugin = "3.0.1"
-testlabGradlePlugin = "0.0.1-alpha06"
+junitKtx = "1.2.0-beta01"
 
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-androidx-vectordrawable = { group = "androidx.vectordrawable", name = "vectordrawable-seekable", version.ref = "vectordrawable" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom"}
-firebase-core = { group = "com.google.firebase", name = "firebase-core", version.ref = "firebaseCore" }
-firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
-firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
-firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
-compose-auth = { group = "io.github.jan-tennert.supabase", name = "compose-auth", version.ref = "composeAuth" }
-fabric = { group = "io.fabric.sdk.android", name = "fabric", version.ref = "fabric" }
-annotations = { group = "io.telereso.kmp", name = "annotations", version.ref = "annotations" }
-com-android-library-gradle-plugin = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "agp" }
-kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlinCompilerEmbeddable" }
-androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycleCommon" }
-support-annotations = { group = "com.android.support", name = "support-annotations", version.ref = "supportAnnotations" }
-asset-delivery-ktx = { group = "com.google.android.play", name = "asset-delivery-ktx", version.ref = "coreKtxVersion" }
-androidx-work-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "workRuntime" }
-androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
-androidx-work-rxjava3 = { group = "androidx.work", name = "work-rxjava3", version = "2.9.0" }
-androidx-work-gcm = { group = "androidx.work", name = "work-gcm", version.ref = "workGcm" }
-androidx-work-multiprocess = { group = "androidx.work", name = "work-multiprocess", version.ref = "workMultiprocess" }
-androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "workTesting" }
-library-com-android-library-gradle-plugin = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "comAndroidLibraryGradlePlugin" }
-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
-com-google-firebase-crashlytics-gradle-plugin = { group = "com.google.firebase.crashlytics", name = "com.google.firebase.crashlytics.gradle.plugin", version.ref = "comGoogleFirebaseCrashlyticsGradlePlugin" }
-testlab-gradle-plugin = { group = "com.google.firebase.testlab", name = "testlab-gradle-plugin", version.ref = "testlabGradlePlugin" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+
+[bundles]
 
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
-
-
-#android-enableImpeller = { id = "io.flutter.embedding.android.gradle.plugin", version.ref = "devFlutter"}
