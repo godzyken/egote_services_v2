@@ -82,8 +82,10 @@ final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
       nativeCrashReportEnabled: true,
       loggingConfiguration: DatadogLoggingConfiguration(),
       rumConfiguration: DatadogRumConfiguration(
-        applicationId: env.applicationId,
-      ),
+          sessionSamplingRate: 100.0,
+          applicationId: env.applicationId,
+          detectLongTasks: true,
+          reportFlutterPerformance: true),
       firstPartyHosts: env.firstPartyHost);
   return config;
 });

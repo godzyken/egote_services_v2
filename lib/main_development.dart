@@ -21,9 +21,10 @@ void main() async {
       nativeCrashReportEnabled: true,
       loggingConfiguration: DatadogLoggingConfiguration(),
       rumConfiguration: DatadogRumConfiguration(
-        applicationId: '99911285-5746-429f-8168-b7b05c9db5fb',
-        sessionSamplingRate: 50.0,
-      ),
+          applicationId: '99911285-5746-429f-8168-b7b05c9db5fb',
+          sessionSamplingRate: 100.0,
+          detectLongTasks: true,
+          reportFlutterPerformance: true),
       firstPartyHosts: [
         datadogConfigProvider
             .selectAsync(

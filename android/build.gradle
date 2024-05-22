@@ -1,0 +1,15 @@
+
+rootProject.file("../build")
+subprojects {
+    project.file("${rootProject.name}/${project.name}")
+}
+
+tasks.register("clean", Delete.class) {
+    delete(rootProject.delete {it})
+}
+
+tasks.register("copyFiles", Copy) {
+    println(">> Compilation deps: ${configurations.compileClasspath.get().files.map { it.name }}")
+    into(layout.buildDirectory.dir("output"))
+    from(configurations.compileClasspath)
+}
