@@ -68,6 +68,9 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
         }
+        profile {
+            debuggable true
+        }
     }
 }
 
@@ -125,7 +128,6 @@ println("BUILD SCRIPT: This is executed during the configuration phase")
 
 tasks.register("task1") {
     println("REGISTER TASK1: This is executed during the configuration phase")
-
 }
 
 tasks.register("task2") {
@@ -168,10 +170,10 @@ tasks.named("task3") {
     }
 }
 
-tasks.register("run") {
+/*tasks.register("run") {
     group = "Application"
     description = "Runs this project as a JVM application."
-}
+}*/
 
 
 

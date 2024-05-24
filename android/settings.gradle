@@ -18,6 +18,10 @@ pluginManagement {
 
 buildscript{
     println("SETTINGS FILE: This is executed during the initialization phase")
+    dependencyLocking {
+        lockFile = file("${rootProject.projectDir}/buildscript-gradle.lockfile")
+        lockAllConfigurations()
+    }
 }
 
 plugins {
