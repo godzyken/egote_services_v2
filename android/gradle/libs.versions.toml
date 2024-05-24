@@ -1,0 +1,15 @@
+[versions]
+desugar_jdk_libs = "2.0.4"
+junitJupiter = "5.10.2"
+legacySupportV13 = "1.0.0"
+workRuntime = "2.9.0"
+
+[libraries]
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+legacy-support-v13 = { group = "androidx.legacy", name = "legacy-support-v13", version.ref = "legacySupportV13" }
+work-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "workRuntime" }
+
+[plugins]
+

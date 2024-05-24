@@ -15,13 +15,42 @@ pluginManagement {
     }
 }
 
-plugins {
-    id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
-    id "com.android.application" version "8.4.0" apply false
-    id "org.jetbrains.kotlin.android" version "2.0.0" apply false
+
+buildscript{
+    println("SETTINGS FILE: This is executed during the initialization phase")
 }
 
+plugins {
+    id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+    id "com.android.application" version '8.4.1' apply false
+    id "org.jetbrains.kotlin.android" version "2.0.0" apply false
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+}
+
+rootProject.name = "egote_services_v2"
 include ":app"
+include ":app_links"
+include ":cloud_firestore"
+include ":connectivity_plus"
+include ":datadog_flutter_plugin"
+include ":desktop_webview_auth"
+include ":device_info_plus"
+include ":emoji_picker_flutter"
+include ":file_picker"
+include ":firebase_auth"
+include ":firebase_core"
+include ":firebase_database"
+include ":firebase_dynamic_links"
+include ":firebase_messaging"
+include ":flutter_local_notifications"
+include ":flutter_plugin_android_lifecycle"
+include ":package_info_plus"
+include ":path_provider_android"
+include ":sentry_flutter"
+include ":shared_preferences_android"
+include ":sqflite"
+include ":url_launcher_android"
+
 
 def localPropertiesFile = file("local.properties")
 

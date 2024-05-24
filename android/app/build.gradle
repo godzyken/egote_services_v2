@@ -1,9 +1,11 @@
+
 plugins {
     id "com.android.application"
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
+
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
@@ -24,26 +26,40 @@ if (flutterVersionName == null) {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('D:\\gitrepo\\projects\\egote_services_v2\\android\\app\\key.properties')
+        }
+    }
     namespace = "com.godzy.egote_services_v2"
     compileSdk 34
     ndkVersion = '27.0.11718014 rc1'
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.godzy.egote_services_v2"
         minSdk 28
         targetSdk 34
+        versionCode flutterVersionCode.toInteger()
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
         signingConfig signingConfigs.debug
         multiDexEnabled true
+        proguardFiles 'proguard-rules.pro'
+        testFunctionalTest true
+        testHandleProfiling true
     }
 
     buildTypes {
@@ -55,6 +71,138 @@ android {
     }
 }
 
+/*
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+    // Or shorter:
+    // For example:
+    //jvmToolchain(17)
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_11))
+    }
+}
+*/
+
 flutter {
     source = "../.."
 }
+dependencies {
+    implementation libs.legacy.support.v13
+    implementation libs.work.runtime
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    //implementation(project(":application"))
+    implementation(project(':app_links'))
+    implementation(project(':cloud_firestore'))
+    implementation(project(':connectivity_plus'))
+    implementation(project(':datadog_flutter_plugin'))
+    implementation(project(':desktop_webview_auth'))
+    implementation(project(':device_info_plus'))
+    implementation(project(':emoji_picker_flutter'))
+    implementation(project(':file_picker'))
+    implementation(project(':firebase_auth'))
+    implementation(project(':firebase_core'))
+    implementation(project(':firebase_database'))
+    implementation(project(':firebase_dynamic_links'))
+    implementation(project(':firebase_messaging'))
+    implementation(project(':flutter_local_notifications'))
+    implementation(project(':flutter_plugin_android_lifecycle'))
+    implementation(project(':package_info_plus'))
+    implementation(project(':path_provider_android'))
+    implementation(project(':sentry_flutter'))
+    implementation(project(':shared_preferences_android'))
+    implementation(project(':sqflite'))
+    implementation(project(':url_launcher_android'))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
+}
+
+println("BUILD SCRIPT: This is executed during the configuration phase")
+
+tasks.register("task1") {
+    println("REGISTER TASK1: This is executed during the configuration phase")
+
+}
+
+tasks.register("task2") {
+    println("REGISTER TASK2: This is executed during the configuration phase")
+}
+
+
+tasks.named("task1") {
+    println("NAMED TASK1: This is executed during the configuration phase")
+    doFirst {
+        println("NAMED TASK1 - doFirst: This is executed during the execution phase")
+    }
+    doLast {
+        println("NAMED TASK1 - doLast: This is executed during the execution phase")
+    }
+}
+
+tasks.named("task2") {
+    println("NAMED TASK2: This is executed during the configuration phase")
+    doFirst {
+        println("NAMED TASK2 - doFirst: This is executed during the execution phase")
+    }
+    doLast {
+        println("NAMED TASK2 - doLast: This is executed during the execution phase")
+    }
+}
+
+
+tasks.register("task3") {
+    println("REGISTER TASK3: This is executed during the configuration phase")
+}
+
+tasks.named("task3") {
+    println("NAMED TASK3: This is executed during the configuration phase")
+    doFirst {
+        println("NAMED TASK3 - doFirst: This is executed during the execution phase")
+    }
+    doLast {
+        println("NAMED TASK3 - doLast: This is executed during the execution phase")
+    }
+}
+
+tasks.register("run") {
+    group = "Application"
+    description = "Runs this project as a JVM application."
+}
+
+
+
+/*
+tasks.register("testjunit") {
+    useJUnitPlatform()
+
+    maxHeapSize = "1G"
+
+    testLogging {
+        events("passed")
+    }
+*/
+/*    testLogging {
+        exceptionFormat "full"
+        events "started", "skipped", "passed", "failed"
+        showStandardStreams true
+    }*//*
+
+}
+
+tasks.named("testjunit") {
+    doFirst {
+        println("Test JUnitPlatform: $logging")
+    }
+    doLast {
+        println("Test JUnitPlatform: $logging")
+
+    }
+
+}
+*/
+
+

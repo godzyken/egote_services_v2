@@ -1,15 +1,21 @@
+import org.gradle.kotlin.dsl.tooling.models.KotlinBuildScriptModel
 
 rootProject.file("../build")
 subprojects {
     project.file("${rootProject.name}/${project.name}")
 }
 
-tasks.register("clean", Delete.class) {
-    delete(rootProject.delete {it})
+tasks.register("clean") {
+    delete()
+
 }
 
-tasks.register("copyFiles", Copy) {
+tasks.register("copyFiles") {
     println(">> Compilation deps: ${configurations.compileClasspath.get().files.map { it.name }}")
     into(layout.buildDirectory.dir("output"))
     from(configurations.compileClasspath)
 }
+
+/*tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {
+    jvmTargetValidationMode.set(org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode.WARNING)
+}*/
