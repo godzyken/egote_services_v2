@@ -1,4 +1,3 @@
-
 plugins {
     id "com.android.application"
     id "kotlin-android"
@@ -6,31 +5,12 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader("UTF-8") { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
-if (flutterVersionCode == null) {
-    flutterVersionCode = "1"
-}
-
-def flutterVersionName = localProperties.getProperty("flutter.versionName")
-if (flutterVersionName == null) {
-    flutterVersionName = "1.0"
-}
-
 android {
-    signingConfigs {
+   /* signingConfigs {
         debug {
             storeFile file('D:\\gitrepo\\projects\\egote_services_v2\\android\\app\\key.properties')
         }
-    }
+    }*/
     namespace = "com.godzy.egote_services_v2"
     compileSdk 34
     ndkVersion = '27.0.11718014 rc1'
@@ -51,10 +31,10 @@ android {
         applicationId = "com.godzy.egote_services_v2"
         minSdk 28
         targetSdk 34
-        versionCode flutterVersionCode.toInteger()
+        versionCode 1
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        versionName = flutterVersionName
+        versionName = '1'
         signingConfig signingConfigs.debug
         multiDexEnabled true
         proguardFiles 'proguard-rules.pro'
@@ -74,57 +54,36 @@ android {
     }
 }
 
-/*
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-    // Or shorter:
-    // For example:
-    //jvmToolchain(17)
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_11))
-    }
-}
-*/
-
 flutter {
     source = "../.."
 }
+
 dependencies {
     implementation libs.legacy.support.v13
     implementation libs.work.runtime
     coreLibraryDesugaring libs.desugar.jdk.libs
     //implementation(project(":application"))
-    implementation(project(':app_links'))
-    implementation(project(':cloud_firestore'))
-    implementation(project(':connectivity_plus'))
-    implementation(project(':datadog_flutter_plugin'))
-    implementation(project(':desktop_webview_auth'))
-    implementation(project(':device_info_plus'))
-    implementation(project(':emoji_picker_flutter'))
-    implementation(project(':file_picker'))
-    implementation(project(':firebase_auth'))
-    implementation(project(':firebase_core'))
-    implementation(project(':firebase_database'))
-    implementation(project(':firebase_dynamic_links'))
-    implementation(project(':firebase_messaging'))
-    implementation(project(':flutter_local_notifications'))
-    implementation(project(':flutter_plugin_android_lifecycle'))
-    implementation(project(':package_info_plus'))
-    implementation(project(':path_provider_android'))
-    implementation(project(':sentry_flutter'))
-    implementation(project(':shared_preferences_android'))
-    implementation(project(':sqflite'))
-    implementation(project(':url_launcher_android'))
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 println("BUILD SCRIPT: This is executed during the configuration phase")
+configurations {
+    implementation {
+        resolutionStrategy.failOnVersionConflict()
+    }
+}
+
+sourceSets {
+    main {
+        java.srcDir("src/core/java")
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 tasks.register("task1") {
     println("REGISTER TASK1: This is executed during the configuration phase")
