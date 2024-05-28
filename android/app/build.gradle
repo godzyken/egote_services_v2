@@ -6,11 +6,7 @@ plugins {
 }
 
 android {
-   /* signingConfigs {
-        debug {
-            storeFile file('D:\\gitrepo\\projects\\egote_services_v2\\android\\app\\key.properties')
-        }
-    }*/
+
     namespace = "com.godzy.egote_services_v2"
     compileSdk 34
     ndkVersion = '27.0.11718014 rc1'
@@ -25,6 +21,11 @@ android {
         baseline = file("lint-baseline.xml")
     }
 
+    sourceSets {
+        main {
+            java.srcDir("src/core/kotlin")
+        }
+    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -40,6 +41,15 @@ android {
         proguardFiles 'proguard-rules.pro'
         testFunctionalTest true
         testHandleProfiling true
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('D:\\gitrepo\\projects\\egote_services_v2\\android\\app\\key.properties')
+            keyAlias 'AndroidDebugKey'
+            keyPassword 'D4t.ebayo'
+
+        }
     }
 
     buildTypes {
@@ -65,24 +75,57 @@ dependencies {
     //implementation(project(":application"))
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
+    implementation(libs.orientdb.core)
+
+    /* flutter libs.flutter.embedding.release
+     compileFlutterBuildRelease libs.armeabi.v7a.release
+     compileFlutterBuildRelease libs.arm64.v8a.release
+
+     compileFlutterBuildProfile libs.flutter.embedding.profile
+     compileFlutterBuildProfile libs.armeabi.v7a.profile
+     compileFlutterBuildProfile libs.arm64.v8a.profile
+
+     compileFlutterBuildDebug libs.flutter.embedding.debug
+     compileFlutterBuildDebug libs.armeabi.v7a.debug
+     compileFlutterBuildDebug libs.arm64.v8a.debug*/
+//    compileFlutterBuildDebug libs.x86.debug
+//    compileFlutterBuildDebug libs.x86_64.debug
 }
 
 println("BUILD SCRIPT: This is executed during the configuration phase")
+
+
 configurations {
+
+    println("configurations:::::::: run")
+
+    compileFlutterBuildRelease.extendsFrom releaseImplementation
+    compileFlutterBuildDebug.extendsFrom debugImplementation
+    compileFlutterBuildProfile.extendsFrom profileImplementation
     implementation {
         resolutionStrategy.failOnVersionConflict()
+        resolutionStrategy.preferProjectModules()
+        excludeRules.module.parallelStream()
+        println("resolutionStrategy.failOnVersionConflict():::::::: run")
+        println("resolutionStrategy.failOnVersionConflict():::::::: $resolutionStrategy")
     }
-}
 
-sourceSets {
-    main {
-        java.srcDir("src/core/java")
-    }
+    println("configurations:::::::: ${implementation.resolutionStrategy {}}")
+
+    /*  create("devConfiguration").resolutionStrategy {
+
+      }*/
+    test.extendsFrom()
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+        vendor = JvmVendorSpec.ADOPTIUM
+    }
 }
 
 tasks.register("task1") {
@@ -103,6 +146,8 @@ tasks.named("task1") {
         println("NAMED TASK1 - doLast: This is executed during the execution phase")
     }
 }
+
+defaultTasks("testClasses")
 
 tasks.named("task2") {
     println("NAMED TASK2: This is executed during the configuration phase")
@@ -134,6 +179,13 @@ tasks.named("task3") {
     description = "Runs this project as a JVM application."
 }*/
 
+tasks.register('resolveDependencies') {
+    configurations.each { configuration ->
+        if (configuration.name.startsWith("flutter")) {
+            configuration.resolve()
+        }
+    }
+}
 
 
 /*
@@ -165,5 +217,4 @@ tasks.named("testjunit") {
 
 }
 */
-
 
