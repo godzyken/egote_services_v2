@@ -6,11 +6,7 @@ plugins {
 }
 
 android {
-   /* signingConfigs {
-        debug {
-            storeFile file('D:\\gitrepo\\projects\\egote_services_v2\\android\\app\\key.properties')
-        }
-    }*/
+
     namespace = "com.godzy.egote_services_v2"
     compileSdk 34
     ndkVersion = '27.0.11718014 rc1'
@@ -25,6 +21,11 @@ android {
         baseline = file("lint-baseline.xml")
     }
 
+    sourceSets {
+        main {
+            java.srcDir("src/core/kotlin")
+        }
+    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -37,19 +38,36 @@ android {
         versionName = '1'
         signingConfig signingConfigs.debug
         multiDexEnabled true
-        proguardFiles 'proguard-rules.pro'
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         testFunctionalTest true
         testHandleProfiling true
     }
+
+ /*   signingConfigs {
+        debug {
+            storeFile file('D:\\gitrepo\\projects\\egote_services_v2\\android\\app\\key.properties')
+            keyAlias 'AndroidDebugKey'
+            keyPassword 'D4t.ebayo'
+
+        }
+    }*/
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+            minifyEnabled = true
             signingConfig = signingConfigs.debug
         }
+
         profile {
-            debuggable true
+            debuggable = true
+        }
+
+        debug {
+            debuggable = true
+            testCoverageEnabled = false
+            jniDebuggable = true
         }
     }
 }
@@ -59,31 +77,47 @@ flutter {
 }
 
 dependencies {
-    implementation libs.legacy.support.v13
-    implementation libs.work.runtime
-    coreLibraryDesugaring libs.desugar.jdk.libs
-    //implementation(project(":application"))
+    implementation(libs.legacy.support.v13)
+    implementation(libs.work.runtime)
+    implementation(libs.multidex)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
+    implementation(libs.orientdb.core)
 }
 
 println("BUILD SCRIPT: This is executed during the configuration phase")
+
+
 configurations {
-    implementation {
-        resolutionStrategy.failOnVersionConflict()
-    }
-}
 
-sourceSets {
-    main {
-        java.srcDir("src/core/java")
-    }
-}
+    println("configurations:::::::: run")
 
-java {
+    test.extendsFrom()
+   // println("test.extendsFrom():::::::: ${test.extendsFrom()}")
+}
+//println("configurations:::::::: $configurations")
+
+/*java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
-}
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+        vendor = JvmVendorSpec.ADOPTIUM
+    }
+}*/
+
+/*kotlin {
+    compilerOptions {
+        // Extension-level common compiler options that are used as defaults
+        // for all targets and shared source sets
+        allWarningsAsErrors.set(true)
+    }
+}*/
+
+
+defaultTasks("testClasses")
 
 tasks.register("task1") {
     println("REGISTER TASK1: This is executed during the configuration phase")
@@ -129,41 +163,26 @@ tasks.named("task3") {
     }
 }
 
-/*tasks.register("run") {
-    group = "Application"
-    description = "Runs this project as a JVM application."
-}*/
 
-
-
-/*
-tasks.register("testjunit") {
-    useJUnitPlatform()
-
-    maxHeapSize = "1G"
-
-    testLogging {
-        events("passed")
+tasks.register('resolveDependencies') {
+    configurations.each { configuration ->
+        if (configuration.name.startsWith("flutter")) {
+            configuration.resolve()
+        }
     }
-*/
-/*    testLogging {
-        exceptionFormat "full"
-        events "started", "skipped", "passed", "failed"
-        showStandardStreams true
-    }*//*
-
 }
 
-tasks.named("testjunit") {
-    doFirst {
-        println("Test JUnitPlatform: $logging")
+tasks.named('resolveDependencies') {
+    configurations.each { configuration ->
+        if (configuration.name.startsWith("flutter")) {
+            doFirst {
+                configuration.resolve()
+                println("NAMED RESOLVEDEPENDENCIES- doFirst: $configuration")
+            }
+        } else {
+            doLast {
+                println("NAMED RESOLVEDEPENDENCIES- doFirst: $configuration")
+            }
+        }
     }
-    doLast {
-        println("Test JUnitPlatform: $logging")
-
-    }
-
 }
-*/
-
-
