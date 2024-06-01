@@ -18,21 +18,17 @@ subprojects {
         if (!project.hasProperty('local-engine-repo')) {
             lockAllConfigurations()
         }
+
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    namespace project.group
+                }
+            }
+        }
     }
 }
 
 tasks.register("clean") {
     delete()
-
 }
-
-tasks.register("copyFiles") {
-    println(">> Compilation deps: ${configurations.compileClasspath.get().files.map { it.name }}")
-    into(layout.buildDirectory.dir("output"))
-    from(configurations.compileClasspath)
-}
-
-/*
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>('kotlin').configureEach {
-    jvmTargetValidationMode.set(org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode.WARNING)
-}*/
