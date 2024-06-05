@@ -30,6 +30,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.godzy.egote_services_v2"
+        testApplicationId = "com.godzy.egote_services_v2.test"
         minSdk 28
         targetSdk 34
         versionCode 1
@@ -90,10 +91,18 @@ println("BUILD SCRIPT: This is executed during the configuration phase")
 
 
 configurations {
-
-    println("configurations:::::::: run")
-
-    test.extendsFrom()
+    // A configuration meant for consumers that need the API of this component
+    create("exposedApi") {
+        // This configuration is an "outgoing" configuration, it's not meant to be resolved
+        isCanBeResolved()
+        // As an outgoing configuration, explain that consumers may want to consume it
+        assert(canBeConsumed)
+    }
+    // A configuration meant for consumers that need the implementation of this component
+    create("exposedRuntime") {
+        isCanBeResolved()
+        assert(canBeConsumed)
+    }
    // println("test.extendsFrom():::::::: ${test.extendsFrom()}")
 }
 //println("configurations:::::::: $configurations")
@@ -184,5 +193,16 @@ tasks.named('resolveDependencies') {
                 println("NAMED RESOLVEDEPENDENCIES- doFirst: $configuration")
             }
         }
+    }
+}
+
+tasks.register("copyFiles", Copy) {
+    into(layout.buildDirectory.dir('output'))
+    // Store the configuration into a variable because referencing the project from the task action
+    // is not compatible with the configuration cache.
+    var compileClasspath = configurations.create("myConfiguration").getOutgoing()
+    from(compileClasspath)
+    doFirst {
+        println ">> Compilation deps: ${compileClasspath.files.name}"
     }
 }

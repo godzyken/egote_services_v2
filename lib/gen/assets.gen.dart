@@ -3,13 +3,14 @@
 ///  FlutterGen
 /// *****************************************************
 
+import 'package:flutter/services.dart';
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/services.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class $AssetsFontsGen {
   const $AssetsFontsGen();
@@ -58,14 +59,20 @@ class $AssetsJsonGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  /// Directory path: assets/lottie/archive
   $AssetsLottieArchiveGen get archive => const $AssetsLottieArchiveGen();
+
+  /// Directory path: assets/lottie/image
   $AssetsLottieImageGen get image => const $AssetsLottieImageGen();
+
+  /// Directory path: assets/lottie/models
   $AssetsLottieModelsGen get models => const $AssetsLottieModelsGen();
 }
 
 class $AssetsLottieArchiveGen {
   const $AssetsLottieArchiveGen();
 
+  /// Directory path: assets/lottie/archive/amenagement
   $AssetsLottieArchiveAmenagementGen get amenagement =>
       const $AssetsLottieArchiveAmenagementGen();
 }
@@ -202,6 +209,7 @@ class $AssetsLottieModelsGen {
   AssetGenImage get provaTexture =>
       const AssetGenImage('assets/lottie/models/prova_texture.png');
 
+  /// Directory path: assets/lottie/models/santa_maria_madalena
   $AssetsLottieModelsSantaMariaMadalenaGen get santaMariaMadalena =>
       const $AssetsLottieModelsSantaMariaMadalenaGen();
 
@@ -252,8 +260,11 @@ class $AssetsLottieModelsGen {
 class $AssetsLottieArchiveAmenagementGen {
   const $AssetsLottieArchiveAmenagementGen();
 
+  /// Directory path: assets/lottie/archive/amenagement/exterieur
   $AssetsLottieArchiveAmenagementExterieurGen get exterieur =>
       const $AssetsLottieArchiveAmenagementExterieurGen();
+
+  /// Directory path: assets/lottie/archive/amenagement/interrieur
   $AssetsLottieArchiveAmenagementInterrieurGen get interrieur =>
       const $AssetsLottieArchiveAmenagementInterrieurGen();
 }
@@ -278,6 +289,7 @@ class $AssetsLottieModelsSantaMariaMadalenaGen {
 class $AssetsLottieArchiveAmenagementExterieurGen {
   const $AssetsLottieArchiveAmenagementExterieurGen();
 
+  /// Directory path: assets/lottie/archive/amenagement/exterieur/piscines
   $AssetsLottieArchiveAmenagementExterieurPiscinesGen get piscines =>
       const $AssetsLottieArchiveAmenagementExterieurPiscinesGen();
 }
@@ -285,6 +297,7 @@ class $AssetsLottieArchiveAmenagementExterieurGen {
 class $AssetsLottieArchiveAmenagementInterrieurGen {
   const $AssetsLottieArchiveAmenagementInterrieurGen();
 
+  /// Directory path: assets/lottie/archive/amenagement/interrieur/sol
   $AssetsLottieArchiveAmenagementInterrieurSolGen get sol =>
       const $AssetsLottieArchiveAmenagementInterrieurSolGen();
 }
@@ -303,6 +316,7 @@ class $AssetsLottieArchiveAmenagementExterieurPiscinesGen {
 class $AssetsLottieArchiveAmenagementInterrieurSolGen {
   const $AssetsLottieArchiveAmenagementInterrieurSolGen();
 
+  /// Directory path: assets/lottie/archive/amenagement/interrieur/sol/matiere
   $AssetsLottieArchiveAmenagementInterrieurSolMatiereGen get matiere =>
       const $AssetsLottieArchiveAmenagementInterrieurSolMatiereGen();
 }
@@ -310,6 +324,7 @@ class $AssetsLottieArchiveAmenagementInterrieurSolGen {
 class $AssetsLottieArchiveAmenagementInterrieurSolMatiereGen {
   const $AssetsLottieArchiveAmenagementInterrieurSolMatiereGen();
 
+  /// Directory path: assets/lottie/archive/amenagement/interrieur/sol/matiere/pvc
   $AssetsLottieArchiveAmenagementInterrieurSolMatierePvcGen get pvc =>
       const $AssetsLottieArchiveAmenagementInterrieurSolMatierePvcGen();
 }
@@ -334,9 +349,11 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName);
+  const AssetGenImage(this._assetName, {this.size = null});
 
   final String _assetName;
+
+  final Size? size;
 
   Image image({
     Key? key,
@@ -408,9 +425,20 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(this._assetName);
+  const SvgGenImage(
+    this._assetName, {
+    this.size = null,
+  }) : _isVecFormat = false;
+
+  const SvgGenImage.vec(
+    this._assetName, {
+    this.size = null,
+  }) : _isVecFormat = true;
 
   final String _assetName;
+
+  final Size? size;
+  final bool _isVecFormat;
 
   SvgPicture svg({
     Key? key,
@@ -425,19 +453,21 @@ class SvgGenImage {
     WidgetBuilder? placeholderBuilder,
     String? semanticsLabel,
     bool excludeFromSemantics = false,
-    SvgTheme theme = const SvgTheme(),
+    SvgTheme? theme,
     ColorFilter? colorFilter,
     Clip clipBehavior = Clip.hardEdge,
     @deprecated Color? color,
     @deprecated BlendMode colorBlendMode = BlendMode.srcIn,
     @deprecated bool cacheColorFilter = false,
   }) {
-    return SvgPicture.asset(
-      _assetName,
+    return SvgPicture(
+      _isVecFormat
+          ? AssetBytesLoader(_assetName,
+              assetBundle: bundle, packageName: package)
+          : SvgAssetLoader(_assetName,
+              assetBundle: bundle, packageName: package),
       key: key,
       matchTextDirection: matchTextDirection,
-      bundle: bundle,
-      package: package,
       width: width,
       height: height,
       fit: fit,
@@ -447,9 +477,8 @@ class SvgGenImage {
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
       theme: theme,
-      colorFilter: colorFilter,
-      color: color,
-      colorBlendMode: colorBlendMode,
+      colorFilter: colorFilter ??
+          (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,
     );
