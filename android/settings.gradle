@@ -12,6 +12,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -26,9 +27,9 @@ buildscript{
 
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-    id "com.android.application" version '8.4.1' apply false
+    id "com.android.application" version "8.4.1" apply false
     id "org.jetbrains.kotlin.android" version "2.0.0" apply false
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+    id "org.gradle.toolchains.foojay-resolver-convention" version "0.7.0"
 }
 
 rootProject.name = "egote_services_v2"
