@@ -2,6 +2,7 @@
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 // import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
+import 'package:egote_services_v2/config/providers/geoloc/geoloc_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
@@ -43,7 +44,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(firebaseFirestoreProvider);
   container.read(firebaseMessagingProvider);
   container.read(emulatorSettingsProvider);
-  container.read(geoFlutterFireProvider);
+  container.read(geoLocProvider);
   container.read(firebaseAuthProvider);
   // container.read(cubeUserControllerProvider);
   // container.read(cubeSessionManagerProvider);
@@ -289,10 +290,6 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
     debugLogDiagnostics: true,
     observers: [observer]));
 
-// <---------------- GeoLocation Provider --------------------> //
-final geoFlutterFireProvider =
-    Provider<Geoflutterfire>((ref) => GeoFlutterFire());
-
 // <---------------- RunViewInfo Provider --------------------> //
 final observer = DatadogNavigationObserver(
     datadogSdk: DatadogSdk.instance, viewInfoExtractor: infoExtractor);
@@ -302,7 +299,7 @@ RumViewInfo? infoExtractor(Route<dynamic> route) {
   if (name == 'my_named_route') {
     return RumViewInfo(
         name: 'MyDifferentName',
-        attributes: {'extra_attribue': 'attribute_value'});
+        attributes: {'extra_attribute': 'attribute_value'});
   }
 
   return defaultViewInfoExtractor(route);

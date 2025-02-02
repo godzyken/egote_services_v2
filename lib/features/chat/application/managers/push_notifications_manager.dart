@@ -111,7 +111,13 @@ class PushNotificationsManager {
     });
   }
 
-  List<DarwinNotificationCategory> get InitNotificationCategories {}
+  List<DarwinNotificationCategory> get InitNotificationCategories {
+    return [
+      DarwinNotificationCategory('Category1'),
+      DarwinNotificationCategory('Category2'),
+      DarwinNotificationCategory('Category3'),
+    ];
+  }
 
   subscribe(String? token) async {
     developer.log('[subscribe] token: $token, ${PushNotificationsManager.TAG}');
