@@ -114,6 +114,8 @@ mixin _$DevisModelEntity {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this DevisModelEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
@@ -133,6 +135,9 @@ class _$DevisModelEntityCopyWithImpl<$Res, $Val extends DevisModelEntity>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -168,6 +173,8 @@ class __$$DevisModelEntityImplCopyWithImpl<$Res>
       $Res Function(_$DevisModelEntityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -236,6 +243,8 @@ class __$$DevisModelEntityImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DevisIdCopyWith<$Res> get id {
@@ -244,6 +253,8 @@ class __$$DevisModelEntityImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ContactOwnerEntityCopyWith<$Res> get client {
@@ -252,6 +263,8 @@ class __$$DevisModelEntityImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ContactOwnerEntityCopyWith<$Res> get pro {
@@ -372,7 +385,7 @@ class _$DevisModelEntityImpl
                 other.approval == approval));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -389,7 +402,9 @@ class _$DevisModelEntityImpl
       amountTtc,
       approval);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DevisModelEntityImplCopyWith<_$DevisModelEntityImpl> get copyWith =>
@@ -544,7 +559,10 @@ abstract class _DevisModelEntity implements DevisModelEntity {
   double get amountHt;
   double get amountTtc;
   bool get approval;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DevisModelEntityImplCopyWith<_$DevisModelEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -571,6 +589,8 @@ class __$$DevisModelEntityInitializeImplCopyWithImpl<$Res>
       $Res Function(_$DevisModelEntityInitializeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -589,6 +609,8 @@ class __$$DevisModelEntityInitializeImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DevisIdCopyWith<$Res> get id {
@@ -643,11 +665,13 @@ class _$DevisModelEntityInitializeImpl
                 other.createdAt == createdAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, createdAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DevisModelEntityInitializeImplCopyWith<_$DevisModelEntityInitializeImpl>
@@ -779,7 +803,10 @@ abstract class _DevisModelEntityInitialize implements DevisModelEntity {
 
   DevisId get id;
   DateTime get createdAt;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DevisModelEntityInitializeImplCopyWith<_$DevisModelEntityInitializeImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -799,6 +826,9 @@ class __$$DevisModelEntityEmptyImplCopyWithImpl<$Res>
   __$$DevisModelEntityEmptyImplCopyWithImpl(_$DevisModelEntityEmptyImpl _value,
       $Res Function(_$DevisModelEntityEmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -832,7 +862,7 @@ class _$DevisModelEntityEmptyImpl
             other is _$DevisModelEntityEmptyImpl);
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 

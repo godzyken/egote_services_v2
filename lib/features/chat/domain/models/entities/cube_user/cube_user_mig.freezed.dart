@@ -38,8 +38,12 @@ mixin _$CubeUserMig {
   bool? get isGuest => throw _privateConstructorUsedError;
   int? get timeZone => throw _privateConstructorUsedError;
 
+  /// Serializes this CubeUserMig to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CubeUserMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CubeUserMigCopyWith<CubeUserMig> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -80,6 +84,8 @@ class _$CubeUserMigCopyWithImpl<$Res, $Val extends CubeUserMig>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CubeUserMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -210,6 +216,8 @@ class __$$CubeUserMigImplCopyWithImpl<$Res>
       _$CubeUserMigImpl _value, $Res Function(_$CubeUserMigImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CubeUserMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -413,7 +421,7 @@ class _$CubeUserMigImpl extends _CubeUserMig {
                 other.timeZone == timeZone));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -435,7 +443,9 @@ class _$CubeUserMigImpl extends _CubeUserMig {
       isGuest,
       timeZone);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CubeUserMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CubeUserMigImplCopyWith<_$CubeUserMigImpl> get copyWith =>
@@ -507,8 +517,11 @@ abstract class _CubeUserMig extends CubeUserMig {
   bool? get isGuest;
   @override
   int? get timeZone;
+
+  /// Create a copy of CubeUserMig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CubeUserMigImplCopyWith<_$CubeUserMigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

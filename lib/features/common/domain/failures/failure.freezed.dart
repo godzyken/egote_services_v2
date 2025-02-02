@@ -84,6 +84,9 @@ class _$FailureCopyWithImpl<$Res, $Val extends Failure>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$EmptyFailureImplCopyWithImpl<$Res>
   __$$EmptyFailureImplCopyWithImpl(
       _$EmptyFailureImpl _value, $Res Function(_$EmptyFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -221,6 +227,8 @@ class __$$UnprocessableEntityFailureImplCopyWithImpl<$Res>
       $Res Function(_$UnprocessableEntityFailureImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -259,7 +267,9 @@ class _$UnprocessableEntityFailureImpl extends _UnprocessableEntityFailure {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UnprocessableEntityFailureImplCopyWith<_$UnprocessableEntityFailureImpl>
@@ -348,7 +358,10 @@ abstract class _UnprocessableEntityFailure extends Failure {
   _UnprocessableEntityFailure._() : super._();
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UnprocessableEntityFailureImplCopyWith<_$UnprocessableEntityFailureImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -367,6 +380,9 @@ class __$$UnauthorizedFailureImplCopyWithImpl<$Res>
   __$$UnauthorizedFailureImplCopyWithImpl(_$UnauthorizedFailureImpl _value,
       $Res Function(_$UnauthorizedFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -484,6 +500,9 @@ class __$$BadRequestFailureImplCopyWithImpl<$Res>
   __$$BadRequestFailureImplCopyWithImpl(_$BadRequestFailureImpl _value,
       $Res Function(_$BadRequestFailureImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of Failure
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

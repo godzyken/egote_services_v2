@@ -34,8 +34,12 @@ mixin _$Environment {
   String get applicationId => throw _privateConstructorUsedError;
   List<String>? get firstPartyHost => throw _privateConstructorUsedError;
 
+  /// Serializes this Environment to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Environment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $EnvironmentCopyWith<Environment> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -71,6 +75,8 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Environment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -172,6 +178,8 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
       _$EnvironmentImpl _value, $Res Function(_$EnvironmentImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Environment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -330,7 +338,7 @@ class _$EnvironmentImpl implements _Environment {
                 .equals(other._firstPartyHost, _firstPartyHost));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -347,7 +355,9 @@ class _$EnvironmentImpl implements _Environment {
       applicationId,
       const DeepCollectionEquality().hash(_firstPartyHost));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Environment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EnvironmentImplCopyWith<_$EnvironmentImpl> get copyWith =>
@@ -403,8 +413,11 @@ abstract class _Environment implements Environment {
   String get applicationId;
   @override
   List<String>? get firstPartyHost;
+
+  /// Create a copy of Environment
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EnvironmentImplCopyWith<_$EnvironmentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

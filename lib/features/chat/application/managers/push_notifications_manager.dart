@@ -52,11 +52,10 @@ class PushNotificationsManager {
         AndroidInitializationSettings('ic_launcher_foreground');
     final DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(
-      requestSoundPermission: true,
-      requestBadgePermission: true,
-      requestAlertPermission: true,
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
-    );
+            requestSoundPermission: true,
+            requestBadgePermission: true,
+            requestAlertPermission: true,
+            notificationCategories: InitNotificationCategories);
 
     final InitializationSettings initializationSettings =
         InitializationSettings(
@@ -111,6 +110,8 @@ class PushNotificationsManager {
       onNotificationClicked?.call(jsonEncode(remoteMessage.data));
     });
   }
+
+  List<DarwinNotificationCategory> get InitNotificationCategories {}
 
   subscribe(String? token) async {
     developer.log('[subscribe] token: $token, ${PushNotificationsManager.TAG}');

@@ -22,8 +22,12 @@ TravauId _$TravauIdFromJson(Map<String, dynamic> json) {
 mixin _$TravauId {
   int get id => throw _privateConstructorUsedError;
 
+  /// Serializes this TravauId to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TravauId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TravauIdCopyWith<TravauId> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -46,6 +50,8 @@ class _$TravauIdCopyWithImpl<$Res, $Val extends TravauId>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TravauId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -79,6 +85,8 @@ class __$$TravauIdImplCopyWithImpl<$Res>
       _$TravauIdImpl _value, $Res Function(_$TravauIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TravauId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -117,11 +125,13 @@ class _$TravauIdImpl implements _TravauId {
             (identical(other.id, id) || other.id == id));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TravauId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TravauIdImplCopyWith<_$TravauIdImpl> get copyWith =>
@@ -143,8 +153,11 @@ abstract class _TravauId implements TravauId {
 
   @override
   int get id;
+
+  /// Create a copy of TravauId
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TravauIdImplCopyWith<_$TravauIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

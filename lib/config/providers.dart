@@ -8,7 +8,7 @@ import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geoflutterfire2/geoflutterfire2.dart';
+// import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as ui;
@@ -291,7 +291,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
 
 // <---------------- GeoLocation Provider --------------------> //
 final geoFlutterFireProvider =
-    Provider<GeoFlutterFire>((ref) => GeoFlutterFire());
+    Provider<Geoflutterfire>((ref) => GeoFlutterFire());
 
 // <---------------- RunViewInfo Provider --------------------> //
 final observer = DatadogNavigationObserver(

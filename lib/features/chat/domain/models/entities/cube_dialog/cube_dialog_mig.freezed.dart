@@ -41,8 +41,12 @@ mixin _$CubeDialogMig {
   bool? get isEncrypted => throw _privateConstructorUsedError;
   bool? get isMuted => throw _privateConstructorUsedError;
 
+  /// Serializes this CubeDialogMig to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CubeDialogMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CubeDialogMigCopyWith<CubeDialogMig> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -86,6 +90,8 @@ class _$CubeDialogMigCopyWithImpl<$Res, $Val extends CubeDialogMig>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CubeDialogMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -234,6 +240,8 @@ class __$$CubeDialogMigImplCopyWithImpl<$Res>
       _$CubeDialogMigImpl _value, $Res Function(_$CubeDialogMigImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CubeDialogMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -497,7 +505,7 @@ class _$CubeDialogMigImpl extends _CubeDialogMig {
             (identical(other.isMuted, isMuted) || other.isMuted == isMuted));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -523,7 +531,9 @@ class _$CubeDialogMigImpl extends _CubeDialogMig {
         isMuted
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CubeDialogMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CubeDialogMigImplCopyWith<_$CubeDialogMigImpl> get copyWith =>
@@ -603,8 +613,11 @@ abstract class _CubeDialogMig extends CubeDialogMig {
   bool? get isEncrypted;
   @override
   bool? get isMuted;
+
+  /// Create a copy of CubeDialogMig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CubeDialogMigImplCopyWith<_$CubeDialogMigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -669,7 +682,9 @@ mixin _$CubeDialogTypeMig {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CubeDialogTypeMigCopyWith<CubeDialogTypeMig> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -693,6 +708,8 @@ class _$CubeDialogTypeMigCopyWithImpl<$Res, $Val extends CubeDialogTypeMig>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -726,6 +743,8 @@ class __$$CubeDialogTypeMigImplCopyWithImpl<$Res>
       $Res Function(_$CubeDialogTypeMigImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -764,7 +783,9 @@ class _$CubeDialogTypeMigImpl extends _CubeDialogTypeMig {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CubeDialogTypeMigImplCopyWith<_$CubeDialogTypeMigImpl> get copyWith =>
@@ -858,8 +879,11 @@ abstract class _CubeDialogTypeMig extends CubeDialogTypeMig {
 
   @override
   int? get id;
+
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CubeDialogTypeMigImplCopyWith<_$CubeDialogTypeMigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -886,6 +910,8 @@ class __$$CubeDialogTypeMigBroadCastImplCopyWithImpl<$Res>
       $Res Function(_$CubeDialogTypeMigBroadCastImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -924,7 +950,9 @@ class _$CubeDialogTypeMigBroadCastImpl extends _CubeDialogTypeMigBroadCast {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CubeDialogTypeMigBroadCastImplCopyWith<_$CubeDialogTypeMigBroadCastImpl>
@@ -1019,8 +1047,11 @@ abstract class _CubeDialogTypeMigBroadCast extends CubeDialogTypeMig {
 
   @override
   int? get id;
+
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CubeDialogTypeMigBroadCastImplCopyWith<_$CubeDialogTypeMigBroadCastImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1046,6 +1077,8 @@ class __$$CubeDialogTypeMigGroupImplCopyWithImpl<$Res>
       $Res Function(_$CubeDialogTypeMigGroupImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1084,7 +1117,9 @@ class _$CubeDialogTypeMigGroupImpl extends _CubeDialogTypeMigGroup {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CubeDialogTypeMigGroupImplCopyWith<_$CubeDialogTypeMigGroupImpl>
@@ -1179,8 +1214,11 @@ abstract class _CubeDialogTypeMigGroup extends CubeDialogTypeMig {
 
   @override
   int? get id;
+
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CubeDialogTypeMigGroupImplCopyWith<_$CubeDialogTypeMigGroupImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1207,6 +1245,8 @@ class __$$CubeDialogTypeMigPrivateImplCopyWithImpl<$Res>
       $Res Function(_$CubeDialogTypeMigPrivateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1245,7 +1285,9 @@ class _$CubeDialogTypeMigPrivateImpl extends _CubeDialogTypeMigPrivate {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CubeDialogTypeMigPrivateImplCopyWith<_$CubeDialogTypeMigPrivateImpl>
@@ -1340,8 +1382,11 @@ abstract class _CubeDialogTypeMigPrivate extends CubeDialogTypeMig {
 
   @override
   int? get id;
+
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CubeDialogTypeMigPrivateImplCopyWith<_$CubeDialogTypeMigPrivateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1367,6 +1412,8 @@ class __$$CubeDialogTypeMigPublicImplCopyWithImpl<$Res>
       $Res Function(_$CubeDialogTypeMigPublicImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1405,7 +1452,9 @@ class _$CubeDialogTypeMigPublicImpl extends _CubeDialogTypeMigPublic {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CubeDialogTypeMigPublicImplCopyWith<_$CubeDialogTypeMigPublicImpl>
@@ -1500,8 +1549,11 @@ abstract class _CubeDialogTypeMigPublic extends CubeDialogTypeMig {
 
   @override
   int? get id;
+
+  /// Create a copy of CubeDialogTypeMig
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CubeDialogTypeMigPublicImplCopyWith<_$CubeDialogTypeMigPublicImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

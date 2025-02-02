@@ -76,6 +76,8 @@ mixin _$Images {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this Images to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
@@ -94,6 +96,9 @@ class _$ImagesCopyWithImpl<$Res, $Val extends Images>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -113,6 +118,8 @@ class __$$ImagesWebImplCopyWithImpl<$Res>
       _$ImagesWebImpl _value, $Res Function(_$ImagesWebImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -155,11 +162,13 @@ class _$ImagesWebImpl implements _ImagesWeb {
             (identical(other.name, name) || other.name == name));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ImagesWebImplCopyWith<_$ImagesWebImpl> get copyWith =>
@@ -249,7 +258,10 @@ abstract class _ImagesWeb implements Images {
       _$ImagesWebImpl.fromJson;
 
   String get name;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ImagesWebImplCopyWith<_$ImagesWebImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -271,6 +283,8 @@ class __$$ImagesLocalImplCopyWithImpl<$Res>
       _$ImagesLocalImpl _value, $Res Function(_$ImagesLocalImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -322,12 +336,14 @@ class _$ImagesLocalImpl implements _ImagesLocal {
             const DeepCollectionEquality().equals(other._images, _images));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_images));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ImagesLocalImplCopyWith<_$ImagesLocalImpl> get copyWith =>
@@ -420,7 +436,10 @@ abstract class _ImagesLocal implements Images {
 
   @AssetsImageConverter()
   List<LocalImages> get images;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ImagesLocalImplCopyWith<_$ImagesLocalImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -442,6 +461,8 @@ class __$$ImagesErrorImplCopyWithImpl<$Res>
       _$ImagesErrorImpl _value, $Res Function(_$ImagesErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -493,11 +514,13 @@ class _$ImagesErrorImpl implements _ImagesError {
             (identical(other.message, message) || other.message == message));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, error, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ImagesErrorImplCopyWith<_$ImagesErrorImpl> get copyWith =>
@@ -590,7 +613,10 @@ abstract class _ImagesError implements Images {
 
   String get error;
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Images
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ImagesErrorImplCopyWith<_$ImagesErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -649,8 +675,13 @@ mixin _$ImagesAssets {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this ImagesAssets to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ImagesAssets
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ImagesAssetsCopyWith<ImagesAssets> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -674,6 +705,8 @@ class _$ImagesAssetsCopyWithImpl<$Res, $Val extends ImagesAssets>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ImagesAssets
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -707,6 +740,8 @@ class __$$ImagesAssetsLoadingImplCopyWithImpl<$Res>
       $Res Function(_$ImagesAssetsLoadingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ImagesAssets
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -769,12 +804,14 @@ class _$ImagesAssetsLoadingImpl extends _ImagesAssetsLoading {
                 other.isLoading == isLoading));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_images), isLoading);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ImagesAssets
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ImagesAssetsLoadingImplCopyWith<_$ImagesAssetsLoadingImpl> get copyWith =>
@@ -863,8 +900,11 @@ abstract class _ImagesAssetsLoading extends ImagesAssets {
   List<Images> get images;
   @override
   bool get isLoading;
+
+  /// Create a copy of ImagesAssets
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ImagesAssetsLoadingImplCopyWith<_$ImagesAssetsLoadingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -888,6 +928,8 @@ class __$$ImagesAssetsFailedImplCopyWithImpl<$Res>
       $Res Function(_$ImagesAssetsFailedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ImagesAssets
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -941,11 +983,13 @@ class _$ImagesAssetsFailedImpl extends _ImagesAssetsFailed {
             (identical(other.message, message) || other.message == message));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ImagesAssets
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ImagesAssetsFailedImplCopyWith<_$ImagesAssetsFailedImpl> get copyWith =>
@@ -1034,8 +1078,11 @@ abstract class _ImagesAssetsFailed extends ImagesAssets {
   @override
   bool get isLoading;
   String get message;
+
+  /// Create a copy of ImagesAssets
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ImagesAssetsFailedImplCopyWith<_$ImagesAssetsFailedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

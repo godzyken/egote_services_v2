@@ -37,8 +37,12 @@ mixin _$SignInState {
   FormzSubmissionStatus? get status => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
+  /// Serializes this SignInState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SignInState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SignInStateCopyWith<SignInState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -78,6 +82,8 @@ class _$SignInStateCopyWithImpl<$Res, $Val extends SignInState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SignInState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -142,6 +148,8 @@ class __$$SignInStateImplCopyWithImpl<$Res>
       _$SignInStateImpl _value, $Res Function(_$SignInStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SignInState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -236,12 +244,14 @@ class _$SignInStateImpl implements _SignInState {
                 other.errorMessage == errorMessage));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, emailFormz, passwordFormz, status, errorMessage);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SignInState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SignInStateImplCopyWith<_$SignInStateImpl> get copyWith =>
@@ -297,8 +307,11 @@ abstract class _SignInState implements SignInState {
   FormzSubmissionStatus? get status;
   @override
   String? get errorMessage;
+
+  /// Create a copy of SignInState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SignInStateImplCopyWith<_$SignInStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

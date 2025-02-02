@@ -94,7 +94,9 @@ class SharedPrefs {
 
   Future<CubeUserMig?> getUser() {
     if (prefs.getString(prefUserLogin) == null &&
-        prefs.getString(prefUserEmail) == null) return Future.value();
+        prefs.getString(prefUserEmail) == null) {
+      return Future.value();
+    }
     var user = const CubeUserMig();
 /*    user.login = prefs.getString(prefUserLogin);
     user.email = prefs.getString(prefUserEmail);

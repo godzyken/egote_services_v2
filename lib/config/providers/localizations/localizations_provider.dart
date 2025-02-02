@@ -76,3 +76,6 @@ class CustomLocalizationsDelegate extends LocalizationsDelegate<MultiLang> {
   @override
   bool shouldReload(covariant LocalizationsDelegate<MultiLang> old) => false;
 }
+
+final customLocalizationProvider =
+    Provider<MultiLang>((_) => MultiLang('localeName'));

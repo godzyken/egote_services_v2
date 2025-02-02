@@ -92,6 +92,8 @@ mixin _$SuperficieEntity {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this SuperficieEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
@@ -111,6 +113,9 @@ class _$SuperficieEntityCopyWithImpl<$Res, $Val extends SuperficieEntity>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -133,6 +138,8 @@ class __$$SuperficieEntityInitializeImplCopyWithImpl<$Res>
       $Res Function(_$SuperficieEntityInitializeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -198,11 +205,13 @@ class _$SuperficieEntityInitializeImpl extends _SuperficieEntityInitialize {
             (identical(other.hauteur, hauteur) || other.hauteur == hauteur));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, longueur, largeur, hauteur);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SuperficieEntityInitializeImplCopyWith<_$SuperficieEntityInitializeImpl>
@@ -311,7 +320,10 @@ abstract class _SuperficieEntityInitialize extends SuperficieEntity {
   int get longueur;
   int get largeur;
   int? get hauteur;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuperficieEntityInitializeImplCopyWith<_$SuperficieEntityInitializeImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -333,6 +345,8 @@ class __$$SuperficieEntityDataImplCopyWithImpl<$Res>
       $Res Function(_$SuperficieEntityDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -397,11 +411,13 @@ class _$SuperficieEntityDataImpl extends _SuperficieEntityData {
             (identical(other.hauteur, hauteur) || other.hauteur == hauteur));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, longueur, largeur, hauteur);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SuperficieEntityDataImplCopyWith<_$SuperficieEntityDataImpl>
@@ -511,7 +527,10 @@ abstract class _SuperficieEntityData extends SuperficieEntity {
   int get longueur;
   int get largeur;
   int? get hauteur;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuperficieEntityDataImplCopyWith<_$SuperficieEntityDataImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -533,6 +552,8 @@ class __$$SuperficieEntityAirImplCopyWithImpl<$Res>
       $Res Function(_$SuperficieEntityAirImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -576,11 +597,13 @@ class _$SuperficieEntityAirImpl extends _SuperficieEntityAir {
             (identical(other.surface, surface) || other.surface == surface));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, surface);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SuperficieEntityAirImplCopyWith<_$SuperficieEntityAirImpl> get copyWith =>
@@ -685,7 +708,10 @@ abstract class _SuperficieEntityAir extends SuperficieEntity {
       _$SuperficieEntityAirImpl.fromJson;
 
   int get surface;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuperficieEntityAirImplCopyWith<_$SuperficieEntityAirImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -710,6 +736,8 @@ class __$$SuperficieEntityPerimetreImplCopyWithImpl<$Res>
       $Res Function(_$SuperficieEntityPerimetreImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -755,11 +783,13 @@ class _$SuperficieEntityPerimetreImpl extends _SuperficieEntityPerimetre {
                 other.perimetre == perimetre));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, perimetre);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SuperficieEntityPerimetreImplCopyWith<_$SuperficieEntityPerimetreImpl>
@@ -864,7 +894,10 @@ abstract class _SuperficieEntityPerimetre extends SuperficieEntity {
       _$SuperficieEntityPerimetreImpl.fromJson;
 
   int get perimetre;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuperficieEntityPerimetreImplCopyWith<_$SuperficieEntityPerimetreImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -888,6 +921,8 @@ class __$$SuperficieEntityVolumeImplCopyWithImpl<$Res>
       $Res Function(_$SuperficieEntityVolumeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -932,11 +967,13 @@ class _$SuperficieEntityVolumeImpl extends _SuperficieEntityVolume {
             (identical(other.volume, volume) || other.volume == volume));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, volume);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SuperficieEntityVolumeImplCopyWith<_$SuperficieEntityVolumeImpl>
@@ -1041,7 +1078,10 @@ abstract class _SuperficieEntityVolume extends SuperficieEntity {
       _$SuperficieEntityVolumeImpl.fromJson;
 
   int get volume;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuperficieEntityVolumeImplCopyWith<_$SuperficieEntityVolumeImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

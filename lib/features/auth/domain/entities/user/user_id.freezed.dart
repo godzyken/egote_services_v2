@@ -22,8 +22,12 @@ UserId _$UserIdFromJson(Map<String, dynamic> json) {
 mixin _$UserId {
   int get value => throw _privateConstructorUsedError;
 
+  /// Serializes this UserId to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserIdCopyWith<UserId> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -45,6 +49,8 @@ class _$UserIdCopyWithImpl<$Res, $Val extends UserId>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -77,6 +83,8 @@ class __$$UserIdImplCopyWithImpl<$Res>
       _$UserIdImpl _value, $Res Function(_$UserIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserId
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -115,11 +123,13 @@ class _$UserIdImpl implements _UserId {
             (identical(other.value, value) || other.value == value));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserIdImplCopyWith<_$UserIdImpl> get copyWith =>
@@ -140,8 +150,11 @@ abstract class _UserId implements UserId {
 
   @override
   int get value;
+
+  /// Create a copy of UserId
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserIdImplCopyWith<_$UserIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -30,8 +30,12 @@ mixin _$UserEntityModel {
   DateTime get phoneConfirmedAt => throw _privateConstructorUsedError;
   DateTime get lastSignInAt => throw _privateConstructorUsedError;
 
+  /// Serializes this UserEntityModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserEntityModelCopyWith<UserEntityModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -66,6 +70,8 @@ class _$UserEntityModelCopyWithImpl<$Res, $Val extends UserEntityModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -119,6 +125,8 @@ class _$UserEntityModelCopyWithImpl<$Res, $Val extends UserEntityModel>
     ) as $Val);
   }
 
+  /// Create a copy of UserEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserIdCopyWith<$Res> get id {
@@ -159,6 +167,8 @@ class __$$UserEntityModelImplCopyWithImpl<$Res>
       _$UserEntityModelImpl _value, $Res Function(_$UserEntityModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -278,12 +288,14 @@ class _$UserEntityModelImpl extends _UserEntityModel {
                 other.lastSignInAt == lastSignInAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, role, isComplete,
       createdAt, updatedAt, emailConfirmedAt, phoneConfirmedAt, lastSignInAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserEntityModelImplCopyWith<_$UserEntityModelImpl> get copyWith =>
@@ -332,8 +344,11 @@ abstract class _UserEntityModel extends UserEntityModel {
   DateTime get phoneConfirmedAt;
   @override
   DateTime get lastSignInAt;
+
+  /// Create a copy of UserEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserEntityModelImplCopyWith<_$UserEntityModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -401,6 +416,9 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -422,6 +440,8 @@ class __$$UsersDataImplCopyWithImpl<$Res>
       _$UsersDataImpl _value, $Res Function(_$UsersDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -435,6 +455,8 @@ class __$$UsersDataImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserListCopyWith<$Res> get userList {
@@ -469,7 +491,9 @@ class _$UsersDataImpl implements UsersData {
   @override
   int get hashCode => Object.hash(runtimeType, userList);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UsersDataImplCopyWith<_$UsersDataImpl> get copyWith =>
@@ -548,7 +572,10 @@ abstract class UsersData implements Users {
   const factory UsersData(final UserList userList) = _$UsersDataImpl;
 
   UserList get userList;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UsersDataImplCopyWith<_$UsersDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -567,6 +594,9 @@ class __$$UsersLoadingImplCopyWithImpl<$Res>
   __$$UsersLoadingImplCopyWithImpl(
       _$UsersLoadingImpl _value, $Res Function(_$UsersLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -678,6 +708,8 @@ class __$$UsersErrorImplCopyWithImpl<$Res>
       _$UsersErrorImpl _value, $Res Function(_$UsersErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -723,7 +755,9 @@ class _$UsersErrorImpl implements UsersError {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(error), stackTrace);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UsersErrorImplCopyWith<_$UsersErrorImpl> get copyWith =>
@@ -804,7 +838,10 @@ abstract class UsersError implements Users {
 
   Object get error;
   StackTrace get stackTrace;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Users
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UsersErrorImplCopyWith<_$UsersErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -878,8 +915,13 @@ mixin _$UserModel {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this UserModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserModelCopyWith<UserModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -908,6 +950,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -931,6 +975,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     ) as $Val);
   }
 
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserIdCopyWith<$Res> get id {
@@ -939,6 +985,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     });
   }
 
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserEntityModelCopyWith<$Res> get userEntityModel {
@@ -977,6 +1025,8 @@ class __$$UserModelCompleteImplCopyWithImpl<$Res>
       $Res Function(_$UserModelCompleteImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1005,6 +1055,8 @@ class __$$UserModelCompleteImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $CubeUserMigCopyWith<$Res> get cubeUser {
@@ -1060,12 +1112,14 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
                 other.cubeUser == cubeUser));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, userEntityModel, authUser, cubeUser);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserModelCompleteImplCopyWith<_$UserModelCompleteImpl> get copyWith =>
@@ -1172,8 +1226,11 @@ abstract class _UserModelComplete implements UserModel {
   @UserConverter()
   AuthUser get authUser;
   CubeUserMig get cubeUser;
+
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserModelCompleteImplCopyWith<_$UserModelCompleteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1205,6 +1262,8 @@ class __$$UserModelUnCompleteImplCopyWithImpl<$Res>
       $Res Function(_$UserModelUnCompleteImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1270,11 +1329,13 @@ class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
                 other.authUser == authUser));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, userEntityModel, authUser);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserModelUnCompleteImplCopyWith<_$UserModelUnCompleteImpl> get copyWith =>
@@ -1380,8 +1441,11 @@ abstract class _UserModelUnComplete implements UserModel {
   @override
   @UserConverter()
   AuthUser get authUser;
+
+  /// Create a copy of UserModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserModelUnCompleteImplCopyWith<_$UserModelUnCompleteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -92,8 +92,13 @@ mixin _$ElementsEntityModel {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this ElementsEntityModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ElementsEntityModelCopyWith<ElementsEntityModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -117,6 +122,8 @@ class _$ElementsEntityModelCopyWithImpl<$Res, $Val extends ElementsEntityModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -160,6 +167,8 @@ class __$$ElementsEntityModelImplCopyWithImpl<$Res>
       $Res Function(_$ElementsEntityModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -241,12 +250,14 @@ class _$ElementsEntityModelImpl implements _ElementsEntityModel {
             (identical(other.volumes, volumes) || other.volumes == volumes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, name, figures, polygones, volumes);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ElementsEntityModelImplCopyWith<_$ElementsEntityModelImpl> get copyWith =>
@@ -360,8 +371,11 @@ abstract class _ElementsEntityModel implements ElementsEntityModel {
   Figures? get figures;
   Polygones? get polygones;
   Volumes? get volumes;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ElementsEntityModelImplCopyWith<_$ElementsEntityModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -388,6 +402,8 @@ class __$$ElementsEntityModelFiguresImplCopyWithImpl<$Res>
       $Res Function(_$ElementsEntityModelFiguresImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -452,11 +468,13 @@ class _$ElementsEntityModelFiguresImpl implements _ElementsEntityModelFigures {
             (identical(other.figures, figures) || other.figures == figures));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, figures);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ElementsEntityModelFiguresImplCopyWith<_$ElementsEntityModelFiguresImpl>
@@ -566,8 +584,11 @@ abstract class _ElementsEntityModelFigures implements ElementsEntityModel {
   @override
   String get name;
   Figures get figures;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ElementsEntityModelFiguresImplCopyWith<_$ElementsEntityModelFiguresImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -594,6 +615,8 @@ class __$$ElementsEntityModelPolygonesImplCopyWithImpl<$Res>
       $Res Function(_$ElementsEntityModelPolygonesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -660,11 +683,13 @@ class _$ElementsEntityModelPolygonesImpl
                 other.polygones == polygones));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, polygones);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ElementsEntityModelPolygonesImplCopyWith<
@@ -775,8 +800,11 @@ abstract class _ElementsEntityModelPolygones implements ElementsEntityModel {
   @override
   String get name;
   Polygones get polygones;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ElementsEntityModelPolygonesImplCopyWith<
           _$ElementsEntityModelPolygonesImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -804,6 +832,8 @@ class __$$ElementsEntityModelVolumesImplCopyWithImpl<$Res>
       $Res Function(_$ElementsEntityModelVolumesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -868,11 +898,13 @@ class _$ElementsEntityModelVolumesImpl implements _ElementsEntityModelVolumes {
             (identical(other.volumes, volumes) || other.volumes == volumes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, volumes);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ElementsEntityModelVolumesImplCopyWith<_$ElementsEntityModelVolumesImpl>
@@ -982,8 +1014,11 @@ abstract class _ElementsEntityModelVolumes implements ElementsEntityModel {
   @override
   String get name;
   Volumes get volumes;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ElementsEntityModelVolumesImplCopyWith<_$ElementsEntityModelVolumesImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

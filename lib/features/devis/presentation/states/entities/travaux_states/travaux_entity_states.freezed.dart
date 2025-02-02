@@ -22,8 +22,12 @@ TravauxEntityStates _$TravauxEntityStatesFromJson(Map<String, dynamic> json) {
 mixin _$TravauxEntityStates {
   List<TravauxEntity> get travaux => throw _privateConstructorUsedError;
 
+  /// Serializes this TravauxEntityStates to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TravauxEntityStates
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TravauxEntityStatesCopyWith<TravauxEntityStates> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +51,8 @@ class _$TravauxEntityStatesCopyWithImpl<$Res, $Val extends TravauxEntityStates>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TravauxEntityStates
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,6 +86,8 @@ class __$$TravauxEntityStatesImplCopyWithImpl<$Res>
       $Res Function(_$TravauxEntityStatesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TravauxEntityStates
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -135,12 +143,14 @@ class _$TravauxEntityStatesImpl
             const DeepCollectionEquality().equals(other._travaux, _travaux));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_travaux));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TravauxEntityStates
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TravauxEntityStatesImplCopyWith<_$TravauxEntityStatesImpl> get copyWith =>
@@ -164,8 +174,11 @@ abstract class _TravauxEntityStates implements TravauxEntityStates {
 
   @override
   List<TravauxEntity> get travaux;
+
+  /// Create a copy of TravauxEntityStates
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TravauxEntityStatesImplCopyWith<_$TravauxEntityStatesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

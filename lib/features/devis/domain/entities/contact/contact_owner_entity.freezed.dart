@@ -101,6 +101,8 @@ mixin _$ContactOwnerEntity {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this ContactOwnerEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
@@ -120,6 +122,9 @@ class _$ContactOwnerEntityCopyWithImpl<$Res, $Val extends ContactOwnerEntity>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -140,6 +145,8 @@ class __$$ContactOwnerEntityImplCopyWithImpl<$Res>
       $Res Function(_$ContactOwnerEntityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -223,12 +230,14 @@ class _$ContactOwnerEntityImpl implements _ContactOwnerEntity {
             (identical(other.email, email) || other.email == email));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, firstName, lastName, phone, email);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ContactOwnerEntityImplCopyWith<_$ContactOwnerEntityImpl> get copyWith =>
@@ -351,7 +360,10 @@ abstract class _ContactOwnerEntity implements ContactOwnerEntity {
   String get lastName;
   String get phone;
   String get email;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ContactOwnerEntityImplCopyWith<_$ContactOwnerEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -373,6 +385,9 @@ class __$$ContactOwnerEntityEmptyImplCopyWithImpl<$Res>
       _$ContactOwnerEntityEmptyImpl _value,
       $Res Function(_$ContactOwnerEntityEmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -399,7 +414,7 @@ class _$ContactOwnerEntityEmptyImpl implements _ContactOwnerEntityEmpty {
             other is _$ContactOwnerEntityEmptyImpl);
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -531,6 +546,8 @@ class __$$ContactOwnerEntityClientImplCopyWithImpl<$Res>
       $Res Function(_$ContactOwnerEntityClientImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -613,12 +630,14 @@ class _$ContactOwnerEntityClientImpl implements _ContactOwnerEntityClient {
             (identical(other.email, email) || other.email == email));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, firstName, lastName, phone, email);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ContactOwnerEntityClientImplCopyWith<_$ContactOwnerEntityClientImpl>
@@ -741,7 +760,10 @@ abstract class _ContactOwnerEntityClient implements ContactOwnerEntity {
   String get lastName;
   String get phone;
   String get email;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ContactOwnerEntityClientImplCopyWith<_$ContactOwnerEntityClientImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -769,6 +791,8 @@ class __$$ContactOwnerEntityProImplCopyWithImpl<$Res>
       $Res Function(_$ContactOwnerEntityProImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -857,12 +881,14 @@ class _$ContactOwnerEntityProImpl implements _ContactOwnerEntityPro {
                 .equals(other._professions, _professions));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, companyName, phone, email,
       const DeepCollectionEquality().hash(_professions));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ContactOwnerEntityProImplCopyWith<_$ContactOwnerEntityProImpl>
@@ -986,7 +1012,10 @@ abstract class _ContactOwnerEntityPro implements ContactOwnerEntity {
   String get phone;
   String get email;
   List<Professions> get professions;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ContactOwnerEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ContactOwnerEntityProImplCopyWith<_$ContactOwnerEntityProImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

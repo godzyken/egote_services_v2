@@ -86,8 +86,13 @@ mixin _$TravauxEntity {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this TravauxEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TravauxEntityCopyWith<TravauxEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -113,6 +118,8 @@ class _$TravauxEntityCopyWithImpl<$Res, $Val extends TravauxEntity>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -126,6 +133,8 @@ class _$TravauxEntityCopyWithImpl<$Res, $Val extends TravauxEntity>
     ) as $Val);
   }
 
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TravauIdCopyWith<$Res> get id {
@@ -162,6 +171,8 @@ class __$$TravauxEntityImplCopyWithImpl<$Res>
       _$TravauxEntityImpl _value, $Res Function(_$TravauxEntityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -281,7 +292,7 @@ class _$TravauxEntityImpl
                 .equals(other._missionEntity, _missionEntity));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -291,7 +302,9 @@ class _$TravauxEntityImpl
       const DeepCollectionEquality().hash(_areaOfServices),
       const DeepCollectionEquality().hash(_missionEntity));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TravauxEntityImplCopyWith<_$TravauxEntityImpl> get copyWith =>
@@ -405,8 +418,11 @@ abstract class _TravauxEntity implements TravauxEntity {
   List<TypesOfWork> get typesOfWorks;
   List<AreaOfServices> get areaOfServices;
   List<MissionEntity> get missionEntity;
+
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TravauxEntityImplCopyWith<_$TravauxEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -433,6 +449,8 @@ class __$$TravauxEntityInitImplCopyWithImpl<$Res>
       $Res Function(_$TravauxEntityInitImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -485,11 +503,13 @@ class _$TravauxEntityInitImpl
             (identical(other.id, id) || other.id == id));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TravauxEntityInitImplCopyWith<_$TravauxEntityInitImpl> get copyWith =>
@@ -593,8 +613,11 @@ abstract class _TravauxEntityInit implements TravauxEntity {
 
   @override
   TravauId get id;
+
+  /// Create a copy of TravauxEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TravauxEntityInitImplCopyWith<_$TravauxEntityInitImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

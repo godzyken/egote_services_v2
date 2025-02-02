@@ -21,7 +21,9 @@ mixin _$UserPreferences {
   String get about => throw _privateConstructorUsedError;
   bool get isDarkMode => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserPreferences
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserPreferencesCopyWith<UserPreferences> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,6 +53,8 @@ class _$UserPreferencesCopyWithImpl<$Res, $Val extends UserPreferences>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserPreferences
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -79,6 +83,8 @@ class _$UserPreferencesCopyWithImpl<$Res, $Val extends UserPreferences>
     ) as $Val);
   }
 
+  /// Create a copy of UserPreferences
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserEntityModelCopyWith<$Res> get userEntityModel {
@@ -114,6 +120,8 @@ class __$$UserPreferencesImplCopyWithImpl<$Res>
       _$UserPreferencesImpl _value, $Res Function(_$UserPreferencesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserPreferences
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -184,7 +192,9 @@ class _$UserPreferencesImpl implements _UserPreferences {
   int get hashCode =>
       Object.hash(runtimeType, userEntityModel, themeMode, about, isDarkMode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserPreferences
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserPreferencesImplCopyWith<_$UserPreferencesImpl> get copyWith =>
@@ -207,8 +217,11 @@ abstract class _UserPreferences implements UserPreferences {
   String get about;
   @override
   bool get isDarkMode;
+
+  /// Create a copy of UserPreferences
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserPreferencesImplCopyWith<_$UserPreferencesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -22,8 +22,12 @@ DevisEntityStates _$DevisEntityStatesFromJson(Map<String, dynamic> json) {
 mixin _$DevisEntityStates {
   List<DevisModelEntity> get devis => throw _privateConstructorUsedError;
 
+  /// Serializes this DevisEntityStates to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DevisEntityStates
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DevisEntityStatesCopyWith<DevisEntityStates> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +51,8 @@ class _$DevisEntityStatesCopyWithImpl<$Res, $Val extends DevisEntityStates>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DevisEntityStates
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,6 +86,8 @@ class __$$DevisEntityStatesImplCopyWithImpl<$Res>
       $Res Function(_$DevisEntityStatesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DevisEntityStates
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -135,12 +143,14 @@ class _$DevisEntityStatesImpl
             const DeepCollectionEquality().equals(other._devis, _devis));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_devis));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DevisEntityStates
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DevisEntityStatesImplCopyWith<_$DevisEntityStatesImpl> get copyWith =>
@@ -164,8 +174,11 @@ abstract class _DevisEntityStates implements DevisEntityStates {
 
   @override
   List<DevisModelEntity> get devis;
+
+  /// Create a copy of DevisEntityStates
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DevisEntityStatesImplCopyWith<_$DevisEntityStatesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

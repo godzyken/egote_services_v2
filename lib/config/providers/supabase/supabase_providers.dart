@@ -120,7 +120,7 @@ final supabaseChannelRProvider = Provider((ref) {
                 } else {
                   chan.unsubscribe();
                 }
-              case SocketStates.closing:
+              case SocketStates.disconnecting:
                 client.conn?.sink
                     .close(socket?.closeCode, realtimeError.message.toString());
                 client.onConnMessage('Goodb8 3wi Body! ${socket?.closeReason}');
@@ -207,6 +207,7 @@ final filterConnection = StateProvider<List<int>>((ref) {
 final countProvider = StateProvider<int>((ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
   final currentValue = prefs.getInt('count') ?? 0;
+  ref.listen;
   ref.listenSelf((previous, next) {
     prefs.setInt('cont', next);
   });

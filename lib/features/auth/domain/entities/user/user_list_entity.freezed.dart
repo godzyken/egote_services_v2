@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UserList {
   List<UserEntityModel> get values => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserListCopyWith<UserList> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -41,6 +43,8 @@ class _$UserListCopyWithImpl<$Res, $Val extends UserList>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,6 +78,8 @@ class __$$UserListImplCopyWithImpl<$Res>
       _$UserListImpl _value, $Res Function(_$UserListImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -120,7 +126,9 @@ class _$UserListImpl extends _UserList {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_values));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserListImplCopyWith<_$UserListImpl> get copyWith =>
@@ -134,8 +142,11 @@ abstract class _UserList extends UserList {
 
   @override
   List<UserEntityModel> get values;
+
+  /// Create a copy of UserList
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserListImplCopyWith<_$UserListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

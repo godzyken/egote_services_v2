@@ -108,8 +108,13 @@ mixin _$MissionEntity {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this MissionEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MissionEntityCopyWith<MissionEntity> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -135,6 +140,8 @@ class _$MissionEntityCopyWithImpl<$Res, $Val extends MissionEntity>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -148,6 +155,8 @@ class _$MissionEntityCopyWithImpl<$Res, $Val extends MissionEntity>
     ) as $Val);
   }
 
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MissionIdCopyWith<$Res> get id {
@@ -179,6 +188,8 @@ class __$$MissionEntityImplCopyWithImpl<$Res>
       _$MissionEntityImpl _value, $Res Function(_$MissionEntityImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -232,11 +243,13 @@ class _$MissionEntityImpl implements _MissionEntity {
                 other.denomination == denomination));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, denomination);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MissionEntityImplCopyWith<_$MissionEntityImpl> get copyWith =>
@@ -357,8 +370,11 @@ abstract class _MissionEntity implements MissionEntity {
   @override
   MissionId get id;
   String get denomination;
+
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MissionEntityImplCopyWith<_$MissionEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -385,6 +401,8 @@ class __$$MissionEntityInitImplCopyWithImpl<$Res>
       $Res Function(_$MissionEntityInitImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -427,11 +445,13 @@ class _$MissionEntityInitImpl implements _MissionEntityInit {
             (identical(other.id, id) || other.id == id));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MissionEntityInitImplCopyWith<_$MissionEntityInitImpl> get copyWith =>
@@ -551,8 +571,11 @@ abstract class _MissionEntityInit implements MissionEntity {
 
   @override
   MissionId get id;
+
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MissionEntityInitImplCopyWith<_$MissionEntityInitImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -584,6 +607,8 @@ class __$$MissionEntityDoneImplCopyWithImpl<$Res>
       $Res Function(_$MissionEntityDoneImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -667,12 +692,14 @@ class _$MissionEntityDoneImpl implements _MissionEntityDone {
             (identical(other.doneOk, doneOk) || other.doneOk == doneOk));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, denomination, startedAt, finishedAt, doneOk);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MissionEntityDoneImplCopyWith<_$MissionEntityDoneImpl> get copyWith =>
@@ -800,8 +827,11 @@ abstract class _MissionEntityDone implements MissionEntity {
   DateTime get startedAt;
   DateTime get finishedAt;
   bool get doneOk;
+
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MissionEntityDoneImplCopyWith<_$MissionEntityDoneImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -829,6 +859,8 @@ class __$$MissionEntityProgressImplCopyWithImpl<$Res>
       $Res Function(_$MissionEntityProgressImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -893,11 +925,13 @@ class _$MissionEntityProgressImpl implements _MissionEntityProgress {
                 other.startedAt == startedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, denomination, startedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MissionEntityProgressImplCopyWith<_$MissionEntityProgressImpl>
@@ -1021,8 +1055,11 @@ abstract class _MissionEntityProgress implements MissionEntity {
   MissionId get id;
   String get denomination;
   DateTime get startedAt;
+
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MissionEntityProgressImplCopyWith<_$MissionEntityProgressImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1054,6 +1091,8 @@ class __$$MissionEntityAbandonImplCopyWithImpl<$Res>
       $Res Function(_$MissionEntityAbandonImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1135,12 +1174,14 @@ class _$MissionEntityAbandonImpl implements _MissionEntityAbandon {
             (identical(other.isLeft, isLeft) || other.isLeft == isLeft));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, denomination, reason, left, isLeft);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MissionEntityAbandonImplCopyWith<_$MissionEntityAbandonImpl>
@@ -1269,8 +1310,11 @@ abstract class _MissionEntityAbandon implements MissionEntity {
   String get reason;
   DateTime get left;
   bool get isLeft;
+
+  /// Create a copy of MissionEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MissionEntityAbandonImplCopyWith<_$MissionEntityAbandonImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

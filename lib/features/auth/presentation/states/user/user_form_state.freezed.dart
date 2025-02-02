@@ -28,8 +28,12 @@ mixin _$UserFormState {
       defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
   RoleFormz? get roleFormz => throw _privateConstructorUsedError;
 
+  /// Serializes this UserFormState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserFormStateCopyWith<UserFormState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -66,6 +70,8 @@ class _$UserFormStateCopyWithImpl<$Res, $Val extends UserFormState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -89,6 +95,8 @@ class _$UserFormStateCopyWithImpl<$Res, $Val extends UserFormState>
     ) as $Val);
   }
 
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserEntityModelCopyWith<$Res> get userEntityModel {
@@ -131,6 +139,8 @@ class __$$UserFormStateImplCopyWithImpl<$Res>
       _$UserFormStateImpl _value, $Res Function(_$UserFormStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -202,12 +212,14 @@ class _$UserFormStateImpl implements _UserFormState {
                 other.roleFormz == roleFormz));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, userEntityModel, nameFormz, roleFormz);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserFormStateImplCopyWith<_$UserFormStateImpl> get copyWith =>
@@ -247,8 +259,11 @@ abstract class _UserFormState implements UserFormState {
   @JsonKey(
       defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
   RoleFormz? get roleFormz;
+
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserFormStateImplCopyWith<_$UserFormStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
