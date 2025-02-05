@@ -1,4 +1,3 @@
-
 import 'package:egote_services_v2/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,20 +17,24 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
   void initState() {
     super.initState();
 
-    _composition = AssetLottie(Assets.lottie.models.lottieLogo1).load();
+    _composition = AssetLottie(Assets.lottie.models.lottieLogo1.keyName).load();
     //_composition = AssetLottie('assets/lottie/models/LottieLogo1.json').load();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: _composition, builder: (context, snapshot) {
-      var composition = snapshot.data;
-      if (composition != null) {
-        return Lottie(composition: composition);
-      } else {
-        return const Center(child: CircularProgressIndicator(),);
-      }
-    },);
+    return FutureBuilder(
+      future: _composition,
+      builder: (context, snapshot) {
+        var composition = snapshot.data;
+        if (composition != null) {
+          return Lottie(composition: composition);
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
   }
 }
-

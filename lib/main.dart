@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'app.dart';
+import 'config/environements/bootstrap.dart';
+
+void main() async {
+  runApp(
+    UncontrolledProviderScope(
+      container: await bootstrap(),
+      child: const MyApp(),
+    ),
+  );
 }
 
+/*
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -123,3 +133,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/

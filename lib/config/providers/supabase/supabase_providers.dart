@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
 
 import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
@@ -28,10 +27,20 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
     },
   );
 
+  Future<String> getAccessToken() async {
+    String? accessToken = client.currentSession?.providerRefreshToken;
+    if (accessToken!.isEmpty) {
+      return Future.value(env.accessToken);
+    } else {
+      return accessToken;
+    }
+  }
+
   return await supabase.Supabase.initialize(
       url: env.supabaseUrl,
       anonKey: env.supabaseAnonKey,
       headers: client.headers,
+      accessToken: () => getAccessToken(),
       authOptions: const supabase.FlutterAuthClientOptions(
           authFlowType: supabase.AuthFlowType.pkce),
       // authCallbackUrlHostname: env.supabaseAuthCallbackUrlHostname,
@@ -56,32 +65,24 @@ final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
     dependencies: [supabaseProvider, supabaseInitProvider],
     name: 'Supabase Client Provider');
 
-final supabaseAuthUserProvider =
-    Provider<supabase.AuthUser>((ref) => supabase.AuthUser(
-          id: '',
-          email: '',
-          appMetadata: {},
-          aud: '',
-          createdAt: '',
-          phone: '',
-          role: '',
-          updatedAt: '',
-          userMetadata: {},
-          lastSignInAt: '',
-          emailConfirmedAt: '',
-          phoneConfirmedAt: '',
-          confirmedAt: '',
-        ));
+final supabaseAuthUserProvider = Provider<supabase.Session>((ref) {
+  final user = ref.watch(userSupabaseProvider);
+  return supabase.Session(
+      accessToken: 'sbp_1ab3d516d00ca0f129246c64d116d3fc5791bc35',
+      tokenType: 'tokenType',
+      user: user);
+});
 
 final supabaseSocketChannelProvider =
     Provider((ref) => ref.watch(supabaseProvider).client.realtime.transport);
 
-final supabaseRealtimeErrorProvider =
+/*final supabaseRealtimeErrorProvider =
     Provider<supabase.SupabaseRealtimeError>((ref) {
   return supabase.SupabaseRealtimeError();
-});
+});*/
 
-final supabaseChannelRProvider = Provider((ref) {
+/*
+final supabaseChannelRProvider = Provider((ref){
   final client =
       ref.watch(supabaseClientProvider.select((value) => value.realtime));
   supabase.SupabaseRealtimeError realtimeError =
@@ -154,33 +155,24 @@ final supabaseChannelRProvider = Provider((ref) {
     });
   });
 });
+*/
+
 final supabaseChannelResponseProvider =
     Provider((ref) => supabase.ChannelResponse);
 
 final supabaseChannelFilterProvider =
     Provider((ref) => supabase.RealtimeChannel);
 
-final linksTypeProvider = StateProvider((_) => supabase.GenerateLinkType);
-
-/*final supabaseCreateAuthProvider = Provider<supabase.AuthUser>((ref) {
-  final users = ref.watch(userNotifierProvider);
-  final authInit = ref.watch(supabaseAuthUserProvider);
-  final filter = ref.watch(linksTypeProvider);
-  final change = ref.read(userChangesProvider);
-
-  switch(filter) {
-    case
-  }
-
-  return authInit;
+final userSupabaseProvider = Provider<supabase.User>((ref) {
+  return supabase.User(
+      id: 'id',
+      appMetadata: {},
+      userMetadata: {},
+      aud: 'aud',
+      createdAt: 'createdAt');
 });
 
-final supabaseUsersListProvider = Provider<List<supabase.SupabaseAuth>>((ref) {
-  final users = ref.watch(userNotifierProvider);
-
-
-  final auths = ref.watch(su)
-},);*/
+final linksTypeProvider = StateProvider((_) => supabase.GenerateLinkType);
 
 final filterConnection = StateProvider<List<int>>((ref) {
   final state1 =
@@ -208,8 +200,6 @@ final countProvider = StateProvider<int>((ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
   final currentValue = prefs.getInt('count') ?? 0;
   ref.listen;
-  ref.listenSelf((previous, next) {
-    prefs.setInt('cont', next);
-  });
+
   return currentValue;
 });

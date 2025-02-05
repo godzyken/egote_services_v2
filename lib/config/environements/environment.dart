@@ -16,6 +16,7 @@ class Environment with _$Environment {
   /// [site] is the datadog site location
   /// [applicationId] is the id app for datadog
   /// [firstPartyHost] is the uri entre point to datadog analise
+  /// [accessToken] is the accessToken to Supabase
 
   const factory Environment({
     required String supabaseUrl,
@@ -30,6 +31,7 @@ class Environment with _$Environment {
     required String site,
     required String applicationId,
     required List<String>? firstPartyHost,
+    required String accessToken,
   }) = _Environment;
 
   ///
