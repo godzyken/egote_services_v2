@@ -110,8 +110,6 @@ class TrackingContentChangeNotifier
         case true:
           c = TrackingConsent.granted;
           return c;
-        default:
-          return c = state.last;
       }
     }
     return state.last == _trackingConsent.single;

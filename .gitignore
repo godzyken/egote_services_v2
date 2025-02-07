@@ -50,3 +50,7 @@ firebase_options.dart
 /assets/lottie/
 /assets/json/
 /assets/
+/android/secring.gpg
+/android/keymagic
+
+*.jnigen.yaml

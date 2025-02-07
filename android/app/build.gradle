@@ -27,7 +27,7 @@ if (flutterVersionName == null) {
 // Android SDK levels defined here:
 // https://developer.android.com/guide/topics/manifest/uses-sdk-element#ApiLevels
 def flutterCompileSdkVersion = 35
-def flutterMinSdkVersion = 24 // Android 7.0
+def flutterMinSdkVersion = 26
 def flutterTargetSdkVersion = 35
 
 kotlin {
@@ -69,20 +69,28 @@ android {
         versionName flutterVersionName
 		
         signingConfig signingConfigs.debug
-        multiDexEnabled true
+//        multiDexEnabled true
         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         testFunctionalTest true
         testHandleProfiling true
     }
 
- /*   signingConfigs {
+    signingConfigs {
         debug {
             storeFile file('D:\\gitrepo\\projects\\egote_services_v2\\android\\app\\key.properties')
             keyAlias 'AndroidDebugKey'
             keyPassword 'D4t.ebayo'
 
         }
-    }*/
+
+        release {
+            storeFile file("keymagic.gpg")
+            storePassword "pass y ka léssé on ti lodè zé"
+            keyAlias "<your_key_alias>"
+            keyPassword "<your_key_password>"
+        }
+
+    }
 
     buildTypes {
         release {
@@ -109,13 +117,16 @@ flutter {
 }
 
 dependencies {
-	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
-    implementation(libs.legacy.support.v13)
+	coreLibraryDesugaring(libs.desugar.jdk.libs.v212)
+//    implementation(libs.legacy.support.v13)
     implementation(libs.work.runtime)
-    implementation(libs.multidex)
+//    implementation(libs.multidex)
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
     implementation(libs.orientdb.core)
+    implementation(libs.firebase.messaging)
+    implementation(libs.appcompat.v7)
+    implementation(libs.flutter.embedding)
 }
 
 println("BUILD SCRIPT: This is executed during the configuration phase")

@@ -1,6 +1,6 @@
-// import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
-//import 'package:file_picker/file_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract class CubeRepositoryInterface {
@@ -9,9 +9,9 @@ abstract class CubeRepositoryInterface {
 
   Future<Either<Failure, bool>> signOut();
 
-// Future<CubeUserMig>? setSession(String token);
+  Future<CubeUser>? setSession(String token);
 
-/* Future<Either<Failure, CubeSession>> createUserSession(
+  Future<Either<Failure, CubeSession>> createUserSession(
       String login, String password);
 
   Future<Either<Failure, CubeSession>> updateUserSession(
@@ -24,5 +24,5 @@ abstract class CubeRepositoryInterface {
 
   Future<CubeFile> getUploadingImageFuture(FilePickerResult result);
 
-  Future<CubeSession> createPhoneAuthSession();*/
+  Future<CubeSession> createPhoneAuthSession();
 }

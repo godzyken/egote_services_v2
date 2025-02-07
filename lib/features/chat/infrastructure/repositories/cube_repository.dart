@@ -1,12 +1,20 @@
-// import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'dart:io';
+
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../config/app_shared/extensions/platform_utils.dart';
+import '../../../../config/cube_config/cube_config.dart';
+import '../../../../firebase_options.dart';
 import '../../../auth/domain/providers/auth_repository_provider.dart';
+import '../../data/data_sources/local/pref_util.dart';
 import '../../domain/repository/cube_repository_interface.dart';
 
 class CubeRepository implements CubeRepositoryInterface {
@@ -15,7 +23,7 @@ class CubeRepository implements CubeRepositoryInterface {
   final AuthRepository authRepository;
   final FirebaseAuth auth;
 
-/*  @override
+  @override
   Future<Either<Failure, CubeSession>> createGuestUserSession(
       bool isGuest, String fullName) {
     // TODO: implement createGuestUserSession
@@ -23,9 +31,10 @@ class CubeRepository implements CubeRepositoryInterface {
   }
 
   @override
-  Future<CubeUserMig>? setSession(String token) async {
+  Future<CubeUser>? setSession(String token) async {
     var idToken = await authRepository.setSession(token);
     return createSession().then((cubeSession) {
+      // TODO: 'signInUsingFirebaseEmail' is deprecated and shouldn't be used. Use [createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret)] instead.
       return signInUsingFirebaseEmail(
               DefaultFirebaseOptions.currentPlatform.projectId,
               idToken.toString())
@@ -43,6 +52,7 @@ class CubeRepository implements CubeRepositoryInterface {
   Future<Either<Failure, CubeSession>> createUserSession(
       String login, String password) async {
     return createSession().then((value) {
+      // TODO: 'signInByLogin' is deprecated and shouldn't be used. Use [createSession(user)] instead.
       return signInByLogin(login, password).then((value) {
         return right(CubeSessionManager.instance.activeSession!);
       });
@@ -53,7 +63,7 @@ class CubeRepository implements CubeRepositoryInterface {
   Future<CubeSession> restoreSession() {
     // TODO: implement restoreSession
     throw UnimplementedError();
-  }*/
+  }
 
   @override
   Future<Either<Failure, bool>> signInWithSocialProviders(
@@ -68,7 +78,7 @@ class CubeRepository implements CubeRepositoryInterface {
     throw UnimplementedError();
   }
 
-/*@override
+  @override
   Future<Either<Failure, CubeSession>> updateUserSession(
       String something, String password) {
     // TODO: implement updateUserSession
@@ -112,7 +122,7 @@ class CubeRepository implements CubeRepositoryInterface {
     return createSessionUsingFirebasePhone(
             DefaultFirebaseOptions.currentPlatform.projectId, phoneAuthIdToken)
         .then((cubeSession) => CubeSessionManager.instance.activeSession!);
-  }*/
+  }
 }
 
 final cubeRepositoryProvider = Provider.autoDispose<CubeRepository>(

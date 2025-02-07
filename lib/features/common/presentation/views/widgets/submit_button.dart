@@ -23,7 +23,7 @@ class SubmitButton extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 16.0),
       height: height,
       decoration: BoxDecoration(
-        color: enabled ? Colors.blue : Colors.grey.withOpacity(0.5),
+        color: enabled ? Colors.blue : Colors.grey.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: ElevatedButton(

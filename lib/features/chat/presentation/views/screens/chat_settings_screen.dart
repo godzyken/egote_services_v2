@@ -1,17 +1,21 @@
-import 'dart:developer';
-
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../config/providers/cube/cube_providers.dart';
+import '../../../../../config/providers/firebase/firebase_providers.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
+import '../../../application/managers/push_notifications_manager.dart';
+import '../../../data/data_sources/local/pref_util.dart';
+import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatSettingsScreen extends ConsumerWidget {
   const ChatSettingsScreen({super.key, required this.currentUser});
 
-  final CubeUserMig currentUser;
+  final CubeUser currentUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,7 +43,7 @@ class ChatSettingsScreen extends ConsumerWidget {
 }
 
 class BodySettingsLayout extends ConsumerStatefulWidget {
-  final CubeUserMig currentUser;
+  final CubeUser currentUser;
 
   const BodySettingsLayout(this.currentUser, {super.key});
 
@@ -173,19 +177,18 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
 
     if (result == null) return;
 
-    /*var uploadImageFuture = ref.watch(cubeRepositoryProvider)
-        .getUploadingImageFuture(result);
+    var uploadImageFuture =
+        ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);
 
     uploadImageFuture.then((cubeFile) {
       _avatarUrl = cubeFile.getPublicUrl();
       setState(() {
         var lastUser = widget.currentUser;
-        var lastUserAvatarUrl = lastUser.avatar;
-        lastUserAvatarUrl = _avatarUrl;
+        _avatarUrl = lastUser.avatar;
       });
     }).catchError((exception) {
       _processUpdateUserError(exception);
-    });*/
+    });
   }
 
   Widget _buildTextFields() {
@@ -264,16 +267,16 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       context.showAlert(context.tr!.nothingToSave);
       return;
     }
-/*    var userToUpdate = const CubeUserMig()..id = widget.currentUser.id;
+    var userToUpdate = CubeUser()..id = widget.currentUser.id;
 
     if (_name.isNotEmpty) userToUpdate.fullName = _name;
     if (_login.isNotEmpty) userToUpdate.login = _login;
     if (_email.isNotEmpty) userToUpdate.email = _email;
-    if (_avatarUrl!.isNotEmpty) userToUpdate.avatar = _avatarUrl;*/
+    if (_avatarUrl!.isNotEmpty) userToUpdate.avatar = _avatarUrl;
     setState(() {
       _isUsersContinues = true;
     });
-/*    updateUser(userToUpdate).then((user) {
+    updateUser(userToUpdate).then((user) {
       SharedPrefs.instance.updateUser(user);
       context.showAlert(context.tr!.success);
       setState(() {
@@ -281,7 +284,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       });
     }).catchError((exception) {
       _processUpdateUserError(exception);
-    });*/
+    });
   }
 
   void _logout() {
@@ -302,23 +305,26 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
             TextButton(
               child: Text(context.tr!.ok),
               onPressed: () {
-                /*           signOut().then(
-                      (voidValue) {
+                // TODO: 'signOut' is deprecated and shouldn't be used. Use [deleteSession] instead.
+                signOut().then(
+                  (voidValue) {
                     context.pop(context); // cancel current Dialog
                   },
                 ).catchError(
-                      (onError) {
+                  (onError) {
                     context.pop(context); // cancel current Dialog
                   },
                 ).whenComplete(() {
                   ref.watch(cubeChatConnectionProvider).destroy();
                   PushNotificationsManager.instance.unsubscribe();
-                  ref.watch(firebaseAuthProvider).currentUser
+                  ref
+                      .watch(firebaseAuthProvider)
+                      .currentUser
                       ?.unlink(PhoneAuthProvider.PROVIDER_ID);
                   SharedPrefs.instance.deleteUser();
                   context.pop(context); // cancel current screen
                   _navigateToLoginScreen();
-                });*/
+                });
               },
             ),
           ],
@@ -349,24 +355,24 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
             TextButton(
               child: Text(context.tr!.ok),
               onPressed: () async {
-                /*  CubeChatConnection.instance.destroy();
+                CubeChatConnection.instance.destroy();
                 await SharedPrefs.instance.deleteUser();
 
                 deleteUser(widget.currentUser.id!).then(
-                      (voidValue) {
+                  (voidValue) {
                     context.pop(context);
                   },
                 ).catchError(
-                      (onError) {
+                  (onError) {
                     context.pop(context);
                   },
                 ).whenComplete(() async {
                   await PushNotificationsManager.instance.unsubscribe();
-                   setState(() {
-                     context.pop();
-                   });
+                  setState(() {
+                    context.pop();
+                  });
                   _navigateToLoginScreen();
-                });*/
+                });
               },
             ),
           ],
@@ -375,7 +381,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     );
   }
 
-/*  _navigateToLoginScreen() {
+  _navigateToLoginScreen() {
     context.pushReplacementNamed('login');
   }
 
@@ -385,5 +391,5 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       _isUsersContinues = false;
     });
     ErrorScreen(error: exception, key: context.widget.key);
-  }*/
+  }
 }

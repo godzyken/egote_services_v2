@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/adapter/user/user_converter.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
 
 part 'user_entity.freezed.dart';
 part 'user_entity.g.dart';
@@ -108,7 +106,7 @@ class UserModel with _$UserModel {
     required UserId id,
     required UserEntityModel userEntityModel,
     @UserConverter() required AuthUser authUser,
-    required CubeUserMig cubeUser,
+    required CubeUser cubeUser,
   }) = _UserModelComplete;
 
   @FreezedUnionValue('UnComplete')

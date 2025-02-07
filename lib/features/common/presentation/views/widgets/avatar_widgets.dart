@@ -1,10 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import '../../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
-import '../../../../chat/domain/models/entities/message_state/message_state.dart';
 
 Widget getAvatarTextWidget(bool condition, String? text, {double? fontSize}) {
   if (condition) {
@@ -17,13 +13,13 @@ Widget getAvatarTextWidget(bool condition, String? text, {double? fontSize}) {
   }
 }
 
-Widget getUserAvatarWidget(CubeUserMig? cubeUser, double radius,
+Widget getUserAvatarWidget(CubeUser? cubeUser, double radius,
     {Widget? placeholder, Widget? errorWidget}) {
   return getAvatarWidget(cubeUser?.avatar, cubeUser?.fullName, radius,
       placeholder: placeholder, errorWidget: errorWidget);
 }
 
-Widget getDialogAvatarWidget(CubeDialogMig? cubeDialog, double radius,
+Widget getDialogAvatarWidget(CubeDialog? cubeDialog, double radius,
     {Widget? placeholder, Widget? errorWidget}) {
   return getAvatarWidget(cubeDialog?.photo, cubeDialog?.name, radius,
       placeholder: placeholder, errorWidget: errorWidget);
@@ -169,10 +165,6 @@ Widget getMessageStateWidget(MessageState state) {
         size: 15.0,
         color: Colors.grey,
       );
-
-      break;
-    default:
-      result = const SizedBox.shrink();
 
       break;
   }

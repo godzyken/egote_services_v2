@@ -15,7 +15,7 @@ const bool _debug = !kReleaseMode && true;
 ///
 /// The value returned depends on the controller [usedKeyValueDbProvider].
 final StateProvider<KeyValueDb> keyValueDbProvider =
-StateProvider<KeyValueDb>((StateProviderRef<KeyValueDb> ref) {
+    StateProvider<KeyValueDb>((Ref<KeyValueDb> ref) {
   ref.onDispose(() {
     if (_debug) debugPrint('keyValueDbProvider: onDispose called');
   });

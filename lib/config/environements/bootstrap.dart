@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:stack_trace/stack_trace.dart' as stacktrace;
 
 import '../providers.dart';
 import 'flavors.dart';
@@ -75,8 +75,8 @@ Future<ProviderContainer> bootstrap() async {
   }
 
   FlutterError.demangleStackTrace = (StackTrace stack) {
-    if (stack is stack_trace.Trace) return stack.vmTrace;
-    if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
+    if (stack is stacktrace.Trace) return stack.vmTrace;
+    if (stack is stacktrace.Chain) return stack.toTrace().vmTrace;
 
     return stack;
   };
@@ -132,10 +132,10 @@ Future<ProviderContainer> bootstrap() async {
       singleChildMount,
       statefulElementRebuild,
     ], replacement: replacementString));
-  } catch (exception, stack_Trace) {
+  } catch (exception, stacktrace) {
     await Sentry.captureException(
       exception,
-      stackTrace: stack_Trace,
+      stackTrace: stacktrace,
     );
   } finally {
     transaction.finished;

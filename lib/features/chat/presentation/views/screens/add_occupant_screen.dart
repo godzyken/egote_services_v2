@@ -1,7 +1,4 @@
-// import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'dart:developer';
-
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,14 +10,14 @@ class AddOccupantScreen extends ConsumerStatefulWidget {
       {super.key, required this.cubeUser, required this.id});
 
   final int id;
-  final CubeUserMig cubeUser;
+  final CubeUser cubeUser;
 
   @override
   ConsumerState createState() => _AddOccupantScreenState();
 }
 
 class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
-  late final CubeUserMig currentUser;
+  late final CubeUser currentUser;
   late int idCopy;
 
   @override
@@ -34,7 +31,7 @@ class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked: (context) => _onBackPressed(context),
+      onPopInvokedWithResult: (isPop, result) async => _onBackPressed(isPop),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
@@ -52,7 +49,7 @@ class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
 }
 
 class BodyLayout extends ConsumerStatefulWidget {
-  final CubeUserMig currentUser;
+  final CubeUser currentUser;
 
   const BodyLayout(this.currentUser, {super.key});
 
@@ -61,8 +58,8 @@ class BodyLayout extends ConsumerStatefulWidget {
 }
 
 class _BodyLayoutState extends ConsumerState<BodyLayout> {
-  late final CubeUserMig currentUser;
-  List<CubeUserMig> userList = [];
+  late final CubeUser currentUser;
+  List<CubeUser> userList = [];
   final Set<int> _selectedUsers = {};
   var _isUsersContinues = false;
   String? userToSearch;
@@ -72,7 +69,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
   void initState() {
     super.initState();
     _isUsersContinues = false;
-    currentUser = const CubeUserMig();
+    currentUser = CubeUser();
   }
 
   _searchUser(value) {

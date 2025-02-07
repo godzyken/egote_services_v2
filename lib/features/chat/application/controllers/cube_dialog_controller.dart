@@ -1,4 +1,13 @@
-/*// TODO: Migration, `CubeDialog` est remplacé par 'CubeDialogMig'
+import 'dart:developer' as developer;
+
+// TODO: Migration, `CubeDialog` est remplacé par 'CubeDialogMig'
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
+
 class CubeDialogController extends StateNotifier<CubeDialogMig?> {
   CubeDialogController(this._ref) : super(null) {
     _initialize();
@@ -52,7 +61,7 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
         }
       }
 
-      */ /*switch (state) {
+      switch (state) {
         case CubeChatConnectionState.Idle:
         // TODO: instance of connection was created.
         case CubeChatConnectionState.Connecting:
@@ -81,13 +90,25 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
             }
           });
           break;
-      }*/ /*
+        case RTCDataChannelState.RTCDataChannelConnecting:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+        case RTCDataChannelState.RTCDataChannelOpen:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+        case RTCDataChannelState.RTCDataChannelClosing:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+        case RTCDataChannelState.RTCDataChannelClosed:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+      }
     });
 
     return cubeChatConnectionStateSubscription.resume();
   }
 
-*/ /*reconnection() {
+  reconnection() {
     CubeChatConnectionSettings chatConnectionSettings =
         CubeChatConnectionSettings.instance;
     chatConnectionSettings.reconnectionTimeout = 5000;
@@ -105,5 +126,5 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
         }
       }
     });
-  }*/ /*
-}*/
+  }
+}

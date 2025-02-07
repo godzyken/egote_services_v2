@@ -1,4 +1,5 @@
 // import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,6 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/domain/entities/entities_extension.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
-import '../../features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import '../../features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import '../../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
@@ -464,7 +463,7 @@ class SelectDialogRoute extends GoRouteData {
 
   SelectDialogRoute({required this.cid});
 
-  CubeUserMig? currentUser;
+  CubeUser? currentUser;
 
   int? get _cid => cid = currentUser!.id!;
 
@@ -487,12 +486,12 @@ class ChatDialogRoute extends GoRouteData {
   ChatDialogRoute({required this.cid, required this.cdid});
 
   int cid;
-  CubeUserMig? currentUser;
+  CubeUser? currentUser;
 
   int? get _cid => cid = currentUser!.id!;
 
   int cdid;
-  CubeDialogMig? cubeDialog;
+  CubeDialog? cubeDialog;
 
   int? get _cdid => cdid = cubeDialog!.type!;
 

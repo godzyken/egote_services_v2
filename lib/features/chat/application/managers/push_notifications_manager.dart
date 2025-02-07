@@ -1,19 +1,24 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_pushnotifications.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../config/app_shared/extensions/extensions.dart';
+import '../../../../config/cube_config/cube_config.dart';
 import '../../data/data_sources/local/pref_util.dart';
+import '../../domain/models/entities/cube_environment/cube_environment_mig.dart';
 
 class PushNotificationsManager {
   static const TAG = "PushNotificationsManager";
@@ -129,7 +134,7 @@ class PushNotificationsManager {
       return;
     }
 
-/*    CreateSubscriptionParameters parameters = CreateSubscriptionParameters();
+    CreateSubscriptionParameters parameters = CreateSubscriptionParameters();
     parameters.pushToken = token;
 
     bool isProduction =
@@ -141,7 +146,7 @@ class PushNotificationsManager {
     if (Platform.isAndroid || kIsWeb || Platform.isIOS || Platform.isMacOS) {
       parameters.channel = NotificationsChannels.GCM;
       parameters.platform = CubePlatform.ANDROID;
-    }*/
+    }
 
     var deviceInfoPlugin = DeviceInfoPlugin();
 
@@ -163,7 +168,7 @@ class PushNotificationsManager {
 
     String? newUuid = const Uuid().v4.toString();
 
-    /* parameters.udid = deviceId ?? newUuid;
+    parameters.udid = deviceId ?? newUuid;
 
     var packageInfo = await PackageInfo.fromPlatform();
     parameters.bundleIdentifier = packageInfo.packageName;
@@ -181,17 +186,17 @@ class PushNotificationsManager {
     }).catchError((error) {
       developer.log(
           '[subscribe] subscription ERROR: $error, ${PushNotificationsManager.TAG}');
-    });*/
+    });
   }
 
   Future<void> unsubscribe() {
     return SharedPrefs.instance.init().then((sharedPrefs) {
       int subscriptionId = sharedPrefs.getSubscriptionId();
       if (subscriptionId != 0) {
-        /*return deleteSubscription(subscriptionId).then((voidResult) {
+        return deleteSubscription(subscriptionId).then((voidResult) {
           FirebaseMessaging.instance.deleteToken();
           sharedPrefs.saveSubscriptionId(0);
-        });*/
+        });
       }
       return Future.value();
     }).catchError((onError) {
@@ -280,7 +285,7 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
 
   if (payload != null) {
     return SharedPrefs.instance.init().then((sharedPrefs) async {
-      CubeUserMig? user =
+      CubeUser? user =
           await sharedPrefs.getUser().then((savedUser) => savedUser);
 
       Map<String, dynamic> payloadObject = jsonDecode(payload);
@@ -289,14 +294,14 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
       developer.log(
           "[onSelectNotification] dialog_id: $dialogId, ${PushNotificationsManager.TAG}");
 
-      /*getDialogs({'id': dialogId}).then((dialogs) {
+      getDialogs({'id': dialogId}).then((dialogs) {
         if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
-          CubeDialogMig dialog = dialogs.items.first;
+          CubeDialog dialog = dialogs.items.first;
 
           context.pushNamed('chat_dialog',
               extra: {USER_ARG_NAME: user, DIALOG_ARG_NAME: dialog});
         }
-      });*/
+      });
     });
   } else {
     return Future.value();

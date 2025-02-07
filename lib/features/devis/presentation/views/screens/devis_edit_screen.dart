@@ -8,7 +8,6 @@ class DevisEditScreen extends ConsumerWidget {
 
   const DevisEditScreen({super.key, required this.devisId});
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -56,7 +55,7 @@ class DevisEditScreen extends ConsumerWidget {
                       ),
                     ),
                     Material(
-                      color: theme.cardColor.withOpacity(0.5),
+                      color: theme.cardColor.withValues(alpha: 0.5),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' deferred as date_format;
 
 /// Extension that allows to substitute [DateTime.now] with a testable function
 extension DateTimeX on DateTime {
@@ -28,7 +28,7 @@ extension DateTimeX on DateTime {
 
   /// Default [DateTime] format to be used on the UI
   String defaultString() {
-    return DateFormat.yMMMd().format(this);
+    return date_format.DateFormat.yMMMd().format(this);
   }
 
   static DateTime? _customTime;

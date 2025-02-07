@@ -868,7 +868,7 @@ mixin _$UserModel {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)
         complete,
     required TResult Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)
@@ -878,7 +878,7 @@ mixin _$UserModel {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)?
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult? Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)?
@@ -888,7 +888,7 @@ mixin _$UserModel {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)?
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)?
@@ -1008,13 +1008,12 @@ abstract class _$$UserModelCompleteImplCopyWith<$Res>
       {UserId id,
       UserEntityModel userEntityModel,
       @UserConverter() AuthUser authUser,
-      CubeUserMig cubeUser});
+      CubeUser cubeUser});
 
   @override
   $UserIdCopyWith<$Res> get id;
   @override
   $UserEntityModelCopyWith<$Res> get userEntityModel;
-  $CubeUserMigCopyWith<$Res> get cubeUser;
 }
 
 /// @nodoc
@@ -1051,18 +1050,8 @@ class __$$UserModelCompleteImplCopyWithImpl<$Res>
       cubeUser: null == cubeUser
           ? _value.cubeUser
           : cubeUser // ignore: cast_nullable_to_non_nullable
-              as CubeUserMig,
+              as CubeUser,
     ));
-  }
-
-  /// Create a copy of UserModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $CubeUserMigCopyWith<$Res> get cubeUser {
-    return $CubeUserMigCopyWith<$Res>(_value.cubeUser, (value) {
-      return _then(_value.copyWith(cubeUser: value));
-    });
   }
 }
 
@@ -1088,7 +1077,7 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
   @UserConverter()
   final AuthUser authUser;
   @override
-  final CubeUserMig cubeUser;
+  final CubeUser cubeUser;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
@@ -1130,7 +1119,7 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)
         complete,
     required TResult Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)
@@ -1143,7 +1132,7 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)?
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult? Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)?
@@ -1156,7 +1145,7 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)?
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)?
@@ -1213,7 +1202,7 @@ abstract class _UserModelComplete implements UserModel {
       {required final UserId id,
       required final UserEntityModel userEntityModel,
       @UserConverter() required final AuthUser authUser,
-      required final CubeUserMig cubeUser}) = _$UserModelCompleteImpl;
+      required final CubeUser cubeUser}) = _$UserModelCompleteImpl;
 
   factory _UserModelComplete.fromJson(Map<String, dynamic> json) =
       _$UserModelCompleteImpl.fromJson;
@@ -1225,7 +1214,7 @@ abstract class _UserModelComplete implements UserModel {
   @override
   @UserConverter()
   AuthUser get authUser;
-  CubeUserMig get cubeUser;
+  CubeUser get cubeUser;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -1346,7 +1335,7 @@ class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)
         complete,
     required TResult Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)
@@ -1359,7 +1348,7 @@ class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)?
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult? Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)?
@@ -1372,7 +1361,7 @@ class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUserMig cubeUser)?
+            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
         complete,
     TResult Function(UserId id, UserEntityModel userEntityModel,
             @UserConverter() AuthUser authUser)?

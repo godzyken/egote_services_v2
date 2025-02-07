@@ -1,6 +1,6 @@
-//import 'dart:async';
+import 'dart:async';
 
-// import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 
 class ChatManager {
   static ChatManager? _instance;
@@ -9,7 +9,7 @@ class ChatManager {
 
   static ChatManager get instance => _instance ??= ChatManager._();
 
-/*StreamController<CubeMessage> sentMessagesController =
+  StreamController<CubeMessage> sentMessagesController =
       StreamController.broadcast();
 
   Stream<CubeMessage> get sentMessagesStream {
@@ -21,5 +21,5 @@ class ChatManager {
 
   Stream<MessageStatus> get readMessagesStream {
     return readMessagesController.stream;
-  }*/
+  }
 }

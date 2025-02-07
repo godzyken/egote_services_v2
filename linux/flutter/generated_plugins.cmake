@@ -5,12 +5,14 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_webview_auth
   emoji_picker_flutter
+  flutter_webrtc
   gtk
   sentry_flutter
   url_launcher_linux
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
+  jni
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

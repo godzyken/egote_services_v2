@@ -1,8 +1,4 @@
-//import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'dart:developer';
-
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/features/chat/infrastructure/repositories/cube_user_repository.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
@@ -17,41 +13,44 @@ class ChatDetailsScreen extends ConsumerWidget {
   const ChatDetailsScreen(
       {super.key, required this.cubeUser, required this.cubeDialog});
 
-  final CubeUserMig cubeUser;
-  final CubeDialogMig cubeDialog;
+  final CubeUser cubeUser;
+  final CubeDialog cubeDialog;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopScope(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => context.pop(),
-            icon: const Icon(
-              Icons.close,
-              color: Colors.white,
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () => context.pop(),
+              icon: const Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
             ),
+            automaticallyImplyLeading: false,
+            title: Text(cubeDialog.type == CubeDialogType.PRIVATE
+                ? context.tr!.contactDetails
+                : context.tr!.groupDetails),
+            centerTitle: false,
+            actions: [
+              if (cubeDialog.type != CubeDialogType.PRIVATE)
+                IconButton(
+                  onPressed: () {
+                    _exitDialog(context);
+                  },
+                  icon: const Icon(
+                    Icons.exit_to_app,
+                  ),
+                )
+            ],
           ),
-          automaticallyImplyLeading: false,
-          title: Text(cubeDialog.type == CubeDialogTypeMig.PRIVATE
-              ? context.tr!.contactDetails
-              : context.tr!.groupDetails),
-          centerTitle: false,
-          actions: [
-            if (cubeDialog.type != CubeDialogTypeMig.PRIVATE)
-              IconButton(
-                onPressed: () {
-                  _exitDialog(context);
-                },
-                icon: const Icon(
-                  Icons.exit_to_app,
-                ),
-              )
-          ],
         ),
-      ),
-      onPopInvoked: (isPop) => _onBackPressed(context),
-    );
+        onPopInvokedWithResult: (isPop, result) async {
+          if (isPop) {
+            _onBackPressed(context);
+          }
+        });
   }
 
   Future<bool> _onBackPressed(BuildContext context) {
@@ -76,7 +75,7 @@ class ChatDetailsScreen extends ConsumerWidget {
             TextButton(
               child: Text(context.tr!.ok),
               onPressed: () {
-                /*deleteDialog(cubeDialog.dialogId!).then((onValue) {
+                deleteDialog(cubeDialog.dialogId!).then((onValue) {
                   context.showAlert(context.tr!.success);
                   context.pushReplacementNamed(
                     'select_dialog',
@@ -84,7 +83,7 @@ class ChatDetailsScreen extends ConsumerWidget {
                   );
                 }).catchError((error) {
                   context.showAlert(error);
-                });*/
+                });
               },
             ),
           ],
@@ -98,8 +97,8 @@ class DetailsScreen extends ConsumerStatefulWidget {
   const DetailsScreen(
       {super.key, required this.cubeUser, required this.cubeDialog});
 
-  final CubeUserMig cubeUser;
-  final CubeDialogMig cubeDialog;
+  final CubeUser cubeUser;
+  final CubeDialog cubeDialog;
 
   @override
   ConsumerStatefulElement createElement() {
@@ -120,7 +119,7 @@ class DetailsScreen extends ConsumerStatefulWidget {
 }
 
 abstract class DetailsScreenState extends ConsumerState<DetailsScreen> {
-  final Map<int, CubeUserMig> _occupants = {};
+  final Map<int, CubeUser> _occupants = {};
   var _isProgressContinues = false;
 
   @override
@@ -155,14 +154,14 @@ abstract class DetailsScreenState extends ConsumerState<DetailsScreen> {
 }
 
 class ContactScreenState extends DetailsScreenState {
-  CubeUserMig? contactUser;
+  CubeUser? contactUser;
 
   ContactScreenState();
 
   initUser() {
     contactUser = _occupants.values.isNotEmpty
         ? _occupants.values.first
-        : CubeUserMig(fullName: context.tr!.absent);
+        : CubeUser(fullName: context.tr!.absent);
   }
 
   @override

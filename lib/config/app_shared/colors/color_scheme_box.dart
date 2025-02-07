@@ -70,13 +70,18 @@ class ColorSchemeBox extends StatelessWidget {
 
   // On color for icon on the colored box.
   static Color _onColor(final Color color) => _isLight(color)
-      ? Colors.black.withOpacity(0.8)
-      : Colors.white.withOpacity(0.8);
+      ? Colors.black.withValues(alpha: 0.8)
+      : Colors.white.withValues(alpha: 0.8);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ColorScheme scheme = theme.colorScheme;
+    final ColorScheme scheme = theme.colorScheme.copyWith(
+      onPrimaryContainer: const Color(0xFF21005D),
+      onSecondaryContainer: const Color(0xFF1D192B),
+      onTertiaryContainer: const Color(0xFF31111D),
+      onErrorContainer: const Color(0xFF410E0B),
+    );
     final Color foreground =
         foregroundColor ?? _onColor(backgroundColor ?? scheme.surface);
     final double width =

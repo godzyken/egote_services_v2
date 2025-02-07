@@ -1,17 +1,23 @@
 [versions]
-desugar_jdk_libs = "2.0.4"
-flutter_embedding_debug = "1.0.0-f6344b75dcf861d8bf1f1322780b8811f982e31a"
-flutter_embedding_profile = "1.0.0-f6344b75dcf861d8bf1f1322780b8811f982e31a"
-flutter_embedding_release = "1.0.0-f6344b75dcf861d8bf1f1322780b8811f982e31a"
-junitJupiter = "5.10.2"
+appcompatV7 = "28.0.0"
+desugar_jdk_libs = "2.1.4"
+desugar_jdk_libsVersion = "2.1.2"
+firebaseMessaging = "24.1.0"
+flutter_embedding = "3.0.0"
+flutter_embedding_debug = "1.0.0-8177b5e8b450619fad86a6dba7fd9b30ed24cf85"
+flutter_embedding_profile = "1.0.0-8177b5e8b450619fad86a6dba7fd9b30ed24cf85"
+flutter_embedding_release = "1.0.0-8177b5e8b450619fad86a6dba7fd9b30ed24cf85"
+groovy = "3.0.23"
+junitJupiter = "5.12.0-M1"
 legacySupportV13 = "1.0.0"
 openpgpApi = "v5.7.1"
-orientdbCore = "3.2.30"
+orientdbCore = "3.2.37"
 workRuntime = "2.9.0"
 agp = "8.4"
 multidex = "2.0.1"
 
 [libraries]
+appcompat-v7 = { module = "com.android.support:appcompat-v7", version.ref = "appcompatV7" }
 arm64_v8a_debug = { module = "io.flutter:arm64_v8a_debug", version.ref = "flutter_embedding_debug" }
 arm64_v8a_profile = { module = "io.flutter:arm64_v8a_profile", version.ref = "flutter_embedding_profile" }
 arm64_v8a_release = { module = "io.flutter:arm64_v8a_release", version.ref = "flutter_embedding_release" }
@@ -19,9 +25,13 @@ armeabi_v7a_debug = { module = "io.flutter:armeabi_v7a_debug", version.ref = "fl
 armeabi_v7a_profile = { module = "io.flutter:armeabi_v7a_profile", version.ref = "flutter_embedding_profile" }
 armeabi_v7a_release = { module = "io.flutter:armeabi_v7a_release", version.ref = "flutter_embedding_release" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+desugar_jdk_libs-v212 = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libsVersion" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebaseMessaging" }
+flutter_embedding = { module = "io.flutter:flutter_embedding", version.ref = "flutter_embedding" }
 flutter_embedding_engine = { module = "io.flutter:flutter_embedding_engine", version.ref = "flutter_embedding_debug" }
 flutter_embedding_profile = { module = "io.flutter:flutter_embedding_profile", version.ref = "flutter_embedding_profile" }
 flutter_embedding_release = { module = "io.flutter:flutter_embedding_release", version.ref = "flutter_embedding_release" }
+groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 legacy-support-v13 = { group = "androidx.legacy", name = "legacy-support-v13", version.ref = "legacySupportV13" }

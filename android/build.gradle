@@ -3,6 +3,13 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.fork = true
+            options.forkOptions.executable = 'C:/Program Files/OpenJDK/jdk-21.0.2/bin/javac.exe'
+        }
+    }
 }
 
 rootProject.file("../build")

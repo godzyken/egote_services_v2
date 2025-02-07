@@ -30,25 +30,25 @@ class KeyValueDbListener {
     if (_debug) debugPrint('KeyValueDbListener: _init() setup listen');
     // Listen to state changes in keyValueDbProvider.state.
     ref.listen<StateController<KeyValueDb>>(keyValueDbProvider.notifier,
-            (StateController<KeyValueDb>? previous,
+        (StateController<KeyValueDb>? previous,
             StateController<KeyValueDb> current) async {
-          // This callback executes when the keyValueDbProvider value changes.
-          if (_debug) {
-            debugPrint('KeyValueDbListener: listen called - - - - -');
-            debugPrint('  DB switch : ${current.state}');
-          }
-          // Get the new un-initialized keyValueDb and initialize it.
-          final KeyValueDb keyValueDb = current.state;
-          await keyValueDb.init();
-          // We changed key valued DB, we must update all settings controls.
-          Settings.init(ref);
-        });
+      // This callback executes when the keyValueDbProvider value changes.
+      if (_debug) {
+        debugPrint('KeyValueDbListener: listen called - - - - -');
+        debugPrint('  DB switch : ${current.state}');
+      }
+      // Get the new un-initialized keyValueDb and initialize it.
+      final KeyValueDb keyValueDb = current.state;
+      await keyValueDb.init();
+      // We changed key valued DB, we must update all settings controls.
+      Settings.init(ref);
+    });
   }
 }
 
 /// A provider used to read and activate a [KeyValueDbListener].
 final Provider<KeyValueDbListener> keyValueDbListenerProvider =
-Provider<KeyValueDbListener>((ProviderRef<KeyValueDbListener> ref) {
+    Provider<KeyValueDbListener>((Ref<KeyValueDbListener> ref) {
   if (_debug) debugPrint('keyValueDbListenerProvider called');
   return KeyValueDbListener(ref);
 });

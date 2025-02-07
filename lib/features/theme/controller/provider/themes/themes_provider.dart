@@ -17,7 +17,7 @@ import '../../../models/flex_tone.dart';
 /// of the watched [Settings] providers state is updated, the [MaterialApp]
 /// will get new [ThemeData] and be rebuilt with the new theme applied.
 final Provider<ThemeData> lightThemeProvider = Provider<ThemeData>(
-  (ProviderRef<ThemeData> ref) {
+  (Ref<ThemeData> ref) {
     // Make an always valid FlexTones config getter from our unsafe int.
     final bool useSeed = ref.watch(Settings.usePrimaryKeyColorProvider);
     final int flexTone = ref.watch(Settings.usedFlexToneProvider);
@@ -58,7 +58,7 @@ final Provider<ThemeData> lightThemeProvider = Provider<ThemeData>(
 ///
 /// Same setup as the [lightThemeProvider], we just have a few more properties.
 final Provider<ThemeData> darkThemeProvider = Provider<ThemeData>(
-  (ProviderRef<ThemeData> ref) {
+  (Ref<ThemeData> ref) {
     // Make an always valid FlexTones config getter from our unsafe int.
     final bool useSeed = ref.watch(Settings.usePrimaryKeyColorProvider);
     final int flexTone = ref.watch(Settings.usedFlexToneProvider);

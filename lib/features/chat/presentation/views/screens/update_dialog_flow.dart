@@ -1,18 +1,17 @@
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/common/application/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
-import '../../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import '../../../domain/models/entities/cube_user/cube_user_mig.dart';
 
 class UpdateDialog extends ConsumerWidget {
   const UpdateDialog(
       {super.key, required this.currentUser, required this.currentDialog});
 
-  final CubeUserMig currentUser;
-  final CubeDialogMig currentDialog;
+  final CubeUser currentUser;
+  final CubeDialog currentDialog;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

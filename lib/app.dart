@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-//import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
@@ -12,10 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
-// import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
-import 'features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
 import 'l10n/app_localizations.dart';
 
@@ -73,7 +71,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    /*  connectivityStateSubscription =
+    connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen((connectivityType) {
       if (AppLifecycleState.resumed != appState) return;
 
@@ -115,7 +113,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         case ConnectivityResult.other:
         // TODO: Handle this case.
       }
-    });*/
+    });
     late final initCube = initConnectyCube();
 
     initCube.asStream();
@@ -158,7 +156,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         SharedPrefs.instance.init().then((sharedPrefs) async {
-          CubeUserMig? user =
+          CubeUser? user =
               await sharedPrefs.getUser().then((savedUser) => savedUser!);
 
           if (user != null) {
