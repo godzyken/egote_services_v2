@@ -14,12 +14,9 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
   final UpdateUserCase _updateUserCase;
   final DeleteUserCase _deleteUserCase;
 
-  UserListViewModel(
-      this._getUserListCase,
-      this._createUserCase,
-      this._updateUserCase,
-      this._deleteUserCase
-      ) : super(const State.init()) {
+  UserListViewModel(this._getUserListCase, this._createUserCase,
+      this._updateUserCase, this._deleteUserCase)
+      : super(const State.init()) {
     _getUserList();
   }
 
@@ -45,7 +42,11 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
 
   testAdd() async {
     var name = 'sasuke';
+    var email = 'sasukeUtchiwa@yahoo.com';
     var role = 'renegade';
+    var externalId = 'sasukeUtchiwa';
+    var phone = '0987654321';
+    var externalLink = 'Linkedin@sasukeUtchiwa';
     bool isComplete = true;
     DateTime createdAt = DateTime.now();
     DateTime updatedAt = DateTime.now();
@@ -54,33 +55,51 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
     DateTime lastSignInAt = DateTime.now();
 
     await _createUserCase.execute(
-        name, role, isComplete, createdAt, updatedAt, emailConfirmedAt, phoneConfirmedAt, lastSignInAt);
+        name,
+        email,
+        role,
+        externalId,
+        phone,
+        externalLink,
+        isComplete,
+        createdAt,
+        updatedAt,
+        emailConfirmedAt,
+        phoneConfirmedAt,
+        lastSignInAt);
   }
 
   createUser(
-      final String name,
-      final String role,
-      final bool isComplete,
-      final DateTime createdAt,
-      final DateTime updatedAt,
-      final DateTime emailConfirmedAt,
-      final DateTime phoneConfirmedAt,
-      final DateTime lastSignInAt,
-      ) async {
+    final String name,
+    final String email,
+    final String role,
+    final String? externalId,
+    final String? phone,
+    final String? externalLink,
+    final bool isComplete,
+    final DateTime createdAt,
+    final DateTime updatedAt,
+    final DateTime emailConfirmedAt,
+    final DateTime phoneConfirmedAt,
+    final DateTime lastSignInAt,
+  ) async {
     try {
       developer.log('CreateUser() : start try with name: $name');
 
       state = const State.loading();
       final newUser = await _createUserCase.execute(
           name,
+          email,
           role,
+          externalId!,
+          phone!,
+          externalLink!,
           isComplete,
           createdAt,
           updatedAt,
           emailConfirmedAt,
           phoneConfirmedAt,
-          lastSignInAt
-      );
+          lastSignInAt);
       developer.log('New User from CreateUser() : $newUser');
 
       state = State.success(state.data!.addUser(newUser));
@@ -99,7 +118,11 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
       await _updateUserCase.execute(
         newUser.id,
         newUser.name,
+        newUser.email,
         newUser.role,
+        newUser.externalId,
+        newUser.phone,
+        newUser.externalLink,
         newUser.isComplete,
         newUser.createdAt,
         newUser.updatedAt,
@@ -130,38 +153,37 @@ final filteredUserListProvider = Provider.autoDispose<State<UserList>>(
     final userListState = ref.watch(userListViewModelStateNotifierProvider);
 
     return userListState.when(
-        init: () => const State.init(),
-        loading: () => const State.loading(),
-        success: (data) {
-          switch (filterKind) {
-            case FilterKind.all:
-              return State.success(data);
-            case FilterKind.available:
-              return State.success(data.filterByComplete());
-            case FilterKind.unavailable:
-              return State.success(data.filterByIncomplete());
-            case FilterKind.byId:
-              return State.success(data.filterByIncomplete());
-          }
-        },
-        error: (exception) => State.error(exception),
+      init: () => const State.init(),
+      loading: () => const State.loading(),
+      success: (data) {
+        switch (filterKind) {
+          case FilterKind.all:
+            return State.success(data);
+          case FilterKind.available:
+            return State.success(data.filterByComplete());
+          case FilterKind.unavailable:
+            return State.success(data.filterByIncomplete());
+          case FilterKind.byId:
+            return State.success(data.filterByIncomplete());
+        }
+      },
+      error: (exception) => State.error(exception),
     );
   },
 );
 
-final userListViewModelStateNotifierProvider = StateNotifierProvider
-    .autoDispose<UserListViewModel, State<UserList>>(
+final userListViewModelStateNotifierProvider =
+    StateNotifierProvider.autoDispose<UserListViewModel, State<UserList>>(
         (ref) => UserListViewModel(
-            ref.watch(getUserListUseCaseProvider),
-            ref.watch(createUserUseCaseProvider),
-            ref.watch(updateUserUseCaseProvider),
-            ref.watch(deleteUserUseCaseProvider),
-        ),
-    dependencies: [
-      getUserListUseCaseProvider,
-      createUserUseCaseProvider,
-      updateUserUseCaseProvider,
-      deleteUserUseCaseProvider,
-    ],
-    name: 'User List View Model State Notifier Provider'
-);
+              ref.watch(getUserListUseCaseProvider),
+              ref.watch(createUserUseCaseProvider),
+              ref.watch(updateUserUseCaseProvider),
+              ref.watch(deleteUserUseCaseProvider),
+            ),
+        dependencies: [
+          getUserListUseCaseProvider,
+          createUserUseCaseProvider,
+          updateUserUseCaseProvider,
+          deleteUserUseCaseProvider,
+        ],
+        name: 'User List View Model State Notifier Provider');

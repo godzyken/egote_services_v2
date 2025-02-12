@@ -9,15 +9,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../gen/assets.gen.dart';
+import '../../../chat/application/providers/cube_settings_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.child});
+  final Widget child;
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  Widget? child;
   bool animate = false;
 
   int index = 0;
@@ -97,8 +100,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 //onEnd: () => context.go('/authRoute'),
                 //onEnd: () => context.goNamed('mfaList'),
                 onEnd: () => context.goNamed('select_dialog', pathParameters: {
-                      'cid': 'idMetry'
-                      // ref.watch(cubeUserControllerProvider)!.id.toString()
+                      'cid':
+                          ref.watch(cubeUserControllerProvider)!.id.toString()
                     }),
                 //onEnd: () => context.goNamed('devis', pathParameters: {'devisId': '123'}),
                 //onEnd: () => context.goNamed('devisList'),
@@ -133,10 +136,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     height: 250,
                   ),
                 )),
-            // GestureDetector(
-            //     onHorizontalDragEnd: (details) => context.goNamed('userList'),
-            //     child: child
-            // ),
+            GestureDetector(
+                onHorizontalDragEnd: (details) => context.goNamed('userList'),
+                child: child),
           ],
         ),
         floatingActionButton: FloatingActionButton(

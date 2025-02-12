@@ -53,7 +53,7 @@ class AuthController extends StateNotifier<AsyncValue<UserModel?>> {
     try {
       state = const AsyncValue.loading();
       final initialLink =
-          await getInitialLink(state.requireValue?.authUser.actionLink);
+          await getInitialLink(state.requireValue?.userEntityModel.name);
       if (state.isRefreshing) {
         if (!(initialLink?.contains('refresh_token') ?? false)) {
           return;
@@ -97,7 +97,8 @@ class AuthController extends StateNotifier<AsyncValue<UserModel?>> {
     final res = await _repository.client.setSession(refreshToken!);
     if (res.session!.isExpired) return res.session?.providerRefreshToken;
     if (state.isRefreshing || state.asData!.hasValue) {
-      if (state.asData?.value?.authUser.id == res.session?.user.id) {
+      if (state.asData?.value?.userEntityModel.id.toString() ==
+          res.session?.user.id) {
         return res.session?.accessToken;
       }
       return res.session?.refreshToken;
@@ -151,7 +152,6 @@ class AutoAuthController extends StateNotifier<UserModel?> {
       state = UserModel.complete(
           id: UserId(value: cubeUser!.id!),
           userEntityModel: _ref.watch(userNotifierProvider),
-          authUser: _ref.watch(autoAuthControllerProvider)!.authUser,
           cubeUser: cubeUser);
       _updateAuthState();
     });
@@ -163,20 +163,9 @@ class AutoAuthController extends StateNotifier<UserModel?> {
 
   Future<void> _handleInitialDeepLink() async {
     state = UserModel.unComplete(
-        id: const UserId(value: 0),
-        userEntityModel: UserEntityModel.empty(),
-        authUser: AuthUser(
-            id: 'id',
-            appMetadata: {},
-            userMetadata: {},
-            aud: 'aud',
-            email: 'email',
-            phone: 'phone',
-            createdAt: 'createdAt',
-            role: 'role',
-            updatedAt: 'updatedAt'));
+        id: const UserId(value: 0), userEntityModel: UserEntityModel.empty());
     try {
-      final initialLink = await getInitialLink(state?.authUser.actionLink);
+      final initialLink = await getInitialLink(state?.userEntityModel.name);
       if (!(initialLink?.contains('refresh_token') ?? false)) {
         return;
       }

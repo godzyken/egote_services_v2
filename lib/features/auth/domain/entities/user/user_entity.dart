@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectycube_sdk/connectycube_calls.dart';
-import 'package:egote_services_v2/features/auth/domain/adapter/user/user_converter.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 part 'user_entity.freezed.dart';
@@ -17,7 +15,11 @@ class UserEntityModel with _$UserEntityModel {
   const factory UserEntityModel({
     required UserId id,
     required String name,
+    required String email,
     required String role,
+    required String externalId,
+    required String phone,
+    required String externalLink,
     required bool isComplete,
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -38,7 +40,11 @@ class UserEntityModel with _$UserEntityModel {
     return UserEntityModel(
       id: UserId(value: int.parse('doc.id')),
       name: map['name'] ?? '',
+      email: map['email'] ?? '',
       role: map['role'] ?? '',
+      externalId: map['externalId'] ?? '',
+      phone: map['phone'] ?? '',
+      externalLink: map['externalLink'] ?? '',
       isComplete: map['is_complete'] ? true : false,
       createdAt: map['created_at'] ?? '',
       updatedAt: map['updated_at'] ?? '',
@@ -51,7 +57,11 @@ class UserEntityModel with _$UserEntityModel {
   @FreezedUnionValue('Create')
   factory UserEntityModel.create(
     String name,
+    String email,
     String role,
+    String externalId,
+    String phone,
+    String externalLink,
     bool isComplete,
     DateTime createdAt,
     DateTime updatedAt,
@@ -62,7 +72,11 @@ class UserEntityModel with _$UserEntityModel {
     return UserEntityModel(
         id: UserId(value: int.parse(_uuid.v4())),
         name: name,
+        email: email,
         role: role,
+        externalId: externalId,
+        phone: phone,
+        externalLink: externalLink,
         isComplete: isComplete,
         createdAt: createdAt,
         updatedAt: updatedAt,
@@ -75,7 +89,11 @@ class UserEntityModel with _$UserEntityModel {
   factory UserEntityModel.empty() => UserEntityModel(
         id: const UserId(value: 0),
         name: '',
+        email: '',
         role: '',
+        externalId: '',
+        phone: '',
+        externalLink: '',
         isComplete: false,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -105,7 +123,6 @@ class UserModel with _$UserModel {
   const factory UserModel.complete({
     required UserId id,
     required UserEntityModel userEntityModel,
-    @UserConverter() required AuthUser authUser,
     required CubeUser cubeUser,
   }) = _UserModelComplete;
 
@@ -113,7 +130,6 @@ class UserModel with _$UserModel {
   const factory UserModel.unComplete({
     required UserId id,
     required UserEntityModel userEntityModel,
-    @UserConverter() required AuthUser authUser,
   }) = _UserModelUnComplete;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

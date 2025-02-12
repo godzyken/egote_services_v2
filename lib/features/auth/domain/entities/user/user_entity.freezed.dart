@@ -22,7 +22,11 @@ UserEntityModel _$UserEntityModelFromJson(Map<String, dynamic> json) {
 mixin _$UserEntityModel {
   UserId get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
+  String get externalId => throw _privateConstructorUsedError;
+  String get phone => throw _privateConstructorUsedError;
+  String get externalLink => throw _privateConstructorUsedError;
   bool get isComplete => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
@@ -49,7 +53,11 @@ abstract class $UserEntityModelCopyWith<$Res> {
   $Res call(
       {UserId id,
       String name,
+      String email,
       String role,
+      String externalId,
+      String phone,
+      String externalLink,
       bool isComplete,
       DateTime createdAt,
       DateTime updatedAt,
@@ -77,7 +85,11 @@ class _$UserEntityModelCopyWithImpl<$Res, $Val extends UserEntityModel>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? email = null,
     Object? role = null,
+    Object? externalId = null,
+    Object? phone = null,
+    Object? externalLink = null,
     Object? isComplete = null,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -94,9 +106,25 @@ class _$UserEntityModelCopyWithImpl<$Res, $Val extends UserEntityModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
+              as String,
+      externalId: null == externalId
+          ? _value.externalId
+          : externalId // ignore: cast_nullable_to_non_nullable
+              as String,
+      phone: null == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String,
+      externalLink: null == externalLink
+          ? _value.externalLink
+          : externalLink // ignore: cast_nullable_to_non_nullable
               as String,
       isComplete: null == isComplete
           ? _value.isComplete
@@ -147,7 +175,11 @@ abstract class _$$UserEntityModelImplCopyWith<$Res>
   $Res call(
       {UserId id,
       String name,
+      String email,
       String role,
+      String externalId,
+      String phone,
+      String externalLink,
       bool isComplete,
       DateTime createdAt,
       DateTime updatedAt,
@@ -174,7 +206,11 @@ class __$$UserEntityModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? email = null,
     Object? role = null,
+    Object? externalId = null,
+    Object? phone = null,
+    Object? externalLink = null,
     Object? isComplete = null,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -191,9 +227,25 @@ class __$$UserEntityModelImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
+              as String,
+      externalId: null == externalId
+          ? _value.externalId
+          : externalId // ignore: cast_nullable_to_non_nullable
+              as String,
+      phone: null == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String,
+      externalLink: null == externalLink
+          ? _value.externalLink
+          : externalLink // ignore: cast_nullable_to_non_nullable
               as String,
       isComplete: null == isComplete
           ? _value.isComplete
@@ -230,7 +282,11 @@ class _$UserEntityModelImpl extends _UserEntityModel {
   const _$UserEntityModelImpl(
       {required this.id,
       required this.name,
+      required this.email,
       required this.role,
+      required this.externalId,
+      required this.phone,
+      required this.externalLink,
       required this.isComplete,
       required this.createdAt,
       required this.updatedAt,
@@ -247,7 +303,15 @@ class _$UserEntityModelImpl extends _UserEntityModel {
   @override
   final String name;
   @override
+  final String email;
+  @override
   final String role;
+  @override
+  final String externalId;
+  @override
+  final String phone;
+  @override
+  final String externalLink;
   @override
   final bool isComplete;
   @override
@@ -263,7 +327,7 @@ class _$UserEntityModelImpl extends _UserEntityModel {
 
   @override
   String toString() {
-    return 'UserEntityModel(id: $id, name: $name, role: $role, isComplete: $isComplete, createdAt: $createdAt, updatedAt: $updatedAt, emailConfirmedAt: $emailConfirmedAt, phoneConfirmedAt: $phoneConfirmedAt, lastSignInAt: $lastSignInAt)';
+    return 'UserEntityModel(id: $id, name: $name, email: $email, role: $role, externalId: $externalId, phone: $phone, externalLink: $externalLink, isComplete: $isComplete, createdAt: $createdAt, updatedAt: $updatedAt, emailConfirmedAt: $emailConfirmedAt, phoneConfirmedAt: $phoneConfirmedAt, lastSignInAt: $lastSignInAt)';
   }
 
   @override
@@ -273,7 +337,13 @@ class _$UserEntityModelImpl extends _UserEntityModel {
             other is _$UserEntityModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.role, role) || other.role == role) &&
+            (identical(other.externalId, externalId) ||
+                other.externalId == externalId) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.externalLink, externalLink) ||
+                other.externalLink == externalLink) &&
             (identical(other.isComplete, isComplete) ||
                 other.isComplete == isComplete) &&
             (identical(other.createdAt, createdAt) ||
@@ -290,8 +360,21 @@ class _$UserEntityModelImpl extends _UserEntityModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, role, isComplete,
-      createdAt, updatedAt, emailConfirmedAt, phoneConfirmedAt, lastSignInAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      email,
+      role,
+      externalId,
+      phone,
+      externalLink,
+      isComplete,
+      createdAt,
+      updatedAt,
+      emailConfirmedAt,
+      phoneConfirmedAt,
+      lastSignInAt);
 
   /// Create a copy of UserEntityModel
   /// with the given fields replaced by the non-null parameter values.
@@ -314,7 +397,11 @@ abstract class _UserEntityModel extends UserEntityModel {
   const factory _UserEntityModel(
       {required final UserId id,
       required final String name,
+      required final String email,
       required final String role,
+      required final String externalId,
+      required final String phone,
+      required final String externalLink,
       required final bool isComplete,
       required final DateTime createdAt,
       required final DateTime updatedAt,
@@ -331,7 +418,15 @@ abstract class _UserEntityModel extends UserEntityModel {
   @override
   String get name;
   @override
+  String get email;
+  @override
   String get role;
+  @override
+  String get externalId;
+  @override
+  String get phone;
+  @override
+  String get externalLink;
   @override
   bool get isComplete;
   @override
@@ -863,36 +958,29 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 mixin _$UserModel {
   UserId get id => throw _privateConstructorUsedError;
   UserEntityModel get userEntityModel => throw _privateConstructorUsedError;
-  @UserConverter()
-  AuthUser get authUser => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)
+    required TResult Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)
         complete,
-    required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)
+    required TResult Function(UserId id, UserEntityModel userEntityModel)
         unComplete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
+    TResult? Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)?
         complete,
-    TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)?
-        unComplete,
+    TResult? Function(UserId id, UserEntityModel userEntityModel)? unComplete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
+    TResult Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)?
         complete,
-    TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)?
-        unComplete,
+    TResult Function(UserId id, UserEntityModel userEntityModel)? unComplete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -931,10 +1019,7 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call(
-      {UserId id,
-      UserEntityModel userEntityModel,
-      @UserConverter() AuthUser authUser});
+  $Res call({UserId id, UserEntityModel userEntityModel});
 
   $UserIdCopyWith<$Res> get id;
   $UserEntityModelCopyWith<$Res> get userEntityModel;
@@ -957,7 +1042,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   $Res call({
     Object? id = null,
     Object? userEntityModel = null,
-    Object? authUser = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -968,10 +1052,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.userEntityModel
           : userEntityModel // ignore: cast_nullable_to_non_nullable
               as UserEntityModel,
-      authUser: null == authUser
-          ? _value.authUser
-          : authUser // ignore: cast_nullable_to_non_nullable
-              as AuthUser,
     ) as $Val);
   }
 
@@ -1004,11 +1084,7 @@ abstract class _$$UserModelCompleteImplCopyWith<$Res>
       __$$UserModelCompleteImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {UserId id,
-      UserEntityModel userEntityModel,
-      @UserConverter() AuthUser authUser,
-      CubeUser cubeUser});
+  $Res call({UserId id, UserEntityModel userEntityModel, CubeUser cubeUser});
 
   @override
   $UserIdCopyWith<$Res> get id;
@@ -1031,7 +1107,6 @@ class __$$UserModelCompleteImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? userEntityModel = null,
-    Object? authUser = null,
     Object? cubeUser = null,
   }) {
     return _then(_$UserModelCompleteImpl(
@@ -1043,10 +1118,6 @@ class __$$UserModelCompleteImplCopyWithImpl<$Res>
           ? _value.userEntityModel
           : userEntityModel // ignore: cast_nullable_to_non_nullable
               as UserEntityModel,
-      authUser: null == authUser
-          ? _value.authUser
-          : authUser // ignore: cast_nullable_to_non_nullable
-              as AuthUser,
       cubeUser: null == cubeUser
           ? _value.cubeUser
           : cubeUser // ignore: cast_nullable_to_non_nullable
@@ -1061,7 +1132,6 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
   const _$UserModelCompleteImpl(
       {required this.id,
       required this.userEntityModel,
-      @UserConverter() required this.authUser,
       required this.cubeUser,
       final String? $type})
       : $type = $type ?? 'Complete';
@@ -1074,9 +1144,6 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
   @override
   final UserEntityModel userEntityModel;
   @override
-  @UserConverter()
-  final AuthUser authUser;
-  @override
   final CubeUser cubeUser;
 
   @JsonKey(name: 'runtimeType')
@@ -1084,7 +1151,7 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
 
   @override
   String toString() {
-    return 'UserModel.complete(id: $id, userEntityModel: $userEntityModel, authUser: $authUser, cubeUser: $cubeUser)';
+    return 'UserModel.complete(id: $id, userEntityModel: $userEntityModel, cubeUser: $cubeUser)';
   }
 
   @override
@@ -1095,16 +1162,13 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userEntityModel, userEntityModel) ||
                 other.userEntityModel == userEntityModel) &&
-            (identical(other.authUser, authUser) ||
-                other.authUser == authUser) &&
             (identical(other.cubeUser, cubeUser) ||
                 other.cubeUser == cubeUser));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, userEntityModel, authUser, cubeUser);
+  int get hashCode => Object.hash(runtimeType, id, userEntityModel, cubeUser);
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -1118,42 +1182,37 @@ class _$UserModelCompleteImpl implements _UserModelComplete {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)
+    required TResult Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)
         complete,
-    required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)
+    required TResult Function(UserId id, UserEntityModel userEntityModel)
         unComplete,
   }) {
-    return complete(id, userEntityModel, authUser, cubeUser);
+    return complete(id, userEntityModel, cubeUser);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
+    TResult? Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)?
         complete,
-    TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)?
-        unComplete,
+    TResult? Function(UserId id, UserEntityModel userEntityModel)? unComplete,
   }) {
-    return complete?.call(id, userEntityModel, authUser, cubeUser);
+    return complete?.call(id, userEntityModel, cubeUser);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
+    TResult Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)?
         complete,
-    TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)?
-        unComplete,
+    TResult Function(UserId id, UserEntityModel userEntityModel)? unComplete,
     required TResult orElse(),
   }) {
     if (complete != null) {
-      return complete(id, userEntityModel, authUser, cubeUser);
+      return complete(id, userEntityModel, cubeUser);
     }
     return orElse();
   }
@@ -1201,7 +1260,6 @@ abstract class _UserModelComplete implements UserModel {
   const factory _UserModelComplete(
       {required final UserId id,
       required final UserEntityModel userEntityModel,
-      @UserConverter() required final AuthUser authUser,
       required final CubeUser cubeUser}) = _$UserModelCompleteImpl;
 
   factory _UserModelComplete.fromJson(Map<String, dynamic> json) =
@@ -1211,9 +1269,6 @@ abstract class _UserModelComplete implements UserModel {
   UserId get id;
   @override
   UserEntityModel get userEntityModel;
-  @override
-  @UserConverter()
-  AuthUser get authUser;
   CubeUser get cubeUser;
 
   /// Create a copy of UserModel
@@ -1232,10 +1287,7 @@ abstract class _$$UserModelUnCompleteImplCopyWith<$Res>
       __$$UserModelUnCompleteImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {UserId id,
-      UserEntityModel userEntityModel,
-      @UserConverter() AuthUser authUser});
+  $Res call({UserId id, UserEntityModel userEntityModel});
 
   @override
   $UserIdCopyWith<$Res> get id;
@@ -1258,7 +1310,6 @@ class __$$UserModelUnCompleteImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? userEntityModel = null,
-    Object? authUser = null,
   }) {
     return _then(_$UserModelUnCompleteImpl(
       id: null == id
@@ -1269,10 +1320,6 @@ class __$$UserModelUnCompleteImplCopyWithImpl<$Res>
           ? _value.userEntityModel
           : userEntityModel // ignore: cast_nullable_to_non_nullable
               as UserEntityModel,
-      authUser: null == authUser
-          ? _value.authUser
-          : authUser // ignore: cast_nullable_to_non_nullable
-              as AuthUser,
     ));
   }
 }
@@ -1281,10 +1328,7 @@ class __$$UserModelUnCompleteImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
   const _$UserModelUnCompleteImpl(
-      {required this.id,
-      required this.userEntityModel,
-      @UserConverter() required this.authUser,
-      final String? $type})
+      {required this.id, required this.userEntityModel, final String? $type})
       : $type = $type ?? 'UnComplete';
 
   factory _$UserModelUnCompleteImpl.fromJson(Map<String, dynamic> json) =>
@@ -1294,16 +1338,13 @@ class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
   final UserId id;
   @override
   final UserEntityModel userEntityModel;
-  @override
-  @UserConverter()
-  final AuthUser authUser;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'UserModel.unComplete(id: $id, userEntityModel: $userEntityModel, authUser: $authUser)';
+    return 'UserModel.unComplete(id: $id, userEntityModel: $userEntityModel)';
   }
 
   @override
@@ -1313,14 +1354,12 @@ class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
             other is _$UserModelUnCompleteImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userEntityModel, userEntityModel) ||
-                other.userEntityModel == userEntityModel) &&
-            (identical(other.authUser, authUser) ||
-                other.authUser == authUser));
+                other.userEntityModel == userEntityModel));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userEntityModel, authUser);
+  int get hashCode => Object.hash(runtimeType, id, userEntityModel);
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -1334,42 +1373,37 @@ class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)
+    required TResult Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)
         complete,
-    required TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)
+    required TResult Function(UserId id, UserEntityModel userEntityModel)
         unComplete,
   }) {
-    return unComplete(id, userEntityModel, authUser);
+    return unComplete(id, userEntityModel);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
+    TResult? Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)?
         complete,
-    TResult? Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)?
-        unComplete,
+    TResult? Function(UserId id, UserEntityModel userEntityModel)? unComplete,
   }) {
-    return unComplete?.call(id, userEntityModel, authUser);
+    return unComplete?.call(id, userEntityModel);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser, CubeUser cubeUser)?
+    TResult Function(
+            UserId id, UserEntityModel userEntityModel, CubeUser cubeUser)?
         complete,
-    TResult Function(UserId id, UserEntityModel userEntityModel,
-            @UserConverter() AuthUser authUser)?
-        unComplete,
+    TResult Function(UserId id, UserEntityModel userEntityModel)? unComplete,
     required TResult orElse(),
   }) {
     if (unComplete != null) {
-      return unComplete(id, userEntityModel, authUser);
+      return unComplete(id, userEntityModel);
     }
     return orElse();
   }
@@ -1416,8 +1450,7 @@ class _$UserModelUnCompleteImpl implements _UserModelUnComplete {
 abstract class _UserModelUnComplete implements UserModel {
   const factory _UserModelUnComplete(
           {required final UserId id,
-          required final UserEntityModel userEntityModel,
-          @UserConverter() required final AuthUser authUser}) =
+          required final UserEntityModel userEntityModel}) =
       _$UserModelUnCompleteImpl;
 
   factory _UserModelUnComplete.fromJson(Map<String, dynamic> json) =
@@ -1427,9 +1460,6 @@ abstract class _UserModelUnComplete implements UserModel {
   UserId get id;
   @override
   UserEntityModel get userEntityModel;
-  @override
-  @UserConverter()
-  AuthUser get authUser;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.

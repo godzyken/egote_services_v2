@@ -167,7 +167,9 @@ class __$$UserFormStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$UserFormStateImpl implements _UserFormState {
+class _$UserFormStateImpl
+    with DiagnosticableTreeMixin
+    implements _UserFormState {
   const _$UserFormStateImpl(this.userEntityModel,
       {@JsonKey(
           defaultValue: 'UserName',
@@ -195,8 +197,18 @@ class _$UserFormStateImpl implements _UserFormState {
   final RoleFormz? roleFormz;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'UserFormState(userEntityModel: $userEntityModel, nameFormz: $nameFormz, roleFormz: $roleFormz)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UserFormState'))
+      ..add(DiagnosticsProperty('userEntityModel', userEntityModel))
+      ..add(DiagnosticsProperty('nameFormz', nameFormz))
+      ..add(DiagnosticsProperty('roleFormz', roleFormz));
   }
 
   @override

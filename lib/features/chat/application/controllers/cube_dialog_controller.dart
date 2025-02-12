@@ -1,14 +1,11 @@
 import 'dart:developer' as developer;
 
-// TODO: Migration, `CubeDialog` est remplacé par 'CubeDialogMig'
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-
-class CubeDialogController extends StateNotifier<CubeDialogMig?> {
+class CubeDialogController extends StateNotifier<CubeDialog?> {
   CubeDialogController(this._ref) : super(null) {
     _initialize();
   }
@@ -28,11 +25,9 @@ class CubeDialogController extends StateNotifier<CubeDialogMig?> {
     }
   }
 
-  Future<int?> createNewGroupDialog(CubeDialogMig newGroupDialog) async {
-    CubeDialogMig groupDialog = CubeDialogMig(
-        CubeDialogTypeMig.GROUP(newGroupDialog.type).id,
-        dialogId: newGroupDialog.dialogId,
-        name: newGroupDialog.name);
+  Future<int?> createNewGroupDialog(CubeDialog newGroupDialog) async {
+    CubeDialog groupDialog = CubeDialog(CubeDialogType.GROUP,
+        dialogId: newGroupDialog.dialogId, name: newGroupDialog.name);
 
     return await createNewGroupDialog(groupDialog)
         .then((createdDialog) => groupDialog.type)
@@ -62,37 +57,35 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
       }
 
       switch (state) {
-        case CubeChatConnectionState.Idle:
-        // TODO: instance of connection was created.
-        case CubeChatConnectionState.Connecting:
-        // TODO: Handle this case.
-        case CubeChatConnectionState.Authenticated:
-        // TODO: user successfully authorised on ConnectyCube server.
-        case CubeChatConnectionState.AuthenticationFailure:
-        // TODO: error(s) was occurred during authorisation on ConnectyCube server.
-        case CubeChatConnectionState.Reconnecting:
-        // TODO: started reconnection to the chat.
-        case CubeChatConnectionState.Resumed:
-        // TODO: chat connection was resumed.
-        case CubeChatConnectionState.Ready:
-        // TODO: chat connection fully ready for realtime communications.
-        case CubeChatConnectionState.Closing:
-        // TODO: Handle this case.
-        case CubeChatConnectionState.ForceClosed:
-        // TODO: chat connection was interrupted.
-        case CubeChatConnectionState.Closed:
-          // TODO: chat connection was closed.
-          Connectivity().checkConnectivity().then((connectivityType) {
-            if (connectivityType != ConnectivityResult.none) {
-              if (CubeChatConnection.instance.currentUser != null) {
-                CubeChatConnection.instance.relogin();
-              }
-            }
-          });
-          break;
         case RTCDataChannelState.RTCDataChannelConnecting:
           // TODO: Handle this case.
-          throw UnimplementedError();
+          Connectivity().checkConnectivity().then((connectivityType) {
+            for (var conn in connectivityType) {
+              switch (conn) {
+                case ConnectivityResult.mobile:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+                case ConnectivityResult.wifi:
+                // TODO: Handle this case.
+                case ConnectivityResult.bluetooth:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+                case ConnectivityResult.ethernet:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+                case ConnectivityResult.none:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+                case ConnectivityResult.vpn:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+                case ConnectivityResult.other:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+              }
+            }
+            throw UnimplementedError();
+          });
         case RTCDataChannelState.RTCDataChannelOpen:
           // TODO: Handle this case.
           throw UnimplementedError();
@@ -108,23 +101,49 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
     return cubeChatConnectionStateSubscription.resume();
   }
 
-  reconnection() {
+  reconnection() async {
     CubeChatConnectionSettings chatConnectionSettings =
         CubeChatConnectionSettings.instance;
     chatConnectionSettings.reconnectionTimeout = 5000;
     chatConnectionSettings.totalReconnections = 5;
+    bool isChatDisconnected = CubeChatConnection.instance.chatConnectionState ==
+        CubeChatConnectionState.Closed;
+
     var connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen((connectivityType) {
-      if (connectivityType != ConnectivityResult.none) {
-        bool isChatDisconnected =
-            CubeChatConnection.instance.chatConnectionState ==
-                CubeChatConnectionState.Closed;
-
-        if (isChatDisconnected &&
-            CubeChatConnection.instance.currentUser != null) {
-          CubeChatConnection.instance.relogin();
+      for (var conn in connectivityType) {
+        switch (conn) {
+          case ConnectivityResult.mobile:
+            // TODO: Handle this case.
+            throw UnimplementedError();
+          case ConnectivityResult.bluetooth:
+            // TODO: Handle this case.
+            throw UnimplementedError();
+          case ConnectivityResult.wifi:
+            // TODO: Handle this case.
+            throw UnimplementedError();
+          case ConnectivityResult.ethernet:
+            // TODO: Handle this case.
+            throw UnimplementedError();
+          case ConnectivityResult.none:
+            // TODO: Handle this case.
+            throw UnimplementedError();
+          case ConnectivityResult.vpn:
+            // TODO: Handle this case.
+            throw UnimplementedError();
+          case ConnectivityResult.other:
+            // TODO: Handle this case.
+            throw UnimplementedError();
         }
       }
+
+      if (isChatDisconnected &&
+          CubeChatConnection.instance.currentUser != null) {
+        CubeChatConnection.instance.relogin();
+        isChatDisconnected = false;
+      }
     });
+
+    return connectivityStateSubscription.resume();
   }
 }

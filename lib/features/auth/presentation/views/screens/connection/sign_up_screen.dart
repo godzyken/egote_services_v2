@@ -94,7 +94,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           if (data == null) return null;
           ref.read(userListViewModelStateNotifierProvider.notifier).createUser(
               data.userEntityModel.name,
+              data.userEntityModel.email,
               data.userEntityModel.role,
+              data.userEntityModel.externalId,
+              data.userEntityModel.phone,
+              data.userEntityModel.externalLink,
               data.userEntityModel.isComplete,
               data.userEntityModel.createdAt,
               data.userEntityModel.updatedAt,

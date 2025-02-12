@@ -3,6 +3,7 @@ import 'package:egote_services_v2/config/routes/app_router_observer.dart';
 import 'package:egote_services_v2/config/routes/router_notifier.dart';
 import 'package:egote_services_v2/config/routes/routes.dart';
 import 'package:egote_services_v2/config/routes/sentry_navigator_observer.dart';
+import 'package:egote_services_v2/features/auth/presentation/views/widgets/app_bar_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -38,10 +39,18 @@ GoRouter router(Ref ref) {
       routes: [
         ShellRoute(
           builder: (BuildContext context, GoRouterState state, Widget child) {
-            return SharedAppData(child: child);
+            final preload = state.extra as bool? ?? false;
+
+            return SharedAppData(
+                child: AppBarConnection(preload: preload, child: child));
           },
           observers: [AppRouterObserver(), sentryNavigatorObserver, observer],
           routes: notifier.routes,
+          pageBuilder: (context, state, child) {
+            final preload = state.extra as bool? ?? false;
+            return NoTransitionPage(
+                child: AppBarConnection(preload: preload, child: child));
+          },
           navigatorKey: _shellRouterKey,
         ),
       ],

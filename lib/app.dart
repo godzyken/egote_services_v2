@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
+import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
@@ -75,44 +76,19 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         Connectivity().onConnectivityChanged.listen((connectivityType) {
       if (AppLifecycleState.resumed != appState) return;
 
-      switch (connectivityType) {
-        case ConnectivityResult.bluetooth:
-        // TODO: Handle this case.
-        case ConnectivityResult.wifi:
-          // TODO: Handle this case.
-          log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-          bool isChatDisconnected =
+      log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
+      bool isChatDisconnected =
+          CubeChatConnection.instance.chatConnectionState ==
+                  CubeChatConnectionState.Closed ||
               CubeChatConnection.instance.chatConnectionState ==
-                      CubeChatConnectionState.Closed ||
-                  CubeChatConnection.instance.chatConnectionState ==
-                      CubeChatConnectionState.ForceClosed;
+                  CubeChatConnectionState.ForceClosed;
 
-          if (isChatDisconnected &&
-              CubeChatConnection.instance.currentUser != null) {
-            CubeChatConnection.instance.relogin();
-          }
-        case ConnectivityResult.ethernet:
-        // TODO: Handle this case.
-        case ConnectivityResult.mobile:
-          log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-          bool isChatDisconnected =
-              CubeChatConnection.instance.chatConnectionState ==
-                      CubeChatConnectionState.Closed ||
-                  CubeChatConnection.instance.chatConnectionState ==
-                      CubeChatConnectionState.ForceClosed;
-
-          if (isChatDisconnected &&
-              CubeChatConnection.instance.currentUser != null) {
-            CubeChatConnection.instance.relogin();
-          }
-        case ConnectivityResult.none:
-          // TODO: Handle this case.
-          CubeChatConnection.instance.destroy();
-        case ConnectivityResult.vpn:
-        // TODO: Handle this case.
-        case ConnectivityResult.other:
-        // TODO: Handle this case.
+      if (isChatDisconnected &&
+          CubeChatConnection.instance.currentUser != null) {
+        CubeChatConnection.instance.relogin();
       }
+
+      log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
     });
     late final initCube = initConnectyCube();
 
@@ -160,7 +136,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
               await sharedPrefs.getUser().then((savedUser) => savedUser!);
 
           if (user != null) {
-            /*   if (!CubeChatConnection.instance.isAuthenticated()) {
+            if (!CubeChatConnection.instance.isAuthenticated()) {
               if (LoginType.phone == sharedPrefs.getLoginType()) {
                 if (CubeSessionManager.instance.isActiveSessionValid()) {
                   user.password =
@@ -174,15 +150,15 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
               CubeChatConnection.instance.login(user);
             } else {
               CubeChatConnection.instance.markActive();
-            }*/
+            }
           }
         });
       case AppLifecycleState.inactive:
       // TODO: Handle this case.
       case AppLifecycleState.paused:
-      /*if (CubeChatConnection.instance.isAuthenticated()) {
+        if (CubeChatConnection.instance.isAuthenticated()) {
           CubeChatConnection.instance.markInactive();
-        }*/
+        }
       case AppLifecycleState.detached:
       // TODO: Handle this case.
       case AppLifecycleState.hidden:

@@ -9,10 +9,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../../../config/providers/firebase/firebase_providers.dart';
 import '../../widgets/profile_widget.dart';
 
-
 class UserHomeScreen extends ConsumerStatefulWidget {
-  const UserHomeScreen({super.key, required this.pid});
+  const UserHomeScreen({super.key, required this.preload, required this.pid});
 
+  final bool preload;
   final String pid;
 
   @override
@@ -21,6 +21,7 @@ class UserHomeScreen extends ConsumerStatefulWidget {
 
 class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
   User? _user;
+  late bool preload;
 
   @override
   void initState() {
@@ -32,37 +33,42 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
   Future<void> _getAuth() async {
     setState(() {
       _user = ref.read(supabaseClientProvider).auth.currentUser;
+      if (_user?.isAnonymous == true) {
+        preload = false;
+      }
     });
-    Supabase.instance.client.auth.onAuthStateChange.listen((event) {
-      setState(() {
-        _user = event.session?.user;
-      });
-    });
+    preload = await Supabase.instance.client.auth.onAuthStateChange
+        .every((element) => element.session?.isExpired != true);
   }
 
   @override
   Widget build(BuildContext context) {
-
     final user = ref.read(authStreamProvider);
     if (user.asData?.value!.uid == widget.pid) {
       return _user == null
           ? const LoginScreen()
           : user.when(
-        data: (data) => Scaffold(body: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            ProfileWidget(
-              imagePath: _user!.id == data!.uid ? data.photoURL! : LocalImages.venomJpg,
-              onClicked: () async {},
-            ),
-            const SizedBox(),
-            buildName(data.uid),
-            const SizedBox(),
-            // Consumer(builder: (context, ref, _) => ref.watch(_usersOnTable),)
-          ],
-        ),),
-        error: (error, stackTrace) => ErrorScreen(error: user.error.toString()),
-        loading: () => const CircularProgressIndicator(),);
+              data: (data) => Scaffold(
+                body: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    ProfileWidget(
+                      imagePath: _user!.id == data!.uid
+                          ? data.photoURL!
+                          : LocalImages.venomJpg,
+                      onClicked: () async {},
+                    ),
+                    const SizedBox(),
+                    buildName(data.uid),
+                    const SizedBox(),
+                    // Consumer(builder: (context, ref, _) => ref.watch(_usersOnTable),)
+                  ],
+                ),
+              ),
+              error: (error, stackTrace) =>
+                  ErrorScreen(error: user.error.toString()),
+              loading: () => const CircularProgressIndicator(),
+            );
     } else {
       return ErrorScreen(error: user.error.toString());
     }
@@ -70,18 +76,12 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
 
   Widget buildName(String name) {
     return Column(
-    children: [
-      Text(
-        name,
-        style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24
+      children: [
+        Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
-      ),
-    ],
-  );
+      ],
+    );
   }
-
 }
-
-

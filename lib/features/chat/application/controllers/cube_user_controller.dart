@@ -22,10 +22,10 @@ class CubeUserController extends StateNotifier<CubeUser?> {
         state = CubeUser(
           id: authModelEntity?.userEntityModel.id.value,
           fullName: authModelEntity!.userEntityModel.name,
-          email: authModelEntity.authUser.email!,
+          email: authModelEntity.userEntityModel.email,
           login: authModelEntity.userEntityModel.name,
           externalId: userModelEntity.previousUser!.id.value,
-          phone: authModelEntity.authUser.phone,
+          phone: authModelEntity.userEntityModel.phone,
         );
       } while (userModelEntity.previousUser!.id == authModelEntity.id);
     } on AuthException catch (e) {

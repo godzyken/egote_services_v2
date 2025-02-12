@@ -1,8 +1,11 @@
-// import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'dart:async';
+
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
+import 'package:egote_services_v2/features/auth/presentation/views/widgets/app_bar_connection.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/domain/entities/entities_extension.dart';
@@ -16,6 +19,7 @@ import '../../features/settings/presentation/view/gallery/gallery.dart';
 import '../../features/settings/presentation/view/settings_ui_page.dart';
 import '../../features/sketch/presentation/view/drawing_page.dart';
 import '../../features/theme/views/screen/theme_showcase_screen.dart';
+import '../providers/firebase/firebase_providers.dart';
 
 part 'routes.g.dart';
 
@@ -93,19 +97,30 @@ class HomeRoute extends GoRouteData {
 
   const HomeRoute();
 
-/*  @override
+  @override
   FutureOr<String?> redirect(BuildContext context, GoRouterState state) async {
-    final userRole = await ProviderScope.containerOf(context).read(permissionsProvider.future);
-    return userRole
-  } */
+    final userRole = await ProviderScope.containerOf(context)
+        .read(userStreamProvider.future);
+    final preload = state.extra as bool? ?? false;
+    if (userRole!.isAnonymous) {
+      return await Future.delayed(Duration(seconds: 1), () => '/authRoute');
+    }
+
+    return Future.delayed(
+        Duration(seconds: 1), () => '/user_home/${userRole.uid}/$preload');
+  }
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return HomeScreen(
-      key: state.pageKey,
-    );
+    final preload = state.extra as bool? ?? false;
+    return preload == true
+        ? AppBarConnection(preload: preload, child: context.widget)
+        : HomeScreen(
+            key: state.pageKey,
+            child: context.widget,
+          );
   }
 }
 
@@ -121,7 +136,8 @@ class UserHomeRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return UserHomeScreen(key: state.pageKey, pid: pid);
+    final preload = state.extra as bool? ?? false;
+    return UserHomeScreen(key: state.pageKey, pid: pid, preload: preload);
   }
 }
 
@@ -218,6 +234,7 @@ class AuthRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     return AuthScreen(
       key: state.pageKey,
+      child: context.widget,
     );
   }
 }

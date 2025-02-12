@@ -34,14 +34,14 @@ class _BodySelectedDialogLayoutState
   List<ListItem<CubeDialog>> dialogList = [];
   var _isDialogContinues = true;
 
-  //StreamSubscription<CubeMessage>? msgSubscription;
+  StreamSubscription<CubeMessage>? msgSubscription;
   StreamSubscription<MessageStatus>? msgDeliveringSubscription;
   StreamSubscription<MessageStatus>? msgReadingSubscription;
   StreamSubscription<MessageStatus>? msgLocalReadingSubscription;
 
-  //StreamSubscription<CubeMessage>? msgSendingSubscription;
-  // final ChatMessagesManager? chatMessagesManager =
-  //     CubeChatConnection.instance.chatMessagesManager;
+  StreamSubscription<CubeMessage>? msgSendingSubscription;
+  final ChatMessagesManager? chatMessagesManager =
+      CubeChatConnection.instance.chatMessagesManager;
   Function(CubeDialog)? onDialogSelectedCallback;
   CubeDialog? selectedDialog;
 
@@ -132,8 +132,7 @@ class _BodySelectedDialogLayoutState
   Widget _getListItemTile(BuildContext context, int index) {
     Widget getDialogIcon() {
       var dialog = dialogList[index].data;
-      if (dialog.type == 1) {
-        var typeMigPrivate = CubeDialogType.PRIVATE;
+      if (dialog.type == CubeDialogType.PRIVATE) {
         return const Icon(
           Icons.person,
           size: 40.0,

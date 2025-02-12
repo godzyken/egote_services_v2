@@ -1,35 +1,47 @@
-import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../config/providers/supabase/supabase_providers.dart';
+
 class AppBarConnection extends ConsumerWidget {
-  const AppBarConnection({
-    super.key,
-  });
+  const AppBarConnection(
+      {super.key, required this.child, required this.preload});
+
+  final Widget child;
+  final bool preload;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AppBar(
-      title: Text(context.tr!.mfaConnect),
-      actions: [
-        PopupMenuButton(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(context.tr!.mfaConnect),
+        actions: [
+          PopupMenuButton(
             itemBuilder: (context) {
               return [
-                PopupMenuItem(child: Text(context.tr!.unEnroll),
-                onTap: () {
-                  context.push('mfaList');
-                },),
-                PopupMenuItem(child: Text(context.tr!.signOut),
-                onTap: () {
-                  ref.watch(supabaseClientProvider).auth.signOut();
-                  context.push('auth');
-                },),
+                PopupMenuItem(
+                  child: Text(context.tr!.unEnroll),
+                  onTap: () {
+                    context.push('mfaList');
+                  },
+                ),
+                PopupMenuItem(
+                  child: Text(context.tr!.signOut),
+                  onTap: () {
+                    ref.watch(supabaseClientProvider).auth.signOut();
+                    context.push('auth');
+                  },
+                ),
               ];
             },
-        )
-      ],
+          )
+        ],
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: child,
     );
   }
 }

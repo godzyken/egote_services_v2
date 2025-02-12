@@ -10,26 +10,32 @@ class CreateUserCaseImpl implements CreateUserCase {
 
   @override
   Future<UserEntityModel> execute(
-      final String name,
-      final String role,
-      final bool isComplete,
-      final DateTime createdAt,
-      final DateTime updatedAt,
-      final DateTime emailConfirmedAt,
-      final DateTime phoneConfirmedAt,
-      final DateTime lastSignInAt,
-      ) async {
-
+    final String name,
+    final String email,
+    final String role,
+    final String externalId,
+    final String phone,
+    final String externalLink,
+    final bool isComplete,
+    final DateTime createdAt,
+    final DateTime updatedAt,
+    final DateTime emailConfirmedAt,
+    final DateTime phoneConfirmedAt,
+    final DateTime lastSignInAt,
+  ) async {
     return await _repository.createUser(
-        name,
-        role,
-        isComplete,
-        createdAt,
-        updatedAt,
-        emailConfirmedAt,
-        phoneConfirmedAt,
-        lastSignInAt,
+      name,
+      email,
+      role,
+      externalId,
+      phone,
+      externalLink,
+      isComplete,
+      createdAt,
+      updatedAt,
+      emailConfirmedAt,
+      phoneConfirmedAt,
+      lastSignInAt,
     );
   }
-
 }

@@ -14,28 +14,36 @@ abstract class UserRepositoryInterface {
 
   ///  Create user
   Future<UserEntityModel> createUser(
-      final String name,
-      final String role,
-      final bool isComplete,
-      final DateTime createdAt,
-      final DateTime updatedAt,
-      final DateTime emailConfirmedAt,
-      final DateTime phoneConfirmedAt,
-      final DateTime lastSignInAt,
-      );
+    final String name,
+    final String email,
+    final String role,
+    final String externalId,
+    final String phone,
+    final String externalLink,
+    final bool isComplete,
+    final DateTime createdAt,
+    final DateTime updatedAt,
+    final DateTime emailConfirmedAt,
+    final DateTime phoneConfirmedAt,
+    final DateTime lastSignInAt,
+  );
 
   ///  Update user
   Future<void> updateUser(
-      final UserId id,
-      final String name,
-      final String role,
-      final bool isComplete,
-      final DateTime createdAt,
-      final DateTime updatedAt,
-      final DateTime emailConfirmedAt,
-      final DateTime phoneConfirmedAt,
-      final DateTime lastSignInAt,
-      );
+    final UserId id,
+    final String name,
+    final String email,
+    final String role,
+    final String externalId,
+    final String phone,
+    final String externalLink,
+    final bool isComplete,
+    final DateTime createdAt,
+    final DateTime updatedAt,
+    final DateTime emailConfirmedAt,
+    final DateTime phoneConfirmedAt,
+    final DateTime lastSignInAt,
+  );
 
   ///  Delete user by id
   Future<int> deleteUser(final UserId id);

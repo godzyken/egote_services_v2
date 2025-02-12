@@ -118,22 +118,16 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                 final user = auth.getOrElse((l) => UserModel.complete(
                     id: UserId(value: l.error.length),
                     userEntityModel: UserEntityModel.empty(),
-                    authUser: AuthUser(
-                      id: l.error,
-                      appMetadata: {},
-                      userMetadata: {},
-                      aud: l.error,
-                      email: l.error,
-                      phone: l.error,
-                      createdAt: l.error,
-                      role: l.error,
-                      updatedAt: l.error,
-                    ),
                     cubeUser: CubeUser()));
 
                 final client = code.getOrElse((l) => AuthResponse(
-                    user: user.authUser,
-                    session: Session.fromJson(user.authUser.toJson())));
+                    user: User(
+                        appMetadata: user.userEntityModel.toJson(),
+                        userMetadata: user.toJson(),
+                        aud: user.userEntityModel.role,
+                        createdAt: user.userEntityModel.createdAt.toString(),
+                        id: user.id.toString()),
+                    session: Session.fromJson(user.userEntityModel.toJson())));
 
                 if (mounted) {
                   //TODO: Go User_home on Validate don't work

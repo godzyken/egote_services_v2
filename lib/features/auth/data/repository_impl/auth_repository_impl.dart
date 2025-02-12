@@ -4,7 +4,6 @@ import 'package:egote_services_v2/features/auth/data/data_sources/mapper/user_ma
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/repository/user_repository_interface.dart';
 
-
 class AuthRepositoryImpl implements UserRepositoryInterface {
   final SourceBase database;
 
@@ -12,20 +11,27 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
 
   @override
   Future<UserEntityModel> createUser(
-      final String name,
-      final String role,
-      final bool isComplete,
-      final DateTime createdAt,
-      final DateTime updatedAt,
-      final DateTime emailConfirmedAt,
-      final DateTime phoneConfirmedAt,
-      final DateTime lastSignInAt,
-      ) async {
-    final userEntity = await database
-        .insertUser(UserMapper
-        .transformToNewEntityMap(
+    final String name,
+    final String email,
+    final String role,
+    final String externalId,
+    final String phone,
+    final String externalLink,
+    final bool isComplete,
+    final DateTime createdAt,
+    final DateTime updatedAt,
+    final DateTime emailConfirmedAt,
+    final DateTime phoneConfirmedAt,
+    final DateTime lastSignInAt,
+  ) async {
+    final userEntity =
+        await database.insertUser(UserMapper.transformToNewEntityMap(
       name,
+      email,
       role,
+      externalId,
+      phone,
+      externalLink,
       isComplete,
       createdAt,
       updatedAt,
@@ -48,7 +54,7 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
     return UserListMapper.transformToModel(userListEntity);
   }
 
- /* @override
+  /* @override
   Future<UserEntityModel> getUserById(UserId id) async {
     final userEntity = await database.getUserById(id.value);
     return UserMapper.transformToModel(userEntity);
@@ -58,7 +64,11 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
   Future<void> updateUser(
       final UserId id,
       final String name,
+      final String email,
       final String role,
+      final String externalId,
+      final String phone,
+      final String externalLink,
       final bool isComplete,
       final DateTime createdAt,
       final DateTime updatedAt,
@@ -68,7 +78,11 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
     final user = UserEntityModel(
       id: id,
       name: name,
+      email: email,
       role: role,
+      externalId: externalId,
+      phone: phone,
+      externalLink: externalLink,
       isComplete: isComplete,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -84,6 +98,4 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
   Future<void> closeDatabase() async {
     await database.close();
   }
-
-
 }

@@ -169,9 +169,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void onReceiveMessage(CubeMessage message) {
     dev.log("onReceiveMessage message= $message");
     if (message.messageId != widget.cubeDialog.dialogId) return;
-    var msg = CubeMessageStanza(message.messageId, message);
+    var cubMsg = CubeMessageStanza(message.messageId, message);
+    MediaStream? msg = cubMsg as MediaStream?;
 
-    // Todo: addMessageToListView(message);
+    addMessageToListView(msg!);
   }
 
   void onDeliveredMessage(MessageStatus status) {
@@ -1012,23 +1013,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         case ConnectivityResult.bluetooth:
           conn = ConnectivityResult.bluetooth;
         case ConnectivityResult.wifi:
-          conn = ConnectivityResult.wifi;
-          getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
-                  DateTime.now().millisecondsSinceEpoch ~/ 1000)
-              .then((newMessages) {
-            setState(() {
-              if (newMessages.length == messagesPerPage) {
-                oldMessages = List.from(listMessage);
-                listMessage = newMessages;
-              } else {
-                listMessage.insertAll(0, newMessages);
-              }
-            });
-          }).whenComplete(() {
-            setState(() {
-              isLoading = false;
-            });
-          });
         case ConnectivityResult.ethernet:
           conn = ConnectivityResult.ethernet;
         case ConnectivityResult.mobile:

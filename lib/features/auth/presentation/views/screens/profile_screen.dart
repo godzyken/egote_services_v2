@@ -76,7 +76,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
 
-  /*Future<void> _editProfile() async {
+  Future<void> _editProfile() async {
     setState(() {
       _isLoading = true;
     });
@@ -91,7 +91,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         lastSignInAt: _userEntityModel!.lastSignInAt,
         role: _userEntityModel!.role,
         isComplete: true);
-    
+
     try {
       await ref
           .read(supabaseClientProvider)
@@ -101,9 +101,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         context.showAlert('SuccessFully updated profile!');
       }
     } on supa_user_exception.PostgrestException catch (error) {
-      context.showAlert(error.message);
+      if (mounted) {
+        context.showAlert(error.message);
+      }
     } catch (error) {
-      context.showAlert(error.toString());
+      if (mounted) {
+        context.showAlert(error.toString());
+      }
     } finally {
       if (mounted) {
         setState(() {
@@ -111,8 +115,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         });
       }
     }
-
-  }*/
+  }
 
   Future<void> _loadAuth(UserModel data) async {
     try {
@@ -122,7 +125,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         final doc = (await ref
             .watch(firebaseFirestoreProvider)
             .collection('users')
-            .doc(data.authUser.id)
+            .doc(data.id.toString())
             .get());
 
         if (doc.exists && doc.id == widget.uid) {
@@ -152,7 +155,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         error: (error, stackTrace) => ErrorScreen(error: stackTrace.toString()),
         loading: () => const Center(
               child: CircularProgressIndicator(),
-            ));
+            ),
+        skipLoadingOnRefresh: true,
+        skipLoadingOnReload: false);
   }
 
   Scaffold authUserComplete(User? user, BuildContext _) {
@@ -163,6 +168,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 imagePath: user!.photoURL!,
                 onClicked: () {
                   // Todo: user!.updatePhotoUrl()
+                  setState(() {
+                    _editProfile();
+                  });
                 },
               )
             : Text(context.tr!.noData),
@@ -269,9 +277,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         title: _userEntityModel!.isComplete
             ? ProfileWidget(
                 imagePath: user!.photoURL!,
-                onClicked: () {
-                  // Todo: user!.updatePhotoUrl()
-                },
+                onClicked: () {},
               )
             : Text(context.tr!.noData),
       ),

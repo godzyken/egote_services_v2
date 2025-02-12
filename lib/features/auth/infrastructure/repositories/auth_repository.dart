@@ -108,7 +108,6 @@ class AuthRepository implements AuthRepositoryInterface {
             return left(Failure.unprocessableEntity(
                 message: 'Channel connection! Time Out!:$res'));
           case ChannelResponse.rateLimited:
-            return left(Failure.empty());
           case ChannelResponse.error:
             return left(Failure.badRequest());
         }
@@ -243,8 +242,12 @@ class AuthRepository implements AuthRepositoryInterface {
 
     final UserEntityModel userEntityModel = UserEntityModel.create(
       name!,
+      user.email!,
       user.role!,
-      false,
+      user.id,
+      user.phone!,
+      user.actionLink!,
+      !user.isAnonymous,
       createdAt,
       updatedAt,
       emailConfirmedAt,
@@ -306,7 +309,11 @@ class AuthRepository implements AuthRepositoryInterface {
 
       final entity = UserEntityModel.create(
           n,
+          n,
           'role',
+          'externalId',
+          'phone',
+          'externalLink',
           false,
           DateTime.parse(now),
           DateTime.parse(now),

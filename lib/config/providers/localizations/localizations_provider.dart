@@ -1,9 +1,9 @@
-// import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' deferred as intl;
 
 class MultiLang extends StateNotifier<Locale> {
   MultiLang(this.localeName)
@@ -12,7 +12,7 @@ class MultiLang extends StateNotifier<Locale> {
   final String localeName;
 
   String get title {
-    return Intl.message(
+    return intl.Intl.message(
       'messageText',
       name: 'title',
       desc: 'Title for this Shiiiit',
@@ -24,9 +24,9 @@ class MultiLang extends StateNotifier<Locale> {
     return Localizations.of<MultiLang>(context, MultiLang)!;
   }
 
-  // static initializeMessages(String localeName) async {
-  //   return await createLocalMediaStream(localeName);
-  // }
+  static initializeMessages(String localeName) async {
+    return await createLocalMediaStream(localeName);
+  }
 
   static const _localizedValues = <String, Map<String, String>>{
     'en': {
@@ -68,7 +68,7 @@ class CustomLocalizationsDelegate extends LocalizationsDelegate<MultiLang> {
         locale.countryCode == null || locale.countryCode!.isEmpty
             ? locale.languageCode
             : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
+    final String localeName = intl.Intl.canonicalizedLocale(name);
 
     return SynchronousFuture<MultiLang>(MultiLang(localeName));
   }

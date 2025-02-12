@@ -1,4 +1,3 @@
-
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/models/userlist/user_list_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +6,15 @@ class AddFormViewModel {
   late UserId _id;
   final UserListViewModel _userListViewModel;
   var _name = '';
+
+  var _email = '';
   var _role = '';
+
+  var _externalId = '';
+
+  var _phone = '';
+
+  var _externalLink = '';
   var _isComplete = false;
   var _createdAt = DateTime.now();
   var _updatedAt = DateTime.now();
@@ -16,10 +23,8 @@ class AddFormViewModel {
   var _lastSignInAt = DateTime.now();
   var _isNewUser = false;
 
-
   AddFormViewModel(
-      final UserEntityModel? userEntityModel,
-      this._userListViewModel) {
+      final UserEntityModel? userEntityModel, this._userListViewModel) {
     _initUser(userEntityModel);
   }
 
@@ -29,6 +34,10 @@ class AddFormViewModel {
     } else {
       _id = userEntityModel.id;
       _name = userEntityModel.name;
+      _email = userEntityModel.email;
+      _externalId = userEntityModel.externalId;
+      _phone = userEntityModel.phone;
+      _externalLink = userEntityModel.externalLink;
       _role = userEntityModel.role;
       _isComplete = userEntityModel.isComplete;
       _createdAt = userEntityModel.createdAt;
@@ -39,25 +48,31 @@ class AddFormViewModel {
     if (_isNewUser) {
       _userListViewModel.createUser(
           _name,
+          _email,
           _role,
+          _externalId,
+          _phone,
+          _externalLink,
           _isComplete,
           _createdAt,
           _updatedAt,
           _emailConfirmedAt,
           _phoneConfirmedAt,
-          _lastSignInAt
-      );
+          _lastSignInAt);
     } else {
       final newUser = UserEntityModel.create(
           _name,
+          _email,
           _role,
+          _externalId,
+          _phone,
+          _externalLink,
           _isComplete,
           _createdAt,
           _updatedAt,
           _emailConfirmedAt,
           _phoneConfirmedAt,
-          _lastSignInAt
-      );
+          _lastSignInAt);
       _userListViewModel.updateEntityUser(newUser);
     }
   }
@@ -68,7 +83,12 @@ class AddFormViewModel {
 
   String appBarTitle() => _isNewUser ? 'Create User' : 'Edit User';
   String initialTitleValue() => _name;
+  String initialEmailValue() => _email;
   String initialRoleValue() => _role;
+  String initialExternalIdValue() => _externalId;
+  String initialPhoneValue() => _phone;
+  String initialExternalLinkValue() => _externalLink;
+  bool initialIsCompleteValue() => _isComplete;
   bool shouldShowDeleteUserIcon() => !_isNewUser;
   DateTime initialCreateValue() => _createdAt;
   DateTime datePickerFirstDate() => DateTime(DateTime.now().year - 5, 1, 1);
@@ -79,7 +99,11 @@ class AddFormViewModel {
   DateTime initialLastSignInAtValue() => _lastSignInAt;
 
   setTitle(final String value) => _name = value;
+  setEmail(final String value) => _email = value;
   setRole(final String value) => _role = value;
+  setExternalId(final String value) => _externalId = value;
+  setPhone(final String value) => _phone = value;
+  setExternalLink(final String value) => _externalLink = value;
   setUserStatus(final bool status) => _isComplete = status;
   setCreate(final DateTime value) => _createdAt = value;
   setUpdate(final DateTime value) => _updatedAt = value;
@@ -97,9 +121,35 @@ class AddFormViewModel {
     }
   }
 
+  String? validateEmail() {
+    if (_email.isEmpty) {
+      return 'Enter a title.';
+    } else if (_email.length > 20) {
+      return 'Limit the title to 20 characters.';
+    } else {
+      return null;
+    }
+  }
+
   String? validateRole() {
     if (_role.length > 100) {
       return 'Limit the description to 100 characters.';
+    } else {
+      return null;
+    }
+  }
+
+  String? validateExternalId() {
+    if (_externalId.length > 10) {
+      return 'Limit the description to 10 characters.';
+    } else {
+      return null;
+    }
+  }
+
+  String? validatePhone() {
+    if (_phone.length > 10) {
+      return 'Limit the description to 10 characters.';
     } else {
       return null;
     }
@@ -114,10 +164,9 @@ class AddFormViewModel {
   }
 }
 
-final addFormViewModelProvider = Provider
-    .autoDispose
-    .family<AddFormViewModel, UserEntityModel?>(
-        (ref, user) {
-          final userListViewModel = ref.watch(userListViewModelStateNotifierProvider.notifier);
-          return AddFormViewModel(user, userListViewModel);
-        });
+final addFormViewModelProvider = Provider.autoDispose
+    .family<AddFormViewModel, UserEntityModel?>((ref, user) {
+  final userListViewModel =
+      ref.watch(userListViewModelStateNotifierProvider.notifier);
+  return AddFormViewModel(user, userListViewModel);
+});

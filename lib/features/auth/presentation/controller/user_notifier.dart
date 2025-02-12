@@ -56,8 +56,19 @@ final userNotifierProvider =
     final previousUser = UserNotifier().previousUser;
     return UserNotifier(previousUser);
   } else {
-    final newUser = UserEntityModel.create(entityModel.name, entityModel.role,
-        entityModel.isComplete, now, now, now, now, diff);
+    final newUser = UserEntityModel.create(
+        entityModel.name,
+        entityModel.email,
+        entityModel.role,
+        entityModel.externalId,
+        entityModel.phone,
+        entityModel.externalLink,
+        entityModel.isComplete,
+        now,
+        now,
+        now,
+        now,
+        diff);
     return UserNotifier(newUser);
   }
 }, dependencies: [clockProvider], name: 'User notifier provider');

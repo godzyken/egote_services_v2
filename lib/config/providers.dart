@@ -2,8 +2,8 @@ import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
-import 'package:egote_services_v2/config/providers/geoloc/geoloc_provider.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
+import 'package:egote_services_v2/config/providers/permissions/permissions_providers.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
@@ -45,7 +45,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(firebaseFirestoreProvider);
   container.read(firebaseMessagingProvider);
   container.read(emulatorSettingsProvider);
-  container.read(geoLocProvider);
+  // container.read(geoLocProvider);
   container.read(firebaseAuthProvider);
   container.read(cubeUserControllerProvider);
   container.read(cubeSessionManagerProvider);
@@ -59,6 +59,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(authStateProvider);
   // container.read(idTokenChangesProvider);
   container.read(userChangesProvider);
+  container.read(userRoleProvider);
 
   container.read(fireDatabaseProvider);
 
@@ -79,14 +80,17 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
           name: 'home',
           builder: (context, state) => HomeScreen(
                 key: state.pageKey,
+                child: context.widget,
               ),
           routes: [
             GoRoute(
                 path: UserHomeRoute.path,
                 name: 'user_home',
                 builder: (context, state) => UserHomeScreen(
-                    key: state.pageKey,
-                    pid: state.pathParameters['userId'] ?? ''),
+                      key: state.pageKey,
+                      pid: state.pathParameters['userId'] ?? '',
+                      preload: false,
+                    ),
                 routes: [
                   GoRoute(
                     path: PersonRoute.path,
@@ -200,6 +204,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
           name: 'authRoute',
           builder: (context, state) => AuthScreen(
                 key: state.pageKey,
+                child: context.widget,
               ),
           routes: [
             GoRoute(

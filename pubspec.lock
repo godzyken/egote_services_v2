@@ -306,10 +306,10 @@ packages:
     dependency: "direct main"
     description:
       name: connectivity_plus
-      sha256: "8a68739d3ee113e51ad35583fdf9ab82c55d09d693d3c39da1aebab87c938412"
+      sha256: "04bf81bb0b77de31557b58d052b24b3eee33f09a6e7a8c68a3e247c7df19ec27"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.2"
+    version: "6.1.3"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
@@ -450,10 +450,10 @@ packages:
     dependency: "direct main"
     description:
       name: device_info_plus
-      sha256: e3fc9a65820fef83035af8ee8c09004a719d5d1d54e6de978fcb0d84bbeb241a
+      sha256: "72d146c6d7098689ff5c5f66bcf593ac11efc530095385356e131070333e64da"
       url: "https://pub.dev"
     source: hosted
-    version: "11.2.2"
+    version: "11.3.0"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -506,10 +506,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: c9943dd7d702ab4199d199bc151a2d79c86db031a02ad84566dab58c494d2adc
+      sha256: cacfdc5abe93e64d418caa9256eef663499ad791bb688d9fd12c85a311968fba
       url: "https://pub.dev"
     source: hosted
-    version: "8.3.1"
+    version: "8.3.2"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -731,14 +731,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.9.0"
-  flutter_geofire:
-    dependency: "direct main"
-    description:
-      name: flutter_geofire
-      sha256: "76a17cc38045b961bd2b1a055d6605af685a59d51160b6672d7dee5a25da07fc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.4"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -777,7 +769,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_plugin_android_lifecycle:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
       sha256: "615a505aef59b151b46bbeef55b36ce2b6ed299d160c51d84281946f0aa0ce0e"
@@ -811,7 +803,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_webrtc:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_webrtc
       sha256: f6800cc2af79018c12e955ddf8ad007891fdfbb8199b0ce3dccd0977ed2add9c
@@ -878,10 +870,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "9b736a9fa879d8ad6df7932cbdcc58237c173ab004ef90d8377923d7ad731eaa"
+      sha256: "04539267a740931c6d4479a10d466717ca5901c6fdfd3fcda09391bbb8ebd651"
       url: "https://pub.dev"
     source: hosted
-    version: "14.7.2"
+    version: "14.8.0"
   go_router_builder:
     dependency: "direct dev"
     description:
@@ -1198,10 +1190,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: c447a3c3e7be4addf129b8f9ab6a4bd5d166b78918223e223b61fddf4d07e254
+      sha256: "67eae327b1b0faf761964a1d2e5d323c797f3799db0e85aa232db8d9e922bc35"
       url: "https://pub.dev"
     source: hosted
-    version: "8.2.0"
+    version: "8.2.1"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -1519,6 +1511,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  socket_io_client:
+    dependency: "direct main"
+    description:
+      name: socket_io_client
+      sha256: "180fdbc7685e32a849511bbf8b1c7bcc46ab0ff116f7024aa204b425bb3a1ffe"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
+  socket_io_common:
+    dependency: transitive
+    description:
+      name: socket_io_common
+      sha256: a914df90f25003fea62dbd0b186d98b745b1b72c16be87418e15a2511d25dadb
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
   source_gen:
     dependency: transitive
     description:
