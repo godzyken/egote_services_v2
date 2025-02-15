@@ -9,23 +9,25 @@ import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart'
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
 import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
+import 'features/chat/application/providers/cube_settings_provider.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
 import 'l10n/app_localizations.dart';
 
-class MyApp extends ConsumerStatefulWidget {
-  const MyApp({super.key});
+class EgoteApp extends ConsumerStatefulWidget {
+  const EgoteApp({super.key});
 
   @override
-  ConsumerState<MyApp> createState() => _MyAppState();
+  ConsumerState<EgoteApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
+class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
   late StreamSubscription<List<ConnectivityResult>>
       connectivityStateSubscription;
   AppLifecycleState? appState;
@@ -90,7 +92,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
       log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
     });
-    late final initCube = initConnectyCube();
+    late final initCube = initConnectyCube(CubeSettings.instance);
 
     initCube.asStream();
 
@@ -99,7 +101,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
   }
 
-  Future<List<ConnectivityResult>> initConnectyCube() async {
+/*  Future<List<ConnectivityResult>> initConnectyCube() async {
     final connectivityResult = await Connectivity().checkConnectivity();
     // This condition is for demo purposes only to explain every connection type.
     // Use conditions which work for your requirements.
@@ -122,10 +124,26 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       // Connected to a network which is not in the above mentioned networks.
     } else if (connectivityResult.contains(ConnectivityResult.none)) {
       // No available network types
+      if (CubeChatConnection.instance.currentUser != null) {
+        CubeChatConnection.instance.relogin();
+      }
     }
 
     return connectivityResult;
+  }*/
+
+  Future<bool> initForegroundService() async {
+    final androidConfig = FlutterBackgroundAndroidConfig(
+      notificationTitle: 'Egote Services',
+      notificationText: 'Screen sharing is in progress',
+      notificationImportance: AndroidNotificationImportance.max,
+      notificationIcon: androidResource,
+    );
+    return FlutterBackground.initialize(androidConfig: androidConfig);
   }
+
+  AndroidResource get androidResource =>
+      AndroidResource(name: 'ic_launcher_foreground', defType: 'drawable');
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {

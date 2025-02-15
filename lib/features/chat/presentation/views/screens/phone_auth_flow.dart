@@ -61,9 +61,11 @@ class VerifyPhoneNumber extends ConsumerWidget {
                           log('[AuthStateChangeAction] CredentialLinked');
                           state.user.getIdToken().then((idToken) {
                             SharedPrefs.instance.saveLoginType(LoginType.phone);
-                            Navigator.of(ctx3, rootNavigator: true)
-                                .pushNamedAndRemoveUntil(
-                                    'loginToChat', (route) => false);
+                            if (context.mounted) {
+                              Navigator.of(ctx3, rootNavigator: true)
+                                  .pushNamedAndRemoveUntil(
+                                      'loginToChat', (route) => false);
+                            }
                           });
                         }),
                         AuthStateChangeAction<Uninitialized>((ctx3, state) {
@@ -80,9 +82,11 @@ class VerifyPhoneNumber extends ConsumerWidget {
                           log('[AuthStateChangeAction] UserCreated');
                           state.credential.user?.getIdToken().then((idToken) {
                             SharedPrefs.instance.saveLoginType(LoginType.phone);
-                            Navigator.of(ctx3, rootNavigator: true)
-                                .pushNamedAndRemoveUntil(
-                                    'loginToChat', (route) => false);
+                            if (context.mounted) {
+                              Navigator.of(ctx3, rootNavigator: true)
+                                  .pushNamedAndRemoveUntil(
+                                      'loginToChat', (route) => false);
+                            }
                           });
                         }),
                       ],

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:egote_services_v2/features/devis/domain/entities/construction/mission_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,8 +14,8 @@ class MissionEntity with _$MissionEntity {
     required String denomination,
   }) = _MissionEntity;
 
-  const factory MissionEntity.init(
-      {required MissionId id}) = _MissionEntityInit;
+  const factory MissionEntity.init({required MissionId id}) =
+      _MissionEntityInit;
 
   const factory MissionEntity.done(
       {required MissionId id,

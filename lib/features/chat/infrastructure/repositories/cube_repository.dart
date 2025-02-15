@@ -35,13 +35,13 @@ class CubeRepository implements CubeRepositoryInterface {
     var idToken = await authRepository.setSession(token);
     return createSession().then((cubeSession) {
       // TODO: 'signInUsingFirebaseEmail' is deprecated and shouldn't be used. Use [createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret)] instead.
-      return signInUsingFirebaseEmail(
+      return createSessionUsingSocialProvider(
               DefaultFirebaseOptions.currentPlatform.projectId,
               idToken.toString())
-          .then((cubeUser) {
+          .then((cubeSession) {
         return SharedPrefs.instance.init().then((sharedPrefs) {
-          sharedPrefs.saveNewUser(cubeUser, LoginType.login);
-          return cubeUser
+          sharedPrefs.saveNewUser(cubeSession.user!, LoginType.login);
+          return cubeSession.user!
             ..password = CubeSessionManager.instance.activeSession?.token;
         });
       });
@@ -51,11 +51,8 @@ class CubeRepository implements CubeRepositoryInterface {
   @override
   Future<Either<Failure, CubeSession>> createUserSession(
       String login, String password) async {
-    return createSession().then((value) {
-      // TODO: 'signInByLogin' is deprecated and shouldn't be used. Use [createSession(user)] instead.
-      return signInByLogin(login, password).then((value) {
-        return right(CubeSessionManager.instance.activeSession!);
-      });
+    return createUserSession(login, password).then((value) {
+      return right(CubeSessionManager.instance.activeSession!);
     }, onError: left(Failure.badRequest()).call);
   }
 

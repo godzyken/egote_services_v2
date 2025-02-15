@@ -10,6 +10,6 @@ void main() async {
 
   runApp(UncontrolledProviderScope(
     container: await bootstrap(),
-    child: const MyApp(),
+    child: const EgoteApp(),
   ));
 }

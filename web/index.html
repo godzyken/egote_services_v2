@@ -31,8 +31,28 @@
 
   <title>egote_services_v2</title>
   <link rel="manifest" href="manifest.json">
+
+  <script>
+    {{flutter_service_worker_version}}
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script> {{flutter_js}} </script>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.load({
+        onEntrypointLoaded: async function(engineInitializer) {
+          loading.textContent = 'Initializing engine...';
+          await engineInitializer.initializeEngine().then(function(appRunner) {
+            loading.textContent = 'Loading app...';
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+  <script> {{flutter_bootstrap_js}}</script>
 </body>
 </html>

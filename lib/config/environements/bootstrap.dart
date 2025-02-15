@@ -7,6 +7,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stacktrace;
 
+import '../app_shared/images/assets_images.dart';
 import '../providers.dart';
 import 'flavors.dart';
 
@@ -17,12 +18,12 @@ Future<ProviderContainer> bootstrap() async {
   binding
     ..deferFirstFrame()
     ..addPostFrameCallback((timeStamp) {
-      // final Element? context = binding.rootElement;
-      // if (context != null) {
-      //   for (final asset in assetList.dependencies!.toList()) {
-      //     precacheImage(AssetImage(asset.toString()), context);
-      //   }
-      // }
+      final Element? context = binding.rootElement;
+      if (context != null) {
+        for (final asset in assetList.dependencies!.toList()) {
+          precacheImage(AssetImage(asset.toString()), context);
+        }
+      }
       binding.allowFirstFrame();
     });
 
@@ -30,7 +31,7 @@ Future<ProviderContainer> bootstrap() async {
     options
       ..environment = 'dev'
       ..dsn =
-          'https://0ee7fbe213ed4eeb9d8e2225896c1601@o573314.ingest.sentry.io/4505427558400000'
+          'https://8486e00ed99148aaa94a4b700ea4df50@o4505047063592960.ingest.us.sentry.io/4505047065427968'
       ..autoAppStart = true
       ..maxCacheItems
       ..enableAutoPerformanceTracing = true

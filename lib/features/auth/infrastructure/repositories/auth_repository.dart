@@ -329,6 +329,12 @@ class AuthRepository implements AuthRepositoryInterface {
       int? statusCode = int.tryParse(e.code!);
 
       developer.ServiceExtensionResponse.error(statusCode!, e.message);
+      PostgrestException(
+          code: '23505',
+          details: 'Key (id)=(1) already exists.',
+          hint: null,
+          message:
+              'duplicate key value violates unique constraint "countries_pkey ${e.message}');
       return left(Failure.unauthorized());
     }
   }
@@ -408,6 +414,12 @@ class AuthRepository implements AuthRepositoryInterface {
       ));
     } catch (e) {
       developer.log(e.toString());
+      PostgrestException(
+          code: '23505',
+          details: 'Key (id)=(1) already exists.',
+          hint: null,
+          message:
+              'duplicate key value violates unique constraint "cubeUser_pkey ${e.toString()}');
       return left(Failure.unprocessableEntity(message: e.toString()));
     }
   }

@@ -21,10 +21,11 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
 
   settings.applicationId = env.appId;
   settings.authorizationKey = env.authKey;
-  // settings.authorizationSecret = env.authSecret;
-  settings.applicationId = env.appId;
+  settings.authorizationSecret = env.authSecret;
   settings.isDebugEnabled = true;
   settings.isJoinEnabled = true;
+
+  await initConnectyCube(settings);
 
   await settings.setEndpoints(settings.apiEndpoint, settings.chatEndpoint);
 
@@ -44,6 +45,12 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
 
   return settings;
 }, dependencies: [cubeSettingsProvider], name: 'Cube settings init provider');
+
+Future<CubeSession> initConnectyCube(CubeSettings settings) async {
+  final String? appId = settings.applicationId;
+  final String? authKey = settings.authorizationKey;
+  return settings.init(appId!, authKey!, settings.authorizationSecret!);
+}
 
 final cubeUserControllerProvider =
     StateNotifierProvider<CubeUserController, CubeUser?>(

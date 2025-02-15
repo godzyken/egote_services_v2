@@ -652,21 +652,21 @@ class KeyValueDbPrefs implements KeyValueDb {
           }
           return;
         } else {
-          await _prefs.setInt(key, (value as Color).value);
+          await _prefs.setInt(key, (value as Color).value32bit);
           if (_debug) {
             debugPrint(
                 'Prefs put   : ["$key"] = $value (${value.runtimeType})');
-            debugPrint('Prefs saved : type Color? $key as ${value.value}');
+            debugPrint('Prefs saved : type Color? $key as ${value.value32bit}');
           }
           return;
         }
       }
       // Save a none nullable Color value.
       if (sameTypes<T, Color>()) {
-        await _prefs.setInt(key, (value as Color).value);
+        await _prefs.setInt(key, (value as Color).value32bit);
         if (_debug) {
           debugPrint('Prefs put   : ["$key"] = $value (${value.runtimeType})');
-          debugPrint('Prefs saved : type Color $key as ${value.value}');
+          debugPrint('Prefs saved : type Color $key as ${value.value32bit}');
         }
         return;
       }

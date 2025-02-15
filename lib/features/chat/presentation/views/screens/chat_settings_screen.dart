@@ -278,10 +278,12 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     });
     updateUser(userToUpdate).then((user) {
       SharedPrefs.instance.updateUser(user);
-      context.showAlert(context.tr!.success);
-      setState(() {
-        _isUsersContinues = false;
-      });
+      if (mounted) {
+        context.showAlert(context.tr!.success);
+        setState(() {
+          _isUsersContinues = false;
+        });
+      }
     }).catchError((exception) {
       _processUpdateUserError(exception);
     });
@@ -306,13 +308,17 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
               child: Text(context.tr!.ok),
               onPressed: () {
                 // TODO: 'signOut' is deprecated and shouldn't be used. Use [deleteSession] instead.
-                signOut().then(
+                deleteSession().then(
                   (voidValue) {
-                    context.pop(context); // cancel current Dialog
+                    if (context.mounted) {
+                      context.pop(context);
+                    }
                   },
                 ).catchError(
                   (onError) {
-                    context.pop(context); // cancel current Dialog
+                    if (context.mounted) {
+                      context.pop(context);
+                    } // cancel current Dialog
                   },
                 ).whenComplete(() {
                   ref.watch(cubeChatConnectionProvider).destroy();
@@ -322,7 +328,9 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
                       .currentUser
                       ?.unlink(PhoneAuthProvider.PROVIDER_ID);
                   SharedPrefs.instance.deleteUser();
-                  context.pop(context); // cancel current screen
+                  if (context.mounted) {
+                    context.pop(context); // cancel current screen
+                  }
                   _navigateToLoginScreen();
                 });
               },
@@ -360,11 +368,15 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
 
                 deleteUser(widget.currentUser.id!).then(
                   (voidValue) {
-                    context.pop(context);
+                    if (mounted) {
+                      context.pop(context);
+                    }
                   },
                 ).catchError(
                   (onError) {
-                    context.pop(context);
+                    if (mounted) {
+                      context.pop(context);
+                    }
                   },
                 ).whenComplete(() async {
                   await PushNotificationsManager.instance.unsubscribe();

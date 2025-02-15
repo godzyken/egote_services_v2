@@ -51,6 +51,7 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
       storageOptions: const supabase.StorageClientOptions(
         retryAttempts: 10,
       ),
+      postgrestOptions: const supabase.PostgrestClientOptions(schema: 'public'),
       debug: kDebugMode);
 }, name: 'Initialisation de supabase provider');
 

@@ -161,7 +161,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       setState(() {
         isLoading = false;
       });
-      context.showAlert('This file is not an image');
+      if (mounted) {
+        context.showAlert('This file is not an image');
+      }
     });
   }
 

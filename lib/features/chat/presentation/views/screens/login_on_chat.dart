@@ -362,7 +362,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       final state = SharedPrefs.instance;
       try {
         await createSession(user).then((cubeSession) {
-          if (cubeSession.timestamp != null) {
+          if (cubeSession.userId != null) {
             state
               ..prefs
               ..getLoginType()
@@ -390,8 +390,10 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       SharedPrefs.instance.saveNewUser(
           user, isEmailSelected ? LoginType.email : LoginType.login);
       PushNotificationsManager.instance.init();
-      signIn(user).then((result) {
-        _loginToCubeChat(context, result);
+      createSession(user).then((result) {
+        if (context.mounted) {
+          _loginToCubeChat(context, result.user!);
+        }
       });
     }).catchError((exception) {
       _processLoginError(exception);
@@ -419,7 +421,9 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
       PushNotificationsManager.instance.init();
 
-      _loginToCubeChat(context, user);
+      if (context.mounted) {
+        _loginToCubeChat(context, user);
+      }
     }).catchError((error) {
       _processLoginError(error);
     });
@@ -450,12 +454,12 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         signInFuture = createSessionUsingFirebaseEmail(projectId, accessToken)
             .then((cubeSession) {
           // todo: 'signInUsingFirebaseEmail' is deprecated and shouldn't be used. Use [createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret)] instead
-          return signInUsingFirebaseEmail(projectId, accessToken)
+          return createSessionUsingSocialProvider(projectId, accessToken)
               .then((cubeUser) => SharedPrefs.instance
                       .init()
                       .then((sharedPrefs) {
                     return sharedPrefs.getUser().then((savedUser) =>
-                        savedUser!..password = cubeUser.password);
+                        savedUser!..password = cubeUser.user!.password);
                   }).onError((ExceptionCause error, stackTrace) =>
                           handleError(error, stackTrace)))
               .onError((ExceptionCause error, stackTrace) =>
@@ -464,20 +468,16 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
       case LoginType.phone:
         signInFuture = createSessionUsingFirebasePhone(projectId, accessToken)
-            .then((cubeSession) {
-          // todo: 'signInUsingFirebasePhone' is deprecated and shouldn't be used. Use [createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret)] instead
-          return signInUsingFirebasePhone(projectId, cubeSession.token!)
-              .then((cubeUser) {
-            return SharedPrefs.instance.init().then((sharedPrefs) {
-              sharedPrefs.saveNewUser(cubeUser, LoginType.phone);
-              return cubeUser
-                ..password =
-                    ref.read(cubeSessionManagerProvider).activeSession?.token;
-            }).onError((ExceptionCause error, stackTrace) =>
+            .then((cubeSession) => SharedPrefs.instance
+                    .init()
+                    .then((sharedPrefs) {
+                  return sharedPrefs.getUser().then((savedUser) =>
+                      savedUser!..password = cubeSession.user!.password);
+                }).onError((ExceptionCause error, stackTrace) =>
+                        handleError(error, stackTrace)))
+            .onError((ExceptionCause error, stackTrace) =>
                 handleError(error, stackTrace));
-          }).onError((ExceptionCause error, stackTrace) =>
-                  handleError(error, stackTrace));
-        });
+
       case LoginType.facebook:
       // TODO: Handle this case.
     }
@@ -485,7 +485,9 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     signInFuture?.then((cubeUser) {
       PushNotificationsManager.instance.init();
 
-      _loginToCubeChat(context, cubeUser);
+      if (mounted) {
+        _loginToCubeChat(context, cubeUser);
+      }
     }).catchError((error) {
       _processLoginError(error);
     });
@@ -503,7 +505,9 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
     ref.watch(cubeChatConnectionProvider).login(user).then((cubeUser) {
       _isLoginContinues = false;
-      _goDialogScreen(context, cubeUser);
+      if (context.mounted) {
+        _goDialogScreen(context, cubeUser);
+      }
     }).catchError((error) {
       _processLoginError(error);
     });

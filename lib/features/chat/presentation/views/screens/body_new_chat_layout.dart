@@ -288,10 +288,12 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
       CubeDialog newDialog = CubeDialog(const CubeDialogTypeMig.PRIVATE(1).id,
           occupantsIds: users.toList());
       createDialog(newDialog).then((createdDialog) {
-        context.pushReplacementNamed('chat_dialog', extra: {
-          USER_ARG_NAME: widget.currentUser,
-          DIALOG_ARG_NAME: createdDialog
-        });
+        if (context.mounted) {
+          context.pushReplacementNamed('chat_dialog', extra: {
+            USER_ARG_NAME: widget.currentUser,
+            DIALOG_ARG_NAME: createdDialog
+          });
+        }
       }).catchError((error) {
         _processCreateDialogError(error);
       });

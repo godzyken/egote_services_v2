@@ -298,8 +298,10 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
         if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
           CubeDialog dialog = dialogs.items.first;
 
-          context.pushNamed('chat_dialog',
-              extra: {USER_ARG_NAME: user, DIALOG_ARG_NAME: dialog});
+          if (context.mounted) {
+            context.pushNamed('chat_dialog',
+                extra: {USER_ARG_NAME: user, DIALOG_ARG_NAME: dialog});
+          }
         }
       });
     });

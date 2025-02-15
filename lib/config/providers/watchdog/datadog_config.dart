@@ -41,13 +41,15 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
   if (dogData case final initDatadog) {
     if (trackingConsent.mounted) {
       try {
-        final consent = trackingConsent._trackingConsent.first;
-        await initDatadog.initialize(configuration, consent);
+        final consent = trackingConsent._trackingConsent;
+        await initDatadog.initialize(configuration, consent.single);
         return initDatadog;
       } on FlutterError catch (e) {
         // TODO
         if (kDebugMode) {
-          print('Datadog Provider error: $e');
+          print('Datadog Provider error: ${e.message}');
+          print('Datadog Provider error rumtime Type: ${e.runtimeType}');
+          print('Datadog Provider error diagnostics: ${e.diagnostics}');
         }
       }
     } else {
@@ -75,9 +77,20 @@ final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
   final env =
       Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
+  final String clientToken = env.clientToken;
+  final String environmentName = F.appFlavor.toString();
+
+  final firstPartyHosts = env.firstPartyHost;
+
+  if (kDebugMode) {
+    print('clientToken: $clientToken');
+    print('environmentName: $environmentName');
+    print('firstPartyHosts: $firstPartyHosts');
+  }
+
   final config = DatadogConfiguration(
-      clientToken: env.clientToken,
-      env: F.appFlavor.toString(),
+      clientToken: clientToken,
+      env: environmentName,
       site: DatadogSite.eu1,
       nativeCrashReportEnabled: true,
       loggingConfiguration: DatadogLoggingConfiguration(),
@@ -86,7 +99,8 @@ final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
           applicationId: env.applicationId,
           detectLongTasks: true,
           reportFlutterPerformance: true),
-      firstPartyHosts: env.firstPartyHost);
+      firstPartyHosts: firstPartyHosts);
+
   return config;
 });
 

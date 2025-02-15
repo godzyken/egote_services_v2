@@ -116,9 +116,9 @@ class KeyValueDbHive implements KeyValueDb {
   /// Hive.registerAdapter(adapter, override: true), but it also screams
   /// an ugly long warning in the console. This gets around both cases.
   void _safeRegisterAdapter<T>(
-      int typeId,
-      TypeAdapter<T> adapter,
-      ) {
+    int typeId,
+    TypeAdapter<T> adapter,
+  ) {
     if (Hive.isAdapterRegistered(typeId)) return;
     Hive.registerAdapter(adapter);
   }
@@ -201,7 +201,7 @@ class _ColorAdapter extends TypeAdapter<Color> {
 
   @override
   void write(BinaryWriter writer, Color obj) {
-    writer.writeInt(obj.value);
+    writer.writeInt(obj.value32bit);
   }
 
   @override

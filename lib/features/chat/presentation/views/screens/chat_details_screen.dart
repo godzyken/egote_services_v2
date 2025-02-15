@@ -76,13 +76,17 @@ class ChatDetailsScreen extends ConsumerWidget {
               child: Text(context.tr!.ok),
               onPressed: () {
                 deleteDialog(cubeDialog.dialogId!).then((onValue) {
-                  context.showAlert(context.tr!.success);
-                  context.pushReplacementNamed(
-                    'select_dialog',
-                    extra: {USER_ARG_NAME: cubeUser},
-                  );
+                  if (context.mounted) {
+                    context.showAlert(context.tr!.success);
+                    context.pushReplacementNamed(
+                      'select_dialog',
+                      extra: {USER_ARG_NAME: cubeUser},
+                    );
+                  }
                 }).catchError((error) {
-                  context.showAlert(error);
+                  if (context.mounted) {
+                    context.showAlert(error);
+                  }
                 });
               },
             ),

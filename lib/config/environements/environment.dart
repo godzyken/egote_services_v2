@@ -17,6 +17,7 @@ class Environment with _$Environment {
   /// [applicationId] is the id app for datadog
   /// [firstPartyHost] is the uri entre point to datadog analise
   /// [accessToken] is the accessToken to Supabase
+  /// [cubeApiKey] is the apiKey to Connectycube
 
   const factory Environment({
     required String supabaseUrl,
@@ -32,6 +33,7 @@ class Environment with _$Environment {
     required String applicationId,
     required List<String>? firstPartyHost,
     required String accessToken,
+    required String cubeApiKey,
   }) = _Environment;
 
   ///
