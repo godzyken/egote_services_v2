@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:egote_services_v2/features/chat/application/controllers/cube_user_controller.dart';
@@ -11,6 +11,8 @@ import '../../../../config/cube_config/cube_config.dart';
 import '../../../../config/environements/environment.dart';
 import '../../../../config/environements/flavors.dart';
 import '../../../../config/providers/cube/cube_providers.dart';
+import '../../data/data_sources/local/pref_util.dart';
+import '../../infrastructure/repositories/cube_repository.dart';
 
 final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   final configFile = await rootBundle.loadString(F.envFileName);
@@ -19,19 +21,19 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
 
   final settings = ref.watch(cubeSettingsProvider);
 
-  settings.applicationId = env.appId;
-  settings.authorizationKey = env.authKey;
-  settings.authorizationSecret = env.authSecret;
-  settings.isDebugEnabled = true;
-  settings.isJoinEnabled = true;
-
-  await initConnectyCube(settings);
+  _loadCredentialsOptions(settings, env);
 
   await settings.setEndpoints(settings.apiEndpoint, settings.chatEndpoint);
 
   // 'init' is deprecated and shouldn't be used. [authorizationSecret] will be removed in next releases
-  /*await settings.init(env.appId, env.authKey, env.authSecret,
-      onSessionRestore: () async {
+  initStateConnection(settings, ref);
+
+  return settings;
+}, dependencies: [cubeSettingsProvider], name: 'Cube settings init provider');
+
+Future<CubeSession?> initStateConnection(CubeSettings settings, Ref ref) async {
+  init(settings.applicationId!, settings.authorizationKey!,
+      settings.authorizationSecret!, onSessionRestore: () async {
     SharedPrefs preferences = await SharedPrefs.instance.init();
 
     if (LoginType.phone == preferences.getLoginType()) {
@@ -41,15 +43,19 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
     return await preferences
         .getUser()
         .then((value) => ref.read(cubeRepositoryProvider).restoreSession());
-  });*/
+  });
 
-  return settings;
-}, dependencies: [cubeSettingsProvider], name: 'Cube settings init provider');
+  return createSession();
+}
 
-Future<CubeSession> initConnectyCube(CubeSettings settings) async {
-  final String? appId = settings.applicationId;
-  final String? authKey = settings.authorizationKey;
-  return settings.init(appId!, authKey!, settings.authorizationSecret!);
+void _loadCredentialsOptions(CubeSettings settings, Environment env) {
+  settings.applicationId = env.appId;
+  settings.authorizationKey = env.authKey;
+  settings.apiEndpoint = env.outpoint;
+  settings.chatEndpoint = env.chatEndpoint;
+  settings.authorizationKey = env.authKey;
+  settings.isDebugEnabled = true;
+  settings.isJoinEnabled = true;
 }
 
 final cubeUserControllerProvider =

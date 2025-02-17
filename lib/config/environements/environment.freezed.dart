@@ -35,6 +35,7 @@ mixin _$Environment {
   List<String>? get firstPartyHost => throw _privateConstructorUsedError;
   String get accessToken => throw _privateConstructorUsedError;
   String get cubeApiKey => throw _privateConstructorUsedError;
+  String get chatEndpoint => throw _privateConstructorUsedError;
 
   /// Serializes this Environment to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -66,7 +67,8 @@ abstract class $EnvironmentCopyWith<$Res> {
       String applicationId,
       List<String>? firstPartyHost,
       String accessToken,
-      String cubeApiKey});
+      String cubeApiKey,
+      String chatEndpoint});
 }
 
 /// @nodoc
@@ -98,6 +100,7 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
     Object? firstPartyHost = freezed,
     Object? accessToken = null,
     Object? cubeApiKey = null,
+    Object? chatEndpoint = null,
   }) {
     return _then(_value.copyWith(
       supabaseUrl: null == supabaseUrl
@@ -157,6 +160,10 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
           ? _value.cubeApiKey
           : cubeApiKey // ignore: cast_nullable_to_non_nullable
               as String,
+      chatEndpoint: null == chatEndpoint
+          ? _value.chatEndpoint
+          : chatEndpoint // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -183,7 +190,8 @@ abstract class _$$EnvironmentImplCopyWith<$Res>
       String applicationId,
       List<String>? firstPartyHost,
       String accessToken,
-      String cubeApiKey});
+      String cubeApiKey,
+      String chatEndpoint});
 }
 
 /// @nodoc
@@ -213,6 +221,7 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
     Object? firstPartyHost = freezed,
     Object? accessToken = null,
     Object? cubeApiKey = null,
+    Object? chatEndpoint = null,
   }) {
     return _then(_$EnvironmentImpl(
       supabaseUrl: null == supabaseUrl
@@ -272,6 +281,10 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
           ? _value.cubeApiKey
           : cubeApiKey // ignore: cast_nullable_to_non_nullable
               as String,
+      chatEndpoint: null == chatEndpoint
+          ? _value.chatEndpoint
+          : chatEndpoint // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -293,7 +306,8 @@ class _$EnvironmentImpl implements _Environment {
       required this.applicationId,
       required final List<String>? firstPartyHost,
       required this.accessToken,
-      required this.cubeApiKey})
+      required this.cubeApiKey,
+      required this.chatEndpoint})
       : _firstPartyHost = firstPartyHost;
 
   factory _$EnvironmentImpl.fromJson(Map<String, dynamic> json) =>
@@ -335,10 +349,12 @@ class _$EnvironmentImpl implements _Environment {
   final String accessToken;
   @override
   final String cubeApiKey;
+  @override
+  final String chatEndpoint;
 
   @override
   String toString() {
-    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outpoint: $outpoint, clientToken: $clientToken, site: $site, applicationId: $applicationId, firstPartyHost: $firstPartyHost, accessToken: $accessToken, cubeApiKey: $cubeApiKey)';
+    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outpoint: $outpoint, clientToken: $clientToken, site: $site, applicationId: $applicationId, firstPartyHost: $firstPartyHost, accessToken: $accessToken, cubeApiKey: $cubeApiKey, chatEndpoint: $chatEndpoint)';
   }
 
   @override
@@ -372,7 +388,9 @@ class _$EnvironmentImpl implements _Environment {
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.cubeApiKey, cubeApiKey) ||
-                other.cubeApiKey == cubeApiKey));
+                other.cubeApiKey == cubeApiKey) &&
+            (identical(other.chatEndpoint, chatEndpoint) ||
+                other.chatEndpoint == chatEndpoint));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -392,7 +410,8 @@ class _$EnvironmentImpl implements _Environment {
       applicationId,
       const DeepCollectionEquality().hash(_firstPartyHost),
       accessToken,
-      cubeApiKey);
+      cubeApiKey,
+      chatEndpoint);
 
   /// Create a copy of Environment
   /// with the given fields replaced by the non-null parameter values.
@@ -425,7 +444,8 @@ abstract class _Environment implements Environment {
       required final String applicationId,
       required final List<String>? firstPartyHost,
       required final String accessToken,
-      required final String cubeApiKey}) = _$EnvironmentImpl;
+      required final String cubeApiKey,
+      required final String chatEndpoint}) = _$EnvironmentImpl;
 
   factory _Environment.fromJson(Map<String, dynamic> json) =
       _$EnvironmentImpl.fromJson;
@@ -458,6 +478,8 @@ abstract class _Environment implements Environment {
   String get accessToken;
   @override
   String get cubeApiKey;
+  @override
+  String get chatEndpoint;
 
   /// Create a copy of Environment
   /// with the given fields replaced by the non-null parameter values.

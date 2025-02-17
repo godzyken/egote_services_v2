@@ -64,7 +64,7 @@ class SharedPrefs {
     }
   }
 
-  /* startSession(CubeSession cubeSession, bool isStart) async {
+  startSession(CubeSession cubeSession, bool isStart) async {
     prefs.clear();
     await Future.delayed(
         Duration(minutes: cubeSession.tokenExpirationDate!.minute));
@@ -74,7 +74,7 @@ class SharedPrefs {
         cubeSession.tokenExpirationDate!.minute) {
       prefs.clear();
     }
-  }*/
+  }
 
   updateUser(CubeUser cubeUser) {
     if (cubeUser.password != null) {

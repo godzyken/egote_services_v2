@@ -92,7 +92,7 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
 
       log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
     });
-    late final initCube = initConnectyCube(CubeSettings.instance);
+    late final initCube = initStateConnection(CubeSettings.instance, ref);
 
     initCube.asStream();
 

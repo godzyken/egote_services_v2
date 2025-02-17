@@ -5,6 +5,7 @@ import 'package:egote_services_v2/config/environements/environment.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../environements/flavors.dart';
 
@@ -39,10 +40,10 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
   logger?.error("An error was met!");
 
   if (dogData case final initDatadog) {
-    if (trackingConsent.mounted) {
+    if (trackingConsent == TrackingConsent.pending) {
       try {
-        final consent = trackingConsent._trackingConsent;
-        await initDatadog.initialize(configuration, consent.single);
+        final consent = trackingConsent;
+        await initDatadog.initialize(configuration, consent);
         return initDatadog;
       } on FlutterError catch (e) {
         // TODO
@@ -53,7 +54,7 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
         }
       }
     } else {
-      final nonConsent = trackingConsent._trackingConsent.last;
+      final nonConsent = trackingConsent;
       await initDatadog.initialize(configuration, nonConsent);
 
       initDatadog.clearAllData();
@@ -104,32 +105,45 @@ final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
   return config;
 });
 
-final trackingConsentProvider = StateProvider<TrackingContentChangeNotifier>(
-    (_) => TrackingContentChangeNotifier());
+// final trackingConsentProvider = StateProvider<TrackingContentChangeNotifier>(
+//     (_) => TrackingContentChangeNotifier());
 
-class TrackingContentChangeNotifier
-    extends StateNotifier<List<TrackingConsent>> {
-  final _trackingConsent = TrackingConsent.values;
+final trackingConsentProvider =
+    StateNotifierProvider<TrackingConsentNotifier, TrackingConsent>(
+        (_) => TrackingConsentNotifier());
 
-  TrackingContentChangeNotifier() : super(TrackingConsent.values) {
-    _init();
+class TrackingConsentNotifier extends StateNotifier<TrackingConsent> {
+  TrackingConsentNotifier() : super(TrackingConsent.pending) {
+    _loadConsent();
   }
 
-  changeAccessRight(bool value) {
-    for (var c in state) {
-      switch (value) {
-        case false:
-          c = TrackingConsent.notGranted;
-          return c;
-        case true:
-          c = TrackingConsent.granted;
-          return c;
-      }
-    }
-    return state.last == _trackingConsent.single;
+  Future<void> _loadConsent() async {
+    final prefs = await SharedPreferences.getInstance();
+    final consentString = prefs.getString('trackingConsent') ?? 'notDetermined';
+    state = TrackingConsent.values
+        .firstWhere((e) => e.toString() == 'TrackingConsent.$consentString');
   }
 
-  _init() {
-    changeAccessRight;
+  Future<void> _saveConsent() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('trackingConsent', state.toString().split('.').last);
+  }
+
+  // Met à jour l'état du consentement à "Granted"
+  void grantConsent() {
+    state = TrackingConsent.granted;
+    _saveConsent();
+  }
+
+  // Met à jour l'état du consentement à "Denied"
+  void denyConsent() {
+    state = TrackingConsent.notGranted;
+    _saveConsent();
+  }
+
+  // Réinitialise l'état à "NotDetermined" (par exemple, pour réinitialiser les préférences)
+  void resetConsent() {
+    state = TrackingConsent.pending;
+    _saveConsent();
   }
 }

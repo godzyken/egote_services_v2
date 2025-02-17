@@ -9,6 +9,7 @@ import 'package:stack_trace/stack_trace.dart' as stacktrace;
 
 import '../app_shared/images/assets_images.dart';
 import '../providers.dart';
+import '../providers/watchdog/datadog_config.dart';
 import 'flavors.dart';
 
 Future<ProviderContainer> bootstrap() async {
@@ -27,7 +28,7 @@ Future<ProviderContainer> bootstrap() async {
       binding.allowFirstFrame();
     });
 
-  await SentryFlutter.init((options) {
+  await SentryFlutter.init(appRunner: () => appRunnerConfig(), (options) {
     options
       ..environment = 'dev'
       ..dsn =
@@ -39,6 +40,7 @@ Future<ProviderContainer> bootstrap() async {
       ..reportSilentFlutterErrors = true
       ..reportPackages = false
       ..sendDefaultPii = true
+      ..serverName
       ..considerInAppFramesByDefault = true
       ..attachThreads = true
       ..attachScreenshot = true
@@ -46,8 +48,8 @@ Future<ProviderContainer> bootstrap() async {
       ..maxRequestBodySize = MaxRequestBodySize.always
       ..maxResponseBodySize = MaxResponseBodySize.always
       ..tracesSampleRate = 1.0
-      ..tracesSampler = (samplingContext) =>
-          samplingContext.transactionContext.parentSamplingDecision?.sampleRate;
+      ..tracesSampler =
+          (samplingContext) => tracesSamplerContext(samplingContext);
   });
 
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -57,6 +59,7 @@ Future<ProviderContainer> bootstrap() async {
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       localizationProvider.overrideWith(
           (ref) => MultiLang(ref.read(localeProvider).languageCode)),
+      datadogConfigProvider.overrideWith((ref) => ref.future),
     ],
     observers: [
       if (F.appFlavor == Flavor.local) _Logger(),
@@ -144,6 +147,39 @@ Future<ProviderContainer> bootstrap() async {
 
   await providers.initializeProvider(container);
   return container;
+}
+
+double? tracesSamplerContext(SentrySamplingContext samplingContext) {
+  // Default to capturing everything
+  var sampleRate = 1.0;
+
+  // Adjust sampling logic based on the transaction context
+  if (samplingContext.transactionContext.operation == 'http') {
+    // If the operation is HTTP, capture 50% of the requests
+    sampleRate = 0.5;
+  } else if (samplingContext.transactionContext.origin == 'db') {
+    // If it's a database operation, only capture 10% of those
+    sampleRate = 0.1;
+  }
+
+  // You can also apply more complex logic here
+  if (samplingContext.transactionContext.name.contains('critical')) {
+    // Always capture critical transactions
+    sampleRate = 1.0;
+  }
+
+  if (samplingContext.transactionContext.parentSamplingDecision?.sampleRate !=
+      null) {
+    sampleRate =
+        samplingContext.transactionContext.parentSamplingDecision!.sampleRate!;
+  }
+
+  return sampleRate;
+}
+
+Future<void Function(Widget app)> appRunnerConfig() async {
+  SentryWidgetsFlutterBinding.ensureInitialized();
+  return runApp;
 }
 
 class _Logger extends ProviderObserver {

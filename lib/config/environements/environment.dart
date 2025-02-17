@@ -8,6 +8,7 @@ class Environment with _$Environment {
   /// Default constructor for the [Environment] model
   /// [supabaseUrl] is the url of the Supabase environment
   /// [supabaseAnonKey] is the anon_key for Supabase
+  /// [supabaseAuthCallbackUrlHostname] is the supabase auth callback url
   /// [appId] is the application id for CubeSettings
   /// [authKey] is the authorization key for CubeSettings
   /// [authSecret] is the authorization secret for CubeSettings
@@ -18,6 +19,7 @@ class Environment with _$Environment {
   /// [firstPartyHost] is the uri entre point to datadog analise
   /// [accessToken] is the accessToken to Supabase
   /// [cubeApiKey] is the apiKey to Connectycube
+  /// [chatEndpoint] is the chat endpoint to Connectycube
 
   const factory Environment({
     required String supabaseUrl,
@@ -34,6 +36,7 @@ class Environment with _$Environment {
     required List<String>? firstPartyHost,
     required String accessToken,
     required String cubeApiKey,
+    required String chatEndpoint,
   }) = _Environment;
 
   ///
