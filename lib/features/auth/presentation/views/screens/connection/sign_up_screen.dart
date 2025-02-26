@@ -44,10 +44,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           .read(authRepositoryProvider)
           .signUp(_emailCtrl.text, _usernameCtrl.text, _passwordCtrl.text);
     } on AuthException catch (e) {
-      developer.log(e.statusCode.toString());
+      developer.log('Signup screen AuthException : ${e.statusCode.toString()}');
       errorAuthExceptionCatch(e);
     } catch (e) {
-      developer.log(e.toString());
+      developer.log('Signup screen other Exception : ${e.toString()}');
       errorCatch(e);
     }
 

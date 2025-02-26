@@ -1,12 +1,13 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../config/app_shared/colors/color_scheme_box.dart';
 import '../../../../../config/app_shared/insets/app_insets.dart';
 
 @immutable
-class SurfaceModeToggleButtons extends StatelessWidget {
+class SurfaceModeToggleButtons extends ConsumerWidget {
   const SurfaceModeToggleButtons({
     super.key,
     required this.mode,
@@ -17,7 +18,7 @@ class SurfaceModeToggleButtons extends StatelessWidget {
   final ValueChanged<FlexSurfaceMode>? onChanged;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final MediaQueryData media = MediaQuery.of(context);
     final bool showAllModes = media.size.width > AppInsets.phoneWidthBreakpoint;
     final ColorScheme scheme = Theme.of(context).colorScheme;
@@ -70,7 +71,7 @@ class SurfaceModeToggleButtons extends StatelessWidget {
 /// Widget using this widget can use state management to get and set values
 /// for this widget. In this app see e.g. widgets
 /// [LightSurfacePopupMenu] and [DarkSurfacePopupMenu].
-class SurfaceModePopupMenu extends StatelessWidget {
+class SurfaceModePopupMenu extends ConsumerWidget {
   const SurfaceModePopupMenu({
     super.key,
     required this.index,
@@ -118,18 +119,19 @@ class SurfaceModePopupMenu extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme scheme = theme.colorScheme;
     final TextStyle txtStyle = theme.textTheme.labelLarge!;
     final bool enabled = onChanged != null;
-    final String styleName = explainMode(context, FlexSurfaceMode.values[index]);
+    final String styleName =
+        explainMode(context, FlexSurfaceMode.values[index]);
     final List<Widget> modeWidgets = _getModeWidget(context, scheme);
 
     final IconThemeData selectedIconTheme =
-    theme.iconTheme.copyWith(color: scheme.onPrimary.withAlpha(0xE5));
+        theme.iconTheme.copyWith(color: scheme.onPrimary.withAlpha(0xE5));
     final IconThemeData unSelectedIconTheme =
-    theme.iconTheme.copyWith(color: scheme.primary);
+        theme.iconTheme.copyWith(color: scheme.primary);
 
     return PopupMenuButton<int>(
       tooltip: '',
@@ -151,21 +153,21 @@ class SurfaceModePopupMenu extends StatelessWidget {
                 dense: true,
                 leading: index == i
                     ? IconTheme(
-                  data: selectedIconTheme,
-                  child: ColorSchemeBox(
-                    backgroundColor: scheme.primary,
-                    borderColor: scheme.primary,
-                    child: modeWidgets[i],
-                  ),
-                )
+                        data: selectedIconTheme,
+                        child: ColorSchemeBox(
+                          backgroundColor: scheme.primary,
+                          borderColor: scheme.primary,
+                          child: modeWidgets[i],
+                        ),
+                      )
                     : IconTheme(
-                  data: unSelectedIconTheme,
-                  child: ColorSchemeBox(
-                    backgroundColor: Colors.transparent,
-                    borderColor: scheme.primary,
-                    child: modeWidgets[i],
-                  ),
-                ),
+                        data: unSelectedIconTheme,
+                        child: ColorSchemeBox(
+                          backgroundColor: Colors.transparent,
+                          borderColor: scheme.primary,
+                          child: modeWidgets[i],
+                        ),
+                      ),
                 title: Text(
                   _modeShort(context, FlexSurfaceMode.values[i]),
                   style: txtStyle,
@@ -177,7 +179,7 @@ class SurfaceModePopupMenu extends StatelessWidget {
       child: ListTile(
         enabled: enabled,
         contentPadding:
-        contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
+            contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
         title: title,
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +205,8 @@ class SurfaceModePopupMenu extends StatelessWidget {
 // need in both the popup menu and toggle buttons implementation.
 // It needs the theme ColorScheme so it can't be a const list or final, and
 // we need to control when we only included a sub set in toggle buttons case.
-List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme, [bool allModes = true]) =>
+List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme,
+        [bool allModes = true]) =>
     <Widget>[
       Tooltip(
         message: context.tr!.blendLevelShortText,
@@ -237,7 +240,8 @@ List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme, [bool allM
         ),
       Tooltip(
         message: context.tr!.tooltipMessageLevelSurfaces,
-        child: const RotatedBox(quarterTurns: 2, child: Icon(Icons.horizontal_split)),
+        child: const RotatedBox(
+            quarterTurns: 2, child: Icon(Icons.horizontal_split)),
       ),
       Tooltip(
         message: context.tr!.highScaffoldLowSurfacesShortText,

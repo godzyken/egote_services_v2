@@ -10,8 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/cube_config/cube_config.dart';
 import '../../../../config/environements/environment.dart';
 import '../../../../config/environements/flavors.dart';
+import '../../../../config/providers.dart';
 import '../../../../config/providers/cube/cube_providers.dart';
-import '../../data/data_sources/local/pref_util.dart';
 import '../../infrastructure/repositories/cube_repository.dart';
 
 final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
@@ -26,15 +26,16 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   await settings.setEndpoints(settings.apiEndpoint, settings.chatEndpoint);
 
   // 'init' is deprecated and shouldn't be used. [authorizationSecret] will be removed in next releases
-  initStateConnection(settings, ref);
+  _initStateConnection(settings, ref);
 
   return settings;
 }, dependencies: [cubeSettingsProvider], name: 'Cube settings init provider');
 
-Future<CubeSession?> initStateConnection(CubeSettings settings, Ref ref) async {
+Future<CubeSession?> _initStateConnection(
+    CubeSettings settings, Ref ref) async {
   init(settings.applicationId!, settings.authorizationKey!,
       settings.authorizationSecret!, onSessionRestore: () async {
-    SharedPrefs preferences = await SharedPrefs.instance.init();
+    final preferences = ref.read(sharedPrefsProvider);
 
     if (LoginType.phone == preferences.getLoginType()) {
       return ref.read(cubeRepositoryProvider).createPhoneAuthSession();
@@ -42,7 +43,7 @@ Future<CubeSession?> initStateConnection(CubeSettings settings, Ref ref) async {
 
     return await preferences
         .getUser()
-        .then((value) => ref.read(cubeRepositoryProvider).restoreSession());
+        .then((cubeUser) => ref.read(cubeRepositoryProvider).restoreSession());
   });
 
   return createSession();
@@ -87,3 +88,34 @@ class FilterLoginTypeView extends StateNotifier<LoginType> {
 
   bool isFilterByFacebook() => state == LoginType.facebook;
 }
+
+/*  Future<List<ConnectivityResult>> initConnectyCube() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    // This condition is for demo purposes only to explain every connection type.
+    // Use conditions which work for your requirements.
+    if (connectivityResult.contains(ConnectivityResult.mobile)) {
+      // Mobile network available.
+    } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
+      // Wi-fi is available.
+      // Note for Android:
+      // When both mobile and Wi-Fi are turned on system will return Wi-Fi only as active network type
+    } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
+      // Ethernet connection available.
+    } else if (connectivityResult.contains(ConnectivityResult.vpn)) {
+      // Vpn connection active.
+      // Note for iOS and macOS:
+      // There is no separate network interface type for [vpn].
+      // It returns [other] on any device (also simulator)
+    } else if (connectivityResult.contains(ConnectivityResult.bluetooth)) {
+      // Bluetooth connection available.
+    } else if (connectivityResult.contains(ConnectivityResult.other)) {
+      // Connected to a network which is not in the above mentioned networks.
+    } else if (connectivityResult.contains(ConnectivityResult.none)) {
+      // No available network types
+      if (CubeChatConnection.instance.currentUser != null) {
+        CubeChatConnection.instance.relogin();
+      }
+    }
+
+    return connectivityResult;
+  }*/

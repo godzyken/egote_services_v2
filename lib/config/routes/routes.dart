@@ -44,11 +44,11 @@ part 'routes.g.dart';
         ]),
     TypedGoRoute<GodzyLogoRoute>(
       path: GodzyLogoRoute.path,
-      name: 'godzyRoute',
+      name: '/godzyRoute',
     ),
     TypedGoRoute<AvisBoxRoute>(
       path: AvisBoxRoute.path,
-      name: 'avisRoute',
+      name: '/avisRoute',
     ),
     TypedGoRoute<DevisEditRoute>(
       path: DevisEditRoute.path,
@@ -67,6 +67,25 @@ part 'routes.g.dart';
                 path: ChatDialogRoute.path, name: 'chat_dialog')
           ])
     ]),
+    TypedGoRoute<ChatVideoScreenRoute>(
+        path: ChatVideoScreenRoute.path,
+        name: 'chat_room',
+        routes: [
+          TypedGoRoute<JoinScreenRoute>(
+              path: JoinScreenRoute.path,
+              name: 'join_screen',
+              routes: [
+                TypedGoRoute<CallScreenRoute>(
+                    path: CallScreenRoute.path, name: 'call_screen')
+              ]),
+          TypedGoRoute<AddOccupantScreenRoute>(
+              path: AddOccupantScreenRoute.path,
+              name: 'add_occupant_screen',
+              routes: [
+                TypedGoRoute<CallScreenRoute>(
+                    path: CallScreenRoute.path, name: 'call_screen')
+              ]),
+        ]),
     TypedGoRoute<SettingsUiRoute>(
         path: SettingsUiRoute.path,
         name: 'settingsRoute',
@@ -93,7 +112,7 @@ part 'routes.g.dart';
   ],
 )
 class HomeRoute extends GoRouteData {
-  static const path = '/';
+  static const path = '/home';
 
   const HomeRoute();
 
@@ -125,7 +144,7 @@ class HomeRoute extends GoRouteData {
 }
 
 class UserHomeRoute extends GoRouteData {
-  static const path = 'user_home/:pid';
+  static const path = '/user_home/:pid';
 
   const UserHomeRoute({required this.pid});
 
@@ -142,7 +161,7 @@ class UserHomeRoute extends GoRouteData {
 }
 
 class PersonRoute extends GoRouteData {
-  static const path = 'person/:uid';
+  static const path = '/user/:uid/person/:pid';
 
   const PersonRoute({required this.uid, required this.pid});
 
@@ -159,7 +178,7 @@ class PersonRoute extends GoRouteData {
 }
 
 class UserListRoute extends GoRouteData {
-  static const path = 'userList/:uid';
+  static const path = '/userList/:uid';
 
   const UserListRoute({required this.pid, required this.uid});
 
@@ -176,7 +195,7 @@ class UserListRoute extends GoRouteData {
 }
 
 class AddUserFormRoute extends GoRouteData {
-  static const path = 'userForm/:uid&:pid';
+  static const path = '/userForm/:uid&:pid';
 
   AddUserFormRoute({required this.uid, required this.pid});
 
@@ -240,7 +259,7 @@ class AuthRoute extends GoRouteData {
 }
 
 class LoginRoute extends GoRouteData {
-  static const path = 'loginRoute';
+  static const path = '/loginRoute';
 
   const LoginRoute();
 
@@ -258,7 +277,7 @@ class LoginRoute extends GoRouteData {
 }
 
 class SignUpRoute extends GoRouteData {
-  static const path = 'signUpRoute';
+  static const path = '/signUpRoute';
 
   const SignUpRoute();
 
@@ -276,7 +295,7 @@ class SignUpRoute extends GoRouteData {
 }
 
 class ListMfaRoute extends GoRouteData {
-  static const path = 'mfaListRoute';
+  static const path = '/mfaListRoute';
 
   const ListMfaRoute();
 
@@ -292,7 +311,7 @@ class ListMfaRoute extends GoRouteData {
 }
 
 class MFAEnrollRoute extends GoRouteData {
-  static const path = 'enrollRoute';
+  static const path = '/enrollRoute';
 
   const MFAEnrollRoute();
 
@@ -313,7 +332,7 @@ class MFAEnrollRoute extends GoRouteData {
 }
 
 class VerificationRoute extends GoRouteData {
-  static const path = 'verificationRoute';
+  static const path = '/verificationRoute';
 
   const VerificationRoute();
 
@@ -335,7 +354,7 @@ class VerificationRoute extends GoRouteData {
 
 /// [Themes Settings Pages Routes]
 class SettingsUiRoute extends GoRouteData {
-  static const path = 'settingsRoute';
+  static const path = '/settingsRoute';
 
   const SettingsUiRoute();
 
@@ -353,7 +372,7 @@ class SettingsUiRoute extends GoRouteData {
 }
 
 class CrossPlatformSettingsRoute extends GoRouteData {
-  static const path = 'crossPlatformRoute';
+  static const path = '/crossPlatformRoute';
 
   const CrossPlatformSettingsRoute();
 
@@ -371,7 +390,7 @@ class CrossPlatformSettingsRoute extends GoRouteData {
 }
 
 class WebChromeAddressesRoute extends GoRouteData {
-  static const path = 'webChromeAddressesRoute';
+  static const path = '/webChromeAddressesRoute';
 
   const WebChromeAddressesRoute();
 
@@ -389,7 +408,7 @@ class WebChromeAddressesRoute extends GoRouteData {
 }
 
 class AndroidNotificationsRoute extends GoRouteData {
-  static const path = 'androidNotificationsRoute';
+  static const path = '/androidNotificationsRoute';
 
   const AndroidNotificationsRoute();
 
@@ -407,7 +426,7 @@ class AndroidNotificationsRoute extends GoRouteData {
 }
 
 class WebChromeSettingsRoute extends GoRouteData {
-  static const path = 'webChromeSettingsRoute';
+  static const path = '/webChromeSettingsRoute';
 
   const WebChromeSettingsRoute();
 
@@ -425,7 +444,7 @@ class WebChromeSettingsRoute extends GoRouteData {
 }
 
 class DrawingRoute extends GoRouteData {
-  static const path = 'drawingRoute';
+  static const path = '/drawingRoute';
 
   const DrawingRoute();
 
@@ -443,7 +462,7 @@ class DrawingRoute extends GoRouteData {
 }
 
 class ThemeShowcaseRoute extends GoRouteData {
-  static const path = 'themeshowcase';
+  static const path = '/themeshowcase';
 
   const ThemeShowcaseRoute();
 
@@ -460,10 +479,10 @@ class ThemeShowcaseRoute extends GoRouteData {
   }
 }
 
-class ChatRoute extends GoRouteData {
-  static const path = 'chatRoute';
+class LoginOnChatRoute extends GoRouteData {
+  static const path = '/loginOnChatRoute';
 
-  const ChatRoute();
+  const LoginOnChatRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -473,8 +492,48 @@ class ChatRoute extends GoRouteData {
   }
 }
 
+class ChatRoute extends GoRouteData {
+  static const path = '/chatRoute:cid';
+
+  ChatRoute({required this.cid});
+  int cid;
+
+  CubeUser? user;
+  CubeDialog? cubeDialog;
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final selfCallerId = state.extra as String;
+
+    if (selfCallerId != cid.toString()) {
+      return const LoginScreen();
+    }
+
+    return ChatScreen(
+      key: state.pageKey,
+      cubeUser: user!,
+      cubeDialog: cubeDialog!,
+    );
+  }
+}
+
+class ChatVideoScreenRoute extends GoRouteData {
+  static const path = '/chatVideoScreenRoute:cid:cdid';
+  ChatVideoScreenRoute({required this.cid, required this.cdid});
+  int cid;
+  int cdid;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChatVideoScreen(
+      key: state.pageKey,
+      uid: cid.toString(),
+      pid: cdid.toString(),
+    );
+  }
+}
+
 class SelectDialogRoute extends GoRouteData {
-  static const path = 'selectDialogRoute:cid';
+  static const path = '/selectDialogRoute:cid';
 
   int cid;
 
@@ -498,7 +557,7 @@ class SelectDialogRoute extends GoRouteData {
 }
 
 class ChatDialogRoute extends GoRouteData {
-  static const path = 'chatDialogRoute:cdid';
+  static const path = '/chatDialogRoute:cdid';
 
   ChatDialogRoute({required this.cid, required this.cdid});
 
@@ -526,9 +585,59 @@ class ChatDialogRoute extends GoRouteData {
   }
 }
 
+class JoinScreenRoute extends GoRouteData {
+  static const path = '/joinScreenRoute:cid';
+  JoinScreenRoute({required this.cid});
+  int cid;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final selfCallerId = state.extra as String;
+
+    return JoinScreen(selfCallerId: selfCallerId);
+  }
+}
+
+class CallScreenRoute extends GoRouteData {
+  static const path = '/callScreenRoute:cdid&caid';
+  CallScreenRoute({required this.cdid, required this.caid});
+  int cdid;
+  int caid;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final callerId = cdid.toString();
+    final calleeId = caid.toString();
+
+    return CallScreen(calleeId: calleeId, callerId: callerId);
+  }
+}
+
+class AddOccupantScreenRoute extends GoRouteData {
+  static const path = '/addOccupantScreenRoute:cid';
+  AddOccupantScreenRoute({required this.cid});
+  int cid;
+
+  CubeUser cubeUser = CubeUser();
+  int id = 0;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final selfCallerId = state.extra as String;
+
+    if (selfCallerId != cid.toString()) {
+      cubeUser.id = cid;
+
+      return AddOccupantScreen(cubeUser: cubeUser, id: id);
+    } else {
+      return const LoginScreen();
+    }
+  }
+}
+
 /// [Other Pages Routes]
 class DevisEditRoute extends GoRouteData {
-  static const path = 'edit_devis/:devisId';
+  static const path = '/edit_devis/:devisId';
 
   const DevisEditRoute({required this.devisId});
 
@@ -542,7 +651,7 @@ class DevisEditRoute extends GoRouteData {
 }
 
 class DevisListRoute extends GoRouteData {
-  static const path = 'devisList';
+  static const path = '/devisList';
 
   const DevisListRoute();
 
@@ -553,14 +662,14 @@ class DevisListRoute extends GoRouteData {
 }
 
 class GodzyLogoRoute extends GoRouteData {
-  static const path = 'godzyRoute';
+  static const path = '/godzyRoute';
 
   const GodzyLogoRoute();
-
+/*
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
     return buildPage(context, state);
-  }
+  }*/
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -571,9 +680,11 @@ class GodzyLogoRoute extends GoRouteData {
 }
 
 class AvisBoxRoute extends GoRouteData {
-  static const path = 'avisRoute';
+  static const path = '/avisRoute/:avisId';
 
-  const AvisBoxRoute();
+  int? avisId;
+
+  AvisBoxRoute({this.avisId});
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
@@ -582,8 +693,10 @@ class AvisBoxRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    final avisId = state.pathParameters['avisId'] as int;
     return AvisBoxPage(
       key: state.pageKey,
+      avisId: avisId,
     );
   }
 }

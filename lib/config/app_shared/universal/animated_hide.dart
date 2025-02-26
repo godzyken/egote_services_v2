@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// This widget is good for using a boolean condition to show/hide the [child]
 /// widget. It is a simple convenience wrapper for AnimatedSwitcher
 /// where the Widget that is Switched to is an invisible SizedBox.shrink()
 /// effectively removing the child by animation in a zero sized widget
 /// instead.
-class AnimatedHide extends StatelessWidget {
+class AnimatedHide extends ConsumerWidget {
   const AnimatedHide({
     super.key,
     required this.hide,
@@ -23,7 +24,7 @@ class AnimatedHide extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
       transitionBuilder: (Widget child, Animation<double> animation) {

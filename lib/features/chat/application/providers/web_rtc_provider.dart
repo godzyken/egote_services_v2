@@ -1,4 +1,5 @@
 import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as web_r_t_c;
 
@@ -54,6 +55,17 @@ class WebRTCStateNotifier extends StateNotifier<WebRTCState> {
     // Add local stream to the peer connection
     localStream.getTracks().forEach((track) {
       pc.addTrack(track, localStream);
+      pc.setConfiguration(configuration);
+      pc.onTrack = (event) {
+        event.streams[0].getTracks().forEach((track) {
+          track.onEnded = () {
+            if (kDebugMode) {
+              print('Track ended');
+            }
+            // Handle track end event
+          };
+        });
+      };
     });
 
     final webRTCVideoState = _ref.read(webRTCVideoSateProvider);

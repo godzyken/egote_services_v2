@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A centered width constrained web style page body.
 ///
@@ -17,12 +18,12 @@ import 'package:flutter/material.dart';
 ///
 /// This is a Flutter "Universal" Widget that only depends on the SDK and
 /// can be dropped into any application.
-class PageBody extends StatelessWidget {
+class PageBody extends ConsumerWidget {
   /// Default constructor for the constrained PageBody.
   const PageBody({
     super.key,
     this.controller,
-    this.constraints = const BoxConstraints(maxWidth: 1000),
+    this.constraints = const BoxConstraints(maxWidth: double.maxFinite),
     this.padding = EdgeInsets.zero,
     required this.child,
   });
@@ -50,7 +51,7 @@ class PageBody extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // We want the scroll bars to be at the edge of the screen, not next to the
     // width constrained content. If we use the built in scroll bars of the
     // in a scrolling child, it will be next to the child, not at the edge of

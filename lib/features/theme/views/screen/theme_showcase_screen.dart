@@ -1,21 +1,35 @@
+import 'dart:developer' as developer;
+import 'dart:ui';
+
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/app_shared/insets/app_insets.dart';
 import '../../../../config/app_shared/universal/page_body.dart';
 import '../widgets/showcase_extensions.dart';
 
-class ThemeShowcasePage extends StatefulWidget {
+class ThemeShowcasePage extends ConsumerStatefulWidget {
   const ThemeShowcasePage({super.key});
 
   @override
-  State<ThemeShowcasePage> createState() => _ThemeShowcasePageState();
+  ConsumerState<ThemeShowcasePage> createState() => _ThemeShowcasePageState();
 }
 
-class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
+class _ThemeShowcasePageState extends ConsumerState<ThemeShowcasePage>
+    with WidgetsBindingObserver {
   int _buttonIndex = 0;
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+
+    final size = PlatformDispatcher.instance.views.first.physicalSize;
+
+    developer.log('[X[>x[<:) Taille de la fenetre : $size');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +78,12 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
               children: <Widget>[
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                      const EdgeInsets.symmetric(horizontal: AppInsets.edge),
                   child: Text(context.tr!.themeShowcase, style: medium),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppInsets.edge),
                   child: Text(context.tr!.themeShowcaseText),
                 ),
                 const Divider(),
@@ -92,7 +107,7 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
                 const Divider(),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                      const EdgeInsets.symmetric(horizontal: AppInsets.edge),
                   child: Text(context.tr!.showcase, style: medium),
                 ),
                 const Padding(
@@ -130,5 +145,17 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 }

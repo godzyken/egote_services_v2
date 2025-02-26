@@ -1,6 +1,7 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 /// Used to show the current theme on Material widgets.
@@ -17,12 +18,12 @@ import 'package:go_router/go_router.dart';
 /// all the Widgets in this file be dropped into any application. They are
 /// however not so useful, unless all you really want to do is to show what
 /// Flutter Widgets look like.
-class ShowcaseMaterial extends StatelessWidget {
+class ShowcaseMaterial extends ConsumerWidget {
   const ShowcaseMaterial({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -162,11 +163,11 @@ class ShowcaseMaterial extends StatelessWidget {
   }
 }
 
-class ElevatedButtonShowcase extends StatelessWidget {
+class ElevatedButtonShowcase extends ConsumerWidget {
   const ElevatedButtonShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -192,11 +193,11 @@ class ElevatedButtonShowcase extends StatelessWidget {
   }
 }
 
-class FilledButtonShowcase extends StatelessWidget {
+class FilledButtonShowcase extends ConsumerWidget {
   const FilledButtonShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -222,11 +223,11 @@ class FilledButtonShowcase extends StatelessWidget {
   }
 }
 
-class FilledButtonTonalShowcase extends StatelessWidget {
+class FilledButtonTonalShowcase extends ConsumerWidget {
   const FilledButtonTonalShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -252,11 +253,11 @@ class FilledButtonTonalShowcase extends StatelessWidget {
   }
 }
 
-class OutlinedButtonShowcase extends StatelessWidget {
+class OutlinedButtonShowcase extends ConsumerWidget {
   const OutlinedButtonShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -282,11 +283,11 @@ class OutlinedButtonShowcase extends StatelessWidget {
   }
 }
 
-class TextButtonShowcase extends StatelessWidget {
+class TextButtonShowcase extends ConsumerWidget {
   const TextButtonShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -312,15 +313,16 @@ class TextButtonShowcase extends StatelessWidget {
   }
 }
 
-class ToggleButtonsShowcase extends StatefulWidget {
+class ToggleButtonsShowcase extends ConsumerStatefulWidget {
   const ToggleButtonsShowcase({this.compareButtons, super.key});
   final bool? compareButtons;
 
   @override
-  State<ToggleButtonsShowcase> createState() => _ToggleButtonsShowcaseState();
+  ConsumerState<ToggleButtonsShowcase> createState() =>
+      _ToggleButtonsShowcaseState();
 }
 
-class _ToggleButtonsShowcaseState extends State<ToggleButtonsShowcase> {
+class _ToggleButtonsShowcaseState extends ConsumerState<ToggleButtonsShowcase> {
   List<bool> selected = <bool>[true, false, false];
 
   @override
@@ -374,18 +376,19 @@ class _ToggleButtonsShowcaseState extends State<ToggleButtonsShowcase> {
   }
 }
 
-class SegmentedButtonShowcase extends StatefulWidget {
+class SegmentedButtonShowcase extends ConsumerStatefulWidget {
   const SegmentedButtonShowcase({this.showOutlinedButton, super.key});
   final bool? showOutlinedButton;
 
   @override
-  State<SegmentedButtonShowcase> createState() =>
+  ConsumerState<SegmentedButtonShowcase> createState() =>
       _SegmentedButtonShowcaseState();
 }
 
 enum Calendar { day, week, month, year }
 
-class _SegmentedButtonShowcaseState extends State<SegmentedButtonShowcase> {
+class _SegmentedButtonShowcaseState
+    extends ConsumerState<SegmentedButtonShowcase> {
   List<bool> selected = <bool>[true, false, false, true];
   Calendar _selected = Calendar.day;
 
@@ -493,11 +496,11 @@ class _SegmentedButtonShowcaseState extends State<SegmentedButtonShowcase> {
   }
 }
 
-class FabShowcase extends StatelessWidget {
+class FabShowcase extends ConsumerWidget {
   const FabShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -539,14 +542,14 @@ class FabShowcase extends StatelessWidget {
   }
 }
 
-class SwitchShowcase extends StatefulWidget {
+class SwitchShowcase extends ConsumerStatefulWidget {
   const SwitchShowcase({super.key});
 
   @override
-  State<SwitchShowcase> createState() => _SwitchShowcaseState();
+  ConsumerState<SwitchShowcase> createState() => _SwitchShowcaseState();
 }
 
-class _SwitchShowcaseState extends State<SwitchShowcase> {
+class _SwitchShowcaseState extends ConsumerState<SwitchShowcase> {
   bool isOn1 = true;
   bool isOn2 = false;
 
@@ -604,14 +607,14 @@ class _SwitchShowcaseState extends State<SwitchShowcase> {
   }
 }
 
-class CheckboxShowcase extends StatefulWidget {
+class CheckboxShowcase extends ConsumerStatefulWidget {
   const CheckboxShowcase({super.key});
 
   @override
-  State<CheckboxShowcase> createState() => _CheckboxShowcaseState();
+  ConsumerState<CheckboxShowcase> createState() => _CheckboxShowcaseState();
 }
 
-class _CheckboxShowcaseState extends State<CheckboxShowcase> {
+class _CheckboxShowcaseState extends ConsumerState<CheckboxShowcase> {
   bool? isSelected1 = true;
   bool? isSelected2;
 
@@ -663,14 +666,14 @@ class _CheckboxShowcaseState extends State<CheckboxShowcase> {
   }
 }
 
-class RadioShowcase extends StatefulWidget {
+class RadioShowcase extends ConsumerStatefulWidget {
   const RadioShowcase({super.key});
 
   @override
-  State<RadioShowcase> createState() => _RadioShowcaseState();
+  ConsumerState<RadioShowcase> createState() => _RadioShowcaseState();
 }
 
-class _RadioShowcaseState extends State<RadioShowcase> {
+class _RadioShowcaseState extends ConsumerState<RadioShowcase> {
   bool? groupValue = true;
 
   @override
@@ -715,14 +718,14 @@ class _RadioShowcaseState extends State<RadioShowcase> {
   }
 }
 
-class SliderShowcase extends StatefulWidget {
+class SliderShowcase extends ConsumerStatefulWidget {
   const SliderShowcase({super.key});
 
   @override
-  State<SliderShowcase> createState() => _SliderShowcaseState();
+  ConsumerState<SliderShowcase> createState() => _SliderShowcaseState();
 }
 
-class _SliderShowcaseState extends State<SliderShowcase> {
+class _SliderShowcaseState extends ConsumerState<SliderShowcase> {
   double value = 5;
 
   @override
@@ -790,14 +793,15 @@ class _SliderShowcaseState extends State<SliderShowcase> {
   }
 }
 
-class RangeSliderShowcase extends StatefulWidget {
+class RangeSliderShowcase extends ConsumerStatefulWidget {
   const RangeSliderShowcase({super.key});
 
   @override
-  State<RangeSliderShowcase> createState() => _RangeSliderShowcaseState();
+  ConsumerState<RangeSliderShowcase> createState() =>
+      _RangeSliderShowcaseState();
 }
 
-class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
+class _RangeSliderShowcaseState extends ConsumerState<RangeSliderShowcase> {
   RangeValues values = const RangeValues(5, 12);
 
   @override
@@ -891,12 +895,12 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
   }
 }
 
-class PopupMenuButtonsShowcase extends StatelessWidget {
+class PopupMenuButtonsShowcase extends ConsumerWidget {
   const PopupMenuButtonsShowcase({super.key, this.explainUsage = true});
   final bool explainUsage;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
@@ -934,11 +938,11 @@ class PopupMenuButtonsShowcase extends StatelessWidget {
   }
 }
 
-class PopupMenuButtonShowcase extends StatelessWidget {
+class PopupMenuButtonShowcase extends ConsumerWidget {
   const PopupMenuButtonShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: PopupMenuButton<int>(
         onSelected: (_) {},
@@ -961,11 +965,11 @@ class PopupMenuButtonShowcase extends StatelessWidget {
   }
 }
 
-class PopupMenuButtonTilesShowcase extends StatelessWidget {
+class PopupMenuButtonTilesShowcase extends ConsumerWidget {
   const PopupMenuButtonTilesShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: PopupMenuButton<int>(
         onSelected: (_) {},
@@ -998,14 +1002,14 @@ class PopupMenuButtonTilesShowcase extends StatelessWidget {
   }
 }
 
-class _DropDownButton extends StatefulWidget {
+class _DropDownButton extends ConsumerStatefulWidget {
   const _DropDownButton();
 
   @override
-  State<_DropDownButton> createState() => _DropDownButtonState();
+  ConsumerState<_DropDownButton> createState() => _DropDownButtonState();
 }
 
-class _DropDownButtonState extends State<_DropDownButton> {
+class _DropDownButtonState extends ConsumerState<_DropDownButton> {
   String selectedItem = 'Dropdown button 1';
   @override
   Widget build(BuildContext context) {
@@ -1037,15 +1041,16 @@ class _DropDownButtonState extends State<_DropDownButton> {
   }
 }
 
-class DropDownButtonFormField extends StatefulWidget {
+class DropDownButtonFormField extends ConsumerStatefulWidget {
   const DropDownButtonFormField({super.key});
 
   @override
-  State<DropDownButtonFormField> createState() =>
+  ConsumerState<DropDownButtonFormField> createState() =>
       _DropDownButtonFormFieldState();
 }
 
-class _DropDownButtonFormFieldState extends State<DropDownButtonFormField> {
+class _DropDownButtonFormFieldState
+    extends ConsumerState<DropDownButtonFormField> {
   String selectedItem = 'DropDown FormField - Option 1';
   @override
   Widget build(BuildContext context) {
@@ -1072,15 +1077,16 @@ class _DropDownButtonFormFieldState extends State<DropDownButtonFormField> {
   }
 }
 
-class DropDownMenuShowcase extends StatefulWidget {
+class DropDownMenuShowcase extends ConsumerStatefulWidget {
   const DropDownMenuShowcase({super.key, this.explainUsage = false});
   final bool explainUsage;
 
   @override
-  State<DropDownMenuShowcase> createState() => _DropDownMenuShowcaseState();
+  ConsumerState<DropDownMenuShowcase> createState() =>
+      _DropDownMenuShowcaseState();
 }
 
-class _DropDownMenuShowcaseState extends State<DropDownMenuShowcase> {
+class _DropDownMenuShowcaseState extends ConsumerState<DropDownMenuShowcase> {
   String selectedItem = 'one';
   @override
   Widget build(BuildContext context) {
@@ -1153,11 +1159,11 @@ class _DropDownMenuShowcaseState extends State<DropDownMenuShowcase> {
   }
 }
 
-class TooltipShowcase extends StatelessWidget {
+class TooltipShowcase extends ConsumerWidget {
   const TooltipShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -1182,16 +1188,16 @@ class TooltipShowcase extends StatelessWidget {
   }
 }
 
-class IconButtonCircleAvatarDropdownShowcase extends StatefulWidget {
+class IconButtonCircleAvatarDropdownShowcase extends ConsumerStatefulWidget {
   const IconButtonCircleAvatarDropdownShowcase({super.key});
 
   @override
-  State<IconButtonCircleAvatarDropdownShowcase> createState() =>
+  ConsumerState<IconButtonCircleAvatarDropdownShowcase> createState() =>
       _IconButtonCircleAvatarDropdownShowcaseState();
 }
 
 class _IconButtonCircleAvatarDropdownShowcaseState
-    extends State<IconButtonCircleAvatarDropdownShowcase> {
+    extends ConsumerState<IconButtonCircleAvatarDropdownShowcase> {
   bool isLockOpen = false;
 
   @override
@@ -1247,11 +1253,11 @@ class _IconButtonCircleAvatarDropdownShowcaseState
   }
 }
 
-class IconButtonShowcase extends StatelessWidget {
+class IconButtonShowcase extends ConsumerWidget {
   const IconButtonShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -1327,11 +1333,11 @@ class IconButtonShowcase extends StatelessWidget {
 }
 
 // TODO(rydmike): Add variant IconButtons when available in stable.
-// class IconButtonM3Showcase extends StatelessWidget {
+// class IconButtonM3Showcase extends ConsumerWidget {
 //   const IconButtonM3Showcase({super.key});
 //
 //   @override
-//   Widget build(BuildContext context) {
+//   Widget build(BuildContext context, WidgetRef ref)  {
 //     return RepaintBoundary(
 //       child: Wrap(
 //         crossAxisAlignment: WrapCrossAlignment.center,
@@ -1431,7 +1437,7 @@ class IconButtonShowcase extends StatelessWidget {
 //   bool selected = false;
 //
 //   @override
-//   Widget build(BuildContext context) {
+//   Widget build(BuildContext context, WidgetRef ref)  {
 //     final VoidCallback? onPressed = widget.isEnabled
 //         ? () {
 //             setState(() {
@@ -1485,7 +1491,7 @@ class IconButtonShowcase extends StatelessWidget {
 //   }
 // }
 
-class IconToggleButton extends StatefulWidget {
+class IconToggleButton extends ConsumerStatefulWidget {
   const IconToggleButton({
     required this.isEnabled,
     required this.tooltip,
@@ -1498,10 +1504,10 @@ class IconToggleButton extends StatefulWidget {
   final ButtonStyle? Function(bool, ColorScheme)? getDefaultStyle;
 
   @override
-  State<IconToggleButton> createState() => _IconToggleButtonState();
+  ConsumerState<IconToggleButton> createState() => _IconToggleButtonState();
 }
 
-class _IconToggleButtonState extends State<IconToggleButton> {
+class _IconToggleButtonState extends ConsumerState<IconToggleButton> {
   bool selected = false;
 
   @override
@@ -1615,15 +1621,16 @@ ButtonStyle disabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
   );
 }
 
-class ProgressIndicatorShowcase extends StatefulWidget {
+class ProgressIndicatorShowcase extends ConsumerStatefulWidget {
   const ProgressIndicatorShowcase({super.key});
 
   @override
-  State<ProgressIndicatorShowcase> createState() =>
+  ConsumerState<ProgressIndicatorShowcase> createState() =>
       _ProgressIndicatorShowcaseState();
 }
 
-class _ProgressIndicatorShowcaseState extends State<ProgressIndicatorShowcase> {
+class _ProgressIndicatorShowcaseState
+    extends ConsumerState<ProgressIndicatorShowcase> {
   bool playProgressIndicator = false;
   @override
   Widget build(BuildContext context) {
@@ -1663,11 +1670,11 @@ class _ProgressIndicatorShowcaseState extends State<ProgressIndicatorShowcase> {
   }
 }
 
-class ChipShowcase extends StatelessWidget {
+class ChipShowcase extends ConsumerWidget {
   const ChipShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -1680,7 +1687,10 @@ class ChipShowcase extends StatelessWidget {
           ),
           Chip(
             label: Text(context.tr!.labelChip),
-            avatar: const FlutterLogo(),
+            avatar: const CircleAvatar(
+              backgroundColor: Colors.grey,
+              child: FlutterLogo(),
+            ),
           ),
           ActionChip(
             label: Text(context.tr!.labelActionChip),
@@ -1762,14 +1772,14 @@ class ChipShowcase extends StatelessWidget {
   }
 }
 
-class TextInputField extends StatefulWidget {
+class TextInputField extends ConsumerStatefulWidget {
   const TextInputField({super.key});
 
   @override
-  State<TextInputField> createState() => _TextInputFieldState();
+  ConsumerState<TextInputField> createState() => _TextInputFieldState();
 }
 
-class _TextInputFieldState extends State<TextInputField> {
+class _TextInputFieldState extends ConsumerState<TextInputField> {
   late TextEditingController _textController1;
   late TextEditingController _textController2;
   late TextEditingController _textController3;
@@ -1894,15 +1904,17 @@ class _TextInputFieldState extends State<TextInputField> {
   }
 }
 
-class AppBarShowcase extends StatelessWidget {
+class AppBarShowcase extends ConsumerWidget {
   const AppBarShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: MediaQuery.removePadding(
         context: context,
         removeBottom: true,
+        removeLeft: false,
+        removeRight: false,
         removeTop: true,
         child: Column(
           children: <Widget>[
@@ -2012,11 +2024,11 @@ class AppBarShowcase extends StatelessWidget {
   }
 }
 
-class _BehindAppBar extends StatelessWidget {
+class _BehindAppBar extends ConsumerWidget {
   const _BehindAppBar();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Wrap(
@@ -2037,7 +2049,7 @@ class _BehindAppBar extends StatelessWidget {
   }
 }
 
-class BottomAppBarShowcase extends StatelessWidget {
+class BottomAppBarShowcase extends ConsumerWidget {
   const BottomAppBarShowcase({
     super.key,
     this.explain = true,
@@ -2046,7 +2058,7 @@ class BottomAppBarShowcase extends StatelessWidget {
   final bool explain;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
@@ -2106,11 +2118,11 @@ class BottomAppBarShowcase extends StatelessWidget {
   }
 }
 
-class TabBarForAppBarShowcase extends StatelessWidget {
+class TabBarForAppBarShowcase extends ConsumerWidget {
   const TabBarForAppBarShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
     final bool useM3 = theme.useMaterial3;
@@ -2180,11 +2192,11 @@ class TabBarForAppBarShowcase extends StatelessWidget {
   }
 }
 
-class TabBarForBackgroundShowcase extends StatelessWidget {
+class TabBarForBackgroundShowcase extends ConsumerWidget {
   const TabBarForBackgroundShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
@@ -2243,18 +2255,18 @@ class TabBarForBackgroundShowcase extends StatelessWidget {
   }
 }
 
-class BottomNavigationBarShowcase extends StatefulWidget {
+class BottomNavigationBarShowcase extends ConsumerStatefulWidget {
   const BottomNavigationBarShowcase({super.key, this.explain = true});
 
   final bool explain;
 
   @override
-  State<BottomNavigationBarShowcase> createState() =>
+  ConsumerState<BottomNavigationBarShowcase> createState() =>
       _BottomNavigationBarShowcaseState();
 }
 
 class _BottomNavigationBarShowcaseState
-    extends State<BottomNavigationBarShowcase> {
+    extends ConsumerState<BottomNavigationBarShowcase> {
   int buttonIndex = 0;
 
   @override
@@ -2350,15 +2362,16 @@ class _BottomNavigationBarShowcaseState
   }
 }
 
-class NavigationBarShowcase extends StatefulWidget {
+class NavigationBarShowcase extends ConsumerStatefulWidget {
   const NavigationBarShowcase({super.key, this.explain = true});
   final bool explain;
 
   @override
-  State<NavigationBarShowcase> createState() => _NavigationBarShowcaseState();
+  ConsumerState<NavigationBarShowcase> createState() =>
+      _NavigationBarShowcaseState();
 }
 
-class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
+class _NavigationBarShowcaseState extends ConsumerState<NavigationBarShowcase> {
   int buttonIndex = 0;
 
   @override
@@ -2451,7 +2464,7 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
   }
 }
 
-class NavigationRailShowcase extends StatefulWidget {
+class NavigationRailShowcase extends ConsumerStatefulWidget {
   const NavigationRailShowcase({
     super.key,
     this.child,
@@ -2469,10 +2482,12 @@ class NavigationRailShowcase extends StatefulWidget {
   final bool explain;
 
   @override
-  State<NavigationRailShowcase> createState() => _NavigationRailShowcaseState();
+  ConsumerState<NavigationRailShowcase> createState() =>
+      _NavigationRailShowcaseState();
 }
 
-class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
+class _NavigationRailShowcaseState
+    extends ConsumerState<NavigationRailShowcase> {
   int buttonIndex = 0;
   bool isExtended = false;
 
@@ -2588,7 +2603,7 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
   }
 }
 
-class MenuBarShowcase extends StatelessWidget {
+class MenuBarShowcase extends ConsumerWidget {
   const MenuBarShowcase({
     super.key,
     this.explainUsage = true,
@@ -2598,7 +2613,7 @@ class MenuBarShowcase extends StatelessWidget {
   final double explainIndent;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
@@ -2755,12 +2770,12 @@ class MenuBarShowcase extends StatelessWidget {
   }
 }
 
-class MenuAnchorShowcase extends StatelessWidget {
+class MenuAnchorShowcase extends ConsumerWidget {
   const MenuAnchorShowcase({super.key, this.explainUsage = true});
   final bool explainUsage;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
@@ -2822,16 +2837,17 @@ enum MenuEntry {
   final MenuSerializableShortcut? shortcut;
 }
 
-class MenuAnchorContextMenu extends StatefulWidget {
+class MenuAnchorContextMenu extends ConsumerStatefulWidget {
   const MenuAnchorContextMenu({super.key, required this.message});
 
   final String message;
 
   @override
-  State<MenuAnchorContextMenu> createState() => _MenuAnchorContextMenuState();
+  ConsumerState<MenuAnchorContextMenu> createState() =>
+      _MenuAnchorContextMenuState();
 }
 
-class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
+class _MenuAnchorContextMenuState extends ConsumerState<MenuAnchorContextMenu> {
   MenuEntry? _lastSelection;
   final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
   final MenuController _menuController = MenuController();
@@ -3015,12 +3031,12 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
   }
 }
 
-class DrawerShowcase extends StatelessWidget {
+class DrawerShowcase extends ConsumerWidget {
   const DrawerShowcase({super.key, this.explain = true});
   final bool explain;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
@@ -3065,17 +3081,18 @@ class DrawerShowcase extends StatelessWidget {
   }
 }
 
-class NavigationDrawerShowcase extends StatefulWidget {
+class NavigationDrawerShowcase extends ConsumerStatefulWidget {
   const NavigationDrawerShowcase({super.key, this.explain = true});
 
   final bool explain;
 
   @override
-  State<NavigationDrawerShowcase> createState() =>
+  ConsumerState<NavigationDrawerShowcase> createState() =>
       _NavigationDrawerShowcaseState();
 }
 
-class _NavigationDrawerShowcaseState extends State<NavigationDrawerShowcase> {
+class _NavigationDrawerShowcaseState
+    extends ConsumerState<NavigationDrawerShowcase> {
   int selectedIndex = 0;
 
   @override
@@ -3155,11 +3172,11 @@ class _NavigationDrawerShowcaseState extends State<NavigationDrawerShowcase> {
   }
 }
 
-class ListTileAllShowcase extends StatelessWidget {
+class ListTileAllShowcase extends ConsumerWidget {
   const ListTileAllShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return const Column(
       children: <Widget>[
         ListTileShowcase(),
@@ -3174,11 +3191,11 @@ class ListTileAllShowcase extends StatelessWidget {
   }
 }
 
-class ListTileShowcase extends StatelessWidget {
+class ListTileShowcase extends ConsumerWidget {
   const ListTileShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Column(
         children: <Widget>[
@@ -3212,11 +3229,11 @@ class ListTileShowcase extends StatelessWidget {
   }
 }
 
-class SwitchTileShowcase extends StatelessWidget {
+class SwitchTileShowcase extends ConsumerWidget {
   const SwitchTileShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Column(
         children: <Widget>[
@@ -3247,11 +3264,11 @@ class SwitchTileShowcase extends StatelessWidget {
   }
 }
 
-class CheckboxTileShowcase extends StatelessWidget {
+class CheckboxTileShowcase extends ConsumerWidget {
   const CheckboxTileShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Column(
         children: <Widget>[
@@ -3291,11 +3308,11 @@ class CheckboxTileShowcase extends StatelessWidget {
   }
 }
 
-class RadioTileShowcase extends StatelessWidget {
+class RadioTileShowcase extends ConsumerWidget {
   const RadioTileShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Column(
         children: <Widget>[
@@ -3338,14 +3355,15 @@ class RadioTileShowcase extends StatelessWidget {
   }
 }
 
-class ExpansionTileShowcase extends StatefulWidget {
+class ExpansionTileShowcase extends ConsumerStatefulWidget {
   const ExpansionTileShowcase({super.key});
 
   @override
-  State<ExpansionTileShowcase> createState() => _ExpansionTileShowcaseState();
+  ConsumerState<ExpansionTileShowcase> createState() =>
+      _ExpansionTileShowcaseState();
 }
 
-class _ExpansionTileShowcaseState extends State<ExpansionTileShowcase> {
+class _ExpansionTileShowcaseState extends ConsumerState<ExpansionTileShowcase> {
   bool _customTileExpanded = false;
 
   @override
@@ -3389,16 +3407,16 @@ class _ExpansionTileShowcaseState extends State<ExpansionTileShowcase> {
   }
 }
 
-class ExpansionPanelListShowcase extends StatefulWidget {
+class ExpansionPanelListShowcase extends ConsumerStatefulWidget {
   const ExpansionPanelListShowcase({super.key});
 
   @override
-  State<ExpansionPanelListShowcase> createState() =>
+  ConsumerState<ExpansionPanelListShowcase> createState() =>
       _ExpansionPanelListShowcaseState();
 }
 
 class _ExpansionPanelListShowcaseState
-    extends State<ExpansionPanelListShowcase> {
+    extends ConsumerState<ExpansionPanelListShowcase> {
   final List<ExpansionPanelShowcaseItems> _items =
       ExpansionPanelShowcaseItems.generateItems(6);
 
@@ -3471,7 +3489,7 @@ class ExpansionPanelShowcaseItems {
   }
 }
 
-class AlertDialogShowcase extends StatelessWidget {
+class AlertDialogShowcase extends ConsumerWidget {
   const AlertDialogShowcase({super.key});
 
   Future<void> _openDialog(BuildContext context) async {
@@ -3482,7 +3500,7 @@ class AlertDialogShowcase extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: <Widget>[
         const AbsorbPointer(child: _AlertDialogExample()),
@@ -3498,11 +3516,11 @@ class AlertDialogShowcase extends StatelessWidget {
   }
 }
 
-class _AlertDialogExample extends StatelessWidget {
+class _AlertDialogExample extends ConsumerWidget {
   const _AlertDialogExample();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final bool useMaterial3 = Theme.of(context).useMaterial3;
     final String cancel =
         useMaterial3 ? context.tr!.cancel : context.tr!.cancel.toUpperCase();
@@ -3520,7 +3538,7 @@ class _AlertDialogExample extends StatelessWidget {
   }
 }
 
-class TimePickerDialogShowcase extends StatelessWidget {
+class TimePickerDialogShowcase extends ConsumerWidget {
   const TimePickerDialogShowcase({super.key});
 
   Future<void> _openDialog(BuildContext context) async {
@@ -3534,7 +3552,7 @@ class TimePickerDialogShowcase extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: <Widget>[
         AbsorbPointer(
@@ -3554,7 +3572,7 @@ class TimePickerDialogShowcase extends StatelessWidget {
   }
 }
 
-class DatePickerDialogShowcase extends StatelessWidget {
+class DatePickerDialogShowcase extends ConsumerWidget {
   const DatePickerDialogShowcase({super.key});
 
   Future<void> _openDialog(BuildContext context) async {
@@ -3570,7 +3588,7 @@ class DatePickerDialogShowcase extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: <Widget>[
         AbsorbPointer(
@@ -3592,11 +3610,11 @@ class DatePickerDialogShowcase extends StatelessWidget {
   }
 }
 
-class BottomSheetShowcase extends StatelessWidget {
+class BottomSheetShowcase extends ConsumerWidget {
   const BottomSheetShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
 
     return AbsorbPointer(
@@ -3629,11 +3647,11 @@ class BottomSheetShowcase extends StatelessWidget {
   }
 }
 
-class BottomSheetModalShowcase extends StatelessWidget {
+class BottomSheetModalShowcase extends ConsumerWidget {
   const BottomSheetModalShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
 
     return AbsorbPointer(
@@ -3666,11 +3684,11 @@ class BottomSheetModalShowcase extends StatelessWidget {
   }
 }
 
-class MaterialBannerSnackBarShowcase extends StatelessWidget {
+class MaterialBannerSnackBarShowcase extends ConsumerWidget {
   const MaterialBannerSnackBarShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -3683,11 +3701,11 @@ class MaterialBannerSnackBarShowcase extends StatelessWidget {
   }
 }
 
-class SnackBarShowcase extends StatelessWidget {
+class SnackBarShowcase extends ConsumerWidget {
   const SnackBarShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final bool useMaterial3 = theme.useMaterial3;
     final ColorScheme colorScheme = theme.colorScheme;
@@ -3791,11 +3809,11 @@ class SnackBarShowcase extends StatelessWidget {
   }
 }
 
-class MaterialBannerShowcase extends StatelessWidget {
+class MaterialBannerShowcase extends ConsumerWidget {
   const MaterialBannerShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -3823,12 +3841,12 @@ class MaterialBannerShowcase extends StatelessWidget {
   }
 }
 
-class MaterialShowcase extends StatelessWidget {
+class MaterialShowcase extends ConsumerWidget {
   const MaterialShowcase({super.key, this.explain = true});
   final bool explain;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
@@ -4134,12 +4152,12 @@ class MaterialShowcase extends StatelessWidget {
   }
 }
 
-class CardShowcase extends StatelessWidget {
+class CardShowcase extends ConsumerWidget {
   const CardShowcase({super.key, this.explain = true});
   final bool explain;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
@@ -4344,31 +4362,31 @@ class CardShowcase extends StatelessWidget {
   }
 }
 
-class TextThemeShowcase extends StatelessWidget {
+class TextThemeShowcase extends ConsumerWidget {
   const TextThemeShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return TextThemeColumnShowcase(textTheme: Theme.of(context).textTheme);
   }
 }
 
-class PrimaryTextThemeShowcase extends StatelessWidget {
+class PrimaryTextThemeShowcase extends ConsumerWidget {
   const PrimaryTextThemeShowcase({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return TextThemeColumnShowcase(
         textTheme: Theme.of(context).primaryTextTheme);
   }
 }
 
-class TextThemeColumnShowcase extends StatelessWidget {
+class TextThemeColumnShowcase extends ConsumerWidget {
   const TextThemeColumnShowcase({super.key, required this.textTheme});
   final TextTheme textTheme;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

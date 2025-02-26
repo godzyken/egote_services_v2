@@ -4,10 +4,11 @@
 // The actual selection is done via platform property in ThemeData.
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/app_shared/flex_icons/flex_icons.dart';
 
-class PlatformPopupMenu extends StatelessWidget {
+class PlatformPopupMenu extends ConsumerWidget {
   const PlatformPopupMenu({
     super.key,
     required this.platform,
@@ -17,7 +18,7 @@ class PlatformPopupMenu extends StatelessWidget {
   final ValueChanged<TargetPlatform> onChanged;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final Color iconColor = Theme.of(context).colorScheme.primary;
     final String labelAndroid = context.tr!.labelAndroid;
     final String labelApple = context.tr!.labelApple;
@@ -27,7 +28,7 @@ class PlatformPopupMenu extends StatelessWidget {
     final String labelFuchsia = context.tr!.labelFuchsia;
 
     final Map<TargetPlatform, PopupMenuItem<TargetPlatform>> platformItems =
-    <TargetPlatform, PopupMenuItem<TargetPlatform>>{
+        <TargetPlatform, PopupMenuItem<TargetPlatform>>{
       TargetPlatform.android: PopupMenuItem<TargetPlatform>(
         value: TargetPlatform.android,
         child: ListTile(
@@ -82,7 +83,7 @@ class PlatformPopupMenu extends StatelessWidget {
     };
 
     const Map<TargetPlatform, IconData> platformIcon =
-    <TargetPlatform, IconData>{
+        <TargetPlatform, IconData>{
       TargetPlatform.android: Icons.android,
       TargetPlatform.iOS: Icons.phone_iphone,
       TargetPlatform.windows: FlexIcons.windows,
@@ -92,7 +93,7 @@ class PlatformPopupMenu extends StatelessWidget {
     };
 
     String subtitle = '${context.tr!.nowSetTo} ${platformString[platform]}\n'
-    '${context.tr!.forTesting}';
+        '${context.tr!.forTesting}';
 
     return PopupMenuButton<TargetPlatform>(
       tooltip: '',
@@ -102,7 +103,7 @@ class PlatformPopupMenu extends StatelessWidget {
         onChanged(value);
       },
       itemBuilder: (BuildContext context) =>
-      <PopupMenuItem<TargetPlatform>>[...platformItems.values],
+          <PopupMenuItem<TargetPlatform>>[...platformItems.values],
       child: ListTile(
         trailing: Padding(
           padding: const EdgeInsetsDirectional.only(end: 12),

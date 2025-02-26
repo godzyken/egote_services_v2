@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../insets/app_insets.dart';
 import 'copy_color_to_clipboard.dart';
 
-class ColorCard extends StatelessWidget {
+class ColorCard extends ConsumerWidget {
   const ColorCard({
     super.key,
     required this.label,
@@ -28,7 +29,7 @@ class ColorCard extends StatelessWidget {
   final double? elevation;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final String materialName = ColorTools.materialName(color);
     final String nameThatColor = ColorTools.nameThatColor(color);
     final String space = materialName == '' ? '' : ' ';

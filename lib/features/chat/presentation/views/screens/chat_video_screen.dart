@@ -33,13 +33,6 @@ class _ChatVideoScreenState extends ConsumerState<ChatVideoScreen> {
       selfCallerID: selfCallerID,
     );
 
-    // return material app
-    return MaterialApp(
-      darkTheme: ThemeData.dark().copyWith(
-        colorScheme: const ColorScheme.dark(),
-      ),
-      themeMode: ThemeMode.dark,
-      home: JoinScreen(selfCallerId: selfCallerID),
-    );
+    return JoinScreen(selfCallerId: selfCallerID);
   }
 }

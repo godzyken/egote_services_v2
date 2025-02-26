@@ -182,7 +182,7 @@ mixin AppLocale {
   };
 }
 
-class ItemWidget extends StatelessWidget {
+class ItemWidget extends ConsumerWidget {
   const ItemWidget({
     super.key,
     required this.title,
@@ -193,7 +193,7 @@ class ItemWidget extends StatelessWidget {
   final String? content;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(

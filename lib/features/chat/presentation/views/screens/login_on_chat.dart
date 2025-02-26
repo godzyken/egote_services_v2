@@ -451,8 +451,9 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       case LoginType.login:
       // TODO: Handle this case.
       case LoginType.email:
-        signInFuture = createSessionUsingFirebaseEmail(projectId, accessToken)
-            .then((cubeSession) {
+        signInFuture =
+            await createSessionUsingFirebaseEmail(projectId, accessToken)
+                .then((cubeSession) {
           // todo: 'signInUsingFirebaseEmail' is deprecated and shouldn't be used. Use [createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret)] instead
           return createSessionUsingSocialProvider(projectId, accessToken)
               .then((cubeUser) => SharedPrefs.instance
@@ -479,7 +480,17 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
                 handleError(error, stackTrace));
 
       case LoginType.facebook:
-      // TODO: Handle this case.
+        // TODO: Handle this case.
+        signInFuture = createSessionUsingSocialProvider(projectId, accessToken)
+            .then((cubeSession) => SharedPrefs.instance
+                    .init()
+                    .then((sharedPrefs) {
+                  return sharedPrefs.getUser().then((savedUser) =>
+                      savedUser!..password = cubeSession.user!.password);
+                }).onError((ExceptionCause error, stackTrace) =>
+                        handleError(error, stackTrace)))
+            .onError((ExceptionCause error, stackTrace) =>
+                handleError(error, stackTrace));
     }
 
     signInFuture?.then((cubeUser) {

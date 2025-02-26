@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/environements/environment.dart';
+import 'package:egote_services_v2/config/providers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../environements/flavors.dart';
 
@@ -82,11 +82,16 @@ final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
   final String environmentName = F.appFlavor.toString();
 
   final firstPartyHosts = env.firstPartyHost;
+  final hostHeaders = {
+    'example.com': {TracingHeaderType.b3},
+    'myapi.names': {TracingHeaderType.tracecontext}
+  };
 
   if (kDebugMode) {
     print('clientToken: $clientToken');
     print('environmentName: $environmentName');
     print('firstPartyHosts: $firstPartyHosts');
+    print('hostHeaders: $hostHeaders');
   }
 
   final config = DatadogConfiguration(
@@ -94,13 +99,26 @@ final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
       env: environmentName,
       site: DatadogSite.eu1,
       nativeCrashReportEnabled: true,
+      batchSize: BatchSize.small,
+      uploadFrequency: UploadFrequency.frequent,
+      batchProcessingLevel: BatchProcessingLevel.low,
+      firstPartyHosts: firstPartyHosts,
+      firstPartyHostsWithTracingHeaders: hostHeaders,
       loggingConfiguration: DatadogLoggingConfiguration(),
       rumConfiguration: DatadogRumConfiguration(
-          sessionSamplingRate: 100.0,
-          applicationId: env.applicationId,
-          detectLongTasks: true,
-          reportFlutterPerformance: true),
-      firstPartyHosts: firstPartyHosts);
+        sessionSamplingRate: 100.0,
+        applicationId: env.applicationId,
+        detectLongTasks: true,
+        reportFlutterPerformance: true,
+        resourceEventMapper: (event) => event,
+        actionEventMapper: (event) => event,
+        viewEventMapper: (event) => event,
+        errorEventMapper: (event) => event,
+        traceSampleRate: 1.0,
+        longTaskEventMapper: (event) => event,
+        telemetrySampleRate: 100,
+      ))
+    ..additionalConfig['_dd.needsClearTextHttp'] = true;
 
   return config;
 });
@@ -117,16 +135,19 @@ class TrackingConsentNotifier extends StateNotifier<TrackingConsent> {
     _loadConsent();
   }
 
+  Ref? _ref;
+
   Future<void> _loadConsent() async {
-    final prefs = await SharedPreferences.getInstance();
-    final consentString = prefs.getString('trackingConsent') ?? 'notDetermined';
+    final prefs = _ref?.watch(sharedPreferencesProvider).value;
+    final consentString =
+        prefs!.getString('trackingConsent') ?? 'notDetermined';
     state = TrackingConsent.values
         .firstWhere((e) => e.toString() == 'TrackingConsent.$consentString');
   }
 
   Future<void> _saveConsent() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('trackingConsent', state.toString().split('.').last);
+    final prefs = _ref?.watch(sharedPreferencesProvider).value;
+    await prefs!.setString('trackingConsent', state.toString().split('.').last);
   }
 
   // Met à jour l'état du consentement à "Granted"

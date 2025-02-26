@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../../../gen/assets.gen.dart';
-import '../../../chat/application/providers/cube_settings_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key, required this.child});
@@ -20,7 +20,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  Widget? child;
   bool animate = false;
 
   int index = 0;
@@ -36,6 +35,139 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ];
 
   @override
+  Widget build(BuildContext context) {
+    var network = ref.watch(networkAwareProvider);
+    if (network == NetWorkStatus.off) {
+      return Center(
+        child: Text('${context.tr?.noNetwork}'),
+      );
+    }
+    return Scaffold(
+      extendBodyBehindAppBar: false,
+      appBar: AppBar(
+        title: Text(
+          '${context.tr!.home} $network',
+          style: const TextStyle(color: Colors.black54),
+        ),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 60.2,
+        toolbarOpacity: 0.8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
+        ),
+        elevation: 50.00,
+        backgroundColor: Colors.greenAccent[400],
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.comment),
+            //tooltip: context.tr!.tooltipIconComment,
+            onPressed: () {
+              // Ajout d'un breadcrumb à chaque clic
+              Sentry.addBreadcrumb(
+                Breadcrumb(
+                  message: 'Bouton cliqué',
+                  level: SentryLevel.info,
+                  data: {'button': 'avis'},
+                ),
+              );
+              if (context.mounted) {
+                context.go('/avisRoute/:avisId', extra: 123);
+              }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            //tooltip: context.tr!.tooltipIconSettings,
+            onPressed: () {
+              if (context.mounted) {
+                context.go('/settingsRoute');
+              }
+            },
+          ),
+          //),
+        ],
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {},
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
+      body: Stack(
+        children: [
+          AnimatedPositioned(
+              duration: const Duration(milliseconds: 1600),
+              onEnd: () {
+                /*        Future.delayed(const Duration(milliseconds: 1600), () {
+                  if (context.mounted) {
+                    context.go('/chatRoute');
+                  }
+                });*/
+              },
+              top: animate ? 0 : -80,
+              left: animate ? 0 : -80,
+              curve: Curves.elasticInOut,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 1600),
+                opacity: animate ? 1 : 0,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 5000),
+                  reverseDuration: const Duration(milliseconds: 500),
+                  transitionBuilder: (child, animation) => ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  ),
+                  switchInCurve: Curves.decelerate,
+                  switchOutCurve: Curves.elasticOut,
+                  child: imageWidgets[index],
+                ),
+              )),
+          AnimatedPositioned(
+              duration: const Duration(milliseconds: 1600),
+              bottom: animate ? 0 : -10,
+              left: animate ? 0 : -30,
+              curve: Curves.fastLinearToSlowEaseIn,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 1600),
+                opacity: animate ? 1 : 0,
+                child: Assets.lottie.image.logoBatServices.image(
+                  width: 250,
+                  height: 250,
+                ),
+              )),
+          GestureDetector(
+            onHorizontalDragEnd: (details) {
+              if (details.primaryVelocity! < 0) {
+                setState(() {
+                  index = (index + 1) % imageWidgets.length;
+                  Future.delayed(const Duration(milliseconds: 1600), () {
+                    if (context.mounted) {
+                      context.go('/userList');
+                    }
+                  });
+                });
+              }
+            },
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.small(
+          onPressed: () {
+            if (context.mounted) {
+              context.go('/godzyRoute');
+            }
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15.0),
+            clipBehavior: Clip.hardEdge,
+            child: const Godzylogo(),
+          )),
+    );
+  }
+
+  @override
   void initState() {
     super.initState();
     startAnimation();
@@ -43,112 +175,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       setState(() {
         index = (index + 1) % imageWidgets.length;
       });
-    });
-  }
-
-  @override
-  Widget build(BuildContext? context) {
-    return Consumer(builder: (context, ref, child) {
-      var network = ref.watch(networkAwareProvider);
-      if (network == NetWorkStatus.off) {
-        return Center(
-          child: Text('${context.tr?.noNetwork}'),
-        );
-      }
-
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            '${context.tr?.home} $network',
-            style: const TextStyle(color: Colors.black54),
-          ),
-          titleSpacing: 00.0,
-          centerTitle: true,
-          toolbarHeight: 60.2,
-          toolbarOpacity: 0.8,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(25),
-                bottomLeft: Radius.circular(25)),
-          ),
-          elevation: 50.00,
-          backgroundColor: Colors.greenAccent[400],
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.comment),
-              tooltip: context.tr?.tooltipIconComment,
-              onPressed: () => context.go('/avisRoute'),
-            ), //IconButton
-            IconButton(
-              icon: const Icon(Icons.settings),
-              tooltip: context.tr?.tooltipIconSettings,
-              onPressed: () => context.go('/settingsRoute'),
-            ), //IconButton
-          ],
-          leading: IconButton(
-            icon: const Icon(Icons.menu),
-            tooltip: context.tr?.tooltipIconMenu,
-            onPressed: () {},
-          ),
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-        ),
-        body: Stack(
-          children: [
-            AnimatedPositioned(
-                duration: const Duration(milliseconds: 1600),
-                //onEnd: () => context.go('/chatRoute'),
-                //onEnd: () => context.go('/authRoute'),
-                //onEnd: () => context.goNamed('mfaList'),
-                onEnd: () => context.goNamed('select_dialog', pathParameters: {
-                      'cid':
-                          ref.watch(cubeUserControllerProvider)!.id.toString()
-                    }),
-                //onEnd: () => context.goNamed('devis', pathParameters: {'devisId': '123'}),
-                //onEnd: () => context.goNamed('devisList'),
-                top: animate ? 0 : -80,
-                left: animate ? 0 : -80,
-                curve: Curves.elasticInOut,
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 1600),
-                  opacity: animate ? 1 : 0,
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 5000),
-                    reverseDuration: const Duration(milliseconds: 500),
-                    transitionBuilder: (child, animation) => ScaleTransition(
-                      scale: animation,
-                      child: child,
-                    ),
-                    switchInCurve: Curves.decelerate,
-                    switchOutCurve: Curves.elasticOut,
-                    child: imageWidgets[index],
-                  ),
-                )),
-            AnimatedPositioned(
-                duration: const Duration(milliseconds: 1600),
-                bottom: animate ? 0 : -10,
-                left: animate ? 0 : -30,
-                curve: Curves.fastLinearToSlowEaseIn,
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 1600),
-                  opacity: animate ? 1 : 0,
-                  child: Assets.lottie.image.logoBatServices.image(
-                    width: 250,
-                    height: 250,
-                  ),
-                )),
-            GestureDetector(
-                onHorizontalDragEnd: (details) => context.goNamed('userList'),
-                child: child),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-            onPressed: () => context.go('/godzyRoute'),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              clipBehavior: Clip.hardEdge,
-              child: const Godzylogo(),
-            )),
-      );
     });
   }
 

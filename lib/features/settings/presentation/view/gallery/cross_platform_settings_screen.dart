@@ -14,7 +14,6 @@ import '../../../controllers/settings.dart';
 import '../../dialogs/reset_settings_dialogs.dart';
 import '../../widgets/platform_popup_menu.dart';
 
-
 class CrossPlatformSettingsScreen extends ConsumerStatefulWidget {
   const CrossPlatformSettingsScreen({super.key});
 
@@ -41,14 +40,11 @@ class _CrossPlatformSettingsScreenState
   };
   DevicePlatform selectedPlatform = DevicePlatform.device;
 
-
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController(
-      keepScrollOffset: true,
-      debugLabel: 'pageBodyScroll'
-    );
+    scrollController =
+        ScrollController(keepScrollOffset: true, debugLabel: 'pageBodyScroll');
   }
 
   @override
@@ -95,16 +91,16 @@ class _CrossPlatformSettingsScreenState
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text('${context.tr?.info}', style: medium),
+                child: Text(context.tr!.info, style: medium),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text('${context.tr?.infoThemeSettings}'),
+                child: Text(context.tr!.infoThemeSettings),
               ),
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text('${context.tr?.persistence}', style: medium),
+                child: Text(context.tr!.persistence, style: medium),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
@@ -112,7 +108,7 @@ class _CrossPlatformSettingsScreenState
               ),
               const KeyValueDbListTile(),
               ListTile(
-                title: Text('${context.tr?.resetSettingsTitle}'),
+                title: Text(context.tr!.resetSettingsTitle),
                 onTap: () async {
                   final bool? reset = await showDialog<bool?>(
                     context: context,
@@ -128,7 +124,7 @@ class _CrossPlatformSettingsScreenState
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.l),
-                child: Text('${context.tr?.themeSettings}', style: medium),
+                child: Text(context.tr!.themeSettings, style: medium),
               ),
               const ThemeSettings(),
               const Divider(),
@@ -141,7 +137,7 @@ class _CrossPlatformSettingsScreenState
               const Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppInsets.edge),
-                child: Text('${context.tr?.themeColors}', style: medium),
+                child: Text(context.tr!.themeColors, style: medium),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppInsets.edge),
@@ -162,5 +158,3 @@ class _CrossPlatformSettingsScreenState
     );
   }
 }
-
-

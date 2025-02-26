@@ -5,7 +5,6 @@ import 'package:egote_services_v2/features/auth/presentation/controller/user_not
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:realtime_client/src/constants.dart' hide Constants;
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../environements/environment.dart';
@@ -45,7 +44,7 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
           authFlowType: supabase.AuthFlowType.pkce),
       // authCallbackUrlHostname: env.supabaseAuthCallbackUrlHostname,
       realtimeClientOptions: const supabase.RealtimeClientOptions(
-        logLevel: RealtimeLogLevel.info,
+        logLevel: supabase.RealtimeLogLevel.info,
         eventsPerSecond: 2,
       ),
       storageOptions: const supabase.StorageClientOptions(
@@ -198,9 +197,6 @@ final filterConnection = StateProvider<List<int>>((ref) {
 });
 
 final countProvider = StateProvider<int>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  final currentValue = prefs.getInt('count') ?? 0;
-  ref.listen;
-
-  return currentValue;
+  final prefs = ref.watch(sharedPreferencesProvider).value;
+  return prefs?.getInt('count') ?? 0;
 });

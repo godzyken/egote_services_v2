@@ -13,10 +13,28 @@ import '../../../firebase_options.dart';
 
 // <---------------- Firebase Instances Providers -------------------> //
 final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
-  FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
+  return await Firebase.initializeApp(
+          name: 'EgoteServices',
+          options: DefaultFirebaseOptions.currentPlatform)
+      .whenComplete(() async {
+    FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
 
-  return Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform);
+    await Future.delayed(Duration(seconds: 5), () {
+      ref.watch(firebaseFirestoreProvider).settings.persistenceEnabled;
+      ref.watch(firebaseAuthProvider).setPersistence(Persistence.LOCAL);
+      ref.watch(firebaseMessagingProvider).setAutoInitEnabled(true);
+      ref.watch(firebaseDatabaseProvider).setLoggingEnabled(true);
+    });
+
+    await ref.watch(firebaseMessagingProvider).requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+        provisional: true,
+        providesAppNotificationSettings: true,
+        announcement: true,
+        criticalAlert: true);
+  });
 });
 
 final firebaseAuthProvider =

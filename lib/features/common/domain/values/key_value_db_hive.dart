@@ -123,11 +123,11 @@ class KeyValueDbHive implements KeyValueDb {
     Hive.registerAdapter(adapter);
   }
 
-  /// Load/get a setting from the [KeyValueDbHive], using a key to access
-  /// it from the Hive storage box.
-  ///
-  /// If type <T> is not an atomic Dart type, there must be a
-  /// Hive type adapter that converts <T> into one.
+  // Load/get a setting from the [KeyValueDbHive], using a key to access
+  // it from the Hive storage box.
+  //
+  // If type <T> is not an atomic Dart type, there must be a
+  // Hive type adapter that converts <T> into one.
   @override
   T get<T>(String key, T defaultValue) {
     try {
@@ -146,11 +146,11 @@ class KeyValueDbHive implements KeyValueDb {
     }
   }
 
-  /// Save/put  a setting to the [KeyValueDbHive] with the Hive storage box,
-  /// using key, as key for the value.
-  ///
-  /// If type <T> is not an atomic Dart type, there must be a
-  /// Hive type adapter that converts <T> into one.
+  // Save/put  a setting to the [KeyValueDbHive] with the Hive storage box,
+  // using key, as key for the value.
+  //
+  // If type <T> is not an atomic Dart type, there must be a
+  // Hive type adapter that converts <T> into one.
   @override
   Future<void> put<T>(String key, T value) {
     try {
@@ -328,10 +328,10 @@ class _FlexSystemNavBarStyleAdapter extends TypeAdapter<FlexSystemNavBarStyle> {
   int get typeId => id;
 }
 
-/// A Hive data type adapter for enum [SchemeColor], nullable.
-///
-/// Handles storing <null> value as -1 and returns anything out of enum
-/// index range as null value.
+// A Hive data type adapter for enum [SchemeColor], nullable.
+//
+// Handles storing <null> value as -1 and returns anything out of enum
+// index range as null value.
 class _FlexSchemeColorAdapter extends TypeAdapter<SchemeColor?> {
   _FlexSchemeColorAdapter(this.id);
   final int id;

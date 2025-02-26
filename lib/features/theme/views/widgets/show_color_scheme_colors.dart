@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/app_shared/colors/color_card.dart';
 import '../../../../config/app_shared/insets/app_insets.dart';
@@ -17,7 +18,7 @@ import '../../../../config/app_shared/insets/app_insets.dart';
 /// These are all Flutter "Universal" Widgets that only depends on the SDK and
 /// all the Widgets in this file be dropped into any application. They are
 /// however not so generally reusable.
-class ShowColorSchemeColors extends StatelessWidget {
+class ShowColorSchemeColors extends ConsumerWidget {
   const ShowColorSchemeColors({super.key, this.onBackgroundColor});
 
   /// The color of the background the color widget are being drawn on.
@@ -42,7 +43,7 @@ class ShowColorSchemeColors extends StatelessWidget {
       _isLight(Color.alphaBlend(color, bg)) ? Colors.black : Colors.white;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final bool isDark = colorScheme.brightness == Brightness.dark;
@@ -100,168 +101,169 @@ class ShowColorSchemeColors extends StatelessWidget {
 
     // Wrap this widget branch in a custom theme where card has a border outline
     // if it did not have one, but retains in ambient themed border radius.
-    return Theme(
-      data: Theme.of(context).copyWith(
-        cardTheme: CardTheme.of(context).copyWith(
-          elevation: 0,
-          shape: border,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              context.tr!.colorScheme,
-              style: theme.textTheme.titleMedium,
-            ),
-          ),
-          Wrap(
-            alignment: WrapAlignment.start,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: spacing,
-            runSpacing: spacing,
-            children: <Widget>[
-              ColorCard(
-                label: context.tr!.labelPrimary,
-                color: colorScheme.primary,
-                textColor: colorScheme.onPrimary,
+    return OrientationBuilder(
+        builder: (context, orientation) => Theme(
+              data: Theme.of(context).copyWith(
+                cardTheme: CardTheme.of(context).copyWith(
+                  elevation: 0,
+                  shape: border,
+                ),
               ),
-              ColorCard(
-                label: context.tr!.labelOnPrimary,
-                color: colorScheme.onPrimary,
-                textColor: colorScheme.primary,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Text(
+                      context.tr!.colorScheme,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: spacing,
+                    runSpacing: spacing,
+                    children: <Widget>[
+                      ColorCard(
+                        label: context.tr!.labelPrimary,
+                        color: colorScheme.primary,
+                        textColor: colorScheme.onPrimary,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnPrimary,
+                        color: colorScheme.onPrimary,
+                        textColor: colorScheme.primary,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelPrimaryContainer,
+                        color: colorScheme.primaryContainer,
+                        textColor: colorScheme.onPrimaryContainer,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnPrimaryContainer,
+                        color: colorScheme.onPrimaryContainer,
+                        textColor: colorScheme.primaryContainer,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelSecondary,
+                        color: colorScheme.secondary,
+                        textColor: colorScheme.onSecondary,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnSecondary,
+                        color: colorScheme.onSecondary,
+                        textColor: colorScheme.secondary,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelSecondaryContainer,
+                        color: colorScheme.secondaryContainer,
+                        textColor: colorScheme.onSecondaryContainer,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnSecondaryContainer,
+                        color: colorScheme.onSecondaryContainer,
+                        textColor: colorScheme.secondaryContainer,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelTertiary,
+                        color: colorScheme.tertiary,
+                        textColor: colorScheme.onTertiary,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnTertiary,
+                        color: colorScheme.onTertiary,
+                        textColor: colorScheme.tertiary,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelTertiaryContainer,
+                        color: colorScheme.tertiaryContainer,
+                        textColor: colorScheme.onTertiaryContainer,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnTertiaryContainer,
+                        color: colorScheme.onTertiaryContainer,
+                        textColor: colorScheme.tertiaryContainer,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelError,
+                        color: colorScheme.error,
+                        textColor: colorScheme.onError,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnError,
+                        color: colorScheme.onError,
+                        textColor: colorScheme.error,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelErrorContainer,
+                        color: colorScheme.errorContainer,
+                        textColor: colorScheme.onErrorContainer,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnErrorContainer,
+                        color: colorScheme.onErrorContainer,
+                        textColor: colorScheme.errorContainer,
+                      ),
+                      ColorCard(
+                        label: '${context.tr!.labelBackground}$backTooHigh',
+                        color: colorScheme.surface,
+                        textColor: colorScheme.surface,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnBackground,
+                        color: colorScheme.surface,
+                        textColor: colorScheme.surface,
+                      ),
+                      ColorCard(
+                        label: '${context.tr!.labelSurface}$surfaceTooHigh',
+                        color: colorScheme.surface,
+                        textColor: colorScheme.onSurface,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnSurface,
+                        color: colorScheme.onSurface,
+                        textColor: colorScheme.surface,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelSurfaceVariant,
+                        color: colorScheme.surfaceContainerHighest,
+                        textColor: colorScheme.onSurfaceVariant,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnSurfaceVariant,
+                        color: colorScheme.onSurfaceVariant,
+                        textColor: colorScheme.surfaceContainerHighest,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOutline,
+                        color: colorScheme.outline,
+                        textColor: colorScheme.surface,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelShadow,
+                        color: colorScheme.shadow,
+                        textColor: _onColor(colorScheme.shadow, background),
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelInverseSurface,
+                        color: colorScheme.inverseSurface,
+                        textColor: colorScheme.onInverseSurface,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelOnInverseSurface,
+                        color: colorScheme.onInverseSurface,
+                        textColor: colorScheme.inverseSurface,
+                      ),
+                      ColorCard(
+                        label: context.tr!.labelInversePrimary,
+                        color: colorScheme.inversePrimary,
+                        textColor: colorScheme.primary,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              ColorCard(
-                label: context.tr!.labelPrimaryContainer,
-                color: colorScheme.primaryContainer,
-                textColor: colorScheme.onPrimaryContainer,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnPrimaryContainer,
-                color: colorScheme.onPrimaryContainer,
-                textColor: colorScheme.primaryContainer,
-              ),
-              ColorCard(
-                label: context.tr!.labelSecondary,
-                color: colorScheme.secondary,
-                textColor: colorScheme.onSecondary,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnSecondary,
-                color: colorScheme.onSecondary,
-                textColor: colorScheme.secondary,
-              ),
-              ColorCard(
-                label: context.tr!.labelSecondaryContainer,
-                color: colorScheme.secondaryContainer,
-                textColor: colorScheme.onSecondaryContainer,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnSecondaryContainer,
-                color: colorScheme.onSecondaryContainer,
-                textColor: colorScheme.secondaryContainer,
-              ),
-              ColorCard(
-                label: context.tr!.labelTertiary,
-                color: colorScheme.tertiary,
-                textColor: colorScheme.onTertiary,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnTertiary,
-                color: colorScheme.onTertiary,
-                textColor: colorScheme.tertiary,
-              ),
-              ColorCard(
-                label: context.tr!.labelTertiaryContainer,
-                color: colorScheme.tertiaryContainer,
-                textColor: colorScheme.onTertiaryContainer,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnTertiaryContainer,
-                color: colorScheme.onTertiaryContainer,
-                textColor: colorScheme.tertiaryContainer,
-              ),
-              ColorCard(
-                label: context.tr!.labelError,
-                color: colorScheme.error,
-                textColor: colorScheme.onError,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnError,
-                color: colorScheme.onError,
-                textColor: colorScheme.error,
-              ),
-              ColorCard(
-                label: context.tr!.labelErrorContainer,
-                color: colorScheme.errorContainer,
-                textColor: colorScheme.onErrorContainer,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnErrorContainer,
-                color: colorScheme.onErrorContainer,
-                textColor: colorScheme.errorContainer,
-              ),
-              ColorCard(
-                label: '${context.tr!.labelBackground}$backTooHigh',
-                color: colorScheme.surface,
-                textColor: colorScheme.surface,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnBackground,
-                color: colorScheme.surface,
-                textColor: colorScheme.surface,
-              ),
-              ColorCard(
-                label: '${context.tr!.labelSurface}$surfaceTooHigh',
-                color: colorScheme.surface,
-                textColor: colorScheme.onSurface,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnSurface,
-                color: colorScheme.onSurface,
-                textColor: colorScheme.surface,
-              ),
-              ColorCard(
-                label: context.tr!.labelSurfaceVariant,
-                color: colorScheme.surfaceContainerHighest,
-                textColor: colorScheme.onSurfaceVariant,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnSurfaceVariant,
-                color: colorScheme.onSurfaceVariant,
-                textColor: colorScheme.surfaceContainerHighest,
-              ),
-              ColorCard(
-                label: context.tr!.labelOutline,
-                color: colorScheme.outline,
-                textColor: colorScheme.surface,
-              ),
-              ColorCard(
-                label: context.tr!.labelShadow,
-                color: colorScheme.shadow,
-                textColor: _onColor(colorScheme.shadow, background),
-              ),
-              ColorCard(
-                label: context.tr!.labelInverseSurface,
-                color: colorScheme.inverseSurface,
-                textColor: colorScheme.onInverseSurface,
-              ),
-              ColorCard(
-                label: context.tr!.labelOnInverseSurface,
-                color: colorScheme.onInverseSurface,
-                textColor: colorScheme.inverseSurface,
-              ),
-              ColorCard(
-                label: context.tr!.labelInversePrimary,
-                color: colorScheme.inversePrimary,
-                textColor: colorScheme.primary,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+            ));
   }
 }

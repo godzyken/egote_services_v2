@@ -29,7 +29,8 @@ class CubeUserController extends StateNotifier<CubeUser?> {
         );
       } while (userModelEntity.previousUser!.id == authModelEntity.id);
     } on AuthException catch (e) {
-      developer.log(e.toString());
+      developer.log(
+          'init screen CubeUserException statue code : ${e.statusCode.toString()}');
       state = CubeUser();
     }
   }

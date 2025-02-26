@@ -1,10 +1,11 @@
 import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../config/app_shared/colors/color_scheme_box.dart';
 
-class AppBarStylePopupMenu extends StatelessWidget {
+class AppBarStylePopupMenu extends ConsumerWidget {
   const AppBarStylePopupMenu({
     super.key,
     required this.index,
@@ -100,7 +101,7 @@ class AppBarStylePopupMenu extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final bool isLight = theme.brightness == Brightness.light;
     final bool useM3 = theme.useMaterial3;

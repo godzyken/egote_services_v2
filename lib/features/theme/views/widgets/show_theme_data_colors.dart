@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/app_shared/colors/color_card.dart';
 import '../../../../config/app_shared/insets/app_insets.dart';
@@ -18,7 +19,7 @@ import '../../../../config/app_shared/insets/app_insets.dart';
 /// These are all Flutter "Universal" Widgets that only depends on the SDK and
 /// all the Widgets in this file be dropped into any application. They are
 /// however not so generally reusable.
-class ShowThemeDataColors extends StatelessWidget {
+class ShowThemeDataColors extends ConsumerWidget {
   const ShowThemeDataColors({
     super.key,
     this.onBackgroundColor,
@@ -54,7 +55,7 @@ class ShowThemeDataColors extends StatelessWidget {
           : Colors.white;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final bool isDark = colorScheme.brightness == Brightness.dark;
@@ -179,8 +180,9 @@ class ShowThemeDataColors extends StatelessWidget {
               ),
               ColorCard(
                 label: context.tr!.dialog,
-                color: theme.dialogBackgroundColor,
-                textColor: _onColor(theme.dialogBackgroundColor, background),
+                color: theme.dialogTheme.backgroundColor!,
+                textColor:
+                    _onColor(theme.dialogTheme.backgroundColor!, background),
               ),
               ColorCard(
                 label: context.tr!.labelIndicatorColor,

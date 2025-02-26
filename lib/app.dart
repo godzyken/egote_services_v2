@@ -15,8 +15,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/app_shared/extensions/extensions.dart';
 import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
-import 'features/chat/application/providers/cube_settings_provider.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
+import 'features/home/presentation/view/home_screen.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
 import 'l10n/app_localizations.dart';
 
@@ -37,6 +37,12 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     final router = ref.read(goRouterProvider);
     final lang = ref.read(localizationProvider);
     final datadog = ref.read(datadogInstanceProvider);
+    final lightTheme = ref.watch(lightThemeProvider);
+    final darkTheme = ref.watch(darkThemeProvider);
+    final settingsThemeMode = ref.watch(Settings.themeModeProvider);
+    /*   final cubeInstance = ref.watch(cubeProvider);
+    //  late final initCube = initStateConnection(cubeInstance, ref);*/
+
     return RumUserActionDetector(
         rum: datadog.rum,
         child: MaterialApp.router(
@@ -47,11 +53,14 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
           routerConfig: router,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          theme: ref.watch(lightThemeProvider),
-          darkTheme: ref.watch(darkThemeProvider),
-          themeMode: ref.watch(Settings.themeModeProvider),
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: settingsThemeMode,
+          debugShowCheckedModeBanner: true,
           scrollBehavior: const AppScrollBehavior(),
           locale: lang,
+          builder: (context, child) =>
+              HomeScreen(key: const Key('home_screen'), child: child!),
         ));
   }
 
@@ -92,45 +101,13 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
 
       log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
     });
-    late final initCube = initStateConnection(CubeSettings.instance, ref);
 
-    initCube.asStream();
+    //initCube.asStream();
 
     appState = WidgetsBinding.instance.lifecycleState;
 
     WidgetsBinding.instance.addObserver(this);
   }
-
-/*  Future<List<ConnectivityResult>> initConnectyCube() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    // This condition is for demo purposes only to explain every connection type.
-    // Use conditions which work for your requirements.
-    if (connectivityResult.contains(ConnectivityResult.mobile)) {
-      // Mobile network available.
-    } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
-      // Wi-fi is available.
-      // Note for Android:
-      // When both mobile and Wi-Fi are turned on system will return Wi-Fi only as active network type
-    } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
-      // Ethernet connection available.
-    } else if (connectivityResult.contains(ConnectivityResult.vpn)) {
-      // Vpn connection active.
-      // Note for iOS and macOS:
-      // There is no separate network interface type for [vpn].
-      // It returns [other] on any device (also simulator)
-    } else if (connectivityResult.contains(ConnectivityResult.bluetooth)) {
-      // Bluetooth connection available.
-    } else if (connectivityResult.contains(ConnectivityResult.other)) {
-      // Connected to a network which is not in the above mentioned networks.
-    } else if (connectivityResult.contains(ConnectivityResult.none)) {
-      // No available network types
-      if (CubeChatConnection.instance.currentUser != null) {
-        CubeChatConnection.instance.relogin();
-      }
-    }
-
-    return connectivityResult;
-  }*/
 
   Future<bool> initForegroundService() async {
     final androidConfig = FlutterBackgroundAndroidConfig(

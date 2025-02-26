@@ -205,13 +205,13 @@ class AuthRepository implements AuthRepositoryInterface {
     return right(true);
   }
 
-  /// Type: Future<AuthResponse> Function({
-  ///   String? [captchaToken],
-  ///   Map<String, dynamic>? [data],
-  ///   String? [email],
-  ///   String? [emailRedirectTo],
-  ///   required String [password],
-  ///   String? [phone],
+  // Type: Future<AuthResponse> Function({
+  //   String? [captchaToken],
+  //   Map<String, dynamic>? [data],
+  //   String? [email],
+  //   String? [emailRedirectTo],
+  //   required String [password],
+  //   String? [phone],
   @override
   Future<Either<Failure, UserModel>> signUp(
       String? email, String? name, String password) async {
@@ -332,7 +332,7 @@ class AuthRepository implements AuthRepositoryInterface {
       PostgrestException(
           code: '23505',
           details: 'Key (id)=(1) already exists.',
-          hint: null,
+          hint: 'Error in auth_repository on ProgrestSql exception ligne 335',
           message:
               'duplicate key value violates unique constraint "countries_pkey ${e.message}');
       return left(Failure.unauthorized());
@@ -413,11 +413,10 @@ class AuthRepository implements AuthRepositoryInterface {
         email: cuberUserModel.email,
       ));
     } catch (e) {
-      developer.log(e.toString());
       PostgrestException(
           code: '23505',
           details: 'Key (id)=(1) already exists.',
-          hint: null,
+          hint: 'Error in auth_repository on ProgrestSql exception ligne 420',
           message:
               'duplicate key value violates unique constraint "cubeUser_pkey ${e.toString()}');
       return left(Failure.unprocessableEntity(message: e.toString()));

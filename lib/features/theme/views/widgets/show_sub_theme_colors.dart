@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/app_shared/colors/color_card.dart';
 import '../../../../config/app_shared/insets/app_insets.dart';
@@ -13,7 +14,7 @@ import '../../../../config/app_shared/insets/app_insets.dart';
 /// These are all Flutter "Universal" Widgets that only depends on the SDK and
 /// all the Widgets in this file be dropped into any application. They are
 /// however not so generally reusable.
-class ShowSubThemeColors extends StatelessWidget {
+class ShowSubThemeColors extends ConsumerWidget {
   const ShowSubThemeColors({
     super.key,
     this.onBackgroundColor,
@@ -41,11 +42,10 @@ class ShowSubThemeColors extends StatelessWidget {
       _isLight(Color.alphaBlend(color, bg)) ? Colors.black : Colors.white;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final bool isDark = colorScheme.brightness == Brightness.dark;
-    final bool useMaterial3 = theme.useMaterial3;
 
     final MediaQueryData media = MediaQuery.of(context);
     final bool isPhone = media.size.width < AppInsets.phoneWidthBreakpoint ||
@@ -70,7 +70,8 @@ class ShowSubThemeColors extends StatelessWidget {
       // If border was null, make one matching Card default, but with border
       // side, if it was not null, we leave it as it was.
       border ??= RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(useMaterial3 ? 12 : 4)),
+        borderRadius:
+            BorderRadius.all(Radius.circular(theme.useMaterial3 ? 12 : 4)),
         side: BorderSide(
           color: theme.dividerColor,
           width: 1,
@@ -82,11 +83,11 @@ class ShowSubThemeColors extends StatelessWidget {
     final Color elevatedButtonColor = theme
             .elevatedButtonTheme.style?.backgroundColor
             ?.resolve(<WidgetState>{}) ??
-        (useMaterial3 ? colorScheme.surface : colorScheme.primary);
+        (theme.useMaterial3 ? colorScheme.surface : colorScheme.primary);
     final Color elevatedForegroundButtonColor = theme
             .elevatedButtonTheme.style?.foregroundColor
             ?.resolve(<WidgetState>{}) ??
-        (useMaterial3 ? colorScheme.primary : colorScheme.onPrimary);
+        (theme.useMaterial3 ? colorScheme.primary : colorScheme.onPrimary);
     final Color filledButtonColor = theme
             .filledButtonTheme.style?.backgroundColor
             ?.resolve(<WidgetState>{}) ??
@@ -111,9 +112,7 @@ class ShowSubThemeColors extends StatelessWidget {
                 : colorScheme.secondary);
     final Color onFloatingActionButtonColor =
         theme.floatingActionButtonTheme.foregroundColor ??
-            (useMaterial3
-                ? theme.colorScheme.onPrimaryContainer
-                : _onColor(floatingActionButtonColor, background));
+            _onColor(floatingActionButtonColor, background);
     final Color switchColor = theme.switchTheme.thumbColor
             ?.resolve(<WidgetState>{WidgetState.selected}) ??
         (theme.useMaterial3 ? colorScheme.primary : colorScheme.secondary);
@@ -123,12 +122,12 @@ class ShowSubThemeColors extends StatelessWidget {
     final Color radioColor = theme.radioTheme.fillColor
             ?.resolve(<WidgetState>{WidgetState.selected}) ??
         (theme.useMaterial3 ? colorScheme.primary : colorScheme.secondary);
-    final Color circleAvatarColor = useMaterial3
+    final Color circleAvatarColor = theme.useMaterial3
         ? theme.colorScheme.primaryContainer
         : isDark
             ? theme.primaryColorLight
             : theme.primaryColorDark;
-    final Color onCircleAvatarColor = useMaterial3
+    final Color onCircleAvatarColor = theme.useMaterial3
         ? theme.colorScheme.onPrimaryContainer
         : _onColor(circleAvatarColor, background);
     final Color chipColor =
@@ -150,7 +149,7 @@ class ShowSubThemeColors extends StatelessWidget {
     final Color tabBarColor = theme.tabBarTheme.labelColor ??
         (isDark ? colorScheme.onSurface : colorScheme.onPrimary);
     final Color dialogColor =
-        theme.dialogTheme.backgroundColor ?? theme.dialogBackgroundColor;
+        theme.dialogTheme.backgroundColor ?? DialogThemeData().backgroundColor!;
     final Color defaultSnackBackgroundColor = isDark
         ? colorScheme.onSurface
         : Color.alphaBlend(
@@ -167,29 +166,31 @@ class ShowSubThemeColors extends StatelessWidget {
         theme.bottomNavigationBarTheme.selectedItemColor ??
             (isDark ? colorScheme.secondary : colorScheme.primary);
     final Color navigationBarColor = theme.navigationBarTheme.backgroundColor ??
-        (useMaterial3
+        (theme.useMaterial3
             ? ElevationOverlay.colorWithOverlay(
                 colorScheme.surface, colorScheme.primary, 3.0)
             : ElevationOverlay.colorWithOverlay(
                 colorScheme.surface, colorScheme.onSurface, 3.0));
     final Color navigationBarItemColor = theme.navigationBarTheme.iconTheme
             ?.resolve(<WidgetState>{WidgetState.selected})?.color ??
-        (useMaterial3
+        (theme.useMaterial3
             ? colorScheme.onSecondaryContainer
             : colorScheme.onSurface);
     final Color navigationBarIndicatorColor =
         theme.navigationBarTheme.indicatorColor ??
-            (useMaterial3
+            (theme.useMaterial3
                 ? colorScheme.secondaryContainer
                 : colorScheme.secondary.withValues(alpha: .24));
     final Color navigationRailColor =
         theme.navigationRailTheme.backgroundColor ?? colorScheme.surface;
-    final Color navigationRailItemColor = theme
-            .navigationRailTheme.selectedIconTheme?.color ??
-        (useMaterial3 ? colorScheme.onSecondaryContainer : colorScheme.primary);
+    final Color navigationRailItemColor =
+        theme.navigationRailTheme.selectedIconTheme?.color ??
+            (theme.useMaterial3
+                ? colorScheme.onSecondaryContainer
+                : colorScheme.primary);
     final Color navigationRailIndicatorColor =
         theme.navigationRailTheme.indicatorColor ??
-            (useMaterial3
+            (theme.useMaterial3
                 ? colorScheme.onSecondaryContainer
                 : colorScheme.secondary.withValues(alpha: .24));
     final Color textColor = theme.textTheme.titleMedium?.color ??
@@ -230,7 +231,7 @@ class ShowSubThemeColors extends StatelessWidget {
                 label: context.tr!.labelElevatedButton,
                 color: elevatedButtonColor,
                 textColor: elevatedForegroundButtonColor,
-                elevation: useMaterial3 ? 2 : null,
+                elevation: theme.useMaterial3 ? 2 : null,
                 shadowColor: Colors.transparent,
               ),
               ColorCard(

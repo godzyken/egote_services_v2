@@ -4,6 +4,7 @@ import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/permissions/permissions_providers.dart';
+import 'package:egote_services_v2/config/providers/platform/platform_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/config/providers/webrtc/webrtc_provider.dart';
@@ -23,6 +24,7 @@ import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
+import '../features/chat/data/data_sources/local/pref_util.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
 import '../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../features/home/presentation/view/home_screen.dart';
@@ -37,10 +39,11 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(userFutureProvider.future);
   await container.read(webrtcInitProvider.future);
   await container.read(datadogProvider.future);
-
   await container.read(cubeSettingsInitProvider.future);
+  await container.read(sharedPreferencesProvider.future);
+
   container.read(cubeChatConnectionSettingsProvider);
-  container.read(sharedPreferencesProvider);
+  container.read(sharedPrefsProvider);
   container.read(firebaseDatabaseProvider);
   container.read(firebaseFirestoreProvider);
   container.read(firebaseMessagingProvider);
@@ -63,13 +66,23 @@ Future<void> initializeProvider(ProviderContainer container) async {
 
   container.read(fireDatabaseProvider);
 
+  container.read(backgroundTaskProvider);
+
   container.dispose();
 }
 
-final sharedPreferencesProvider = Provider<SharedPreferences>(
-  (ref) => throw UnimplementedError(),
+final sharedPreferencesProvider = FutureProvider<SharedPreferences>(
+  (ref) async {
+    // Initialisation de SharedPreferences
+    final sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences;
+  },
   name: 'Shared preferences future provider',
 );
+
+final sharedPrefsProvider = Provider<SharedPrefs>((ref) {
+  return SharedPrefs.instance;
+});
 
 // <---------------- GoRouter Provider --------------------> //
 final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
@@ -125,8 +138,8 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
               builder: (context, state) => Godzylogo(key: state.pageKey),
             ),
             GoRoute(
-                path: ChatRoute.path,
-                name: 'chat',
+                path: LoginOnChatRoute.path,
+                name: 'login_on_chat',
                 builder: (context, state) => LoginOnChat(key: state.pageKey),
                 routes: [
                   GoRoute(
@@ -149,10 +162,15 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                       ])
                 ]),
             GoRoute(
-              path: AvisBoxRoute.path,
-              name: 'avisRoute',
-              builder: (context, state) => AvisBoxPage(key: state.pageKey),
-            ),
+                path: AvisBoxRoute.path,
+                name: 'avisRoute',
+                builder: (context, state) {
+                  final avisId = state.pathParameters['avisId'] as int;
+                  return AvisBoxPage(
+                    key: state.pageKey,
+                    avisId: avisId,
+                  );
+                }),
             GoRoute(
               path: DevisEditRoute.path,
               name: 'devis',
@@ -254,6 +272,39 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
               ),
             ),
           ]),
+      GoRoute(
+          path: ChatRoute.path,
+          name: 'chat',
+          builder: (context, state) {
+            final currentUser = ref.watch(cubeUserControllerProvider);
+            final cubeDialogId = state.pathParameters['dialogId'];
+            CubeDialog? cubeDialog;
+            if (cubeDialogId == null && currentUser != null) {
+              return ErrorScreen(
+                  key: state.pageKey,
+                  error:
+                      'What\'s wrong bobby?! CubeDialogId is null && currentUser is not null');
+            }
+            if (cubeDialogId != null && currentUser != null) {
+              return ChatScreen(
+                  key: state.pageKey,
+                  cubeUser: currentUser,
+                  cubeDialog: cubeDialog!);
+            } else {
+              return LoginOnChat(key: state.pageKey);
+            }
+          }),
+      GoRoute(
+        path: ChatVideoScreenRoute.path,
+        name: 'chatVideo',
+        builder: (context, state) {
+          return ChatVideoScreen(
+            key: state.pageKey,
+            uid: state.pathParameters['userId']!,
+            pid: state.pathParameters['cubeUserId']!,
+          );
+        },
+      )
     ],
     errorBuilder: (context, state) =>
         ErrorScreen(error: state.error.toString()),
@@ -298,11 +349,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
 
 // <---------------- RunViewInfo Provider --------------------> //
 final observer = DatadogNavigationObserver(
-    datadogSdk: datadogInstance(), viewInfoExtractor: infoExtractor);
-
-late final Ref ref;
-
-DatadogSdk datadogInstance() => ref.read(datadogInstanceProvider);
+    datadogSdk: DatadogSdk.instance, viewInfoExtractor: infoExtractor);
 
 RumViewInfo? infoExtractor(Route<dynamic> route) {
   var name = route.settings.name;

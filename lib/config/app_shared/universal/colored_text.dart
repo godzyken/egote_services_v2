@@ -2,6 +2,7 @@ import 'dart:ui' as ui show TextHeightBehavior;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ignore_for_file: comment_references
 
@@ -51,7 +52,7 @@ import 'package:flutter/rendering.dart';
 ///
 ///  * [RichText], which gives you more control over the text styles.
 ///  * [DefaultTextStyle], which sets default styles for [ColoredText] widgets.
-class ColoredText extends StatelessWidget {
+class ColoredText extends ConsumerWidget {
   /// Creates a colored text widget.
   ///
   /// The [ColoredText] defaults to using Theme.of(context).colorScheme.primary
@@ -275,7 +276,7 @@ class ColoredText extends StatelessWidget {
   final Color? selectionColor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
     TextStyle? effectiveTextStyle = style;
     if (style == null || style!.inherit) {

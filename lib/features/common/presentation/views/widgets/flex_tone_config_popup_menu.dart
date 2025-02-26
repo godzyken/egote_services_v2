@@ -1,10 +1,11 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../config/app_shared/colors/color_scheme_box.dart';
 import '../../../../theme/models/flex_tone.dart';
 
-class FlexToneConfigPopupMenu extends StatelessWidget {
+class FlexToneConfigPopupMenu extends ConsumerWidget {
   const FlexToneConfigPopupMenu({
     super.key,
     required this.index,
@@ -18,7 +19,7 @@ class FlexToneConfigPopupMenu extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding; // Defaults to 16.
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final TextStyle txtStyle = theme.textTheme.labelLarge!;
@@ -53,12 +54,12 @@ class FlexToneConfigPopupMenu extends StatelessWidget {
       child: ListTile(
         enabled: !disabled,
         contentPadding:
-        contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
+            contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
         title: Text('$title ${FlexTone.values[index].tone}'),
         subtitle: Text(FlexTone.values[index].describe),
         trailing: ColorSchemeBox(
           backgroundColor:
-          !disabled ? colorScheme.primary : colorScheme.primaryContainer,
+              !disabled ? colorScheme.primary : colorScheme.primaryContainer,
           defaultOption: disabled,
           optionIcon: FlexTone.values[index].icon,
         ),

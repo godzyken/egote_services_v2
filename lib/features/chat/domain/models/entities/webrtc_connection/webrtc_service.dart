@@ -1,11 +1,12 @@
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class SignallingService {
   // instance of Socket
   Socket? socket;
-
+  // instance of SignallingService
   SignallingService._();
   static final instance = SignallingService._();
 
@@ -83,7 +84,21 @@ class ConfigVideoService {
 
       // display the stream in UI
       // ...RTCVideoView(streamRender);
-      RTCVideoView videoView = RTCVideoView(streamRender);
+      RTCVideoView videoView = RTCVideoView(streamRender,
+          mirror: true, filterQuality: FilterQuality.medium);
+      await videoView.videoRenderer.initialize();
+      streamRender = videoView.videoRenderer;
+
+      RTCVideoPlatFormView view = RTCVideoPlatFormView(
+        onViewReady: (view) {
+          view.initialize();
+          view.srcObject = mediaStream;
+        },
+        objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+        mirror: true,
+      );
+
+      // ...
     };
 
     callSession.onRemoteStreamRemoved = (callSession, opponentId, mediaStream) {
@@ -92,6 +107,8 @@ class ConfigVideoService {
 
     callSession.onUserNoAnswer = (callSession, opponentId) {
       // called when did not receive an answer from opponent during timeout (default timeout is 60 seconds)
+      callSession.reject(userInfo);
+      rejectCall(callSession.sessionId, opponentsIds, userInfo: userInfo);
     };
 
     callSession.onCallRejectedByUser = (callSession, opponentId, [userInfo]) {
@@ -120,6 +137,7 @@ class ConfigVideoService {
     callSession.onReceiveHungUpFromUser =
         (callSession, opponentId, [userInfo]) {
       // called when received 'hungUp' signal from opponent
+      callSession.hungUp(userInfo);
     };
 
     callSession.onSessionClosed = (callSession) {

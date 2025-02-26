@@ -58,5 +58,8 @@ GoRouter router(Ref ref) {
       initialLocation: HomeRoute.path,
       debugLogDiagnostics: true,
       navigatorKey: _rootRouterKey,
-      observers: [observer]);
+      observers: [observer],
+      overridePlatformDefaultLocation: true,
+      onException: (context, state, router) => GoExceptionHandler,
+      requestFocus: true);
 }

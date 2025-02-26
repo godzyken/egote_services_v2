@@ -10,7 +10,7 @@ import '../../../../config/providers/supabase/supabase_providers.dart';
 import '../../infrastructure/repositories/auth_repository.dart';
 
 final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
+  final prefs = ref.watch(sharedPreferencesProvider).value;
   final client = ref.watch(supabaseClientProvider).auth;
   final link = ref.watch(generateLinkTypeNotifierProvider);
   /*for (var link in links) {
@@ -31,13 +31,13 @@ final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
   }*/
   try {
     client.startAutoRefresh();
-    prefs.reload();
+    prefs?.reload();
 
-    return AuthRepository(AuthTokenLocalDataSource(prefs), client, link);
+    return AuthRepository(AuthTokenLocalDataSource(prefs!), client, link);
   } on FlutterError catch (e) {
     ref.onCancel(() {
       client.startAutoRefresh();
-      prefs.reload();
+      prefs!.reload();
     });
     if (kDebugMode) {
       print('Auth Repository error: $e');
@@ -45,7 +45,7 @@ final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
   }
 
   ref.keepAlive();
-  return AuthRepository(AuthTokenLocalDataSource(prefs), client, link);
+  return AuthRepository(AuthTokenLocalDataSource(prefs!), client, link);
 }, dependencies: [
   sharedPreferencesProvider,
   supabaseClientProvider,

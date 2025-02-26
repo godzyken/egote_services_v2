@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer' as dev;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:cryptography/cryptography.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
@@ -32,6 +34,8 @@ class ChatScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState createState() => _ChatScreenState();
 }
+
+final keyAlgorithm = X25519();
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final Map<int?, CubeUser?> _occupants = {};
@@ -171,10 +175,44 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void onReceiveMessage(CubeMessage message) {
     dev.log("onReceiveMessage message= $message");
     if (message.messageId != widget.cubeDialog.dialogId) return;
-    var cubMsg = CubeMessageStanza(message.messageId, message);
-    MediaStream? msg = cubMsg as MediaStream?;
+    ref
+        .read(cubeChatConnectionProvider)
+        .systemMessagesManager
+        ?.systemMessagesStream
+        .listen((msg) async {
+      var senderId = msg.senderId;
+      var secretDialogId = msg.properties['secretDialogId'];
+      var publicKeyString = msg.properties['publicKey'];
 
-    addMessageToListView(msg!);
+      var alicePublicKeyRestored = SimplePublicKey(
+          base64Decode(publicKeyString!),
+          type: KeyPairType.x25519);
+
+      final keyAlgorithm = X25519();
+      final bobKeyPair = await keyAlgorithm.newKeyPair();
+
+      final bobSecretKey = await keyAlgorithm.sharedSecretKey(
+        keyPair: bobKeyPair,
+        remotePublicKey: alicePublicKeyRestored,
+      );
+
+      final bobPublicKey = await bobKeyPair.extractPublicKey();
+
+      var bobPublicKeyString = base64Encode(bobPublicKey.bytes);
+
+      var responseSystemMessage = CubeMessage()
+        ..recipientId = senderId
+        ..properties = {
+          'publicKey': bobPublicKeyString,
+          'secretDialogId': secretDialogId!
+        };
+
+      var cubMsg = CubeMessageStanza(
+          responseSystemMessage.messageId, responseSystemMessage);
+      MediaStream? msgAdd = cubMsg as MediaStream?;
+
+      addMessageToListView(msgAdd!);
+    });
   }
 
   void onDeliveredMessage(MessageStatus status) {
@@ -184,6 +222,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   void onReadMessage(MessageStatus status) {
     dev.log("onReadMessage message= ${status.messageId}");
+
     //updateReadDeliveredStatusMessage(status, true);
   }
 
@@ -223,13 +262,30 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
-  void onSendChatMessage(String content) {
+  void onSendChatMessage(String content) async {
+    final aliceKeyPair = await keyAlgorithm.newKeyPair();
+    final alicePublicKey = await aliceKeyPair.extractPublicKey();
+
+    var publicKeyString = base64Encode(alicePublicKey.bytes);
+    var secretDialogId = 'some-random-generated-chat-id';
+
+    var userId = 12345; // the `id` of the opponent user
+
     if (content.trim() != '') {
       final message = createCubeMsg();
       message.body = content.trim();
+      message
+        ..recipientId = widget.cubeUser.id ?? userId
+        ..properties = {
+          'publicKey': publicKeyString,
+          'secretDialogId': secretDialogId
+        };
+
       onSendMessage(message);
     } else {
-      context.showAlert('Nothing to send');
+      if (mounted) {
+        context.showAlert('Nothing to send');
+      }
     }
   }
 
@@ -266,6 +322,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ChatManager.instance.sentMessagesController
           .add(message..dialogId = widget.cubeDialog.dialogId);
     }
+    ref
+        .read(cubeChatConnectionProvider)
+        .systemMessagesManager
+        ?.sendSystemMessage(message);
   }
 
   updateReadDeliveredStatusMessage(MessageStatus status, bool isRead) {

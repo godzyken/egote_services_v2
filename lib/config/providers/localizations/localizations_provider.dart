@@ -25,6 +25,7 @@ class MultiLang extends StateNotifier<Locale> {
   }
 
   static initializeMessages(String localeName) async {
+    await intl.loadLibrary();
     return await createLocalMediaStream(localeName);
   }
 

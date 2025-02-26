@@ -1,23 +1,26 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart' as webrtc;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 final webrtcProvider =
-    StateNotifierProvider<WebRTCNotifier, RTCSessionDescription?>(
+    StateNotifierProvider<WebRTCNotifier, webrtc.RTCSessionDescription?>(
   (ref) => WebRTCNotifier(),
 );
 
-class WebRTCNotifier extends StateNotifier<RTCSessionDescription?> {
+class WebRTCNotifier extends StateNotifier<webrtc.RTCSessionDescription?> {
   WebRTCNotifier() : super(null);
 
-  late final RTCVideoRenderer localRenderer;
-  late final RTCVideoRenderer remoteRenderer;
-  late final RTCPeerConnection peerConnection;
-  late final MediaStream localStream;
+  late final webrtc.RTCVideoRenderer localRenderer;
+  late final webrtc.RTCVideoRenderer remoteRenderer;
+  late final webrtc.RTCPeerConnection peerConnection;
+  late final webrtc.MediaStream localStream;
 
   Future<void> initialize() async {
-    localRenderer = RTCVideoRenderer();
-    remoteRenderer = RTCVideoRenderer();
+    localRenderer = webrtc.RTCVideoRenderer();
+    remoteRenderer = webrtc.RTCVideoRenderer();
 
     await localRenderer.initialize();
     await remoteRenderer.initialize();
@@ -27,7 +30,7 @@ class WebRTCNotifier extends StateNotifier<RTCSessionDescription?> {
 
   Future<void> _setupWebRTC() async {
     // Initialisation de la connexion WebRTC
-    peerConnection = await createPeerConnection({
+    peerConnection = await webrtc.createPeerConnection({
       'iceServers': [
         {
           'urls': 'stun:stun.l.google.com:19302',
@@ -36,7 +39,7 @@ class WebRTCNotifier extends StateNotifier<RTCSessionDescription?> {
     });
 
     // Capture du flux local
-    localStream = await navigator.mediaDevices.getUserMedia({
+    localStream = await webrtc.navigator.mediaDevices.getUserMedia({
       'audio': true,
       'video': true,
     });
@@ -50,7 +53,7 @@ class WebRTCNotifier extends StateNotifier<RTCSessionDescription?> {
     localRenderer.srcObject = localStream;
 
     // Écoute des événements de la connexion WebRTC (par exemple, onTrack)
-    peerConnection.onTrack = (RTCTrackEvent event) {
+    peerConnection.onTrack = (webrtc.RTCTrackEvent event) {
       remoteRenderer.srcObject = event.streams[0];
     };
 
@@ -69,17 +72,23 @@ class WebRTCNotifier extends StateNotifier<RTCSessionDescription?> {
 
 final webrtcInitProvider = FutureProvider<bool>((ref) async {
   try {
-    bool? isOn = WebRTC.initialized;
+    bool? isOn = webrtc.WebRTC.initialized;
 
     if (isOn == false) {
-      await WebRTC.initialize();
+      await webrtc.WebRTC.initialize(options: {
+        'androidAudioConfiguration':
+            webrtc.AndroidAudioConfiguration.media.toMap()
+      });
+      webrtc.Helper.setAndroidAudioConfiguration(
+          webrtc.AndroidAudioConfiguration.media);
     }
-  } catch (e) {
+  } on ExceptionStackTraceExtractor catch (e, s) {
     if (kDebugMode) {
-      print(e);
+      developer.log('Future web rtc init provider: $e', stackTrace: s);
     }
     return false;
   }
 
-  return await Future.delayed(Duration(seconds: 1), () => WebRTC.initialized);
+  return await Future.delayed(
+      Duration(seconds: 1), () => webrtc.WebRTC.initialized);
 });

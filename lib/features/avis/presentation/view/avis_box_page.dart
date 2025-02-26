@@ -9,7 +9,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/app_shared/images/list_local.dart';
 
 class AvisBoxPage extends ConsumerStatefulWidget {
-  const AvisBoxPage({super.key});
+  const AvisBoxPage({super.key, this.avisId});
+
+  final int? avisId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AvisBoxPageState();
@@ -141,12 +143,11 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
       body: CommentBox(
         userImage:
             CommentBox.commentImageParser(imageURLorPath: LocalImages.venomJpg),
-        labelText: context.tr?.comment,
-        errorText: context.tr?.canBeBlank,
+        labelText: context.tr!.comment,
+        errorText: context.tr!.canBeBlank,
         withBorder: false,
         sendButtonMethod: () {
           if (formKey.currentState!.validate()) {
-            developer.log(controller.text);
             setState(() {
               var value = {
                 'name': 'New User',

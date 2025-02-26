@@ -1,7 +1,8 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ColorSchemeBox extends StatelessWidget {
+class ColorSchemeBox extends ConsumerWidget {
   const ColorSchemeBox({
     super.key,
     this.selected = false,
@@ -74,7 +75,7 @@ class ColorSchemeBox extends StatelessWidget {
       : Colors.white.withValues(alpha: 0.8);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme scheme = theme.colorScheme.copyWith(
       onPrimaryContainer: const Color(0xFF21005D),

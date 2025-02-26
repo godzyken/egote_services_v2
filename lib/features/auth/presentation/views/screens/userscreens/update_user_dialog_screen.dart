@@ -36,11 +36,11 @@ class _UpdateUserDialogScreenState
               autocorrect: false,
               validator: (String? value) {
                 if (value!.isNotEmpty) {
-                  /* var uri = Uri.parse(value);
+                  var uri = Uri.parse(value);
                   if (uri.isAbsolute) {
                     //TODO: get the data with dart:io or http and check it here
                     return null;
-                  }*/
+                  }
                   return context.tr!.faultyUrl;
                 }
                 return null;

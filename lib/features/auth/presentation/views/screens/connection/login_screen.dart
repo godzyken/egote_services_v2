@@ -56,10 +56,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .read(authStateProvider.notifier)
           .onSignInWithPassword(_emailCtrl.text, _passwordCtrl.text);
     } on AuthException catch (e) {
-      developer.log(e.statusCode.toString());
+      developer.log('login screen AuthException : ${e.statusCode.toString()}');
       catchAuthException(e);
     } catch (e) {
-      developer.log(e.toString());
+      developer.log('login screen other Exception : ${e.toString()}');
       catchException(e);
     }
 

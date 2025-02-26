@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:developer' as developer;
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -8,34 +13,25 @@ import 'config/environements/flavors.dart';
 
 void main() async {
   F.appFlavor = Flavor.development;
-/*  final configuration = DatadogConfiguration(
-      clientToken: datadogConfigProvider
-          .selectAsync((data) => data.clientToken)
-          .toString(),
-      env: datadogConfigProvider.selectAsync((data) => data.env).toString(),
-      site: DatadogSite.eu1,
-      nativeCrashReportEnabled: true,
-      loggingConfiguration: DatadogLoggingConfiguration(),
-      rumConfiguration: DatadogRumConfiguration(
-          applicationId: '99911285-5746-429f-8168-b7b05c9db5fb',
-          sessionSamplingRate: 100.0,
-          detectLongTasks: true,
-          reportFlutterPerformance: true),
-      firstPartyHosts: [
-        datadogConfigProvider
-            .selectAsync((data) => data.firstPartyHosts.toList())
-            .toString()
-      ]);*/
-  runApp(UncontrolledProviderScope(
-      container: await bootstrap(),
-      child: SentryScreenshotWidget(child: EgoteApp())));
-}
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    if (kReleaseMode) exit(1);
+  };
 
-// @pragma(
-//     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
-// void callbackDispatcher() {
-//   Workmanager().executeTask((task, inputData) {
-//     log("Native called background task: $task"); //simpleTask will be emitted here.
-//     return Future.value(true);
-//   });
-// }
+  runZonedGuarded(() async {
+    runApp(UncontrolledProviderScope(
+        container: await bootstrap(),
+        child: SentryScreenshotWidget(child: EgoteApp())));
+  }, (error, stack) async {
+    // Gère les erreurs non capturées et applique le filtre de stack trace
+    final stackTraceFilter = CustomRepetitiveStackFrameFilter();
+    String filteredStack = stackTraceFilter.filter(stack.toString());
+
+    // Affiche la stack trace filtrée dans la console (ou tu peux l'enregistrer dans un fichier ou serveur)
+    if (kDebugMode) {
+      developer.log('Erreur non capturée : $error');
+
+      developer.log('Stack trace filtrée :\n$filteredStack');
+    }
+  });
+}
