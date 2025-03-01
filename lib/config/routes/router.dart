@@ -1,13 +1,13 @@
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/routes/app_router_observer.dart';
 import 'package:egote_services_v2/config/routes/router_notifier.dart';
-import 'package:egote_services_v2/config/routes/routes.dart';
 import 'package:egote_services_v2/config/routes/sentry_navigator_observer.dart';
-import 'package:egote_services_v2/features/auth/presentation/views/widgets/app_bar_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../features/auth/presentation/views/screens/auth_screens.dart';
 
 part 'router.g.dart';
 
@@ -18,6 +18,7 @@ final _shellRouterKey = GlobalKey<NavigatorState>(debugLabel: 'shellRouterKey');
 // <---------------- RunViewInfo Provider --------------------> //
 final observer = DatadogNavigationObserver(
     datadogSdk: DatadogSdk.instance, viewInfoExtractor: infoExtractor);
+final appRouterObserver = AppRouterObserver();
 
 RumViewInfo? infoExtractor(Route<dynamic> route) {
   var name = route.settings.name;
@@ -44,7 +45,7 @@ GoRouter router(Ref ref) {
             return SharedAppData(
                 child: AppBarConnection(preload: preload, child: child));
           },
-          observers: [AppRouterObserver(), sentryNavigatorObserver, observer],
+          observers: [appRouterObserver, sentryNavigatorObserver, observer],
           routes: notifier.routes,
           pageBuilder: (context, state, child) {
             final preload = state.extra as bool? ?? false;
@@ -55,10 +56,10 @@ GoRouter router(Ref ref) {
         ),
       ],
       refreshListenable: notifier,
-      initialLocation: HomeRoute.path,
+      initialLocation: '/',
       debugLogDiagnostics: true,
       navigatorKey: _rootRouterKey,
-      observers: [observer],
+      observers: [observer, appRouterObserver, sentryNavigatorObserver],
       overridePlatformDefaultLocation: true,
       onException: (context, state, router) => GoExceptionHandler,
       requestFocus: true);

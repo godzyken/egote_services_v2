@@ -1,3 +1,4 @@
+export '../widgets/widgets_extensions.dart';
 export 'connection/auth_screen.dart';
 export 'connection/login_screen.dart';
 export 'connection/sign_up_screen.dart';

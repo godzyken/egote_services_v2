@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:egote_services_v2/config/app_shared/images/list_local.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../config/providers/supabase/supabase_providers.dart';
 
@@ -15,6 +16,12 @@ class Godzylogo extends ConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        title: const Text('Godzy Logo'),
+        leading: BackButton(
+          onPressed: () => context.go('/'),
+        ),
+      ),
       body: SizedBox.expand(
         child: Container(
           decoration: const BoxDecoration(

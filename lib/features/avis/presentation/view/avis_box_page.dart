@@ -9,9 +9,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/app_shared/images/list_local.dart';
 
 class AvisBoxPage extends ConsumerStatefulWidget {
-  const AvisBoxPage({super.key, this.avisId});
+  const AvisBoxPage({super.key, required this.avisId});
 
-  final int? avisId;
+  final String avisId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AvisBoxPageState();

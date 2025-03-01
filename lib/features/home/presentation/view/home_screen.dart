@@ -12,8 +12,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import '../../../../gen/assets.gen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key, required this.child});
-  final Widget child;
+  const HomeScreen({super.key});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -74,7 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               );
               if (context.mounted) {
-                context.go('/avisRoute/:avisId', extra: 123);
+                context.goNamed('avisRoute', pathParameters: {'avisId': '123'});
               }
             },
           ),
@@ -83,7 +82,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             //tooltip: context.tr!.tooltipIconSettings,
             onPressed: () {
               if (context.mounted) {
-                context.go('/settingsRoute');
+                context.goNamed('settingsRoute');
               }
             },
           ),
@@ -100,11 +99,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           AnimatedPositioned(
               duration: const Duration(milliseconds: 1600),
               onEnd: () {
-                /*        Future.delayed(const Duration(milliseconds: 1600), () {
+                Future.delayed(const Duration(milliseconds: 1600), () {
                   if (context.mounted) {
-                    context.go('/chatRoute');
+                    context.goNamed('chatRoute');
                   }
-                });*/
+                });
               },
               top: animate ? 0 : -80,
               left: animate ? 0 : -80,
@@ -144,7 +143,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   index = (index + 1) % imageWidgets.length;
                   Future.delayed(const Duration(milliseconds: 1600), () {
                     if (context.mounted) {
-                      context.go('/userList');
+                      context.goNamed('userList');
                     }
                   });
                 });
@@ -156,7 +155,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       floatingActionButton: FloatingActionButton.small(
           onPressed: () {
             if (context.mounted) {
-              context.go('/godzyRoute');
+              context.goNamed('godzyRoute');
             }
           },
           child: ClipRRect(

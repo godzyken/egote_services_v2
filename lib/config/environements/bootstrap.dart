@@ -12,7 +12,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stacktrace;
 import 'package:workmanager/workmanager.dart';
 
@@ -24,13 +26,12 @@ import 'flavors.dart';
 Future<ProviderContainer> bootstrap() async {
   //WidgetsFlutterBinding.ensureInitialized();
   final binding = SentryWidgetsFlutterBinding.ensureInitialized();
-  await Workmanager().initialize(callbackDispatcher);
+  //await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
   await Future.wait(
       [
         Future.delayed(const Duration(seconds: 2)),
         runTaskInIsolate(),
-        callbackDispatcher(),
         providerTaskIsolate(),
       ]..clear(),
       eagerError: true, cleanUp: (successValue) {
@@ -337,11 +338,28 @@ void runHeavyTask(SendPort sendPort) {
   sendPort.send('Task completed');
 }
 
+const simpleTaskKey = "be.tramckrijte.workmanagerExample.simpleTask";
+const rescheduledTaskKey = "be.tramckrijte.workmanagerExample.rescheduledTask";
+const failedTaskKey = "be.tramckrijte.workmanagerExample.failedTask";
+const simpleDelayedTask = "be.tramckrijte.workmanagerExample.simpleDelayedTask";
+const simplePeriodicTask =
+    "be.tramckrijte.workmanagerExample.simplePeriodicTask";
+const simplePeriodic1HourTask =
+    "be.tramckrijte.workmanagerExample.simplePeriodic1HourTask";
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
-Future<void> callbackDispatcher() async {
-  Workmanager().executeTask((task, inputData) {
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    developer.log("Native called background task: $task");
+
+    int? totalExecutions;
+    final sharedPreference = await SharedPreferences.getInstance();
+
     try {
+      totalExecutions = sharedPreference.getInt("totalExecutions");
+      sharedPreference.setInt(
+          "totalExecutions", totalExecutions == null ? 1 : totalExecutions + 1);
+
       developer.log("Task $task executed with inputData: $inputData");
 
       String value = inputData!['key'];
@@ -350,8 +368,41 @@ Future<void> callbackDispatcher() async {
       developer.log("Value from inputData: $value");
 
       switch (task) {
+        case simpleTaskKey:
+          developer.log("$simpleTaskKey was executed. inputData = $inputData");
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setBool("test", true);
+          developer.log("Bool from prefs: ${prefs.getBool("test")}");
+          break;
+        case rescheduledTaskKey:
+          final key = inputData['key']!;
+          final prefs = await SharedPreferences.getInstance();
+          if (prefs.containsKey('unique-$key')) {
+            developer.log('has been running before, task is successful');
+            return true;
+          } else {
+            await prefs.setBool('unique-$key', true);
+            developer.log('reschedule task');
+            return false;
+          }
+        case failedTaskKey:
+          developer.log('failed task');
+          return Future.error('failed');
+        case simpleDelayedTask:
+          developer.log("$simpleDelayedTask was executed");
+          break;
+        case simplePeriodicTask:
+          developer.log("$simplePeriodicTask was executed");
+          break;
+        case simplePeriodic1HourTask:
+          developer.log("$simplePeriodic1HourTask was executed");
+          break;
         case Workmanager.iOSBackgroundTask:
-          stderr.writeln("The iOS background fetch was triggered");
+          developer.log("The iOS background fetch was triggered");
+          Directory? tempDir = await getTemporaryDirectory();
+          String? tempPath = tempDir.path;
+          developer.log(
+              "You can access other plugins in the background, for example Directory.getTemporaryDirectory(): $tempPath");
           break;
       }
 
@@ -362,7 +413,7 @@ Future<void> callbackDispatcher() async {
     }
   });
 
-  Workmanager().registerOneOffTask("1", "simpleTask",
+/*  Workmanager().registerOneOffTask("1", "simpleTask",
       initialDelay: Duration(seconds: 10),
       inputData: <String, dynamic>{'key': 'value'},
       constraints: Constraints(
@@ -379,16 +430,16 @@ Future<void> callbackDispatcher() async {
 // Minimum frequency is 15 min. Android will automatically change your
 // frequency to 15 min if you have configured a lower frequency.
     frequency: Duration(minutes: 15),
-  );
+  );*/
 
-  BackgroundTaskNotifier().setTaskStarted((details) => FlutterErrorDetails(
+  /*BackgroundTaskNotifier().setTaskStarted((details) => FlutterErrorDetails(
       exception: details.exception,
       stack: details.stack,
       library: details.library,
       informationCollector: details.informationCollector,
       context: details.context,
       silent: details.silent,
-      stackFilter: details.stackFilter));
+      stackFilter: details.stackFilter));*/
 }
 
 Future<void> providerTaskIsolate() async {
@@ -418,5 +469,5 @@ Future<void> providerTaskIsolate() async {
       inputData: <String, dynamic>{'key': 'value'},
       backoffPolicy: BackoffPolicy.exponential,
       backoffPolicyDelay: Duration(seconds: 30),
-      initialDelay: Duration(seconds: 10)) as BackgroundTaskNotifier;
+      initialDelay: Duration(seconds: 10));
 }

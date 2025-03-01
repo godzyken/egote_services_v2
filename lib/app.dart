@@ -16,7 +16,6 @@ import 'config/app_shared/extensions/extensions.dart';
 import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
-import 'features/home/presentation/view/home_screen.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
 import 'l10n/app_localizations.dart';
 
@@ -59,8 +58,7 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
           debugShowCheckedModeBanner: true,
           scrollBehavior: const AppScrollBehavior(),
           locale: lang,
-          builder: (context, child) =>
-              HomeScreen(key: const Key('home_screen'), child: child!),
+          builder: (context, child) => child!,
         ));
   }
 

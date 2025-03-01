@@ -5,6 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:build_verify/build_verify.dart';
 import 'package:egote_services_v2/app.dart';
 import 'package:egote_services_v2/features/settings/presentation/view/gallery/cross_platform_settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -83,4 +84,6 @@ void main() {
       expect(delegate.crossAxisCount, 3);
     });
   });
+
+  test('ensure_build', expectBuildClean);
 }

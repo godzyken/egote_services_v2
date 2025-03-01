@@ -8,14 +8,11 @@ import 'package:egote_services_v2/config/providers/platform/platform_provider.da
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/config/providers/webrtc/webrtc_provider.dart';
-import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
-import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as ui;
 
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
@@ -25,7 +22,13 @@ import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
 import '../features/chat/data/data_sources/local/pref_util.dart';
+import '../features/chat/presentation/views/screens/chat_dialog_screen.dart';
+import '../features/chat/presentation/views/screens/chat_screen.dart';
+import '../features/chat/presentation/views/screens/chat_video_screen.dart';
+import '../features/chat/presentation/views/screens/login_on_chat.dart';
+import '../features/chat/presentation/views/screens/select_dialog_screen.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
+import '../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../features/home/presentation/view/home_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
@@ -86,22 +89,19 @@ final sharedPrefsProvider = Provider<SharedPrefs>((ref) {
 
 // <---------------- GoRouter Provider --------------------> //
 final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
-    initialLocation: '/',
+    initialLocation: '/home',
     routes: [
       GoRoute(
           path: HomeRoute.path,
           name: 'home',
-          builder: (context, state) => HomeScreen(
-                key: state.pageKey,
-                child: context.widget,
-              ),
+          builder: (context, state) => HomeScreen(key: state.pageKey),
           routes: [
             GoRoute(
                 path: UserHomeRoute.path,
                 name: 'user_home',
                 builder: (context, state) => UserHomeScreen(
                       key: state.pageKey,
-                      pid: state.pathParameters['userId'] ?? '',
+                      pid: state.pathParameters['userId']!,
                       preload: false,
                     ),
                 routes: [
@@ -112,9 +112,10 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                       return ProfileScreen(
                           key: state.pageKey,
                           uid: ref.watch(authStateChangesProvider).value!.uid,
-                          pid:
-                              '1335' //ref.watch(cubeUserControllerProvider)!.id.toString()
-                          );
+                          pid: ref
+                              .watch(cubeUserControllerProvider)!
+                              .id
+                              .toString());
                     },
                   ),
                   GoRoute(
@@ -165,10 +166,9 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                 path: AvisBoxRoute.path,
                 name: 'avisRoute',
                 builder: (context, state) {
-                  final avisId = state.pathParameters['avisId'] as int;
                   return AvisBoxPage(
                     key: state.pageKey,
-                    avisId: avisId,
+                    avisId: state.pathParameters['avisId']!,
                   );
                 }),
             GoRoute(
@@ -176,7 +176,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
               name: 'devis',
               builder: (context, state) => DevisEditScreen(
                 key: state.pageKey,
-                devisId: state.pathParameters['devisId'] as String,
+                devisId: state.pathParameters['devisId']!,
               ),
             ),
             GoRoute(
@@ -308,7 +308,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
     ],
     errorBuilder: (context, state) =>
         ErrorScreen(error: state.error.toString()),
-    redirect: (context, state) async {
+    /*redirect: (context, state) async {
       final supabase = ref.watch(supabaseClientProvider);
       // Any users can visit the /auth route
       if (state.matchedLocation.contains('auth') == true) {
@@ -342,7 +342,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
       }
 
       return null;
-    },
+    },*/
     refreshListenable: authStateListenable,
     debugLogDiagnostics: true,
     observers: [observer]));

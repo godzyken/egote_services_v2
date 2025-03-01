@@ -19,7 +19,7 @@ class ChatDialogScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(cubeDialog.name != null ? cubeDialog.name! : ""),
+        title: Text(cubeUser.fullName != null ? cubeUser.fullName! : ""),
         centerTitle: false,
         actions: [
           IconButton(

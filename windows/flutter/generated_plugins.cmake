@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
+  battery_plus
   cloud_firestore
   connectivity_plus
   desktop_webview_auth
@@ -11,6 +12,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   firebase_auth
   firebase_core
   flutter_webrtc
+  permission_handler_windows
   sentry_flutter
   url_launcher_windows
 )

@@ -1,16 +1,11 @@
-import 'dart:async';
-
 import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
-import 'package:egote_services_v2/features/auth/presentation/views/widgets/app_bar_connection.dart';
-import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/auth/domain/entities/entities_extension.dart';
+import '../../features/auth/domain/entities/user/user_entity.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
+import '../../features/chat/presentation/views/screens/chat_screens.dart';
 import '../../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
@@ -19,7 +14,6 @@ import '../../features/settings/presentation/view/gallery/gallery.dart';
 import '../../features/settings/presentation/view/settings_ui_page.dart';
 import '../../features/sketch/presentation/view/drawing_page.dart';
 import '../../features/theme/views/screen/theme_showcase_screen.dart';
-import '../providers/firebase/firebase_providers.dart';
 
 part 'routes.g.dart';
 
@@ -44,7 +38,7 @@ part 'routes.g.dart';
         ]),
     TypedGoRoute<GodzyLogoRoute>(
       path: GodzyLogoRoute.path,
-      name: '/godzyRoute',
+      name: 'godzyRoute',
     ),
     TypedGoRoute<AvisBoxRoute>(
       path: AvisBoxRoute.path,
@@ -116,7 +110,7 @@ class HomeRoute extends GoRouteData {
 
   const HomeRoute();
 
-  @override
+/*  @override
   FutureOr<String?> redirect(BuildContext context, GoRouterState state) async {
     final userRole = await ProviderScope.containerOf(context)
         .read(userStreamProvider.future);
@@ -127,9 +121,14 @@ class HomeRoute extends GoRouteData {
 
     return Future.delayed(
         Duration(seconds: 1), () => '/user_home/${userRole.uid}/$preload');
-  }
+  }*/
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -138,7 +137,6 @@ class HomeRoute extends GoRouteData {
         ? AppBarConnection(preload: preload, child: context.widget)
         : HomeScreen(
             key: state.pageKey,
-            child: context.widget,
           );
   }
 }
@@ -161,29 +159,27 @@ class UserHomeRoute extends GoRouteData {
 }
 
 class PersonRoute extends GoRouteData {
-  static const path = '/user/:uid/person/:pid';
+  static const path = '/user/:uid/person/:personId';
 
-  const PersonRoute({required this.uid, required this.pid});
+  const PersonRoute({required this.uid, required this.personId});
 
   final String uid;
-  final String pid;
+  final String personId;
 
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ProfileScreen(key: state.pageKey, uid: uid, pid: pid);
+    final personId = state.pathParameters['personId'];
+    return ProfileScreen(key: state.pageKey, uid: uid, pid: personId!);
   }
 }
 
 class UserListRoute extends GoRouteData {
-  static const path = '/userList/:uid';
+  static const path = '/userList';
 
-  const UserListRoute({required this.pid, required this.uid});
-
-  final String uid;
-  final String pid;
+  const UserListRoute();
 
   // any user signup and login redirects would go here
   // and be paried up with a required notifier listener
@@ -195,12 +191,10 @@ class UserListRoute extends GoRouteData {
 }
 
 class AddUserFormRoute extends GoRouteData {
-  static const path = '/userForm/:uid&:pid';
+  static const path = '/userForm';
 
-  AddUserFormRoute({required this.uid, required this.pid});
+  AddUserFormRoute();
 
-  final String uid;
-  final String pid;
   UserEntityModel? userEntityModel;
 
   @override
@@ -485,6 +479,11 @@ class LoginOnChatRoute extends GoRouteData {
   const LoginOnChatRoute();
 
   @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
   Widget build(BuildContext context, GoRouterState state) {
     return LoginOnChat(
       key: state.pageKey,
@@ -493,16 +492,22 @@ class LoginOnChatRoute extends GoRouteData {
 }
 
 class ChatRoute extends GoRouteData {
-  static const path = '/chatRoute:cid';
+  static const path = '/chatRoute/:cid';
 
   ChatRoute({required this.cid});
   int cid;
 
   CubeUser? user;
   CubeDialog? cubeDialog;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final selfCallerId = state.extra as String;
+    final selfCallerId = state.pathParameters['selfCallerId'];
 
     if (selfCallerId != cid.toString()) {
       return const LoginScreen();
@@ -517,31 +522,42 @@ class ChatRoute extends GoRouteData {
 }
 
 class ChatVideoScreenRoute extends GoRouteData {
-  static const path = '/chatVideoScreenRoute:cid:cdid';
-  ChatVideoScreenRoute({required this.cid, required this.cdid});
-  int cid;
-  int cdid;
+  static const path = '/chatVideoScreenRoute';
+  ChatVideoScreenRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    final uid = state.pathParameters['uid'];
+    final pid = state.pathParameters['pid'];
+
     return ChatVideoScreen(
       key: state.pageKey,
-      uid: cid.toString(),
-      pid: cdid.toString(),
+      uid: uid!,
+      pid: pid!,
     );
   }
 }
 
 class SelectDialogRoute extends GoRouteData {
-  static const path = '/selectDialogRoute:cid';
+  static const path = '/selectDialogRoute';
 
-  int cid;
+  int? cid;
 
   SelectDialogRoute({required this.cid});
 
   CubeUser? currentUser;
 
   int? get _cid => cid = currentUser!.id!;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -557,23 +573,22 @@ class SelectDialogRoute extends GoRouteData {
 }
 
 class ChatDialogRoute extends GoRouteData {
-  static const path = '/chatDialogRoute:cdid';
+  static const path = '/chatDialogRoute';
 
-  ChatDialogRoute({required this.cid, required this.cdid});
+  ChatDialogRoute();
 
-  int cid;
   CubeUser? currentUser;
 
-  int? get _cid => cid = currentUser!.id!;
-
-  int cdid;
   CubeDialog? cubeDialog;
 
-  int? get _cdid => cdid = cubeDialog!.type!;
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    if (_cid != cid && _cdid != cdid) {
+    if (currentUser!.id == null) {
       return const LoginScreen();
     }
 
@@ -586,49 +601,57 @@ class ChatDialogRoute extends GoRouteData {
 }
 
 class JoinScreenRoute extends GoRouteData {
-  static const path = '/joinScreenRoute:cid';
-  JoinScreenRoute({required this.cid});
-  int cid;
+  static const path = '/joinScreenRoute';
+  JoinScreenRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final selfCallerId = state.extra as String;
+    final selfCallerId = state.pathParameters['selfCallerId'];
 
-    return JoinScreen(selfCallerId: selfCallerId);
+    return JoinScreen(selfCallerId: selfCallerId!);
   }
 }
 
 class CallScreenRoute extends GoRouteData {
-  static const path = '/callScreenRoute:cdid&caid';
-  CallScreenRoute({required this.cdid, required this.caid});
-  int cdid;
-  int caid;
+  static const path = '/callScreenRoute';
+  CallScreenRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final callerId = cdid.toString();
-    final calleeId = caid.toString();
+    final callerId = state.pathParameters['callerId'];
+    final calleeId = state.pathParameters['calleeId'];
 
-    return CallScreen(calleeId: calleeId, callerId: callerId);
+    return CallScreen(calleeId: calleeId!, callerId: callerId!);
   }
 }
 
 class AddOccupantScreenRoute extends GoRouteData {
-  static const path = '/addOccupantScreenRoute:cid';
-  AddOccupantScreenRoute({required this.cid});
-  int cid;
+  static const path = '/addOccupantScreenRoute';
+  AddOccupantScreenRoute();
 
-  CubeUser cubeUser = CubeUser();
-  int id = 0;
+  CubeUser? cubeUser;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final selfCallerId = state.extra as String;
+    final id = state.pathParameters['id'] as int;
 
-    if (selfCallerId != cid.toString()) {
-      cubeUser.id = cid;
-
-      return AddOccupantScreen(cubeUser: cubeUser, id: id);
+    if (id != cubeUser?.id) {
+      return AddOccupantScreen(cubeUser: cubeUser!, id: id);
     } else {
       return const LoginScreen();
     }
@@ -644,9 +667,14 @@ class DevisEditRoute extends GoRouteData {
   final int devisId;
 
   @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
   Widget build(BuildContext context, GoRouterState state) {
-    final devisId = state.pathParameters['userId'] as String;
-    return DevisEditScreen(key: state.pageKey, devisId: devisId);
+    final devisId = state.pathParameters['userId'];
+    return DevisEditScreen(key: state.pageKey, devisId: devisId!);
   }
 }
 
@@ -654,6 +682,11 @@ class DevisListRoute extends GoRouteData {
   static const path = '/devisList';
 
   const DevisListRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -665,11 +698,11 @@ class GodzyLogoRoute extends GoRouteData {
   static const path = '/godzyRoute';
 
   const GodzyLogoRoute();
-/*
+
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
     return buildPage(context, state);
-  }*/
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -682,9 +715,9 @@ class GodzyLogoRoute extends GoRouteData {
 class AvisBoxRoute extends GoRouteData {
   static const path = '/avisRoute/:avisId';
 
-  int? avisId;
+  int avisId;
 
-  AvisBoxRoute({this.avisId});
+  AvisBoxRoute({required this.avisId});
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
@@ -693,10 +726,9 @@ class AvisBoxRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final avisId = state.pathParameters['avisId'] as int;
     return AvisBoxPage(
       key: state.pageKey,
-      avisId: avisId,
+      avisId: avisId.toString(),
     );
   }
 }
