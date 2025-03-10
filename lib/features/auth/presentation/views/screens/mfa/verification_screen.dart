@@ -132,12 +132,8 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                 if (mounted) {
                   //TODO: Go User_home on Validate don't work
                   context.showAlert(context.tr!.successSignedUp);
-
-                  final String location = context.namedLocation('user_home',
-                      pathParameters: {'pid': client.user!.id});
-                  setState(() {
-                    context.go(location);
-                  });
+                  setState(() => context.goNamed('user_home',
+                      pathParameters: {'pid': client.user!.id}));
                 }
               } catch (e) {
                 if (mounted) {

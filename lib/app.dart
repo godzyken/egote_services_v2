@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/app_shared/extensions/extensions.dart';
 import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
+import 'config/providers/cube/cube_providers.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
 import 'l10n/app_localizations.dart';
@@ -39,8 +40,8 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     final lightTheme = ref.watch(lightThemeProvider);
     final darkTheme = ref.watch(darkThemeProvider);
     final settingsThemeMode = ref.watch(Settings.themeModeProvider);
-    /*   final cubeInstance = ref.watch(cubeProvider);
-    //  late final initCube = initStateConnection(cubeInstance, ref);*/
+    final cubeInstance = ref.watch(cubeProvider);
+    //  late final initCube = initStateConnection(cubeInstance, ref);
 
     return RumUserActionDetector(
         rum: datadog.rum,

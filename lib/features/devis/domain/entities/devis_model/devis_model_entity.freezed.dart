@@ -40,6 +40,7 @@ mixin _$DevisModelEntity {
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -60,6 +61,7 @@ mixin _$DevisModelEntity {
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -80,6 +82,7 @@ mixin _$DevisModelEntity {
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -153,6 +156,7 @@ abstract class _$$DevisModelEntityImplCopyWith<$Res> {
       ContactOwnerEntity client,
       ContactOwnerEntity pro,
       List<TravauxEntity> travauxEntity,
+      List<Produit> produits,
       int quantity,
       int unitPrice,
       double vatRates,
@@ -184,6 +188,7 @@ class __$$DevisModelEntityImplCopyWithImpl<$Res>
     Object? client = null,
     Object? pro = null,
     Object? travauxEntity = null,
+    Object? produits = null,
     Object? quantity = null,
     Object? unitPrice = null,
     Object? vatRates = null,
@@ -216,6 +221,10 @@ class __$$DevisModelEntityImplCopyWithImpl<$Res>
           ? _value._travauxEntity
           : travauxEntity // ignore: cast_nullable_to_non_nullable
               as List<TravauxEntity>,
+      produits: null == produits
+          ? _value._produits
+          : produits // ignore: cast_nullable_to_non_nullable
+              as List<Produit>,
       quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -286,6 +295,7 @@ class _$DevisModelEntityImpl
       required this.client,
       required this.pro,
       required final List<TravauxEntity> travauxEntity,
+      required final List<Produit> produits,
       required this.quantity,
       required this.unitPrice,
       required this.vatRates,
@@ -294,6 +304,7 @@ class _$DevisModelEntityImpl
       required this.approval,
       final String? $type})
       : _travauxEntity = travauxEntity,
+        _produits = produits,
         $type = $type ?? 'approved';
 
   factory _$DevisModelEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -317,6 +328,14 @@ class _$DevisModelEntityImpl
     return EqualUnmodifiableListView(_travauxEntity);
   }
 
+  final List<Produit> _produits;
+  @override
+  List<Produit> get produits {
+    if (_produits is EqualUnmodifiableListView) return _produits;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_produits);
+  }
+
   @override
   final int quantity;
   @override
@@ -335,7 +354,7 @@ class _$DevisModelEntityImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DevisModelEntity.approved(id: $id, createdAt: $createdAt, validity: $validity, client: $client, pro: $pro, travauxEntity: $travauxEntity, quantity: $quantity, unitPrice: $unitPrice, vatRates: $vatRates, amountHt: $amountHt, amountTtc: $amountTtc, approval: $approval)';
+    return 'DevisModelEntity.approved(id: $id, createdAt: $createdAt, validity: $validity, client: $client, pro: $pro, travauxEntity: $travauxEntity, produits: $produits, quantity: $quantity, unitPrice: $unitPrice, vatRates: $vatRates, amountHt: $amountHt, amountTtc: $amountTtc, approval: $approval)';
   }
 
   @override
@@ -349,6 +368,7 @@ class _$DevisModelEntityImpl
       ..add(DiagnosticsProperty('client', client))
       ..add(DiagnosticsProperty('pro', pro))
       ..add(DiagnosticsProperty('travauxEntity', travauxEntity))
+      ..add(DiagnosticsProperty('produits', produits))
       ..add(DiagnosticsProperty('quantity', quantity))
       ..add(DiagnosticsProperty('unitPrice', unitPrice))
       ..add(DiagnosticsProperty('vatRates', vatRates))
@@ -371,6 +391,7 @@ class _$DevisModelEntityImpl
             (identical(other.pro, pro) || other.pro == pro) &&
             const DeepCollectionEquality()
                 .equals(other._travauxEntity, _travauxEntity) &&
+            const DeepCollectionEquality().equals(other._produits, _produits) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
             (identical(other.unitPrice, unitPrice) ||
@@ -395,6 +416,7 @@ class _$DevisModelEntityImpl
       client,
       pro,
       const DeepCollectionEquality().hash(_travauxEntity),
+      const DeepCollectionEquality().hash(_produits),
       quantity,
       unitPrice,
       vatRates,
@@ -421,6 +443,7 @@ class _$DevisModelEntityImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -432,7 +455,7 @@ class _$DevisModelEntityImpl
     required TResult Function() empty,
   }) {
     return approved(id, createdAt, validity, client, pro, travauxEntity,
-        quantity, unitPrice, vatRates, amountHt, amountTtc, approval);
+        produits, quantity, unitPrice, vatRates, amountHt, amountTtc, approval);
   }
 
   @override
@@ -445,6 +468,7 @@ class _$DevisModelEntityImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -456,7 +480,7 @@ class _$DevisModelEntityImpl
     TResult? Function()? empty,
   }) {
     return approved?.call(id, createdAt, validity, client, pro, travauxEntity,
-        quantity, unitPrice, vatRates, amountHt, amountTtc, approval);
+        produits, quantity, unitPrice, vatRates, amountHt, amountTtc, approval);
   }
 
   @override
@@ -469,6 +493,7 @@ class _$DevisModelEntityImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -481,8 +506,20 @@ class _$DevisModelEntityImpl
     required TResult orElse(),
   }) {
     if (approved != null) {
-      return approved(id, createdAt, validity, client, pro, travauxEntity,
-          quantity, unitPrice, vatRates, amountHt, amountTtc, approval);
+      return approved(
+          id,
+          createdAt,
+          validity,
+          client,
+          pro,
+          travauxEntity,
+          produits,
+          quantity,
+          unitPrice,
+          vatRates,
+          amountHt,
+          amountTtc,
+          approval);
     }
     return orElse();
   }
@@ -537,6 +574,7 @@ abstract class _DevisModelEntity implements DevisModelEntity {
       required final ContactOwnerEntity client,
       required final ContactOwnerEntity pro,
       required final List<TravauxEntity> travauxEntity,
+      required final List<Produit> produits,
       required final int quantity,
       required final int unitPrice,
       required final double vatRates,
@@ -553,6 +591,7 @@ abstract class _DevisModelEntity implements DevisModelEntity {
   ContactOwnerEntity get client;
   ContactOwnerEntity get pro;
   List<TravauxEntity> get travauxEntity;
+  List<Produit> get produits;
   int get quantity;
   int get unitPrice;
   double get vatRates;
@@ -688,6 +727,7 @@ class _$DevisModelEntityInitializeImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -711,6 +751,7 @@ class _$DevisModelEntityInitializeImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -734,6 +775,7 @@ class _$DevisModelEntityInitializeImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -876,6 +918,7 @@ class _$DevisModelEntityEmptyImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -899,6 +942,7 @@ class _$DevisModelEntityEmptyImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,
@@ -922,6 +966,7 @@ class _$DevisModelEntityEmptyImpl
             ContactOwnerEntity client,
             ContactOwnerEntity pro,
             List<TravauxEntity> travauxEntity,
+            List<Produit> produits,
             int quantity,
             int unitPrice,
             double vatRates,

@@ -10,10 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../application/providers/auth_providers.dart';
 import '../../../../domain/providers/auth_repository_provider.dart';
-import '../../models/userlist/user_list_view_model.dart';
-import '../../widgets/widgets_extensions.dart';
-
-class SignUpScreen extends ConsumerStatefulWidget {
+import '../../models/userlist/user_list_view_modeltefulWidget {
   const SignUpScreen({
     super.key,
   });
@@ -206,10 +203,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 height: 16,
               ),
               TextButton(
-                onPressed: () {
-                  final String location = context.namedLocation('login');
-                  return context.go(location);
-                },
+                onPressed: () => context.goNamed('login'),
                 child: Text(context.tr!.alreadyHave),
               ),
             ],

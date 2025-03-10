@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CubeDialogController extends StateNotifier<CubeDialog?> {
@@ -37,79 +39,71 @@ class CubeDialogController extends StateNotifier<CubeDialog?> {
 
 class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
   CubeDialogStateController(this.ref)
-      : super(RTCDataChannelState.RTCDataChannelClosed);
+      : super(RTCDataChannelState.RTCDataChannelClosed) {
+    _initialize();
+  }
 
   final Ref ref;
 
-  connectionStateStream() async {
-    final cubeChatConnectionStateSubscription =
-        createLocalMediaStream('Subscribe')
-            .asStream()
-            .listen((mediaStream) async {
+  StreamSubscription<List<ConnectivityResult>>? connectivityStateSubscription;
+  StreamSubscription<MediaStream>? connectionStateSubscription;
+  CubeChatConnectionSettings? chatConnectionSettings;
+
+  List<MediaStreamTrack>? tracks;
+  bool? isChatDisconnected;
+
+  Future<void> _initialize() async {
+    ref.notifyListeners();
+    await switcherState();
+  }
+
+  switcherState() async {
+    switch (state) {
+      case RTCDataChannelState.RTCDataChannelConnecting:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case RTCDataChannelState.RTCDataChannelOpen:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case RTCDataChannelState.RTCDataChannelClosing:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case RTCDataChannelState.RTCDataChannelClosed:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+    }
+  }
+
+  Future<void> connectionStateStream() async {
+    connectionStateSubscription = createLocalMediaStream('Subscribe')
+        .asStream()
+        .listen((mediaStream) async {
       developer.log("New chat connection state is $mediaStream");
 
-      final tracks = mediaStream.getTracks();
+      tracks = mediaStream.getTracks();
 
-      for (var track in tracks) {
-        if (tracks.isEmpty) {
+      for (var track in tracks!) {
+        if (tracks!.isEmpty) {
           return await mediaStream.addTrack(track);
         }
       }
-
-      switch (state) {
-        case RTCDataChannelState.RTCDataChannelConnecting:
-          // TODO: Handle this case.
-          Connectivity().checkConnectivity().then((connectivityType) {
-            for (var conn in connectivityType) {
-              switch (conn) {
-                case ConnectivityResult.mobile:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
-                case ConnectivityResult.wifi:
-                // TODO: Handle this case.
-                case ConnectivityResult.bluetooth:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
-                case ConnectivityResult.ethernet:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
-                case ConnectivityResult.none:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
-                case ConnectivityResult.vpn:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
-                case ConnectivityResult.other:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
-              }
-            }
-            throw UnimplementedError();
-          });
-        case RTCDataChannelState.RTCDataChannelOpen:
-          // TODO: Handle this case.
-          throw UnimplementedError();
-        case RTCDataChannelState.RTCDataChannelClosing:
-          // TODO: Handle this case.
-          throw UnimplementedError();
-        case RTCDataChannelState.RTCDataChannelClosed:
-          // TODO: Handle this case.
-          throw UnimplementedError();
-      }
     });
 
-    return cubeChatConnectionStateSubscription.resume();
+    return connectionStateSubscription!.resume();
   }
 
-  reconnection() async {
-    CubeChatConnectionSettings chatConnectionSettings =
-        CubeChatConnectionSettings.instance;
-    chatConnectionSettings.reconnectionTimeout = 5000;
-    chatConnectionSettings.totalReconnections = 5;
-    bool isChatDisconnected = CubeChatConnection.instance.chatConnectionState ==
-        CubeChatConnectionState.Closed;
+  Future<void> reconnection() async {
+    chatConnectionSettings =
+        await ref.watch(cubeChatConnectionSettingsProvider);
 
-    var connectivityStateSubscription =
+    chatConnectionSettings!.reconnectionTimeout = 5000;
+    chatConnectionSettings!.totalReconnections = 5;
+
+    isChatDisconnected =
+        ref.watch(cubeChatConnectionProvider).chatConnectionState ==
+            CubeChatConnectionState.Closed;
+
+    connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen((connectivityType) {
       for (var conn in connectivityType) {
         switch (conn) {
@@ -126,8 +120,15 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
             // TODO: Handle this case.
             throw UnimplementedError();
           case ConnectivityResult.none:
-            // TODO: Handle this case.
-            throw UnimplementedError();
+            isChatDisconnected =
+                ref.watch(cubeChatConnectionProvider).chatConnectionState ==
+                    CubeChatConnectionState.Closed;
+
+            if (isChatDisconnected! &&
+                ref.watch(cubeChatConnectionProvider).currentUser != null) {
+              ref.watch(cubeChatConnectionProvider).relogin();
+            }
+
           case ConnectivityResult.vpn:
             // TODO: Handle this case.
             throw UnimplementedError();
@@ -136,14 +137,17 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
             throw UnimplementedError();
         }
       }
-
-      if (isChatDisconnected &&
-          CubeChatConnection.instance.currentUser != null) {
-        CubeChatConnection.instance.relogin();
-        isChatDisconnected = false;
-      }
     });
 
-    return connectivityStateSubscription.resume();
+    return connectivityStateSubscription!.resume();
+  }
+
+  Future<void> deconnection() async {
+    if (connectionStateSubscription != null) {
+      ref.watch(cubeChatConnectionProvider).logout();
+      return await connectionStateSubscription!.cancel();
+    } else {
+      ref.watch(cubeChatConnectionProvider).destroy();
+    }
   }
 }

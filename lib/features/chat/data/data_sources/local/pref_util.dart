@@ -68,10 +68,9 @@ class SharedPrefs {
     prefs.clear();
     await Future.delayed(
         Duration(minutes: cubeSession.tokenExpirationDate!.minute));
-    if (cubeSession.timestamp != 0 && isStart) {
-      prefs.setInt(cubeSession.token!, cubeSession.timestamp!);
-    } else if (cubeSession.timestamp ==
-        cubeSession.tokenExpirationDate!.minute) {
+    if (isStart) {
+      prefs.setInt(cubeSession.token!, cubeSession.userId!);
+    } else if (cubeSession.token == null) {
       prefs.clear();
     }
   }

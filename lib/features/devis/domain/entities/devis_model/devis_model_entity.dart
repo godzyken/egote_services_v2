@@ -1,6 +1,7 @@
 import 'package:egote_services_v2/features/devis/domain/entities/construction/travaux_entity.dart';
 import 'package:egote_services_v2/features/devis/domain/entities/contact/contact_owner_entity.dart';
 import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devi_id.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/products/produit_model_entity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -16,6 +17,7 @@ class DevisModelEntity with _$DevisModelEntity {
     required ContactOwnerEntity client,
     required ContactOwnerEntity pro,
     required List<TravauxEntity> travauxEntity,
+    required List<Produit> produits,
     required int quantity,
     required int unitPrice,
     required double vatRates,

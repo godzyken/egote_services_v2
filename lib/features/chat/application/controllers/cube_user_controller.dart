@@ -13,7 +13,7 @@ class CubeUserController extends StateNotifier<CubeUser?> {
 
   final Ref _ref;
 
-  Future<void> _initialize() async {
+  Future<CubeUser?> _initialize() async {
     try {
       final userModelEntity = _ref.watch(userNotifierProvider.notifier);
       final authModelEntity = _ref.watch(autoAuthControllerProvider);
@@ -28,10 +28,12 @@ class CubeUserController extends StateNotifier<CubeUser?> {
           phone: authModelEntity.userEntityModel.phone,
         );
       } while (userModelEntity.previousUser!.id == authModelEntity.id);
+
+      return state;
     } on AuthException catch (e) {
       developer.log(
           'init screen CubeUserException statue code : ${e.statusCode.toString()}');
-      state = CubeUser();
+      return state = CubeUser();
     }
   }
 }

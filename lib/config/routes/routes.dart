@@ -6,8 +6,13 @@ import '../../features/auth/domain/entities/user/user_entity.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
 import '../../features/chat/presentation/views/screens/chat_screens.dart';
+import '../../features/devis/domain/entities/products/produit_model_entity.dart';
 import '../../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
+import '../../features/devis/presentation/views/screens/document_view_screen.dart';
+import '../../features/devis/presentation/views/screens/product_details_screen.dart';
+import '../../features/devis/presentation/views/screens/product_edit_screen.dart';
+import '../../features/devis/presentation/views/screens/product_list_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
 import '../../features/home/presentation/widget/godzylogo.dart';
 import '../../features/settings/presentation/view/gallery/gallery.dart';
@@ -44,14 +49,31 @@ part 'routes.g.dart';
       path: AvisBoxRoute.path,
       name: '/avisRoute',
     ),
-    TypedGoRoute<DevisEditRoute>(
-      path: DevisEditRoute.path,
-      name: 'devis',
-    ),
-    TypedGoRoute<DevisListRoute>(
-      path: DevisListRoute.path,
-      name: 'devisList',
-    ),
+    TypedGoRoute<DocumentPreviewRoute>(
+        path: DocumentPreviewRoute.path,
+        name: 'documents',
+        routes: [
+          TypedGoRoute<DevisEditRoute>(
+            path: DevisEditRoute.path,
+            name: 'devis',
+          ),
+          TypedGoRoute<DevisListRoute>(
+            path: DevisListRoute.path,
+            name: 'devisList',
+          ),
+          TypedGoRoute<ProduitListRoute>(
+            path: ProduitListRoute.path,
+            name: 'produitList',
+          ),
+          TypedGoRoute<ProduitEditRoute>(
+            path: ProduitEditRoute.path,
+            name: 'produitEditRoute',
+          ),
+          TypedGoRoute<ProduitDetailsRoute>(
+            path: ProduitDetailsRoute.path,
+            name: 'produitDetails',
+          ),
+        ]),
     TypedGoRoute<ChatRoute>(path: ChatRoute.path, name: 'chat', routes: [
       TypedGoRoute<SelectDialogRoute>(
           path: SelectDialogRoute.path,
@@ -522,8 +544,11 @@ class ChatRoute extends GoRouteData {
 }
 
 class ChatVideoScreenRoute extends GoRouteData {
-  static const path = '/chatVideoScreenRoute';
+  static const path = '/chatVideoScreenRoute/:userId/:cubId';
   ChatVideoScreenRoute();
+
+  String? userId;
+  String? cubId;
 
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
@@ -678,6 +703,22 @@ class DevisEditRoute extends GoRouteData {
   }
 }
 
+class DocumentPreviewRoute extends GoRouteData {
+  static const path = '/document_preview_route';
+
+  const DocumentPreviewRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return DocumentViewScreen(key: state.pageKey);
+  }
+}
+
 class DevisListRoute extends GoRouteData {
   static const path = '/devisList';
 
@@ -691,6 +732,71 @@ class DevisListRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return DevisListScreen(key: state.pageKey);
+  }
+}
+
+class ProduitListRoute extends GoRouteData {
+  static const path = '/produitList';
+
+  const ProduitListRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ProductListScreen(key: state.pageKey);
+  }
+}
+
+class ProduitEditRoute extends GoRouteData {
+  static const path = '/produitEdit/:prodId';
+
+  const ProduitEditRoute({required this.prodId});
+
+  final int prodId;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final prodId = state.pathParameters['prodId'];
+
+    Produit? produit;
+    produit = produit!.sku == prodId! ? produit : null;
+
+    return ProductEditScreen(
+      key: state.pageKey,
+      produit: produit!,
+    );
+  }
+}
+
+class ProduitDetailsRoute extends GoRouteData {
+  static const path = '/produitDetails/:prodId';
+
+  const ProduitDetailsRoute({required this.prodId});
+
+  final int prodId;
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    final prodId = state.pathParameters['prodId'];
+
+    return ProduitDetails(
+      key: state.pageKey,
+      id: prodId!,
+    );
   }
 }
 

@@ -22,7 +22,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool animate = false;
 
   int index = 0;
-  late Timer _timer;
+  Timer? _timer;
 
   final imageWidgets = [
     Assets.lottie.image.maisonIndiv
@@ -90,7 +90,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          onPressed: () {},
+          onPressed: () => CustomMenuWidget(),
         ),
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
@@ -98,13 +98,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           AnimatedPositioned(
               duration: const Duration(milliseconds: 1600),
-              onEnd: () {
-                Future.delayed(const Duration(milliseconds: 1600), () {
-                  if (context.mounted) {
-                    context.goNamed('chatRoute');
-                  }
-                });
-              },
+              onEnd: () => context.goNamed('produitList'),
+              //onEnd: () => context.goNamed('chat_room', pathParameters: {'userId': '123', 'cubId': '456'}),
               top: animate ? 0 : -80,
               left: animate ? 0 : -80,
               curve: Curves.elasticInOut,
@@ -153,11 +148,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.small(
-          onPressed: () {
-            if (context.mounted) {
-              context.goNamed('godzyRoute');
-            }
-          },
+          onPressed: () => context.goNamed('godzyRoute'),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15.0),
             clipBehavior: Clip.hardEdge,
@@ -179,7 +170,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 

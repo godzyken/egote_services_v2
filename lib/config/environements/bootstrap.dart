@@ -26,7 +26,7 @@ import 'flavors.dart';
 Future<ProviderContainer> bootstrap() async {
   //WidgetsFlutterBinding.ensureInitialized();
   final binding = SentryWidgetsFlutterBinding.ensureInitialized();
-  //await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  // await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
   await Future.wait(
       [
@@ -58,28 +58,25 @@ Future<ProviderContainer> bootstrap() async {
     options.dsn =
         'https://8486e00ed99148aaa94a4b700ea4df50@o4505047063592960.ingest.us.sentry.io/4505047065427968';
 
+    options.enableAutoPerformanceTracing = true;
     options.beforeCaptureScreenshot = (event, hint, bool isOn) {
       event.tags?['app_version'] = '1.0.0';
       if (isOn) {
         // Ajouter des informations supplémentaires dans l'événement
-        event.tags!['background'] =
-            'App is in foreground'; // Exemple d'état du fond
+        event.tags!['background'] = 'App is in foreground';
         return false;
       } else {
-        event.tags!['background'] =
-            'App is in background'; // Exemple d'état du fond
+        event.tags!['background'] = 'App is in background';
         return true;
       }
     };
 
     options.beforeCaptureViewHierarchy = (event, hint, bool isOn) {
       if (FlutterBackground.isBackgroundExecutionEnabled) {
-        event.tags?['background'] =
-            'App is in background'; // Exemple d'état du fond
+        event.tags?['background'] = 'App is in background';
         return true;
       } else {
-        event.tags?['background'] =
-            'App is in foreground'; // Exemple d'état du fond
+        event.tags?['background'] = 'App is in foreground';
         return false;
       }
     };
@@ -90,19 +87,22 @@ Future<ProviderContainer> bootstrap() async {
     };
     options.tracesSampleRate = 1.0;
     options.tracesSampler = (samplingContext) {
-      // Vous pouvez baser votre logique de sampling sur le contexte de la trace
       if (samplingContext.transactionContext.name == 'importantOperation') {
-        return 1.0; // 100% de probabilité d'échantillonner
+        return 1.0;
       } else {
-        return 0.0; // 0% pour les autres opérations
+        return 0.0;
       }
     };
 
     options.debug = true;
     options.attachStacktrace = true;
+    options.enableAutoSessionTracking = true;
     options.enableNativeCrashHandling = true;
     options.maxBreadcrumbs = 100;
     options.environment = 'development';
+    options.sendDefaultPii = true;
+    options.experimental.replay.sessionSampleRate = 1.0;
+    options.experimental.replay.onErrorSampleRate = 1.0;
   });
 
   final container = ProviderContainer(
@@ -413,7 +413,8 @@ void callbackDispatcher() {
     }
   });
 
-/*  Workmanager().registerOneOffTask("1", "simpleTask",
+/*
+  Workmanager().registerOneOffTask("1", "simpleTask",
       initialDelay: Duration(seconds: 10),
       inputData: <String, dynamic>{'key': 'value'},
       constraints: Constraints(
@@ -430,7 +431,8 @@ void callbackDispatcher() {
 // Minimum frequency is 15 min. Android will automatically change your
 // frequency to 15 min if you have configured a lower frequency.
     frequency: Duration(minutes: 15),
-  );*/
+  );
+*/
 
   /*BackgroundTaskNotifier().setTaskStarted((details) => FlutterErrorDetails(
       exception: details.exception,

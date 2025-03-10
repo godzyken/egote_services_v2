@@ -8,6 +8,10 @@ enum NetWorkStatus { notDetermined, on, off }
 class HomeControllerNotifier extends StateNotifier<NetWorkStatus> {
   HomeControllerNotifier() : super(NetWorkStatus.notDetermined) {
     lastResult = NetWorkStatus.notDetermined;
+    connectionChanged();
+  }
+
+  void connectionChanged() async {
     Connectivity().onConnectivityChanged.listen((event) {
       for (var i in event) {
         if (i == ConnectivityResult.none) {

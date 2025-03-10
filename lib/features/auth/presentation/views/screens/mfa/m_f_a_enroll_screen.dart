@@ -99,13 +99,8 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
                           .refreshSession();
 
                       if (mounted) {
-                        setState(() {
-                          final String location = context.namedLocation(
-                              'user_home',
-                              pathParameters: {'pid': client.user.id});
-
-                          context.go(location);
-                        });
+                        setState(() => context.goNamed('user_home',
+                            pathParameters: {'pid': client.user.id}));
                       }
                     } on AuthException catch (error) {
                       if (mounted) {

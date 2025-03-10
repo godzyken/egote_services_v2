@@ -36,8 +36,19 @@ class EditDeviViewModelController
   bool get edit => initial.toJson().isNotEmpty;
 
   DevisModelEntity get devis => initial.when(
-        approved: (devis, createdAt, validity, client, pro, travauxEntity,
-            quantity, unitPrice, vatRates, amountHt, amountTtc, approval) {
+        approved: (devis,
+            createdAt,
+            validity,
+            client,
+            pro,
+            travauxEntity,
+            produits,
+            quantity,
+            unitPrice,
+            vatRates,
+            amountHt,
+            amountTtc,
+            approval) {
           try {
             state = const State.loading();
 
@@ -49,6 +60,7 @@ class EditDeviViewModelController
                   client: client,
                   pro: pro,
                   travauxEntity: travauxEntity,
+                  produits: produits,
                   quantity: quantity,
                   unitPrice: unitPrice,
                   vatRates: vatRates,

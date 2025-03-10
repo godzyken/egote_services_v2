@@ -8,7 +8,6 @@ import '../../../../domain/entities/entities_extension.dart';
 import '../../models/userlist/user_list_view_model.dart';
 import '../../widgets/widgets_extensions.dart';
 
-
 class UserListScreen extends ConsumerWidget {
   UserListScreen({super.key});
 
@@ -19,7 +18,9 @@ class UserListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(_userListProvider.notifier).testAdd();
     return Scaffold(
-      appBar: AppBar(title: Text(context.tr!.selectUserGuess),),
+      appBar: AppBar(
+        title: Text(context.tr!.selectUserGuess),
+      ),
       body: Column(
         children: [
           ChipsBarWidget(),
@@ -27,16 +28,20 @@ class UserListScreen extends ConsumerWidget {
             height: 2,
             color: Colors.grey,
           ),
-          Consumer(builder:
-              (context, ref, _) => ref
-                  .watch(_filteredUserListProvider)
-                  .maybeWhen(
-                success: (data) => _buildUserListContainerWidget(context, ref, data),
-                error: (exception) => Expanded(child: Center(child: ErrorWidget(exception),)),
-                orElse: () => const Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(),)),
-              ),
+          Consumer(
+            builder: (context, ref, _) =>
+                ref.watch(_filteredUserListProvider).maybeWhen(
+                      success: (data) =>
+                          _buildUserListContainerWidget(context, ref, data),
+                      error: (exception) => Expanded(
+                          child: Center(
+                        child: ErrorWidget(exception),
+                      )),
+                      orElse: () => const Expanded(
+                          child: Center(
+                        child: CircularProgressIndicator(),
+                      )),
+                    ),
           )
         ],
       ),
@@ -45,19 +50,16 @@ class UserListScreen extends ConsumerWidget {
   }
 
   Widget _buildUserListContainerWidget(
-      BuildContext context,
-      WidgetRef ref,
-      final UserList userList
-      ) {
+      BuildContext context, WidgetRef ref, final UserList userList) {
     return Expanded(child: _buildUserListWidget(context, ref, userList));
   }
 
-  Widget _buildUserListWidget(
-      final BuildContext context,
-      final WidgetRef ref,
+  Widget _buildUserListWidget(final BuildContext context, final WidgetRef ref,
       final UserList userList) {
     if (userList.length == 0) {
-      return Center(child: Text(context.tr!.noData),);
+      return Center(
+        child: Text(context.tr!.noData),
+      );
     } else {
       return ListView.builder(
         padding: const EdgeInsets.all(8),
@@ -70,35 +72,50 @@ class UserListScreen extends ConsumerWidget {
     }
   }
 
-  Widget _buildUserItemCardWidget(final BuildContext context, final WidgetRef ref, final UserEntityModel userEntityModel) => InkWell(
-    onTap: () => context.go('/userForm'),
-    child: Card(child: Padding(padding: const EdgeInsets.all(8.0), child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              userEntityModel.name,
-              style: context.textTheme.displaySmall,
-              overflow: TextOverflow.ellipsis,
+  Widget _buildUserItemCardWidget(final BuildContext context,
+          final WidgetRef ref, final UserEntityModel userEntityModel) =>
+      InkWell(
+        onTap: () => context.goNamed('userForm'),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userEntityModel.name,
+                      style: context.textTheme.displaySmall,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      DateFormat('yyyy/MM/dd')
+                          .format(userEntityModel.createdAt),
+                      style: context.textTheme.displaySmall,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                )),
+                const SizedBox(
+                  width: 8,
+                ),
+                userEntityModel.name.isNotEmpty
+                    ? _buildCheckedIcon(ref, userEntityModel)
+                    : _buildUncheckedIcon(ref, userEntityModel),
+              ],
             ),
-            Text(
-              DateFormat('yyyy/MM/dd').format(userEntityModel.createdAt),
-              style: context.textTheme.displaySmall,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        )),
-        const SizedBox(width: 8,),
-        userEntityModel.name.isNotEmpty ? _buildCheckedIcon(ref, userEntityModel) : _buildUncheckedIcon(ref, userEntityModel),
-      ],
-    ),),),
-  );
+          ),
+        ),
+      );
 
-  Widget _buildCheckedIcon(final WidgetRef ref, final UserEntityModel userEntityModel) {
+  Widget _buildCheckedIcon(
+      final WidgetRef ref, final UserEntityModel userEntityModel) {
     return InkResponse(
-      onTap: () => ref.watch(_userListProvider.notifier).availableUser(userEntityModel),
+      onTap: () =>
+          ref.watch(_userListProvider.notifier).availableUser(userEntityModel),
       splashColor: Colors.transparent,
       child: const Icon(
         Icons.done,
@@ -108,9 +125,12 @@ class UserListScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildUncheckedIcon(final WidgetRef ref, final UserEntityModel userEntityModel) {
+  Widget _buildUncheckedIcon(
+      final WidgetRef ref, final UserEntityModel userEntityModel) {
     return InkResponse(
-      onTap: () => ref.watch(_userListProvider.notifier).unavailableUser(userEntityModel),
+      onTap: () => ref
+          .watch(_userListProvider.notifier)
+          .unavailableUser(userEntityModel),
       splashColor: Colors.transparent,
       child: const Icon(
         Icons.radio_button_off_rounded,
@@ -122,9 +142,8 @@ class UserListScreen extends ConsumerWidget {
 
   Widget _buildFloatingActionButton(final BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => context.go('/userForm'),
+      onPressed: () => context.goNamed('userForm'),
       child: const Icon(Icons.add),
     );
   }
-
 }

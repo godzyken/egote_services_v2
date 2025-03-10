@@ -198,5 +198,6 @@ final filterConnection = StateProvider<List<int>>((ref) {
 
 final countProvider = StateProvider<int>((ref) {
   final prefs = ref.watch(sharedPreferencesProvider).value;
+  prefs?.setInt('count', (prefs.getInt('count') ?? 0) + 1);
   return prefs?.getInt('count') ?? 0;
 });

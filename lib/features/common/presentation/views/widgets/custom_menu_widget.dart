@@ -71,7 +71,8 @@ class CustomMenuWidget extends ConsumerWidget {
                     ),
                     const Divider(),
                     ListTile(
-                      onTap: () => context.go('/person/:uid'),
+                      onTap: () => context
+                          .goNamed('person', pathParameters: {'uid': '1'}),
                       leading: const Icon(Icons.account_circle_rounded),
                       title: Text(context.tr!.profile),
                     ),
@@ -83,7 +84,7 @@ class CustomMenuWidget extends ConsumerWidget {
                     ),
                     const Divider(),
                     ListTile(
-                      onTap: () => context.go('/settingsRoute'),
+                      onTap: () => context.goNamed('settingsRoute'),
                       leading: const Icon(Icons.settings),
                       title: Text(context.tr!.settings),
                     ),
@@ -128,13 +129,15 @@ class CustomMenuWidget extends ConsumerWidget {
               child: Assets.lottie.models.earthAugmentedImage.image()),
           const Divider(),
           ListTile(
-            onTap: () => context.go('/user_home/:pid'),
+            onTap: () =>
+                context.goNamed('user_home', pathParameters: {'uId': '123'}),
             leading: const Icon(Icons.home),
             title: Text(context.tr!.home),
           ),
           const Divider(),
           ListTile(
-            onTap: () => context.go('/person/:uid'),
+            onTap: () =>
+                context.goNamed('person', pathParameters: {'pId': '123'}),
             leading: const Icon(Icons.account_circle_rounded),
             title: Text(context.tr!.profile),
           ),
@@ -146,7 +149,7 @@ class CustomMenuWidget extends ConsumerWidget {
           ),
           const Divider(),
           ListTile(
-            onTap: () => context.go('/settingsRoute'),
+            onTap: () => context.goNamed('settingsRoute'),
             leading: const Icon(Icons.settings),
             title: Text(context.tr!.settings),
           ),

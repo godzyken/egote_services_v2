@@ -28,8 +28,15 @@ import '../features/chat/presentation/views/screens/chat_video_screen.dart';
 import '../features/chat/presentation/views/screens/login_on_chat.dart';
 import '../features/chat/presentation/views/screens/select_dialog_screen.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
+import '../features/devis/domain/entities/products/produit_model_entity.dart';
+import '../features/devis/domain/providers/devis_providers.dart';
+import '../features/devis/domain/providers/edit_devis_view_model_provider.dart';
 import '../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../features/devis/presentation/views/screens/devis_list_screen.dart';
+import '../features/devis/presentation/views/screens/document_view_screen.dart';
+import '../features/devis/presentation/views/screens/product_details_screen.dart';
+import '../features/devis/presentation/views/screens/product_edit_screen.dart';
+import '../features/devis/presentation/views/screens/product_list_screen.dart';
 import '../features/home/presentation/view/home_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
 import '../features/settings/presentation/view/gallery/gallery.dart';
@@ -70,6 +77,13 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(fireDatabaseProvider);
 
   container.read(backgroundTaskProvider);
+  container.read(editDeviViewModelProvider);
+  container.read(produitServiceProvider);
+  container.read(produitStateNotifierProvider);
+  container.read(missionsListProvider);
+  container.read(travauxListProvider);
+  container.read(missionStateNotifierProvider);
+  container.read(devisStateNotifierProvider);
 
   container.dispose();
 }
@@ -172,20 +186,53 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                   );
                 }),
             GoRoute(
-              path: DevisEditRoute.path,
-              name: 'devis',
-              builder: (context, state) => DevisEditScreen(
-                key: state.pageKey,
-                devisId: state.pathParameters['devisId']!,
-              ),
-            ),
-            GoRoute(
-              path: DevisListRoute.path,
-              name: 'devisList',
-              builder: (context, state) => DevisListScreen(
-                key: state.pageKey,
-              ),
-            ),
+                path: DocumentPreviewRoute.path,
+                name: 'documents',
+                builder: (context, state) => DocumentViewScreen(
+                      key: state.pageKey,
+                    ),
+                routes: [
+                  GoRoute(
+                    path: DevisEditRoute.path,
+                    name: 'devis',
+                    builder: (context, state) => DevisEditScreen(
+                      key: state.pageKey,
+                      devisId: state.pathParameters['devisId']!,
+                    ),
+                  ),
+                  GoRoute(
+                    path: DevisListRoute.path,
+                    name: 'devisList',
+                    builder: (context, state) => DevisListScreen(
+                      key: state.pageKey,
+                    ),
+                  ),
+                  GoRoute(
+                      path: ProduitListRoute.path,
+                      name: 'produitList',
+                      builder: (context, state) => ProductListScreen(
+                            key: state.pageKey,
+                          )),
+                  GoRoute(
+                      path: ProduitEditRoute.path,
+                      name: 'produitEditRoute',
+                      builder: (context, state) {
+                        final produit = state.extra as Produit;
+                        return ProductEditScreen(
+                          key: state.pageKey,
+                          produit: produit,
+                        );
+                      }),
+                  GoRoute(
+                      path: ProduitDetailsRoute.path,
+                      name: 'produitDetailsRoute',
+                      builder: (context, state) {
+                        return ProduitDetails(
+                          key: state.pageKey,
+                          id: state.pathParameters['prodId']!,
+                        );
+                      }),
+                ]),
             GoRoute(
                 path: SettingsUiRoute.path,
                 name: 'settingsRoute',
@@ -296,12 +343,12 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
           }),
       GoRoute(
         path: ChatVideoScreenRoute.path,
-        name: 'chatVideo',
+        name: 'chat_room',
         builder: (context, state) {
           return ChatVideoScreen(
             key: state.pageKey,
             uid: state.pathParameters['userId']!,
-            pid: state.pathParameters['cubeUserId']!,
+            pid: state.pathParameters['cubId']!,
           );
         },
       )

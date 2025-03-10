@@ -13,36 +13,40 @@ class DevisListScreen extends ConsumerWidget {
     final devisList = ref.watch(eventListProvider);
     return SafeArea(
         child: Scaffold(
-          body: devisList.map(
-              data: (data) =>
-              switch (data.value) {
+      body: devisList.map(
+          data: (data) => switch (data.value) {
                 QueryGetAllEventError() => const Text('Empty'),
                 SuccessGetAllEventState(devisModelEntity: final devisEntity) =>
-                    Column(
-                      children: [
-                        Text('${devisEntity.length} length'),
-                        ...devisEntity.map((devisModel) =>
-                            devisModel.when(
-                              approved: (id, createdAt, validity, client, pro,
-                                  travauxEntity, quantity, unitPrice, vatRates,
-                                  amountHt, amountTtc, approval) =>
-                                  Card(
-                                    child: Text(createdAt.toIso8601String()),
-                                  ),
-                              initialize: (id, createdAt) =>
-                                  Card(
-                                    child: Text(id.id.toString()),
-                                  ),
-                              empty: () => const Text('Empty'),
-                            )
-                        )
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      Text('${devisEntity.length} length'),
+                      ...devisEntity.map((devisModel) => devisModel.when(
+                            approved: (id,
+                                    createdAt,
+                                    validity,
+                                    client,
+                                    pro,
+                                    travauxEntity,
+                                    produits,
+                                    quantity,
+                                    unitPrice,
+                                    vatRates,
+                                    amountHt,
+                                    amountTtc,
+                                    approval) =>
+                                Card(
+                              child: Text(createdAt.toIso8601String()),
+                            ),
+                            initialize: (id, createdAt) => Card(
+                              child: Text(id.id.toString()),
+                            ),
+                            empty: () => const Text('Empty'),
+                          ))
+                    ],
+                  ),
               },
-              error: (error) => ErrorScreen(error: error.error.toString()),
-              loading: (_) => const CircularProgressIndicator()
-          ),
-        )
-    );
+          error: (error) => ErrorScreen(error: error.error.toString()),
+          loading: (_) => const CircularProgressIndicator()),
+    ));
   }
 }
