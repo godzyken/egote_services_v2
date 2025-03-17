@@ -1,5 +1,7 @@
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
+import 'package:egote_services_v2/config/providers/connectivity/connectivity_providers.dart';
+import 'package:egote_services_v2/config/providers/connectivity/dio_providers.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
@@ -8,6 +10,8 @@ import 'package:egote_services_v2/config/providers/platform/platform_provider.da
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/config/providers/webrtc/webrtc_provider.dart';
+import 'package:egote_services_v2/features/devis/domain/providers/check_out_service_provider.dart';
+import 'package:egote_services_v2/features/devis/presentation/states/entities/product_states/produit_entity_states.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:geoflutterfire2/geoflutterfire2.dart';
@@ -50,9 +54,12 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(webrtcInitProvider.future);
   await container.read(datadogProvider.future);
   await container.read(cubeSettingsInitProvider.future);
+  await container.read(cubeUserProvider.future);
   await container.read(sharedPreferencesProvider.future);
+  await container.read(produitFutureProvider.future);
+  await container.read(cubeChatConnectionSettingsProvider.future);
 
-  container.read(cubeChatConnectionSettingsProvider);
+  container.read(connectivityStatusProviders);
   container.read(sharedPrefsProvider);
   container.read(firebaseDatabaseProvider);
   container.read(firebaseFirestoreProvider);
@@ -62,6 +69,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(firebaseAuthProvider);
   container.read(cubeUserControllerProvider);
   container.read(cubeSessionManagerProvider);
+  container.read(cubeChatConnectionNotifierProvider);
   container.read(cubeChatConnectionSettingsProvider);
   container.read(cubeChatConnectionProvider);
   container.read(goRouterProvider);
@@ -79,11 +87,16 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(backgroundTaskProvider);
   container.read(editDeviViewModelProvider);
   container.read(produitServiceProvider);
+  container.read(editProduitProvider);
   container.read(produitStateNotifierProvider);
+  container.read(devisStateNotifierProvider);
+  container.read(checkoutServiceProvider);
   container.read(missionsListProvider);
   container.read(travauxListProvider);
   container.read(missionStateNotifierProvider);
   container.read(devisStateNotifierProvider);
+  container.read(dioProvider);
+  container.read(telemetryProvider);
 
   container.dispose();
 }
@@ -215,7 +228,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                           )),
                   GoRoute(
                       path: ProduitEditRoute.path,
-                      name: 'produitEditRoute',
+                      name: 'produitEdit',
                       builder: (context, state) {
                         final produit = state.extra as Produit;
                         return ProductEditScreen(

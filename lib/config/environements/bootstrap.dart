@@ -26,7 +26,18 @@ import 'flavors.dart';
 Future<ProviderContainer> bootstrap() async {
   //WidgetsFlutterBinding.ensureInitialized();
   final binding = SentryWidgetsFlutterBinding.ensureInitialized();
-  // await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    if (kReleaseMode) exit(1);
+  };
+/*  await Workmanager().initialize(callbackDispatcher);*/
+  Workmanager().registerOneOffTask(
+    'id_unique',
+    'simpleTask',
+    initialDelay: Duration(seconds: 10),
+    inputData: <String, dynamic>{'key': 'value'},
+    existingWorkPolicy: ExistingWorkPolicy.replace,
+  );
 
   await Future.wait(
       [
@@ -104,6 +115,9 @@ Future<ProviderContainer> bootstrap() async {
     options.experimental.replay.sessionSampleRate = 1.0;
     options.experimental.replay.onErrorSampleRate = 1.0;
   });
+
+  await Sentry.captureMessage('message de sentry: hello world',
+      level: SentryLevel.fatal, withScope: (p0) => p0.user!.name);
 
   final container = ProviderContainer(
     overrides: [
@@ -373,7 +387,7 @@ void callbackDispatcher() {
           final prefs = await SharedPreferences.getInstance();
           prefs.setBool("test", true);
           developer.log("Bool from prefs: ${prefs.getBool("test")}");
-          break;
+          return myTaskFunction(task);
         case rescheduledTaskKey:
           final key = inputData['key']!;
           final prefs = await SharedPreferences.getInstance();
@@ -403,6 +417,7 @@ void callbackDispatcher() {
           String? tempPath = tempDir.path;
           developer.log(
               "You can access other plugins in the background, for example Directory.getTemporaryDirectory(): $tempPath");
+          stderr.writeln('the iOS background fetch was triggered');
           break;
       }
 
@@ -412,36 +427,6 @@ void callbackDispatcher() {
       return Future.value(false);
     }
   });
-
-/*
-  Workmanager().registerOneOffTask("1", "simpleTask",
-      initialDelay: Duration(seconds: 10),
-      inputData: <String, dynamic>{'key': 'value'},
-      constraints: Constraints(
-          networkType: NetworkType.connected,
-          requiresBatteryNotLow: true,
-          requiresCharging: true,
-          requiresDeviceIdle: true,
-          requiresStorageNotLow: true));
-
-  Workmanager().registerPeriodicTask(
-    "periodic-task-identifier",
-    "simplePeriodicTask",
-// When no frequency is provided the default 15 minutes is set.
-// Minimum frequency is 15 min. Android will automatically change your
-// frequency to 15 min if you have configured a lower frequency.
-    frequency: Duration(minutes: 15),
-  );
-*/
-
-  /*BackgroundTaskNotifier().setTaskStarted((details) => FlutterErrorDetails(
-      exception: details.exception,
-      stack: details.stack,
-      library: details.library,
-      informationCollector: details.informationCollector,
-      context: details.context,
-      silent: details.silent,
-      stackFilter: details.stackFilter));*/
 }
 
 Future<void> providerTaskIsolate() async {
@@ -472,4 +457,65 @@ Future<void> providerTaskIsolate() async {
       backoffPolicy: BackoffPolicy.exponential,
       backoffPolicyDelay: Duration(seconds: 30),
       initialDelay: Duration(seconds: 10));
+}
+
+/*
+  Workmanager().registerOneOffTask("1", "simpleTask",
+      initialDelay: Duration(seconds: 10),
+      inputData: <String, dynamic>{'key': 'value'},
+      constraints: Constraints(
+          networkType: NetworkType.connected,
+          requiresBatteryNotLow: true,
+          requiresCharging: true,
+          requiresDeviceIdle: true,
+          requiresStorageNotLow: true));
+
+  Workmanager().registerPeriodicTask(
+    "periodic-task-identifier",
+    "simplePeriodicTask",
+// When no frequency is provided the default 15 minutes is set.
+// Minimum frequency is 15 min. Android will automatically change your
+// frequency to 15 min if you have configured a lower frequency.
+    frequency: Duration(minutes: 15),
+  );
+*/
+
+/*BackgroundTaskNotifier().setTaskStarted((details) => FlutterErrorDetails(
+      exception: details.exception,
+      stack: details.stack,
+      library: details.library,
+      informationCollector: details.informationCollector,
+      context: details.context,
+      silent: details.silent,
+      stackFilter: details.stackFilter));*/
+bool myTaskFunction(String taskName) {
+  developer.log("Executing background task: $taskName");
+
+  try {
+    // Add your background work here
+    // For example, a network request, database operation, etc.
+
+    // Simulating a background task (you can replace it with your actual task logic)
+    bool success = performBackgroundTask();
+
+    if (success) {
+      // If the task was successful, return true
+      developer.log("Task $taskName completed successfully.");
+      return true; // Success
+    } else {
+      // If the task failed, return false and the task will be retried
+      developer.log("Task $taskName failed. Will retry.");
+      return false; // Failure, to trigger retry
+    }
+  } catch (e) {
+    // Catch any exceptions and return false to trigger retry
+    developer.log("Error in task $taskName: $e");
+    return false; // Failure, to trigger retry
+  }
+}
+
+// Simulating a background task (you can replace this with your actual task logic)
+bool performBackgroundTask() {
+  // Simulate success or failure of a background task.
+  return DateTime.now().second % 2 == 0; // Randomly return true or false
 }

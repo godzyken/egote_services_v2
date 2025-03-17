@@ -38,19 +38,22 @@ class UserEntityModel with _$UserEntityModel {
   factory UserEntityModel.fromFirestore(DocumentSnapshot doc) {
     final map = doc.data() as Map<String, dynamic>;
     return UserEntityModel(
-      id: UserId(value: int.parse('doc.id')),
+      id: UserId(value: int.parse(doc.id)),
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       role: map['role'] ?? '',
       externalId: map['externalId'] ?? '',
       phone: map['phone'] ?? '',
       externalLink: map['externalLink'] ?? '',
-      isComplete: map['is_complete'] ? true : false,
-      createdAt: map['created_at'] ?? '',
-      updatedAt: map['updated_at'] ?? '',
-      emailConfirmedAt: map['email_confirmed_at'] ?? '',
-      phoneConfirmedAt: map['phone_confirmed_at'] ?? '',
-      lastSignInAt: map['last_sign_in_at'] ?? '',
+      isComplete: map['is_complete'] ?? false,
+      createdAt: DateTime.tryParse(map['created_at'] ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(map['updated_at'] ?? '') ?? DateTime.now(),
+      emailConfirmedAt:
+          DateTime.tryParse(map['email_confirmed_at'] ?? '') ?? DateTime.now(),
+      phoneConfirmedAt:
+          DateTime.tryParse(map['phone_confirmed_at'] ?? '') ?? DateTime.now(),
+      lastSignInAt:
+          DateTime.tryParse(map['last_sign_in_at'] ?? '') ?? DateTime.now(),
     );
   }
 

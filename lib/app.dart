@@ -15,7 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/app_shared/extensions/extensions.dart';
 import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
-import 'config/providers/cube/cube_providers.dart';
+import 'config/providers/connectivity/connectivity_providers.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
 import 'l10n/app_localizations.dart';
@@ -40,8 +40,9 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     final lightTheme = ref.watch(lightThemeProvider);
     final darkTheme = ref.watch(darkThemeProvider);
     final settingsThemeMode = ref.watch(Settings.themeModeProvider);
-    final cubeInstance = ref.watch(cubeProvider);
-    //  late final initCube = initStateConnection(cubeInstance, ref);
+
+    connectivityStateSubscription =
+        ref.watch(connectivityStatusProviders.notifier).subscription!;
 
     return RumUserActionDetector(
         rum: datadog.rum,
@@ -81,25 +82,6 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-
-    connectivityStateSubscription =
-        Connectivity().onConnectivityChanged.listen((connectivityType) {
-      if (AppLifecycleState.resumed != appState) return;
-
-      log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-      bool isChatDisconnected =
-          CubeChatConnection.instance.chatConnectionState ==
-                  CubeChatConnectionState.Closed ||
-              CubeChatConnection.instance.chatConnectionState ==
-                  CubeChatConnectionState.ForceClosed;
-
-      if (isChatDisconnected &&
-          CubeChatConnection.instance.currentUser != null) {
-        CubeChatConnection.instance.relogin();
-      }
-
-      log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-    });
 
     //initCube.asStream();
 

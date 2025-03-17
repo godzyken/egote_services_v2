@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:egote_services_v2/config/providers/connectivity/connectivity_providers.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,21 +20,107 @@ class CubeDialogController extends StateNotifier<CubeDialog?> {
   }
 
   Future<RTCDataChannelState> channelInit(int? id) async {
-    RTCDataChannelInit channelInit = RTCDataChannelInit();
-    if (channelInit.id == id) {
-      return rtcDataChannelStateForString(state!.name!);
-    } else {
-      return rtcDataChannelStateForString(channelInit.protocol);
+    try {
+      RTCDataChannelInit channelInit = RTCDataChannelInit();
+      if (channelInit.id == id) {
+        return rtcDataChannelStateForString(state!.name!);
+      } else {
+        return rtcDataChannelStateForString(channelInit.protocol);
+      }
+    } catch (e) {
+      developer.log("Erreur lors de l'initialisation du channel : $e");
+      return RTCDataChannelState.RTCDataChannelClosed;
     }
   }
 
   Future<int?> createNewGroupDialog(CubeDialog newGroupDialog) async {
-    CubeDialog groupDialog = CubeDialog(CubeDialogType.GROUP,
-        dialogId: newGroupDialog.dialogId, name: newGroupDialog.name);
+    try {
+      CubeDialog groupDialog = CubeDialog(CubeDialogType.GROUP,
+          dialogId: newGroupDialog.dialogId, name: newGroupDialog.name);
 
-    return await createNewGroupDialog(groupDialog)
-        .then((createdDialog) => groupDialog.type)
-        .catchError((onError) => onError);
+      final createdGroupDialog = await _createGroupDialog(groupDialog);
+      state = createdGroupDialog;
+
+      final dialogId = int.parse(createdGroupDialog!.dialogId!);
+      return dialogId;
+    } catch (e) {
+      developer.log("Erreur lors de la création du groupe : $e");
+      return null;
+    }
+  }
+
+  Future<CubeDialog?> _createGroupDialog(CubeDialog groupDialog) async {
+    try {
+      List<CubeUser> users = [];
+      final cubeUser = await _ref.watch(cubeUserProvider.future);
+      if (cubeUser != null) {
+        users.add(cubeUser);
+      }
+
+      CubeDialog group = CubeDialog(
+        CubeDialogType.GROUP,
+        dialogId: groupDialog.dialogId,
+        name: groupDialog.name,
+        occupantsIds: users.map((user) => user.id!).toList(),
+        photo: groupDialog.photo,
+        description: groupDialog.description,
+      );
+
+      CubeDialog createdGroup = await createDialog(group);
+
+      return createdGroup;
+    } catch (e) {
+      developer.log("Erreur lors de la création du groupe : $e");
+      return null;
+    }
+  }
+
+  Future<List<CubeDialog>> fetchAllDialogs() async {
+    try {
+      // TODO: à remplacer par une API réelle
+
+      await Future.delayed(Duration(seconds: 2));
+
+      List<CubeDialog> dialogs = [
+        CubeDialog(CubeDialogType.PRIVATE,
+            dialogId: '12345', name: 'Dialogue 1'),
+        CubeDialog(CubeDialogType.GROUP, dialogId: '67890', name: 'Groupe 2'),
+      ];
+
+      return dialogs;
+    } catch (e) {
+      developer.log("Erreur lors de la récupération des dialogs : $e");
+      return [];
+    }
+  }
+
+  Future<bool> deleteDialog(String dialogId) async {
+    try {
+      // TODO: Logique pour supprimer un dialogue (ici, c'est une simulation)
+      await Future.delayed(Duration(seconds: 1));
+
+      return true;
+    } catch (e) {
+      developer.log("Erreur lors de la suppression du dialogue : $e");
+      return false;
+    }
+  }
+
+  Future<List<String>> getUserPermissions(String dialogId, int userId) async {
+    try {
+      // TODO: permissions fictives à remplacer par une API réelle
+      await Future.delayed(Duration(seconds: 1));
+
+      if (dialogId == '12345') {
+        return ['read', 'write'];
+      } else {
+        return ['read'];
+      }
+    } catch (e) {
+      developer.log(
+          "Erreur lors de la récupération des permissions de l'utilisateur : $e");
+      return [];
+    }
   }
 }
 
@@ -74,6 +161,32 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
     }
   }
 
+  Future<void> initializeChatConnection() async {
+    final cubeChatConnectionSettingsResult =
+        await ref.watch(cubeChatConnectionSettingsProvider.future);
+
+    final settings = cubeChatConnectionSettingsResult;
+
+    settings.reconnectionTimeout = 5000;
+    settings.totalReconnections = 5;
+
+    final connectionState = ref.watch(cubeChatConnectionNotifierProvider);
+
+    final isDisconnected =
+        ref.watch(cubeChatConnectionProvider).chatConnectionState ==
+            connectionState;
+
+    final connectivityNotifier = ref.read(connectivityStatusProviders.notifier);
+
+    if (connectivityNotifier.subscription != null) {
+      connectivityNotifier.subscription!.resume();
+    } else {
+      developer.log('Warning: Connectivity subscription is null');
+    }
+
+    developer.log('Chat connection initialized. Disconnected: $isDisconnected');
+  }
+
   Future<void> connectionStateStream() async {
     connectionStateSubscription = createLocalMediaStream('Subscribe')
         .asStream()
@@ -94,7 +207,7 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
 
   Future<void> reconnection() async {
     chatConnectionSettings =
-        await ref.watch(cubeChatConnectionSettingsProvider);
+        await ref.watch(cubeChatConnectionSettingsProvider.future);
 
     chatConnectionSettings!.reconnectionTimeout = 5000;
     chatConnectionSettings!.totalReconnections = 5;
@@ -104,40 +217,7 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
             CubeChatConnectionState.Closed;
 
     connectivityStateSubscription =
-        Connectivity().onConnectivityChanged.listen((connectivityType) {
-      for (var conn in connectivityType) {
-        switch (conn) {
-          case ConnectivityResult.mobile:
-            // TODO: Handle this case.
-            throw UnimplementedError();
-          case ConnectivityResult.bluetooth:
-            // TODO: Handle this case.
-            throw UnimplementedError();
-          case ConnectivityResult.wifi:
-            // TODO: Handle this case.
-            throw UnimplementedError();
-          case ConnectivityResult.ethernet:
-            // TODO: Handle this case.
-            throw UnimplementedError();
-          case ConnectivityResult.none:
-            isChatDisconnected =
-                ref.watch(cubeChatConnectionProvider).chatConnectionState ==
-                    CubeChatConnectionState.Closed;
-
-            if (isChatDisconnected! &&
-                ref.watch(cubeChatConnectionProvider).currentUser != null) {
-              ref.watch(cubeChatConnectionProvider).relogin();
-            }
-
-          case ConnectivityResult.vpn:
-            // TODO: Handle this case.
-            throw UnimplementedError();
-          case ConnectivityResult.other:
-            // TODO: Handle this case.
-            throw UnimplementedError();
-        }
-      }
-    });
+        ref.watch(connectivityStatusProviders.notifier).subscription!;
 
     return connectivityStateSubscription!.resume();
   }

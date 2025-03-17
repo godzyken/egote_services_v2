@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:egote_services_v2/features/devis/domain/entities/products/produit_model_entity.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'produit_entity_states.g.dart';

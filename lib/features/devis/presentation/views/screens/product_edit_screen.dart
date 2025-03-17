@@ -41,7 +41,7 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   TextFormField(
-                    initialValue: produit?.produitName,
+                    initialValue: produit?.name,
                     decoration:
                         const InputDecoration(labelText: 'Dénomination'),
                     validator: (value) => value?.isEmpty ?? true
@@ -49,68 +49,19 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
                         : null,
                     onChanged: (value) {
                       setState(() {
-                        produit = produit?.copyWith(produitName: value);
+                        produit = produit?.copyWith(name: value);
                       });
                     },
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    initialValue: produit!.description,
+                    initialValue: produit!.manufacturer,
                     decoration: const InputDecoration(labelText: 'Title'),
                     validator: (value) =>
-                        value?.isEmpty ?? true ? 'Entrer un titre' : null,
+                        value?.isEmpty ?? true ? 'Entrer un Fabricant' : null,
                     onChanged: (value) {
                       setState(() {
-                        produit = produit!.copyWith(description: value);
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    initialValue: produit!.category,
-                    decoration: const InputDecoration(labelText: 'Catégorie'),
-                    validator: (value) =>
-                        value?.isEmpty ?? true ? 'Entrer une Catégorie' : null,
-                    onChanged: (value) {
-                      setState(() {
-                        produit = produit!.copyWith(category: value);
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    initialValue: produit!.material,
-                    decoration: const InputDecoration(labelText: 'Material'),
-                    validator: (value) =>
-                        value?.isEmpty ?? true ? 'Entrer une matière' : null,
-                    onChanged: (value) {
-                      setState(() {
-                        produit = produit!.copyWith(material: value);
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    initialValue: produit?.color,
-                    decoration: const InputDecoration(labelText: 'Title'),
-                    validator: (value) =>
-                        value?.isEmpty ?? true ? 'Entrer une Couleur' : null,
-                    onChanged: (value) {
-                      setState(() {
-                        produit = produit?.copyWith(color: value);
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    initialValue: produit?.size,
-                    decoration: const InputDecoration(labelText: 'Title'),
-                    validator: (value) => value?.isEmpty ?? true
-                        ? 'Entrer une taille/Dimention'
-                        : null,
-                    onChanged: (value) {
-                      setState(() {
-                        produit = produit?.copyWith(size: value);
+                        produit = produit!.copyWith(manufacturer: value);
                       });
                     },
                   ),
@@ -124,7 +75,7 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
                     onChanged: (value) {
                       final price = double.tryParse(value);
                       setState(() {
-                        produit = produit?.copyWith(price: price!);
+                        produit?.price == price;
                       });
                     },
                   ),
@@ -137,14 +88,14 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
                     onChanged: (value) {
                       final quantity = int.tryParse(value);
                       setState(() {
-                        produit = produit?.copyWith(quantity: quantity!);
+                        produit?.quantity == quantity;
                       });
                     },
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () async {
-                      if (_formKey.currentState!.validate() ?? false) {
+                      if (_formKey.currentState!.validate()) {
                         await ref
                             .read(editProduitProvider.notifier)
                             .saveChanges(produit!);

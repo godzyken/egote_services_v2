@@ -510,9 +510,10 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
   _loginToCubeChat(BuildContext context, CubeUser user) {
     log("_loginToCubeChat user $user");
-    ref.watch(cubeChatConnectionSettingsProvider)
-      ..totalReconnections = 0
-      ..reconnectionTimeout = 5000;
+    ref.watch(cubeChatConnectionSettingsProvider);
+    setState(() {
+      _isLoginContinues = true;
+    });
 
     ref.watch(cubeChatConnectionProvider).login(user).then((cubeUser) {
       _isLoginContinues = false;

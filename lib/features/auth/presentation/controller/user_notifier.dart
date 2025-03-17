@@ -7,19 +7,46 @@ class UserNotifier extends StateNotifier<UserEntityModel> {
   UserNotifier([UserEntityModel? userEntityModel])
       : super(userEntityModel ?? UserEntityModel.empty());
 
-  UserEntityModel? previousUser;
+  final List<UserEntityModel> _previousStates = [];
 
   void updateName(String name) {
+    _savePreviousState();
     state = state.copyWith(name: name);
-
-    previousUser = state;
   }
 
-  void updateRole(String name) {
-    state = state.copyWith(role: name);
-
-    previousUser = state;
+  void updateRole(String role) {
+    _savePreviousState();
+    state = state.copyWith(role: role);
   }
+
+  void updateUser({
+    String? name,
+    String? role,
+    String? externalId,
+    String? phone,
+    String? externalLink,
+  }) {
+    _savePreviousState();
+    state = state.copyWith(
+      name: name ?? state.name,
+      role: role ?? state.role,
+      externalId: externalId ?? state.externalId,
+      phone: phone ?? state.phone,
+      externalLink: externalLink ?? state.externalLink,
+    );
+  }
+
+  void _savePreviousState() {
+    _previousStates.add(state);
+  }
+
+  void revertToPreviousState() {
+    if (_previousStates.isNotEmpty) {
+      state = _previousStates.removeLast();
+    }
+  }
+
+  List<UserEntityModel> get previousStates => _previousStates;
 }
 
 class UserFormStateController extends StateNotifier<UserFormState> {
@@ -49,28 +76,7 @@ final currentProvider = StateProvider<UserEntityModel?>((ref) => null);
 
 final userNotifierProvider =
     StateNotifierProvider<UserNotifier, UserEntityModel>((ref) {
-  final now = ref.read(clockProvider);
-  final diff = now.add(const Duration(days: 5));
-  final entityModel = ref.watch(userModelProvider);
-  if (diff.isAfter(entityModel.createdAt)) {
-    final previousUser = UserNotifier().previousUser;
-    return UserNotifier(previousUser);
-  } else {
-    final newUser = UserEntityModel.create(
-        entityModel.name,
-        entityModel.email,
-        entityModel.role,
-        entityModel.externalId,
-        entityModel.phone,
-        entityModel.externalLink,
-        entityModel.isComplete,
-        now,
-        now,
-        now,
-        now,
-        diff);
-    return UserNotifier(newUser);
-  }
+  return UserNotifier();
 }, dependencies: [clockProvider], name: 'User notifier provider');
 
 final userModelProvider = Provider<UserEntityModel>((ref) {

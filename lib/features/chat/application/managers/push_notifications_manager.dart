@@ -17,6 +17,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../config/app_shared/extensions/extensions.dart';
 import '../../../../config/cube_config/cube_config.dart';
+import '../../../../config/providers.dart';
 import '../../data/data_sources/local/pref_util.dart';
 import '../../domain/models/entities/cube_environment/cube_environment_mig.dart';
 
@@ -42,6 +43,8 @@ class PushNotificationsManager {
 
   init() async {
     developer.log('[init], $TAG');
+    await getPackageInfo();
+
     final firebaseMessaging = _ref!.watch(firebaseMessagingProvider);
 
     await firebaseMessaging.setAutoInitEnabled(true).whenComplete(
@@ -79,7 +82,9 @@ class PushNotificationsManager {
             onNotificationClicked?.call(data);
           } else {
             String? dialogId = jsonDecode(data)['dialog_id'];
-            SharedPrefs.instance.saveSelectedDialogId(dialogId ?? '');
+            _ref!
+                .read(sharedPrefsProvider)
+                .saveSelectedDialogId(dialogId ?? '');
           }
         }
       },
@@ -127,7 +132,7 @@ class PushNotificationsManager {
   subscribe(String? token) async {
     developer.log('[subscribe] token: $token, ${PushNotificationsManager.TAG}');
 
-    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+    SharedPrefs sharedPrefs = await _ref!.read(sharedPrefsProvider).init();
     if (sharedPrefs.getSubscriptionToken() == token) {
       developer.log(
           '[subscribe] skip subscription for same token, ${PushNotificationsManager.TAG}');
@@ -190,7 +195,7 @@ class PushNotificationsManager {
   }
 
   Future<void> unsubscribe() {
-    return SharedPrefs.instance.init().then((sharedPrefs) {
+    return _ref!.read(sharedPrefsProvider).init().then((sharedPrefs) {
       int subscriptionId = sharedPrefs.getSubscriptionId();
       if (subscriptionId != 0) {
         return deleteSubscription(subscriptionId).then((voidResult) {
@@ -314,4 +319,15 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
 void notificationTapBackground(NotificationResponse notificationResponse) {
   developer.log(
       '[notificationTapBackground] payload: ${notificationResponse.payload}');
+}
+
+Future<void> getPackageInfo() async {
+  try {
+    final packageInfo = await PackageInfo.fromPlatform();
+    developer.log('App name: ${packageInfo.appName}');
+    developer.log('App version: ${packageInfo.version}');
+    developer.log('App build number: ${packageInfo.buildNumber}');
+  } catch (e) {
+    developer.log('Error: $e');
+  }
 }

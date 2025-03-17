@@ -7,49 +7,57 @@ part 'produit_model_entity.g.dart';
 abstract class Produit with _$Produit {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory Produit({
+    required int id,
     required String sku,
-    required String produitName,
-    required double price,
+    required String name,
+    required String manufacturer,
     required String imageUrl,
-    required String description,
-    required String category,
-    required String brand,
-    required String size,
-    required String color,
-    required String material,
-    required int quantity,
+    required String url,
   }) = _Produit;
 
   const Produit._();
 
-  double get totalPrice => price * quantity;
+  factory Produit.empty() => const Produit(
+        id: 0,
+        sku: '',
+        name: '',
+        manufacturer: '',
+        imageUrl: '',
+        url: '',
+      );
+
+  double? get price => 0.0;
+  int? get quantity => 1;
+
+  factory Produit.fromJson(Map<String, dynamic> json) =>
+      _$ProduitFromJson(json);
+
+  double get totalPrice => price! * quantity!;
+
+  String get formattedPrice => _formatCurrency(price!);
+
+  String get formattedTotalPrice => _formatCurrency(totalPrice);
 
   String getIndex(int index) {
     switch (index) {
       case 0:
-        return sku;
+        return id.toString();
       case 1:
-        return produitName;
+        return sku;
       case 2:
-        return _formatCurrency(price);
+        return name;
       case 3:
-        return imageUrl;
+        return manufacturer;
       case 4:
-        return description;
+        return imageUrl;
       case 5:
-        return category;
+        return url;
       case 6:
-        return brand;
+        return formattedPrice;
       case 7:
-        return size;
-      case 8:
-        return color;
-      case 9:
-        return material;
-      case 10:
         return quantity.toString();
-      case 11:
-        return _formatCurrency(totalPrice);
+      case 8:
+        return formattedTotalPrice;
     }
     return '';
   }
@@ -57,7 +65,4 @@ abstract class Produit with _$Produit {
   String _formatCurrency(double amount) {
     return '\$${amount.toStringAsFixed(2)}';
   }
-
-  factory Produit.fromJson(Map<String, dynamic> json) =>
-      _$ProduitFromJson(json);
 }

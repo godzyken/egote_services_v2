@@ -13,27 +13,39 @@ class CubeUserController extends StateNotifier<CubeUser?> {
 
   final Ref _ref;
 
-  Future<CubeUser?> _initialize() async {
+  void _updateState(CubeUser? newState) {
+    state = newState;
+  }
+
+  void _logError(AuthException e, {StackTrace? stackTrace}) {
+    developer.log(
+        'AuthException code: ${e.code}\n'
+        'Runtime Type: ${e.runtimeType}\n'
+        'Status code: ${e.statusCode}\n'
+        'CubeUserController error message: ${e.message}',
+        stackTrace: stackTrace);
+  }
+
+  Future<void> _initialize() async {
+    _updateState(null);
+
     try {
       final userModelEntity = _ref.watch(userNotifierProvider.notifier);
       final authModelEntity = _ref.watch(autoAuthControllerProvider);
 
       do {
-        state = CubeUser(
+        _updateState(CubeUser(
           id: authModelEntity?.userEntityModel.id.value,
-          fullName: authModelEntity!.userEntityModel.name,
-          email: authModelEntity.userEntityModel.email,
-          login: authModelEntity.userEntityModel.name,
-          externalId: userModelEntity.previousUser!.id.value,
+          fullName: authModelEntity?.userEntityModel.name,
+          email: authModelEntity?.userEntityModel.email,
+          login: authModelEntity?.userEntityModel.name,
+          externalId: int.parse(authModelEntity!.userEntityModel.externalLink),
           phone: authModelEntity.userEntityModel.phone,
-        );
-      } while (userModelEntity.previousUser!.id == authModelEntity.id);
-
-      return state;
+        ));
+      } while (userModelEntity.previousStates.last.id == authModelEntity.id);
     } on AuthException catch (e) {
-      developer.log(
-          'init screen CubeUserException statue code : ${e.statusCode.toString()}');
-      return state = CubeUser();
+      _logError(e, stackTrace: StackTrace.fromString(e.message));
+      _updateState(null);
     }
   }
 }

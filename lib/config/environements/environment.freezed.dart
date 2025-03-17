@@ -36,6 +36,8 @@ mixin _$Environment {
   String get accessToken => throw _privateConstructorUsedError;
   String get cubeApiKey => throw _privateConstructorUsedError;
   String get chatEndpoint => throw _privateConstructorUsedError;
+  String get materialBankApiKey => throw _privateConstructorUsedError;
+  String get materialBankBaseUrl => throw _privateConstructorUsedError;
 
   /// Serializes this Environment to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -68,7 +70,9 @@ abstract class $EnvironmentCopyWith<$Res> {
       List<String>? firstPartyHost,
       String accessToken,
       String cubeApiKey,
-      String chatEndpoint});
+      String chatEndpoint,
+      String materialBankApiKey,
+      String materialBankBaseUrl});
 }
 
 /// @nodoc
@@ -101,6 +105,8 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
     Object? accessToken = null,
     Object? cubeApiKey = null,
     Object? chatEndpoint = null,
+    Object? materialBankApiKey = null,
+    Object? materialBankBaseUrl = null,
   }) {
     return _then(_value.copyWith(
       supabaseUrl: null == supabaseUrl
@@ -164,6 +170,14 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
           ? _value.chatEndpoint
           : chatEndpoint // ignore: cast_nullable_to_non_nullable
               as String,
+      materialBankApiKey: null == materialBankApiKey
+          ? _value.materialBankApiKey
+          : materialBankApiKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      materialBankBaseUrl: null == materialBankBaseUrl
+          ? _value.materialBankBaseUrl
+          : materialBankBaseUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -191,7 +205,9 @@ abstract class _$$EnvironmentImplCopyWith<$Res>
       List<String>? firstPartyHost,
       String accessToken,
       String cubeApiKey,
-      String chatEndpoint});
+      String chatEndpoint,
+      String materialBankApiKey,
+      String materialBankBaseUrl});
 }
 
 /// @nodoc
@@ -222,6 +238,8 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
     Object? accessToken = null,
     Object? cubeApiKey = null,
     Object? chatEndpoint = null,
+    Object? materialBankApiKey = null,
+    Object? materialBankBaseUrl = null,
   }) {
     return _then(_$EnvironmentImpl(
       supabaseUrl: null == supabaseUrl
@@ -285,6 +303,14 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
           ? _value.chatEndpoint
           : chatEndpoint // ignore: cast_nullable_to_non_nullable
               as String,
+      materialBankApiKey: null == materialBankApiKey
+          ? _value.materialBankApiKey
+          : materialBankApiKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      materialBankBaseUrl: null == materialBankBaseUrl
+          ? _value.materialBankBaseUrl
+          : materialBankBaseUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -307,7 +333,9 @@ class _$EnvironmentImpl implements _Environment {
       required final List<String>? firstPartyHost,
       required this.accessToken,
       required this.cubeApiKey,
-      required this.chatEndpoint})
+      required this.chatEndpoint,
+      required this.materialBankApiKey,
+      required this.materialBankBaseUrl})
       : _firstPartyHost = firstPartyHost;
 
   factory _$EnvironmentImpl.fromJson(Map<String, dynamic> json) =>
@@ -351,10 +379,14 @@ class _$EnvironmentImpl implements _Environment {
   final String cubeApiKey;
   @override
   final String chatEndpoint;
+  @override
+  final String materialBankApiKey;
+  @override
+  final String materialBankBaseUrl;
 
   @override
   String toString() {
-    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outpoint: $outpoint, clientToken: $clientToken, site: $site, applicationId: $applicationId, firstPartyHost: $firstPartyHost, accessToken: $accessToken, cubeApiKey: $cubeApiKey, chatEndpoint: $chatEndpoint)';
+    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outpoint: $outpoint, clientToken: $clientToken, site: $site, applicationId: $applicationId, firstPartyHost: $firstPartyHost, accessToken: $accessToken, cubeApiKey: $cubeApiKey, chatEndpoint: $chatEndpoint, materialBankApiKey: $materialBankApiKey, materialBankBaseUrl: $materialBankBaseUrl)';
   }
 
   @override
@@ -390,7 +422,11 @@ class _$EnvironmentImpl implements _Environment {
             (identical(other.cubeApiKey, cubeApiKey) ||
                 other.cubeApiKey == cubeApiKey) &&
             (identical(other.chatEndpoint, chatEndpoint) ||
-                other.chatEndpoint == chatEndpoint));
+                other.chatEndpoint == chatEndpoint) &&
+            (identical(other.materialBankApiKey, materialBankApiKey) ||
+                other.materialBankApiKey == materialBankApiKey) &&
+            (identical(other.materialBankBaseUrl, materialBankBaseUrl) ||
+                other.materialBankBaseUrl == materialBankBaseUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -411,7 +447,9 @@ class _$EnvironmentImpl implements _Environment {
       const DeepCollectionEquality().hash(_firstPartyHost),
       accessToken,
       cubeApiKey,
-      chatEndpoint);
+      chatEndpoint,
+      materialBankApiKey,
+      materialBankBaseUrl);
 
   /// Create a copy of Environment
   /// with the given fields replaced by the non-null parameter values.
@@ -445,7 +483,9 @@ abstract class _Environment implements Environment {
       required final List<String>? firstPartyHost,
       required final String accessToken,
       required final String cubeApiKey,
-      required final String chatEndpoint}) = _$EnvironmentImpl;
+      required final String chatEndpoint,
+      required final String materialBankApiKey,
+      required final String materialBankBaseUrl}) = _$EnvironmentImpl;
 
   factory _Environment.fromJson(Map<String, dynamic> json) =
       _$EnvironmentImpl.fromJson;
@@ -480,6 +520,10 @@ abstract class _Environment implements Environment {
   String get cubeApiKey;
   @override
   String get chatEndpoint;
+  @override
+  String get materialBankApiKey;
+  @override
+  String get materialBankBaseUrl;
 
   /// Create a copy of Environment
   /// with the given fields replaced by the non-null parameter values.

@@ -11,7 +11,7 @@ class MainActivity : FlutterActivity() {
     private  val CHANNEL = "egote_services_v2"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+//        WorkManager.initialize(this, Configuration.Builder().build())
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -21,12 +21,12 @@ class MainActivity : FlutterActivity() {
 
         val myApi = object : ExampleHostApi {
             override fun getMessage() : MessageData {
-                return MessageData("Hello from kotli", 42)
+                return MessageData("Hello from kotlin", 42)
             }
 
             override fun sendMessage(message: MessageData) {
                 // Traitement du message reçu
-                println("Message reçu: ${message.text}, ${message.value}")
+                println("Message reçu: ${message.message}, ${message.value}")
             }
 
         }
@@ -61,6 +61,25 @@ class MainActivity : FlutterActivity() {
                         }
 
                 }
+            }
+
+            MethodChannel(flutterEngine.dartExecutor, "net.nfet.printing").apply {
+                setMethodCallHandler { call, result ->
+                    if (call.method == "printingInfo") {
+                        // Create a custom message to send back to Flutter
+                        val message = mapOf("text" to "printingInfo from Kotlin", "value" to true)
+                        result.success(message)
+                    } else {
+                        result.notImplemented()
+                    }
+
+                    when (call.method) {
+                        "printingInfo" -> {
+                            result.success(true)
+                        }
+                        else -> result.notImplemented()
+                        }
+                    }
             }
         } else {
             throw IllegalStateException("flutterEngine or Binary messenger is null")

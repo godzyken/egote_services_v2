@@ -17,6 +17,8 @@ abstract class AuthRepositoryInterface {
   );
 
   Future<Either<Failure, CubeUser>> cubeUserStateChange(
+      supabase.GenerateLinkType type,
+      CubeUser cuberUserModel,
       void Function(CubeUser? cubeUser) cubeUser);
 
   Future<void> setSession(String token);

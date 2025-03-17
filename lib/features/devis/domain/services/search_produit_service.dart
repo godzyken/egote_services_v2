@@ -1,8 +1,12 @@
 import 'dart:developer' as developer;
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
+import 'package:egote_services_v2/config/environements/environment.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../config/providers/connectivity/dio_providers.dart';
+import '../../../../config/providers/localizations/localizations_provider.dart';
 import '../entities/products/produit_model_entity.dart';
 
 part 'search_produit_service.g.dart';
@@ -10,26 +14,48 @@ part 'search_produit_service.g.dart';
 @riverpod
 class SearchProduitService extends _$SearchProduitService {
   late final Dio _dio;
+  Environment? env;
+  String? baseUrl;
+
+  Locale? lang;
 
   SearchProduitService() : produitService = AsyncValue.loading() {
-    _dio = Dio(
-      BaseOptions(
-        baseUrl:
-            'https://www.materialbank.eu/rest/V1/sdg-project/projectphase/search?searchCriteria[currentPage]=1',
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 3),
-      ),
-    );
+    _dio.clone(
+        options: BaseOptions(
+      baseUrl: baseUrl!,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Expose-Headers': 'X-Request-Id',
+        'Content-Type': 'Application/json',
+        'Accept': 'Application/json, text/plain, */*',
+        'authorization': 'Bearer rt27f99sq5gsv3chlraqa7ifgiheo1n2059v',
+      },
+      responseType: ResponseType.json,
+      validateStatus: (status) =>
+          status! >= 200 && status <= 299 || status == 403,
+      receiveDataWhenStatusError: true,
+    ));
   }
   SearchProduitService.withProduitService({required this.produitService}) {
-    _dio = Dio(
-      BaseOptions(
-        baseUrl:
-            'https://www.materialbank.eu/rest/V1/sdg-project/projectphase/search?searchCriteria[currentPage]=1',
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 3),
-      ),
-    );
+    _dio.clone(
+        options: BaseOptions(
+      baseUrl: baseUrl!,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Expose-Headers': 'X-Request-Id',
+        'Content-Type': 'Application/json',
+        'Accept': 'Application/json, text/plain, */*',
+        'authorization': 'Bearer rt27f99sq5gsv3chlraqa7ifgiheo1n2059v',
+      },
+      responseType: ResponseType.json,
+      validateStatus: (status) =>
+          status! >= 200 && status <= 299 || status == 403,
+      receiveDataWhenStatusError: true,
+    ));
   }
 
   late final AsyncValue<List<Produit>> produitService;
@@ -38,24 +64,31 @@ class SearchProduitService extends _$SearchProduitService {
 
   @override
   Future<List<Produit>> build() async {
+    baseUrl = env!.materialBankBaseUrl;
+    _dio = ref.read(dioProvider);
     return fetchProduits();
   }
 
   Future<List<Produit>> fetchProduits([String filter = '']) async {
     await Future.delayed(const Duration(seconds: 2));
     produitService = const AsyncValue.loading();
+    final lang = ref.read(localizationProvider);
 
     try {
-      final response = await _dio.get('/produits', queryParameters: {
-        if (filter.isNotEmpty) 'ProductName': filter,
+      final response = await _dio
+          .get<List<Produit>>('$baseUrl!/v2/suggest', queryParameters: {
+        'siteId': 'materialbank-eu_product',
+        'lang': lang.countryCode,
+        'context': 'Tous',
+        if (filter.isNotEmpty) 'q': filter,
       });
 
       if (response.statusCode == 200) {
-        produitService = AsyncValue.data(response.data((response.data as List)
-            .map((json) => Produit.fromJson(json))
-            .toList()));
+        developer.log('Resultat de la requetes : ${response.data.toString()}');
+
+        produitService = AsyncValue.data(response.data!);
       } else {
-        throw Exception('Failed to fetch produits');
+        throw Exception('Failed to fetch produits filters');
       }
     } on DioException catch (e, st) {
       developer.log(e.toString(), stackTrace: st);
@@ -64,7 +97,8 @@ class SearchProduitService extends _$SearchProduitService {
       } else if (e.type == DioExceptionType.receiveTimeout) {
         throw Exception('Receive timeout');
       } else {
-        throw Exception('Failed to fetch produits: ${e.message}');
+        throw Exception(
+            'Failed to fetch produits on dio service: ${e.message}');
       }
     }
     return produitService.value ?? [];
@@ -78,7 +112,7 @@ class SearchProduitService extends _$SearchProduitService {
       if (response.statusCode == 200) {
         return Produit.fromJson(response.data);
       } else {
-        throw Exception('Failed to fetch produit');
+        throw Exception('Failed to fetch 2 produit id');
       }
     } on DioException catch (e, st) {
       developer.log(e.toString(), stackTrace: st);
@@ -87,7 +121,7 @@ class SearchProduitService extends _$SearchProduitService {
       } else if (e.type == DioExceptionType.receiveTimeout) {
         throw Exception('Receive timeout');
       } else {
-        throw Exception('Failed to fetch produits: ${e.message}');
+        throw Exception('Failed to fetch 1 produit id: ${e.message}');
       }
     }
   }
@@ -96,7 +130,7 @@ class SearchProduitService extends _$SearchProduitService {
       String id, Map<String, dynamic> produitData) async {
     await Future.delayed(const Duration(seconds: 2));
     try {
-      final response = await _dio.put('/produit/$id', data: produitData);
+      final response = await _dio.get('/produit/$id', data: produitData);
       return Produit.fromJson(response.data);
     } on DioException catch (e, st) {
       developer.log(e.toString(), stackTrace: st);
@@ -111,7 +145,7 @@ class SearchProduitService extends _$SearchProduitService {
       await _dio.delete('/produit/$id');
     } on DioException catch (e, st) {
       developer.log(e.toString(), stackTrace: st);
-      throw Exception('Failed to delete produit: ${e.message}');
+      throw Exception('Failed to delete produit id: ${e.message}');
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/environements/environment.dart';
@@ -46,11 +47,10 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
         await initDatadog.initialize(configuration, consent);
         return initDatadog;
       } on FlutterError catch (e) {
-        // TODO
         if (kDebugMode) {
-          print('Datadog Provider error: ${e.message}');
-          print('Datadog Provider error rumtime Type: ${e.runtimeType}');
-          print('Datadog Provider error diagnostics: ${e.diagnostics}');
+          developer.log('Datadog Provider error: ${e.message}\n'
+              'Datadog Provider error runtime Type: ${e.runtimeType}\n'
+              'Datadog Provider error diagnostics: ${e.diagnostics}');
         }
       }
     } else {
@@ -168,3 +168,37 @@ class TrackingConsentNotifier extends StateNotifier<TrackingConsent> {
     _saveConsent();
   }
 }
+
+class TelemetryState {
+  final bool isConfigured;
+  final String errorMessage;
+
+  TelemetryState({this.isConfigured = false, this.errorMessage = ''});
+}
+
+class TelemetryNotifier extends StateNotifier<TelemetryState> {
+  TelemetryNotifier(this.ref) : super(TelemetryState());
+
+  Ref ref;
+
+  Future<void> updateTelemetryConfiguration(
+      String service, bool nativeCrashReportEnabled) async {
+    try {
+      final datadog = await ref.watch(datadogProvider.future);
+      if (datadog case final DatadogSdk initDatadog) {
+        initDatadog.platform
+            .updateTelemetryConfiguration(service, nativeCrashReportEnabled);
+      }
+      state = TelemetryState(isConfigured: true);
+    } catch (e) {
+      state = TelemetryState(isConfigured: false, errorMessage: e.toString());
+    }
+  }
+}
+
+final telemetryProvider =
+    StateNotifierProvider<TelemetryNotifier, TelemetryState>(
+  (ref) => TelemetryNotifier(ref),
+  dependencies: [datadogProvider, datadogInstanceProvider],
+  name: 'Telemetry provider',
+);

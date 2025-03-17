@@ -97,7 +97,11 @@ class AuthService extends ExampleHostApi {
   }
 
   Future<void> updatePassword(String newPassword) async {
-    return Future.delayed(const Duration(milliseconds: 5000));
+    try {
+      return Future.delayed(const Duration(milliseconds: 5000));
+    } catch (e) {
+      throw Exception('Erreur lors de la mise à jour du mot de passe : $e');
+    }
   }
 
   Future<void> updatePhone(String newPhone) async {

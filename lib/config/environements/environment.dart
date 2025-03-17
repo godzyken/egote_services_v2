@@ -20,6 +20,8 @@ class Environment with _$Environment {
   /// [accessToken] is the accessToken to Supabase
   /// [cubeApiKey] is the apiKey to Connectycube
   /// [chatEndpoint] is the chat endpoint to Connectycube
+  /// [materialBankApiKey] is the apiKey to Material Bank
+  /// [materialBankBaseUrl] is the baseUrl to Material Bank
 
   const factory Environment({
     required String supabaseUrl,
@@ -37,6 +39,8 @@ class Environment with _$Environment {
     required String accessToken,
     required String cubeApiKey,
     required String chatEndpoint,
+    required String materialBankApiKey,
+    required String materialBankBaseUrl,
   }) = _Environment;
 
   ///

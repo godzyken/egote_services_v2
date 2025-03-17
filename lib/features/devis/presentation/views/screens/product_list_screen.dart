@@ -11,16 +11,17 @@ class ProductListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final produitsAsync = ref.watch(produitNotifierProvider);
+    final produitsAsync = ref.watch(produitFutureProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Produits'),
       ),
       body: produitsAsync.when(
-        data: (data) => ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) => ProduitFiche(produit: data[index]),
+        data: (produits) => ListView.builder(
+          itemCount: produits.length,
+          itemBuilder: (context, index) =>
+              ProduitFiche(produit: produits[index]),
         ),
         error: (error, stackTrace) => ErrorWidget(error),
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -37,7 +38,7 @@ class ProduitFiche extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
         child: ListTile(
-      title: Text(produit.produitName),
+      title: Text(produit.name),
       subtitle: Text('${produit.sku} - ${produit.price}'),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
@@ -73,7 +74,7 @@ class ProduitFiche extends ConsumerWidget {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-                title: Text('Supprimer le produit: ${produit.produitName}'),
+                title: Text('Supprimer le produit: ${produit.name}'),
                 content: const Text(
                     'Êtes-vous sûr de vouloir supprimer ce produit ?'),
                 actions: [

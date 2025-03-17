@@ -61,6 +61,8 @@
         <string>remote-notification</string>
     </array>
     <key>FlutterDeepLinkingEnabled</key>
-     <false/>
+    <false/>
+    <key>com.apple.security.print</key>
+    <true/>
 </dict>
 </plist>

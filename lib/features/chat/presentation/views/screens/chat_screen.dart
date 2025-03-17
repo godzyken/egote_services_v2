@@ -8,6 +8,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
+import 'package:egote_services_v2/features/chat/application/providers/cube_chat_providers.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart' as fp;
@@ -71,8 +72,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   List<CubeMessage> oldMessages = [];
 
-  final List<RTCDataChannelMessage> _unreadMessages = [];
-  final List<RTCDataChannelMessage> _unsentMessages = [];
+  final List<CubeMessage> _unreadMessages = [];
+  final List<CubeMessage> _unsentMessages = [];
 
   late FocusNode _editMessageFocusNode;
 
@@ -117,6 +118,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     listScrollController.addListener(onScrollChanged);
     connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen(onConnectivityChanged);
+
     _editMessageFocusNode = createEditMessageFocusNode();
   }
 
@@ -200,11 +202,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
       var bobPublicKeyString = base64Encode(bobPublicKey.bytes);
 
+      var bobSecretKeyString = base64Decode(bobSecretKey.toString()).toString();
+
       var responseSystemMessage = CubeMessage()
         ..recipientId = senderId
         ..properties = {
           'publicKey': bobPublicKeyString,
-          'secretDialogId': secretDialogId!
+          'secretDialogId': secretDialogId!,
+          'secretKey': bobSecretKeyString
         };
 
       var cubMsg = CubeMessageStanza(
@@ -223,7 +228,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void onReadMessage(MessageStatus status) {
     dev.log("onReadMessage message= ${status.messageId}");
 
-    //updateReadDeliveredStatusMessage(status, true);
+    updateReadDeliveredStatusMessage(status, true);
   }
 
   void onReactionReceived(MessageReaction reaction) {
@@ -275,13 +280,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       final message = createCubeMsg();
       message.body = content.trim();
       message
+        ..senderId = widget.cubeUser.id
         ..recipientId = widget.cubeUser.id ?? userId
+        ..dateSent = DateTime.now().microsecondsSinceEpoch
         ..properties = {
           'publicKey': publicKeyString,
           'secretDialogId': secretDialogId
         };
 
       onSendMessage(message);
+      await Future.delayed(Duration(seconds: 1));
+      await ref.read(messagesProvider.notifier).markAsSent(message);
     } else {
       if (mounted) {
         context.showAlert('Nothing to send');
@@ -315,7 +324,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     textEditingController.clear();
     await widget.cubeDialog.sendMessage(message);
     message.senderId = widget.cubeUser.id;
-    // TODO: addMessageToListView(message);
+    addMessageToListView(message as MediaStream);
     listScrollController.animateTo(0.0,
         duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
     if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
@@ -348,10 +357,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
 // todo: The argument type 'MediaStream' can't be assigned to the parameter type 'CubeMessage'
-  addMessageToListView(MediaStream message) {
+  addMessageToListView(MediaStream message) async {
     setState(() {
       isLoading = false;
       int existMessageIndex = listMessage.indexWhere((cubeMessage) {
+        ref.read(messagesProvider.notifier).addMessage(cubeMessage);
         return cubeMessage.messageId == message.id;
       });
 
@@ -989,16 +999,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           if (_unreadMessages.isNotEmpty) {
             for (var cubeMessage in _unreadMessages) {
-              // Todo: zupporter de lom
-              // widget.cubeDialog.readMessage(cubeMessage);
+              widget.cubeDialog.readMessage(cubeMessage);
             }
             _unreadMessages.clear();
           }
 
           if (_unsentMessages.isNotEmpty) {
             for (var cubeMessage in _unsentMessages) {
-              // Todo: zupporter de lom
-              // widget.cubeDialog.sendMessage(cubeMessage);
+              widget.cubeDialog.sendMessage(cubeMessage);
             }
 
             _unsentMessages.clear();
@@ -1071,7 +1079,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       isLoading = true;
     });
     for (var conn in connectivityType!) {
-      switch (connectivityType.single) {
+      switch (conn) {
         case ConnectivityResult.bluetooth:
           conn = ConnectivityResult.bluetooth;
         case ConnectivityResult.wifi:

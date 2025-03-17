@@ -67,7 +67,7 @@ part 'routes.g.dart';
           ),
           TypedGoRoute<ProduitEditRoute>(
             path: ProduitEditRoute.path,
-            name: 'produitEditRoute',
+            name: 'produitEdit',
           ),
           TypedGoRoute<ProduitDetailsRoute>(
             path: ProduitDetailsRoute.path,

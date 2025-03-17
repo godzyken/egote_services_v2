@@ -98,7 +98,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           AnimatedPositioned(
               duration: const Duration(milliseconds: 1600),
-              onEnd: () => context.goNamed('produitList'),
+              onEnd: () => context.goNamed('chat',
+                  pathParameters: {'cid': '456'}),
               //onEnd: () => context.goNamed('chat_room', pathParameters: {'userId': '123', 'cubId': '456'}),
               top: animate ? 0 : -80,
               left: animate ? 0 : -80,

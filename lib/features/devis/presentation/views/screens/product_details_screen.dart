@@ -55,13 +55,13 @@ class ProduitDetailsContent extends ConsumerWidget {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
-                produit.produitName,
+                produit.name,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 10,
               ),
-              Text('Description: ${produit.description}'),
+              Text('Manufacturer: ${produit.manufacturer}'),
               SizedBox(
                 height: 10,
               ),
@@ -77,11 +77,6 @@ class ProduitDetailsContent extends ConsumerWidget {
               SizedBox(
                 height: 10,
               ),
-              Text('Catégorie: ${produit.category}'),
-              SizedBox(
-                height: 10,
-              ),
-              Text('Brand: ${produit.brand}'),
             ]))
       ]),
     );
