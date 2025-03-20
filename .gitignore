@@ -47,6 +47,7 @@ firebase_options.dart
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/
 /assets/lottie/
 /assets/json/
 /assets/

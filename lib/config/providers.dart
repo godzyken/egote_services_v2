@@ -370,37 +370,45 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
         ErrorScreen(error: state.error.toString()),
     /*redirect: (context, state) async {
       final supabase = ref.watch(supabaseClientProvider);
-      // Any users can visit the /auth route
-      if (state.matchedLocation.contains('auth') == true) {
+
+      // Autoriser l'accès aux pages d'authentification sans restriction
+      if (state.matchedLocation.contains('auth')) {
         return null;
       }
 
       final session = supabase.auth.currentSession;
-      // A user without a session should be redirected to the sign_up screen
-      if (session == null || session.isExpired == true) {
+
+      // Si l'utilisateur n'a pas de session ou si elle est expirée, rediriger vers la page d'authentification
+      if (session == null || session.isExpired) {
         return AuthRoute.path;
       }
 
-      final assuranceLevelData =
-          supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      try {
+        // Vérifier le niveau d'assurance MFA de l'utilisateur
+        final assuranceLevelData =
+            supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        final nextLevel = assuranceLevelData.nextLevel;
 
-      final nextLevel =
-          supabase.auth.mfa.getAuthenticatorAssuranceLevel().nextLevel;
-      // The user has not setup MFA yet, so send them to enroll MFA page.
-      if (assuranceLevelData.currentLevel ==
-          ui.AuthenticatorAssuranceLevels.aal1) {
-        await supabase.auth.refreshSession();
-        if (nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
-          // The user has already setup MFA, but haven't login via MFA
-          // Redirect them to the verify screen
-          return VerificationRoute.path;
-        } else {
-          // The user has not yet setup MFA
-          // Redirect them to the enrollment screen
-          return MFAEnrollRoute.path;
+        // Si l'utilisateur n'a pas encore configuré MFA, le rediriger vers l'enrôlement MFA
+        if (assuranceLevelData.currentLevel ==
+            ui.AuthenticatorAssuranceLevels.aal1) {
+          await supabase.auth.refreshSession();
+
+          if (nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
+            // Si l'utilisateur a configuré MFA mais n'a pas encore vérifié, rediriger vers la vérification
+            return VerificationRoute.path;
+          } else {
+            // Si l'utilisateur n'a pas configuré MFA, le rediriger vers l'enrôlement
+            return MFAEnrollRoute.path;
+          }
         }
+      } catch (e) {
+        // En cas d'erreur lors de la récupération des données MFA
+        developer.log('Erreur lors de la récupération du niveau MFA: $e');
+        return AuthRoute.path;
       }
 
+      // Si tout est en règle, l'utilisateur peut continuer normalement
       return null;
     },*/
     refreshListenable: authStateListenable,

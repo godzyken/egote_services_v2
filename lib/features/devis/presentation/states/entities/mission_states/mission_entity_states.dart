@@ -1,6 +1,4 @@
-// ignore_for_file: invalid_annotation_target
-
-import 'package:flutter/foundation.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/construction/mission_entity_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../domain/entities/construction/mission_entity.dart';
@@ -9,10 +7,9 @@ part 'mission_entity_states.freezed.dart';
 part 'mission_entity_states.g.dart';
 
 @freezed
-abstract class MissionEntityStates with _$MissionEntityStates {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+sealed class MissionEntityStates with _$MissionEntityStates {
   const factory MissionEntityStates({
-    required List<MissionEntity> missionEntities,
+    @MissionEntityConverter() required List<MissionEntity> missionEntities,
   }) = _MissionEntityStates;
 
   factory MissionEntityStates.init() =>

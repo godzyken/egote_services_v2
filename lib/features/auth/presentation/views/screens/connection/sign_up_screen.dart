@@ -11,7 +11,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../application/providers/auth_providers.dart';
 import '../../../../domain/providers/auth_repository_provider.dart';
 import '../../models/userlist/user_list_view_model.dart';
-import '../../widgets/widgets_extensions.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({

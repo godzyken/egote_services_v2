@@ -1,4 +1,3 @@
-import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
@@ -117,8 +116,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
 
                 final user = auth.getOrElse((l) => UserModel.complete(
                     id: UserId(value: l.error.length),
-                    userEntityModel: UserEntityModel.empty(),
-                    cubeUser: CubeUser()));
+                    userEntityModel: UserEntityModel.empty()));
 
                 final client = code.getOrElse((l) => AuthResponse(
                     user: User(

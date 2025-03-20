@@ -1,239 +1,205 @@
 import 'dart:developer' as devtools show log;
 
-import 'package:battery_plus/battery_plus.dart';
+import 'package:egote_services_v2/config/providers/permissions/permission_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-// Un provider pour suivre l'état de la permission de la caméra
-final cameraPermissionsProvider = FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.camera.status;
+// Provider générique pour gérer les permissions
+final permissionProvider = FutureProvider.family<PermissionStatus, Permission>(
+    (ref, permission) async {
+  final status = await permission.status;
   return status;
 });
 
-// Un provider pour demander la permission de la caméra
-final requestCameraPermissionProvider = FutureProvider<bool>((ref) async {
-  final status = await Permission.camera.request();
+// Provider générique pour demander des permissions
+final requestPermissionProvider =
+    FutureProvider.family<bool, Permission>((ref, permission) async {
+  final status = await permission.request();
   return status.isGranted;
 });
 
-// Un provider pour suivre l'état de la permission de l'emplacement
-final locationPermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.location.status;
-  return status;
-});
+// Exemple de gestion de la permission de la caméra
+final cameraPermissionsProvider = permissionProvider(Permission.camera);
+final requestCameraPermissionProvider =
+    requestPermissionProvider(Permission.camera);
 
-// Un provider pour demander la permission de l'emplacement
-final requestLocationPermissionProvider = FutureProvider<bool>((ref) async {
-  final status = await Permission.location.request();
-  return status.isGranted;
-});
+// Exemple de gestion de la permission de localisation
+final locationPermissionsProvider = permissionProvider(Permission.location);
+final requestLocationPermissionProvider =
+    requestPermissionProvider(Permission.location);
 
-// Un provider pour suivre l'état de la permission du microphone
-final microphonePermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.microphone.status;
-  return status;
-});
+// Exemple de gestion de la permission du microphone
+final microphonePermissionsProvider = permissionProvider(Permission.microphone);
+final requestMicrophonePermissionProvider =
+    requestPermissionProvider(Permission.microphone);
 
-// Un provider pour demander la permission du microphone
-final requestMicrophonePermissionProvider = FutureProvider<bool>((ref) async {
-  final status = await Permission.microphone.request();
-  return status.isGranted;
-});
+// Exemple de gestion de la permission du stockage
+final storagePermissionsProvider = permissionProvider(Permission.storage);
+final requestStoragePermissionProvider =
+    requestPermissionProvider(Permission.storage);
 
-// Un provider pour suivre l'état de la permission du stockage externe
-final storagePermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.storage.status;
-  return status;
-});
+// Exemple de gestion de la permission du Bluetooth
+final bluetoothPermissionsProvider = permissionProvider(Permission.bluetooth);
+final requestBluetoothPermissionProvider =
+    requestPermissionProvider(Permission.bluetooth);
 
-// Un provider pour demander la permission du stockage externe
-final requestStoragePermissionProvider = FutureProvider<bool>((ref) async {
-  final status = await Permission.storage.request();
-  return status.isGranted;
-});
-
-// Un provider pour suivre l'état de la permission du stockage externe
-final manageExternalStoragePermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.manageExternalStorage.status;
-  return status;
-});
-
-// Un provider pour demander la permission du stockage externe
-final requestManageExternalStoragePermissionProvider =
-    FutureProvider<bool>((ref) async {
-  final status = await Permission.manageExternalStorage.request();
-  return status.isGranted;
-});
-
-// Un provider pour suivre l'état de la permission de la notification
+// Exemple de gestion de la permission de notification
 final notificationPermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.notification.status;
-  return status;
-});
+    permissionProvider(Permission.notification);
+final requestNotificationPermissionProvider =
+    requestPermissionProvider(Permission.notification);
 
-// Un provider pour demander la permission de la notification
-final requestNotificationPermissionProvider = FutureProvider<bool>((ref) async {
-  final status = await Permission.notification.request();
-  return status.isGranted;
-});
-
-// Un provider pour suivre l'état de la permission du Bluetooth
-final bluetoothPermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.bluetooth.status;
-  return status;
-});
-
-// Un provider pour demander la permission du Bluetooth
-final requestBluetoothPermissionProvider = FutureProvider<bool>((ref) async {
-  final status = await Permission.bluetooth.request();
-  return status.isGranted;
-});
-
-// Un provider pour suivre l'état de la permission du Bluetooth Connect
-final bluetoothConnectPermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.bluetoothConnect.status;
-  return status;
-});
-
-// Un provider pour demander la permission du Bluetooth Connect
-final requestBluetoothConnectPermissionProvider =
-    FutureProvider<bool>((ref) async {
-  final status = await Permission.bluetoothConnect.request();
-  return status.isGranted;
-});
-
-// Un provider pour suivre l'état de la permission du Bluetooth Scan
-final bluetoothScanPermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.bluetoothScan.status;
-  return status;
-});
-
-// Un provider pour demander la permission du Bluetooth Scan
-final requestBluetoothScanPermissionProvider =
-    FutureProvider<bool>((ref) async {
-  final status = await Permission.bluetoothScan.request();
-  return status.isGranted;
-});
-
-// Un provider pour suivre l'état de la permission du Bluetooth Advertise
-final bluetoothAdvertisePermissionsProvider =
-    FutureProvider<PermissionStatus>((ref) async {
-  final status = await Permission.bluetoothAdvertise.status;
-  return status;
-});
-
-// Un provider pour demander la permission du Bluetooth Advertise
-final requestBluetoothAdvertisePermissionProvider =
-    FutureProvider<bool>((ref) async {
-  final status = await Permission.bluetoothAdvertise.request();
-  return status.isGranted;
-});
-
-final batteryProvider = Provider<BatteryStateNotifier>((ref) {
-  return BatteryStateNotifier();
-});
-
-class BatteryStateNotifier extends StateNotifier<BatteryState> {
-  BatteryStateNotifier() : super(BatteryState.unknown) {
-    _updateBatteryState();
-  }
-
-  final Battery _battery = Battery();
-
-  Future<void> _updateBatteryState() async {
-    final battery = await Battery().batteryState;
-    state = battery;
-
-    await _battery.batteryLevel;
-    await _battery.isInBatterySaveMode;
-  }
-
-  onBatteryStateChanged(BatteryState batteryState) {
-    _battery.onBatteryStateChanged.listen(
-      (event) => _updateBatteryState(),
-    );
-  }
-}
-
+// Fonction pour vérifier et demander toutes les permissions nécessaires
 Future<void> _checkPermissions() async {
-  var status = await Permission.bluetooth.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Bluetooth Permission disabled: ${status.toString()}');
-  }
-  status = await Permission.bluetoothConnect.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Bluetooth Connect Permission disabled: ${status.toString()}');
-  }
+  await _checkPermissionStatus(Permission.bluetooth);
+  await _checkPermissionStatus(Permission.bluetoothConnect);
+  await _checkPermissionStatus(Permission.bluetoothScan);
+  await _checkPermissionStatus(Permission.location);
+  await _checkPermissionStatus(Permission.locationAlways);
+  await _checkPermissionStatus(Permission.locationWhenInUse);
+  await _checkPermissionStatus(Permission.microphone);
+  await _checkPermissionStatus(Permission.phone);
+  await _checkPermissionStatus(Permission.storage);
+  await _checkPermissionStatus(Permission.camera);
+  await _checkPermissionStatus(Permission.manageExternalStorage);
+  await _checkPermissionStatus(Permission.notification);
+  await _checkPermissionStatus(Permission.bluetoothAdvertise);
+  await _checkPermissionStatus(Permission.videos);
+  await _checkPermissionStatus(Permission.audio);
+  await _checkPermissionStatus(Permission.accessMediaLocation);
+  await _checkPermissionStatus(Permission.contacts);
+  await _checkPermissionStatus(Permission.mediaLibrary);
+  await _checkPermissionStatus(Permission.sms);
+  await _checkPermissionStatus(Permission.systemAlertWindow);
+  devtools.log('All permissions checked');
+}
 
-  status = await Permission.bluetoothScan.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Bluetooth Scan Permission disabled: ${status.toString()}');
-  }
+// Vérifier et demander une permission spécifique
+Future<void> _checkPermissionStatus(Permission permission) async {
+  final status = await permission.request();
 
-  status = await Permission.location.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Location Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.locationAlways.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Location Always Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.locationWhenInUse.request();
-  if (status.isPermanentlyDenied) {
-    devtools
-        .log('Location When In Use Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.microphone.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Microphone Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.phone.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Phone Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.storage.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Storage Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.camera.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Camera Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.manageExternalStorage.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log(
-        'Manage External Storage Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.manageExternalStorage.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log(
-        'Manage External Storage Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.notification.request();
-  if (status.isPermanentlyDenied) {
-    devtools.log('Notification Permission disabled: ${status.toString()}');
-  }
-
-  status = await Permission.bluetoothAdvertise.request();
-  if (status.isPermanentlyDenied) {
-    devtools
-        .log('Bluetooth Advertise Permission disabled: ${status.toString()}');
+  switch (status) {
+    case PermissionStatus.granted:
+      devtools.log(
+          '${permission.toString()} Permission granted: ${status.toString()}');
+      break;
+    case PermissionStatus.denied:
+      devtools.log(
+          '${permission.toString()} Permission denied: ${status.toString()}');
+      break;
+    case PermissionStatus.restricted:
+      devtools.log(
+          '${permission.toString()} Permission restricted: ${status.toString()}');
+      break;
+    case PermissionStatus.limited:
+      devtools.log(
+          '${permission.toString()} Permission limited: ${status.toString()}');
+      break;
+    case PermissionStatus.permanentlyDenied:
+      devtools.log(
+          '${permission.toString()} Permission permanently denied: ${status.toString()}');
+      break;
+    case PermissionStatus.provisional:
+      devtools.log(
+          '${permission.toString()} Permission provisional: ${status.toString()}');
+      break;
   }
 }
+
+class PermissionStateNotifier extends StateNotifier<PermissionStatus> {
+  final PermissionService permissionService;
+
+  PermissionStateNotifier(this.permissionService)
+      : super(PermissionStatus.provisional) {
+    _initPermissions();
+  }
+
+  /* ------- Permet de vérifier les permissions avec le service ------------ */
+
+  Future<void> requestPermissionWithService(
+      PermissionWithService permission) async {
+    await Future.delayed(Duration(seconds: 1));
+    final result =
+        await permissionService.requestPermissionWithServiceHandler(permission);
+
+    switch (state) {
+      case PermissionStatus.granted:
+        state = result ? PermissionStatus.granted : PermissionStatus.denied;
+        break;
+      case PermissionStatus.denied:
+        state = result ? PermissionStatus.denied : PermissionStatus.granted;
+        break;
+      case PermissionStatus.restricted:
+        state = result ? PermissionStatus.restricted : PermissionStatus.denied;
+        break;
+      case PermissionStatus.limited:
+        state = result ? PermissionStatus.limited : PermissionStatus.denied;
+        break;
+      case PermissionStatus.permanentlyDenied:
+        state = result
+            ? PermissionStatus.permanentlyDenied
+            : PermissionStatus.denied;
+        break;
+      case PermissionStatus.provisional:
+        state = result ? PermissionStatus.provisional : PermissionStatus.denied;
+        break;
+    }
+  }
+
+  /* ------- Permet de vérifier les permissions sans le service ------------ */
+
+  Future<void> requestPermission(Permission permission) async {
+    await Future.delayed(Duration(seconds: 1));
+    final result = await permissionService.requestPermissionHandler(permission);
+    if (result) {
+      state = PermissionStatus.granted;
+    } else {
+      state = PermissionStatus.denied;
+    }
+  }
+
+  // Fonction appelée pour initialiser la vérification des permissions
+  Future<void> _initPermissions() async {
+    // Demande de toutes les permissions
+
+    await requestPermissionWithService(Permission.bluetooth);
+    await requestPermissionWithService(Permission.locationAlways);
+    await requestPermissionWithService(Permission.location);
+    await requestPermissionWithService(Permission.locationWhenInUse);
+    await requestPermissionWithService(Permission.phone);
+
+    await requestPermission(Permission.camera);
+    await requestPermission(Permission.location);
+    await requestPermission(Permission.microphone);
+    await requestPermission(Permission.storage);
+    await requestPermission(Permission.bluetooth);
+    await requestPermission(Permission.notification);
+    await requestPermission(Permission.bluetoothConnect);
+    await requestPermission(Permission.bluetoothScan);
+    await requestPermission(Permission.locationAlways);
+    await requestPermission(Permission.locationWhenInUse);
+    await requestPermission(Permission.phone);
+    await requestPermission(Permission.manageExternalStorage);
+    await requestPermission(Permission.videos);
+    await requestPermission(Permission.audio);
+    await requestPermission(Permission.accessMediaLocation);
+    await requestPermission(Permission.contacts);
+    await requestPermission(Permission.mediaLibrary);
+    await requestPermission(Permission.sms);
+    await requestPermission(Permission.systemAlertWindow);
+    await requestPermission(Permission.bluetoothAdvertise);
+
+    // Vérification des permissions
+    await _checkPermissions();
+  }
+}
+
+final permissionServiceProvider = Provider<PermissionService>((ref) {
+  return PermissionService();
+});
+
+final permissionStateNotifierProvider =
+    StateNotifierProvider<PermissionStateNotifier, PermissionStatus>((ref) {
+  final permissionService = ref.read(permissionServiceProvider);
+  return PermissionStateNotifier(permissionService);
+});

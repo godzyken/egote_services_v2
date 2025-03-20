@@ -1,37 +1,33 @@
-// ignore_for_file: invalid_annotation_target
-
 import 'package:egote_services_v2/features/devis/domain/entities/construction/mission_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import 'mission_id_converter.dart';
 
 part 'mission_entity.freezed.dart';
 part 'mission_entity.g.dart';
 
 @freezed
-class MissionEntity with _$MissionEntity {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-  const factory MissionEntity({
-    required MissionId id,
-    required String denomination,
-  }) = _MissionEntity;
-
-  const factory MissionEntity.init({required MissionId id}) =
-      _MissionEntityInit;
+abstract class MissionEntity with _$MissionEntity {
+  const factory MissionEntity.initialize({
+    @MissionIdConverter() required MissionId id,
+    String? denomination,
+  }) = _MissionEntityInitialize;
 
   const factory MissionEntity.done(
-      {required MissionId id,
+      {@MissionIdConverter() required MissionId id,
       required String denomination,
       required DateTime startedAt,
       required DateTime finishedAt,
       required bool doneOk}) = _MissionEntityDone;
 
   const factory MissionEntity.progress({
-    required MissionId id,
+    @MissionIdConverter() required MissionId id,
     required String denomination,
     required DateTime startedAt,
   }) = _MissionEntityProgress;
 
   const factory MissionEntity.abandon(
-      {required MissionId id,
+      {@MissionIdConverter() required MissionId id,
       required String denomination,
       required String reason,
       required DateTime left,

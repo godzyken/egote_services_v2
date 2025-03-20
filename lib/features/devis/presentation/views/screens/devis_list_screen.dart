@@ -21,7 +21,7 @@ class DevisListScreen extends ConsumerWidget {
                     children: [
                       Text('${devisEntity.length} length'),
                       ...devisEntity.map((devisModel) => devisModel.when(
-                            approved: (id,
+                            edit: (id,
                                     createdAt,
                                     validity,
                                     client,
@@ -38,7 +38,7 @@ class DevisListScreen extends ConsumerWidget {
                               child: Text(createdAt.toIso8601String()),
                             ),
                             initialize: (id, createdAt) => Card(
-                              child: Text(id.id.toString()),
+                              child: Text(id.value.toString()),
                             ),
                             empty: () => const Text('Empty'),
                           ))

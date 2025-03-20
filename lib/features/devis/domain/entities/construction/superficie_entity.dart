@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_annotation_target
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -7,58 +7,72 @@ part 'superficie_entity.freezed.dart';
 part 'superficie_entity.g.dart';
 
 @freezed
-class SuperficieEntity with _$SuperficieEntity {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+sealed class SuperficieEntity with _$SuperficieEntity {
+  @FreezedUnionValue("circle")
+  const factory SuperficieEntity.circle(double radius) = _Circle;
+  @FreezedUnionValue("rectangle")
+  const factory SuperficieEntity.rectangle(double width, double height) =
+      _Rectangle;
+  @FreezedUnionValue("cylinder")
+  const factory SuperficieEntity.cylinder(double radius, double height) =
+      _Cylinder;
+  @FreezedUnionValue("square")
+  const factory SuperficieEntity.square(double side) = _Square;
+
   const SuperficieEntity._();
 
-  const factory SuperficieEntity.initialize({
-    required int longueur,
-    required int largeur,
-    int? hauteur,
-  }) = _SuperficieEntityInitialize;
+  // Calculs de l'air, périmètre et volume
 
-  int air(int longueur, int largeur) {
-    return longueur * largeur;
-  }
+  double get area => when(
+        circle: (radius) => pi * radius * radius,
+        rectangle: (width, height) => width * height,
+        cylinder: (radius, height) => pi * radius * radius * height,
+        square: (side) => side * side,
+      );
 
-  int? linear(int longueur, int? largeur) {
-    return 2 * (longueur + largeur!);
-  }
+  double get perimeter => when(
+        circle: (radius) => 2 * pi * radius,
+        rectangle: (width, height) => 2 * (width + height),
+        cylinder: (radius, height) => 2 * pi * radius * (radius + height),
+        square: (side) => 4 * side,
+      );
 
-  int? quantity(air, int hauteur) {
-    return air * hauteur;
-  }
-
-  const factory SuperficieEntity({
-    required int longueur,
-    required int largeur,
-    int? hauteur,
-    // Function()? air,
-    // Function()? perimetre,
-    // Function()? volume,
-  }) = _SuperficieEntityData;
-
-  const factory SuperficieEntity.surface({required int surface}) =
-      _SuperficieEntityAir;
-
-  const factory SuperficieEntity.perimetre({required int perimetre}) =
-      _SuperficieEntityPerimetre;
-
-  const factory SuperficieEntity.volume({required int volume}) =
-      _SuperficieEntityVolume;
+  double get volume => when(
+        circle: (radius) => 0,
+        rectangle: (width, height) => 0,
+        cylinder: (radius, height) => pi * radius * radius * height,
+        square: (side) => 0,
+      );
 
   factory SuperficieEntity.fromJson(Map<String, dynamic> json) =>
       _$SuperficieEntityFromJson(json);
 
-  factory SuperficieEntity.fromFirestore(DocumentSnapshot doc) {
-    final map = doc.data() as Map<String, dynamic>;
-    return SuperficieEntity(
-      longueur: map['longueur'] ?? 0,
-      largeur: map['largeur'] ?? 0,
-      hauteur: map['hauteur'] ?? 0,
-      // perimetre: map['perimetre'] ?? 0,
-      // air: map['surface'] ?? 0,
-      // volume: map['volume'] ?? 0,
+  // Sauvegarder les données dans Firestore
+  Map<String, dynamic> toFirestore() {
+    return when(
+      circle: (radius) => {'type': 'circle', 'radius': radius},
+      rectangle: (width, height) =>
+          {'type': 'rectangle', 'width': width, 'height': height},
+      cylinder: (radius, height) =>
+          {'type': 'cylinder', 'radius': radius, 'height': height},
+      square: (side) => {'type': 'square', 'side': side},
     );
+  }
+
+  // Récupérer les données depuis Firestore
+  factory SuperficieEntity.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    switch (data['type']) {
+      case 'circle':
+        return SuperficieEntity.circle(data['radius']);
+      case 'rectangle':
+        return SuperficieEntity.rectangle(data['width'], data['height']);
+      case 'cylinder':
+        return SuperficieEntity.cylinder(data['radius'], data['height']);
+      case 'square':
+        return SuperficieEntity.square(data['side']);
+      default:
+        throw Exception('Forme inconnue');
+    }
   }
 }

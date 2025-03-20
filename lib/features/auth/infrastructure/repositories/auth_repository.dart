@@ -1,12 +1,16 @@
+import 'dart:convert';
 import 'dart:developer' as developer;
 
 import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:cryptography/cryptography.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/repository/auth_repository_interface.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,7 +23,8 @@ class AuthRepository implements AuthRepositoryInterface {
   final supabase.GoTrueClient client;
 
   static const String _table = 'auth_users_table';
-  final authClient = supabase.Supabase.instance.client;
+  supabase.SupabaseClient get authClient => throw UnimplementedError();
+  FirebaseAuth get firebaseAuth => throw UnimplementedError();
   final supabase.GenerateLinkType type;
 
   final CubeUser cuberUserModel = CubeUser();
@@ -29,6 +34,8 @@ class AuthRepository implements AuthRepositoryInterface {
     self: true,
     ack: true,
   );
+
+  static final _aesGcm256 = AesGcm.with256bits();
 
   @override
   void authStateChange(void Function(UserModel? userEntity) callback) {
@@ -153,42 +160,59 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, bool>> signInWithGoogle() async {
-    final res = await client.signInWithOAuth(supabase.OAuthProvider.google,
+    try {
+      // Tentative de connexion via Google OAuth avec Supabase
+      final res = await client.signInWithOAuth(
+        supabase.OAuthProvider.google,
         authScreenLaunchMode: LaunchMode.inAppWebView,
-        redirectTo: 'io.supabase.flutter://reset-callback/');
+        redirectTo: 'io.supabase.flutter://reset-callback/',
+      );
 
-    if (!res) {
-      _logError('signInWithGoogle() error: $res');
-      return left(Failure.badRequest());
+      // Vérification du résultat de l'authentification
+      if (!res) {
+        _logError('signInWithGoogle() error: $res');
+        return left(Failure.badRequest());
+      }
+
+      // Si l'authentification réussit
+      _logInfo('signInWithGoogle() success: $res');
+      return right(true); // Retourne un succès avec un résultat booléen
+    } catch (e) {
+      // Gestion des erreurs inattendues lors de l'authentification
+      _logError('signInWithGoogle() exception: $e');
+      return left(Failure.unprocessableEntity(message: e.toString()));
     }
-    _logInfo('signInWithGoogle() success: $res');
-
-    return right(true);
   }
 
   @override
   Future<Either<Failure, supabase.User>> signInWithPassword(
       String? email, String? password) async {
-    _logInfo('signInWithPassword()');
+    try {
+      _logInfo('signInWithPassword()');
 
-    final res = await client.signInWithPassword(
-      email: email,
-      password: password!,
-    );
-    _logInfo('signInWithPassword response : ${res.session!.toJson()}');
+      final res = await client.signInWithPassword(
+        email: email,
+        password: password!,
+      );
+      _logInfo('signInWithPassword response : ${res.session!.toJson()}');
 
-    await authTokenLocalDataSource
-        .store(res.session?.providerRefreshToken ?? '');
+      await authTokenLocalDataSource
+          .store(res.session?.providerRefreshToken ?? '');
 
-    final supabase.Session? session = res.session;
-    final supabase.User? user = res.user;
+      final supabase.Session? session = res.session;
+      final supabase.User? user = res.user;
 
-    if (session == null || user == null) {
-      await authTokenLocalDataSource.remove();
-      return left(Failure.unauthorized());
+      if (session == null || user == null) {
+        await authTokenLocalDataSource.remove();
+        return left(Failure.unauthorized());
+      }
+
+      return right(session.user);
+    } catch (e) {
+      _logError('signInWithPassword exception: $e');
+      return left(Failure.unprocessableEntity(
+          message: 'Erreur lors de l\'authentification: $e'));
     }
-
-    return right(session.user);
   }
 
   @override
@@ -208,57 +232,63 @@ class AuthRepository implements AuthRepositoryInterface {
   @override
   Future<Either<Failure, UserModel>> signUp(
       String? email, String? name, String password) async {
-    final response = await client.signUp(
-      email: email,
-      password: password,
-      data: {'name': name},
-      emailRedirectTo:
-          kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
-    );
+    try {
+      final response = await client.signUp(
+        email: email,
+        password: password,
+        data: {'name': name},
+        emailRedirectTo:
+            kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
+      );
 
-    _logInfo('response api signup: ${response.user}');
+      _logInfo('response api signup: ${response.user}');
 
-    if (response.user != null) {
-      await authTokenLocalDataSource
-          .store(response.session?.providerRefreshToken ?? '');
+      if (response.user != null) {
+        await authTokenLocalDataSource
+            .store(response.session?.providerRefreshToken ?? '');
+      }
+
+      final supabase.Session? data = response.session;
+      final supabase.User? user = response.user;
+
+      if (user == null) {
+        return left(Failure.unauthorized());
+      }
+
+      final UserEntityModel userEntityModel = UserEntityModel.create(
+        name!,
+        user.email!,
+        user.role!,
+        user.id,
+        user.phone!,
+        user.actionLink!,
+        !user.isAnonymous,
+        DateTime.parse(user.createdAt),
+        DateTime.parse(user.updatedAt!),
+        DateTime.parse(user.emailConfirmedAt!),
+        DateTime.parse(user.phoneConfirmedAt!),
+        DateTime.parse(user.lastSignInAt!),
+      );
+
+      await authClient.from('auth_users_table').insert(userEntityModel);
+
+      if (data != null) {
+        await setSession(data.accessToken);
+        await authTokenLocalDataSource.remove();
+        await authClient
+            .from('auth_users_table')
+            .delete()
+            .match({'id': userEntityModel.id});
+      } else {
+        return left(Failure.unauthorized());
+      }
+
+      return right(UserModel.fromJson(userEntityModel.toJson()));
+    } catch (e) {
+      _logError('signUp exception: $e');
+      return left(Failure.unprocessableEntity(
+          message: 'Erreur lors de l\'inscription.'));
     }
-
-    final supabase.Session? data = response.session;
-    final supabase.User? user = response.user;
-
-    if (user == null) {
-      return left(Failure.unauthorized());
-    }
-
-    final UserEntityModel userEntityModel = UserEntityModel.create(
-      name!,
-      user.email!,
-      user.role!,
-      user.id,
-      user.phone!,
-      user.actionLink!,
-      !user.isAnonymous,
-      DateTime.parse(user.createdAt),
-      DateTime.parse(user.updatedAt!),
-      DateTime.parse(user.emailConfirmedAt!),
-      DateTime.parse(user.phoneConfirmedAt!),
-      DateTime.parse(user.lastSignInAt!),
-    );
-
-    await authClient.from('auth_users_table').insert(userEntityModel);
-
-    if (data != null) {
-      await setSession(data.accessToken);
-      await authTokenLocalDataSource.remove();
-      await authClient
-          .from('auth_users_table')
-          .delete()
-          .match({'id': userEntityModel.id});
-    } else {
-      return left(Failure.unauthorized());
-    }
-
-    return right(UserModel.fromJson(userEntityModel.toJson()));
   }
 
   @override
@@ -333,11 +363,11 @@ class AuthRepository implements AuthRepositoryInterface {
 
       developer.ServiceExtensionResponse.error(statusCode!, e.message);
       PostgrestException(
-          code: '23505',
-          details: 'Key (id)=(1) already exists.',
-          hint: 'Error in auth_repository on ProgrestSql exception ligne 335',
-          message:
-              'duplicate key value violates unique constraint "countries_pkey ${e.message}');
+        code: e.code,
+        details: e.details,
+        hint: e.hint,
+        message: e.message,
+      );
       return left(Failure.unauthorized());
     }
   }
@@ -383,31 +413,81 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, bool>> signInWithApple() async {
-/*    final rawNonce = await authClient.auth.generateRawNonce();
-    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+  Future<Either<Failure, AuthResponse>> signInWithApple() async {
+    try {
+      final rawNonce = authClient.auth.generateRawNonce();
+      final encode = utf8.encode(rawNonce);
+      final hashedNonce = _aesGcm256.newSecretKeyFromBytes(encode).toString();
 
-    final credential = await supabase.Supabase.instance.client.auth.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      nonce: hashedNonce,
-    );
-
-    final idToken = credential.identityToken;
-    if (idToken == null) {
-      throw const AuthException(
-        'Could not find ID Token from generated credential.',
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: hashedNonce,
       );
-    }
 
-    return signInWithIdToken(
-      provider: OAuthProvider.apple,
-      idToken: idToken,
-      nonce: rawNonce,
-    );*/
-    return left(Failure.empty());
+      final idToken = credential.identityToken;
+      if (idToken == null) {
+        throw const AuthException(
+          'Could not find ID Token from generated credential.',
+        );
+      }
+      final response = await authClient.auth.signInWithIdToken(
+        provider: supabase.OAuthProvider.apple,
+        idToken: idToken,
+        nonce: rawNonce,
+      );
+      return right(response);
+    } catch (e) {
+      // Logging des erreurs spécifiques
+      return logErrorSwitchException(e);
+    }
+  }
+
+/*  Future<Either<Failure, AuthResponse>> signInWithPhoneNumber(
+      String phoneNumber) async {
+    try {
+      final response = await firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) =>
+            firebaseAuth.signInWithCredential(credential),
+        verificationFailed: (FirebaseAuthException e) {},
+        codeSent: (String verificationId, int? resendToken) {},
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+
+      return right(response);
+    } catch (e) {
+      // Logging des erreurs spécifiques
+      return logErrorSwitchException(e);
+    }
+  }*/
+
+  Either<Failure, supabase.AuthResponse> logErrorSwitchException(Object e) {
+    if (e is AuthException) {
+      _logError('AuthException: ${e.message}');
+      return left(Failure.unprocessableEntity(message: e.message));
+    } else if (e is PostgrestException) {
+      int? statusCode = int.tryParse(e.code!);
+      developer.ServiceExtensionResponse.error(statusCode!, e.message);
+      PostgrestException(
+        code: e.code,
+        details: e.details,
+        hint: e.hint,
+        message: e.message,
+      );
+      return left(Failure.unprocessableEntity(
+          message: 'PostgrestException issue during sign in with Apple.'));
+    } else if (e is FirebaseException) {
+      int? statusCode = int.tryParse(e.code);
+      developer.ServiceExtensionResponse.error(statusCode!,
+          'Erreur Firebase : ${e.message} du plugin : ${e.plugin}');
+      return left(Failure.unprocessableEntity(message: e.message!));
+    } else {
+      _logError('Unknown error: ${e.toString()}');
+      return left(Failure.empty());
+    }
   }
 
   Future<Either<Failure, CubeUser>> _handleSignup(CubeUser cuberUserModel,
@@ -453,11 +533,14 @@ class AuthRepository implements AuthRepositoryInterface {
     try {
       final res =
           await authClient.auth.admin.inviteUserByEmail(cuberUserModel.email!);
-      final inviteLink = res.user!.actionLink;
-      final cubeUser = CubeUser(isGuest: true);
+      if (res.user?.actionLink != null) {
+        final cubeUser = CubeUser(isGuest: true);
 
-      cubeUserCallBack(cubeUser);
-      return right(cubeUser); // Return the CubeUser (guest)
+        cubeUserCallBack(cubeUser);
+        return right(cubeUser);
+      } else {
+        return left(Failure.unprocessableEntity(message: "User not found"));
+      }
     } catch (e) {
       return left(Failure.unprocessableEntity(message: e.toString()));
     }

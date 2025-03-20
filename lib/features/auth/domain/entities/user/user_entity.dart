@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectycube_sdk/connectycube_calls.dart';
-import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user/user_id_converter.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user/user_list_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
+
+import 'user_id.dart';
 
 part 'user_entity.freezed.dart';
 part 'user_entity.g.dart';
@@ -10,10 +12,9 @@ part 'user_entity.g.dart';
 var _uuid = const Uuid();
 
 @freezed
-class UserEntityModel with _$UserEntityModel {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+abstract class UserEntityModel with _$UserEntityModel {
   const factory UserEntityModel({
-    required UserId id,
+    @UserIdConverter() required UserId id,
     required String name,
     required String email,
     required String role,
@@ -87,7 +88,6 @@ class UserEntityModel with _$UserEntityModel {
         phoneConfirmedAt: phoneConfirmedAt,
         lastSignInAt: lastSignInAt);
   }
-
   @FreezedUnionValue('Empty')
   factory UserEntityModel.empty() => UserEntityModel(
         id: const UserId(value: 0),
@@ -110,28 +110,25 @@ class UserEntityModel with _$UserEntityModel {
 }
 
 @freezed
-class Users with _$Users {
-  const factory Users.data(
-    UserList userList,
-  ) = UsersData;
+abstract class Users with _$Users {
+  const factory Users({required UserList userList}) = _Users;
 
-  const factory Users.loading() = UsersLoading;
+  const factory Users.loading() = _UsersLoading;
 
-  const factory Users.error(Object error, StackTrace stackTrace) = UsersError;
+  const factory Users.error(Object error, StackTrace stackTrace) = _UsersError;
 }
 
 @freezed
-class UserModel with _$UserModel {
+abstract class UserModel with _$UserModel {
   @FreezedUnionValue('Complete')
   const factory UserModel.complete({
-    required UserId id,
+    @UserIdConverter() required UserId id,
     required UserEntityModel userEntityModel,
-    required CubeUser cubeUser,
   }) = _UserModelComplete;
 
   @FreezedUnionValue('UnComplete')
   const factory UserModel.unComplete({
-    required UserId id,
+    @UserIdConverter() required UserId id,
     required UserEntityModel userEntityModel,
   }) = _UserModelUnComplete;
 

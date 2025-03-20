@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,35 +7,41 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../features/chat/application/managers/push_notifications_manager.dart';
 import '../../../firebase_options.dart';
+import '../../environements/environment.dart';
+import '../../environements/flavors.dart';
 
 // <---------------- Firebase Instances Providers -------------------> //
 final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
-  return await Firebase.initializeApp(
-          name: 'EgoteServices',
-          options: DefaultFirebaseOptions.currentPlatform)
-      .whenComplete(() async {
-    FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
+  FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
 
-    await Future.delayed(Duration(seconds: 5), () {
-      ref.watch(firebaseFirestoreProvider).settings.persistenceEnabled;
-      ref.watch(firebaseAuthProvider).setPersistence(Persistence.LOCAL);
-      ref.watch(firebaseMessagingProvider).setAutoInitEnabled(true);
-      ref.watch(firebaseDatabaseProvider).setLoggingEnabled(true);
-    });
+  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
+  final env =
+      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
-    await ref.watch(firebaseMessagingProvider).requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-        provisional: true,
-        providesAppNotificationSettings: true,
-        announcement: true,
-        criticalAlert: true);
+  await Future.delayed(Duration(seconds: 5), () {
+    ref.watch(firebaseFirestoreProvider).settings.persistenceEnabled;
+    ref.watch(firebaseAuthProvider).setPersistence(Persistence.LOCAL);
+    ref.watch(firebaseDatabaseProvider).setLoggingEnabled(true);
+    ref.watch(firebaseMessagingProvider)
+      ..setAutoInitEnabled(true)
+      ..getToken(vapidKey: env.vapidKey)
+      ..requestPermission(
+          alert: true,
+          badge: true,
+          sound: true,
+          provisional: true,
+          providesAppNotificationSettings: true,
+          announcement: true,
+          criticalAlert: true);
   });
+
+  return await Firebase.initializeApp(
+      name: 'EgoteServices', options: DefaultFirebaseOptions.currentPlatform);
 });
 
 final firebaseAuthProvider =
@@ -43,9 +50,11 @@ final firebaseAuthProvider =
 final firebaseDatabaseProvider =
     Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
 
-final firebaseFirestoreProvider = Provider((ref) => FirebaseFirestore.instance);
+final firebaseFirestoreProvider =
+    Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
 
-final firebaseMessagingProvider = Provider((ref) => FirebaseMessaging.instance);
+final firebaseMessagingProvider =
+    Provider<FirebaseMessaging>((ref) => FirebaseMessaging.instance);
 
 final emulatorSettingsProvider = Provider((ref) {
   final fire = ref.watch(firebaseFirestoreProvider);

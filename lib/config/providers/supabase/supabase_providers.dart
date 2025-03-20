@@ -13,10 +13,12 @@ import '../../environements/flavors.dart';
 // <---------------- Supabase Instances Providers -------------------> //
 
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
+  // Charger la configuration à partir d'un fichier JSON
   final configFile = await rootBundle.loadString(F.envFileName, cache: false);
   final env =
       Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
+  // Initialiser un client GoTrue pour l'authentification
   final client = supabase.GoTrueClient(
     url: env.supabaseUrl,
     autoRefreshToken: true,
@@ -26,41 +28,56 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
     },
   );
 
+  // Fonction améliorée pour récupérer un token d'accès
   Future<String> getAccessToken() async {
     String? accessToken = client.currentSession?.providerRefreshToken;
-    if (accessToken!.isEmpty) {
-      return Future.value(env.accessToken);
-    } else {
-      return accessToken;
+
+    // Vérification si le token est vide ou nul
+    if (accessToken == null || accessToken.isEmpty) {
+      return env.accessToken; // Retourne le token d'accès par défaut
     }
+    return accessToken; // Retourne le token d'accès valide
   }
 
+  // Initialisation de Supabase avec les options
   return await supabase.Supabase.initialize(
-      url: env.supabaseUrl,
-      anonKey: env.supabaseAnonKey,
-      headers: client.headers,
-      accessToken: () => getAccessToken(),
-      authOptions: const supabase.FlutterAuthClientOptions(
-          authFlowType: supabase.AuthFlowType.pkce),
-      // authCallbackUrlHostname: env.supabaseAuthCallbackUrlHostname,
-      realtimeClientOptions: const supabase.RealtimeClientOptions(
-        logLevel: supabase.RealtimeLogLevel.info,
-        eventsPerSecond: 2,
-      ),
-      storageOptions: const supabase.StorageClientOptions(
-        retryAttempts: 10,
-      ),
-      postgrestOptions: const supabase.PostgrestClientOptions(schema: 'public'),
-      debug: kDebugMode);
+    url: env.supabaseUrl,
+    anonKey: env.supabaseAnonKey,
+    headers: client.headers,
+    accessToken: () => getAccessToken(),
+    authOptions: const supabase.FlutterAuthClientOptions(
+      authFlowType: supabase
+          .AuthFlowType.pkce, // Utilisation de PKCE pour l'authentification
+    ),
+    realtimeClientOptions: const supabase.RealtimeClientOptions(
+      logLevel: supabase.RealtimeLogLevel.info,
+      eventsPerSecond: 2, // Limitation des événements en temps réel
+    ),
+    storageOptions: const supabase.StorageClientOptions(
+      retryAttempts: 10,
+    ),
+    postgrestOptions: const supabase.PostgrestClientOptions(schema: 'public'),
+    debug: kDebugMode,
+  );
 }, name: 'Initialisation de supabase provider');
 
 final supabaseProvider =
     Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
 
 final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
+  // Récupère les données initiales à partir du provider `supabaseInitProvider`
   final supaInit = ref.watch(supabaseInitProvider);
+
+  // Vérifie si le client est disponible et renvoie une exception sinon
   final client = supaInit.value?.client;
-  return client!;
+
+  // Si le client est nul, une erreur explicite peut être lancée
+  if (client == null) {
+    throw StateError('Supabase client is not initialized or available');
+  }
+
+  // Retourne le client si tout est en ordre
+  return client;
 },
     dependencies: [supabaseProvider, supabaseInitProvider],
     name: 'Supabase Client Provider');

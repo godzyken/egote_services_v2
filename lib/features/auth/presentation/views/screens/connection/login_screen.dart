@@ -11,7 +11,6 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../domain/providers/auth_repository_provider.dart';
-import '../../widgets/widgets_extensions.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({

@@ -21,11 +21,11 @@ import '../services/search_produit_service.dart';
 part 'devis_providers.g.dart';
 
 class DevisStateNotifier extends StateNotifier<DevisEntityStates> {
-  DevisStateNotifier(Ref ref) : super(DevisEntityStates.initial());
+  DevisStateNotifier(Ref ref) : super(DevisEntityStates.propale(devis: []));
 
   void addDevis(String item) {
     final devis = DevisModelEntity.initialize(
-        id: DevisId(id: int.parse(item)), createdAt: DateTime.parse(item));
+        id: DevisId(value: item), createdAt: DateTime.parse(item));
     state = state.copyWith(
       devis: state.devis..add(devis),
     );
@@ -47,11 +47,12 @@ final devisStateNotifierProvider =
         (ref) => DevisStateNotifier(ref));
 
 class TravauxStateNotifier extends StateNotifier<TravauxEntityStates> {
-  TravauxStateNotifier(Ref ref) : super(TravauxEntityStates.initial());
+  TravauxStateNotifier(Ref ref)
+      : super(TravauxEntityStates.initial(travaux: []));
 
   void addTravaux(String item) {
-    final travaux = TravauxEntity.Init(
-      id: TravauId(id: int.parse(item)),
+    final travaux = TravauxEntity.initialize(
+      id: TravauId(value: item),
     );
     state = state.copyWith(travaux: state.travaux..add(travaux));
 
@@ -59,7 +60,7 @@ class TravauxStateNotifier extends StateNotifier<TravauxEntityStates> {
   }
 
   void removedTravaux(TravauId id) {
-    final travaux = TravauxEntity.Init(id: id);
+    final travaux = TravauxEntity.initialize(id: id);
     state = state.copyWith(travaux: state.travaux..remove(travaux));
 
     developer.log('[${state.travaux}]');
@@ -74,8 +75,8 @@ class MissionStateNotifier extends StateNotifier<MissionEntityStates> {
   MissionStateNotifier(Ref ref) : super(MissionEntityStates.init());
 
   void addMission(String item) {
-    final mission = MissionEntity.init(
-      id: MissionId(id: int.parse(item)),
+    final mission = MissionEntity.initialize(
+      id: MissionId(value: item),
     );
     state =
         state.copyWith(missionEntities: state.missionEntities..add(mission));
@@ -84,7 +85,7 @@ class MissionStateNotifier extends StateNotifier<MissionEntityStates> {
   }
 
   void removedMission(MissionId id) {
-    final mission = MissionEntity.init(id: id);
+    final mission = MissionEntity.initialize(id: id);
     state =
         state.copyWith(missionEntities: state.missionEntities..remove(mission));
 

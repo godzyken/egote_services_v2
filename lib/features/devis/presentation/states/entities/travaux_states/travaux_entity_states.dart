@@ -1,25 +1,25 @@
-// ignore_for_file: invalid_annotation_target
-
-import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../domain/entities/construction/travaux_entity.dart';
+import '../../../../domain/entities/construction/travaux_entity_converter.dart';
 
 part 'travaux_entity_states.freezed.dart';
 part 'travaux_entity_states.g.dart';
 
 @freezed
-abstract class TravauxEntityStates with _$TravauxEntityStates {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-  const factory TravauxEntityStates({
-    required List<TravauxEntity> travaux,
-  }) = _TravauxEntityStates;
+sealed class TravauxEntityStates with _$TravauxEntityStates {
+  @FreezedUnionValue("list")
+  const factory TravauxEntityStates.list({
+    @TravauxEntityConverter() required List<TravauxEntity> travaux,
+  }) = _TravauxEntityStatesList;
 
-  factory TravauxEntityStates.initial() =>
-      const TravauxEntityStates(travaux: <TravauxEntity>[]);
+  @FreezedUnionValue("initial")
+  factory TravauxEntityStates.initial({required List<TravauxEntity> travaux}) =>
+      TravauxEntityStates.initial(travaux: <TravauxEntity>[]);
 
-  factory TravauxEntityStates.done() =>
-      const TravauxEntityStates(travaux: <TravauxEntity>[]);
+  @FreezedUnionValue("done")
+  factory TravauxEntityStates.done({required List<TravauxEntity> travaux}) =>
+      TravauxEntityStates.done(travaux: <TravauxEntity>[]);
 
   factory TravauxEntityStates.fromJson(Map<String, dynamic> json) =>
       _$TravauxEntityStatesFromJson(json);

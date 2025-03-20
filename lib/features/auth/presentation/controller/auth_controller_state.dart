@@ -59,8 +59,8 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
             status: validator(_user)!,
             userEntity: UserModel.complete(
                 id: UserId(value: int.tryParse(_user!.id)!),
-                userEntityModel: UserEntityModel.fromJson(_user!.toJson()),
-                cubeUser: CubeUser()));
+                userEntityModel: UserEntityModel.fromJson(_user!.toJson())
+            ));
       case supabase.AuthChangeEvent.signedOut:
         session?.user;
         onSignOut();
@@ -73,16 +73,16 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
             status: validator(_user)!,
             userEntity: UserModel.complete(
                 id: UserId(value: int.parse(_user!.id)),
-                userEntityModel: UserEntityModel.fromJson(_user!.toJson()),
-                cubeUser: CubeUser()));
+                userEntityModel: UserEntityModel.fromJson(_user!.toJson())
+            ));
       case supabase.AuthChangeEvent.userUpdated:
         _user = session?.user;
         state = perso.AuthState.authenticated(
             status: validator(_user)!,
             userEntity: UserModel.complete(
                 id: UserId(value: int.parse(_user!.id)),
-                userEntityModel: UserEntityModel.fromJson(_user!.toJson()),
-                cubeUser: CubeUser()));
+                userEntityModel: UserEntityModel.fromJson(_user!.toJson())
+            ));
       case supabase.AuthChangeEvent.userDeleted:
       case supabase.AuthChangeEvent.mfaChallengeVerified:
       // TODO: Handle this case.
@@ -100,8 +100,8 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
           userEntity: UserModel.complete(
               id: UserId(value: int.parse(userModel.toNullable()!.id)),
               userEntityModel:
-                  UserEntityModel.fromJson(userModel.toNullable()!.toJson()),
-              cubeUser: CubeUser()));
+                  UserEntityModel.fromJson(userModel.toNullable()!.toJson())
+          ));
     } while (userModel.exists((r) => r.id.isNotEmpty));
 
     state = const perso.AuthState.unauthenticated(

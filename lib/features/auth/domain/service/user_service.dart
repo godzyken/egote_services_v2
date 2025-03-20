@@ -11,6 +11,91 @@ class UserService {
   FirebaseAuth get _firebaseAuth => _ref.watch(firebaseAuthProvider);
   UserService(this._ref);
 
+  Future<bool> verifyPhoneAuthentication(
+      String token, String code, String verificationId) async {
+    try {
+      await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: '+44 7123 123 456',
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          // Le code de vérification a été complété
+          developer.log("Code de vérification complété");
+          if (credential.smsCode != null) {
+            developer.log("Code de vérification: ${credential.smsCode}");
+            await _firebaseAuth.signInWithCredential(credential);
+          } else {
+            if (credential.verificationId != null) {
+              developer.log("VerificationId: ${credential.verificationId}");
+              verificationId = credential.verificationId!;
+              if (credential.smsCode != null) {
+                developer.log("Code de vérification: ${credential.smsCode}");
+                await _firebaseAuth.signInWithCredential(credential);
+              } else {
+                developer.log("Code de vérification non disponible");
+              }
+            }
+          }
+        },
+        verificationFailed: (FirebaseAuthException e) async {
+          switch (e.code) {
+            case 'invalid-phone-number':
+              // Le numéro de téléphone est invalide
+              developer.log("Numéro de téléphone invalide: ${e.message}");
+              break;
+
+            case 'invalid-verification-code':
+              // Le code de vérification est invalide
+              developer.log("Code de vérification invalide: ${e.message}");
+              break;
+
+            case 'invalid-verification-id':
+              // L'identifiant de vérification est invalide
+              developer
+                  .log("Identifiant de vérification invalide: ${e.message}");
+              break;
+
+            case 'invalid-credential':
+              // Les informations de l'authentification sont invalides
+              developer.log(
+                  "Informations d'authentification invalides: ${e.message}");
+              break;
+            default:
+              developer.log("Erreur Firebase: ${e.message}");
+          }
+        },
+        codeSent: (String verificationId, int? resendToken) async {
+          // Le code de vérification a été envoyé avec succès
+          developer.log("Code de vérification envoyé avec succès");
+          developer.log("VerificationId: $verificationId");
+          developer.log("ResendToken: $resendToken");
+          verificationId = verificationId;
+        },
+        codeAutoRetrievalTimeout: (String verificationId) async {},
+      );
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Méthode pour vérifier le code SMS
+  Future<void> verifySmsCode(String verificationId, String smsCode) async {
+    try {
+      // Créez un objet PhoneAuthCredential avec le code SMS et l'ID de vérification
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+
+      // Utilisez la méthode signInWithCredential pour vous connecter
+      await _firebaseAuth.signInWithCredential(credential);
+      developer.log("Authentification réussie");
+      // Naviguez vers l'écran d'accueil ou un autre écran
+    } catch (e) {
+      developer.log("Erreur lors de la vérification du code SMS: $e");
+    }
+  }
+
   Future<CubeUser?> createCubeUserFromFirebase() async {
     try {
       User? user = _firebaseAuth.currentUser;

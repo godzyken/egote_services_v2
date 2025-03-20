@@ -8,7 +8,7 @@ part 'user_form_state.freezed.dart';
 part 'user_form_state.g.dart';
 
 @freezed
-class UserFormState with _$UserFormState {
+abstract class UserFormState with _$UserFormState {
   const factory UserFormState(UserEntityModel userEntityModel,
       {@JsonKey(
         defaultValue: 'UserName',

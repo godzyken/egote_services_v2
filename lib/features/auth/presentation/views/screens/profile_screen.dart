@@ -1,6 +1,5 @@
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
-import 'package:egote_services_v2/features/auth/presentation/views/widgets/widgets_extensions.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -1,16 +1,22 @@
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user_preferences/user_prefs_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_pref.freezed.dart';
+part 'user_pref.g.dart';
 
 @freezed
-class UserPreferences with _$UserPreferences {
+abstract class UserPreferences with _$UserPreferences {
   const factory UserPreferences({
-    required UserEntityModel userEntityModel,
+    @UserEntityModelConverter() required UserEntityModel userEntityModel,
     required ThemeMode themeMode,
     required String about,
-    required bool isDarkMode
+    required bool isDarkMode,
   }) = _UserPreferences;
 
+  const UserPreferences._();
+
+  factory UserPreferences.fromJson(Map<String, dynamic> json) =>
+      _$UserPreferencesFromJson(json);
 }

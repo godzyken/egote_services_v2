@@ -1,58 +1,75 @@
-// ignore_for_file: invalid_annotation_target
-
-import 'package:egote_services_v2/features/devis/domain/entities/construction/travau_id.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/construction/mission_entity_converter.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/construction/travau_id_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'mission_entity.dart';
+import 'travau_id.dart';
 
 part 'travaux_entity.freezed.dart';
 part 'travaux_entity.g.dart';
 
 @freezed
-abstract class TravauxEntity with _$TravauxEntity {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-  const factory TravauxEntity({
-    required TravauId id,
+sealed class TravauxEntity with _$TravauxEntity {
+  const factory TravauxEntity.definis({
+    @TravauIdConverter() required TravauId id,
     required String denomination,
     required List<TypesOfWork> typesOfWorks,
     required List<AreaOfServices> areaOfServices,
-    required List<MissionEntity> missionEntity,
-  }) = _TravauxEntity;
+    @MissionEntityConverter() required List<MissionEntity> missionEntity,
+  }) = _TravauxEntityDefinis;
 
-  factory TravauxEntity.Init({
-    required TravauId id,
-  }) = _TravauxEntityInit;
+  const factory TravauxEntity.initialize({
+    @TravauIdConverter() required TravauId id,
+    @Default('') String denomination,
+    @Default([]) List<TypesOfWork> typesOfWorks,
+    @Default([]) List<AreaOfServices> areaOfServices,
+    @Default([]) List<MissionEntity> missionEntity,
+  }) = _TravauxEntityInitialize;
 
   factory TravauxEntity.fromJson(Map<String, dynamic> json) =>
       _$TravauxEntityFromJson(json);
+
+  factory TravauxEntity.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return TravauxEntity.definis(
+      id: TravauId(value: doc.id),
+      denomination: data['denomination'],
+      typesOfWorks: List<TypesOfWork>.from(
+          data['typesOfWorks'].map((e) => TypesOfWork.values[e])),
+      areaOfServices: List<AreaOfServices>.from(
+          data['areaOfServices'].map((e) => AreaOfServices.values[e])),
+      missionEntity: List<MissionEntity>.from(
+          data['missions'].map((e) => MissionEntity.fromJson(e))),
+    );
+  }
 }
 
 @JsonEnum()
-enum TypesOfWork { Builds, Installations, Services, Cares, Operations }
+enum TypesOfWork { builds, installations, services, cares, operations }
 
 @JsonEnum()
 enum AreaOfServices {
-  FenetrePorte,
-  CouvertureToiture,
-  Peinture,
-  Plomberie,
-  Ebenisterie,
-  Electricite,
-  ConstructionRenovation,
-  JardinExterieur,
-  Climatisation,
-  Platre,
-  Chauffage,
-  SdeSanitaires,
-  Nettoyage,
-  Securite,
-  Cuisine,
-  EnergiRenoDiag,
-  SolCarrelage,
-  DemolitioEvacuation,
-  Ascenseurs,
-  TraitementNuisibles,
-  Isolation,
-  Bricolage
+  fenetrePorte,
+  couvertureToiture,
+  peinture,
+  plomberie,
+  ebenisterie,
+  electricite,
+  constructionRenovation,
+  jardinExterieur,
+  climatisation,
+  platre,
+  chauffage,
+  sdeSanitaires,
+  nettoyage,
+  securite,
+  cuisine,
+  energiRenoDiag,
+  solCarrelage,
+  demolitioEvacuation,
+  ascenseurs,
+  traitementNuisibles,
+  isolation,
+  bricolage
 }

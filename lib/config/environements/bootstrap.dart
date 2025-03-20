@@ -117,7 +117,7 @@ Future<ProviderContainer> bootstrap() async {
   });
 
   await Sentry.captureMessage('message de sentry: hello world',
-      level: SentryLevel.fatal, withScope: (p0) => p0.user!.name);
+      level: SentryLevel.fatal);
 
   final container = ProviderContainer(
     overrides: [
@@ -125,7 +125,6 @@ Future<ProviderContainer> bootstrap() async {
       localizationProvider.overrideWith(
           (ref) => MultiLang(ref.read(localeProvider).languageCode)),
       datadogConfigProvider.overrideWith((ref) => ref.future),
-      backgroundTaskProvider.overrideWith((ref) => BackgroundTaskNotifier()),
       sharedPreferencesProvider.overrideWith((ref) => ref.future),
     ],
     observers: [

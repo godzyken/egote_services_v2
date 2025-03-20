@@ -2,8 +2,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'list_local.dart';
 
-class AssetsImageConverter
-    implements JsonConverter<LocalImages, Map<String, dynamic>> {
+
+class AssetsImageConverter implements JsonConverter<LocalImages, Map<String, dynamic>> {
   const AssetsImageConverter();
 
   @override

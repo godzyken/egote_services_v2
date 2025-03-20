@@ -1,5 +1,4 @@
 import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -273,8 +272,8 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
   void _createDialog(BuildContext context, Set<int> users, bool isGroup) async {
     log("_createDialog with users= $users");
     if (isGroup) {
-      CubeDialog newDialog = CubeDialog(const CubeDialogTypeMig.GROUP(2).id,
-          occupantsIds: users.toList());
+      CubeDialog newDialog =
+          CubeDialog(CubeDialogType.GROUP, occupantsIds: users.toList());
       List<CubeUser> usersToAdd = users
           .map((id) => userList.firstWhere((user) => user.id == id))
           .toList();
@@ -285,8 +284,8 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
         SELECTED_USERS_ARG_NAME: usersToAdd,
       });
     } else {
-      CubeDialog newDialog = CubeDialog(const CubeDialogTypeMig.PRIVATE(1).id,
-          occupantsIds: users.toList());
+      CubeDialog newDialog =
+          CubeDialog(CubeDialogType.PRIVATE, occupantsIds: users.toList());
       createDialog(newDialog).then((createdDialog) {
         if (context.mounted) {
           context.pushReplacementNamed('chat_dialog', extra: {

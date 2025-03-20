@@ -8,7 +8,7 @@ import '../../../common/domain/failures/failure.dart';
 abstract class AuthRepositoryInterface {
   Future<Either<Failure, bool>> signInWithGoogle();
 
-  Future<Either<Failure, bool>> signInWithApple();
+  Future<Either<Failure, supabase.AuthResponse>> signInWithApple();
 
   Future<Either<Failure, bool>> signOut();
 

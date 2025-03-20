@@ -160,7 +160,7 @@ class AutoAuthController extends StateNotifier<UserModel?> {
 
   // Méthode pour initialiser et gérer l'authentification
   Future<void> _initialize() async {
-    final res = await _repository?.restoreSession();
+    final res = await _repository!.restoreSession();
     _subscribeToUserDoc(res);
 
     if (state == null) {
@@ -222,7 +222,6 @@ class AutoAuthController extends StateNotifier<UserModel?> {
     state = UserModel.complete(
       id: UserId(value: cubeUser!.id!),
       userEntityModel: _ref.watch(userNotifierProvider),
-      cubeUser: cubeUser,
     );
   }
 

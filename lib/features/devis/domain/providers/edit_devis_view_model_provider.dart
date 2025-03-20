@@ -21,39 +21,27 @@ class EditDeviViewModelController
       : super(const State.init());
 
   DevisModelEntity initial = DevisModelEntity.empty();
-  SuperficieEntity initialSup =
-      const SuperficieEntity.initialize(longueur: 0, largeur: 0, hauteur: 0);
-  TravauxEntity initialTra = const TravauxEntity(
-      id: TravauId(id: 0),
+  SuperficieEntity initialSup = SuperficieEntity.rectangle(0, 0);
+  TravauxEntity initialTra = TravauxEntity.initialize(
+      id: TravauId(value: '0'),
       denomination: 'denomination',
-      typesOfWorks: [],
-      areaOfServices: [],
-      missionEntity: []);
+      typesOfWorks: const [],
+      areaOfServices: const [],
+      missionEntity: const []);
   ContactOwnerEntity initialContact = const ContactOwnerEntity.empty();
-  MissionEntity initialMission =
-      const MissionEntity(id: MissionId(id: 0), denomination: 'denomination');
+  MissionEntity initialMission = MissionEntity.initialize(
+      id: MissionId(value: '0'), denomination: 'denomination');
 
   bool get edit => initial.toJson().isNotEmpty;
 
   DevisModelEntity get devis => initial.when(
-        approved: (devis,
-            createdAt,
-            validity,
-            client,
-            pro,
-            travauxEntity,
-            produits,
-            quantity,
-            unitPrice,
-            vatRates,
-            amountHt,
-            amountTtc,
-            approval) {
+        edit: (devis, createdAt, validity, client, pro, travauxEntity, produits,
+            quantity, unitPrice, vatRates, amountHt, amountTtc, approval) {
           try {
             state = const State.loading();
 
-            if (devis.id != 0 && approval != false) {
-              final DevisModelEntity newDevis = DevisModelEntity.approved(
+            if (devis.value.isNotEmpty && approval == false) {
+              final DevisModelEntity newDevis = DevisModelEntity.edit(
                   id: devis,
                   createdAt: createdAt,
                   validity: validity,
@@ -90,33 +78,33 @@ class EditDeviViewModelController
     _numDevis = value;
   }
 
-  int? _long;
+  double? _long;
 
-  int get longueur => _long!;
+  double get longueur => _long!;
 
-  set long(int value) {
+  set long(double value) {
     _long = value;
   }
 
-  int? _larg;
+  double? _larg;
 
-  int get largeur => _larg!;
+  double get largeur => _larg!;
 
-  set larg(int value) {
+  set larg(double value) {
     _larg = value;
   }
 
-  int? _haut;
+  double? _haut;
 
-  int get hauteur => _haut!;
+  double get hauteur => _haut!;
 
-  set haut(int value) {
+  set haut(double value) {
     _haut = value;
   }
 
   SuperficieEntity? _superficieEntity;
 
-  SuperficieEntity get superficieEntity =>
+  /* SuperficieEntity get superficieEntity =>
       _superficieEntity ??
       initialSup.when(
         initialize: (longueur, largeur, hauteur) => SuperficieEntity.initialize(
@@ -132,7 +120,9 @@ class EditDeviViewModelController
           largeur: largeur = _larg!,
           hauteur: hauteur = _haut!,
         ),
-      );
+      );*/
+
+  SuperficieEntity get superficieEntity => _superficieEntity ?? initialSup;
 
   set superficieEntity(SuperficieEntity value) {
     _superficieEntity = value;
@@ -151,12 +141,6 @@ class EditDeviViewModelController
   ContactOwnerEntity get contactOwnerEntity =>
       _contactOwnerEntity ??
       initialContact.when(
-        (id, firstName, lastName, phone, email) => ContactOwnerEntity(
-            id: id,
-            firstName: firstName,
-            lastName: lastName,
-            phone: phone,
-            email: email),
         empty: () => const ContactOwnerEntity.empty(),
         client: (int id, String firstName, String lastName, String phone,
                 String email) =>
@@ -185,7 +169,6 @@ class EditDeviViewModelController
   MissionEntity get missionEntity =>
       _missionEntity ??
       initialMission.when(
-        (id, denomination) => MissionEntity(id: id, denomination: denomination),
         done: (id, denomination, startedAt, finishedAt, doneOk) =>
             MissionEntity.done(
                 id: id,
@@ -202,7 +185,8 @@ class EditDeviViewModelController
                 reason: reason,
                 left: left,
                 isLeft: isLeft),
-        init: (MissionId id) => MissionEntity.init(id: id),
+        initialize: (id, denomination) =>
+            MissionEntity.initialize(id: id, denomination: denomination),
       );
 
   set missionEntity(MissionEntity value) {

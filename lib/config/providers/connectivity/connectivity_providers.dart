@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConnectivityService {
@@ -73,11 +75,16 @@ class ConnectivityStatusNotifier extends StateNotifier<ConnectivityStatus> {
   }
 
   Future<void> initialize() async {
-    _subscription = Connectivity().onConnectivityChanged.listen((results) {
-      state = results.first == ConnectivityResult.none
-          ? ConnectivityStatus.offline
-          : ConnectivityStatus.online;
-    });
+    try {
+      _subscription = Connectivity().onConnectivityChanged.listen((results) {
+        state = results.first == ConnectivityResult.none
+            ? ConnectivityStatus.offline
+            : ConnectivityStatus.online;
+      });
+    } on PlatformException catch (e) {
+      developer.log('Erreur lors de la vérification de la connexion: $e');
+      state = ConnectivityStatus.offline;
+    }
   }
 
   @override

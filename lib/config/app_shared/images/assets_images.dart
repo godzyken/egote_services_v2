@@ -10,16 +10,19 @@ import 'list_local.dart';
 part 'assets_images.freezed.dart';
 part 'assets_images.g.dart';
 
-@Freezed()
-class Images with _$Images {
+@freezed
+sealed class Images with _$Images {
+  @FreezedUnionValue("web")
   const factory Images.web({
     required String name,
   }) = _ImagesWeb;
 
+  @FreezedUnionValue("local")
   const factory Images.local({
     @AssetsImageConverter() required List<LocalImages> images,
   }) = _ImagesLocal;
 
+  @FreezedUnionValue("error")
   const factory Images.error({required String error, required String message}) =
       _ImagesError;
 
@@ -27,24 +30,24 @@ class Images with _$Images {
 }
 
 @Freezed()
-class ImagesAssets with _$ImagesAssets {
+sealed class ImagesAssets with _$ImagesAssets {
+  @FreezedUnionValue("loading")
   const factory ImagesAssets.loading(
       {required List<Images> images,
       required bool isLoading}) = _ImagesAssetsLoading;
 
+  @FreezedUnionValue("failed")
   const factory ImagesAssets.failed({
     required bool isLoading,
     required String message,
   }) = _ImagesAssetsFailed;
 
   const ImagesAssets._();
-
-  factory ImagesAssets.fromJson(Map<String, dynamic> json) =>
-      _$ImagesAssetsFromJson(json);
 }
 
-final assetList = StateNotifierProvider<ImageAssetsNotifier, List<ImagesAssets>>(
-    (ref) => ImageAssetsNotifier());
+final assetList =
+    StateNotifierProvider<ImageAssetsNotifier, List<ImagesAssets>>(
+        (ref) => ImageAssetsNotifier());
 
 class ImageAssetsNotifier extends StateNotifier<List<ImagesAssets>> {
   ImageAssetsNotifier([List<ImagesAssets>? state])
@@ -75,9 +78,13 @@ class ImageAssetsNotifier extends StateNotifier<List<ImagesAssets>> {
 
       final images = assetsList.map((e) => Images.fromJson(e)).toList();
       state = isLoading
-          ? <ImagesAssets>[ImagesAssets.loading(images: images, isLoading: true)].toList()
-          : <ImagesAssets>[const ImagesAssets.failed(
-              isLoading: false, message: 'Failed to load images assets')].toList();
+          ? <ImagesAssets>[
+              ImagesAssets.loading(images: images, isLoading: true)
+            ].toList()
+          : <ImagesAssets>[
+              const ImagesAssets.failed(
+                  isLoading: false, message: 'Failed to load images assets')
+            ].toList();
     }
   }
 }

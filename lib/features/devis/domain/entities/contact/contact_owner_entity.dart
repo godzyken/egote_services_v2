@@ -1,23 +1,15 @@
-// ignore_for_file: invalid_annotation_target
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'contact_owner_entity.freezed.dart';
 part 'contact_owner_entity.g.dart';
 
 @freezed
-class ContactOwnerEntity with _$ContactOwnerEntity {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-  const factory ContactOwnerEntity({
-    required int id,
-    required String firstName,
-    required String lastName,
-    required String phone,
-    required String email,
-  }) = _ContactOwnerEntity;
+abstract class ContactOwnerEntity with _$ContactOwnerEntity {
+  const ContactOwnerEntity._();
 
   const factory ContactOwnerEntity.empty() = _ContactOwnerEntityEmpty;
 
+  @FreezedUnionValue('client')
   const factory ContactOwnerEntity.client({
     required int id,
     required String firstName,
@@ -26,6 +18,7 @@ class ContactOwnerEntity with _$ContactOwnerEntity {
     required String email,
   }) = _ContactOwnerEntityClient;
 
+  @FreezedUnionValue('pro')
   const factory ContactOwnerEntity.pro(
       {required int id,
       required String companyName,

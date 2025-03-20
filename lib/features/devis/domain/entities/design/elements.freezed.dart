@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 ElementsEntityModel _$ElementsEntityModelFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'default':
-      return _ElementsEntityModel.fromJson(json);
+      return _ElementsEntityModelData.fromJson(json);
     case 'figures':
       return _ElementsEntityModelFigures.fromJson(json);
     case 'polygones':
@@ -69,7 +69,7 @@ mixin _$ElementsEntityModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
+    TResult Function(_ElementsEntityModelData value) $default, {
     required TResult Function(_ElementsEntityModelFigures value) figures,
     required TResult Function(_ElementsEntityModelPolygones value) polygones,
     required TResult Function(_ElementsEntityModelVolumes value) volumes,
@@ -77,7 +77,7 @@ mixin _$ElementsEntityModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
+    TResult? Function(_ElementsEntityModelData value)? $default, {
     TResult? Function(_ElementsEntityModelFigures value)? figures,
     TResult? Function(_ElementsEntityModelPolygones value)? polygones,
     TResult? Function(_ElementsEntityModelVolumes value)? volumes,
@@ -85,7 +85,7 @@ mixin _$ElementsEntityModel {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
+    TResult Function(_ElementsEntityModelData value)? $default, {
     TResult Function(_ElementsEntityModelFigures value)? figures,
     TResult Function(_ElementsEntityModelPolygones value)? polygones,
     TResult Function(_ElementsEntityModelVolumes value)? volumes,
@@ -144,11 +144,12 @@ class _$ElementsEntityModelCopyWithImpl<$Res, $Val extends ElementsEntityModel>
 }
 
 /// @nodoc
-abstract class _$$ElementsEntityModelImplCopyWith<$Res>
+abstract class _$$ElementsEntityModelDataImplCopyWith<$Res>
     implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$ElementsEntityModelImplCopyWith(_$ElementsEntityModelImpl value,
-          $Res Function(_$ElementsEntityModelImpl) then) =
-      __$$ElementsEntityModelImplCopyWithImpl<$Res>;
+  factory _$$ElementsEntityModelDataImplCopyWith(
+          _$ElementsEntityModelDataImpl value,
+          $Res Function(_$ElementsEntityModelDataImpl) then) =
+      __$$ElementsEntityModelDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -160,11 +161,13 @@ abstract class _$$ElementsEntityModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ElementsEntityModelImplCopyWithImpl<$Res>
-    extends _$ElementsEntityModelCopyWithImpl<$Res, _$ElementsEntityModelImpl>
-    implements _$$ElementsEntityModelImplCopyWith<$Res> {
-  __$$ElementsEntityModelImplCopyWithImpl(_$ElementsEntityModelImpl _value,
-      $Res Function(_$ElementsEntityModelImpl) _then)
+class __$$ElementsEntityModelDataImplCopyWithImpl<$Res>
+    extends _$ElementsEntityModelCopyWithImpl<$Res,
+        _$ElementsEntityModelDataImpl>
+    implements _$$ElementsEntityModelDataImplCopyWith<$Res> {
+  __$$ElementsEntityModelDataImplCopyWithImpl(
+      _$ElementsEntityModelDataImpl _value,
+      $Res Function(_$ElementsEntityModelDataImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ElementsEntityModel
@@ -178,7 +181,7 @@ class __$$ElementsEntityModelImplCopyWithImpl<$Res>
     Object? polygones = freezed,
     Object? volumes = freezed,
   }) {
-    return _then(_$ElementsEntityModelImpl(
+    return _then(_$ElementsEntityModelDataImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -205,8 +208,8 @@ class __$$ElementsEntityModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ElementsEntityModelImpl implements _ElementsEntityModel {
-  const _$ElementsEntityModelImpl(
+class _$ElementsEntityModelDataImpl implements _ElementsEntityModelData {
+  const _$ElementsEntityModelDataImpl(
       {required this.id,
       required this.name,
       this.figures,
@@ -215,8 +218,8 @@ class _$ElementsEntityModelImpl implements _ElementsEntityModel {
       final String? $type})
       : $type = $type ?? 'default';
 
-  factory _$ElementsEntityModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ElementsEntityModelImplFromJson(json);
+  factory _$ElementsEntityModelDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElementsEntityModelDataImplFromJson(json);
 
   @override
   final int id;
@@ -241,7 +244,7 @@ class _$ElementsEntityModelImpl implements _ElementsEntityModel {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ElementsEntityModelImpl &&
+            other is _$ElementsEntityModelDataImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.figures, figures) || other.figures == figures) &&
@@ -260,9 +263,9 @@ class _$ElementsEntityModelImpl implements _ElementsEntityModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ElementsEntityModelImplCopyWith<_$ElementsEntityModelImpl> get copyWith =>
-      __$$ElementsEntityModelImplCopyWithImpl<_$ElementsEntityModelImpl>(
-          this, _$identity);
+  _$$ElementsEntityModelDataImplCopyWith<_$ElementsEntityModelDataImpl>
+      get copyWith => __$$ElementsEntityModelDataImplCopyWithImpl<
+          _$ElementsEntityModelDataImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -311,7 +314,7 @@ class _$ElementsEntityModelImpl implements _ElementsEntityModel {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
+    TResult Function(_ElementsEntityModelData value) $default, {
     required TResult Function(_ElementsEntityModelFigures value) figures,
     required TResult Function(_ElementsEntityModelPolygones value) polygones,
     required TResult Function(_ElementsEntityModelVolumes value) volumes,
@@ -322,7 +325,7 @@ class _$ElementsEntityModelImpl implements _ElementsEntityModel {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
+    TResult? Function(_ElementsEntityModelData value)? $default, {
     TResult? Function(_ElementsEntityModelFigures value)? figures,
     TResult? Function(_ElementsEntityModelPolygones value)? polygones,
     TResult? Function(_ElementsEntityModelVolumes value)? volumes,
@@ -333,7 +336,7 @@ class _$ElementsEntityModelImpl implements _ElementsEntityModel {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
+    TResult Function(_ElementsEntityModelData value)? $default, {
     TResult Function(_ElementsEntityModelFigures value)? figures,
     TResult Function(_ElementsEntityModelPolygones value)? polygones,
     TResult Function(_ElementsEntityModelVolumes value)? volumes,
@@ -347,22 +350,22 @@ class _$ElementsEntityModelImpl implements _ElementsEntityModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ElementsEntityModelImplToJson(
+    return _$$ElementsEntityModelDataImplToJson(
       this,
     );
   }
 }
 
-abstract class _ElementsEntityModel implements ElementsEntityModel {
-  const factory _ElementsEntityModel(
+abstract class _ElementsEntityModelData implements ElementsEntityModel {
+  const factory _ElementsEntityModelData(
       {required final int id,
       required final String name,
       final Figures? figures,
       final Polygones? polygones,
-      final Volumes? volumes}) = _$ElementsEntityModelImpl;
+      final Volumes? volumes}) = _$ElementsEntityModelDataImpl;
 
-  factory _ElementsEntityModel.fromJson(Map<String, dynamic> json) =
-      _$ElementsEntityModelImpl.fromJson;
+  factory _ElementsEntityModelData.fromJson(Map<String, dynamic> json) =
+      _$ElementsEntityModelDataImpl.fromJson;
 
   @override
   int get id;
@@ -376,8 +379,8 @@ abstract class _ElementsEntityModel implements ElementsEntityModel {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ElementsEntityModelImplCopyWith<_$ElementsEntityModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$ElementsEntityModelDataImplCopyWith<_$ElementsEntityModelDataImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -528,7 +531,7 @@ class _$ElementsEntityModelFiguresImpl implements _ElementsEntityModelFigures {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
+    TResult Function(_ElementsEntityModelData value) $default, {
     required TResult Function(_ElementsEntityModelFigures value) figures,
     required TResult Function(_ElementsEntityModelPolygones value) polygones,
     required TResult Function(_ElementsEntityModelVolumes value) volumes,
@@ -539,7 +542,7 @@ class _$ElementsEntityModelFiguresImpl implements _ElementsEntityModelFigures {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
+    TResult? Function(_ElementsEntityModelData value)? $default, {
     TResult? Function(_ElementsEntityModelFigures value)? figures,
     TResult? Function(_ElementsEntityModelPolygones value)? polygones,
     TResult? Function(_ElementsEntityModelVolumes value)? volumes,
@@ -550,7 +553,7 @@ class _$ElementsEntityModelFiguresImpl implements _ElementsEntityModelFigures {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
+    TResult Function(_ElementsEntityModelData value)? $default, {
     TResult Function(_ElementsEntityModelFigures value)? figures,
     TResult Function(_ElementsEntityModelPolygones value)? polygones,
     TResult Function(_ElementsEntityModelVolumes value)? volumes,
@@ -744,7 +747,7 @@ class _$ElementsEntityModelPolygonesImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
+    TResult Function(_ElementsEntityModelData value) $default, {
     required TResult Function(_ElementsEntityModelFigures value) figures,
     required TResult Function(_ElementsEntityModelPolygones value) polygones,
     required TResult Function(_ElementsEntityModelVolumes value) volumes,
@@ -755,7 +758,7 @@ class _$ElementsEntityModelPolygonesImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
+    TResult? Function(_ElementsEntityModelData value)? $default, {
     TResult? Function(_ElementsEntityModelFigures value)? figures,
     TResult? Function(_ElementsEntityModelPolygones value)? polygones,
     TResult? Function(_ElementsEntityModelVolumes value)? volumes,
@@ -766,7 +769,7 @@ class _$ElementsEntityModelPolygonesImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
+    TResult Function(_ElementsEntityModelData value)? $default, {
     TResult Function(_ElementsEntityModelFigures value)? figures,
     TResult Function(_ElementsEntityModelPolygones value)? polygones,
     TResult Function(_ElementsEntityModelVolumes value)? volumes,
@@ -958,7 +961,7 @@ class _$ElementsEntityModelVolumesImpl implements _ElementsEntityModelVolumes {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
+    TResult Function(_ElementsEntityModelData value) $default, {
     required TResult Function(_ElementsEntityModelFigures value) figures,
     required TResult Function(_ElementsEntityModelPolygones value) polygones,
     required TResult Function(_ElementsEntityModelVolumes value) volumes,
@@ -969,7 +972,7 @@ class _$ElementsEntityModelVolumesImpl implements _ElementsEntityModelVolumes {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
+    TResult? Function(_ElementsEntityModelData value)? $default, {
     TResult? Function(_ElementsEntityModelFigures value)? figures,
     TResult? Function(_ElementsEntityModelPolygones value)? polygones,
     TResult? Function(_ElementsEntityModelVolumes value)? volumes,
@@ -980,7 +983,7 @@ class _$ElementsEntityModelVolumesImpl implements _ElementsEntityModelVolumes {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
+    TResult Function(_ElementsEntityModelData value)? $default, {
     TResult Function(_ElementsEntityModelFigures value)? figures,
     TResult Function(_ElementsEntityModelPolygones value)? polygones,
     TResult Function(_ElementsEntityModelVolumes value)? volumes,

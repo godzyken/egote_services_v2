@@ -7,10 +7,7 @@ part 'sign_up_state.freezed.dart';
 part 'sign_up_state.g.dart';
 
 @freezed
-class SignUpState with _$SignUpState {
-  @JsonSerializable(
-    fieldRename: FieldRename.snake,
-  )
+abstract class SignUpState with _$SignUpState {
   const factory SignUpState({
     @JsonKey(
       defaultValue: 'NameFormz',
@@ -30,10 +27,9 @@ class SignUpState with _$SignUpState {
       includeToJson: false,
     )
     PasswordFormz? passwordFormz,
-    @Default(FormzSubmissionStatus.initial)
-    FormzSubmissionStatus? status,
+    @Default(FormzSubmissionStatus.initial) FormzSubmissionStatus? status,
     String? errorMessage,
-  }) = _SignUpState;
+  }) = _SignUpStateData;
 
   factory SignUpState.fromJson(Map<String, dynamic> json) =>
       _$SignUpStateFromJson(json);

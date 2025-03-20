@@ -1,7 +1,8 @@
 import 'dart:developer' as developer;
 
 import 'package:comment_box/comment/comment.dart';
-import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
+import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
+import 'package:egote_services_v2/features/avis/presentation/view/domain/entities/feedback/providers/feedback/feedback_provider.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,27 +24,28 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
   List filedata = [
     {
       'name': 'Chuks Okwuenu',
-      'pic': 'https://picsum.photos/300/30',
+      'photo_url': 'https://picsum.photos/100/30',
       'message': 'I love to code',
-      'date': '2021-01-01 12:00:00'
+      'created_at': '2021-01-01 12:00:00'
     },
     {
       'name': 'Biggi Man',
-      'pic': 'https://www.adeleyeayodeji.com/img/IMG_20200522_121756_834_2.jpg',
+      'photo_url':
+          'https://www.adeleyeayodeji.com/img/IMG_20200522_121756_834_2.jpg',
       'message': 'Very cool',
-      'date': '2021-01-01 12:00:00'
+      'created_at': '2021-01-01 12:00:00'
     },
     {
       'name': 'Tunde Martins',
-      'pic': LocalImages.venomJpg,
+      'photo_url': 'https://picsum.photos/200/30',
       'message': 'Very cool',
-      'date': '2021-01-01 12:00:00'
+      'created_at': '2021-01-01 12:00:00'
     },
     {
       'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
+      'photo_url': 'https://picsum.photos/300/30',
       'message': 'Very cool',
-      'date': '2021-01-01 12:00:00'
+      'created_at': '2021-01-01 12:00:00'
     },
   ];
 
@@ -68,7 +70,7 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: CommentBox.commentImageParser(
-                        imageURLorPath: data[i]['pic']),
+                        imageURLorPath: data[i]['photo_url']),
                   ),
                 ),
               ),
@@ -78,7 +80,7 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
               ),
               subtitle: Text(data[i]['message']),
               trailing: Text(
-                data[i]['date'],
+                data[i]['created_at'],
                 style: const TextStyle(fontSize: 10),
               ),
             ),
@@ -88,48 +90,42 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
   }
 
   Widget avisPosted() {
-    final privatePostsFuture =
-        ref.watch(supabaseClientProvider).from('avis_posts').select('*');
-    return FutureBuilder(
-      future: privatePostsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text(snapshot.error.toString()));
-        }
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final data = snapshot.data!;
+    final privatePostsFuture = ref.watch(feedbackProvider);
+    return privatePostsFuture.when(
+      data: (data) {
         return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) => ListTile(
-            leading: GestureDetector(
-              onTap: () {},
-              child: Container(
-                height: 50.0,
-                width: 50.0,
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              final feedback = data[index];
+              return ListTile(
+                leading: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: CommentBox.commentImageParser(
+                          imageURLorPath: feedback.photoUrl),
+                    ),
+                  ),
                 ),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: CommentBox.commentImageParser(
-                      imageURLorPath: data[index]['pic']),
+                title: Text(feedback.name!,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(feedback.message),
+                trailing: Text(
+                  feedback.createdAt.toIso8601String(),
+                  style: const TextStyle(fontSize: 10),
                 ),
-              ),
-            ),
-            title: Text(data[index]['name'],
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(data[index]['message']),
-            trailing: Text(
-              data[index]['created_at'],
-              style: const TextStyle(fontSize: 10),
-            ),
-          ),
-        );
+              );
+            });
       },
+      error: (error, stackTrace) => Text('Error: $error'),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -141,27 +137,14 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
         backgroundColor: Colors.pink,
       ),
       body: CommentBox(
-        userImage:
-            CommentBox.commentImageParser(imageURLorPath: LocalImages.venomJpg),
+        userImage: CommentBox.commentImageParser(
+            imageURLorPath: LocalImages.foxFaceMeshTexture),
         labelText: context.tr!.comment,
         errorText: context.tr!.canBeBlank,
         withBorder: false,
         sendButtonMethod: () {
           if (formKey.currentState!.validate()) {
-            setState(() {
-              var value = {
-                'name': 'New User',
-                'pic':
-                    'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
-                'message': controller.text,
-                'date': '2021-01-01 12:00:00'
-              };
-              filedata.insert(0, value);
-            });
-            //ref.read(supabaseClientProvider).from('avis_posts').insert(value);
-
-            controller.clear();
-            FocusScope.of(context).unfocus();
+            sendAvis(context);
           } else {
             developer.log("Not validated");
           }
@@ -174,5 +157,21 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
         child: avisChild(filedata),
       ),
     );
+  }
+
+  void sendAvis(BuildContext context) async {
+    final user = ref.read(firebaseAuthProvider).currentUser;
+    setState(() {
+      var value = controller.text;
+
+      ref
+          .read(feedbackProvider.notifier)
+          .submitFeedback(value, user!.isAnonymous);
+
+      filedata.insert(0, value);
+    });
+
+    controller.clear();
+    FocusScope.of(context).unfocus();
   }
 }

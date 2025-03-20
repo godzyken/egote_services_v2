@@ -18,12 +18,12 @@ class ConcreteCheckoutService implements CheckoutService {
 
   @override
   Future<DevisModelEntity> update(String id) async {
-    final oldDeviId = DevisId(id: int.parse(id));
+    final oldDeviId = DevisId(value: id);
     final oldDevis = DevisModelEntity.initialize(
         id: oldDeviId, createdAt: DateTime.timestamp());
 
     return oldDevis.when(
-        approved: (id,
+        edit: (id,
                 createdAt,
                 validity,
                 client,
@@ -36,7 +36,7 @@ class ConcreteCheckoutService implements CheckoutService {
                 amountHt,
                 amountTtc,
                 approval) async =>
-            DevisModelEntity.approved(
+            DevisModelEntity.edit(
                 id: id,
                 createdAt: createdAt,
                 validity: validity,
