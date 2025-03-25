@@ -1,6 +1,7 @@
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../features/auth/domain/entities/user/user_entity.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
@@ -832,9 +833,10 @@ class AvisBoxRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
+    final avisId = state.pathParameters['avisId'] = Uuid().v4.toString();
     return AvisBoxPage(
       key: state.pageKey,
-      avisId: avisId.toString(),
+      avisId: avisId,
     );
   }
 }

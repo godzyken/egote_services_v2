@@ -9,7 +9,7 @@ import '../../../../../config/providers.dart';
 import '../../../../../config/providers/cube/cube_providers.dart';
 import '../../../../../config/providers/firebase/firebase_providers.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
-import '../../../application/managers/push_notifications_manager.dart';
+import '../../../application/services/push_notification_service.dart';
 import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatSettingsScreen extends ConsumerWidget {
@@ -57,6 +57,8 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   final TextEditingController _loginFilter = TextEditingController();
   final TextEditingController _nameFilter = TextEditingController();
   final TextEditingController _emailFilter = TextEditingController();
+
+  late final PushNotificationService _pushNotificationService;
   String _login = "";
   String _name = "";
   String _email = "";
@@ -65,6 +67,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     _loginFilter.addListener(_loginListen);
     _nameFilter.addListener(_nameListen);
     _emailFilter.addListener(_emailListen);
+    _pushNotificationService.flutterLocalNotificationsPlugin;
     setState(() {
       _nameFilter.text = widget.currentUser.fullName ?? '';
       _loginFilter.text = widget.currentUser.login ?? '';
@@ -322,7 +325,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
                   },
                 ).whenComplete(() {
                   ref.watch(cubeChatConnectionProvider).destroy();
-                  PushNotificationsManager.instance.unsubscribe();
+                  _pushNotificationService.unsubscribe();
                   ref
                       .watch(firebaseAuthProvider)
                       .currentUser
@@ -379,7 +382,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
                     }
                   },
                 ).whenComplete(() async {
-                  await PushNotificationsManager.instance.unsubscribe();
+                  await _pushNotificationService.unsubscribe();
                   setState(() {
                     context.pop();
                   });

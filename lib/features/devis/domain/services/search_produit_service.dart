@@ -19,31 +19,11 @@ class SearchProduitService extends _$SearchProduitService {
 
   Locale? lang;
 
-  SearchProduitService() : produitService = AsyncValue.loading() {
-    _dio.clone(
-        options: BaseOptions(
-      baseUrl: baseUrl!,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Expose-Headers': 'X-Request-Id',
-        'Content-Type': 'Application/json',
-        'Accept': 'Application/json, text/plain, */*',
-        'authorization': 'Bearer rt27f99sq5gsv3chlraqa7ifgiheo1n2059v',
-      },
-      responseType: ResponseType.json,
-      validateStatus: (status) =>
-          status! >= 200 && status <= 299 || status == 403,
-      receiveDataWhenStatusError: true,
-    ));
-  }
+  SearchProduitService() : produitService = AsyncValue.loading();
   SearchProduitService.withProduitService({required this.produitService}) {
     _dio.clone(
         options: BaseOptions(
       baseUrl: baseUrl!,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Expose-Headers': 'X-Request-Id',

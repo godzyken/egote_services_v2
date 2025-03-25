@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:egote_services_v2/features/chat/application/services/firebase_messaging_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,15 +11,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../features/chat/application/managers/push_notifications_manager.dart';
 import '../../../firebase_options.dart';
 import '../../environements/environment.dart';
 import '../../environements/flavors.dart';
 
 // <---------------- Firebase Instances Providers -------------------> //
 final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
-  FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
-
   final configFile = await rootBundle.loadString(F.envFileName, cache: false);
   final env =
       Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
@@ -53,8 +51,12 @@ final firebaseDatabaseProvider =
 final firebaseFirestoreProvider =
     Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
 
-final firebaseMessagingProvider =
-    Provider<FirebaseMessaging>((ref) => FirebaseMessaging.instance);
+final firebaseMessagingProvider = Provider<FirebaseMessaging>((ref) {
+  return FirebaseMessaging.instance;
+});
+
+final firebaseMessagingServiceProvider =
+    Provider<FirebaseMessagingService>((ref) => FirebaseMessagingService());
 
 final emulatorSettingsProvider = Provider((ref) {
   final fire = ref.watch(firebaseFirestoreProvider);

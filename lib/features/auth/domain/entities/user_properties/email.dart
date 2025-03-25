@@ -20,7 +20,7 @@ const String _kEmailPattern =
 class EmailFormz extends FormzInput<String, EmailValidationError> {
   const EmailFormz.pure([super.value = '']) : super.pure();
 
-  const EmailFormz._() : super.dirty('');
+  const EmailFormz() : super.dirty('');
 
   const EmailFormz.dirty([super.value = '']) : super.dirty();
 

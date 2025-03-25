@@ -1,6 +1,6 @@
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:egote_services_v2/features/common/domain/values/value_abstract.dart';
-import 'package:fpdart/src/either.dart' as either;
+import 'package:fpdart/fpdart.dart' as either;
 
 class UserName extends ValueAbstract<String> {
   factory UserName(String input) {

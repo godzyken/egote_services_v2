@@ -62,11 +62,7 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
     }
   }
   return dogData;
-}, dependencies: [
-  datadogConfigProvider,
-  datadogInstanceProvider,
-  trackingConsentProvider
-], name: 'Initialisation de datadog provider');
+}, name: 'Initialisation de datadog provider');
 
 final datadogInstanceProvider =
     Provider<DatadogSdk>((ref) => DatadogSdk.instance);

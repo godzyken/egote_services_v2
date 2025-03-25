@@ -45,9 +45,11 @@ class ConfigVideoService {
   Map<String, String> userInfo = {};
 
   P2PSession? callSession;
+  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
 
   void init() {
     createCallSession(callType, opponentsIds);
+    _remoteRenderer = RTCVideoRenderer();
   }
 
   Future<P2PClient> createCallSession(callType, opponentsIds) async {
@@ -65,43 +67,39 @@ class ConfigVideoService {
     P2PSession callSession =
         callClient.createCallSession(callType, opponentsIds);
 
-    callSession.onLocalStreamReceived = (mediaStream) {
+    callSession.onLocalStreamReceived = (mediaStream) async {
       // called when local media stream completely prepared
 
+      RTCVideoRenderer localRender = RTCVideoRenderer();
+      await localRender.initialize();
+      localRender.srcObject = mediaStream;
       // display the stream in UI
-      // ...
+      // ... Ex : setState(() { _localRenderer = localRenderer; })
       callSession.acceptCall(userInfo);
     };
 
     callSession.onRemoteStreamReceived =
         (callSession, opponentId, mediaStream) async {
-      // called when remote media stream received from opponent
-      RTCVideoRenderer streamRender = RTCVideoRenderer();
-      await streamRender.initialize();
-      streamRender.srcObject = mediaStream;
+      _remoteRenderer = RTCVideoRenderer();
+      await _remoteRenderer.initialize();
+      _remoteRenderer.srcObject = mediaStream;
       // display the stream in UI
-      // ...streamRender.objectFit = RTCVideoViewObjectFit.RTCVideoViewObjectFitCover;
+      // ... Ex : setState(() { _remoteRenderer = remoteRenderer; })
 
       // display the stream in UI
       // ...RTCVideoView(streamRender);
-      RTCVideoView videoView = RTCVideoView(streamRender,
+      RTCVideoView remoteVideoView = RTCVideoView(_remoteRenderer,
           mirror: true, filterQuality: FilterQuality.medium);
-      await videoView.videoRenderer.initialize();
-      streamRender = videoView.videoRenderer;
-
-      RTCVideoPlatFormView view = RTCVideoPlatFormView(
-        onViewReady: (view) {
-          view.initialize();
-          view.srcObject = mediaStream;
-        },
-        objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-        mirror: true,
-      );
-
-      // ...
+      await remoteVideoView.videoRenderer.initialize();
     };
 
-    callSession.onRemoteStreamRemoved = (callSession, opponentId, mediaStream) {
+    callSession.onRemoteStreamRemoved =
+        (callSession, opponentId, mediaStream) async {
+      _remoteRenderer.srcObject = null;
+      _remoteRenderer.dispose();
+      _remoteRenderer.removeListener(
+        () => Action.DELETE,
+      );
       // called when remote media was removed
     };
 
@@ -113,24 +111,14 @@ class ConfigVideoService {
 
     callSession.onCallRejectedByUser = (callSession, opponentId, [userInfo]) {
       // called when received 'reject' signal from opponent
-      String callSessionId;
-      Set<int> callMembers = {};
-      callMembers.add(opponentId);
-      callSessionId = callSession.sessionId;
-
+      String callSessionId = callSession.sessionId;
+      Set<int> callMembers = {opponentId};
       callSession.reject(userInfo);
-
       rejectCall(callSessionId, callMembers, userInfo: userInfo);
     };
 
-    /* callSession.onCallRejectedByOpponent = (callSessionId, callMembers, [userInfo]) {
-
-
-      rejectCall(callSessionId, callMembers, userInfo: userInfo);
-    }*/
-
-    callSession.onCallAcceptedByUser = (callSession, opponentId, [userInfo]) {
-      // called when received 'accept' signal from opponent
+    callSession.onCallAcceptedByUser =
+        (callSessionId, callMembers, [userInfo]) {
       callSession.acceptCall(userInfo);
     };
 

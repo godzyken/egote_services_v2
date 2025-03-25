@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:egote_services_v2/config/providers.dart';
+import 'package:egote_services_v2/config/providers/supabase/supabase_service.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -13,52 +14,55 @@ import '../../environements/flavors.dart';
 // <---------------- Supabase Instances Providers -------------------> //
 
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
-  // Charger la configuration à partir d'un fichier JSON
-  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  final env =
-      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  try {
+    // Charger la configuration à partir d'un fichier JSON
+    final configFile = await rootBundle.loadString(F.envFileName, cache: false);
+    final env =
+        Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
-  // Initialiser un client GoTrue pour l'authentification
-  final client = supabase.GoTrueClient(
-    url: env.supabaseUrl,
-    autoRefreshToken: true,
-    headers: {
-      "apiKey": env.supabaseAnonKey,
-      "Authorization": "Bearer ${env.supabaseAnonKey}",
-    },
-  );
+    // Initialiser un client GoTrue pour l'authentification
+    final client = supabase.GoTrueClient(
+      url: env.supabaseUrl,
+      autoRefreshToken: true,
+      headers: {
+        "apiKey": env.supabaseAnonKey,
+        "Authorization": "Bearer ${env.supabaseAnonKey}",
+      },
+    );
 
-  // Fonction améliorée pour récupérer un token d'accès
-  Future<String> getAccessToken() async {
-    String? accessToken = client.currentSession?.providerRefreshToken;
+    // Fonction améliorée pour récupérer un token d'accès
+    Future<String> getAccessToken() async {
+      await Future.delayed(const Duration(seconds: 2));
+      String? accessToken = client.currentSession?.providerRefreshToken;
 
-    // Vérification si le token est vide ou nul
-    if (accessToken == null || accessToken.isEmpty) {
-      return env.accessToken; // Retourne le token d'accès par défaut
+      return accessToken ?? env.accessToken;
     }
-    return accessToken; // Retourne le token d'accès valide
-  }
 
-  // Initialisation de Supabase avec les options
-  return await supabase.Supabase.initialize(
-    url: env.supabaseUrl,
-    anonKey: env.supabaseAnonKey,
-    headers: client.headers,
-    accessToken: () => getAccessToken(),
-    authOptions: const supabase.FlutterAuthClientOptions(
-      authFlowType: supabase
-          .AuthFlowType.pkce, // Utilisation de PKCE pour l'authentification
-    ),
-    realtimeClientOptions: const supabase.RealtimeClientOptions(
-      logLevel: supabase.RealtimeLogLevel.info,
-      eventsPerSecond: 2, // Limitation des événements en temps réel
-    ),
-    storageOptions: const supabase.StorageClientOptions(
-      retryAttempts: 10,
-    ),
-    postgrestOptions: const supabase.PostgrestClientOptions(schema: 'public'),
-    debug: kDebugMode,
-  );
+    // Initialisation de Supabase avec les options
+    await supabase.Supabase.initialize(
+      url: env.supabaseUrl,
+      anonKey: env.supabaseAnonKey,
+      headers: client.headers,
+      accessToken: () => getAccessToken(),
+      authOptions: const supabase.FlutterAuthClientOptions(
+        authFlowType: supabase
+            .AuthFlowType.pkce, // Utilisation de PKCE pour l'authentification
+      ),
+      realtimeClientOptions: const supabase.RealtimeClientOptions(
+        logLevel: supabase.RealtimeLogLevel.info,
+        eventsPerSecond: 2, // Limitation des événements en temps réel
+      ),
+      storageOptions: const supabase.StorageClientOptions(
+        retryAttempts: 10,
+      ),
+      postgrestOptions: const supabase.PostgrestClientOptions(schema: 'public'),
+      debug: kDebugMode,
+    );
+
+    return ref.watch(supabaseProvider);
+  } on Exception catch (e) {
+    throw StateError('Error initializing Supabase: $e');
+  }
 }, name: 'Initialisation de supabase provider');
 
 final supabaseProvider =
@@ -69,29 +73,10 @@ final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
   final supaInit = ref.watch(supabaseInitProvider);
 
   // Vérifie si le client est disponible et renvoie une exception sinon
-  final client = supaInit.value?.client;
+  final client = supaInit.value!.client;
 
-  // Si le client est nul, une erreur explicite peut être lancée
-  if (client == null) {
-    throw StateError('Supabase client is not initialized or available');
-  }
-
-  // Retourne le client si tout est en ordre
   return client;
-},
-    dependencies: [supabaseProvider, supabaseInitProvider],
-    name: 'Supabase Client Provider');
-
-final supabaseAuthUserProvider = Provider<supabase.Session>((ref) {
-  final user = ref.watch(userSupabaseProvider);
-  return supabase.Session(
-      accessToken: 'sbp_1ab3d516d00ca0f129246c64d116d3fc5791bc35',
-      tokenType: 'tokenType',
-      user: user);
 });
-
-final supabaseSocketChannelProvider =
-    Provider((ref) => ref.watch(supabaseProvider).client.realtime.transport);
 
 /*final supabaseRealtimeErrorProvider =
     Provider<supabase.SupabaseRealtimeError>((ref) {
@@ -180,12 +165,24 @@ final supabaseChannelResponseProvider =
 final supabaseChannelFilterProvider =
     Provider((ref) => supabase.RealtimeChannel);
 
+final supabaseServiceProvider =
+    Provider<SupabaseService>((ref) => SupabaseService());
+
 final userSupabaseProvider = Provider<supabase.User>((ref) {
+  final currentUser = ref.watch(supabaseProvider).client.auth.currentUser;
   return supabase.User(
-      id: 'id',
-      appMetadata: {},
-      userMetadata: {},
-      aud: 'aud',
+      id: currentUser!.id,
+      appMetadata: currentUser.appMetadata,
+      userMetadata: currentUser.userMetadata,
+      email: currentUser.email,
+      emailConfirmedAt: currentUser.emailConfirmedAt,
+      phone: currentUser.phone,
+      phoneConfirmedAt: currentUser.phoneConfirmedAt,
+      invitedAt: currentUser.invitedAt,
+      lastSignInAt: currentUser.lastSignInAt,
+      role: currentUser.role,
+      identities: currentUser.identities,
+      aud: currentUser.aud,
       createdAt: 'createdAt');
 });
 
@@ -194,12 +191,12 @@ final linksTypeProvider = StateProvider((_) => supabase.GenerateLinkType);
 final filterConnection = StateProvider<List<int>>((ref) {
   final state1 =
       ref.watch(supabaseInitProvider.future).timeout(const Duration(days: 2));
-  final state2 = ref.watch(supabaseClientProvider);
+  final state2 = ref.watch(userSupabaseProvider);
   final state3 = ref.watch(userNotifierProvider);
 
   final stateList = <int, String>{
     1: state1.toString(),
-    2: state2.auth.currentUser!.id,
+    2: state2.id,
     3: state3.role
   };
 

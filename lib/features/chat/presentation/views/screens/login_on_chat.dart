@@ -13,13 +13,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
 import '../../../../../config/providers/cube/cube_providers.dart';
 import '../../../../../firebase_options.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../auth/presentation/views/widgets/widgets_extensions.dart';
-import '../../../application/managers/push_notifications_manager.dart';
+import '../../../application/services/push_notification_service.dart';
 import '../../../data/data_sources/local/pref_util.dart';
 
 class LoginOnChat extends ConsumerStatefulWidget {
@@ -34,6 +35,7 @@ enum FormType { login, register }
 class _LoginOnChatState extends ConsumerState<LoginOnChat> {
   final TextEditingController _loginFilter = TextEditingController();
   final TextEditingController _passwordFilter = TextEditingController();
+  late final PushNotificationService _pushNotificationService;
   String _login = "";
   String _password = "";
 
@@ -373,7 +375,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
             user = cubeSession.user!;
 
-            PushNotificationsManager.instance.init();
+            _pushNotificationService.initialize;
 
             return user.id == cubeSession.userId ? user : null;
           }
@@ -389,7 +391,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       user.id = newUser.id;
       SharedPrefs.instance.saveNewUser(
           user, isEmailSelected ? LoginType.email : LoginType.login);
-      PushNotificationsManager.instance.init();
+      _pushNotificationService.initialize;
       createSession(user).then((result) {
         if (context.mounted) {
           _loginToCubeChat(context, result.user!);
@@ -419,7 +421,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         });
       }
 
-      PushNotificationsManager.instance.init();
+      _pushNotificationService.initialize;
 
       if (context.mounted) {
         _loginToCubeChat(context, user);
@@ -494,7 +496,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     }
 
     signInFuture?.then((cubeUser) {
-      PushNotificationsManager.instance.init();
+      _pushNotificationService.initialize;
 
       if (mounted) {
         _loginToCubeChat(context, cubeUser);
@@ -543,7 +545,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
       log("getNotificationAppLaunchDetails, payload: $payload");
 
-      var dialogId;
+      String? dialogId = Uuid().v1();
       if (getToken(payload!).isEmpty) {
         dialogId = SharedPrefs.instance.getSelectedDialogId();
         log("getNotificationAppLaunchDetails, selectedDialogId: $dialogId");

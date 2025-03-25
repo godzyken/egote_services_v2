@@ -23,6 +23,7 @@ import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/domain/providers/auth_repository_provider.dart';
 import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
+import '../features/avis/domain/providers/feedback/feedback_provider.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
 import '../features/chat/data/data_sources/local/pref_util.dart';
@@ -48,55 +49,65 @@ import '../features/settings/presentation/view/settings_ui_page.dart';
 import '../features/sketch/presentation/view/drawing_page.dart';
 
 Future<void> initializeProvider(ProviderContainer container) async {
-  await container.read(firebaseInitProvider.future);
-  await container.read(supabaseInitProvider.future);
-  await container.read(userFutureProvider.future);
-  await container.read(webrtcInitProvider.future);
-  await container.read(datadogProvider.future);
-  await container.read(cubeSettingsInitProvider.future);
-  await container.read(cubeUserProvider.future);
-  await container.read(sharedPreferencesProvider.future);
-  await container.read(produitFutureProvider.future);
-  await container.read(cubeChatConnectionSettingsProvider.future);
+  await Future.wait(
+    <Future<dynamic>>[
+      container.read(supabaseInitProvider.future),
+      container.read(firebaseInitProvider.future),
+      container.read(userFutureProvider.future),
+      container.read(webrtcInitProvider.future),
+      container.read(datadogProvider.future),
+      container.read(cubeSettingsInitProvider.future),
+      container.read(cubeUserProvider.future),
+      container.read(sharedPreferencesProvider.future),
+      container.read(produitFutureProvider.future),
+      container.read(cubeChatConnectionSettingsProvider.future),
+    ],
+    eagerError: true,
+    cleanUp: (successValue) async {
+      await Future.delayed(const Duration(seconds: 2));
+      container.read(connectivityStatusProviders);
+      container.read(sharedPrefsProvider);
+      container.read(firebaseDatabaseProvider);
+      container.read(firebaseFirestoreProvider);
+      container.read(firebaseMessagingProvider);
+      container.read(emulatorSettingsProvider);
+      // container.read(geoLocProvider);
+      container.read(firebaseAuthProvider);
+      container.read(cubeUserControllerProvider);
+      container.read(cubeSessionManagerProvider);
+      container.read(cubeChatConnectionNotifierProvider);
+      container.read(cubeChatConnectionSettingsProvider);
+      container.read(cubeChatConnectionProvider);
+      container.read(goRouterProvider);
+      container.read(localizationProvider);
+      container.read(cubeProvider);
 
-  container.read(connectivityStatusProviders);
-  container.read(sharedPrefsProvider);
-  container.read(firebaseDatabaseProvider);
-  container.read(firebaseFirestoreProvider);
-  container.read(firebaseMessagingProvider);
-  container.read(emulatorSettingsProvider);
-  // container.read(geoLocProvider);
-  container.read(firebaseAuthProvider);
-  container.read(cubeUserControllerProvider);
-  container.read(cubeSessionManagerProvider);
-  container.read(cubeChatConnectionNotifierProvider);
-  container.read(cubeChatConnectionSettingsProvider);
-  container.read(cubeChatConnectionProvider);
-  container.read(goRouterProvider);
-  container.read(localizationProvider);
-  container.read(cubeProvider);
+      container.read(authStateChangesProvider);
+      container.read(authStateProvider);
+      // container.read(idTokenChangesProvider);
+      container.read(userChangesProvider);
+      container.read(userRoleProvider);
 
-  container.read(authStateChangesProvider);
-  container.read(authStateProvider);
-  // container.read(idTokenChangesProvider);
-  container.read(userChangesProvider);
-  container.read(userRoleProvider);
+      container.read(fireDatabaseProvider);
 
-  container.read(fireDatabaseProvider);
+      container.read(backgroundTaskProvider);
+      container.read(editDeviViewModelProvider);
+      container.read(produitServiceProvider);
+      container.read(editProduitProvider);
+      container.read(produitStateNotifierProvider);
+      container.read(devisStateNotifierProvider);
+      container.read(checkoutServiceProvider);
+      container.read(missionsListProvider);
+      container.read(travauxListProvider);
+      container.read(missionStateNotifierProvider);
+      container.read(devisStateNotifierProvider);
+      container.read(dioProvider);
+      container.read(telemetryProvider);
+      container.read(feedbacksProvider);
 
-  container.read(backgroundTaskProvider);
-  container.read(editDeviViewModelProvider);
-  container.read(produitServiceProvider);
-  container.read(editProduitProvider);
-  container.read(produitStateNotifierProvider);
-  container.read(devisStateNotifierProvider);
-  container.read(checkoutServiceProvider);
-  container.read(missionsListProvider);
-  container.read(travauxListProvider);
-  container.read(missionStateNotifierProvider);
-  container.read(devisStateNotifierProvider);
-  container.read(dioProvider);
-  container.read(telemetryProvider);
+      return successValue;
+    },
+  );
 
   container.dispose();
 }
@@ -193,9 +204,10 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                 path: AvisBoxRoute.path,
                 name: 'avisRoute',
                 builder: (context, state) {
+                  final avisId = state.pathParameters['avisId']!;
                   return AvisBoxPage(
                     key: state.pageKey,
-                    avisId: state.pathParameters['avisId']!,
+                    avisId: avisId,
                   );
                 }),
             GoRoute(

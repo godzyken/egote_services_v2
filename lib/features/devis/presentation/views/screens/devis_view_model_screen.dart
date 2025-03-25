@@ -109,11 +109,7 @@ class DevisViewModel {
 
   double get _grandTotal => _total * (1 + tax);
 
-  String? _andy;
-
   Future<Uint8List> buildPdf(PdfPageFormat format) async {
-    _andy = Assets.lottie.models.andy.keyName;
-
     final pdf = pw.Document();
 
     pdf.addPage(pw.MultiPage(
@@ -212,13 +208,12 @@ class DevisViewModel {
               child: pw.Column(
                 mainAxisSize: pw.MainAxisSize.min,
                 children: [
-                  /*   pw.Container(
+                  pw.Container(
                     alignment: pw.Alignment.topRight,
                     padding: const pw.EdgeInsets.only(bottom: 8, left: 30),
                     height: 72,
-                    child:
-                        _andy != null ? pw.SvgImage(svg: _andy!) : pw.PdfLogo(),
-                  ),*/
+                    child: pw.SvgImage(svg: Assets.lottie.models.andy.keyName),
+                  ),
                   pw.Container(
                     color: baseColor,
                     alignment: pw.Alignment.topRight,

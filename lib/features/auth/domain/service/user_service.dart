@@ -5,11 +5,11 @@ import 'package:egote_services_v2/config/providers/firebase/firebase_providers.d
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserService {
+class FirebaseAuthService {
   late final Ref _ref;
 
   FirebaseAuth get _firebaseAuth => _ref.watch(firebaseAuthProvider);
-  UserService(this._ref);
+  FirebaseAuthService(this._ref);
 
   Future<bool> verifyPhoneAuthentication(
       String token, String code, String verificationId) async {

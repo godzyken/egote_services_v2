@@ -45,7 +45,7 @@ class SharedPrefs {
   }
 
   saveNewUser(CubeUser cubeUser, LoginType loginType) {
-    prefs.clear();
+    // prefs.clear();
 
     prefs.setString(prefLoginType, loginType.name);
 
@@ -90,20 +90,25 @@ class SharedPrefs {
     }
   }
 
-  Future<CubeUser?> getUser() {
-    if (prefs.getString(prefUserLogin) == null &&
-        prefs.getString(prefUserEmail) == null) {
-      return Future.value();
+  Future<CubeUser?> getUser() async {
+    String? login = prefs.getString(prefUserLogin);
+    String? email = prefs.getString(prefUserEmail);
+
+    if (login == null && email == null) {
+      return null; // Aucun utilisateur trouvé
     }
-    var user = CubeUser();
-    user.login = prefs.getString(prefUserLogin);
-    user.email = prefs.getString(prefUserEmail);
-    user.phone = prefs.getString(prefUserPhone);
-    user.password = prefs.getString(prefUserPsw);
-    user.fullName = prefs.getString(prefUserName);
-    user.id = prefs.getInt(prefUserId);
-    user.avatar = prefs.getString(prefUserAvatar);
-    return Future.value(user);
+
+    var user = CubeUser(
+      login: login,
+      email: email,
+      phone: prefs.getString(prefUserPhone),
+      password: prefs.getString(prefUserPsw),
+      fullName: prefs.getString(prefUserName),
+      id: prefs.getInt(prefUserId),
+      avatar: prefs.getString(prefUserAvatar),
+    );
+
+    return user;
   }
 
   LoginType? getLoginType() {

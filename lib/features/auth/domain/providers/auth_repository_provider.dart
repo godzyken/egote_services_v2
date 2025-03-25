@@ -6,7 +6,6 @@ import 'package:egote_services_v2/features/auth/infrastructure/repositories/list
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../config/providers/firebase/firebase_providers.dart';
 import '../../../../config/providers/supabase/supabase_providers.dart';
 import '../../infrastructure/repositories/auth_repository.dart';
 
@@ -31,18 +30,13 @@ final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
 
   ref.keepAlive();
   return AuthRepository(AuthTokenLocalDataSource(prefs!), client, link);
-}, dependencies: [
-  sharedPreferencesProvider,
-  supabaseClientProvider,
-  generateLinkTypeNotifierProvider
-], name: 'Auth repository provider');
+}, name: 'Auth repository provider');
 
 final authStateListenable = ValueNotifier<bool>(false);
 
 final autoAuthControllerProvider =
     StateNotifierProvider<AutoAuthController, UserModel?>(
         (ref) => AutoAuthController(ref),
-        dependencies: [authRepositoryProvider, firebaseFirestoreProvider],
         name: 'auto controller authentication state notifier');
 
 final authProvider =
@@ -51,6 +45,5 @@ final authProvider =
     final repo = ref.watch(authRepositoryProvider);
     return AuthController(repo);
   },
-  dependencies: [authRepositoryProvider],
   name: 'authentication always listener async values state notifier',
 );

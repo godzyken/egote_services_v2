@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:io';
 import 'dart:isolate';
@@ -26,10 +27,8 @@ import 'flavors.dart';
 Future<ProviderContainer> bootstrap() async {
   //WidgetsFlutterBinding.ensureInitialized();
   final binding = SentryWidgetsFlutterBinding.ensureInitialized();
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    if (kReleaseMode) exit(1);
-  };
+  flutterErrorFlow();
+
 /*  await Workmanager().initialize(callbackDispatcher);*/
   Workmanager().registerOneOffTask(
     'id_unique',
@@ -39,6 +38,101 @@ Future<ProviderContainer> bootstrap() async {
     existingWorkPolicy: ExistingWorkPolicy.replace,
   );
 
+  await customSentryBinding(binding);
+
+  await SentryFlutter.init(
+      appRunner: () => runApp(const ProviderScope(child: EgoteApp())),
+      sentryCustomOptions);
+
+  await sendMessageToSentry();
+
+  final container = ProviderContainer(
+    overrides: [
+      firebaseInitProvider.overrideWith((ref) => ref.future),
+      localizationProvider.overrideWith(
+          (ref) => MultiLang(ref.read(localeProvider).languageCode)),
+      datadogConfigProvider.overrideWith((ref) => ref.future),
+      sharedPreferencesProvider.overrideWith((ref) => ref.future),
+      platformProvider
+          .overrideWith((ref) => ref.read(targetPlatformProvider).value!),
+    ],
+    observers: [
+      if (F.appFlavor == Flavor.local) _Logger(),
+    ],
+  );
+
+  await providers.initializeProvider(container);
+  return container;
+}
+
+Future<void> sendMessageToSentry() async {
+  final search_results = [
+    {'id': 1, 'name': 'Philipe Morice'},
+    {'id': 2, 'name': 'Romain Roussel'},
+    {'id': 3, 'name': 'Biggy man'},
+  ];
+
+  try {
+    final context = {
+      'user_id': '12312012',
+      'search_results': search_results,
+    };
+
+    // Capturer un message avec un niveau fatal
+    final sentryId = await Sentry.captureMessage(
+      'message de sentry: hello world',
+      level: SentryLevel.fatal,
+    );
+    final transaction = Sentry.startTransaction('processOrderBatch', 'task',
+        bindToScope: true, customSamplingContext: context);
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    await tryProcessOrderBatch(transaction);
+
+    await tryPartialStackFrameList(transaction);
+
+    await sendDataToSupabase();
+
+    // Utiliser l'ID envoyé par Sentry
+    developer.log('Message envoyé à Sentry avec l\'ID: $sentryId');
+  } catch (exception) {
+    developer.log('Erreur lors de l\'envoi du message à Sentry: $exception');
+  }
+}
+
+Future<void> sendDataToSupabase() async {
+  var client = SentryHttpClient();
+  try {
+    var uriResponse = await client.post(
+        Uri.parse(
+            'https://ltcnlgqoeunywzlewydv.supabase.co/rest/v1/avis_posts?select=*'),
+        body: {'name': 'Philipe Morice', 'message': 'I love to move it.'});
+
+    // Assurez-vous que la réponse contient un corps valide et une clé 'uri'
+    if (uriResponse.statusCode == 200) {
+      var uri = uriResponse
+          .body; // Remplacez ici si vous avez besoin de parser le JSON
+      developer.log('Réponse de la requête POST: $uri');
+
+      // Exemple d'utilisation de la réponse 'uri' dans une requête GET
+      var getResponse = await client.get(Uri.parse(uri));
+      if (getResponse.statusCode == 200) {
+        developer.log('Réponse GET réussie: ${getResponse.body}');
+      } else {
+        developer.log('Erreur GET: ${getResponse.statusCode}');
+      }
+    } else {
+      developer.log('Erreur POST: ${uriResponse.statusCode}');
+    }
+  } catch (e) {
+    developer.log('Erreur lors de la requête: $e');
+  } finally {
+    client.close();
+  }
+}
+
+Future<void> customSentryBinding(WidgetsBinding binding) async {
   await Future.wait(
       [
         Future.delayed(const Duration(seconds: 2)),
@@ -62,87 +156,13 @@ Future<ProviderContainer> bootstrap() async {
         successValue;
       });
   });
+}
 
-  await SentryFlutter.init(
-      appRunner: () => runApp(const ProviderScope(child: EgoteApp())),
-      (options) {
-    options.dsn =
-        'https://8486e00ed99148aaa94a4b700ea4df50@o4505047063592960.ingest.us.sentry.io/4505047065427968';
-
-    options.enableAutoPerformanceTracing = true;
-    options.beforeCaptureScreenshot = (event, hint, bool isOn) {
-      event.tags?['app_version'] = '1.0.0';
-      if (isOn) {
-        // Ajouter des informations supplémentaires dans l'événement
-        event.tags!['background'] = 'App is in foreground';
-        return false;
-      } else {
-        event.tags!['background'] = 'App is in background';
-        return true;
-      }
-    };
-
-    options.beforeCaptureViewHierarchy = (event, hint, bool isOn) {
-      if (FlutterBackground.isBackgroundExecutionEnabled) {
-        event.tags?['background'] = 'App is in background';
-        return true;
-      } else {
-        event.tags?['background'] = 'App is in foreground';
-        return false;
-      }
-    };
-
-    options.beforeSend = (event, hint) {
-      event.tags?['app_version'] = '1.0.0';
-      return event;
-    };
-    options.tracesSampleRate = 1.0;
-    options.tracesSampler = (samplingContext) {
-      if (samplingContext.transactionContext.name == 'importantOperation') {
-        return 1.0;
-      } else {
-        return 0.0;
-      }
-    };
-
-    options.debug = true;
-    options.attachStacktrace = true;
-    options.enableAutoSessionTracking = true;
-    options.enableNativeCrashHandling = true;
-    options.maxBreadcrumbs = 100;
-    options.environment = 'development';
-    options.sendDefaultPii = true;
-    options.experimental.replay.sessionSampleRate = 1.0;
-    options.experimental.replay.onErrorSampleRate = 1.0;
-  });
-
-  await Sentry.captureMessage('message de sentry: hello world',
-      level: SentryLevel.fatal);
-
-  final container = ProviderContainer(
-    overrides: [
-      firebaseInitProvider.overrideWith((ref) => ref.future),
-      localizationProvider.overrideWith(
-          (ref) => MultiLang(ref.read(localeProvider).languageCode)),
-      datadogConfigProvider.overrideWith((ref) => ref.future),
-      sharedPreferencesProvider.overrideWith((ref) => ref.future),
-    ],
-    observers: [
-      if (F.appFlavor == Flavor.local) _Logger(),
-    ],
-  );
-
-  final transaction =
-      Sentry.startTransaction('processOrderBatch', 'task', bindToScope: true);
-
-  try {
-    await processOrderBatch(transaction);
-  } catch (exception) {
-    transaction.throwable = exception;
-    transaction.status = const SpanStatus.internalError();
-  } finally {
-    await transaction.finish();
-  }
+void flutterErrorFlow() {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    if (kReleaseMode) exit(1);
+  };
 
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stacktrace.Trace) return stack.vmTrace;
@@ -150,7 +170,9 @@ Future<ProviderContainer> bootstrap() async {
 
     return stack;
   };
+}
 
+Future<void> tryPartialStackFrameList(ISentrySpan transaction) async {
   try {
     const PartialStackFrame elementInflateWidget = PartialStackFrame(
         package: 'package:flutter/src/widgets/framework.dart',
@@ -210,9 +232,84 @@ Future<ProviderContainer> bootstrap() async {
   } finally {
     transaction.finished;
   }
+}
 
-  await providers.initializeProvider(container);
-  return container;
+Future<void> tryProcessOrderBatch(ISentrySpan transaction) async {
+  try {
+    await processOrderBatch(transaction);
+  } catch (exception) {
+    transaction.throwable = exception;
+    transaction.status = const SpanStatus.internalError();
+  } finally {
+    await transaction.finish();
+  }
+}
+
+FutureOr<void> sentryCustomOptions(options) {
+  options.dsn =
+      'https://0ee7fbe213ed4eeb9d8e2225896c1601@o573314.ingest.us.sentry.io/4505427558400000';
+
+  options.enableAutoPerformanceTracing = true;
+  options.beforeCaptureScreenshot = (event, hint, bool isOn) {
+    event.tags?['app_version'] = '1.0.0';
+    if (isOn) {
+      // Ajouter des informations supplémentaires dans l'événement
+      event.tags!['background'] = 'App is in foreground';
+      return false;
+    } else {
+      event.tags!['background'] = 'App is in background';
+      return true;
+    }
+  };
+
+  options.beforeCaptureViewHierarchy = (event, hint, bool isOn) {
+    if (FlutterBackground.isBackgroundExecutionEnabled) {
+      event.tags?['background'] = 'App is in background';
+      return true;
+    } else {
+      event.tags?['background'] = 'App is in foreground';
+      return false;
+    }
+  };
+
+  options.beforeSend = (event, hint) {
+    event.tags?['app_version'] = '1.0.0';
+    return event;
+  };
+  options.tracesSampleRate = 1.0;
+  options.tracesSampler = (samplingContext) {
+    final ctx = samplingContext.customSamplingContext;
+    // If this is the continuation of a trace, just use that decision (rate controlled by the caller).
+    final parentSampled = samplingContext.transactionContext.parentSampled;
+    if (parentSampled != null) {
+      return parentSampled ? 1.0 : 0.0;
+    }
+    if ('/payment' == ctx['url']) {
+      // These are important - take a big sample
+      return 0.5;
+    } else if ('/search' == ctx['url']) {
+      // Search is less important and happen much more frequently - only take 1%
+      return 0.01;
+    } else if ('/health' == ctx['url']) {
+      // The health check endpoint is just noise - drop all transactions
+      return 0.0;
+    } else {
+      // Default sample rate
+      return 0.1;
+    }
+  };
+
+  options.debug = true;
+  options.attachStacktrace = true;
+  options.enableAutoSessionTracking = true;
+  options.enableNativeCrashHandling = true;
+  options.maxBreadcrumbs = 100;
+  options.environment = 'development';
+  options.sendDefaultPii = true;
+  options.experimental.replay.sessionSampleRate = 1.0;
+  options.experimental.replay.onErrorSampleRate = 1.0;
+  options.experimental.replay.maskAllText = true;
+  options.experimental.replay.maskAllImages = true;
 }
 
 class _Logger extends ProviderObserver {

@@ -1,14 +1,14 @@
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../common/domain/failures/failure.dart';
 
 abstract class AuthRepositoryInterface {
   Future<Either<Failure, bool>> signInWithGoogle();
 
-  Future<Either<Failure, supabase.AuthResponse>> signInWithApple();
+  Future<Either<Failure, bool>> signInWithApple();
 
   Future<Either<Failure, bool>> signOut();
 
@@ -16,10 +16,8 @@ abstract class AuthRepositoryInterface {
     void Function(UserModel? userEntity) callback,
   );
 
-  Future<Either<Failure, CubeUser>> cubeUserStateChange(
-      supabase.GenerateLinkType type,
-      CubeUser cuberUserModel,
-      void Function(CubeUser? cubeUser) cubeUser);
+  Future<Either<Failure, CubeUser>> cubeUserStateChange(GenerateLinkType type,
+      CubeUser cuberUserModel, void Function(CubeUser? cubeUser) cubeUser);
 
   Future<void> setSession(String token);
 
@@ -31,17 +29,19 @@ abstract class AuthRepositoryInterface {
     String password,
   );
 
-  Future<Either<Failure, supabase.User>> signInWithPassword(
+  Future<Either<Failure, User>> signInWithPassword(
     String? email,
     String? password,
   );
 
   Future<Either<Failure, bool>> isOnLine();
 
-  Future<Either<Failure, supabase.AuthResponse>> verifyCode(
+  Future<Either<Failure, AuthResponse>> verifyCode(
     String email,
     String code,
   );
 
   Future<Either<Failure, UserEntityModel>> createUserEntityModel(UserName name);
+
+  Either<Failure, AuthResponse> logErrorSwitchException(Object e);
 }

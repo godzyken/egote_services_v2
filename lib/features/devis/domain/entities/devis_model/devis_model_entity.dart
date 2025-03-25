@@ -29,7 +29,7 @@ sealed class DevisModelEntity with _$DevisModelEntity {
     required double vatRates,
     required double amountHt,
     required double amountTtc,
-    @Default(false) required bool approval,
+    required bool approval,
   }) = _DevisModelEntityEdit;
 
   @FreezedUnionValue("initialize")
