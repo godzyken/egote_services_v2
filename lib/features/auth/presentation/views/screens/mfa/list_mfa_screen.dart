@@ -36,40 +36,11 @@ class ListMfaScreen extends ConsumerWidget {
                 title: Text(factor.friendlyName ?? factor.factorType.name),
                 subtitle: Text(factor.status.name),
                 trailing: IconButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text(context.tr!.deleteFactor),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: Text(context.tr!.cancel),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  await ref
-                                      .watch(supabaseClientProvider)
-                                      .auth
-                                      .mfa
-                                      .unenroll(factor.id);
-                                  await ref
-                                      .watch(supabaseClientProvider)
-                                      .auth
-                                      .signOut();
-                                  /* if (context.mounted) {
-                                    context.go(SignUpRoute.path);
-                                  }*/
-                                },
-                                child: Text(context.tr!.delete),
-                              ),
-                            ],
-                          );
-                        });
-                  },
+                  onPressed: () => _showDeleteFactorDialog(
+                    context,
+                    ref,
+                    factor,
+                  ),
                   icon: const Icon(Icons.delete_outline),
                 ),
               );
@@ -78,5 +49,36 @@ class ListMfaScreen extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  Future<void> _showDeleteFactorDialog(
+      BuildContext context, WidgetRef ref, dynamic factor) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(context.tr!.deleteFactor),
+            content: Text(context.tr!.confirmDeleteUser),
+            actions: [
+              TextButton(
+                  onPressed: () => context.pop(),
+                  child: Text(context.tr!.cancel)),
+              TextButton(
+                onPressed: () async {
+                  await ref
+                      .watch(supabaseClientProvider)
+                      .auth
+                      .mfa
+                      .unenroll(factor.id);
+                  await ref.watch(supabaseClientProvider).auth.signOut();
+                  if (context.mounted) {
+                    context.goNamed('sign_up');
+                  }
+                },
+                child: Text(context.tr!.delete),
+              )
+            ],
+          );
+        });
   }
 }

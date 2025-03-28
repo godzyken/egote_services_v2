@@ -67,7 +67,8 @@ class CubeChatConnectionNotifier
     try {
       // Logique de déconnexion
       await Future.delayed(Duration(seconds: 2));
-      state = CubeChatConnectionState.Closed; // Déconnexion réussie
+      state = CubeChatConnectionState.Closed;
+      developer.log("Déconnexion réussie");
     } catch (e) {
       state = CubeChatConnectionState.Closed;
       developer.log("Erreur lors de la déconnexion : $e");
@@ -100,11 +101,18 @@ class CubeChatConnectionNotifier
   }
 
   Future<void> _attemptConnection() async {
-    await Future.delayed(Duration(seconds: 2));
+    try {
+      await Future.delayed(Duration(seconds: 2));
 
-    bool success = true;
-    if (success) {
-      state = CubeChatConnectionState.Ready;
+      bool success = true;
+      if (success) {
+        state = CubeChatConnectionState.Ready;
+      }
+      developer.log("Connexion réussie");
+    } catch (e) {
+      state = CubeChatConnectionState.Closed;
+      developer.log("Erreur lors de la connexion à CubeChat : $e");
+      rethrow;
     }
   }
 }

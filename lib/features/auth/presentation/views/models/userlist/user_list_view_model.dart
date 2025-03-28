@@ -180,10 +180,4 @@ final userListViewModelStateNotifierProvider =
               ref.watch(updateUserUseCaseProvider),
               ref.watch(deleteUserUseCaseProvider),
             ),
-        dependencies: [
-          getUserListUseCaseProvider,
-          createUserUseCaseProvider,
-          updateUserUseCaseProvider,
-          deleteUserUseCaseProvider,
-        ],
         name: 'User List View Model State Notifier Provider');

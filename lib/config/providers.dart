@@ -33,7 +33,6 @@ import '../features/chat/presentation/views/screens/chat_video_screen.dart';
 import '../features/chat/presentation/views/screens/login_on_chat.dart';
 import '../features/chat/presentation/views/screens/select_dialog_screen.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
-import '../features/devis/domain/entities/products/produit_model_entity.dart';
 import '../features/devis/domain/providers/devis_providers.dart';
 import '../features/devis/domain/providers/edit_devis_view_model_provider.dart';
 import '../features/devis/presentation/views/screens/devis_edit_screen.dart';
@@ -49,67 +48,81 @@ import '../features/settings/presentation/view/settings_ui_page.dart';
 import '../features/sketch/presentation/view/drawing_page.dart';
 
 Future<void> initializeProvider(ProviderContainer container) async {
+  await _initializeCoreServices(container);
+
+  await _initializeAdditionalProviders(container);
+
+  _cleanupProviders(container);
+
+  container.dispose();
+}
+
+Future<void> _initializeCoreServices(ProviderContainer container) async {
   await Future.wait(
     <Future<dynamic>>[
       container.read(supabaseInitProvider.future),
       container.read(firebaseInitProvider.future),
-      container.read(userFutureProvider.future),
       container.read(webrtcInitProvider.future),
       container.read(datadogProvider.future),
       container.read(cubeSettingsInitProvider.future),
-      container.read(cubeUserProvider.future),
-      container.read(sharedPreferencesProvider.future),
-      container.read(produitFutureProvider.future),
-      container.read(cubeChatConnectionSettingsProvider.future),
     ],
     eagerError: true,
-    cleanUp: (successValue) async {
-      await Future.delayed(const Duration(seconds: 2));
-      container.read(connectivityStatusProviders);
-      container.read(sharedPrefsProvider);
-      container.read(firebaseDatabaseProvider);
-      container.read(firebaseFirestoreProvider);
-      container.read(firebaseMessagingProvider);
-      container.read(emulatorSettingsProvider);
-      // container.read(geoLocProvider);
-      container.read(firebaseAuthProvider);
-      container.read(cubeUserControllerProvider);
-      container.read(cubeSessionManagerProvider);
-      container.read(cubeChatConnectionNotifierProvider);
-      container.read(cubeChatConnectionSettingsProvider);
-      container.read(cubeChatConnectionProvider);
-      container.read(goRouterProvider);
-      container.read(localizationProvider);
-      container.read(cubeProvider);
-
-      container.read(authStateChangesProvider);
-      container.read(authStateProvider);
-      // container.read(idTokenChangesProvider);
-      container.read(userChangesProvider);
-      container.read(userRoleProvider);
-
-      container.read(fireDatabaseProvider);
-
-      container.read(backgroundTaskProvider);
-      container.read(editDeviViewModelProvider);
-      container.read(produitServiceProvider);
-      container.read(editProduitProvider);
-      container.read(produitStateNotifierProvider);
-      container.read(devisStateNotifierProvider);
-      container.read(checkoutServiceProvider);
-      container.read(missionsListProvider);
-      container.read(travauxListProvider);
-      container.read(missionStateNotifierProvider);
-      container.read(devisStateNotifierProvider);
-      container.read(dioProvider);
-      container.read(telemetryProvider);
-      container.read(feedbacksProvider);
-
-      return successValue;
-    },
   );
+}
 
-  container.dispose();
+Future<void> _initializeAdditionalProviders(ProviderContainer container) async {
+  await Future.wait(
+    <Future<dynamic>>[
+      container.read(userFutureProvider.future),
+      container.read(cubeUserProvider.future),
+      container.read(sharedPreferencesProvider.future),
+      container.read(cubeChatConnectionSettingsProvider.future),
+      container.read(produitFutureProvider.future),
+    ],
+    eagerError: true,
+  );
+}
+
+void _cleanupProviders(ProviderContainer container) {
+  Future.delayed(const Duration(seconds: 2), () {
+    container.read(connectivityStatusProviders);
+    container.read(sharedPrefsProvider);
+    container.read(firebaseDatabaseProvider);
+    container.read(firebaseFirestoreProvider);
+    container.read(firebaseMessagingProvider);
+    container.read(emulatorSettingsProvider);
+    container.read(firebaseAuthProvider);
+    container.read(cubeUserControllerProvider);
+    container.read(cubeSessionManagerProvider);
+    container.read(cubeChatConnectionNotifierProvider);
+    container.read(cubeChatConnectionSettingsProvider);
+    container.read(cubeChatConnectionProvider);
+    container.read(goRouterProvider);
+    container.read(localizationProvider);
+    container.read(cubeProvider);
+
+    // Read authentication related providers
+    container.read(authStateChangesProvider);
+    container.read(authStateProvider);
+    container.read(userChangesProvider);
+    container.read(userRoleProvider);
+
+    // Read other services/providers
+    container.read(fireDatabaseProvider);
+    container.read(backgroundTaskProvider);
+    container.read(editDeviViewModelProvider);
+    container.read(produitServiceProvider);
+    container.read(editProduitProvider);
+    container.read(produitStateNotifierProvider);
+    container.read(devisStateNotifierProvider);
+    container.read(checkoutServiceProvider);
+    container.read(missionsListProvider);
+    container.read(travauxListProvider);
+    container.read(missionStateNotifierProvider);
+    container.read(dioProvider);
+    container.read(telemetryProvider);
+    container.read(feedbacksProvider);
+  });
 }
 
 final sharedPreferencesProvider = FutureProvider<SharedPreferences>(
@@ -242,10 +255,10 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                       path: ProduitEditRoute.path,
                       name: 'produitEdit',
                       builder: (context, state) {
-                        final produit = state.extra as Produit;
+                        final produitId = state.pathParameters['produitId']!;
                         return ProductEditScreen(
                           key: state.pageKey,
-                          produit: produit,
+                          produitId: produitId,
                         );
                       }),
                   GoRoute(
@@ -348,20 +361,19 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
           path: ChatRoute.path,
           name: 'chat',
           builder: (context, state) {
-            final currentUser = ref.watch(cubeUserControllerProvider);
-            final cubeDialogId = state.pathParameters['dialogId'];
-            CubeDialog? cubeDialog;
-            if (cubeDialogId == null && currentUser != null) {
+            final currentUserId = state.pathParameters['cId']!;
+            final cubeDialogId = state.pathParameters['dialogId']!;
+            if (cubeDialogId == '0' && currentUserId == '0') {
               return ErrorScreen(
                   key: state.pageKey,
                   error:
                       'What\'s wrong bobby?! CubeDialogId is null && currentUser is not null');
             }
-            if (cubeDialogId != null && currentUser != null) {
+            if (cubeDialogId != '0' && currentUserId != '0') {
               return ChatScreen(
                   key: state.pageKey,
-                  cubeUser: currentUser,
-                  cubeDialog: cubeDialog!);
+                  cubeUserId: currentUserId,
+                  cubeDialogId: cubeDialogId);
             } else {
               return LoginOnChat(key: state.pageKey);
             }
@@ -388,7 +400,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
         return null;
       }
 
-      final session = supabase.auth.currentSession;
+      final session = client.auth.currentSession;
 
       // Si l'utilisateur n'a pas de session ou si elle est expirée, rediriger vers la page d'authentification
       if (session == null || session.isExpired) {
@@ -398,13 +410,13 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
       try {
         // Vérifier le niveau d'assurance MFA de l'utilisateur
         final assuranceLevelData =
-            supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+            client.auth.mfa.getAuthenticatorAssuranceLevel();
         final nextLevel = assuranceLevelData.nextLevel;
 
         // Si l'utilisateur n'a pas encore configuré MFA, le rediriger vers l'enrôlement MFA
         if (assuranceLevelData.currentLevel ==
             ui.AuthenticatorAssuranceLevels.aal1) {
-          await supabase.auth.refreshSession();
+          await client.auth.refreshSession();
 
           if (nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
             // Si l'utilisateur a configuré MFA mais n'a pas encore vérifié, rediriger vers la vérification

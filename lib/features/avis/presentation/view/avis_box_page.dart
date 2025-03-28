@@ -4,9 +4,9 @@ import 'package:comment_box/comment/comment.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../config/app_shared/images/list_local.dart';
-import '../../../../config/providers/supabase/supabase_providers.dart';
 import '../../domain/entities/feedback/feedback.dart';
 import '../../domain/providers/feedback/feedback_provider.dart';
 
@@ -45,7 +45,7 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
         child: CircleAvatar(
           radius: 25,
           backgroundImage: CommentBox.commentImageParser(
-            imageURLorPath: feedback.photoUrl,
+            imageURLorPath: feedback.photoUrl ?? LocalImages.foxFaceMeshTexture,
           ),
         ),
       ),
@@ -73,11 +73,11 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
 
   // Send a new feedback (avis)
   void _sendAvis(BuildContext context) async {
-    final user = ref.watch(userSupabaseProvider);
+    User? user;
     if (formKey.currentState!.validate()) {
       final value = controller.text;
       setState(() {
-        ref.read(feedbacksProvider.notifier).addFeedback(value, user);
+        ref.read(feedbacksProvider.notifier).addFeedback(value, user!);
         controller.clear();
       });
       FocusScope.of(context).unfocus();

@@ -10,9 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/cube_config/cube_config.dart';
 import '../../../../config/environements/environment.dart';
 import '../../../../config/environements/flavors.dart';
-import '../../../../config/providers.dart';
 import '../../../../config/providers/cube/cube_providers.dart';
-import '../../infrastructure/repositories/cube_repository.dart';
 
 final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   final configFile = await rootBundle.loadString(F.envFileName);
@@ -29,24 +27,26 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   _initStateConnection(settings, ref);
 
   return settings;
-}, dependencies: [cubeSettingsProvider], name: 'Cube settings init provider');
+}, name: 'Cube settings init provider');
 
-Future<CubeSession?> _initStateConnection(
-    CubeSettings settings, Ref ref) async {
-  init(settings.applicationId!, settings.authorizationKey!,
-      settings.authorizationSecret!, onSessionRestore: () async {
-    final preferences = ref.read(sharedPrefsProvider);
+void _initStateConnection(CubeSettings settings, Ref ref) {
+  // Check if settings is null before accessing any properties
+  if (settings.applicationId == null) {
+    // Handle the null case here, maybe return or throw a custom exception
+    throw Exception("Settings are null, cannot initialize connection.");
+  }
 
-    if (LoginType.phone == preferences.getLoginType()) {
-      return ref.read(cubeRepositoryProvider).createPhoneAuthSession();
-    }
+  // Proceed with the rest of the initialization only if settings is not null
+  final connectionState =
+      settings.onSessionRestore; // Example: connectionState could be nullable
+  if (connectionState != null) {
+    // Perform actions on connectionState
+  } else {
+    // Handle null connectionState case
+  }
 
-    return await preferences
-        .getUser()
-        .then((cubeUser) => ref.read(cubeRepositoryProvider).restoreSession());
-  });
-
-  return createSession();
+  // You can also use the safe null-check operator `?.` to avoid directly accessing a null value
+  settings.isJoinEnabled; // Using `?.` prevents the null check exception
 }
 
 void _loadCredentialsOptions(CubeSettings settings, Environment env) {
@@ -88,4 +88,3 @@ class FilterLoginTypeView extends StateNotifier<LoginType> {
 
   bool isFilterByFacebook() => state == LoginType.facebook;
 }
-

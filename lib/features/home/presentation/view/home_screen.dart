@@ -20,7 +20,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool animate = false;
-
   int index = 0;
   Timer? _timer;
 
@@ -98,6 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           AnimatedPositioned(
               duration: const Duration(milliseconds: 1600),
+              onEnd: () => context.goNamed('userList'),
               //onEnd: () => context.goNamed('chat', pathParameters: {'cid': '456'}),
               //onEnd: () => context.goNamed('chat_room', pathParameters: {'userId': '123', 'cubId': '456'}),
               top: animate ? 0 : -80,

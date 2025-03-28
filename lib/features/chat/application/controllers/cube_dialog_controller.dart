@@ -161,6 +161,21 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
     }
   }
 
+  Future<void> _connectToCubeChat() async {
+    try {
+      // Exemple d'initialisation de la connexion CubeChat
+      final connection = CubeChatConnection
+          .instance; // Ceci est un exemple, remplace par ta propre logique
+
+      // Connecte-toi au service Cube Chat
+      connection.chatMessagesManager!.connection.connect();
+
+      developer.log("Connexion au chat Cube réussie.");
+    } catch (e) {
+      throw Exception('Erreur lors de la connexion au chat Cube: $e');
+    }
+  }
+
   Future<void> initializeChatConnection() async {
     final cubeChatConnectionSettingsResult =
         await ref.watch(cubeChatConnectionSettingsProvider.future);
@@ -177,6 +192,24 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
             connectionState;
 
     final connectivityNotifier = ref.read(connectivityStatusProviders.notifier);
+
+    // Retry on failure with a max number of retries
+    int retryCount = 0;
+    bool success = false;
+    while (retryCount < settings.totalReconnections && !success) {
+      try {
+        await _connectToCubeChat();
+        success = true;
+      } catch (e) {
+        retryCount++;
+        await Future.delayed(
+            Duration(milliseconds: settings.reconnectionTimeout));
+      }
+    }
+
+    if (!success) {
+      developer.log('Failed to connect after $retryCount attempts');
+    }
 
     if (connectivityNotifier.subscription != null) {
       connectivityNotifier.subscription!.resume();
@@ -215,6 +248,12 @@ class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
     isChatDisconnected =
         ref.watch(cubeChatConnectionProvider).chatConnectionState ==
             CubeChatConnectionState.Closed;
+
+    // Handle reconnection attempts gracefully
+    if (connectivityStateSubscription != null) {
+      await connectivityStateSubscription!
+          .cancel(); // Ensure we cancel existing subscription before resuming
+    }
 
     connectivityStateSubscription =
         ref.watch(connectivityStatusProviders.notifier).subscription!;

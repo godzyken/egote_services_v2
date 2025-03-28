@@ -69,13 +69,13 @@ final supabaseProvider =
     Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
 
 final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
-  // Récupère les données initiales à partir du provider `supabaseInitProvider`
-  final supaInit = ref.watch(supabaseInitProvider);
+  try {
+    final client = ref.watch(supabaseProvider).client;
 
-  // Vérifie si le client est disponible et renvoie une exception sinon
-  final client = supaInit.value!.client;
-
-  return client;
+    return client;
+  } on Exception catch (e) {
+    throw StateError('Error initializing Supabase client: $e');
+  }
 });
 
 /*final supabaseRealtimeErrorProvider =

@@ -11,7 +11,6 @@ final usersDatabaseProvider =
 
 final usersRepoProvider = Provider<UserRepositoryInterface>(
     (ref) => AuthRepositoryImpl(ref.watch(usersDatabaseProvider)),
-    dependencies: [usersDatabaseProvider],
     name: 'User repository provider');
 
 final userFutureProvider = FutureProvider.autoDispose((ref) async {

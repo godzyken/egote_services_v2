@@ -184,7 +184,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
         ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);
 
     uploadImageFuture.then((cubeFile) {
-      _avatarUrl = cubeFile.getPublicUrl();
+      _avatarUrl = cubeFile?.getPublicUrl();
       setState(() {
         var lastUser = widget.currentUser;
         _avatarUrl = lastUser.avatar;

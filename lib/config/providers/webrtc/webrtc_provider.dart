@@ -19,76 +19,92 @@ class WebRTCNotifier extends StateNotifier<webrtc.RTCSessionDescription?> {
   late final webrtc.MediaStream localStream;
 
   Future<void> initialize() async {
-    localRenderer = webrtc.RTCVideoRenderer();
-    remoteRenderer = webrtc.RTCVideoRenderer();
+    try {
+      localRenderer = webrtc.RTCVideoRenderer();
+      remoteRenderer = webrtc.RTCVideoRenderer();
 
-    await localRenderer.initialize();
-    await remoteRenderer.initialize();
+      await localRenderer.initialize();
+      await remoteRenderer.initialize();
 
-    await _setupWebRTC();
+      await _setupWebRTC();
+
+      // Update state after initialization
+      state = null; // Can replace with actual RTCSessionDescription if needed
+    } catch (e, s) {
+      if (kDebugMode) {
+        developer.log('Error initializing WebRTC: $e', stackTrace: s);
+      }
+      // Optionally, report the error
+      await Sentry.captureException(e, stackTrace: s);
+    }
   }
 
   Future<void> _setupWebRTC() async {
-    // Initialisation de la connexion WebRTC
+    // WebRTC setup code here...
     peerConnection = await webrtc.createPeerConnection({
       'iceServers': [
-        {
-          'urls': 'stun:stun.l.google.com:19302',
-        },
+        {'urls': 'stun:stun.l.google.com:19302'}
       ],
     });
 
-    // Capture du flux local
     localStream = await webrtc.navigator.mediaDevices.getUserMedia({
       'audio': true,
       'video': true,
     });
 
-    // Ajout du flux local à la connexion
     localStream.getTracks().forEach((track) {
       peerConnection.addTrack(track, localStream);
     });
 
-    // Définir le flux local pour le rendre visible dans l'interface utilisateur
     localRenderer.srcObject = localStream;
 
-    // Écoute des événements de la connexion WebRTC (par exemple, onTrack)
     peerConnection.onTrack = (webrtc.RTCTrackEvent event) {
       remoteRenderer.srcObject = event.streams[0];
     };
-
-    // D'autres configurations...
   }
 
   @override
   Future<void> dispose() async {
-    await localRenderer.dispose();
-    await remoteRenderer.dispose();
-    await peerConnection.close();
-    await localStream.dispose();
+    try {
+      await localRenderer.dispose();
+      await remoteRenderer.dispose();
+      await peerConnection.close();
+      await localStream.dispose();
+    } catch (e, s) {
+      if (kDebugMode) {
+        developer.log('Error during dispose: $e', stackTrace: s);
+      }
+      await Sentry.captureException(e, stackTrace: s);
+    }
+
     super.dispose();
   }
 }
 
 final webrtcInitProvider = FutureProvider<bool>((ref) async {
   try {
-    bool? isOn = webrtc.WebRTC.initialized;
+    // Check if WebRTC is initialized already
+    bool isInitialized = webrtc.WebRTC.initialized;
 
-    if (isOn == false) {
+    // If WebRTC is not initialized, try initializing it
+    if (!isInitialized) {
       await webrtc.WebRTC.initialize(options: {
         'androidAudioConfiguration':
-            webrtc.AndroidAudioConfiguration.media.toMap()
+            webrtc.AndroidAudioConfiguration.media.toMap(),
       });
       webrtc.Helper.setAndroidAudioConfiguration(
           webrtc.AndroidAudioConfiguration.media);
     }
-  } on ExceptionStackTraceExtractor catch (e, s) {
+
+    // Ensure the initialization is complete
+    return webrtc.WebRTC.initialized;
+  } catch (e, s) {
+    // Log the error for debugging purposes
     if (kDebugMode) {
-      developer.log('Future web rtc init provider: $e', stackTrace: s);
+      developer.log('Error initializing WebRTC: $e', stackTrace: s);
     }
+    // Optionally, report the error to a service like Sentry
+    await Sentry.captureException(e, stackTrace: s);
     return false;
   }
-
-  return await Future.delayed(
-      Duration(seconds: 1), () => webrtc.WebRTC.initialized);
 });

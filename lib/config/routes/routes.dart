@@ -1,13 +1,11 @@
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../features/auth/domain/entities/user/user_entity.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
 import '../../features/chat/presentation/views/screens/chat_screens.dart';
-import '../../features/devis/domain/entities/products/produit_model_entity.dart';
 import '../../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../../features/devis/presentation/views/screens/document_view_screen.dart';
@@ -520,9 +518,6 @@ class ChatRoute extends GoRouteData {
   ChatRoute({required this.cid});
   int cid;
 
-  CubeUser? user;
-  CubeDialog? cubeDialog;
-
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
     return buildPage(context, state);
@@ -530,7 +525,8 @@ class ChatRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final selfCallerId = state.pathParameters['selfCallerId'];
+    final selfCallerId = state.pathParameters['selfCallerId']!;
+    final cubeDialogId = state.pathParameters['cubeDialogId']!;
 
     if (selfCallerId != cid.toString()) {
       return const LoginScreen();
@@ -538,8 +534,8 @@ class ChatRoute extends GoRouteData {
 
     return ChatScreen(
       key: state.pageKey,
-      cubeUser: user!,
-      cubeDialog: cubeDialog!,
+      cubeUserId: selfCallerId,
+      cubeDialogId: cubeDialogId,
     );
   }
 }
@@ -699,8 +695,8 @@ class DevisEditRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final devisId = state.pathParameters['userId'];
-    return DevisEditScreen(key: state.pageKey, devisId: devisId!);
+    final devisId = state.pathParameters['userId']!;
+    return DevisEditScreen(key: state.pageKey, devisId: devisId);
   }
 }
 
@@ -758,7 +754,6 @@ class ProduitEditRoute extends GoRouteData {
   const ProduitEditRoute({required this.prodId});
 
   final int prodId;
-
   @override
   Page<Function> buildPage(BuildContext context, GoRouterState state) {
     return buildPage(context, state);
@@ -766,14 +761,10 @@ class ProduitEditRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final prodId = state.pathParameters['prodId'];
-
-    Produit? produit;
-    produit = produit!.sku == prodId! ? produit : null;
-
+    final prodId = state.pathParameters['prodId']!;
     return ProductEditScreen(
       key: state.pageKey,
-      produit: produit!,
+      produitId: prodId,
     );
   }
 }
@@ -792,11 +783,11 @@ class ProduitDetailsRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final prodId = state.pathParameters['prodId'];
+    final prodId = state.pathParameters['prodId']!;
 
     return ProduitDetails(
       key: state.pageKey,
-      id: prodId!,
+      id: prodId,
     );
   }
 }
@@ -833,7 +824,7 @@ class AvisBoxRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final avisId = state.pathParameters['avisId'] = Uuid().v4.toString();
+    final avisId = state.pathParameters['avisId']!;
     return AvisBoxPage(
       key: state.pageKey,
       avisId: avisId,

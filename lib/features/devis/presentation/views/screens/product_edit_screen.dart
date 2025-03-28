@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductEditScreen extends ConsumerStatefulWidget {
-  const ProductEditScreen({required this.produit, super.key});
+  const ProductEditScreen({required this.produitId, super.key});
 
-  final Produit produit;
+  final String produitId;
 
   @override
   ConsumerState createState() => _ProductEditScreenState();
@@ -15,18 +15,19 @@ class ProductEditScreen extends ConsumerStatefulWidget {
 class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  late Produit editProduit;
+  late final Produit editProduit;
 
   @override
   void initState() {
     super.initState();
-    editProduit = widget.produit;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final form = _formKey.currentState!;
       form.save();
       form.validate();
-      ref.read(editProduitProvider.notifier).editProduit(widget.produit);
+      if (widget.produitId == editProduit.id.toString()) {
+        ref.read(editProduitProvider.notifier).editProduit(editProduit);
+      }
       form.reset();
     });
   }
@@ -94,21 +95,21 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await ref
-                            .read(editProduitProvider.notifier)
-                            .saveChanges(produit!);
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                        }
-                      }
-                    },
+                    onPressed: () async => await saveChange(produit!, context),
                     child: const Text('Enregistrer'),
                   ),
                 ]))),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (Object error, StackTrace stackTrace) =>
             Center(child: Text('Error: $error')));
+  }
+
+  Future<void> saveChange(Produit produit, BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      await ref.read(editProduitProvider.notifier).saveChanges(produit);
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    }
   }
 }

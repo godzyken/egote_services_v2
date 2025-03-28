@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:connectycube_sdk/connectycube_sdk.dart';
@@ -5,128 +6,145 @@ import 'package:egote_services_v2/config/providers/firebase/firebase_providers.d
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 import '../../../../config/app_shared/extensions/platform_utils.dart';
-import '../../../../config/cube_config/cube_config.dart';
 import '../../../../firebase_options.dart';
+import '../../../auth/domain/entities/auth_exeptions/error_handler.dart';
 import '../../../auth/domain/providers/auth_repository_provider.dart';
-import '../../data/data_sources/local/pref_util.dart';
 import '../../domain/repository/cube_repository_interface.dart';
 
 class CubeRepository implements CubeRepositoryInterface {
-  CubeRepository(this.authRepository, this.auth);
+  CubeRepository(this.authRepository);
 
   final AuthRepository authRepository;
-  final FirebaseAuth auth;
-
-  @override
-  Future<Either<Failure, CubeSession>> createGuestUserSession(
-      bool isGuest, String fullName) {
-    // TODO: implement createGuestUserSession
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<CubeUser>? setSession(String token) async {
-    var idToken = await authRepository.setSession(token);
-    return createSession().then((cubeSession) {
-      // TODO: 'signInUsingFirebaseEmail' is deprecated and shouldn't be used. Use [createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret)] instead.
-      return createSessionUsingSocialProvider(
-              DefaultFirebaseOptions.currentPlatform.projectId,
-              idToken.toString())
-          .then((cubeSession) {
-        return SharedPrefs.instance.init().then((sharedPrefs) {
-          sharedPrefs.saveNewUser(cubeSession.user!, LoginType.login);
-          return cubeSession.user!
-            ..password = CubeSessionManager.instance.activeSession?.token;
-        });
-      });
-    });
-  }
-
-  @override
-  Future<Either<Failure, CubeSession>> createUserSession(
-      String login, String password) async {
-    return createUserSession(login, password).then((value) {
-      return right(CubeSessionManager.instance.activeSession!);
-    }, onError: left(Failure.badRequest()).call);
-  }
-
-  @override
-  Future<CubeSession> restoreSession() {
-    // TODO: implement restoreSession
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, bool>> signInWithSocialProviders(
-      String socialProvider, String accessToken, String accessTokenSecret) {
-    // TODO: implement signInWithSocialProviders
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, bool>> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, CubeSession>> updateUserSession(
-      String something, String password) {
-    // TODO: implement updateUserSession
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<CubeFile> getUploadingImageFuture(FilePickerResult result) async {
-    // there possible to upload the file as an array of bytes,
-    // but here showed two ways just as an godzy
-    if (kIsWeb) {
-      return uploadRawFile(result.files.single.bytes!, result.files.single.name,
-          isPublic: true, onProgress: (progress) {
-        log("uploadImageFile progress= $progress");
-      });
-    } else {
-      return uploadFile(File(result.files.single.path!), isPublic: true,
-          onProgress: (progress) {
-        log("uploadImageFile progress= $progress");
-      });
-    }
-  }
 
   refreshBadgeCount() {
     getUnreadMessagesCount().then((value) => updateBadgeCount(value['total']));
   }
 
   @override
-  Future<CubeSession> createPhoneAuthSession() async {
-    var phoneAuthIdToken = await auth.currentUser?.getIdToken();
+  Future<Either<Failure, CubeSession>> createPhoneAuthSession(Ref ref) async {
+    try {
+      final auth = ref.watch(firebaseAuthProvider);
 
-    if (phoneAuthIdToken == null) {
-      var accessToken = auth.currentUser!.refreshToken;
-      return createSessionUsingFirebaseEmail(
-              DefaultFirebaseOptions.currentPlatform.projectId, accessToken!)
-          .then((cubeSession) {
-        return CubeSessionManager.instance.activeSession!;
-      });
+      var phoneAuthIdToken = await auth.currentUser?.getIdToken();
+
+      if (phoneAuthIdToken == null) {
+        return right(await createSession());
+      }
+
+      await authRepository.setSession(phoneAuthIdToken);
+
+      return right(await createSessionUsingSocialProvider(
+              CubeProvider.FIREBASE_PHONE,
+              DefaultFirebaseOptions.currentPlatform.projectId,
+              phoneAuthIdToken)
+          .then((cubeSession) => CubeSessionManager.instance.activeSession!));
+    } catch (e) {
+      logErrorSwitchException(e);
+      return left(Failure.badRequest());
     }
-
-    return createSessionUsingFirebasePhone(
-            DefaultFirebaseOptions.currentPlatform.projectId, phoneAuthIdToken)
-        .then((cubeSession) => CubeSessionManager.instance.activeSession!);
   }
+
+  @override
+  Future<Either<Failure, CubeSession>> createFacebookAuthSession(
+      Ref ref) async {
+    try {
+      final accessToken = await FacebookAuth.instance.accessToken;
+
+      if (accessToken == null) {
+        return right(await createSession());
+      }
+
+      await authRepository.setSession(accessToken.tokenString);
+
+      return right(await createSessionUsingSocialProvider(
+        CubeProvider.FACEBOOK,
+        accessToken.tokenString,
+      ).then((cubeSession) => CubeSessionManager.instance.activeSession!));
+    } catch (e) {
+      logErrorSwitchException(e);
+      return left(Failure.badRequest());
+    }
+  }
+
+  @override
+  Future<Either<Failure, CubeSession>> createGoogleAuthSession(Ref ref) async {
+    try {
+      final auth = ref.watch(firebaseAuthProvider);
+
+      var googleAuthIdToken = await auth.currentUser?.getIdToken();
+
+      if (googleAuthIdToken == null) {
+        return right(await createSession());
+      }
+
+      await authRepository.setSession(googleAuthIdToken);
+
+      return right(await createSessionUsingSocialProvider(
+              CubeProvider.FIREBASE_EMAIL,
+              DefaultFirebaseOptions.currentPlatform.projectId,
+              googleAuthIdToken)
+          .then((cubeSession) => CubeSessionManager.instance.activeSession!));
+    } catch (e) {
+      logErrorSwitchException(e);
+      return left(Failure.badRequest());
+    }
+  }
+
+  @override
+  Future<CubeFile?> getUploadingImageFuture(FilePickerResult result) async {
+    final file = result.files.single;
+    return await eitherCubeFile(file);
+  }
+
+  Future<CubeFile?> eitherCubeFile(PlatformFile file) async {
+    if (kIsWeb) {
+      final uploadFile = await uploadImageWeb(file);
+
+      return uploadFile.toNullable();
+    } else {
+      final uploadFile = await uploadImageMobile(file);
+      return uploadFile.toNullable();
+    }
+  }
+
+  Future<Either<Failure, CubeFile>> uploadImageWeb(PlatformFile file) async {
+    try {
+      return right(await uploadRawFile(file.bytes!, file.name,
+          isPublic: true,
+          onProgress: (p) => developer.log('upload image file progress= $p')));
+    } catch (e) {
+      logErrorSwitchException(e);
+      return left(Failure.unprocessableEntity(message: e.toString()));
+    }
+  }
+
+  Future<Either<Failure, CubeFile>> uploadImageMobile(PlatformFile file) async {
+    try {
+      return right(await uploadFile(File(file.path!),
+          isPublic: true,
+          onProgress: (p) => developer.log('upload image file progress= $p')));
+    } catch (e) {
+      logErrorSwitchException(e);
+      return left(Failure.unprocessableEntity(message: e.toString()));
+    }
+  }
+
+  @override
+  Either<Failure, AuthResponse> logErrorSwitchException(Object e) =>
+      AuthErrorHandler.handleError(e);
 }
 
 final cubeRepositoryProvider = Provider.autoDispose<CubeRepository>(
   (ref) {
     final authRepository = ref.read(authRepositoryProvider);
-    final auth = ref.read(firebaseAuthProvider);
 
-    return CubeRepository(authRepository, auth);
+    return CubeRepository(authRepository);
   },
 );

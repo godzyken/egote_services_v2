@@ -24,20 +24,31 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
 
   @override
   void initState() {
-    _getAuth();
-
     super.initState();
+    preload = widget.preload;
+    _getAuth();
   }
 
   Future<void> _getAuth() async {
+    // Handle user authentication on state change
+    final client = ref.read(supabaseClientProvider);
+    final currentUser = client.auth.currentUser;
     setState(() {
-      _user = ref.read(supabaseClientProvider).auth.currentUser;
-      if (_user?.isAnonymous == true) {
-        preload = false;
-      }
+      _user = currentUser;
     });
-    preload = await Supabase.instance.client.auth.onAuthStateChange
-        .every((element) => element.session?.isExpired != true);
+
+    if (_user?.isAnonymous == true) {
+      setState(() {
+        preload = false;
+      });
+    }
+
+    // Listen for auth state changes
+    client.auth.onAuthStateChange.listen((event) {
+      setState(() {
+        _user = event.session?.user;
+      });
+    });
   }
 
   @override

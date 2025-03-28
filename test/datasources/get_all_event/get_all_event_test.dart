@@ -1,14 +1,14 @@
-// import 'package:egote_services_v2/features/devis/domain/datasources/get_all_event/get_all_event.dart';
-// import 'package:egote_services_v2/features/devis/domain/datasources/get_all_event/get_all_event_state.dart';
-// import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devi_id.dart';
-// import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devis_model_entity.dart';
+import 'package:egote_services_v2/features/devis/domain/datasources/get_all_event/get_all_event.dart';
+import 'package:egote_services_v2/features/devis/domain/datasources/get_all_event/get_all_event_state.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devi_id.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devis_model_entity.dart';
 import 'package:egote_services_v2/features/devis/domain/services/check_out_service.dart';
-// import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class CheckoutServiceMock extends Mock implements CheckoutService {}
 
-/*void main() {
+void main() {
   group('getAllEvent', () {
     test('should call "getAll" from CheckoutService one time', () async {
       final checkoutService = CheckoutServiceMock();
@@ -45,7 +45,7 @@ class CheckoutServiceMock extends Mock implements CheckoutService {}
       final service = CheckoutServiceMock();
 
       final devisEntity = DevisModelEntity.initialize(
-          id: const DevisId(id: 0), createdAt: DateTime(2023));
+          id: DevisId(value: '0'), createdAt: DateTime(2023));
       when(
         () => service.getAll,
       ).thenAnswer((invocation) async => [devisEntity]);
@@ -60,4 +60,4 @@ class CheckoutServiceMock extends Mock implements CheckoutService {}
       }
     });
   });
-}*/
+}

@@ -86,56 +86,49 @@ class UserListScreen extends ConsumerWidget {
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      userEntityModel.name,
-                      style: context.textTheme.displaySmall,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      DateFormat('yyyy/MM/dd')
-                          .format(userEntityModel.createdAt),
-                      style: context.textTheme.displaySmall,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    _buildText(context, userEntityModel.name),
+                    _buildText(
+                        context,
+                        DateFormat('yyyy/MM/dd')
+                            .format(userEntityModel.createdAt)),
                   ],
                 )),
                 const SizedBox(
                   width: 8,
                 ),
-                userEntityModel.name.isNotEmpty
-                    ? _buildCheckedIcon(ref, userEntityModel)
-                    : _buildUncheckedIcon(ref, userEntityModel),
+                _buildCheckedIcon(ref, userEntityModel),
               ],
             ),
           ),
         ),
       );
 
-  Widget _buildCheckedIcon(
-      final WidgetRef ref, final UserEntityModel userEntityModel) {
-    return InkResponse(
-      onTap: () =>
-          ref.watch(_userListProvider.notifier).availableUser(userEntityModel),
-      splashColor: Colors.transparent,
-      child: const Icon(
-        Icons.done,
-        size: 24,
-        color: Colors.lightGreen,
-      ),
+  Widget _buildText(final BuildContext context, String text) {
+    return Text(
+      text,
+      style: context.textTheme.displaySmall,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
-  Widget _buildUncheckedIcon(
+  Widget _buildCheckedIcon(
       final WidgetRef ref, final UserEntityModel userEntityModel) {
+    final bool isAvailable = userEntityModel.name.isNotEmpty;
     return InkResponse(
-      onTap: () => ref
-          .watch(_userListProvider.notifier)
-          .unavailableUser(userEntityModel),
+      onTap: () {
+        if (isAvailable) {
+          ref.watch(_userListProvider.notifier).availableUser(userEntityModel);
+        } else {
+          ref
+              .watch(_userListProvider.notifier)
+              .unavailableUser(userEntityModel);
+        }
+      },
       splashColor: Colors.transparent,
-      child: const Icon(
-        Icons.radio_button_off_rounded,
+      child: Icon(
+        isAvailable ? Icons.done : Icons.radio_button_checked_rounded,
         size: 24,
-        color: Colors.grey,
+        color: isAvailable ? Colors.lightGreen : Colors.grey,
       ),
     );
   }

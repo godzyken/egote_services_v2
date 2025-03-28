@@ -18,15 +18,19 @@ class AuthScreen extends ConsumerWidget {
     return authState.when(() => const LoginScreen(),
         authenticated: (AuthStatus status, UserModel userEntity) {
           final preload = userEntity.userEntityModel.isComplete != true;
-          switch (status) {
-            case AuthStatus.authenticated:
-              return UserHomeScreen(
-                  preload: preload,
-                  pid: userEntity.userEntityModel.id.toString());
-            case AuthStatus.unauthenticated:
-              return const LoginScreen();
-          }
+          return _buildAuthenticatedUI(status, preload, userEntity);
         },
         unauthenticated: (AuthStatus status) => const SignUpScreen());
+  }
+
+  Widget _buildAuthenticatedUI(
+      AuthStatus status, bool preload, UserModel userEntity) {
+    switch (status) {
+      case AuthStatus.authenticated:
+        return UserHomeScreen(
+            preload: preload, pid: userEntity.userEntityModel.id.toString());
+      case AuthStatus.unauthenticated:
+        return const LoginScreen();
+    }
   }
 }

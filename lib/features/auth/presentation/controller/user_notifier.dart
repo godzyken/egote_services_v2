@@ -3,6 +3,9 @@ import 'package:egote_services_v2/features/auth/presentation/states/user/user_fo
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
+import '../../domain/entities/user_properties/name.dart';
+import '../../domain/entities/user_properties/role.dart';
+
 class UserNotifier extends StateNotifier<UserEntityModel> {
   UserNotifier([UserEntityModel? userEntityModel])
       : super(userEntityModel ?? UserEntityModel.empty());
@@ -10,11 +13,17 @@ class UserNotifier extends StateNotifier<UserEntityModel> {
   final List<UserEntityModel> _previousStates = [];
 
   void updateName(String name) {
+    if (name.isEmpty) {
+      throw Exception('Name cannot be empty');
+    }
     _savePreviousState();
     state = state.copyWith(name: name);
   }
 
   void updateRole(String role) {
+    if (role.isEmpty) {
+      throw Exception('Role cannot be empty');
+    }
     _savePreviousState();
     state = state.copyWith(role: role);
   }
@@ -26,6 +35,10 @@ class UserNotifier extends StateNotifier<UserEntityModel> {
     String? phone,
     String? externalLink,
   }) {
+    if (name == null && role == null) {
+      throw Exception('At least one field must be updated');
+    }
+
     _savePreviousState();
     state = state.copyWith(
       name: name ?? state.name,
@@ -42,7 +55,7 @@ class UserNotifier extends StateNotifier<UserEntityModel> {
 
   void revertToPreviousState() {
     if (_previousStates.isNotEmpty) {
-      state = _previousStates.removeLast();
+      state = _previousStates.removeLast().copyWith();
     }
   }
 
@@ -53,22 +66,52 @@ class UserFormStateController extends StateNotifier<UserFormState> {
   UserFormStateController() : super(UserFormState(UserEntityModel.empty()));
 
   FormzSubmissionStatus? isUser(UserEntityModel? userEntityModel) {
-    if (userEntityModel!.name.isNotEmpty) {
-      state = state.copyWith(userEntityModel: userEntityModel);
+    if (userEntityModel!.name.isEmpty) {
+      return FormzSubmissionStatus.failure;
     }
-    return null;
+    state = state.copyWith(userEntityModel: userEntityModel);
+    return FormzSubmissionStatus.success;
   }
 
-  void addUser(UserEntityModel u) async {
-    UserEntityModel form = state.userEntityModel.copyWith(name: u.name);
+  // Méthode pour ajouter ou mettre à jour l'utilisateur
+  Future<void> addUser(UserEntityModel user) async {
+    // Commencer avec un état de "en cours" pour indiquer que la soumission est en cours
+    state = state.copyWith(
+      nameFormz: NameFormz.dirty(user.name),
+      roleFormz: RoleFormz.dirty(user.role),
+    );
 
-    late UserEntityModel user;
+    // Validation des champs avant mise à jour
+    if (user.name.isEmpty || user.role.isEmpty || user.phone.isEmpty) {
+      // Si l'un des champs est invalide, on met à jour l'état avec un statut d'échec
+      state = state.copyWith(status: FormzSubmissionStatus.failure);
+      return;
+    }
 
-    if (form.name.isNotEmpty) {
-      user = form;
-      state = state.copyWith(userEntityModel: user);
+    try {
+      // Simuler un délai d'attente (par exemple, appel réseau)
+      await Future.delayed(const Duration(seconds: 2));
+
+      // Mise à jour de l'état avec un statut de réussite et l'utilisateur mis à jour
+      state = state.copyWith(
+        userEntityModel: user,
+        status: FormzSubmissionStatus.success,
+      );
+    } catch (e) {
+      // En cas d'erreur, mettez à jour l'état avec un message d'erreur
+      state = state.copyWith(
+        status: FormzSubmissionStatus.failure,
+        errorMessage: e.toString(),
+      );
     }
   }
+
+  // Méthode pour réinitialiser l'état du formulaire
+  void resetForm() {
+    state = UserFormState(UserEntityModel.empty());
+  }
+
+// Méthode pour ajouter un utilisateur
 }
 
 final clockProvider = StateProvider((ref) => DateTime.now());

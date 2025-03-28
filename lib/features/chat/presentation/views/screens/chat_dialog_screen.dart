@@ -30,7 +30,9 @@ class ChatDialogScreen extends ConsumerWidget {
               )),
         ],
       ),
-      body: ChatScreen(cubeUser: cubeUser, cubeDialog: cubeDialog),
+      body: ChatScreen(
+          cubeUserId: cubeUser.id.toString(),
+          cubeDialogId: cubeDialog.id.toString()),
     );
   }
 }

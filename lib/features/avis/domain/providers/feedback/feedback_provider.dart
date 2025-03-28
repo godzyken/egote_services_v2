@@ -34,9 +34,13 @@ class FeedbacksNotifier extends StateNotifier<List<AvisUtilisateur>> {
     try {
       // Appel à Supabase pour récupérer les données
       final response = await fetchList();
+
       state = response.isEmpty
           ? []
           : response.map((item) => AvisUtilisateur.fromJson(item)).toList();
+
+      developer.debugger(
+          message: 'Feedbacks loaded successfully: $state', when: true);
     } on PostgrestException catch (e) {
       // Gestion des erreurs
       developer.log('Erreur lors du chargement des feedbacks:');
@@ -57,22 +61,22 @@ class FeedbacksNotifier extends StateNotifier<List<AvisUtilisateur>> {
   }
 
   // Cette fonction permet d'ajouter un feedback
-  Future<void> addFeedback(String content, User user) async {
+  Future<void> addFeedback(String content, User? user) async {
     try {
       // Vérification si l'utilisateur est anonyme ou non
-      final userName = user.isAnonymous == true
+      final userName = user?.isAnonymous == true
           ? 'Batman'
-          : user.appMetadata['display_name'] ?? 'Inconnu';
+          : user?.appMetadata['display_name'] ?? 'Inconnu';
       final photoUrl =
-          user.isAnonymous == true ? null : user.appMetadata['photo_url'];
+          user?.isAnonymous == true ? null : user?.appMetadata['photo_url'];
 
       final newFeedback = AvisUtilisateur(
         id: Random().nextInt(1000000000),
         name: userName,
-        message: content,
         photoUrl: photoUrl,
+        message: content,
         createdAt: DateTime.now(),
-        isAnonymous: user.isAnonymous,
+        isAnonymous: user?.isAnonymous,
       );
 
       // Appel à la méthode pour ajouter le feedback dans la base de données

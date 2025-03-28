@@ -27,10 +27,10 @@ import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen(
-      {super.key, required this.cubeUser, required this.cubeDialog});
+      {super.key, required this.cubeUserId, required this.cubeDialogId});
 
-  final CubeUser cubeUser;
-  final CubeDialog cubeDialog;
+  final String cubeUserId;
+  final String cubeDialogId;
 
   @override
   ConsumerState createState() => _ChatScreenState();
@@ -44,6 +44,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   late bool isLoading;
   late StreamSubscription<List<ConnectivityResult>>
       connectivityStateSubscription;
+
+  late CubeUser cubeUser;
+  late CubeDialog cubeDialog;
   String? imageUrl;
 
   // à changer avec le commit du 29/04/2024
@@ -160,9 +163,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     uploadImageFile(uploadImageFuture, decodedImage);
   }
 
-  Future uploadImageFile(Future<CubeFile> uploadAction, imageData) async {
+  Future uploadImageFile(Future<CubeFile?> uploadAction, imageData) async {
     uploadAction.then((cubeFile) {
-      onSendChatAttachment(cubeFile, imageData);
+      onSendChatAttachment(cubeFile!, imageData);
     }).catchError((ex) {
       setState(() {
         isLoading = false;
@@ -176,7 +179,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // todo: The argument type 'MediaStream' can't be assigned to the parameter type 'CubeMessage'
   void onReceiveMessage(CubeMessage message) {
     dev.log("onReceiveMessage message= $message");
-    if (message.messageId != widget.cubeDialog.dialogId) return;
+    if (message.messageId != widget.cubeDialogId) return;
     ref
         .read(cubeChatConnectionProvider)
         .systemMessagesManager
@@ -238,9 +241,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   void onTypingMessage(TypingStatus status) {
     dev.log("TypingStatus message= ${status.userId}");
-    if (status.userId == widget.cubeUser.id ||
-        (status.dialogId != null &&
-            status.dialogId != widget.cubeDialog.dialogId)) {
+    if (status.userId.toString() == widget.cubeUserId ||
+        (status.dialogId != null && status.dialogId != widget.cubeDialogId)) {
       return;
     }
     userStatus = _occupants[status.userId]?.fullName ??
@@ -274,14 +276,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     var publicKeyString = base64Encode(alicePublicKey.bytes);
     var secretDialogId = 'some-random-generated-chat-id';
 
-    var userId = 12345; // the `id` of the opponent user
-
     if (content.trim() != '') {
       final message = createCubeMsg();
       message.body = content.trim();
       message
-        ..senderId = widget.cubeUser.id
-        ..recipientId = widget.cubeUser.id ?? userId
+        ..senderId = int.parse(widget.cubeUserId)
+        ..recipientId = int.parse(widget.cubeUserId)
         ..dateSent = DateTime.now().microsecondsSinceEpoch
         ..properties = {
           'publicKey': publicKeyString,
@@ -322,19 +322,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void onSendMessage(CubeMessage message) async {
     dev.log("onSendMessage message= $message");
     textEditingController.clear();
-    await widget.cubeDialog.sendMessage(message);
-    message.senderId = widget.cubeUser.id;
-    addMessageToListView(message as MediaStream);
-    listScrollController.animateTo(0.0,
-        duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
-    if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
-      ChatManager.instance.sentMessagesController
-          .add(message..dialogId = widget.cubeDialog.dialogId);
+
+    if (widget.cubeDialogId == cubeDialog.id.toString() &&
+        widget.cubeUserId == cubeUser.id.toString()) {
+      await cubeDialog.sendMessage(message);
+      message.senderId = cubeUser.id;
+      addMessageToListView(message as MediaStream);
+      listScrollController.animateTo(0.0,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+      if (cubeDialog.type == CubeDialogType.PRIVATE) {
+        ChatManager.instance.sentMessagesController
+            .add(message..dialogId = cubeDialog.dialogId);
+      }
+      ref
+          .read(cubeChatConnectionProvider)
+          .systemMessagesManager
+          ?.sendSystemMessage(message);
     }
-    ref
-        .read(cubeChatConnectionProvider)
-        .systemMessagesManager
-        ?.sendSystemMessage(message);
   }
 
   updateReadDeliveredStatusMessage(MessageStatus status, bool isRead) {
@@ -375,28 +379,29 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Widget buildItem(int index, CubeMessage message) {
     markAsReadIfNeed() {
-      var isOpponentMsgRead = message.readIds != null &&
-          message.readIds!.contains(widget.cubeUser.id);
-      dev.log(
-          "markAsReadIfNeed message= $message, isOpponentMsgRead= $isOpponentMsgRead");
-      if (message.senderId != widget.cubeUser.id && !isOpponentMsgRead) {
-        if (message.readIds == null) {
-          message.readIds = [widget.cubeUser.id!];
-        } else {
-          message.readIds!.add(widget.cubeUser.id!);
-        }
+      if (widget.cubeUserId == cubeUser.id.toString() &&
+          widget.cubeDialogId == cubeDialog.id.toString()) {
+        var isOpponentMsgRead =
+            message.readIds != null && message.readIds!.contains(cubeUser.id);
+        dev.log(
+            "markAsReadIfNeed message= $message, isOpponentMsgRead= $isOpponentMsgRead");
+        if (message.senderId != cubeUser.id && !isOpponentMsgRead) {
+          if (message.readIds == null) {
+            message.readIds = [cubeUser.id!];
+          } else {
+            message.readIds!.add(cubeUser.id!);
+          }
 
-        if (CubeChatConnection.instance.chatConnectionState ==
-            CubeChatConnectionState.Ready) {
-          widget.cubeDialog.readMessage(message);
-          // } else {
-          //   _unreadMessages.add(message);
-        }
+          if (CubeChatConnection.instance.chatConnectionState ==
+              CubeChatConnectionState.Ready) {
+            cubeDialog.readMessage(message);
+            // } else {
+            //   _unreadMessages.add(message);
+          }
 
-        ChatManager.instance.readMessagesController.add(MessageStatus(
-            widget.cubeUser.id!,
-            message.messageId!,
-            widget.cubeDialog.dialogId!));
+          ChatManager.instance.readMessagesController.add(MessageStatus(
+              cubeUser.id!, message.messageId!, cubeDialog.dialogId!));
+        }
       }
     }
 
@@ -404,26 +409,31 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       dev.log("[getReadDeliveredWidget]");
       bool messageIsRead() {
         dev.log("[getReadDeliveredWidget] messageIsRead");
-        if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
+
+        if (widget.cubeUserId == cubeUser.id.toString() &&
+            widget.cubeDialogId == cubeDialog.id.toString() &&
+            cubeDialog.type == CubeDialogType.PRIVATE) {
           return message.readIds != null &&
               (message.recipientId == null ||
                   message.readIds!.contains(message.recipientId));
         }
         return message.readIds != null &&
-            message.readIds!.any((int id) =>
-                id != widget.cubeUser.id && _occupants.keys.contains(id));
+            message.readIds!.any(
+                (int id) => id != cubeUser.id && _occupants.keys.contains(id));
       }
 
       bool messageIsDelivered() {
         dev.log("[getReadDeliveredWidget] messageIsDelivered");
-        if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
+        if (widget.cubeUserId == cubeUser.id.toString() &&
+            widget.cubeDialogId == cubeDialog.id.toString() &&
+            cubeDialog.type == CubeDialogType.PRIVATE) {
           return message.deliveredIds != null &&
               (message.recipientId == null ||
                   message.deliveredIds!.contains(message.recipientId));
         }
         return message.deliveredIds != null &&
-            message.deliveredIds!.any((int id) =>
-                id != widget.cubeUser.id && _occupants.keys.contains(id));
+            message.deliveredIds!.any(
+                (int id) => id != cubeUser.id && _occupants.keys.contains(id));
       }
 
       if (messageIsRead()) {
@@ -475,7 +485,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       return result;
     }
 
-    if (message.senderId == widget.cubeUser.id) {
+    if (message.senderId.toString() == widget.cubeUserId) {
       // Right (own message)
       return Column(
         children: <Widget>[
@@ -761,7 +771,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   bool isLastMessageLeft(int index) {
-    if ((index > 0 && listMessage[index - 1].id == widget.cubeUser.id) ||
+    if ((index > 0 &&
+            listMessage[index - 1].id.toString() == widget.cubeUserId) ||
         index == 0) {
       return true;
     } else {
@@ -770,7 +781,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   bool isLastMessageRight(int index) {
-    if ((index > 0 && listMessage[index - 1].id != widget.cubeUser.id) ||
+    if ((index > 0 &&
+            listMessage[index - 1].id.toString() != widget.cubeUserId) ||
         index == 0) {
       return true;
     } else {
@@ -903,9 +915,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           isLoading = false;
           messages = loadedMessages;
         }),
-        getAllUsersByIds(widget.cubeDialog.occupantsIds!.toSet()).then(
-            (result) => _occupants
-                .addAll({for (var item in result!.items) item.id: item}))
+        getAllUsersByIds(cubeDialog.occupantsIds!.toSet()).then((result) =>
+            _occupants.addAll({for (var item in result!.items) item.id: item}))
       ]);
       completer.complete(messages);
     } catch (error) {
@@ -954,7 +965,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   void onBackPress(isLoading) {
     Navigator.pushNamedAndRemoveUntil(context, 'select_dialog', (r) => false,
-        arguments: {USER_ARG_NAME: widget.cubeUser}).then((value) {
+        arguments: {USER_ARG_NAME: widget.cubeUserId}).then((value) {
       return true;
     });
   }
@@ -999,14 +1010,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           if (_unreadMessages.isNotEmpty) {
             for (var cubeMessage in _unreadMessages) {
-              widget.cubeDialog.readMessage(cubeMessage);
+              cubeDialog.readMessage(cubeMessage);
             }
             _unreadMessages.clear();
           }
 
           if (_unsentMessages.isNotEmpty) {
             for (var cubeMessage in _unsentMessages) {
-              widget.cubeDialog.sendMessage(cubeMessage);
+              cubeDialog.sendMessage(cubeMessage);
             }
 
             _unsentMessages.clear();
@@ -1021,7 +1032,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     var isTypingTimeout = currentTime - _sendIsTypingTime;
     if (isTypingTimeout >= TYPING_TIMEOUT) {
       _sendIsTypingTime = currentTime;
-      widget.cubeDialog.sendIsTypingStatus();
+      cubeDialog.sendIsTypingStatus();
       _startStopTypingStatus();
     }
   }
@@ -1030,7 +1041,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _sendStopTypingTimer?.cancel();
     _sendStopTypingTimer =
         Timer(const Duration(milliseconds: STOP_TYPING_TIMEOUT), () {
-      widget.cubeDialog.sendStopTypingStatus();
+      cubeDialog.sendStopTypingStatus();
     });
   }
 
@@ -1042,8 +1053,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       RequestFilter('', 'date_sent', isLoadNew || date == 0 ? 'gt' : 'lt', date)
     ];
 
-    return getMessages(
-            widget.cubeDialog.dialogId!, params.getRequestParameters())
+    return getMessages(widget.cubeDialogId, params.getRequestParameters())
         .then((result) {
           lastPartSize = result!.items.length;
 
@@ -1065,8 +1075,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       RequestFilter('', 'date_sent', 'lt', endDate)
     ];
 
-    return getMessages(
-            widget.cubeDialog.dialogId!, params.getRequestParameters())
+    return getMessages(widget.cubeDialogId, params.getRequestParameters())
         .then((result) {
       return result!.items;
     });
@@ -1132,7 +1141,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   getReactionsWidget(CubeMessage message) {
     if (message.reactions == null) return Container();
 
-    var isOwnMessage = message.senderId == widget.cubeUser.id;
+    var isOwnMessage = message.senderId.toString() == widget.cubeUserId;
 
     return LayoutBuilder(builder: (context, constraints) {
       var widgetWidth =
@@ -1251,12 +1260,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         (message.reactions?.own.contains(emoji.emoji) ?? false)) {
       removeMessageReaction(message.messageId!, emoji.emoji);
       _updateMessageReactions(MessageReaction(
-          widget.cubeUser.id!, widget.cubeDialog.dialogId!, message.messageId!,
+          cubeUser.id!, widget.cubeDialogId, message.messageId!,
           removeReaction: emoji.emoji));
     } else {
       addMessageReaction(message.messageId!, emoji.emoji);
       _updateMessageReactions(MessageReaction(
-          widget.cubeUser.id!, widget.cubeDialog.dialogId!, message.messageId!,
+          cubeUser.id!, widget.cubeDialogId, message.messageId!,
           addReaction: emoji.emoji));
     }
   }
@@ -1271,15 +1280,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       if (msg.reactions == null) {
         msg.reactions = CubeMessageReactions.fromJson({
           'own': {
-            if (reaction.userId == widget.cubeUser.id) reaction.addReaction
+            if (reaction.userId == widget.cubeUserId) reaction.addReaction
           },
           'total': {reaction.addReaction: 1}
         });
       } else {
         if (reaction.addReaction != null) {
-          if (reaction.userId != widget.cubeUser.id ||
+          if (reaction.userId.toString() != widget.cubeUserId ||
               !(msg.reactions?.own.contains(reaction.addReaction) ?? false)) {
-            if (reaction.userId == widget.cubeUser.id) {
+            if (reaction.userId.toString() == widget.cubeUserId) {
               msg.reactions!.own.add(reaction.addReaction!);
             }
 
@@ -1291,9 +1300,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
 
         if (reaction.removeReaction != null) {
-          if (reaction.userId != widget.cubeUser.id ||
+          if (reaction.userId.toString() != widget.cubeUserId ||
               (msg.reactions?.own.contains(reaction.removeReaction) ?? false)) {
-            if (reaction.userId == widget.cubeUser.id) {
+            if (reaction.userId.toString() == widget.cubeUserId) {
               msg.reactions!.own.remove(reaction.removeReaction!);
             }
 

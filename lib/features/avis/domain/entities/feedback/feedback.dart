@@ -6,10 +6,14 @@ part 'feedback.g.dart';
 @freezed
 class AvisUtilisateur with _$AvisUtilisateur {
   const factory AvisUtilisateur({
-    required int id,
+    @JsonKey(name: 'id') required int id,
     String? name,
-    String? photoUrl,
-    required String message,
+    @JsonKey(name: 'photo_url') String? photoUrl,
+    @JsonKey(name: 'message') required String message,
+    @JsonKey(
+        name: 'created_at',
+        fromJson: _dateTimeFromString,
+        toJson: _dateTimeToString)
     required DateTime createdAt,
     @Default(true) bool? isAnonymous,
   }) = _AvisUtilisateur;
@@ -17,3 +21,6 @@ class AvisUtilisateur with _$AvisUtilisateur {
   factory AvisUtilisateur.fromJson(Map<String, dynamic> json) =>
       _$AvisUtilisateurFromJson(json);
 }
+
+DateTime _dateTimeFromString(String str) => DateTime.parse(str);
+String _dateTimeToString(DateTime date) => date.toIso8601String();

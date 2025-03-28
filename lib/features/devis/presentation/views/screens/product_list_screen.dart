@@ -65,7 +65,7 @@ class ProduitFiche extends ConsumerWidget {
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        child: ProductEditScreen(produit: produit),
+        child: ProductEditScreen(produitId: produit.sku),
       ),
     );
   }

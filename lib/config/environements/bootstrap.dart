@@ -66,7 +66,7 @@ Future<ProviderContainer> bootstrap() async {
 }
 
 Future<void> sendMessageToSentry() async {
-  final search_results = [
+  final searchResults = [
     {'id': 1, 'name': 'Philipe Morice'},
     {'id': 2, 'name': 'Romain Roussel'},
     {'id': 3, 'name': 'Biggy man'},
@@ -75,7 +75,7 @@ Future<void> sendMessageToSentry() async {
   try {
     final context = {
       'user_id': '12312012',
-      'search_results': search_results,
+      'search_results': searchResults,
     };
 
     // Capturer un message avec un niveau fatal
@@ -274,6 +274,7 @@ FutureOr<void> sentryCustomOptions(options) {
 
   options.beforeSend = (event, hint) {
     event.tags?['app_version'] = '1.0.0';
+
     return event;
   };
   options.tracesSampleRate = 1.0;

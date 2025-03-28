@@ -8,100 +8,80 @@ import 'package:egote_services_v2/features/auth/presentation/states/auth/auth_st
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
-//todo: remove authUser
-
 class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
   AuthControllerStateNotifier(this._repository)
       : super(const perso.AuthState.unauthenticated(
             status: perso.AuthStatus.unauthenticated)) {
-    lastState = const perso.AuthState.unauthenticated(
-        status: perso.AuthStatus.unauthenticated);
-
     _subscription =
         _repository.authClient.auth.onAuthStateChange.listen((event) {
       _onUserChanged(event);
     });
   }
 
-  StreamController<supabase.AuthResponse> controller =
-      StreamController<supabase.AuthResponse>();
-
-  late perso.AuthState lastState;
-
   late final StreamSubscription<supabase.AuthState> _subscription;
 
   final AuthRepository _repository;
 
-  supabase.User? _user;
-
-  perso.AuthStatus? validator(supabase.User? value) {
-    if (value!.id.isEmpty) {
-      return perso.AuthStatus.authenticated;
+  perso.AuthState _getAuthStateFromUser(supabase.User? user) {
+    if (user == null || user.id.isEmpty) {
+      return const perso.AuthState.unauthenticated(
+          status: perso.AuthStatus.unauthenticated);
     } else {
-      return perso.AuthStatus.unauthenticated;
+      return perso.AuthState.authenticated(
+        status: perso.AuthStatus.authenticated,
+        userEntity: UserModel.complete(
+          id: UserId(value: int.parse(user.id)),
+          userEntityModel: UserEntityModel.fromJson(user.toJson()),
+        ),
+      );
     }
   }
 
   void _onUserChanged(supabase.AuthState authState) {
     final supabase.AuthChangeEvent event = authState.event;
     final supabase.Session? session = authState.session;
-
-    state = const perso.AuthState.unauthenticated(
-        status: perso.AuthStatus.unauthenticated);
+    final supabase.User? user = session?.user;
 
     switch (event) {
-      case supabase.AuthChangeEvent.passwordRecovery:
-      // TODO: Handle this case.
       case supabase.AuthChangeEvent.signedIn:
-        _user = session?.user;
-        state = perso.AuthState.authenticated(
-            status: validator(_user)!,
-            userEntity: UserModel.complete(
-                id: UserId(value: int.tryParse(_user!.id)!),
-                userEntityModel: UserEntityModel.fromJson(_user!.toJson())));
+      case supabase.AuthChangeEvent.tokenRefreshed:
+      case supabase.AuthChangeEvent.userUpdated:
+        state = _getAuthStateFromUser(user);
+        break;
       case supabase.AuthChangeEvent.signedOut:
-        session?.user;
         onSignOut();
         state = const perso.AuthState.unauthenticated(
             status: perso.AuthStatus.unauthenticated);
-      case supabase.AuthChangeEvent.tokenRefreshed:
-        session?.providerRefreshToken;
-        _user = session?.user;
-        state = perso.AuthState.authenticated(
-            status: validator(_user)!,
-            userEntity: UserModel.complete(
-                id: UserId(value: int.parse(_user!.id)),
-                userEntityModel: UserEntityModel.fromJson(_user!.toJson())));
-      case supabase.AuthChangeEvent.userUpdated:
-        _user = session?.user;
-        state = perso.AuthState.authenticated(
-            status: validator(_user)!,
-            userEntity: UserModel.complete(
-                id: UserId(value: int.parse(_user!.id)),
-                userEntityModel: UserEntityModel.fromJson(_user!.toJson())));
+        break;
+      case supabase.AuthChangeEvent.passwordRecovery:
       case supabase.AuthChangeEvent.userDeleted:
       case supabase.AuthChangeEvent.mfaChallengeVerified:
-      // TODO: Handle this case.
+        // When MFA challenge is verified, the user is now fully authenticated.
+        state =
+            _getAuthStateFromUser(user); // Update the state with the user data
+        break;
       case supabase.AuthChangeEvent.initialSession:
-      // TODO: Handle this case.
+        // Handle these events if needed
+        break;
     }
   }
 
   Future<perso.AuthState?> onSignInWithPassword(
       String email, String password) async {
     final userModel = await _repository.signInWithPassword(email, password);
-    do {
-      state = perso.AuthState.authenticated(
-          status: validator(userModel.toNullable())!,
-          userEntity: UserModel.complete(
-              id: UserId(value: int.parse(userModel.toNullable()!.id)),
-              userEntityModel:
-                  UserEntityModel.fromJson(userModel.toNullable()!.toJson())));
-    } while (userModel.exists((r) => r.id.isNotEmpty));
-
-    state = const perso.AuthState.unauthenticated(
-        status: perso.AuthStatus.unauthenticated);
-
+    if (userModel.exists((r) => r.id.isNotEmpty)) {
+      final user = userModel.toNullable();
+      if (user != null) {
+        state = perso.AuthState.authenticated(
+            status: perso.AuthStatus.authenticated,
+            userEntity: UserModel.complete(
+                id: UserId(value: int.parse(user.id)),
+                userEntityModel: UserEntityModel.fromJson(user.toJson())));
+      }
+    } else {
+      state = const perso.AuthState.unauthenticated(
+          status: perso.AuthStatus.unauthenticated);
+    }
     return state;
   }
 
