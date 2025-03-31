@@ -27,7 +27,7 @@ class DevisStateNotifier extends StateNotifier<DevisEntityStates> {
     final devis = DevisModelEntity.initialize(
         id: DevisId(value: item), createdAt: DateTime.parse(item));
     state = state.copyWith(
-      devis: state.devis..add(devis),
+      devis: [...state.devis, devis],
     );
     developer.log('[${state.devis}]');
   }
@@ -54,14 +54,15 @@ class TravauxStateNotifier extends StateNotifier<TravauxEntityStates> {
     final travaux = TravauxEntity.initialize(
       id: TravauId(value: item),
     );
-    state = state.copyWith(travaux: state.travaux..add(travaux));
+    state = state.copyWith(travaux: [...state.travaux, travaux]);
 
     developer.log('[${state.travaux}]');
   }
 
   void removedTravaux(TravauId id) {
     final travaux = TravauxEntity.initialize(id: id);
-    state = state.copyWith(travaux: state.travaux..remove(travaux));
+    state = state.copyWith(
+        travaux: state.travaux.where((e) => e.id != travaux.id).toList());
 
     developer.log('[${state.travaux}]');
   }
@@ -225,42 +226,14 @@ final produitFutureProvider = FutureProvider<List<Produit>>((ref) async {
     if (response.statusCode == 200 &&
         response.data != null &&
         response.data['items'] is List) {
-      final items = response.data!['items'];
+      final items = response.data['items'];
       developer.log('WWWWWWWWWDDDD: ${items.toString()}');
 
-      if (items.isNotEmpty) {
-        for (var item in items) {
-          if (item is Map<String, dynamic> && item.containsKey('id')) {
-            int id = item['id'];
-            String sku = item['sku'];
-            String name = item['name'];
-            String manufacturer = item['manufacturer'];
-            String imageUrl = item['imageUrl'];
-            String url = item['url'];
-
-            // Afficher les informations de chaque produit
-            developer.log('ID: $id');
-            developer.log('SKU: $sku');
-            developer.log('Nom: $name');
-            developer.log('Fabricant: $manufacturer');
-            developer.log('URL de l\'image: $imageUrl');
-            developer.log('URL produit: $url');
-          } else {
-            throw Exception('Échec de la récupération des produits !!');
-          }
-        }
-        return await items
-            .map((json) => Produit.fromJson(json as Map<String, Object?>))
-            .toList();
-      } else {
-        throw Exception('Échec aucun produits Trouvé');
-      }
+      return await items.map((json) => Produit.fromJson(json)).toList();
     } else {
       throw Exception(
           'Erreur de communication API code reponse: ${response.statusCode}:::: ${response.statusMessage} !!');
     }
-    /*  final service = ref.watch(produitServiceProvider);
-    return await service.build();*/
   } on DioException catch (e, stackTrace) {
     throw Exception('DioException code::::: $e,:::: Message:::: $stackTrace');
   }

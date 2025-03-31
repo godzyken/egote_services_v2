@@ -5,18 +5,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as webrtc;
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-final webrtcProvider =
-    StateNotifierProvider<WebRTCNotifier, webrtc.RTCSessionDescription?>(
+import '../../../features/chat/domain/models/entities/webrtc_connection/web_rtc_connection_state.dart';
+
+final webrtcProvider = StateNotifierProvider<WebRTCNotifier, WebRTCState>(
   (ref) => WebRTCNotifier(),
 );
 
-class WebRTCNotifier extends StateNotifier<webrtc.RTCSessionDescription?> {
-  WebRTCNotifier() : super(null);
+class WebRTCNotifier extends StateNotifier<WebRTCState> {
+  WebRTCNotifier() : super(WebRTCState.initializing);
 
   late final webrtc.RTCVideoRenderer localRenderer;
   late final webrtc.RTCVideoRenderer remoteRenderer;
   late final webrtc.RTCPeerConnection peerConnection;
   late final webrtc.MediaStream localStream;
+
+  late final webrtc.RTCIceCandidate iceCandidate;
+
+  late final webrtc.RTCIceConnectionState iceState;
 
   Future<void> initialize() async {
     try {
@@ -29,13 +34,16 @@ class WebRTCNotifier extends StateNotifier<webrtc.RTCSessionDescription?> {
       await _setupWebRTC();
 
       // Update state after initialization
-      state = null; // Can replace with actual RTCSessionDescription if needed
+      state = WebRTCState.initialized;
     } catch (e, s) {
       if (kDebugMode) {
         developer.log('Error initializing WebRTC: $e', stackTrace: s);
       }
       // Optionally, report the error
       await Sentry.captureException(e, stackTrace: s);
+
+      // Update state to error state
+      state = WebRTCState.error(errorMessage: s.toString());
     }
   }
 
@@ -61,6 +69,12 @@ class WebRTCNotifier extends StateNotifier<webrtc.RTCSessionDescription?> {
     peerConnection.onTrack = (webrtc.RTCTrackEvent event) {
       remoteRenderer.srcObject = event.streams[0];
     };
+
+    peerConnection.onIceCandidate = (webrtc.RTCIceCandidate candidate) {
+      // Handle ICE candidate events if needed
+    };
+
+    state = WebRTCState.iceConnectionState(iceState: iceState.toString());
   }
 
   @override
@@ -97,14 +111,17 @@ final webrtcInitProvider = FutureProvider<bool>((ref) async {
     }
 
     // Ensure the initialization is complete
-    return webrtc.WebRTC.initialized;
+    return isInitialized;
   } catch (e, s) {
     // Log the error for debugging purposes
     if (kDebugMode) {
       developer.log('Error initializing WebRTC: $e', stackTrace: s);
     }
-    // Optionally, report the error to a service like Sentry
+
+    // Report the error to Sentry
     await Sentry.captureException(e, stackTrace: s);
+
+    // Return false indicating initialization failure
     return false;
   }
 });

@@ -20,50 +20,90 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
     final env =
         Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
-    // Initialiser un client GoTrue pour l'authentification
-    final client = supabase.GoTrueClient(
-      url: env.supabaseUrl,
-      autoRefreshToken: true,
-      headers: {
-        "apiKey": env.supabaseAnonKey,
-        "Authorization": "Bearer ${env.supabaseAnonKey}",
-      },
-    );
+    // Utiliser Future.any pour initialiser Supabase avec différentes stratégies
+    final supabaseInstance = await _initializeSupabaseWithFallback(env);
 
-    // Fonction améliorée pour récupérer un token d'accès
-    Future<String> getAccessToken() async {
-      await Future.delayed(const Duration(seconds: 2));
-      String? accessToken = client.currentSession?.providerRefreshToken;
-
-      return accessToken ?? env.accessToken;
-    }
-
-    // Initialisation de Supabase avec les options
-    await supabase.Supabase.initialize(
-      url: env.supabaseUrl,
-      anonKey: env.supabaseAnonKey,
-      headers: client.headers,
-      accessToken: () => getAccessToken(),
-      authOptions: const supabase.FlutterAuthClientOptions(
-        authFlowType: supabase
-            .AuthFlowType.pkce, // Utilisation de PKCE pour l'authentification
-      ),
-      realtimeClientOptions: const supabase.RealtimeClientOptions(
-        logLevel: supabase.RealtimeLogLevel.info,
-        eventsPerSecond: 2, // Limitation des événements en temps réel
-      ),
-      storageOptions: const supabase.StorageClientOptions(
-        retryAttempts: 10,
-      ),
-      postgrestOptions: const supabase.PostgrestClientOptions(schema: 'public'),
-      debug: kDebugMode,
-    );
-
-    return ref.watch(supabaseProvider);
+    return supabaseInstance;
   } on Exception catch (e) {
     throw StateError('Error initializing Supabase: $e');
   }
 }, name: 'Initialisation de supabase provider');
+
+// Méthodes pour initialiser Supabase avec des délais différents
+Future<supabase.Supabase> _initializeSupabaseWithFallback(
+    Environment env) async {
+  try {
+    final supabaseInstance = await Future.any([
+      _slowSupabaseInit(env),
+      _delayedSupabaseInit(env),
+      _fastSupabaseInit(env),
+    ]);
+    return supabaseInstance;
+  } catch (e) {
+    throw StateError('Error during Supabase initialization: $e');
+  }
+}
+
+// Initialisation lente de Supabase
+Future<supabase.Supabase> _slowSupabaseInit(Environment env) async {
+  await Future.delayed(const Duration(seconds: 5));
+  return await _initializeSupabase(env);
+}
+
+// Initialisation avec délai moyen de Supabase
+Future<supabase.Supabase> _delayedSupabaseInit(Environment env) async {
+  await Future.delayed(const Duration(seconds: 3));
+  return await _initializeSupabase(env);
+}
+
+// Initialisation rapide de Supabase
+Future<supabase.Supabase> _fastSupabaseInit(Environment env) async {
+  await Future.delayed(const Duration(seconds: 1));
+  return await _initializeSupabase(env);
+}
+
+// Fonction centralisée pour initialiser Supabase
+Future<supabase.Supabase> _initializeSupabase(Environment env) async {
+  // Initialiser un client GoTrue pour l'authentification
+  final client = supabase.GoTrueClient(
+    url: env.supabaseUrl,
+    autoRefreshToken: true,
+    headers: {
+      "apiKey": env.supabaseAnonKey,
+      "Authorization": "Bearer ${env.supabaseAnonKey}",
+    },
+  );
+
+  // Fonction améliorée pour récupérer un token d'accès
+  Future<String> getAccessToken() async {
+    await Future.delayed(const Duration(seconds: 2));
+    String? accessToken = client.currentSession?.providerRefreshToken;
+    return accessToken ?? env.accessToken;
+  }
+
+  // Initialisation de Supabase avec les options
+  await supabase.Supabase.initialize(
+    url: env.supabaseUrl,
+    anonKey: env.supabaseAnonKey,
+    headers: client.headers,
+    accessToken: () => getAccessToken(),
+    authOptions: const supabase.FlutterAuthClientOptions(
+      authFlowType: supabase
+          .AuthFlowType.pkce, // Utilisation de PKCE pour l'authentification
+    ),
+    realtimeClientOptions: const supabase.RealtimeClientOptions(
+      logLevel: supabase.RealtimeLogLevel.info,
+      eventsPerSecond: 2, // Limitation des événements en temps réel
+    ),
+    storageOptions: const supabase.StorageClientOptions(
+      retryAttempts: 10,
+    ),
+    postgrestOptions: const supabase.PostgrestClientOptions(schema: 'public'),
+    debug: kDebugMode,
+  );
+
+  return supabase.Supabase.instance;
+}
 
 final supabaseProvider =
     Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
@@ -71,123 +111,36 @@ final supabaseProvider =
 final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
   try {
     final client = ref.watch(supabaseProvider).client;
-
     return client;
   } on Exception catch (e) {
     throw StateError('Error initializing Supabase client: $e');
   }
 });
 
-/*final supabaseRealtimeErrorProvider =
-    Provider<supabase.SupabaseRealtimeError>((ref) {
-  return supabase.SupabaseRealtimeError();
-});*/
-
-/*
-final supabaseChannelRProvider = Provider((ref){
-  final client =
-      ref.watch(supabaseClientProvider.select((value) => value.realtime));
-  supabase.SupabaseRealtimeError realtimeError =
-      ref.watch(supabaseRealtimeErrorProvider);
-
-  ref.onDispose(() {
-    client.onOpen(() {
-      developer.log('Socket opened.');
-      try {
-        final listChannels = client
-            .getChannels()
-            .where((element) => element.presence.channel.canPush)
-            .toList();
-        final options = client.connState;
-        final socket = client.conn;
-
-        for (var chan in listChannels) {
-          if (options != null) {
-            switch (options) {
-              case SocketStates.connecting:
-                if (chan.canPush) {
-                  Stream? streamChannel = socket?.stream;
-                  client.conn?.sink.addStream(streamChannel!);
-                  client.onConnMessage('hello 3wi Body!');
-                  chan.presenceState();
-                } else {
-                  chan.unsubscribe();
-                  socket?.stream;
-                }
-              case SocketStates.open:
-                if (chan.canPush) {
-                  Stream? streamChannel = socket?.stream;
-                  client.conn?.sink.addStream(streamChannel!);
-                  client.onConnMessage('hello 3wi Body!');
-                  chan.subscribe();
-                } else {
-                  chan.unsubscribe();
-                }
-              case SocketStates.disconnecting:
-                client.conn?.sink
-                    .close(socket?.closeCode, realtimeError.message.toString());
-                client.onConnMessage('Goodb8 3wi Body! ${socket?.closeReason}');
-
-                chan.unsubscribe();
-
-              case SocketStates.closed:
-                client.conn?.sink
-                    .close(socket?.closeCode, realtimeError.message.toString());
-                client.onConnMessage('Goodb8 3wi Body! ${socket?.closeReason}');
-
-                chan.unsubscribe();
-                socket?.stream;
-              case SocketStates.disconnected:
-                chan.unsubscribe();
-            }
-          }
-          client.removeChannel(chan);
-        }
-      } on supabase.SupabaseRealtimeError catch (e) {
-        realtimeError = e;
-        developer.log(realtimeError.toString(),
-            error: realtimeError.message, stackTrace: realtimeError.stackTrace);
-      }
-    });
-  });
-
-  ref.onCancel(() {
-    client.onClose((p0) {
-      client.channels.clear();
-    });
-  });
-});
-*/
-
-final supabaseChannelResponseProvider =
-    Provider((ref) => supabase.ChannelResponse);
-
-final supabaseChannelFilterProvider =
-    Provider((ref) => supabase.RealtimeChannel);
-
+// Autres Providers pour Supabase...
 final supabaseServiceProvider =
     Provider<SupabaseService>((ref) => SupabaseService());
 
 final userSupabaseProvider = Provider<supabase.User>((ref) {
   final currentUser = ref.watch(supabaseProvider).client.auth.currentUser;
   return supabase.User(
-      id: currentUser!.id,
-      appMetadata: currentUser.appMetadata,
-      userMetadata: currentUser.userMetadata,
-      email: currentUser.email,
-      emailConfirmedAt: currentUser.emailConfirmedAt,
-      phone: currentUser.phone,
-      phoneConfirmedAt: currentUser.phoneConfirmedAt,
-      invitedAt: currentUser.invitedAt,
-      lastSignInAt: currentUser.lastSignInAt,
-      role: currentUser.role,
-      identities: currentUser.identities,
-      aud: currentUser.aud,
-      createdAt: 'createdAt');
+    id: currentUser!.id,
+    appMetadata: currentUser.appMetadata,
+    userMetadata: currentUser.userMetadata,
+    email: currentUser.email,
+    emailConfirmedAt: currentUser.emailConfirmedAt,
+    phone: currentUser.phone,
+    phoneConfirmedAt: currentUser.phoneConfirmedAt,
+    invitedAt: currentUser.invitedAt,
+    lastSignInAt: currentUser.lastSignInAt,
+    role: currentUser.role,
+    identities: currentUser.identities,
+    aud: currentUser.aud,
+    createdAt: 'createdAt',
+  );
 });
 
-final linksTypeProvider = StateProvider((_) => supabase.GenerateLinkType);
-
+// <---------------- Example of using the Filtered List --------------------> //
 final filterConnection = StateProvider<List<int>>((ref) {
   final state1 =
       ref.watch(supabaseInitProvider.future).timeout(const Duration(days: 2));

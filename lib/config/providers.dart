@@ -49,28 +49,24 @@ import '../features/sketch/presentation/view/drawing_page.dart';
 
 Future<void> initializeProvider(ProviderContainer container) async {
   await _initializeCoreServices(container);
-
   await _initializeAdditionalProviders(container);
-
   _cleanupProviders(container);
-
   container.dispose();
 }
 
 Future<void> _initializeCoreServices(ProviderContainer container) async {
-  await Future.wait(
-    <Future<dynamic>>[
-      container.read(supabaseInitProvider.future),
-      container.read(firebaseInitProvider.future),
-      container.read(webrtcInitProvider.future),
-      container.read(datadogProvider.future),
-      container.read(cubeSettingsInitProvider.future),
-    ],
-    eagerError: true,
-  );
+  // Utiliser Future.any pour tenter plusieurs initialisations parallèles
+  await Future.any([
+    container.read(supabaseInitProvider.future),
+    container.read(firebaseInitProvider.future),
+    container.read(webrtcInitProvider.future),
+    container.read(datadogProvider.future),
+    container.read(cubeSettingsInitProvider.future),
+  ]);
 }
 
 Future<void> _initializeAdditionalProviders(ProviderContainer container) async {
+  // Utiliser Future.wait pour initialiser des fournisseurs supplémentaires en parallèle
   await Future.wait(
     <Future<dynamic>>[
       container.read(userFutureProvider.future),
@@ -79,7 +75,7 @@ Future<void> _initializeAdditionalProviders(ProviderContainer container) async {
       container.read(cubeChatConnectionSettingsProvider.future),
       container.read(produitFutureProvider.future),
     ],
-    eagerError: true,
+    eagerError: true, // Si une des futures échoue, l'exécution s'arrête
   );
 }
 
@@ -122,6 +118,7 @@ void _cleanupProviders(ProviderContainer container) {
     container.read(dioProvider);
     container.read(telemetryProvider);
     container.read(feedbacksProvider);
+    container.read(authCubeStreamProvider);
   });
 }
 
@@ -289,11 +286,32 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                         WebChromeAddressesScreen(key: state.pageKey),
                   ),
                   GoRoute(
-                    path: AndroidNotificationsRoute.path,
-                    name: 'androidNotificationsRoute',
-                    builder: (context, state) =>
-                        AndroidNotificationsScreen(key: state.pageKey),
-                  ),
+                      path: AndroidNotificationsRoute.path,
+                      name: 'androidNotificationsRoute',
+                      builder: (context, state) =>
+                          AndroidNotificationsScreen(key: state.pageKey),
+                      routes: [
+                        GoRoute(
+                            path: NotificationsScreenRoute.path,
+                            name: 'notificationsScreen',
+                            builder: (context, state) =>
+                                const NotificationsScreen()),
+                        GoRoute(
+                            path: DevicesScreenRoute.path,
+                            name: 'devicesScreen',
+                            builder: (context, state) => const DevicesScreen()),
+                        GoRoute(
+                            path: NetworkScreenRoute.path,
+                            name: 'networkScreen',
+                            builder: (context, state) => const NetworkScreen()),
+                        GoRoute(
+                          path: PermissionRoute.path,
+                          name: 'permissionScreen',
+                          builder: (context, state) => PermissionScreen(
+                            key: state.pageKey,
+                          ),
+                        )
+                      ]),
                   GoRoute(
                     path: WebChromeSettingsRoute.path,
                     name: 'webChromeSettingsRoute',

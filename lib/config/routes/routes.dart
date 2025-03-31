@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -120,6 +122,26 @@ part 'routes.g.dart';
           TypedGoRoute<WebChromeSettingsRoute>(
             path: WebChromeSettingsRoute.path,
             name: 'webChromeSettingsRoute',
+          ),
+          TypedGoRoute<DrawingRoute>(
+            path: DrawingRoute.path,
+            name: 'drawingRoute',
+          ),
+          TypedGoRoute<PermissionRoute>(
+            path: PermissionRoute.path,
+            name: 'permissionRoute',
+          ),
+          TypedGoRoute<NetworkScreenRoute>(
+            path: NetworkScreenRoute.path,
+            name: 'networkRoute',
+          ),
+          TypedGoRoute<DevicesScreenRoute>(
+            path: DevicesScreenRoute.path,
+            name: 'devicesRoute',
+          ),
+          TypedGoRoute<NotificationsScreenRoute>(
+            path: NotificationsScreenRoute.path,
+            name: 'notificationRoute',
           ),
         ]),
     TypedGoRoute<ThemeShowcaseRoute>(
@@ -471,6 +493,78 @@ class DrawingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return DrawingPage(
+      key: state.pageKey,
+    );
+  }
+}
+
+class PermissionRoute extends GoRouteData {
+  static const path = '/permissionRoute';
+
+  const PermissionRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return PermissionScreen(
+      key: state.pageKey,
+    );
+  }
+}
+
+class NetworkScreenRoute extends GoRouteData {
+  static const path = '/networkRoute';
+
+  const NetworkScreenRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return NetworkScreen(
+      key: state.pageKey,
+    );
+  }
+}
+
+class DevicesScreenRoute extends GoRouteData {
+  static const path = '/devicesScreenRoute';
+
+  const DevicesScreenRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return DevicesScreen(
+      key: state.pageKey,
+    );
+  }
+}
+
+class NotificationsScreenRoute extends GoRouteData {
+  static const path = '/notificationRoute';
+
+  const NotificationsScreenRoute();
+
+  @override
+  Page<Function> buildPage(BuildContext context, GoRouterState state) {
+    return buildPage(context, state);
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return NotificationsScreen(
       key: state.pageKey,
     );
   }

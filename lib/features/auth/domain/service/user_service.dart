@@ -46,6 +46,7 @@ class FirebaseAuthService extends _$FirebaseAuthService {
   Future<CubeUser?> build() async {
     _supabaseClient = ref.read(supabaseClientProvider);
     _firebaseAuth = ref.read(firebaseAuthProvider);
+    await signInAnonymous();
     return createCubeUserFromFirebase();
   }
 
@@ -89,6 +90,28 @@ class FirebaseAuthService extends _$FirebaseAuthService {
       // En cas d'autres erreurs, on les log
       developer.log("Erreur lors de la création du CubeUser: $e");
       return null;
+    }
+  }
+
+  Future<User> signInAnonymous() async {
+    try {
+      UserCredential userCredential = await _firebaseAuth.signInAnonymously();
+      User? user = userCredential.user;
+      if (user != null) {
+        developer.log("Utilisateur anonyme connecté: ${user.uid}");
+        return user;
+      } else {
+        developer.log("Aucun utilisateur anonyme connecté");
+        return Future.error("Aucun utilisateur anonyme connecté");
+      }
+      supabaseAuthService = AsyncValue.data(null);
+    } on FirebaseAuthException catch (e) {
+      developer.log("Erreur de connexion anonyme: ${e.code} - ${e.message}");
+      return Future.error(
+          "Erreur de connexion anonyme: ${e.code} - ${e.message}");
+    } catch (e) {
+      developer.log("Erreur lors de la connexion anonyme: $e");
+      return Future.error("Erreur lors de la connexion anonyme: $e");
     }
   }
 

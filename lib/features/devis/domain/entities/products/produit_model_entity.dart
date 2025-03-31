@@ -7,7 +7,7 @@ part 'produit_model_entity.g.dart';
 abstract class Produit with _$Produit {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory Produit({
-    required int id,
+    required String id,
     required String sku,
     required String name,
     required String manufacturer,
@@ -18,7 +18,7 @@ abstract class Produit with _$Produit {
   const Produit._();
 
   factory Produit.empty() => const Produit(
-        id: 0,
+        id: '',
         sku: '',
         name: '',
         manufacturer: '',
@@ -41,7 +41,7 @@ abstract class Produit with _$Produit {
   String getIndex(int index) {
     switch (index) {
       case 0:
-        return id.toString();
+        return id;
       case 1:
         return sku;
       case 2:

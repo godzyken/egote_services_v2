@@ -1,6 +1,7 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class AndroidSettingsScreen extends ConsumerWidget {
@@ -95,6 +96,17 @@ class AndroidSettingsScreen extends ConsumerWidget {
     );
   }
 
-  void toNotificationsScreen(BuildContext context) {}
+  void toNotificationsScreen(BuildContext context) {
+    String title = context.tr!.notifications;
 
+    if (title == context.tr!.networkInternet) {
+      context.goNamed('networkScreen');
+    } else if (title == context.tr!.connectedDevices) {
+      context.goNamed('devicesScreen');
+    } else if (title == context.tr!.appsTitle) {
+      context.goNamed('appsScreen');
+    } else if (title == context.tr!.notifications) {
+      context.goNamed('notificationsScreen');
+    }
+  }
 }

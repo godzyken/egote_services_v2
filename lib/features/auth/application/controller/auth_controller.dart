@@ -6,6 +6,7 @@ import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
+import 'package:egote_services_v2/features/auth/domain/service/user_service.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/list_generate_link_type_provider.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
@@ -167,13 +168,29 @@ class AutoAuthController extends StateNotifier<UserModel?> {
       await Future.delayed(const Duration(seconds: 3));
       await _handleInitialDeepLink();
     }
-    _cubeUser =
-        await _ref.watch(userServiceProvider).createCubeUserFromFirebase();
+    await createCubeUser;
+    updateStateUser();
+  }
+
+  void performAction() {
+    final action = FirebaseAuthService();
+
+    // Use ProviderFactory to execute the action
+    userServiceProvider
+        .overrideWithValue(action); // Replacing the deprecated approach
+  }
+
+  void updateStateUser() {
     _repository?.authStateChange(_updateState);
     _repository?.cubeUserStateChange(
         _ref.watch(generateLinkTypeNotifierProvider),
         _cubeUser!,
         _updateCubeUserState);
+  }
+
+  Future<void> get createCubeUser async {
+    _cubeUser =
+        await _ref.watch(userServiceProvider).createCubeUserFromFirebase();
   }
 
   // Abonnement aux changements de données utilisateur dans Firestore

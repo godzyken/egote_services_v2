@@ -272,7 +272,7 @@ FutureOr<void> sentryCustomOptions(options) {
     }
   };
 
-  options.beforeSend = (event, hint) {
+  options.beforeSend = (SentryEvent event, dynamic hint) {
     event.tags?['app_version'] = '1.0.0';
 
     return event;

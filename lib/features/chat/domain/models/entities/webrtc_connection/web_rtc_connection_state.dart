@@ -11,11 +11,36 @@ class WebRTCState {
   final RTCVideoRenderer? localRenderer;
   final RTCVideoRenderer? remoteRenderer;
 
-  WebRTCState(
-      {this.peerConnection,
-      this.localStream,
-      required this.localRenderer,
-      required this.remoteRenderer});
+  final String status;
+  final String errorMessage;
+  final String iceState;
+
+  WebRTCState({
+    required this.status,
+    required this.peerConnection,
+    required this.localStream,
+    required this.errorMessage,
+    required this.iceState,
+    required this.localRenderer,
+    required this.remoteRenderer,
+  });
+  const WebRTCState._(this.status, this.peerConnection, this.localStream,
+      this.errorMessage, this.iceState,
+      {required this.localRenderer, required this.remoteRenderer});
+
+  // States for WebRTC initialization
+  static const initializing = WebRTCState._(
+      'initializing', null, null, 'null', 'null',
+      localRenderer: null, remoteRenderer: null);
+  static const initialized = WebRTCState._(
+      'initialized', null, null, 'null', 'null',
+      localRenderer: null, remoteRenderer: null);
+
+  static WebRTCState error({required String errorMessage}) =>
+      WebRTCState.error(errorMessage: errorMessage);
+
+  static WebRTCState iceConnectionState({required String iceState}) =>
+      WebRTCState.iceConnectionState(iceState: iceState);
 }
 
 final webRTCStateProvider = Provider<WebRTCState>((ref) {
@@ -39,8 +64,15 @@ final webRTCStateProvider = Provider<WebRTCState>((ref) {
 
   final remote = ref.state.remoteRenderer;
   final localRenderer = ref.state.localRenderer;
+  final status = ref.state.status;
+  final iceState = ref.state.iceState;
+  final peerConnection = ref.state.peerConnection;
+  final localStream = ref.state.localStream;
+  final errorMessage = ref.state.errorMessage;
 
-  return WebRTCState(localRenderer: localRenderer, remoteRenderer: remote);
+  return WebRTCState._(
+      status, peerConnection, localStream, errorMessage, iceState,
+      localRenderer: localRenderer, remoteRenderer: remote);
 });
 
 class WebRTCVideoState {

@@ -203,3 +203,51 @@ final permissionStateNotifierProvider =
   final permissionService = ref.read(permissionServiceProvider);
   return PermissionStateNotifier(permissionService);
 });
+
+class PermissionNotifier
+    extends StateNotifier<Map<Permission, PermissionStatus>> {
+  PermissionNotifier() : super({});
+
+  Future<void> requestPermission(Permission permission) async {
+    final status = await permission.request();
+    state = {...state, permission: status};
+  }
+
+  // Demander toutes les permissions nécessaires.
+  Future<void> requestAllPermissions() async {
+    final statuses = await Future.wait([
+      Permission.camera.request(),
+      Permission.microphone.request(),
+      Permission.storage.request(),
+      Permission.bluetooth.request(),
+      Permission.audio.request(),
+      Permission.phone.request(),
+      Permission.location.request(),
+      Permission.mediaLibrary.request(),
+      Permission.notification.request(),
+    ]);
+
+    // Mettre à jour l'état avec toutes les permissions demandées et leur statut.
+    state = {
+      Permission.camera: statuses[0],
+      Permission.microphone: statuses[1],
+      Permission.storage: statuses[2],
+      Permission.bluetooth: statuses[3],
+      Permission.audio: statuses[4],
+      Permission.phone: statuses[5],
+      Permission.location: statuses[6],
+      Permission.mediaLibrary: statuses[7],
+      Permission.notification: statuses[8],
+    };
+  }
+
+  // Révoquer une permission spécifique (notamment pour les notifications).
+  Future<void> revokeNotificationPermission() async {
+    // La révocation d'une permission nécessite souvent des actions manuelles dans les paramètres.
+    // Cependant, nous pouvons mettre à jour l'état comme s'il n'y avait plus de permission.
+    state = {...state, Permission.notification: PermissionStatus.denied};
+  }
+}
+
+final permissionNotifierProvider = StateNotifierProvider<PermissionNotifier,
+    Map<Permission, PermissionStatus>>((ref) => PermissionNotifier());

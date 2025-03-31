@@ -1,43 +1,49 @@
+import 'dart:developer' as developer;
+
+import 'package:connectycube_sdk/connectycube_calls.dart' as web_r_t_c;
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart' as web_r_t_c;
 
 import '../../domain/models/entities/webrtc_connection/web_rtc_connection_state.dart';
 
 class WebRTCStateNotifier extends StateNotifier<WebRTCState> {
   WebRTCStateNotifier(this.peerConnection, this._ref)
-      : super(WebRTCState(localRenderer: null, remoteRenderer: null));
+      : super(WebRTCState.initialized);
 
   final Ref _ref;
   final RTCPeerConnection peerConnection;
 
+  // Initialize WebRTC state and setup peer connection
   Future<void> initialize() async {
     final webRTCState = _ref.read(webRTCStateProvider);
     final localRenderer = webRTCState.localRenderer;
     final remoteRenderer = webRTCState.remoteRenderer;
+    final localStream = webRTCState.localStream;
+    final iceState = webRTCState.iceState;
+    final status = webRTCState.status;
+    final errorMessage = webRTCState.errorMessage;
+
     state = WebRTCState(
-        peerConnection: peerConnection,
-        localRenderer: localRenderer,
-        remoteRenderer: remoteRenderer);
+      peerConnection: peerConnection,
+      localRenderer: localRenderer,
+      remoteRenderer: remoteRenderer,
+      status: status,
+      errorMessage: errorMessage,
+      iceState: iceState,
+      localStream: localStream,
+    );
 
     final webRTCVideoState = _ref.read(webRTCVideoSateProvider);
 
-    state = WebRTCState(
-        peerConnection: peerConnection,
-        localRenderer: webRTCVideoState.localRenderer,
-        remoteRenderer: webRTCVideoState.remoteRenderer);
+    state = WebRTCState.initialized;
 
+    // Initialize the renderers
     await localRenderer?.initialize();
     await remoteRenderer?.initialize();
 
-    state = WebRTCState(
-        peerConnection: peerConnection,
-        localRenderer: localRenderer,
-        remoteRenderer: remoteRenderer);
-
-    // await localRenderer?.srcObject = peerConnection.getLocalStreams()[0];
-    // await remoteRenderer?.srcObject = peerConnection.getRemoteStreams()[0];
+    state =
+        WebRTCState.iceConnectionState(iceState: webRTCVideoState.toString());
 
     return await Future.delayed(
         Duration(seconds: 1), () => web_r_t_c.WebRTC.initialized);
@@ -46,7 +52,6 @@ class WebRTCStateNotifier extends StateNotifier<WebRTCState> {
   Future<void> createPeerConnection(Map<String, dynamic> configuration) async {
     final pc = await web_r_t_c.createPeerConnection(configuration);
 
-    // Create a local media stream
     final localStream = await navigator.mediaDevices.getUserMedia({
       'audio': true,
       'video': true,
@@ -60,7 +65,7 @@ class WebRTCStateNotifier extends StateNotifier<WebRTCState> {
         event.streams[0].getTracks().forEach((track) {
           track.onEnded = () {
             if (kDebugMode) {
-              print('Track ended');
+              developer.log('Track ended');
             }
             // Handle track end event
           };
@@ -71,13 +76,18 @@ class WebRTCStateNotifier extends StateNotifier<WebRTCState> {
     final webRTCVideoState = _ref.read(webRTCVideoSateProvider);
 
     state = WebRTCState(
-        peerConnection: pc,
-        localStream: localStream,
-        localRenderer: webRTCVideoState.localRenderer,
-        remoteRenderer: webRTCVideoState.remoteRenderer);
+      peerConnection: pc,
+      localStream: localStream,
+      localRenderer: webRTCVideoState.localRenderer,
+      remoteRenderer: webRTCVideoState.remoteRenderer,
+      status: '',
+      errorMessage: '',
+      iceState: '',
+    );
   }
 }
 
+// WebRTC Video State Notifier
 class WebRTCVideoStateNotifier extends StateNotifier<WebRTCVideoState> {
   WebRTCVideoStateNotifier(this.renderer, this.remoteRenderer)
       : super(WebRTCVideoState(
@@ -88,29 +98,24 @@ class WebRTCVideoStateNotifier extends StateNotifier<WebRTCVideoState> {
 
   RTCPeerConnection? peerConnection;
 
-  // Initialize the video renderer
   Future<void> initialize() async {
-    RTCVideoRenderer renderer = RTCVideoRenderer();
-    RTCVideoRenderer remoteRenderer = RTCVideoRenderer();
-    await renderer.initialize();
+    final localRenderer = RTCVideoRenderer();
+    final remoteRenderer = RTCVideoRenderer();
+    await localRenderer.initialize();
     await remoteRenderer.initialize();
 
-    state =
-        state.copyWith(localRenderer: renderer, remoteRenderer: remoteRenderer);
+    state = state.copyWith(
+        localRenderer: localRenderer, remoteRenderer: remoteRenderer);
   }
 
-  // Dispose renderer when no longer needed
   void disposeRenderer() {
     state.localRenderer.dispose();
     state = state.copyWith(
-        isConnected: isMobile == true
-            ? isDesktop == true
-                ? true
-                : false
-            : isWeb,
+        isConnected: false, // Add condition based on your logic
         localRenderer: renderer,
         peerConnection: peerConnection,
         remoteRenderer: remoteRenderer);
+    state.peerConnection?.dispose();
   }
 
   void updateWebRTCVideoState(WebRTCVideoState newState) {
@@ -118,46 +123,16 @@ class WebRTCVideoStateNotifier extends StateNotifier<WebRTCVideoState> {
   }
 }
 
-// WebRTC StateProvider
-final webRTCVideoStateNotifierProvider =
-    StateNotifierProvider<WebRTCVideoStateNotifier, WebRTCVideoState?>((ref) {
-  final renderer = ref.watch(webRTCStateProvider).localRenderer;
-  final remoteRenderer = ref.watch(webRTCStateProvider).remoteRenderer;
-  return WebRTCVideoStateNotifier(renderer!, remoteRenderer!);
-});
-
-// WebRTC StateNotifier to manage WebRTC connection
-class WebRTCVideoRendererStateNotifier
-    extends StateNotifier<RTCVideoRenderer?> {
-  WebRTCVideoRendererStateNotifier() : super(null);
-
-  // Initialize the video renderer
-  Future<void> initialize() async {
-    RTCVideoRenderer renderer = RTCVideoRenderer();
-    await renderer.initialize();
-    state = renderer;
-  }
-
-  // Dispose renderer when no longer needed
-  void disposeRenderer() {
-    state?.dispose();
-    state = null;
-  }
-
-  updateWebRTCState(RTCVideoRenderer newState) {
-    state = newState;
-  }
-}
-
+// WebRTC StateNotifier for Peer Connection
 class WebRTCPeerConnectionStateNotifier
     extends StateNotifier<RTCPeerConnection?> {
   WebRTCPeerConnectionStateNotifier() : super(null);
 
-  updateWebRTCState(RTCPeerConnection newState) {
+  void updateWebRTCState(RTCPeerConnection newState) {
     state = newState;
   }
 
-  disposeWebRTCState() {
+  void disposeWebRTCState() {
     state?.dispose();
     state = null;
   }

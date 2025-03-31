@@ -13,7 +13,7 @@ Future<Uint8List> generateDevisPdf(
     PdfPageFormat format, CustomData data) async {
   final products = <Produit>[
     Produit(
-        id: 61975,
+        id: '61975',
         sku: '100561265',
         name: 'Gravity Aluminium Trace',
         manufacturer: 'Porcelanosa',
@@ -21,7 +21,7 @@ Future<Uint8List> generateDevisPdf(
             'https://materialbank-eu-cdn.freetls.fastly.net/media/catalog/product/base_image/10001/100561266.jpg?width=276',
         url: '/porcelanosa-gravity-aluminium-trace-1576811'),
     Produit(
-        id: 47333,
+        id: '47333',
         sku: '101472081',
         name: 'Affreschi Botticelli',
         manufacturer: 'Ceramiche Mariner',
@@ -29,7 +29,7 @@ Future<Uint8List> generateDevisPdf(
             'https://materialbank-eu-cdn.freetls.fastly.net/media/catalog/product/base_image/10209/101472083.jpg?width=276',
         url: '/ceramiche-mariner-affreschi-botticelli-2022081'),
     Produit(
-        id: 23116,
+        id: '23116',
         sku: '101369355',
         name: 'Dust Dune',
         manufacturer: 'Elios Ceramica',
@@ -37,7 +37,7 @@ Future<Uint8List> generateDevisPdf(
             'https://materialbank-eu-cdn.freetls.fastly.net/media/catalog/product/base_image/10342/101369356.jpg?width=276',
         url: '/elios-ceramica-dust-dune-1919355'),
     Produit(
-        id: 71993,
+        id: '71993',
         sku: '101737964',
         name: 'Camo',
         manufacturer: 'Palet.',
@@ -45,7 +45,7 @@ Future<Uint8List> generateDevisPdf(
             'https://materialbank-eu-cdn.freetls.fastly.net/media/catalog/product/base_image/10616/101737965.jpg?width=276',
         url: '/palet-camo-2287964'),
     Produit(
-        id: 9623,
+        id: '9623',
         sku: '101301433',
         name: 'Microcosmi Verde Alpi',
         manufacturer: 'Ceramica Magica',
@@ -53,7 +53,7 @@ Future<Uint8List> generateDevisPdf(
             'https://materialbank-eu-cdn.freetls.fastly.net/media/catalog/product/base_image/10002/101301439.jpg?width=276"',
         url: '/ceramica-magica-microcosmi-verde-alpi-1851433'),
     Produit(
-        id: 48829,
+        id: '48829',
         sku: '101473154',
         name: 'Hex Pattern 1',
         manufacturer: 'ONIX',
