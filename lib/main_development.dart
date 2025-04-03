@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer' as developer;
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -13,10 +12,6 @@ import 'config/environements/flavors.dart';
 
 void main() async {
   F.appFlavor = Flavor.development;
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    if (kReleaseMode) exit(1);
-  };
 
   runZonedGuarded(() async {
     runApp(UncontrolledProviderScope(

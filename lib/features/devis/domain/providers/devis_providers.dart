@@ -184,9 +184,9 @@ final produitStateNotifierProvider =
 //const String apiUrl = "https://api.materialsproject.org/";
 const String apiUrl = "https://search.materialbank.eu";
 
+// Optimisation de l'appel réseau pour effectuer une recherche des produits
 final produitFutureProvider = FutureProvider<List<Produit>>((ref) async {
   final lang = ref.read(localizationProvider);
-
   final dio = ref.read(dioProvider);
 
   dio.clone(
@@ -229,6 +229,7 @@ final produitFutureProvider = FutureProvider<List<Produit>>((ref) async {
       final items = response.data['items'];
       developer.log('WWWWWWWWWDDDD: ${items.toString()}');
 
+      // Retourner les produits récupérés depuis l'API
       return await items.map((json) => Produit.fromJson(json)).toList();
     } else {
       throw Exception(

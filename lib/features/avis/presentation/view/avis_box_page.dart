@@ -13,10 +13,6 @@ import '../../../../config/app_shared/images/list_local.dart';
 import '../../domain/entities/feedback/feedback.dart';
 import '../../domain/providers/feedback/feedback_provider.dart';
 
-// Alias pour différencier les deux classes User
-typedef FirebaseUser = firebase_auth.User;
-typedef SupabaseUser = supabase.User;
-
 class AvisBoxPage extends ConsumerStatefulWidget {
   const AvisBoxPage({super.key, required this.avisId});
 
@@ -39,7 +35,6 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(feedbacksProvider.notifier).loadFeedbacks();
   }
 
   // Widget for displaying each feedback item
@@ -69,26 +64,48 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
   // Fetch feedback using Riverpod
   Widget _buildFeedbackList() {
     final privatePostsFuture = ref.watch(feedbacksProvider);
-    return ListView.builder(
-      itemCount: privatePostsFuture.length,
-      itemBuilder: (context, index) {
-        final AvisUtilisateur feedback = privatePostsFuture[index];
-        return _buildFeedbackTile(feedback);
-      },
-    );
+    return privatePostsFuture.isEmpty
+        ? const Center(child: Text('Aucun avis'))
+        : ListView.builder(
+            itemCount: privatePostsFuture.length,
+            itemBuilder: (context, index) {
+              final AvisUtilisateur feedback = privatePostsFuture[index];
+              return _buildFeedbackTile(feedback);
+            },
+          );
   }
 
   // Send a new feedback (avis)
   void _sendAvis(BuildContext context) async {
-    final auth = ref.watch(authStreamProvider);
-    User? user = convertFirebaseUserToSupabaseUser(auth.value!);
+    // Vérification si l'utilisateur est authentifié
+    final auth = ref.watch(firebaseAuthProvider);
+    User? user = auth.currentUser != null
+        ? convertFirebaseUserToSupabaseUser(auth.currentUser!)
+        : null;
 
     if (formKey.currentState!.validate()) {
       final value = controller.text;
+
+      // Si l'utilisateur n'est pas connecté, on crée un utilisateur anonyme avec des valeurs par défaut
+      user ??= supabase.User(
+        id: 'anonymous_${DateTime.now().millisecondsSinceEpoch}', // ID unique temporaire pour l'utilisateur anonyme
+        email: 'anonymous@anonymous.com',
+        appMetadata: {
+          'display_name': 'Utilisateur anonyme',
+          'photo_url': LocalImages
+              .foxFaceMeshTexture, // Vous pouvez mettre une image par défaut
+        },
+        userMetadata: {},
+        aud: '',
+        createdAt: DateTime.now().toIso8601String(),
+      );
+
+      // Ajout de l'avis
       setState(() {
-        ref.read(feedbacksProvider.notifier).addFeedback(value, user);
+        ref.read(feedbacksProvider.notifier).addFeedback(value, user!);
         controller.clear();
       });
+
       FocusScope.of(context).unfocus();
       developer.log("Avis envoyé avec succès");
     } else {

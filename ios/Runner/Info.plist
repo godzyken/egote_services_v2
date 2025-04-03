@@ -64,5 +64,7 @@
     <false/>
     <key>com.apple.security.print</key>
     <true/>
+    <key>Sentry.DSN</key>
+    <string>https://<key>@sentry.io/<project></string>
 </dict>
 </plist>

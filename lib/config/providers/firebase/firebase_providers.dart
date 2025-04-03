@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
+import 'dart:isolate';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectycube_sdk/connectycube_calls.dart';
@@ -11,12 +12,25 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../firebase_options.dart';
 import '../../environements/environment.dart';
 import '../../environements/flavors.dart';
 
 // <---------------- Firebase Initialization -------------------> //
+@Riverpod(keepAlive: true)
+final firebaseProvider = FutureProvider<void>((ref) async {
+  try {
+    await Firebase.initializeApp();
+    developer.log('Firebase initialized successfully');
+  } on FirebaseException catch (e) {
+    developer.log('Erreur lors de l\'initialisation de Firebase: $e');
+    rethrow;
+  }
+});
+
+@Riverpod(keepAlive: true)
 final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
   // Vérifier si Firebase est déjà initialisé
   if (Firebase.apps.isNotEmpty) {
@@ -24,10 +38,11 @@ final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
   }
 
   final env = await _loadEnvironmentConfig();
+
   await _initializeFirebaseServices(ref, env);
 
   // Utilise Future.any pour initialiser Firebase de manière optimisée
-  final instance = await _initializeFirebaseWithFallback(env);
+  final instance = await _initializeFirebaseInBackground(env);
 
   return instance;
 });
@@ -38,56 +53,85 @@ Future<Environment> _loadEnvironmentConfig() async {
   return Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 }
 
-// Méthode pour initialiser Firebase avec une logique de secours via Future.any
-Future<FirebaseApp> _initializeFirebaseWithFallback(Environment env) async {
-  try {
-    // Attendre que l'une des initialisations réussisse
-    final firebaseApp = await Future.any([
-      _slowFirebaseInit(env),
-      _delayedFirebaseInit(env),
-      _fastFirebaseInit(env),
-    ]);
-    return firebaseApp;
-  } catch (e) {
-    developer.log('Error during Firebase initialization: $e');
+// Initialize Firebase in background isolate
+Future<FirebaseApp> _initializeFirebaseInBackground(Environment env) async {
+  final receivePort = ReceivePort();
+  await Isolate.spawn(
+    _initializeFirebaseIsolate,
+    FirebaseInitializationParams(env, receivePort.sendPort),
+  );
+
+  // Wait for the result from the isolate
+  final result = await receivePort.first;
+  if (result is FirebaseApp) {
+    return result;
+  } else {
     throw FirebaseInitializationException('Firebase initialization failed.');
+  }
+}
+
+// Isolate function to initialize Firebase
+void _initializeFirebaseIsolate(FirebaseInitializationParams params) async {
+  try {
+    final firebaseApp = await Future.any([
+      _slowFirebaseInit(params.env),
+      _delayedFirebaseInit(params.env),
+      _fastFirebaseInit(params.env),
+    ]);
+
+    // Send back the result to the main isolate
+    params.sendPort.send(firebaseApp);
+  } catch (e) {
+    developer.log('Error during Firebase initialization in isolate: $e');
+    params.sendPort.send(
+        FirebaseInitializationException('Firebase initialization failed.'));
   }
 }
 
 // Initialisation lente
 Future<FirebaseApp> _slowFirebaseInit(Environment env) async {
-  await Future.delayed(Duration(seconds: 5));
-  return await Firebase.initializeApp(
-    name: 'SlowFirebase',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Future.delayed(Duration(seconds: 5));
+    return await Firebase.initializeApp(
+      name: 'SlowFirebase',
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    developer.log('Error during SlowFirebase initialization: $e');
+    throw FirebaseInitializationException('Firebase initialization failed.');
+  }
 }
 
 // Initialisation avec délai moyen
 Future<FirebaseApp> _delayedFirebaseInit(Environment env) async {
-  await Future.delayed(Duration(seconds: 3));
-  return await Firebase.initializeApp(
-    name: 'DelayedFirebase',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Future.delayed(Duration(seconds: 3));
+    return await Firebase.initializeApp(
+      name: 'DelayedFirebase',
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    developer.log('Error during DelayedFirebase initialization: $e');
+    throw FirebaseInitializationException('Firebase initialization failed.');
+  }
 }
 
 // Initialisation rapide
 Future<FirebaseApp> _fastFirebaseInit(Environment env) async {
-  await Future.delayed(Duration(seconds: 1));
-  return await Firebase.initializeApp(
-    name: '[DEFAULT]',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Future.delayed(Duration(seconds: 1));
+    return await Firebase.initializeApp(
+      name: '[DEFAULT]',
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    developer.log('Error during FastFirebase initialization: $e');
+    throw FirebaseInitializationException('Firebase initialization failed.');
+  }
 }
 
 // Méthode d'initialisation des services Firebase (Firestore, Auth, etc.)
 Future<void> _initializeFirebaseServices(Ref ref, Environment env) async {
-  await Firebase.initializeApp(
-    name: '[DEFAULT]',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   await Future.delayed(Duration(seconds: 2), () {
     ref.watch(firebaseFirestoreProvider).settings.persistenceEnabled;
     ref.watch(firebaseAuthProvider).setPersistence(Persistence.LOCAL);
@@ -117,13 +161,18 @@ class FirebaseInitializationException implements Exception {
 }
 
 // <---------------- Firebase Auth Provider -----------------> //
+@Riverpod(keepAlive: true)
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
-
+@Riverpod(keepAlive: true)
 final firebaseDatabaseProvider =
     Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
+
+@Riverpod(keepAlive: true)
 final firebaseFirestoreProvider =
     Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
+
+@Riverpod(keepAlive: true)
 final firebaseMessagingProvider =
     Provider<FirebaseMessaging>((ref) => FirebaseMessaging.instance);
 final firebaseMessagingServiceProvider =
@@ -233,3 +282,11 @@ final fireDatabaseProvider = Provider<FirebaseDatabase?>((ref) {
   }
   return null;
 });
+
+// Helper class for passing data between isolates
+class FirebaseInitializationParams {
+  final Environment env;
+  final SendPort sendPort;
+
+  FirebaseInitializationParams(this.env, this.sendPort);
+}

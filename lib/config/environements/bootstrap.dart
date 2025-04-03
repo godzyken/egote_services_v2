@@ -6,16 +6,14 @@ import 'dart:isolate';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/app.dart';
 import 'package:egote_services_v2/config/providers.dart' as providers;
-import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/platform/platform_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stacktrace;
 import 'package:workmanager/workmanager.dart';
 
@@ -26,29 +24,18 @@ import 'flavors.dart';
 
 Future<ProviderContainer> bootstrap() async {
   //WidgetsFlutterBinding.ensureInitialized();
-  final binding = SentryWidgetsFlutterBinding.ensureInitialized();
-  flutterErrorFlow();
+  await sentryInitBinding();
+  await initializeSentry();
 
-/*  await Workmanager().initialize(callbackDispatcher);*/
-  Workmanager().registerOneOffTask(
-    'id_unique',
-    'simpleTask',
-    initialDelay: Duration(seconds: 10),
-    inputData: <String, dynamic>{'key': 'value'},
-    existingWorkPolicy: ExistingWorkPolicy.replace,
-  );
-
-  await customSentryBinding(binding);
-
-  await SentryFlutter.init(
-      appRunner: () => runApp(const ProviderScope(child: EgoteApp())),
-      sentryCustomOptions);
-
-  await sendMessageToSentry();
+  await Future.wait([
+    initializeWorkManager(),
+    sendMessageToSentry(),
+    flutterErrorFlow(),
+  ], eagerError: true);
 
   final container = ProviderContainer(
     overrides: [
-      firebaseInitProvider.overrideWith((ref) => ref.future),
+      //firebaseProvider.overrideWith((ref) => ref.keepAlive()),
       localizationProvider.overrideWith(
           (ref) => MultiLang(ref.read(localeProvider).languageCode)),
       datadogConfigProvider.overrideWith((ref) => ref.future),
@@ -58,11 +45,46 @@ Future<ProviderContainer> bootstrap() async {
     ],
     observers: [
       if (F.appFlavor == Flavor.local) _Logger(),
+      if (F.appFlavor == Flavor.development) _Logger(),
     ],
   );
 
   await providers.initializeProvider(container);
+
   return container;
+}
+
+Future<void> initializeSentry() async {
+  await SentryFlutter.init(appRunner: () async {
+    await sentryInitFirebase();
+    return runApp(const ProviderScope(child: EgoteApp()));
+  }, sentryCustomOptions);
+}
+
+Future<void> sentryInitFirebase() async {
+  try {
+    await Firebase.initializeApp();
+    developer.log('Firebase initialized successfully');
+  } catch (e) {
+    developer.log('Erreur lors de l\'initialisation de Firebase: $e');
+    rethrow;
+  }
+}
+
+Future<void> initializeWorkManager() async {
+  await Workmanager().initialize(callbackDispatcher);
+
+  await Workmanager().registerOneOffTask(
+    'id_unique',
+    'simpleTask',
+    initialDelay: Duration(seconds: 10),
+    inputData: <String, dynamic>{'key': 'value'},
+    existingWorkPolicy: ExistingWorkPolicy.replace,
+  );
+}
+
+Future<void> sentryInitBinding() async {
+  await customSentryBinding(SentryWidgetsFlutterBinding.ensureInitialized());
 }
 
 Future<void> sendMessageToSentry() async {
@@ -133,13 +155,10 @@ Future<void> sendDataToSupabase() async {
 }
 
 Future<void> customSentryBinding(WidgetsBinding binding) async {
-  await Future.wait(
-      [
-        Future.delayed(const Duration(seconds: 2)),
-        runTaskInIsolate(),
-        providerTaskIsolate(),
-      ]..clear(),
-      eagerError: true, cleanUp: (successValue) {
+  await Future.wait([
+    runTaskInIsolate(),
+    providerTaskIsolate(),
+  ], eagerError: true, cleanUp: (successValue) {
     binding
       ..deferFirstFrame()
       ..createSceneBuilder()
@@ -158,7 +177,7 @@ Future<void> customSentryBinding(WidgetsBinding binding) async {
   });
 }
 
-void flutterErrorFlow() {
+Future<void> flutterErrorFlow() async {
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
     if (kReleaseMode) exit(1);
@@ -281,10 +300,8 @@ FutureOr<void> sentryCustomOptions(options) {
   options.tracesSampler = (samplingContext) {
     final ctx = samplingContext.customSamplingContext;
     // If this is the continuation of a trace, just use that decision (rate controlled by the caller).
-    final parentSampled = samplingContext.transactionContext.parentSampled;
-    if (parentSampled != null) {
-      return parentSampled ? 1.0 : 0.0;
-    }
+    ctx['parentSampled'] ??= 1.0;
+
     if ('/payment' == ctx['url']) {
       // These are important - take a big sample
       return 0.5;
@@ -434,6 +451,7 @@ Future<void> runTaskInIsolate() async {
   var res =
       await compute((message) => expensiveComputation(message), 'message');
 
+  flutterErrorFlow();
   developer.log('run compute: $res');
   sleep(const Duration(seconds: 1));
 
@@ -460,69 +478,9 @@ const simplePeriodic1HourTask =
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
 void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    developer.log("Native called background task: $task");
-
-    int? totalExecutions;
-    final sharedPreference = await SharedPreferences.getInstance();
-
-    try {
-      totalExecutions = sharedPreference.getInt("totalExecutions");
-      sharedPreference.setInt(
-          "totalExecutions", totalExecutions == null ? 1 : totalExecutions + 1);
-
-      developer.log("Task $task executed with inputData: $inputData");
-
-      String value = inputData!['key'];
-
-      // Effectuez votre traitement ici
-      developer.log("Value from inputData: $value");
-
-      switch (task) {
-        case simpleTaskKey:
-          developer.log("$simpleTaskKey was executed. inputData = $inputData");
-          final prefs = await SharedPreferences.getInstance();
-          prefs.setBool("test", true);
-          developer.log("Bool from prefs: ${prefs.getBool("test")}");
-          return myTaskFunction(task);
-        case rescheduledTaskKey:
-          final key = inputData['key']!;
-          final prefs = await SharedPreferences.getInstance();
-          if (prefs.containsKey('unique-$key')) {
-            developer.log('has been running before, task is successful');
-            return true;
-          } else {
-            await prefs.setBool('unique-$key', true);
-            developer.log('reschedule task');
-            return false;
-          }
-        case failedTaskKey:
-          developer.log('failed task');
-          return Future.error('failed');
-        case simpleDelayedTask:
-          developer.log("$simpleDelayedTask was executed");
-          break;
-        case simplePeriodicTask:
-          developer.log("$simplePeriodicTask was executed");
-          break;
-        case simplePeriodic1HourTask:
-          developer.log("$simplePeriodic1HourTask was executed");
-          break;
-        case Workmanager.iOSBackgroundTask:
-          developer.log("The iOS background fetch was triggered");
-          Directory? tempDir = await getTemporaryDirectory();
-          String? tempPath = tempDir.path;
-          developer.log(
-              "You can access other plugins in the background, for example Directory.getTemporaryDirectory(): $tempPath");
-          stderr.writeln('the iOS background fetch was triggered');
-          break;
-      }
-
-      return Future.value(true);
-    } catch (e) {
-      developer.log("Error dans la tache de fond: $e");
-      return Future.value(false);
-    }
+  Workmanager().executeTask((task, inputData) {
+    developer.log("Task executed: $task");
+    return Future.value(true);
   });
 }
 
@@ -585,7 +543,7 @@ Future<void> providerTaskIsolate() async {
       context: details.context,
       silent: details.silent,
       stackFilter: details.stackFilter));*/
-bool myTaskFunction(String taskName) {
+Future<bool> myTaskFunction(String taskName) async {
   developer.log("Executing background task: $taskName");
 
   try {
@@ -593,7 +551,7 @@ bool myTaskFunction(String taskName) {
     // For example, a network request, database operation, etc.
 
     // Simulating a background task (you can replace it with your actual task logic)
-    bool success = performBackgroundTask();
+    bool success = await performBackgroundTask();
 
     if (success) {
       // If the task was successful, return true
@@ -612,7 +570,22 @@ bool myTaskFunction(String taskName) {
 }
 
 // Simulating a background task (you can replace this with your actual task logic)
-bool performBackgroundTask() {
+Future<bool> performBackgroundTask() async {
   // Simulate success or failure of a background task.
-  return DateTime.now().second % 2 == 0; // Randomly return true or false
+  bool success =
+      await initForegroundService(); // Replace with your actual task logic
+  return success;
 }
+
+Future<bool> initForegroundService() async {
+  final androidConfig = FlutterBackgroundAndroidConfig(
+    notificationTitle: 'Egote Services',
+    notificationText: 'Screen sharing is in progress',
+    notificationImportance: AndroidNotificationImportance.max,
+    notificationIcon: androidResource,
+  );
+  return FlutterBackground.initialize(androidConfig: androidConfig);
+}
+
+AndroidResource get androidResource =>
+    AndroidResource(name: 'ic_launcher_foreground', defType: 'drawable');

@@ -4,12 +4,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers.dart';
+import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
@@ -33,6 +33,7 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final initializeFirebase = ref.read(firebaseProvider);
     final router = ref.read(goRouterProvider);
     final lang = ref.read(localizationProvider);
     final datadog = ref.read(datadogInstanceProvider);
@@ -43,24 +44,39 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     connectivityStateSubscription =
         ref.watch(connectivityStatusProviders.notifier).subscription!;
 
-    return RumUserActionDetector(
-        rum: datadog.rum,
-        child: MaterialApp.router(
-          title: F.title,
-          // routerDelegate: router.routerDelegate,
-          // routeInformationParser: router.routeInformationParser,
-          // routeInformationProvider: router.routeInformationProvider,
-          routerConfig: router,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: settingsThemeMode,
-          debugShowCheckedModeBanner: true,
-          scrollBehavior: const AppScrollBehavior(),
-          locale: lang,
-          builder: (context, child) => child!,
-        ));
+    return initializeFirebase.when(
+        data: (_) => RumUserActionDetector(
+            rum: datadog.rum,
+            child: MaterialApp.router(
+              title: F.title,
+              // routerDelegate: router.routerDelegate,
+              // routeInformationParser: router.routeInformationParser,
+              // routeInformationProvider: router.routeInformationProvider,
+              routerConfig: router,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: settingsThemeMode,
+              debugShowCheckedModeBanner: true,
+              scrollBehavior: const AppScrollBehavior(),
+              locale: lang,
+              builder: (context, child) => child!,
+            )),
+        error: (error, stackTrace) => MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: Text(error.toString()),
+                ),
+              ),
+            ),
+        loading: () => MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ));
   }
 
   @override
@@ -88,19 +104,6 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
   }
-
-  Future<bool> initForegroundService() async {
-    final androidConfig = FlutterBackgroundAndroidConfig(
-      notificationTitle: 'Egote Services',
-      notificationText: 'Screen sharing is in progress',
-      notificationImportance: AndroidNotificationImportance.max,
-      notificationIcon: androidResource,
-    );
-    return FlutterBackground.initialize(androidConfig: androidConfig);
-  }
-
-  AndroidResource get androidResource =>
-      AndroidResource(name: 'ic_launcher_foreground', defType: 'drawable');
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {

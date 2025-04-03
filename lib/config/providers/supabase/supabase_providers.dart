@@ -13,58 +13,25 @@ import '../../environements/flavors.dart';
 
 // <---------------- Supabase Instances Providers -------------------> //
 
+// Provider pour initialiser Supabase de manière asynchrone.
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
   try {
-    // Charger la configuration à partir d'un fichier JSON
-    final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-    final env =
-        Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
-
-    // Utiliser Future.any pour initialiser Supabase avec différentes stratégies
-    final supabaseInstance = await _initializeSupabaseWithFallback(env);
-
-    return supabaseInstance;
-  } on Exception catch (e) {
-    throw StateError('Error initializing Supabase: $e');
-  }
-}, name: 'Initialisation de supabase provider');
-
-// Méthodes pour initialiser Supabase avec des délais différents
-Future<supabase.Supabase> _initializeSupabaseWithFallback(
-    Environment env) async {
-  try {
-    final supabaseInstance = await Future.any([
-      _slowSupabaseInit(env),
-      _delayedSupabaseInit(env),
-      _fastSupabaseInit(env),
-    ]);
+    final env = await _loadEnvironmentConfig();
+    final supabaseInstance = await _initializeSupabase(env);
     return supabaseInstance;
   } catch (e) {
-    throw StateError('Error during Supabase initialization: $e');
+    throw StateError('Error initializing Supabase: $e');
   }
+}, name: 'Supabase Initializer');
+
+// Charger la configuration de l'environnement à partir du fichier JSON.
+Future<Environment> _loadEnvironmentConfig() async {
+  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
+  return Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 }
 
-// Initialisation lente de Supabase
-Future<supabase.Supabase> _slowSupabaseInit(Environment env) async {
-  await Future.delayed(const Duration(seconds: 5));
-  return await _initializeSupabase(env);
-}
-
-// Initialisation avec délai moyen de Supabase
-Future<supabase.Supabase> _delayedSupabaseInit(Environment env) async {
-  await Future.delayed(const Duration(seconds: 3));
-  return await _initializeSupabase(env);
-}
-
-// Initialisation rapide de Supabase
-Future<supabase.Supabase> _fastSupabaseInit(Environment env) async {
-  await Future.delayed(const Duration(seconds: 1));
-  return await _initializeSupabase(env);
-}
-
-// Fonction centralisée pour initialiser Supabase
+// Initialiser Supabase avec les paramètres de l'environnement.
 Future<supabase.Supabase> _initializeSupabase(Environment env) async {
-  // Initialiser un client GoTrue pour l'authentification
   final client = supabase.GoTrueClient(
     url: env.supabaseUrl,
     autoRefreshToken: true,
@@ -74,26 +41,22 @@ Future<supabase.Supabase> _initializeSupabase(Environment env) async {
     },
   );
 
-  // Fonction améliorée pour récupérer un token d'accès
   Future<String> getAccessToken() async {
     await Future.delayed(const Duration(seconds: 2));
-    String? accessToken = client.currentSession?.providerRefreshToken;
-    return accessToken ?? env.accessToken;
+    return client.currentSession?.providerRefreshToken ?? env.accessToken;
   }
 
-  // Initialisation de Supabase avec les options
   await supabase.Supabase.initialize(
     url: env.supabaseUrl,
     anonKey: env.supabaseAnonKey,
     headers: client.headers,
     accessToken: () => getAccessToken(),
     authOptions: const supabase.FlutterAuthClientOptions(
-      authFlowType: supabase
-          .AuthFlowType.pkce, // Utilisation de PKCE pour l'authentification
+      authFlowType: supabase.AuthFlowType.pkce,
     ),
     realtimeClientOptions: const supabase.RealtimeClientOptions(
       logLevel: supabase.RealtimeLogLevel.info,
-      eventsPerSecond: 2, // Limitation des événements en temps réel
+      eventsPerSecond: 2,
     ),
     storageOptions: const supabase.StorageClientOptions(
       retryAttempts: 10,
@@ -105,26 +68,36 @@ Future<supabase.Supabase> _initializeSupabase(Environment env) async {
   return supabase.Supabase.instance;
 }
 
-final supabaseProvider =
-    Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
+// <---------------- Providers pour l'accès à Supabase -------------------> //
 
-final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
-  try {
-    final client = ref.watch(supabaseProvider).client;
-    return client;
-  } on Exception catch (e) {
-    throw StateError('Error initializing Supabase client: $e');
+// Fournisseur pour l'accès à l'instance de Supabase.
+final supabaseProvider = Provider<supabase.Supabase>((ref) {
+  final supabaseInstance = ref.watch(supabaseInitProvider).value;
+  if (supabaseInstance == null) {
+    throw StateError('Supabase instance not initialized yet');
   }
+  return supabaseInstance;
 });
 
-// Autres Providers pour Supabase...
-final supabaseServiceProvider =
-    Provider<SupabaseService>((ref) => SupabaseService());
+// Fournisseur pour l'accès au client Supabase.
+final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
+  final client = ref.watch(supabaseProvider).client;
+  return client;
+});
 
+// Service Supabase centralisé pour l'usage à travers l'application.
+final supabaseServiceProvider = Provider<SupabaseService>((ref) {
+  return SupabaseService();
+});
+
+// Fournisseur pour récupérer l'utilisateur actuellement authentifié.
 final userSupabaseProvider = Provider<supabase.User>((ref) {
   final currentUser = ref.watch(supabaseProvider).client.auth.currentUser;
+  if (currentUser == null) {
+    throw StateError('No authenticated user found');
+  }
   return supabase.User(
-    id: currentUser!.id,
+    id: currentUser.id,
     appMetadata: currentUser.appMetadata,
     userMetadata: currentUser.userMetadata,
     email: currentUser.email,
@@ -140,27 +113,20 @@ final userSupabaseProvider = Provider<supabase.User>((ref) {
   );
 });
 
-// <---------------- Example of using the Filtered List --------------------> //
+// <---------------- Example: Filtered List --------------------> //
+
 final filterConnection = StateProvider<List<int>>((ref) {
-  final state1 =
-      ref.watch(supabaseInitProvider.future).timeout(const Duration(days: 2));
-  final state2 = ref.watch(userSupabaseProvider);
-  final state3 = ref.watch(userNotifierProvider);
+  final supabaseState = ref.watch(supabaseInitProvider);
+  final userState = ref.watch(userSupabaseProvider);
+  final userNotifierState = ref.watch(userNotifierProvider);
 
   final stateList = <int, String>{
-    1: state1.toString(),
-    2: state2.id,
-    3: state3.role
+    1: supabaseState.toString(),
+    2: userState.id,
+    3: userNotifierState.role,
   };
 
-  var list = <int>[];
-
-  stateList.forEach((key, value) {
-    var checkList = list.add(key);
-    return checkList;
-  });
-
-  return list;
+  return stateList.keys.toList();
 });
 
 final countProvider = StateProvider<int>((ref) {

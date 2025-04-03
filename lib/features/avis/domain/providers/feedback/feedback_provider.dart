@@ -1,10 +1,10 @@
 import 'dart:developer' as developer;
+import 'dart:isolate';
 
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/auth_exeptions/error_handler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../entities/feedback/feedback.dart';
 
@@ -19,87 +19,76 @@ class FeedbacksNotifier extends StateNotifier<List<AvisUtilisateur>> {
   }
 
   final Ref ref;
+
+  // Simplified error handling
   void logError(Object e) => AuthErrorHandler.handleError(e);
 
+  // Initialize the feedback loading and stream listening
   void _startListening() async {
-    ref.read(supabaseClientProvider).getChannels();
-
-    // Exemple d'écoute d'un stream
+    ref.watch(supabaseClientProvider).getChannels();
     ref.keepAlive();
-
-    loadFeedbacks();
+    await loadFeedbacks();
   }
 
+  // Load feedbacks from Supabase
   Future<void> loadFeedbacks() async {
+    final stopwatch = Stopwatch()..start();
+    developer.log('Loading feedbacks...');
     try {
-      // Appel à Supabase pour récupérer les données
       final response = await fetchList();
-
       state = response.isEmpty
           ? []
           : response.map((item) => AvisUtilisateur.fromJson(item)).toList();
-    } on PostgrestException catch (e) {
-      // Gestion des erreurs
-      developer.log('Erreur lors du chargement des feedbacks:');
-      logError(e);
 
+      stopwatch.stop();
+      developer.log('Feedbacks loaded in ${stopwatch.elapsedMilliseconds}ms');
+    } on PostgrestException catch (e) {
+      developer.log('Error loading feedbacks: ${e.message}');
+      logError(e);
       state = [];
+      stopwatch.stop();
+      developer.log(
+          'Feedbacks loading failed in ${stopwatch.elapsedMilliseconds}ms');
     }
   }
 
-  // Méthode pour récupérer la liste des feedbacks depuis Supabase
+  // Fetch the list of feedbacks from Supabase
   Future<List<Map<String, dynamic>>> fetchList() async {
-    // Appel à Supabase pour récupérer les données de la table 'avis_posts'
-    final response =
-        await ref.watch(supabaseClientProvider).from('avis_posts').select();
-
-    // Transformez chaque élément de la réponse en un objet AvisUtilisateur
-    return response.isEmpty ? [] : List<Map<String, dynamic>>.from(response);
+    try {
+      final response =
+          await ref.watch(supabaseClientProvider).from('avis_posts').select();
+      return response.isEmpty ? [] : List<Map<String, dynamic>>.from(response);
+    } on PostgrestException catch (e) {
+      developer.log('Error fetching feedbacks: ${e.message}');
+      logError(e);
+      return [];
+    }
   }
 
-  // Cette fonction permet d'ajouter un feedback
-
+  // Add a feedback
   Future<void> addFeedback(String content, User user) async {
     try {
-      // Vérification si l'utilisateur est anonyme ou non
-      final userName = user.isAnonymous
-          ? 'Batman'
-          : user.appMetadata['display_name'] ?? 'Inconnu';
-      final photoUrl = user.isAnonymous ? null : user.appMetadata['photo_url'];
-
-      // Generate a UUID instead of using random number
-      final uuid = Uuid();
-      final feedbackId = int.parse(uuid.v4()); // Unique ID generation
-
       final newFeedback = AvisUtilisateur(
-        id: feedbackId, // Using the UUID here
-        name: userName,
-        photoUrl: photoUrl,
+        id: int.parse(user.id),
+        name: user.appMetadata['display_name'],
+        photoUrl: user.appMetadata['photo_url'],
         message: content,
         createdAt: DateTime.now(),
         isAnonymous: user.isAnonymous,
       );
 
-      // Debugging message before inserting the feedback
       developer.debugger(
-          message: '[await _insertFeedback($newFeedback)]:', when: true);
-
-      // Call the method to insert the feedback into the database
+          message: '[Adding Feedback]: $newFeedback', when: true);
       await _insertFeedback(newFeedback);
-
-      developer.debugger(
-          message: '${[await _insertFeedback(newFeedback)]}:', when: false);
-
-      // Updating the state after successfully adding the feedback
       state = [...state, newFeedback];
     } on PostgrestException catch (e) {
-      // Handling errors, you might want to log the specific exception message
-      developer.log('Error while adding feedback: ${e.message}');
+      developer.log('Error adding feedback: ${e.message}');
+      logError(e);
       state = [];
     }
   }
 
-  // Méthode d'insertion dans la base de données Supabase
+  // Insert feedback into Supabase
   Future<PostgrestResponse> _insertFeedback(AvisUtilisateur feedback) async {
     try {
       return await ref
@@ -107,17 +96,81 @@ class FeedbacksNotifier extends StateNotifier<List<AvisUtilisateur>> {
           .from('avis_posts')
           .insert(feedback.toJson());
     } on PostgrestException catch (e) {
-      // Gestion des erreurs
-      developer.log('Erreur lors de l\'insertion du feedback:');
+      developer.log('Error inserting feedback: ${e.message}');
       logError(e);
       rethrow;
     }
   }
 
-  @override
-  void dispose() {
-    // Annuler l'écouteur lors de la fermeture de la ressource
-    ref.read(supabaseClientProvider).dispose();
-    super.dispose();
+  // Execute the background operation in an isolate
+  Future<void> executeInBackground(SendPort sendPort) async {
+    try {
+      final response = await fetchList();
+      sendPort.send(response.toString());
+    } catch (error) {
+      sendPort.send({'error': error.toString()});
+    }
+  }
+
+  // Perform Supabase operation in the background using an Isolate
+  Future<void> performSupabaseOperation() async {
+    final receivePort = ReceivePort();
+    await Isolate.spawn(executeInBackground, receivePort.sendPort);
+
+    receivePort.listen((data) {
+      if (data is Map && data.containsKey('error')) {
+        developer.log('Error during Supabase operation: ${data['error']}');
+      } else {
+        developer.log('Supabase operation result: $data');
+      }
+      receivePort.close();
+    });
+  }
+
+  // Perform multiple async operations and wait for their completion
+  Future<void> performMultipleAsyncOperations() async {
+    try {
+      final fetch = fetchList();
+      final insert = _insertFeedback(AvisUtilisateur.fromJson({}));
+
+      final results = await Future.wait([fetch, insert]);
+      developer
+          .log('Multiple async operations completed successfully: $results');
+    } catch (error) {
+      developer.log('Error during multiple async operations: $error');
+    }
+  }
+
+  // Perform async operations using multiple isolates
+  Future<void> performAsyncOperationWithIsolate() async {
+    final receivePort1 = ReceivePort();
+    final receivePort2 = ReceivePort();
+
+    await Isolate.spawn(executeInBackground, receivePort1.sendPort);
+    await Isolate.spawn(executeInBackground, receivePort2.sendPort);
+
+    final result = await Future.any([
+      receivePort1.first,
+      receivePort2.first,
+    ]);
+
+    developer
+        .log('Async operation with Isolate completed successfully: $result');
+
+    // Handle responses from both isolates
+    _handleIsolateResponse(receivePort1);
+    _handleIsolateResponse(receivePort2);
+  }
+
+  // Handle the response from an isolate
+  void _handleIsolateResponse(ReceivePort receivePort) {
+    receivePort.listen((data) {
+      if (data is Map && data.containsKey('error')) {
+        developer.log('Error during async operation: ${data['error']}');
+      } else {
+        developer.log('Async operation result: $data');
+      }
+      receivePort.close();
+    });
   }
 }

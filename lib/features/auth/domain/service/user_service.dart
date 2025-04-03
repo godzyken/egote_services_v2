@@ -104,7 +104,6 @@ class FirebaseAuthService extends _$FirebaseAuthService {
         developer.log("Aucun utilisateur anonyme connecté");
         return Future.error("Aucun utilisateur anonyme connecté");
       }
-      supabaseAuthService = AsyncValue.data(null);
     } on FirebaseAuthException catch (e) {
       developer.log("Erreur de connexion anonyme: ${e.code} - ${e.message}");
       return Future.error(

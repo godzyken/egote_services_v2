@@ -27,4 +27,4 @@ CheckoutService checkoutService(Ref ref) {
 
 final searchProduitServiceProvider =
     Provider.family<SearchProduitService, AsyncValue<List<Produit>>>(
-        (ref, produitService) => ref.watch(produitServiceProvider));
+        (ref, prouitService) => ref.watch(produitServiceProvider));

@@ -62,4 +62,29 @@ class SupabaseAuthService {
       developer.debugger(when: kDebugMode, message: 'Erreur: $e');
     }
   }
+
+  // Vérification de la session utilisateur
+  Future<Future<AuthResponse>> checkSession() async {
+    final session = supabaseClient.auth.currentSession;
+
+    final token = supabasePersistSessionKey;
+    try {
+      if (session == null) {
+        // Aucune session active, redirigez l'utilisateur vers la page de connexion
+        developer.log("Utilisateur non connecté");
+        return supabaseClient.auth.recoverSession(token);
+        // redirigez vers une page de connexion
+      } else {
+        // Session active, l'utilisateur est connecté
+        developer.log("Utilisateur connecté : ${session.user.email}");
+        // Continuez avec les actions authentifiées
+
+        return supabaseClient.auth.setSession(token);
+      }
+    } catch (e) {
+      // Gestion d'erreurs générales (celles qui viennent de Supabase ou du processus en général)
+      developer.log('Erreur: $e');
+      return supabaseClient.auth.recoverSession(token);
+    }
+  }
 }

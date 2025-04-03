@@ -1,3 +1,6 @@
+import 'dart:developer' as developer;
+import 'dart:isolate';
+
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers/connectivity/connectivity_providers.dart';
@@ -27,20 +30,11 @@ import '../features/avis/domain/providers/feedback/feedback_provider.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
 import '../features/chat/data/data_sources/local/pref_util.dart';
-import '../features/chat/presentation/views/screens/chat_dialog_screen.dart';
-import '../features/chat/presentation/views/screens/chat_screen.dart';
-import '../features/chat/presentation/views/screens/chat_video_screen.dart';
-import '../features/chat/presentation/views/screens/login_on_chat.dart';
-import '../features/chat/presentation/views/screens/select_dialog_screen.dart';
+import '../features/chat/presentation/views/screens/chat_screens.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
 import '../features/devis/domain/providers/devis_providers.dart';
 import '../features/devis/domain/providers/edit_devis_view_model_provider.dart';
-import '../features/devis/presentation/views/screens/devis_edit_screen.dart';
-import '../features/devis/presentation/views/screens/devis_list_screen.dart';
-import '../features/devis/presentation/views/screens/document_view_screen.dart';
-import '../features/devis/presentation/views/screens/product_details_screen.dart';
-import '../features/devis/presentation/views/screens/product_edit_screen.dart';
-import '../features/devis/presentation/views/screens/product_list_screen.dart';
+import '../features/devis/presentation/views/screens/devis_screens.dart';
 import '../features/home/presentation/view/home_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
 import '../features/settings/presentation/view/gallery/gallery.dart';
@@ -48,78 +42,147 @@ import '../features/settings/presentation/view/settings_ui_page.dart';
 import '../features/sketch/presentation/view/drawing_page.dart';
 
 Future<void> initializeProvider(ProviderContainer container) async {
-  await _initializeCoreServices(container);
+  final receivePort = ReceivePort();
+
+  await Isolate.spawn(
+      _initializeCoreServicesInBackground, receivePort.sendPort);
+
+  final result = await receivePort.first;
+
+  if (result is String) {
+    developer.log('Error during initialization: $result');
+    throw Exception(result);
+  }
+
   await _initializeAdditionalProviders(container);
   _cleanupProviders(container);
   container.dispose();
 }
 
-Future<void> _initializeCoreServices(ProviderContainer container) async {
-  // Utiliser Future.any pour tenter plusieurs initialisations parallèles
-  await Future.any([
-    container.read(supabaseInitProvider.future),
-    container.read(firebaseInitProvider.future),
-    container.read(webrtcInitProvider.future),
-    container.read(datadogProvider.future),
-    container.read(cubeSettingsInitProvider.future),
-  ]);
+void _initializeCoreServicesInBackground(SendPort sendPort) async {
+  try {
+    final container = ProviderContainer();
+    // Lancer les initialisations en parallèle avec Future.any
+    await Future.any([
+      container.read(supabaseInitProvider.future),
+      container.read(firebaseProvider.future),
+      container.read(webrtcInitProvider.future),
+      container.read(datadogProvider.future),
+      container.read(cubeSettingsInitProvider.future),
+    ]);
+
+    sendPort
+        .send('Core services initialized successfully'); // Envoyer un succès
+  } catch (e) {
+    sendPort.send(
+        'Error during core services initialization: $e'); // En cas d'erreur
+  }
 }
 
 Future<void> _initializeAdditionalProviders(ProviderContainer container) async {
-  // Utiliser Future.wait pour initialiser des fournisseurs supplémentaires en parallèle
-  await Future.wait(
-    <Future<dynamic>>[
-      container.read(userFutureProvider.future),
-      container.read(cubeUserProvider.future),
-      container.read(sharedPreferencesProvider.future),
-      container.read(cubeChatConnectionSettingsProvider.future),
-      container.read(produitFutureProvider.future),
-    ],
-    eagerError: true, // Si une des futures échoue, l'exécution s'arrête
-  );
+  final receivePort = ReceivePort();
+
+  // Créer un Isolate pour initialiser les fournisseurs supplémentaires
+  await Isolate.spawn(
+      _initializeAdditionalProvidersInBackground, receivePort.sendPort);
+
+  // Attendre la fin de l'initialisation des fournisseurs
+  final result = await receivePort.first;
+
+  if (result is String) {
+    developer.log('Error during additional provider initialization: $result');
+    throw Exception(result); // Gérer l'erreur d'initialisation
+  }
+
+  developer.log('Additional providers initialized successfully');
 }
 
-void _cleanupProviders(ProviderContainer container) {
-  Future.delayed(const Duration(seconds: 2), () {
-    container.read(connectivityStatusProviders);
-    container.read(sharedPrefsProvider);
-    container.read(firebaseDatabaseProvider);
-    container.read(firebaseFirestoreProvider);
-    container.read(firebaseMessagingProvider);
-    container.read(emulatorSettingsProvider);
-    container.read(firebaseAuthProvider);
-    container.read(cubeUserControllerProvider);
-    container.read(cubeSessionManagerProvider);
-    container.read(cubeChatConnectionNotifierProvider);
-    container.read(cubeChatConnectionSettingsProvider);
-    container.read(cubeChatConnectionProvider);
-    container.read(goRouterProvider);
-    container.read(localizationProvider);
-    container.read(cubeProvider);
+void _initializeAdditionalProvidersInBackground(SendPort sendPort) async {
+  try {
+    final container = ProviderContainer();
 
-    // Read authentication related providers
-    container.read(authStateChangesProvider);
-    container.read(authStateProvider);
-    container.read(userChangesProvider);
-    container.read(userRoleProvider);
+    await Future.wait(
+      <Future<dynamic>>[
+        container.read(firebaseInitProvider.future),
+        container.read(userFutureProvider.future),
+        container.read(cubeUserProvider.future),
+        container.read(sharedPreferencesProvider.future),
+        container.read(cubeChatConnectionSettingsProvider.future),
+        container.read(produitFutureProvider.future),
+      ],
+      eagerError: true, // Si une des futures échoue, l'exécution s'arrête
+    );
+  } catch (e) {
+    sendPort.send(
+        'Error during additional providers initialization: $e'); // En cas d'erreur
+  }
+}
 
-    // Read other services/providers
-    container.read(fireDatabaseProvider);
-    container.read(backgroundTaskProvider);
-    container.read(editDeviViewModelProvider);
-    container.read(produitServiceProvider);
-    container.read(editProduitProvider);
-    container.read(produitStateNotifierProvider);
-    container.read(devisStateNotifierProvider);
-    container.read(checkoutServiceProvider);
-    container.read(missionsListProvider);
-    container.read(travauxListProvider);
-    container.read(missionStateNotifierProvider);
-    container.read(dioProvider);
-    container.read(telemetryProvider);
-    container.read(feedbacksProvider);
-    container.read(authCubeStreamProvider);
+Future<void> _cleanupProviders(ProviderContainer container) async {
+  final receivePort = ReceivePort();
+
+  await Isolate.spawn(
+      _cleanupProvidersInBackground, [container, receivePort.sendPort]);
+
+  receivePort.listen((message) {
+    if (message is String) {
+      developer.log('Cleanup completed successfully: $message');
+    } else {
+      developer.log('Error during cleanup: $message');
+    }
   });
+}
+
+void _cleanupProvidersInBackground(List<dynamic> args) async {
+  final container = args[0] as ProviderContainer;
+  final sendPort = args[1] as SendPort;
+
+  try {
+    await Future.delayed(const Duration(seconds: 2), () {
+      container.read(connectivityStatusProviders);
+      container.read(sharedPrefsProvider);
+      container.read(firebaseDatabaseProvider);
+      container.read(firebaseFirestoreProvider);
+      container.read(firebaseMessagingProvider);
+      container.read(emulatorSettingsProvider);
+      container.read(firebaseAuthProvider);
+      container.read(cubeUserControllerProvider);
+      container.read(cubeSessionManagerProvider);
+      container.read(cubeChatConnectionNotifierProvider);
+      container.read(cubeChatConnectionSettingsProvider);
+      container.read(cubeChatConnectionProvider);
+      container.read(goRouterProvider);
+      container.read(localizationProvider);
+      container.read(cubeProvider);
+
+      // Read authentication related providers
+      container.read(authStateChangesProvider);
+      container.read(authStateProvider);
+      container.read(userChangesProvider);
+      container.read(userRoleProvider);
+
+      // Read other services/providers
+      container.read(fireDatabaseProvider);
+      container.read(backgroundTaskProvider);
+      container.read(editDeviViewModelProvider);
+      container.read(produitServiceProvider);
+      container.read(editProduitProvider);
+      container.read(produitStateNotifierProvider);
+      container.read(devisStateNotifierProvider);
+      container.read(checkoutServiceProvider);
+      container.read(missionsListProvider);
+      container.read(travauxListProvider);
+      container.read(missionStateNotifierProvider);
+      container.read(dioProvider);
+      container.read(telemetryProvider);
+      container.read(feedbacksProvider);
+      container.read(authCubeStreamProvider);
+    });
+
+    sendPort.send('Cleanup completed successfully');
+  } catch (e) {
+    sendPort.send('Error during cleanup: $e');
+  }
 }
 
 final sharedPreferencesProvider = FutureProvider<SharedPreferences>(
@@ -136,326 +199,305 @@ final sharedPrefsProvider = Provider<SharedPrefs>((ref) {
 });
 
 // <---------------- GoRouter Provider --------------------> //
-final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
-    initialLocation: '/home',
-    routes: [
-      GoRoute(
-          path: HomeRoute.path,
-          name: 'home',
-          builder: (context, state) => HomeScreen(key: state.pageKey),
-          routes: [
-            GoRoute(
-                path: UserHomeRoute.path,
-                name: 'user_home',
-                builder: (context, state) => UserHomeScreen(
-                      key: state.pageKey,
-                      pid: state.pathParameters['userId']!,
-                      preload: false,
-                    ),
-                routes: [
-                  GoRoute(
-                    path: PersonRoute.path,
-                    name: 'profile',
-                    builder: (context, state) {
-                      return ProfileScreen(
-                          key: state.pageKey,
-                          uid: ref.watch(authStateChangesProvider).value!.uid,
-                          pid: ref
-                              .watch(cubeUserControllerProvider)!
-                              .id
-                              .toString());
-                    },
-                  ),
-                  GoRoute(
-                    path: DrawingRoute.path,
-                    name: 'drawingRoute',
-                    builder: (context, state) => DrawingPage(
-                      key: state.pageKey,
-                    ),
-                  ),
-                  GoRoute(
-                    path: UserListRoute.path,
-                    name: 'userList',
-                    builder: (context, state) => UserListScreen(
-                      key: state.pageKey,
-                    ),
-                  ),
-                ]),
-            GoRoute(
-              path: GodzyLogoRoute.path,
-              name: 'godzyRoute',
-              builder: (context, state) => Godzylogo(key: state.pageKey),
-            ),
-            GoRoute(
-                path: LoginOnChatRoute.path,
-                name: 'login_on_chat',
-                builder: (context, state) => LoginOnChat(key: state.pageKey),
-                routes: [
-                  GoRoute(
-                      path: SelectDialogRoute.path,
-                      name: 'select_dialog',
-                      builder: (context, state) => SelectDialogScreen(
-                          currentUser: ref.watch(cubeUserControllerProvider
-                              .select((value) => value!))),
-                      routes: [
-                        GoRoute(
-                            path: ChatDialogRoute.path,
-                            name: 'chat_dialog',
-                            builder: (context, state) {
-                              CubeDialog? cubeDialog;
-                              return ChatDialogScreen(
-                                  cubeUser: ref.watch(cubeUserControllerProvider
-                                      .select((value) => value!)),
-                                  cubeDialog: cubeDialog!);
-                            })
-                      ])
-                ]),
-            GoRoute(
-                path: AvisBoxRoute.path,
-                name: 'avisRoute',
-                builder: (context, state) {
-                  final avisId = state.pathParameters['avisId']!;
-                  return AvisBoxPage(
-                    key: state.pageKey,
-                    avisId: avisId,
-                  );
-                }),
-            GoRoute(
-                path: DocumentPreviewRoute.path,
-                name: 'documents',
-                builder: (context, state) => DocumentViewScreen(
-                      key: state.pageKey,
-                    ),
-                routes: [
-                  GoRoute(
-                    path: DevisEditRoute.path,
-                    name: 'devis',
-                    builder: (context, state) => DevisEditScreen(
-                      key: state.pageKey,
-                      devisId: state.pathParameters['devisId']!,
-                    ),
-                  ),
-                  GoRoute(
-                    path: DevisListRoute.path,
-                    name: 'devisList',
-                    builder: (context, state) => DevisListScreen(
-                      key: state.pageKey,
-                    ),
-                  ),
-                  GoRoute(
-                      path: ProduitListRoute.path,
-                      name: 'produitList',
-                      builder: (context, state) => ProductListScreen(
+final goRouterProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
+      initialLocation: '/home',
+      routes: [
+        GoRoute(
+            path: HomeRoute.path,
+            name: 'home',
+            builder: (context, state) => HomeScreen(key: state.pageKey),
+            routes: [
+              GoRoute(
+                  path: UserHomeRoute.path,
+                  name: 'user_home',
+                  builder: (context, state) => UserHomeScreen(
+                        key: state.pageKey,
+                        pid: state.pathParameters['userId']!,
+                        preload: false,
+                      ),
+                  routes: [
+                    GoRoute(
+                      path: PersonRoute.path,
+                      name: 'profile',
+                      builder: (context, state) {
+                        return ProfileScreen(
                             key: state.pageKey,
-                          )),
-                  GoRoute(
-                      path: ProduitEditRoute.path,
-                      name: 'produitEdit',
-                      builder: (context, state) {
-                        final produitId = state.pathParameters['produitId']!;
-                        return ProductEditScreen(
-                          key: state.pageKey,
-                          produitId: produitId,
-                        );
-                      }),
-                  GoRoute(
-                      path: ProduitDetailsRoute.path,
-                      name: 'produitDetailsRoute',
-                      builder: (context, state) {
-                        return ProduitDetails(
-                          key: state.pageKey,
-                          id: state.pathParameters['prodId']!,
-                        );
-                      }),
-                ]),
-            GoRoute(
-                path: SettingsUiRoute.path,
-                name: 'settingsRoute',
-                builder: (context, state) => SettingsUiPage(key: state.pageKey),
-                routes: [
-                  GoRoute(
-                    path: CrossPlatformSettingsRoute.path,
-                    name: 'crossPlatformRoute',
-                    builder: (context, state) =>
-                        CrossPlatformSettingsScreen(key: state.pageKey),
-                  ),
-                  GoRoute(
-                    path: WebChromeAddressesRoute.path,
-                    name: 'webChromeAddressesRoute',
-                    builder: (context, state) =>
-                        WebChromeAddressesScreen(key: state.pageKey),
-                  ),
-                  GoRoute(
-                      path: AndroidNotificationsRoute.path,
-                      name: 'androidNotificationsRoute',
+                            uid: ref.watch(authStateChangesProvider).value!.uid,
+                            pid: ref
+                                .watch(cubeUserControllerProvider)!
+                                .id
+                                .toString());
+                      },
+                    ),
+                    GoRoute(
+                      path: DrawingRoute.path,
+                      name: 'drawingRoute',
+                      builder: (context, state) => DrawingPage(
+                        key: state.pageKey,
+                      ),
+                    ),
+                    GoRoute(
+                      path: UserListRoute.path,
+                      name: 'userList',
+                      builder: (context, state) => UserListScreen(
+                        key: state.pageKey,
+                      ),
+                    ),
+                  ]),
+              GoRoute(
+                path: GodzyLogoRoute.path,
+                name: 'godzyRoute',
+                builder: (context, state) => Godzylogo(key: state.pageKey),
+              ),
+              GoRoute(
+                  path: LoginOnChatRoute.path,
+                  name: 'login_on_chat',
+                  builder: (context, state) => LoginOnChat(key: state.pageKey),
+                  routes: [
+                    GoRoute(
+                        path: SelectDialogRoute.path,
+                        name: 'select_dialog',
+                        builder: (context, state) => SelectDialogScreen(
+                            currentUser: ref.watch(cubeUserControllerProvider
+                                .select((value) => value!))),
+                        routes: [
+                          GoRoute(
+                              path: ChatDialogRoute.path,
+                              name: 'chat_dialog',
+                              builder: (context, state) {
+                                CubeDialog? cubeDialog;
+                                return ChatDialogScreen(
+                                    cubeUser: ref.watch(
+                                        cubeUserControllerProvider
+                                            .select((value) => value!)),
+                                    cubeDialog: cubeDialog!);
+                              })
+                        ])
+                  ]),
+              GoRoute(
+                  path: AvisBoxRoute.path,
+                  name: 'avisRoute',
+                  builder: (context, state) {
+                    final avisId = state.pathParameters['avisId']!;
+                    return AvisBoxPage(
+                      key: state.pageKey,
+                      avisId: avisId,
+                    );
+                  }),
+              GoRoute(
+                  path: DocumentPreviewRoute.path,
+                  name: 'documents',
+                  builder: (context, state) => DocumentViewScreen(
+                        key: state.pageKey,
+                      ),
+                  routes: [
+                    GoRoute(
+                      path: DevisEditRoute.path,
+                      name: 'devis',
+                      builder: (context, state) => DevisEditScreen(
+                        key: state.pageKey,
+                        devisId: state.pathParameters['devisId']!,
+                      ),
+                    ),
+                    GoRoute(
+                      path: DevisListRoute.path,
+                      name: 'devisList',
+                      builder: (context, state) => DevisListScreen(
+                        key: state.pageKey,
+                      ),
+                    ),
+                    GoRoute(
+                        path: ProduitListRoute.path,
+                        name: 'produitList',
+                        builder: (context, state) => ProductListScreen(
+                              key: state.pageKey,
+                            )),
+                    GoRoute(
+                        path: ProduitEditRoute.path,
+                        name: 'produitEdit',
+                        builder: (context, state) {
+                          final produitId = state.pathParameters['produitId']!;
+                          return ProductEditScreen(
+                            key: state.pageKey,
+                            produitId: produitId,
+                          );
+                        }),
+                    GoRoute(
+                        path: ProduitDetailsRoute.path,
+                        name: 'produitDetailsRoute',
+                        builder: (context, state) {
+                          return ProduitDetails(
+                            key: state.pageKey,
+                            id: state.pathParameters['prodId']!,
+                          );
+                        }),
+                  ]),
+              GoRoute(
+                  path: SettingsUiRoute.path,
+                  name: 'settingsRoute',
+                  builder: (context, state) =>
+                      SettingsUiPage(key: state.pageKey),
+                  routes: [
+                    GoRoute(
+                      path: CrossPlatformSettingsRoute.path,
+                      name: 'crossPlatformRoute',
                       builder: (context, state) =>
-                          AndroidNotificationsScreen(key: state.pageKey),
-                      routes: [
-                        GoRoute(
-                            path: NotificationsScreenRoute.path,
-                            name: 'notificationsScreen',
-                            builder: (context, state) =>
-                                const NotificationsScreen()),
-                        GoRoute(
-                            path: DevicesScreenRoute.path,
-                            name: 'devicesScreen',
-                            builder: (context, state) => const DevicesScreen()),
-                        GoRoute(
-                            path: NetworkScreenRoute.path,
-                            name: 'networkScreen',
-                            builder: (context, state) => const NetworkScreen()),
-                        GoRoute(
-                          path: PermissionRoute.path,
-                          name: 'permissionScreen',
-                          builder: (context, state) => PermissionScreen(
-                            key: state.pageKey,
-                          ),
-                        )
-                      ]),
-                  GoRoute(
-                    path: WebChromeSettingsRoute.path,
-                    name: 'webChromeSettingsRoute',
-                    builder: (context, state) =>
-                        WebChromeSettings(key: state.pageKey),
-                  ),
-                ]),
-          ]),
-      GoRoute(
-          path: AuthRoute.path,
-          name: 'authRoute',
-          builder: (context, state) => AuthScreen(
-                key: state.pageKey,
-                child: context.widget,
-              ),
-          routes: [
-            GoRoute(
-                path: LoginRoute.path,
-                name: 'login',
-                builder: (context, state) => LoginScreen(
-                      key: state.pageKey,
+                          CrossPlatformSettingsScreen(key: state.pageKey),
                     ),
-                routes: [
-                  GoRoute(
-                    path: VerificationRoute.path,
-                    name: 'verify',
-                    builder: (context, state) {
-                      VerificationScreenParams params =
-                          state.extra as VerificationScreenParams;
-                      return VerificationScreen(params: params);
-                    },
-                  )
-                ]),
-            GoRoute(
-                path: SignUpRoute.path,
-                name: 'sign_up',
-                builder: (context, state) => SignUpScreen(
-                      key: state.pageKey,
+                    GoRoute(
+                      path: WebChromeAddressesRoute.path,
+                      name: 'webChromeAddressesRoute',
+                      builder: (context, state) =>
+                          WebChromeAddressesScreen(key: state.pageKey),
                     ),
-                routes: [
-                  GoRoute(
-                    path: MFAEnrollRoute.path,
-                    name: 'enroll',
-                    builder: (context, state) {
-                      VerificationScreenParams params =
-                          state.extra as VerificationScreenParams;
-                      // var params = const VerificationScreenParams(
-                      //     name: 'karl',
-                      //     email: 'isgodzy@msn.com',
-                      //     password: 'bondamanmanw');
+                    GoRoute(
+                        path: AndroidNotificationsRoute.path,
+                        name: 'androidNotificationsRoute',
+                        builder: (context, state) =>
+                            AndroidNotificationsScreen(key: state.pageKey),
+                        routes: [
+                          GoRoute(
+                              path: NotificationsScreenRoute.path,
+                              name: 'notificationsScreen',
+                              builder: (context, state) =>
+                                  const NotificationsScreen()),
+                          GoRoute(
+                              path: DevicesScreenRoute.path,
+                              name: 'devicesScreen',
+                              builder: (context, state) =>
+                                  const DevicesScreen()),
+                          GoRoute(
+                              path: NetworkScreenRoute.path,
+                              name: 'networkScreen',
+                              builder: (context, state) =>
+                                  const NetworkScreen()),
+                          GoRoute(
+                            path: PermissionRoute.path,
+                            name: 'permissionScreen',
+                            builder: (context, state) => PermissionScreen(
+                              key: state.pageKey,
+                            ),
+                          )
+                        ]),
+                    GoRoute(
+                      path: WebChromeSettingsRoute.path,
+                      name: 'webChromeSettingsRoute',
+                      builder: (context, state) =>
+                          WebChromeSettings(key: state.pageKey),
+                    ),
+                  ]),
+            ]),
+        GoRoute(
+            path: AuthRoute.path,
+            name: 'authRoute',
+            builder: (context, state) => AuthScreen(
+                  key: state.pageKey,
+                  child: context.widget,
+                ),
+            routes: [
+              GoRoute(
+                  path: LoginRoute.path,
+                  name: 'login',
+                  builder: (context, state) => LoginScreen(
+                        key: state.pageKey,
+                      ),
+                  routes: [
+                    GoRoute(
+                      path: VerificationRoute.path,
+                      name: 'verify',
+                      builder: (context, state) {
+                        VerificationScreenParams params =
+                            state.extra as VerificationScreenParams;
+                        return VerificationScreen(params: params);
+                      },
+                    )
+                  ]),
+              GoRoute(
+                  path: SignUpRoute.path,
+                  name: 'sign_up',
+                  builder: (context, state) => SignUpScreen(
+                        key: state.pageKey,
+                      ),
+                  routes: [
+                    GoRoute(
+                      path: MFAEnrollRoute.path,
+                      name: 'enroll',
+                      builder: (context, state) {
+                        VerificationScreenParams params =
+                            state.extra as VerificationScreenParams;
+                        // var params = const VerificationScreenParams(
+                        //     name: 'karl',
+                        //     email: 'isgodzy@msn.com',
+                        //     password: 'bondamanmanw');
 
-                      return MFAEnrollScreen(params: params);
-                    },
-                  ),
-                ]),
-            GoRoute(
-              path: ListMfaRoute.path,
-              name: 'mfaList',
-              builder: (context, state) => ListMfaScreen(
-                key: state.pageKey,
+                        return MFAEnrollScreen(params: params);
+                      },
+                    ),
+                  ]),
+              GoRoute(
+                path: ListMfaRoute.path,
+                name: 'mfaList',
+                builder: (context, state) => ListMfaScreen(
+                  key: state.pageKey,
+                ),
               ),
-            ),
-          ]),
-      GoRoute(
-          path: ChatRoute.path,
-          name: 'chat',
+            ]),
+        GoRoute(
+            path: ChatRoute.path,
+            name: 'chat',
+            builder: (context, state) {
+              final currentUserId = state.pathParameters['cId']!;
+              final cubeDialogId = state.pathParameters['dialogId']!;
+              if (cubeDialogId == '0' && currentUserId == '0') {
+                return ErrorScreen(
+                    key: state.pageKey,
+                    error:
+                        'What\'s wrong bobby?! CubeDialogId is null && currentUser is not null');
+              }
+              if (cubeDialogId != '0' && currentUserId != '0') {
+                return ChatScreen(
+                    key: state.pageKey,
+                    cubeUserId: currentUserId,
+                    cubeDialogId: cubeDialogId);
+              } else {
+                return LoginOnChat(key: state.pageKey);
+              }
+            }),
+        GoRoute(
+          path: ChatVideoScreenRoute.path,
+          name: 'chat_room',
           builder: (context, state) {
-            final currentUserId = state.pathParameters['cId']!;
-            final cubeDialogId = state.pathParameters['dialogId']!;
-            if (cubeDialogId == '0' && currentUserId == '0') {
-              return ErrorScreen(
-                  key: state.pageKey,
-                  error:
-                      'What\'s wrong bobby?! CubeDialogId is null && currentUser is not null');
-            }
-            if (cubeDialogId != '0' && currentUserId != '0') {
-              return ChatScreen(
-                  key: state.pageKey,
-                  cubeUserId: currentUserId,
-                  cubeDialogId: cubeDialogId);
-            } else {
-              return LoginOnChat(key: state.pageKey);
-            }
-          }),
-      GoRoute(
-        path: ChatVideoScreenRoute.path,
-        name: 'chat_room',
-        builder: (context, state) {
-          return ChatVideoScreen(
-            key: state.pageKey,
-            uid: state.pathParameters['userId']!,
-            pid: state.pathParameters['cubId']!,
-          );
-        },
-      )
-    ],
-    errorBuilder: (context, state) =>
-        ErrorScreen(error: state.error.toString()),
-    /*redirect: (context, state) async {
-      final supabase = ref.watch(supabaseClientProvider);
+            return ChatVideoScreen(
+              key: state.pageKey,
+              uid: state.pathParameters['userId']!,
+              pid: state.pathParameters['cubId']!,
+            );
+          },
+        )
+      ],
+      redirect: (context, state) async {
+        // await Firebase.initializeApp();
 
-      // Autoriser l'accès aux pages d'authentification sans restriction
-      if (state.matchedLocation.contains('auth')) {
-        return null;
-      }
+        final user = ref.watch(firebaseAuthProvider).currentUser;
 
-      final session = client.auth.currentSession;
-
-      // Si l'utilisateur n'a pas de session ou si elle est expirée, rediriger vers la page d'authentification
-      if (session == null || session.isExpired) {
-        return AuthRoute.path;
-      }
-
-      try {
-        // Vérifier le niveau d'assurance MFA de l'utilisateur
-        final assuranceLevelData =
-            client.auth.mfa.getAuthenticatorAssuranceLevel();
-        final nextLevel = assuranceLevelData.nextLevel;
-
-        // Si l'utilisateur n'a pas encore configuré MFA, le rediriger vers l'enrôlement MFA
-        if (assuranceLevelData.currentLevel ==
-            ui.AuthenticatorAssuranceLevels.aal1) {
-          await client.auth.refreshSession();
-
-          if (nextLevel == ui.AuthenticatorAssuranceLevels.aal2) {
-            // Si l'utilisateur a configuré MFA mais n'a pas encore vérifié, rediriger vers la vérification
-            return VerificationRoute.path;
-          } else {
-            // Si l'utilisateur n'a pas configuré MFA, le rediriger vers l'enrôlement
-            return MFAEnrollRoute.path;
-          }
+        // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
+        if (user == null && state.uri.toString() != '/login') {
+          return '/login';
         }
-      } catch (e) {
-        // En cas d'erreur lors de la récupération des données MFA
-        developer.log('Erreur lors de la récupération du niveau MFA: $e');
-        return AuthRoute.path;
-      }
 
-      // Si tout est en règle, l'utilisateur peut continuer normalement
-      return null;
-    },*/
-    refreshListenable: authStateListenable,
-    debugLogDiagnostics: true,
-    observers: [observer]));
+        // Si l'utilisateur est connecté, rediriger vers la page d'accueil
+        if (user != null && state.uri.toString() == '/login') {
+          return '/home';
+        }
+        return null; // Aucune redirection
+      },
+      errorBuilder: (context, state) =>
+          ErrorScreen(error: state.error.toString()),
+      refreshListenable: authStateListenable,
+      debugLogDiagnostics: true,
+      observers: [observer]);
+});
 
 // <---------------- RunViewInfo Provider --------------------> //
 final observer = DatadogNavigationObserver(

@@ -22,20 +22,21 @@ class SearchProduitService extends _$SearchProduitService {
   SearchProduitService() : produitService = AsyncValue.loading();
   SearchProduitService.withProduitService({required this.produitService}) {
     _dio.clone(
-        options: BaseOptions(
-      baseUrl: baseUrl!,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Expose-Headers': 'X-Request-Id',
-        'Content-Type': 'Application/json',
-        'Accept': 'Application/json, text/plain, */*',
-        'authorization': 'Bearer rt27f99sq5gsv3chlraqa7ifgiheo1n2059v',
-      },
-      responseType: ResponseType.json,
-      validateStatus: (status) =>
-          status! >= 200 && status <= 299 || status == 403,
-      receiveDataWhenStatusError: true,
-    ));
+      options: BaseOptions(
+        baseUrl: baseUrl!,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Expose-Headers': 'X-Request-Id',
+          'Content-Type': 'Application/json',
+          'Accept': 'Application/json, text/plain, */*',
+          'authorization': 'Bearer rt27f99sq5gsv3chlraqa7ifgiheo1n2059v',
+        },
+        responseType: ResponseType.json,
+        validateStatus: (status) =>
+            status! >= 200 && status <= 299 || status == 403,
+        receiveDataWhenStatusError: true,
+      ),
+    );
   }
 
   late final AsyncValue<List<Produit>> produitService;
@@ -50,10 +51,27 @@ class SearchProduitService extends _$SearchProduitService {
   }
 
   Future<List<Produit>> fetchProduits([String filter = '']) async {
-    await Future.delayed(const Duration(seconds: 2));
     produitService = const AsyncValue.loading();
     final lang = ref.read(localizationProvider);
 
+    try {
+      // Optimisation en parallélisant les tâches réseaux
+      final responses = await Future.wait([
+        _fetchProduits(filter, lang),
+      ]);
+
+      // Mise à jour de l'état avec la réponse
+      produitService = AsyncValue.data(responses[0]);
+    } catch (e) {
+      // Gestion centralisée des erreurs
+      handleDioError(e);
+    }
+
+    return produitService.value ?? [];
+  }
+
+  // Appel réseau optimisé pour les produits
+  Future<List<Produit>> _fetchProduits(String filter, Locale lang) async {
     try {
       final response = await _dio
           .get<List<Produit>>('$baseUrl!/v2/suggest', queryParameters: {
@@ -65,50 +83,32 @@ class SearchProduitService extends _$SearchProduitService {
 
       if (response.statusCode == 200) {
         developer.log('Resultat de la requetes : ${response.data.toString()}');
-
-        produitService = AsyncValue.data(response.data!);
+        return response.data ?? [];
       } else {
         throw Exception('Failed to fetch produits filters');
       }
     } on DioException catch (e, st) {
       developer.log(e.toString(), stackTrace: st);
-      if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('Connection timeout');
-      } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('Receive timeout');
-      } else {
-        throw Exception(
-            'Failed to fetch produits on dio service: ${e.message}');
-      }
+      rethrow; // Relancer l'exception pour la gestion centrale
     }
-    return produitService.value ?? [];
   }
 
   Future<Produit> fetchProduit(String id) async {
-    await Future.delayed(const Duration(seconds: 2));
-
     try {
       final response = await _dio.get('/produit/$id');
       if (response.statusCode == 200) {
         return Produit.fromJson(response.data);
       } else {
-        throw Exception('Failed to fetch 2 produit id');
+        throw Exception('Failed to fetch produit id');
       }
     } on DioException catch (e, st) {
       developer.log(e.toString(), stackTrace: st);
-      if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('Connection timeout');
-      } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('Receive timeout');
-      } else {
-        throw Exception('Failed to fetch 1 produit id: ${e.message}');
-      }
+      throw Exception('Failed to fetch produit id: ${e.message}');
     }
   }
 
   Future<Produit> updateProduit(
       String id, Map<String, dynamic> produitData) async {
-    await Future.delayed(const Duration(seconds: 2));
     try {
       final response = await _dio.get('/produit/$id', data: produitData);
       return Produit.fromJson(response.data);
@@ -119,13 +119,27 @@ class SearchProduitService extends _$SearchProduitService {
   }
 
   Future<void> deleteProduit(String id) async {
-    await Future.delayed(const Duration(seconds: 2));
-
     try {
       await _dio.delete('/produit/$id');
     } on DioException catch (e, st) {
       developer.log(e.toString(), stackTrace: st);
       throw Exception('Failed to delete produit id: ${e.message}');
+    }
+  }
+
+  // Fonction centralisée de gestion des erreurs Dio
+  void handleDioError(Object e) {
+    if (e is DioException) {
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw Exception('Connection timeout');
+      } else if (e.type == DioExceptionType.receiveTimeout) {
+        throw Exception('Receive timeout');
+      } else {
+        throw Exception(
+            'Failed to fetch produits on dio service: ${e.message}');
+      }
+    } else {
+      throw Exception('An unexpected error occurred: $e');
     }
   }
 }
