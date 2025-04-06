@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../config/providers/supabase/supabase_providers.dart';
+import '../service/firebase_service.dart';
 import '../service/supabase_auth_service.dart';
 import '../service/user_service.dart';
 
@@ -25,8 +26,10 @@ CheckOutUserService getCheckoutUserService(Ref ref) {
 
       final authService = AuthService();
 
+      final firebaseService = FirebaseService();
+
       return CheckOutUserService.fromFirebaseAuthService(
-          service, supabaseAuthService, authService);
+          service, supabaseAuthService, authService, firebaseService);
     },
     error: (error, stackTrace) =>
         throw Exception('Erreur lors du chargement du CheckoutUserService :'),

@@ -1,6 +1,7 @@
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/config/pigeon/dart_api.g.dart';
 import 'package:egote_services_v2/features/auth/domain/service/check_out_user_service.dart';
+import 'package:egote_services_v2/features/auth/domain/service/firebase_service.dart';
 import 'package:egote_services_v2/features/auth/domain/service/supabase_auth_service.dart';
 import 'package:egote_services_v2/features/auth/domain/service/user_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
@@ -12,9 +13,10 @@ class VerifAllUserCheckOutService implements CheckOutUserService {
   final SupabaseAuthService supabaseAuthService;
 
   final AuthService authService;
+  final FirebaseService firebaseService;
 
-  VerifAllUserCheckOutService(
-      this.userService, this.supabaseAuthService, this.authService);
+  VerifAllUserCheckOutService(this.userService, this.supabaseAuthService,
+      this.authService, this.firebaseService);
 
   @override
   // TODO: implement getAll
@@ -161,5 +163,10 @@ class VerifAllUserCheckOutService implements CheckOutUserService {
   @override
   Future<void> updateWebsite(String newWebsite) async {
     return await authService.updateWebsite(newWebsite);
+  }
+
+  @override
+  Future<String> getFirebaseData(String message) async {
+    return await firebaseService.getFirebaseData(message);
   }
 }

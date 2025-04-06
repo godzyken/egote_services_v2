@@ -8,7 +8,6 @@ import 'package:egote_services_v2/app.dart';
 import 'package:egote_services_v2/config/providers.dart' as providers;
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/platform/platform_provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_background/flutter_background.dart';
@@ -24,8 +23,9 @@ import 'flavors.dart';
 
 Future<ProviderContainer> bootstrap() async {
   //WidgetsFlutterBinding.ensureInitialized();
-  await sentryInitBinding();
+
   await initializeSentry();
+  await sentryInitBinding();
 
   await Future.wait([
     initializeWorkManager(),
@@ -35,7 +35,6 @@ Future<ProviderContainer> bootstrap() async {
 
   final container = ProviderContainer(
     overrides: [
-      //firebaseProvider.overrideWith((ref) => ref.keepAlive()),
       localizationProvider.overrideWith(
           (ref) => MultiLang(ref.read(localeProvider).languageCode)),
       datadogConfigProvider.overrideWith((ref) => ref.future),
@@ -56,19 +55,8 @@ Future<ProviderContainer> bootstrap() async {
 
 Future<void> initializeSentry() async {
   await SentryFlutter.init(appRunner: () async {
-    await sentryInitFirebase();
     return runApp(const ProviderScope(child: EgoteApp()));
   }, sentryCustomOptions);
-}
-
-Future<void> sentryInitFirebase() async {
-  try {
-    await Firebase.initializeApp();
-    developer.log('Firebase initialized successfully');
-  } catch (e) {
-    developer.log('Erreur lors de l\'initialisation de Firebase: $e');
-    rethrow;
-  }
 }
 
 Future<void> initializeWorkManager() async {

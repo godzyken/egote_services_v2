@@ -20,17 +20,6 @@ import '../../environements/flavors.dart';
 
 // <---------------- Firebase Initialization -------------------> //
 @Riverpod(keepAlive: true)
-final firebaseProvider = FutureProvider<void>((ref) async {
-  try {
-    await Firebase.initializeApp();
-    developer.log('Firebase initialized successfully');
-  } on FirebaseException catch (e) {
-    developer.log('Erreur lors de l\'initialisation de Firebase: $e');
-    rethrow;
-  }
-});
-
-@Riverpod(keepAlive: true)
 final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
   // Vérifier si Firebase est déjà initialisé
   if (Firebase.apps.isNotEmpty) {

@@ -1,4 +1,5 @@
 import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:egote_services_v2/features/auth/domain/service/firebase_service.dart';
 import 'package:egote_services_v2/features/auth/domain/service/supabase_auth_service.dart';
 import 'package:egote_services_v2/features/auth/domain/service/user_service.dart';
 import 'package:egote_services_v2/features/auth/domain/service/verification_all_user_check_out_service.dart';
@@ -70,11 +71,14 @@ abstract class CheckOutUserService {
 
   Future<void> updateWebsite(String newWebsite);
 
+  Future<void> getFirebaseData(String message);
+
   factory CheckOutUserService.fromFirebaseAuthService(
       FirebaseAuthService service,
       SupabaseAuthService supabaseAuthService,
-      AuthService authService) {
+      AuthService authService,
+      FirebaseService firebaseService) {
     return VerifAllUserCheckOutService(
-        service, supabaseAuthService, authService);
+        service, supabaseAuthService, authService, firebaseService);
   }
 }

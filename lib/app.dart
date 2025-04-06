@@ -1,15 +1,16 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers.dart';
-import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
@@ -27,13 +28,42 @@ class EgoteApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
+  static const platform = MethodChannel('com.godzy.egote_services_v2/firebase');
+
+  String _firebaseResponse = 'Reponse de firebase: Non recue';
+
+  Future<void> _getFirebaseData() async {
+    try {
+      final String response = await platform
+          .invokeMethod('getFirebaseData', {'message': 'Hello from Flutter'});
+      developer.log('Firebase response: $response');
+      setState(() {
+        _firebaseResponse = response;
+      });
+    } on PlatformException catch (e) {
+      developer.log('$_firebaseResponse :: ${e.message}');
+      setState(() {
+        _firebaseResponse = 'Erreur: ${e.message}';
+      });
+    }
+  }
+
+  Future<void> _getPlatformVersion() async {
+    try {
+      // Invoke the method on the native side
+      final String version = await platform.invokeMethod('getPlatformVersion');
+      developer.log('Platform version: $version');
+    } on PlatformException catch (e) {
+      developer.log("Failed to get platform version: '${e.message}'.");
+    }
+  }
+
   late StreamSubscription<List<ConnectivityResult>>
       connectivityStateSubscription;
   AppLifecycleState? appState;
 
   @override
   Widget build(BuildContext context) {
-    final initializeFirebase = ref.read(firebaseProvider);
     final router = ref.read(goRouterProvider);
     final lang = ref.read(localizationProvider);
     final datadog = ref.read(datadogInstanceProvider);
@@ -44,39 +74,24 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     connectivityStateSubscription =
         ref.watch(connectivityStatusProviders.notifier).subscription!;
 
-    return initializeFirebase.when(
-        data: (_) => RumUserActionDetector(
-            rum: datadog.rum,
-            child: MaterialApp.router(
-              title: F.title,
-              // routerDelegate: router.routerDelegate,
-              // routeInformationParser: router.routeInformationParser,
-              // routeInformationProvider: router.routeInformationProvider,
-              routerConfig: router,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              themeMode: settingsThemeMode,
-              debugShowCheckedModeBanner: true,
-              scrollBehavior: const AppScrollBehavior(),
-              locale: lang,
-              builder: (context, child) => child!,
-            )),
-        error: (error, stackTrace) => MaterialApp(
-              home: Scaffold(
-                body: Center(
-                  child: Text(error.toString()),
-                ),
-              ),
-            ),
-        loading: () => MaterialApp(
-              home: Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ));
+    return RumUserActionDetector(
+        rum: datadog.rum,
+        child: MaterialApp.router(
+          title: F.title,
+          // routerDelegate: router.routerDelegate,
+          // routeInformationParser: router.routeInformationParser,
+          // routeInformationProvider: router.routeInformationProvider,
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: settingsThemeMode,
+          debugShowCheckedModeBanner: true,
+          scrollBehavior: const AppScrollBehavior(),
+          locale: lang,
+          builder: (context, child) => child!,
+        ));
   }
 
   @override
@@ -99,6 +114,10 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     super.initState();
 
     //initCube.asStream();
+
+    _getPlatformVersion();
+
+    _getFirebaseData();
 
     appState = WidgetsBinding.instance.lifecycleState;
 

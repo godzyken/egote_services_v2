@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/services.dart';
 
 import '../../../../config/pigeon/dart_api.g.dart';
@@ -11,6 +13,22 @@ class AuthService extends ExampleHostApi {
   Future<String> login(String email, String password) async {
     return Future.delayed(const Duration(milliseconds: 5000))
         .then((value) => 'authToken');
+  }
+
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      final bool success = await _channel.invokeMethod('signIn', {
+        'email': email,
+        'password': password,
+      });
+      if (success) {
+        developer.log("User signed in successfully");
+      } else {
+        developer.log("Sign in failed");
+      }
+    } on PlatformException catch (e) {
+      developer.log("Failed to sign in: '${e.message}'.");
+    }
   }
 
   @override
