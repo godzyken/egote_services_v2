@@ -4,165 +4,84 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
-import 'package:egote_services_v2/app.dart';
-import 'package:egote_services_v2/config/providers.dart' as providers;
+import 'package:egote_services_v2/config/providers/firebase/firebase_notification_handler.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/platform/platform_provider.dart';
+import 'package:egote_services_v2/config/providers/sentry/sentry_provider.dart';
+import 'package:egote_services_v2/config/providers/sentry/sentry_service.dart';
+import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stacktrace;
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:workmanager/workmanager.dart';
 
-import '../app_shared/images/assets_images.dart';
+import '../../features/chat/application/services/notification_utils.dart';
+import '../providers.dart' as providers;
 import '../providers.dart';
+import '../providers/firebase/firebase_providers.dart';
+import '../providers/sentry/riverpod_performance_monitor.dart';
+import '../providers/supabase/supabase_providers.dart';
 import '../providers/watchdog/datadog_config.dart';
+import '../providers/watchdog/datadog_service.dart';
 import 'flavors.dart';
 
-Future<ProviderContainer> bootstrap() async {
-  //WidgetsFlutterBinding.ensureInitialized();
+Future<Refreshable<Future<Supabase>>> initializeSupabase() async {
+  return supabaseInitProvider.future;
+}
 
-  await initializeSentry();
-  await sentryInitBinding();
-
-  await Future.wait([
-    initializeWorkManager(),
-    sendMessageToSentry(),
-    flutterErrorFlow(),
-  ], eagerError: true);
-
-  final container = ProviderContainer(
-    overrides: [
-      localizationProvider.overrideWith(
-          (ref) => MultiLang(ref.read(localeProvider).languageCode)),
-      datadogConfigProvider.overrideWith((ref) => ref.future),
-      sharedPreferencesProvider.overrideWith((ref) => ref.future),
-      platformProvider
-          .overrideWith((ref) => ref.read(targetPlatformProvider).value!),
-    ],
-    observers: [
-      if (F.appFlavor == Flavor.local) _Logger(),
-      if (F.appFlavor == Flavor.development) _Logger(),
-    ],
-  );
-
-  await providers.initializeProvider(container);
-
-  return container;
+Future<Refreshable<AppStateNotifier>> initializeFirebase() async {
+  return appStateProvider.notifier;
 }
 
 Future<void> initializeSentry() async {
-  await SentryFlutter.init(appRunner: () async {
-    return runApp(const ProviderScope(child: EgoteApp()));
-  }, sentryCustomOptions);
-}
-
-Future<void> initializeWorkManager() async {
-  await Workmanager().initialize(callbackDispatcher);
-
-  await Workmanager().registerOneOffTask(
-    'id_unique',
-    'simpleTask',
-    initialDelay: Duration(seconds: 10),
-    inputData: <String, dynamic>{'key': 'value'},
-    existingWorkPolicy: ExistingWorkPolicy.replace,
-  );
+  await SentryService.initialize();
 }
 
 Future<void> sentryInitBinding() async {
-  await customSentryBinding(SentryWidgetsFlutterBinding.ensureInitialized());
+  await SentryService.initBinding();
 }
 
-Future<void> sendMessageToSentry() async {
-  final searchResults = [
-    {'id': 1, 'name': 'Philipe Morice'},
-    {'id': 2, 'name': 'Romain Roussel'},
-    {'id': 3, 'name': 'Biggy man'},
-  ];
-
+Future<void> initializeWorkManager() async {
   try {
-    final context = {
-      'user_id': '12312012',
-      'search_results': searchResults,
-    };
+    await Workmanager().initialize(callbackDispatcher);
 
-    // Capturer un message avec un niveau fatal
-    final sentryId = await Sentry.captureMessage(
-      'message de sentry: hello world',
-      level: SentryLevel.fatal,
+    await Workmanager().registerOneOffTask(
+      'id_unique',
+      'simpleTask',
+      initialDelay: Duration(seconds: 10),
+      inputData: <String, dynamic>{'key': 'value'},
+      existingWorkPolicy: ExistingWorkPolicy.replace,
     );
-    final transaction = Sentry.startTransaction('processOrderBatch', 'task',
-        bindToScope: true, customSamplingContext: context);
 
-    await Future.delayed(const Duration(seconds: 1));
-
-    await tryProcessOrderBatch(transaction);
-
-    await tryPartialStackFrameList(transaction);
-
-    await sendDataToSupabase();
-
-    // Utiliser l'ID envoyé par Sentry
-    developer.log('Message envoyé à Sentry avec l\'ID: $sentryId');
-  } catch (exception) {
-    developer.log('Erreur lors de l\'envoi du message à Sentry: $exception');
+    await Workmanager().registerPeriodicTask(
+      'id_unique',
+      'simplePeriodicTask',
+      existingWorkPolicy: ExistingWorkPolicy.replace,
+      constraints: Constraints(
+        networkType: NetworkType.connected,
+      ),
+      frequency: Duration(hours: 1),
+    );
+  } catch (e, stackTrace) {
+    developer.log('Error initializing WorkManager: $e');
+    await Sentry.captureException(e, stackTrace: stackTrace);
+    await Workmanager().cancelAll();
   }
 }
 
-Future<void> sendDataToSupabase() async {
-  var client = SentryHttpClient();
-  try {
-    var uriResponse = await client.post(
-        Uri.parse(
-            'https://ltcnlgqoeunywzlewydv.supabase.co/rest/v1/avis_posts?select=*'),
-        body: {'name': 'Philipe Morice', 'message': 'I love to move it.'});
-
-    // Assurez-vous que la réponse contient un corps valide et une clé 'uri'
-    if (uriResponse.statusCode == 200) {
-      var uri = uriResponse
-          .body; // Remplacez ici si vous avez besoin de parser le JSON
-      developer.log('Réponse de la requête POST: $uri');
-
-      // Exemple d'utilisation de la réponse 'uri' dans une requête GET
-      var getResponse = await client.get(Uri.parse(uri));
-      if (getResponse.statusCode == 200) {
-        developer.log('Réponse GET réussie: ${getResponse.body}');
-      } else {
-        developer.log('Erreur GET: ${getResponse.statusCode}');
-      }
-    } else {
-      developer.log('Erreur POST: ${uriResponse.statusCode}');
-    }
-  } catch (e) {
-    developer.log('Erreur lors de la requête: $e');
-  } finally {
-    client.close();
+Future<void> initializeDatadog() async {
+  try {} catch (e, stackTrace) {
+    developer.log('Error initializing Datadog: $e');
+    await Sentry.captureException(e, stackTrace: stackTrace);
   }
-}
-
-Future<void> customSentryBinding(WidgetsBinding binding) async {
-  await Future.wait([
-    runTaskInIsolate(),
-    providerTaskIsolate(),
-  ], eagerError: true, cleanUp: (successValue) {
-    binding
-      ..deferFirstFrame()
-      ..createSceneBuilder()
-      ..debugShowWidgetInspectorOverride = true
-      ..addPostFrameCallback((timeStamp) {
-        final Element? context = binding.rootElement;
-        if (context != null) {
-          for (final asset in assetList.dependencies!.toList()) {
-            precacheImage(AssetImage(asset.toString()), context,
-                onError: (error, stacktrace) => ErrorWidget(error.toString()));
-          }
-        }
-        binding.allowFirstFrame();
-        successValue;
-      });
-  });
 }
 
 Future<void> flutterErrorFlow() async {
@@ -177,145 +96,6 @@ Future<void> flutterErrorFlow() async {
 
     return stack;
   };
-}
-
-Future<void> tryPartialStackFrameList(ISentrySpan transaction) async {
-  try {
-    const PartialStackFrame elementInflateWidget = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'Element',
-        method: 'inflateWidget');
-    const PartialStackFrame elementUpdateChild = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'Element',
-        method: 'updateChild');
-    const PartialStackFrame elementRebuild = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'Element',
-        method: 'rebuild');
-    const PartialStackFrame componentElementPerformRebuild = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'ComponentElement',
-        method: 'performRebuild');
-    const PartialStackFrame componentElementFirstBuild = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'ComponentElement',
-        method: '_firstBuild');
-    const PartialStackFrame componentElementMount = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'ComponentElement',
-        method: 'mount');
-    const PartialStackFrame statefulElementFirstBuild = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'StatefulElement',
-        method: '_firstBuild');
-    const PartialStackFrame singleChildMount = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'SingleChildRenderObjectElement',
-        method: 'mount');
-    const PartialStackFrame statefulElementRebuild = PartialStackFrame(
-        package: 'package:flutter/src/widgets/framework.dart',
-        className: 'StatefulElement',
-        method: 'performRebuild');
-
-    const String replacementString = '...     Normal element mounting';
-    FlutterError.addDefaultStackFilter(
-        const RepetitiveStackFrameFilter(frames: <PartialStackFrame>[
-      elementInflateWidget,
-      elementUpdateChild,
-      elementRebuild,
-      componentElementPerformRebuild,
-      componentElementFirstBuild,
-      componentElementMount,
-      statefulElementFirstBuild,
-      singleChildMount,
-      statefulElementRebuild,
-    ], replacement: replacementString));
-  } on SentryException catch (exception, stacktrace) {
-    await Sentry.captureException(
-      exception,
-      stackTrace: stacktrace,
-    );
-  } finally {
-    transaction.finished;
-  }
-}
-
-Future<void> tryProcessOrderBatch(ISentrySpan transaction) async {
-  try {
-    await processOrderBatch(transaction);
-  } catch (exception) {
-    transaction.throwable = exception;
-    transaction.status = const SpanStatus.internalError();
-  } finally {
-    await transaction.finish();
-  }
-}
-
-FutureOr<void> sentryCustomOptions(options) {
-  options.dsn =
-      'https://0ee7fbe213ed4eeb9d8e2225896c1601@o573314.ingest.us.sentry.io/4505427558400000';
-
-  options.enableAutoPerformanceTracing = true;
-  options.beforeCaptureScreenshot = (event, hint, bool isOn) {
-    event.tags?['app_version'] = '1.0.0';
-    if (isOn) {
-      // Ajouter des informations supplémentaires dans l'événement
-      event.tags!['background'] = 'App is in foreground';
-      return false;
-    } else {
-      event.tags!['background'] = 'App is in background';
-      return true;
-    }
-  };
-
-  options.beforeCaptureViewHierarchy = (event, hint, bool isOn) {
-    if (FlutterBackground.isBackgroundExecutionEnabled) {
-      event.tags?['background'] = 'App is in background';
-      return true;
-    } else {
-      event.tags?['background'] = 'App is in foreground';
-      return false;
-    }
-  };
-
-  options.beforeSend = (SentryEvent event, dynamic hint) {
-    event.tags?['app_version'] = '1.0.0';
-
-    return event;
-  };
-  options.tracesSampleRate = 1.0;
-  options.tracesSampler = (samplingContext) {
-    final ctx = samplingContext.customSamplingContext;
-    // If this is the continuation of a trace, just use that decision (rate controlled by the caller).
-    ctx['parentSampled'] ??= 1.0;
-
-    if ('/payment' == ctx['url']) {
-      // These are important - take a big sample
-      return 0.5;
-    } else if ('/search' == ctx['url']) {
-      // Search is less important and happen much more frequently - only take 1%
-      return 0.01;
-    } else if ('/health' == ctx['url']) {
-      // The health check endpoint is just noise - drop all transactions
-      return 0.0;
-    } else {
-      // Default sample rate
-      return 0.1;
-    }
-  };
-
-  options.debug = true;
-  options.attachStacktrace = true;
-  options.enableAutoSessionTracking = true;
-  options.enableNativeCrashHandling = true;
-  options.maxBreadcrumbs = 100;
-  options.environment = 'development';
-  options.sendDefaultPii = true;
-  options.experimental.replay.sessionSampleRate = 1.0;
-  options.experimental.replay.onErrorSampleRate = 1.0;
-  options.experimental.replay.maskAllText = true;
-  options.experimental.replay.maskAllImages = true;
 }
 
 class _Logger extends ProviderObserver {
@@ -371,27 +151,6 @@ class _Logger extends ProviderObserver {
       "provider": "${provider.name ?? provider.runtimeType}",
       "container": "$container",
       }''');
-  }
-}
-
-Future<void> processOrderBatch(ISentrySpan span) async {
-  // span operation: task, span description: operation
-  final innerSpan = span.startChild('task', description: 'operation');
-
-  try {
-    // omitted code
-    innerSpan
-      ..startChild('_Logger()')
-      ..setMeasurement('memoryUsed', 123, unit: SentryMeasurementUnit.none)
-      ..setMeasurement('ui.footerComponent.render', 1.3,
-          unit: SentryMeasurementUnit.none)
-      ..setMeasurement('localStorageRead', 4);
-  } catch (exception) {
-    innerSpan
-      ..throwable = exception
-      ..status = const SpanStatus.notFound();
-  } finally {
-    await innerSpan.finish();
   }
 }
 
@@ -466,9 +225,23 @@ const simplePeriodic1HourTask =
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
 void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
+  Workmanager().executeTask((task, inputData) async {
     developer.log("Task executed: $task");
-    return Future.value(true);
+    try {
+      final bool result = await myTaskFunction(task);
+      if (result == true) {
+        final sharedPreferences = inputData?['sharedPreferences'];
+        final totalExecutions = sharedPreferences.getInt('totalExecutions');
+        sharedPreferences.setInt('totalExecutions', totalExecutions! + 1);
+
+        return Future.value(true);
+      } else {
+        return Future.value(false);
+      }
+    } on MissingPluginException catch (e) {
+      developer.log("Error in callbackDispatcher: $e");
+      return Future.value(false);
+    }
   });
 }
 
@@ -502,35 +275,6 @@ Future<void> providerTaskIsolate() async {
       initialDelay: Duration(seconds: 10));
 }
 
-/*
-  Workmanager().registerOneOffTask("1", "simpleTask",
-      initialDelay: Duration(seconds: 10),
-      inputData: <String, dynamic>{'key': 'value'},
-      constraints: Constraints(
-          networkType: NetworkType.connected,
-          requiresBatteryNotLow: true,
-          requiresCharging: true,
-          requiresDeviceIdle: true,
-          requiresStorageNotLow: true));
-
-  Workmanager().registerPeriodicTask(
-    "periodic-task-identifier",
-    "simplePeriodicTask",
-// When no frequency is provided the default 15 minutes is set.
-// Minimum frequency is 15 min. Android will automatically change your
-// frequency to 15 min if you have configured a lower frequency.
-    frequency: Duration(minutes: 15),
-  );
-*/
-
-/*BackgroundTaskNotifier().setTaskStarted((details) => FlutterErrorDetails(
-      exception: details.exception,
-      stack: details.stack,
-      library: details.library,
-      informationCollector: details.informationCollector,
-      context: details.context,
-      silent: details.silent,
-      stackFilter: details.stackFilter));*/
 Future<bool> myTaskFunction(String taskName) async {
   developer.log("Executing background task: $taskName");
 
@@ -572,8 +316,107 @@ Future<bool> initForegroundService() async {
     notificationImportance: AndroidNotificationImportance.max,
     notificationIcon: androidResource,
   );
-  return FlutterBackground.initialize(androidConfig: androidConfig);
+  return await FlutterBackground.initialize(androidConfig: androidConfig);
 }
 
 AndroidResource get androidResource =>
     AndroidResource(name: 'ic_launcher_foreground', defType: 'drawable');
+
+Future<ProviderContainer> bootstrap() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Configure global Flutter error -> Sentry
+  await SentryService.configureFlutterErrorHandling();
+
+  // Init services de fond (Sentry, Firebase, Supabase, WorkManager...)
+  await Future.wait([
+    initializeFirebase(),
+    initializeSupabase(),
+    initializeSentry(),
+    sentryInitBinding(),
+    initializeWorkManager(),
+    flutterErrorFlow(),
+  ], eagerError: true);
+
+  final bool isSentryEnabled = !kDebugMode && F.appFlavor != Flavor.local;
+
+  // Init container avec overrides & observers
+  final container = ProviderContainer(
+    overrides: [
+      appStreamProvider.overrideWith((ref) => Stream.value(0)),
+      firebaseInitProvider.overrideWith((ref) async {
+        await Future.delayed(Duration(seconds: 2));
+        return await Firebase.initializeApp();
+      }),
+      userStreamProvider
+          .overrideWith((ref) => FirebaseAuth.instance.authStateChanges()),
+      supabaseInitProvider.overrideWith((ref) async {
+        await Future.delayed(Duration(seconds: 2));
+        return await Supabase.initialize(url: 'url', anonKey: 'anonKey');
+      }),
+      localizationProvider.overrideWith(
+        (ref) => MultiLang(ref.read(localeProvider).languageCode),
+      ),
+      sharedPreferencesProvider.overrideWith((ref) async {
+        await Future.delayed(Duration(seconds: 2));
+        return await SharedPreferences.getInstance();
+      }),
+      firebaseNotificationHandlerProvider.overrideWith((ref) {
+        return FirebaseNotificationHandler(
+          ref: ref,
+          notificationUtils: NotificationUtils(
+            ref.read(flutterLocalNotificationsProvider),
+            ref.read(sharedPrefsProvider),
+          ),
+        );
+      }),
+      datadogStreamProvider.overrideWith(
+        (ref) => Stream.periodic(Duration(days: 1)),
+      ),
+      datadogServiceProvider.overrideWith(
+        (ref) {
+          final service = DatadogService();
+          service.setRef(ref);
+          service.init();
+
+          return service;
+        },
+      ),
+      platformProvider
+          .overrideWith((ref) => ref.watch(targetPlatformProvider).value!),
+    ],
+    observers: [
+      if (isSentryEnabled) SentryProviderObserver(enableSentryLogging: true),
+      // DatadogObserver(datadogService: container.read(datadogServiceProvider)),
+      if (F.appFlavor == Flavor.local || F.appFlavor == Flavor.development)
+        _Logger(),
+    ],
+  );
+
+  developer.log('🛠 ProviderContainer ready');
+
+  // Configure Sentry avec des infos personnalisées
+  Sentry.configureScope((scope) {
+    final sp = container.read(sharedPrefsProvider);
+    scope.setTag(
+        'dark_mode', sp.prefs.getBool('dark_mode')?.toString() ?? 'null');
+  });
+
+  // Init custom Riverpod services ou autres providers
+  await providers.initializeProvider(container);
+
+  // Init Datadog avec accès au ref
+  final datadogService = container.read(datadogServiceProvider);
+  await datadogService.init();
+
+  // Init RUM ou traces automatiques (facultatif)
+  RiverpodPerformanceMonitor(container);
+
+  // Déclenche quelques tests de flux Sentry
+  unawaited(SentryService.trackComplexFlow());
+  unawaited(SentryService.testSendMessage());
+
+  developer.log("✅ bootstrap complete");
+
+  return container;
+}

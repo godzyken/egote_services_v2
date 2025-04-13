@@ -15,16 +15,16 @@ sealed class Images with _$Images {
   @FreezedUnionValue("web")
   const factory Images.web({
     required String name,
-  }) = _ImagesWeb;
+  }) = _Web;
 
   @FreezedUnionValue("local")
   const factory Images.local({
     @AssetsImageConverter() required List<LocalImages> images,
-  }) = _ImagesLocal;
+  }) = _Local;
 
   @FreezedUnionValue("error")
   const factory Images.error({required String error, required String message}) =
-      _ImagesError;
+      _Error;
 
   factory Images.fromJson(Map<String, dynamic> json) => _$ImagesFromJson(json);
 }

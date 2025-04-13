@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as develope;
 
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../config/cube_config/cube_config.dart';
 import '../../data/data_sources/local/pref_util.dart';
 
 class NotificationUtils {
@@ -15,7 +15,7 @@ class NotificationUtils {
 
   NotificationUtils(this.flutterLocalNotificationsPlugin, this._sharedPrefs);
 
-  Future<void> initialize(FlutterLocalNotificationsPlugin plugin) async {
+  Future<void> initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('ic_launcher_foreground');
     final DarwinInitializationSettings initializationSettingsIOS =
@@ -29,7 +29,7 @@ class NotificationUtils {
             android: initializationSettingsAndroid,
             iOS: initializationSettingsIOS);
 
-    await plugin.initialize(initializationSettings,
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: _onNotificationResponse);
   }
 
@@ -68,27 +68,43 @@ class NotificationUtils {
   Future<void> handleNotificationSelection(
       String payload, BuildContext context) async {
     CubeUser? user = await _sharedPrefs.getUser();
-    Map<String, dynamic> payloadObject = jsonDecode(payload);
-    String? dialogId = payloadObject['dialog_id'];
+    Map<String, dynamic> payloadObject = {};
+    try {
+      develope.log('Payload: $payload');
+      payloadObject = jsonDecode(payload);
+      develope.log('Payload: $payloadObject');
+      String? dialogId = payloadObject['dialog_id'];
 
-    if (dialogId != null) {
-      var dialogs = await getDialogs({'id': dialogId});
-      if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
-        CubeDialog dialog = dialogs.items.first;
-        if (context.mounted) {
-          context.pushNamed('chat_dialog',
-              extra: {USER_ARG_NAME: user, DIALOG_ARG_NAME: dialog});
+      user ??= await _sharedPrefs.getUser();
+      if (dialogId != null) {
+        var dialogs = await getDialogs({'id': dialogId});
+        develope.log('Dialogs: $dialogs');
+        if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
+          CubeDialog dialog = dialogs.items.first;
+          develope.log('Dialog: $dialog');
+          if (context.mounted) {
+            context.goNamed('chat_dialog',
+                pathParameters: {'dialogId': dialog.id.toString()});
+          }
         }
       }
+    } catch (e) {
+      develope.log('Error: $e');
+      return;
     }
   }
 
   Future<void> _onNotificationResponse(
       NotificationResponse notificationResponse) async {
-    var data = notificationResponse.payload;
-    if (data != null) {
-      String? dialogId = jsonDecode(data)['dialog_id'];
-      _sharedPrefs.saveSelectedDialogId(dialogId ?? '');
+    try {
+      var data = notificationResponse.payload;
+      if (data != null) {
+        String? dialogId = jsonDecode(data)['dialog_id'];
+        _sharedPrefs.saveSelectedDialogId(dialogId ?? '');
+      }
+    } catch (e) {
+      develope.log('Error: $e');
+      return;
     }
   }
 }

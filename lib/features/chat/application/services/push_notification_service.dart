@@ -33,7 +33,7 @@ class PushNotificationService {
 
   Future<void> initialize(Ref ref) async {
     await _firebaseMessagingService.initialize(ref);
-    await _notificationUtils.initialize(flutterLocalNotificationsPlugin);
+    await _notificationUtils.initialize();
     _firebaseMessagingService = ref.read(firebaseMessagingServiceProvider);
   }
 

@@ -13,7 +13,7 @@ class AuthScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
+    final authState = ref.watch(authControllerStateProvider);
 
     return authState.when(() => const LoginScreen(),
         authenticated: (AuthStatus status, UserModel userEntity) {

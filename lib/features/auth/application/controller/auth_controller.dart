@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/auth_exeptions/error_handler.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/domain/service/user_service.dart';
@@ -16,10 +17,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../config/providers/watchdog/datadog_service.dart';
 import '../../domain/providers/user_service_provider.dart';
 
-class AuthController extends StateNotifier<AsyncValue<UserModel?>> {
-  AuthController(this._repository) : super(const AsyncValue.loading()) {
+class AuthUserController extends StateNotifier<AsyncValue<UserModel?>> {
+  AuthUserController(this._repository) : super(const AsyncValue.loading()) {
     _initialize();
   }
 
@@ -308,5 +310,68 @@ class AutoAuthController extends StateNotifier<UserModel?> {
   void dispose() {
     _docSub?.cancel();
     super.dispose();
+  }
+}
+
+final authControllerProvider =
+    StateNotifierProvider<CustomAuthController, AsyncValue<void>>((ref) {
+  return CustomAuthController(ref);
+});
+
+class CustomAuthController extends StateNotifier<AsyncValue<void>> {
+  CustomAuthController(this.ref) : super(const AsyncValue.loading());
+  final Ref ref;
+
+  Either<Failure, dynamic> _logError(dynamic e, {StackTrace? stackTrace}) {
+    return AuthErrorHandler.handleError(e, message: stackTrace.toString());
+  }
+
+  Future<void> handle(UserName name) async {
+    _updateState(const AsyncValue.loading());
+    try {
+      final res =
+          await ref.read(authRepositoryProvider).createUserEntityModel(name);
+
+      res.fold(
+        (l) => _updateState(
+            AsyncValue.error(l.error, StackTrace.fromString(l.toString()))),
+        (r) => _updateState(AsyncValue.data(null)),
+      );
+    } catch (e) {
+      _logError(e);
+    }
+  }
+
+  void _updateState(AsyncValue<void> newState) {
+    state = newState;
+  }
+
+  Future<void> login(String email, String password) async {
+    state = const AsyncValue.loading();
+    final datadog = ref.read(datadogServiceProvider);
+
+    try {
+      datadog.logInfo('Attempting login ', attributes: {'email': email});
+
+      final res = await ref
+          .read(authRepositoryProvider)
+          .signInWithPassword(email, password);
+
+      if (res.isLeft()) {
+        state = AsyncValue.error(
+            res.getLeft(), StackTrace.fromString(res.toString()));
+        return;
+      }
+
+      res.getRight();
+
+      await Future.delayed(const Duration(seconds: 1));
+
+      datadog.logInfo('Login successful', attributes: {'email': email});
+      state = const AsyncValue.data(null);
+    } catch (e, st) {
+      datadog.logErrorWithSentry('Login failed', e, st);
+      state = AsyncValue.error(e, st);
+    }
   }
 }

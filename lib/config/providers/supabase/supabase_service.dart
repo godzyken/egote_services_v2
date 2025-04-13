@@ -49,7 +49,7 @@ class SupabaseService {
 }
 
 @freezed
-class Instrument with _$Instrument {
+sealed class Instrument with _$Instrument {
   const factory Instrument({required int id, required String name}) =
       _Instrument;
 

@@ -66,5 +66,12 @@
     <true/>
     <key>Sentry.DSN</key>
     <string>https://<key>@sentry.io/<project></string>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>remote-notification</string>
+    </array>
+    <key>NSUserNotificationUsageDescription</key>
+    <string>Nous avons besoin de vous envoyer des notifications pour vous alerter des appels.</string>
+
 </dict>
 </plist>

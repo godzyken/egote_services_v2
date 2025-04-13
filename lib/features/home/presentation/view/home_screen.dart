@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
+import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:egote_services_v2/features/home/application/home_controller.dart';
 import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
@@ -10,6 +12,20 @@ import 'package:go_router/go_router.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../../../gen/assets.gen.dart';
+import '../../domain/entities/notifier/application_state.dart';
+
+final userDataProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
+  final user = await ref.read(authStateProvider.notifier).signInAnonymously();
+
+  final response = await ref
+      .read(supabaseClientProvider)
+      .from('auth_users_table')
+      .select('*')
+      .eq('id', user.user!.uid)
+      .single();
+
+  return response;
+});
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -69,17 +85,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (network == NetWorkStatus.off) {
       return _buildNoNetwork();
     }
+    final userDataAsync = ref.watch(userDataProvider);
+
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: _buildAppBar(context, network),
-      body: Stack(
-        children: [
-          _buildAnimatedImage(),
-          _buildLogo(),
-          _buildSwipeGestureDetector(),
-        ],
+      body: userDataAsync.when(
+          data: (data) => _buildStack,
+          error: (error, stackTrace) => ErrorScreen(error: error.toString()),
+          loading: () => Center(child: const CircularProgressIndicator(),),
       ),
       floatingActionButton: _buildFloatingActionButton(),
+    );
+  }
+
+  Stack get _buildStack {
+    return Stack(
+      children: [
+        _buildAnimatedImage(),
+        _buildLogo(),
+        _buildSwipeGestureDetector(),
+      ],
     );
   }
 
@@ -90,6 +116,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   AppBar _buildAppBar(BuildContext context, NetWorkStatus network) {
+    final user = ref.watch(authStreamProvider);
     return AppBar(
       title: Text(
         '${context.tr!.home} $network',
@@ -108,16 +135,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       actions: [
         _buildAppBarAction(
           icon: Icons.comment,
-          onPressed: () => _onCommentPressed(),
+          onPressed: () async {
+            if (user == null) {
+              await ref.read(authStateProvider.notifier);
+            }
+            _onCommentPressed();
+          },
         ),
         _buildAppBarAction(
           icon: Icons.settings,
           onPressed: () => _onSettingsPressed(),
         ),
       ],
-      leading: IconButton(
-        icon: const Icon(Icons.menu),
-        onPressed: () {},
+      leading: _buildAppBarAction(
+        icon: user != null ? Icons.menu : Icons.exit_to_app,
+        onPressed: () => user != null ? _onPressedMenu() : _onPressedLogOut(),
       ),
       systemOverlayStyle: SystemUiOverlayStyle.light,
     );
@@ -141,7 +173,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  void _onCommentPressed() {
+  void _onCommentPressed() async {
+    // Ajout d'un breadcrumb à chaque clic
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        message: 'Bouton cliqué',
+        level: SentryLevel.info,
+        data: {'button': 'avis'},
+      ),
+    );
     if (context.mounted) {
       context.goNamed('avisRoute', pathParameters: {'avisId': '123'});
     }
@@ -151,6 +191,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (context.mounted) {
       context.goNamed('settingsRoute');
     }
+  }
+
+  void _onPressedMenu() {
+    if (context.mounted) {
+      context.goNamed('menuRoute');
+    }
+  }
+
+  void _onPressedLogOut() async {
+    await ref.read(authStateProvider.notifier).signOut();
   }
 
   Widget _buildAnimatedImage() {
@@ -218,13 +268,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildFloatingActionButton() {
-    return FloatingActionButton.small(
-      onPressed: () => context.goNamed('godzyRoute'),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
-        clipBehavior: Clip.hardEdge,
-        child: const Godzylogo(),
-      ),
-    );
+    return WidgetInspector(
+        child: FloatingActionButton.small(
+          onPressed: () => context.goNamed('godzyRoute'),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15.0),
+            clipBehavior: Clip.hardEdge,
+            child: const Godzylogo(),
+          ),
+        ),
+        exitWidgetSelectionButtonBuilder: (context,
+                {required key, required onPressed}) =>
+            FloatingActionButton(
+              key: key,
+              onPressed: onPressed,
+              child: const Icon(Icons.exit_to_app),
+            ),
+        moveExitWidgetSelectionButtonBuilder:
+            (context, {isLeftAligned = true, required onPressed}) => Align(
+                  alignment: isLeftAligned == true
+                      ? Alignment.centerLeft
+                      : Alignment.centerRight,
+                  child: FloatingActionButton(
+                    onPressed: onPressed,
+                    child: const Icon(Icons.exit_to_app),
+                  ),
+                ));
   }
 }

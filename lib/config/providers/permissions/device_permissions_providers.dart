@@ -1,12 +1,19 @@
 import 'dart:developer' as devtools show log;
+import 'dart:developer' as devtools;
 
 import 'package:egote_services_v2/config/providers/permissions/permission_service.dart';
+import 'package:egote_services_v2/config/providers/permissions/permissions_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+final permissionsInitProvider = FutureProvider<void>((ref) async {
+  await ref.read(permissionNotifierProvider.notifier).requestAllPermissions();
+});
+
 // Provider générique pour gérer les permissions
-final permissionProvider = FutureProvider.family<PermissionStatus, Permission>(
-    (ref, permission) async {
+final permissionStatusProvider =
+    FutureProvider.family<PermissionStatus, Permission>(
+        (ref, permission) async {
   final status = await permission.status;
   return status;
 });
@@ -19,33 +26,32 @@ final requestPermissionProvider =
 });
 
 // Exemple de gestion de la permission de la caméra
-final cameraPermissionsProvider = permissionProvider(Permission.camera);
+final cameraPermissionsProvider = permissionProvider;
 final requestCameraPermissionProvider =
     requestPermissionProvider(Permission.camera);
 
 // Exemple de gestion de la permission de localisation
-final locationPermissionsProvider = permissionProvider(Permission.location);
+final locationPermissionsProvider = permissionProvider;
 final requestLocationPermissionProvider =
     requestPermissionProvider(Permission.location);
 
 // Exemple de gestion de la permission du microphone
-final microphonePermissionsProvider = permissionProvider(Permission.microphone);
+final microphonePermissionsProvider = permissionProvider;
 final requestMicrophonePermissionProvider =
     requestPermissionProvider(Permission.microphone);
 
 // Exemple de gestion de la permission du stockage
-final storagePermissionsProvider = permissionProvider(Permission.storage);
+final storagePermissionsProvider = permissionProvider;
 final requestStoragePermissionProvider =
     requestPermissionProvider(Permission.storage);
 
 // Exemple de gestion de la permission du Bluetooth
-final bluetoothPermissionsProvider = permissionProvider(Permission.bluetooth);
+final bluetoothPermissionsProvider = permissionProvider;
 final requestBluetoothPermissionProvider =
     requestPermissionProvider(Permission.bluetooth);
 
 // Exemple de gestion de la permission de notification
-final notificationPermissionsProvider =
-    permissionProvider(Permission.notification);
+final notificationPermissionsProvider = permissionProvider.notifier;
 final requestNotificationPermissionProvider =
     requestPermissionProvider(Permission.notification);
 

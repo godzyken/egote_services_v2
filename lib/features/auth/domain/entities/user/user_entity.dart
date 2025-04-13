@@ -107,6 +107,22 @@ abstract class UserEntityModel with _$UserEntityModel {
 
   factory UserEntityModel.fromJson(Map<String, dynamic> json) =>
       _$UserEntityModelFromJson(json);
+
+  factory UserEntityModel.fromMap(Map<String, dynamic> map) => UserEntityModel(
+        id: UserId(value: map['id']),
+        name: map['name'],
+        email: map['email'],
+        role: map['role'],
+        externalId: map['externalId'],
+        phone: map['phone'],
+        externalLink: map['externalLink'],
+        isComplete: map['isComplete'],
+        createdAt: DateTime.parse(map['createdAt']),
+        updatedAt: DateTime.parse(map['updatedAt']),
+        emailConfirmedAt: DateTime.parse(map['emailConfirmedAt']),
+        phoneConfirmedAt: DateTime.parse(map['phoneConfirmedAt']),
+        lastSignInAt: DateTime.parse(map['lastSignInAt']),
+      );
 }
 
 @freezed

@@ -4,11 +4,13 @@ import 'dart:developer' as developer;
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/environements/environment.dart';
 import 'package:egote_services_v2/config/providers.dart';
+import 'package:egote_services_v2/config/providers/watchdog/watchdog_logger_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../environements/flavors.dart';
+import 'datadog_service.dart';
 
 final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
   final configuration = await ref.watch(datadogConfigProvider.future);
@@ -198,3 +200,45 @@ final telemetryProvider =
   dependencies: [datadogProvider, datadogInstanceProvider],
   name: 'Telemetry provider',
 );
+final datadogStreamProvider = StreamProvider.autoDispose<String>((ref) async* {
+  final channel = EventChannel(
+    'com.godzy.egote_services_v2/datadog',
+    const StandardMethodCodec(),
+    BackgroundIsolateBinaryMessenger.instance,
+  );
+
+  // Fermer le canal lors de la suppression du provider
+  ref.onDispose(() {
+    channel.receiveBroadcastStream('dispose');
+  });
+
+  // Écouter les messages du canal
+  await for (final message in channel.receiveBroadcastStream()) {
+    yield message;
+  }
+});
+
+final MethodChannel channel = MethodChannel(
+  'com.godzy.egote_services_v2/datadog/method',
+  StandardMethodCodec(),
+);
+
+// Exemple d'appel de méthode
+Future<void> invokeMethod() async {
+  try {
+    final result = await channel.invokeMethod('methodName', DataDogConfig);
+    // Traitez le résultat ici
+    channel.setMethodCallHandler(result);
+    developer.log("hello from data config", name: "data config", error: result);
+  } on PlatformException catch (e) {
+    // Gérez les exceptions ici
+    developer.log("hello from data config", name: "data config", error: e);
+  }
+}
+
+mixin DataDogConfig {}
+
+final watchdogLoggerProvider = Provider<WatchdogLogger>((ref) {
+  final datadogService = ref.watch(datadogServiceProvider);
+  return WatchdogLogger(datadogService: datadogService);
+});

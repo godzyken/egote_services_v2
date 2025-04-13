@@ -2,23 +2,26 @@ import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/routes/app_router_observer.dart';
 import 'package:egote_services_v2/config/routes/router_notifier.dart';
 import 'package:egote_services_v2/config/routes/sentry_navigator_observer.dart';
+import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
+import '../../features/common/presentation/views/widgets/router_refresh_stream.dart';
+import '../providers/watchdog/datadog_service.dart';
 
 part 'router.g.dart';
 
-final _rootRouterKey = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
+final rootRouterKey = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
 
 final _shellRouterKey = GlobalKey<NavigatorState>(debugLabel: 'shellRouterKey');
 
 // <---------------- RunViewInfo Provider --------------------> //
 final observer = DatadogNavigationObserver(
     datadogSdk: DatadogSdk.instance, viewInfoExtractor: infoExtractor);
-final appRouterObserver = AppRouterObserver();
+final appRouterObserver = AppRouterObserver(datadogService: DatadogService());
 
 RumViewInfo? infoExtractor(Route<dynamic> route) {
   var name = route.settings.name;
@@ -35,6 +38,7 @@ RumViewInfo? infoExtractor(Route<dynamic> route) {
 // ignore: prefer-static-class
 GoRouter router(Ref ref) {
   final notifier = ref.watch(routerNotifierProvider.notifier);
+  final user = ref.watch(authStateProvider);
 
   return GoRouter(
       routes: [
@@ -55,10 +59,22 @@ GoRouter router(Ref ref) {
           navigatorKey: _shellRouterKey,
         ),
       ],
-      refreshListenable: notifier,
+      refreshListenable: GoRouterRefreshStream(
+          ref.watch(authStateProvider.notifier).listenToUserChanges),
+      redirect: (context, state) {
+        final isLoggedIn = user != null;
+        final isOnLogin = state.path == '/auth';
+
+        if (isOnLogin && isLoggedIn) {
+          return '/';
+        } else if (!isOnLogin && !isLoggedIn) {
+          return '/auth';
+        }
+        return null;
+      },
       initialLocation: '/',
       debugLogDiagnostics: true,
-      navigatorKey: _rootRouterKey,
+      navigatorKey: rootRouterKey,
       observers: [observer, appRouterObserver, sentryNavigatorObserver],
       overridePlatformDefaultLocation: true,
       onException: (context, state, router) => GoExceptionHandler,

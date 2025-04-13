@@ -96,7 +96,7 @@ class AuthControllerStateNotifier extends StateNotifier<perso.AuthState> {
   }
 }
 
-final authStateProvider = StateNotifierProvider.autoDispose<
+final authControllerStateProvider = StateNotifierProvider.autoDispose<
     AuthControllerStateNotifier, perso.AuthState>((ref) {
   final repo = ref.watch(authRepositoryProvider);
   return AuthControllerStateNotifier(repo);

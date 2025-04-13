@@ -1,9 +1,11 @@
+import 'package:egote_services_v2/config/providers/sentry/sentry_service.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa_user_exception;
 
 import '../../../../../config/providers/firebase/firebase_providers.dart';
@@ -38,6 +40,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _loadProfile() async {
+    await SentryService.traceTask(
+        name: 'load_user_profile',
+        task: (ISentrySpan span) async {
+          SentryService.addBreadcrumb(
+              message: 'Chargement du profil utilisateur', category: 'api');
+
+          span.setTag('endpoint', '/users/me');
+          span.setData('user_id', '1234');
+
+          try {
+            throw Exception('Erreur lors du chargement du profil');
+          } catch (e, st) {
+            await Sentry.captureException(e, stackTrace: st);
+            rethrow;
+          }
+        });
+
     setState(() {
       _isLoading = true;
     });

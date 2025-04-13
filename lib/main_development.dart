@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,9 +12,6 @@ import 'config/environements/flavors.dart';
 
 void main() async {
   F.appFlavor = Flavor.development;
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
 
   runZonedGuarded(() async {
     runApp(UncontrolledProviderScope(

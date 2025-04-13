@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../auth/domain/entities/user_properties/name.dart';
+
 part 'feedback.freezed.dart';
 part 'feedback.g.dart';
 
@@ -7,7 +9,12 @@ part 'feedback.g.dart';
 class AvisUtilisateur with _$AvisUtilisateur {
   const factory AvisUtilisateur({
     @JsonKey(name: 'id') required int id,
-    String? name,
+    @JsonKey(
+      defaultValue: 'NameFormz',
+      includeToJson: false,
+      includeFromJson: false,
+    )
+    NameFormz? name,
     @JsonKey(name: 'photo_url') String? photoUrl,
     @JsonKey(name: 'message') required String message,
     @JsonKey(

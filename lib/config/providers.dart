@@ -3,25 +3,39 @@ import 'dart:isolate';
 
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
+import 'package:egote_services_v2/config/providers/connectivity/connectivity_providers.dart';
+import 'package:egote_services_v2/config/providers/connectivity/dio_providers.dart';
+import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
+import 'package:egote_services_v2/config/providers/permissions/device_permissions_providers.dart';
+import 'package:egote_services_v2/config/providers/permissions/permissions_providers.dart';
 import 'package:egote_services_v2/config/providers/platform/platform_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
+import 'package:egote_services_v2/config/providers/watchdog/datadog_service.dart';
 import 'package:egote_services_v2/config/providers/webrtc/webrtc_provider.dart';
+import 'package:egote_services_v2/features/avis/domain/providers/feedback/feedback_provider.dart';
+import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/routes/routes.dart';
+import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/domain/providers/auth_repository_provider.dart';
+import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
 import '../features/chat/data/data_sources/local/pref_util.dart';
 import '../features/chat/presentation/views/screens/chat_screens.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
+import '../features/devis/domain/providers/check_out_service_provider.dart';
+import '../features/devis/domain/providers/devis_providers.dart';
+import '../features/devis/domain/providers/edit_devis_view_model_provider.dart';
+import '../features/devis/presentation/states/entities/product_states/produit_entity_states.dart';
 import '../features/devis/presentation/views/screens/devis_screens.dart';
 import '../features/home/presentation/view/home_screen.dart';
 import '../features/home/presentation/widget/godzylogo.dart';
@@ -41,9 +55,9 @@ Future<void> initializeProvider(ProviderContainer container) async {
     developer.log('Error during initialization: $result');
     throw Exception(result);
   }
+  developer.log('Core services initialized successfully');
 
   await _initializeAdditionalProviders(container);
-  _cleanupProviders(container);
   container.dispose();
 }
 
@@ -55,7 +69,8 @@ void _initializeCoreServicesInBackground(SendPort sendPort) async {
       container.read(supabaseInitProvider.future),
       container.read(webrtcInitProvider.future),
       container.read(datadogProvider.future),
-    ]);
+      container.read(cubeUserProvider.future),
+    ]).timeout(const Duration(seconds: 30));
 
     sendPort
         .send('Core services initialized successfully'); // Envoyer un succès
@@ -81,6 +96,8 @@ Future<void> _initializeAdditionalProviders(ProviderContainer container) async {
   }
 
   developer.log('Additional providers initialized successfully');
+  await _cleanupProviders(container);
+  container.dispose();
 }
 
 void _initializeAdditionalProvidersInBackground(SendPort sendPort) async {
@@ -89,8 +106,13 @@ void _initializeAdditionalProvidersInBackground(SendPort sendPort) async {
 
     await Future.wait(
       <Future<dynamic>>[
+        container.read(permissionsInitProvider.future),
         container.read(firebaseInitProvider.future),
+        container.read(userFutureProvider.future),
+        container.read(cubeUserProvider.future),
         container.read(sharedPreferencesProvider.future),
+        container.read(cubeChatConnectionSettingsProvider.future),
+        container.read(produitFutureProvider.future),
       ],
       eagerError: true, // Si une des futures échoue, l'exécution s'arrête
     );
@@ -109,9 +131,14 @@ Future<void> _cleanupProviders(ProviderContainer container) async {
   receivePort.listen((message) {
     if (message is String) {
       developer.log('Cleanup completed successfully: $message');
+      throw Exception(message);
     } else {
       developer.log('Error during cleanup: $message');
     }
+  }, onError: (error, stackTrace) {
+    developer.log('Error during cleanup: $error');
+    developer.log('Stack trace: $stackTrace');
+    throw Exception('Error during cleanup: $error');
   });
 }
 
@@ -121,12 +148,46 @@ void _cleanupProvidersInBackground(List<dynamic> args) async {
 
   try {
     await Future.delayed(const Duration(seconds: 2), () {
+      container.read(appStateProvider);
+      container.read(connectivityStatusProviders);
       container.read(sharedPrefsProvider);
+      container.read(firebaseDatabaseProvider);
+      container.read(firebaseFirestoreProvider);
+      container.read(firebaseMessagingProvider);
       container.read(emulatorSettingsProvider);
+      container.read(firebaseAuthProvider);
+      container.read(cubeUserControllerProvider);
+      container.read(cubeSessionManagerProvider);
+      container.read(cubeChatConnectionNotifierProvider);
+      container.read(cubeChatConnectionSettingsProvider);
+      container.read(cubeChatConnectionProvider);
       container.read(goRouterProvider);
       container.read(localizationProvider);
+      container.read(cubeProvider);
+
+      // Read authentication related providers
+      container.read(authStateChangesProvider);
+      container.read(authControllerStateProvider);
+      container.read(userChangesProvider);
+      container.read(userRoleProvider);
+
       // Read other services/providers
+      container.read(fireDatabaseProvider);
       container.read(backgroundTaskProvider);
+      container.read(editDeviViewModelProvider);
+      container.read(produitServiceProvider);
+      container.read(editProduitProvider);
+      container.read(produitStateNotifierProvider);
+      container.read(devisStateNotifierProvider);
+      container.read(checkoutServiceProvider);
+      container.read(missionsListProvider);
+      container.read(travauxListProvider);
+      container.read(missionStateNotifierProvider);
+      container.read(dioProvider);
+      container.read(telemetryProvider);
+      container.read(feedbacksProvider);
+      container.read(authCubeStreamProvider);
+      container.read(datadogServiceProvider);
     });
 
     sendPort.send('Cleanup completed successfully');
@@ -463,3 +524,11 @@ RumViewInfo? infoExtractor(Route<dynamic> route) {
 
   return defaultViewInfoExtractor(route);
 }
+
+final containerProvider = Provider<ProviderContainer>((ref) {
+  final container = ProviderContainer();
+  ref.onDispose(
+    () => container.dispose(),
+  );
+  return container;
+});

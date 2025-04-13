@@ -23,13 +23,6 @@ class FeedbacksNotifier extends StateNotifier<List<AvisUtilisateur>> {
   // Simplified error handling
   void logError(Object e) => AuthErrorHandler.handleError(e);
 
-  // Initialize the feedback loading and stream listening
-  void _startListening() async {
-    ref.watch(supabaseClientProvider).getChannels();
-    ref.keepAlive();
-    await loadFeedbacks();
-  }
-
   // Load feedbacks from Supabase
   Future<void> loadFeedbacks() async {
     final stopwatch = Stopwatch()..start();
@@ -173,4 +166,37 @@ class FeedbacksNotifier extends StateNotifier<List<AvisUtilisateur>> {
       receivePort.close();
     });
   }
+
+  void _startListening() async {
+    await loadFeedbacks();
+  }
 }
+
+class FeedbackStateNotifier extends StateNotifier<AvisUtilisateur?> {
+  FeedbackStateNotifier() : super(null);
+  void setFeedback(AvisUtilisateur feedback) {
+    state = feedback;
+  }
+
+  void clearFeedback() {
+    state = null;
+  }
+
+  AvisUtilisateur? getFeedback() {
+    return state;
+  }
+
+  bool get hasFeedback => state != null;
+
+  void deleteFeedback() {
+    state = null;
+  }
+
+  void updateFeedback(AvisUtilisateur feedback) {
+    state = feedback;
+  }
+}
+
+final feedbackProvider =
+    StateNotifierProvider<FeedbackStateNotifier, AvisUtilisateur?>(
+        (ref) => FeedbackStateNotifier());

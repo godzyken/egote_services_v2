@@ -91,6 +91,16 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
           scrollBehavior: const AppScrollBehavior(),
           locale: lang,
           builder: (context, child) => child!,
+          actions: <Type, Action<Intent>>{
+            ...WidgetsApp.defaultActions,
+            ActivateAction: CallbackAction<Intent>(
+              onInvoke: (Intent intent) {
+                // Do something here...
+
+                return null;
+              },
+            ),
+          },
         ));
   }
 
@@ -112,7 +122,6 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-
     //initCube.asStream();
 
     _getPlatformVersion();
@@ -125,41 +134,65 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.resumed:
-        ref.watch(sharedPrefsProvider).init().then((sharedPrefs) async {
-          CubeUser? user =
-              await sharedPrefs.getUser().then((savedUser) => savedUser!);
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    try {
+      switch (state) {
+        case AppLifecycleState.resumed:
+          // L'application revient au premier plan
+          ref.watch(sharedPrefsProvider).init().then((sharedPrefs) async {
+            CubeUser? user =
+                await sharedPrefs.getUser().then((savedUser) => savedUser);
 
-          if (user != null) {
-            if (!CubeChatConnection.instance.isAuthenticated()) {
-              if (LoginType.phone == sharedPrefs.getLoginType()) {
-                if (CubeSessionManager.instance.isActiveSessionValid()) {
-                  user.password =
-                      CubeSessionManager.instance.activeSession?.token;
-                } else {
-                  var phoneAuthSession = await createSessionUsingFirebasePhone(
-                      'projectId', 'accessToken');
-                  user.password = phoneAuthSession.token;
+            if (user != null) {
+              // Si l'utilisateur est présent dans les préférences partagées
+              if (!CubeChatConnection.instance.isAuthenticated()) {
+                if (LoginType.phone == sharedPrefs.getLoginType()) {
+                  // Connexion par téléphone
+                  if (CubeSessionManager.instance.isActiveSessionValid()) {
+                    user.password =
+                        CubeSessionManager.instance.activeSession?.token;
+                  } else {
+                    var phoneAuthSession =
+                        await createSessionUsingFirebasePhone(
+                            'projectId', 'accessToken');
+                    user.password = phoneAuthSession.token;
+                  }
                 }
+                // Connexion à CubeChat
+                CubeChatConnection.instance.login(user);
+              } else {
+                // Si déjà connecté, on marque la connexion comme active
+                CubeChatConnection.instance.markActive();
               }
-              CubeChatConnection.instance.login(user);
-            } else {
-              CubeChatConnection.instance.markActive();
             }
+          });
+          break;
+
+        case AppLifecycleState.inactive:
+          // L'application passe en mode inactif
+          // Peut-être qu'on pourrait faire un nettoyage ou enregistrer des données ici
+          break;
+
+        case AppLifecycleState.paused:
+          // L'application passe en arrière-plan
+          if (CubeChatConnection.instance.isAuthenticated()) {
+            CubeChatConnection.instance.markInactive();
           }
-        });
-      case AppLifecycleState.inactive:
-      // TODO: Handle this case.
-      case AppLifecycleState.paused:
-        if (CubeChatConnection.instance.isAuthenticated()) {
-          CubeChatConnection.instance.markInactive();
-        }
-      case AppLifecycleState.detached:
-      // TODO: Handle this case.
-      case AppLifecycleState.hidden:
-      // TODO: Handle this case.
+          break;
+
+        case AppLifecycleState.detached:
+          // L'application se détache de l'arbre des widgets
+          // Ici, il peut être utile de faire un nettoyage ou une sauvegarde des données
+          break;
+
+        case AppLifecycleState.hidden:
+          // L'application passe à l'état caché
+          // Vous pouvez gérer ce cas si nécessaire
+          break;
+      }
+    } catch (e) {
+      // Gestion des erreurs globales
+      developer.log('Error handling app lifecycle state: $e');
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_service.dart';
@@ -16,6 +17,7 @@ import '../../environements/flavors.dart';
 // Provider pour initialiser Supabase de manière asynchrone.
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
   try {
+    await Future.delayed(const Duration(seconds: 2));
     final env = await _loadEnvironmentConfig();
     final supabaseInstance = await _initializeSupabase(env);
     return supabaseInstance;
@@ -26,8 +28,21 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
 
 // Charger la configuration de l'environnement à partir du fichier JSON.
 Future<Environment> _loadEnvironmentConfig() async {
-  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  return Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  try {
+    await Future.delayed(const Duration(seconds: 2));
+    developer.log("Loading config file..."); // Log avant de charger le fichier
+    final name = F.appFlavor?.name ?? 'development';
+    final configFile = await rootBundle
+        .loadString('assets/json/$name.config.json', cache: false);
+    developer
+        .log("Config file loaded: $configFile"); // Log le contenu du fichier
+    return Environment.fromJson(
+        json.decode(configFile) as Map<String, dynamic>);
+  } catch (e) {
+    developer
+        .log("Error loading config: $e"); // Log de l'erreur si elle survient
+    rethrow;
+  }
 }
 
 // Initialiser Supabase avec les paramètres de l'environnement.
@@ -46,7 +61,7 @@ Future<supabase.Supabase> _initializeSupabase(Environment env) async {
     return client.currentSession?.providerRefreshToken ?? env.accessToken;
   }
 
-  await supabase.Supabase.initialize(
+  return await supabase.Supabase.initialize(
     url: env.supabaseUrl,
     anonKey: env.supabaseAnonKey,
     headers: client.headers,
@@ -64,19 +79,21 @@ Future<supabase.Supabase> _initializeSupabase(Environment env) async {
     postgrestOptions: const supabase.PostgrestClientOptions(schema: 'public'),
     debug: kDebugMode,
   );
-
-  return supabase.Supabase.instance;
 }
 
 // <---------------- Providers pour l'accès à Supabase -------------------> //
 
 // Fournisseur pour l'accès à l'instance de Supabase.
 final supabaseProvider = Provider<supabase.Supabase>((ref) {
-  final supabaseInstance = ref.watch(supabaseInitProvider).value;
-  if (supabaseInstance == null) {
+  final supabaseInstance = ref.watch(supabaseInitProvider);
+  if (supabaseInstance.hasError) {
     throw StateError('Supabase instance not initialized yet');
   }
-  return supabaseInstance;
+  if (supabaseInstance.value == null) {
+    throw StateError('Supabase instance is null');
+  }
+  final supabase = supabaseInstance.value!;
+  return supabase;
 });
 
 // Fournisseur pour l'accès au client Supabase.

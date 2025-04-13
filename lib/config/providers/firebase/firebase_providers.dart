@@ -55,7 +55,7 @@ Future<FirebaseApp> _initializeFirebaseInBackground(Environment env) async {
   if (result is FirebaseApp) {
     return result;
   } else {
-    throw FirebaseInitializationException('Firebase initialization failed.');
+    throw FirebaseInitializationException('Firebase initialization failed 1.');
   }
 }
 
@@ -73,7 +73,7 @@ void _initializeFirebaseIsolate(FirebaseInitializationParams params) async {
   } catch (e) {
     developer.log('Error during Firebase initialization in isolate: $e');
     params.sendPort.send(
-        FirebaseInitializationException('Firebase initialization failed.'));
+        FirebaseInitializationException('Firebase initialization failed 2.'));
   }
 }
 
@@ -87,7 +87,7 @@ Future<FirebaseApp> _slowFirebaseInit(Environment env) async {
     );
   } catch (e) {
     developer.log('Error during SlowFirebase initialization: $e');
-    throw FirebaseInitializationException('Firebase initialization failed.');
+    throw FirebaseInitializationException('Firebase initialization failed 3.');
   }
 }
 
@@ -101,7 +101,7 @@ Future<FirebaseApp> _delayedFirebaseInit(Environment env) async {
     );
   } catch (e) {
     developer.log('Error during DelayedFirebase initialization: $e');
-    throw FirebaseInitializationException('Firebase initialization failed.');
+    throw FirebaseInitializationException('Firebase initialization failed 4.');
   }
 }
 
@@ -115,7 +115,7 @@ Future<FirebaseApp> _fastFirebaseInit(Environment env) async {
     );
   } catch (e) {
     developer.log('Error during FastFirebase initialization: $e');
-    throw FirebaseInitializationException('Firebase initialization failed.');
+    throw FirebaseInitializationException('Firebase initialization failed 5.');
   }
 }
 
@@ -151,8 +151,11 @@ class FirebaseInitializationException implements Exception {
 
 // <---------------- Firebase Auth Provider -----------------> //
 @Riverpod(keepAlive: true)
-final firebaseAuthProvider =
-    Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
+final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
+  final auth = FirebaseAuth.instance;
+  return auth;
+});
+
 @Riverpod(keepAlive: true)
 final firebaseDatabaseProvider =
     Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
@@ -201,7 +204,13 @@ final userStreamProvider =
     StreamProvider.autoDispose<User?>((ref) => _mapUserStream(ref));
 
 Stream<User?> _mapAuthStream(Ref ref) {
-  return ref.watch(firebaseAuthProvider).authStateChanges().map((user) => user);
+  return ref.watch(firebaseAuthProvider).authStateChanges().map((user) {
+    if (user != null) {
+      return user;
+    } else {
+      return null;
+    }
+  });
 }
 
 Stream<String?> _mapIdTokenStream(Ref ref) {

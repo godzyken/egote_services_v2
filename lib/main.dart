@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:egote_services_v2/config/providers/watchdog/datadog_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'config/environements/bootstrap.dart';
+import 'config/providers/watchdog/datadog_observer.dart';
 
 void main() async {
   FlutterError.onError = (details) {
@@ -48,6 +51,12 @@ class MyApp extends ConsumerWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      navigatorObservers: [
+        SentryNavigatorObserver(),
+        DatadogNavigationObserver(
+          datadogService: ref.read(datadogServiceProvider),
+        ),
+      ],
     );
   }
 }

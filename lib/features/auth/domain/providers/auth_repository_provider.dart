@@ -39,11 +39,11 @@ final autoAuthControllerProvider =
         (ref) => AutoAuthController(ref),
         name: 'auto controller authentication state notifier');
 
-final authProvider =
-    StateNotifierProvider.autoDispose<AuthController, AsyncValue<UserModel?>>(
+final authProvider = StateNotifierProvider.autoDispose<AuthUserController,
+    AsyncValue<UserModel?>>(
   (ref) {
     final repo = ref.watch(authRepositoryProvider);
-    return AuthController(repo);
+    return AuthUserController(repo);
   },
   name: 'authentication always listener async values state notifier',
 );

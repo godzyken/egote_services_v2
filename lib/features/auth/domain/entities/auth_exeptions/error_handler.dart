@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:fpdart/fpdart.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 import '../../../../common/domain/failures/failure.dart';
@@ -25,6 +26,13 @@ class AuthErrorHandler {
       final errorDetail = 'Erreur serveur auth api: ${e.message}';
       developer.log(error: errorCode, errorDetail);
       return left(Failure.unprocessableEntity(message: e.message));
+    } else if (e is SentryException) {
+      final errorCode = int.parse(e.value!);
+      final errorDetail = 'Erreur Sentry stack trace: ${e.stackTrace}';
+      final errorMachanism = 'Erreur Sentry mechanism: ${e.mechanism}';
+      developer.log(error: errorCode, errorDetail);
+      developer.log(error: errorMachanism, '${e.mechanism}');
+      return left(Failure.unprocessableEntity(message: e.throwable));
     } else {
       return left(Failure.unprocessableEntity(
           message: message ?? 'Unknown error occurred'));

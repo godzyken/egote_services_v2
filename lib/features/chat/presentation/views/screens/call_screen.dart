@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
+import '../../../../../config/providers/firebase/notification_service.dart';
 import '../../../domain/models/entities/webrtc_connection/webrtc_service.dart';
 
-class CallScreen extends StatefulWidget {
+class CallScreen extends ConsumerStatefulWidget {
   final String callerId, calleeId;
   final dynamic offer;
   const CallScreen({
@@ -14,10 +16,10 @@ class CallScreen extends StatefulWidget {
   });
 
   @override
-  State<CallScreen> createState() => _CallScreenState();
+  ConsumerState<CallScreen> createState() => _CallScreenState();
 }
 
-class _CallScreenState extends State<CallScreen> {
+class _CallScreenState extends ConsumerState<CallScreen> {
   // socket instance
   final socket = SignallingService.instance.socket;
 
@@ -57,7 +59,7 @@ class _CallScreenState extends State<CallScreen> {
     }
   }
 
-  _setupPeerConnection() async {
+  Future<void> _setupPeerConnection() async {
     // create peer connection
     _rtcPeerConnection = await createPeerConnection({
       'iceServers': [
@@ -169,11 +171,37 @@ class _CallScreenState extends State<CallScreen> {
     }
   }
 
-  _leaveCall() {
-    Navigator.pop(context);
+  Future<void> _leaveCall() async {
+    final service = ref.read(notificationServiceProvider);
+    await service.notifyIfGranted(
+      title: 'Appel terminé',
+      body: 'Vous avez quitté l\'appel',
+    );
+    // send leaveCall event over signalling
+    socket!.emit("leaveCall", {
+      "callerId": widget.callerId,
+      "calleeId": widget.calleeId,
+    });
+    // close peer connection
+    _rtcPeerConnection?.close();
+
+    // close socket connection
+    socket!.disconnect();
+
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
-  _toggleMic() {
+  Future<void> _toggleMic() async {
+    final service = ref.read(notificationServiceProvider);
+
+    if (!await service.isPermissionGranted() && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Permission microphone refusée')),
+      );
+      return;
+    }
     // change status
     isAudioOn = !isAudioOn;
     // enable or disable audio track
@@ -181,9 +209,15 @@ class _CallScreenState extends State<CallScreen> {
       track.enabled = isAudioOn;
     });
     setState(() {});
+
+    // Envoi d'une notification locale (si permission accordée)
+    await service.notifyIfGranted(
+      title: 'Microphone',
+      body: isAudioOn ? 'Microphone activé' : 'Microphone désactivé',
+    );
   }
 
-  _toggleCamera() {
+  Future<void> _toggleCamera() async {
     // change status
     isVideoOn = !isVideoOn;
 
@@ -192,9 +226,16 @@ class _CallScreenState extends State<CallScreen> {
       track.enabled = isVideoOn;
     });
     setState(() {});
+
+    // Envoi d'une notification locale (si permission accordée)
+    final service = ref.read(notificationServiceProvider);
+    await service.notifyIfGranted(
+      title: 'Caméra',
+      body: isVideoOn ? 'Caméra activé' : 'Caméra désactivé',
+    );
   }
 
-  _switchCamera() {
+  Future<void> _switchCamera() async {
     // change status
     isFrontCameraSelected = !isFrontCameraSelected;
 
@@ -204,6 +245,13 @@ class _CallScreenState extends State<CallScreen> {
       track.switchCamera();
     });
     setState(() {});
+
+    // Envoi d'une notification locale (si permission accordée)
+    final service = ref.read(notificationServiceProvider);
+    await service.notifyIfGranted(
+      title: 'Caméra',
+      body: isFrontCameraSelected ? 'Caméra avant' : 'Caméra arrière',
+    );
   }
 
   @override
@@ -243,22 +291,28 @@ class _CallScreenState extends State<CallScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                    icon: Icon(isAudioOn ? Icons.mic : Icons.mic_off),
-                    onPressed: _toggleMic,
+                  _buildIconButton(
+                    isAudioOn ? Icons.mic : Icons.mic_off,
+                    _toggleMic,
+                    requiresNotificationPermission: true,
+                    iconSize: 10,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.call_end),
+                  _buildIconButton(
+                    Icons.call_end,
                     iconSize: 30,
-                    onPressed: _leaveCall,
+                    _leaveCall,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.cameraswitch),
-                    onPressed: _switchCamera,
+                  _buildIconButton(
+                    Icons.cameraswitch,
+                    _switchCamera,
+                    iconSize: 10,
+                    requiresNotificationPermission: true,
                   ),
-                  IconButton(
-                    icon: Icon(isVideoOn ? Icons.videocam : Icons.videocam_off),
-                    onPressed: _toggleCamera,
+                  _buildIconButton(
+                    isVideoOn ? Icons.videocam : Icons.videocam_off,
+                    _toggleCamera,
+                    iconSize: 10,
+                    requiresNotificationPermission: true,
                   ),
                 ],
               ),
@@ -266,6 +320,29 @@ class _CallScreenState extends State<CallScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  IconButton _buildIconButton(IconData icon, VoidCallback onPressed,
+      {bool requiresNotificationPermission = false, required int? iconSize}) {
+    return IconButton(
+      icon: Icon(icon),
+      onPressed: () async {
+        if (requiresNotificationPermission) {
+          final service = ref.read(notificationServiceProvider);
+          await service.requestPermissions();
+          final granted = await service.isPermissionGranted();
+          if (!granted && mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Permission notifications refusée')),
+            );
+            return;
+          }
+        }
+
+        onPressed();
+      },
+      iconSize: iconSize?.toDouble(),
     );
   }
 
