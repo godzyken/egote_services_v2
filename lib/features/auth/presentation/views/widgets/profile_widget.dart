@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileWidget extends ConsumerWidget {
-  const ProfileWidget({super.key, required this.imagePath, required this.onClicked,});
+  const ProfileWidget({
+    super.key,
+    required this.imagePath,
+    required this.onClicked,
+  });
 
   final String imagePath;
-  final VoidCallback onClicked;
+  final VoidCallback? onClicked;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,10 +19,7 @@ class ProfileWidget extends ConsumerWidget {
       child: Stack(
         children: [
           buildImage(),
-          Positioned(
-              bottom: 0,
-              right: 4,
-              child: buildEditIcon(color))
+          Positioned(bottom: 0, right: 4, child: buildEditIcon(color))
         ],
       ),
     );
@@ -29,7 +30,7 @@ class ProfileWidget extends ConsumerWidget {
     return ClipOval(
       child: Material(
         child: Ink.image(
-            image: image.image,
+          image: image.image,
           fit: BoxFit.cover,
           width: 128,
           height: 128,
@@ -48,12 +49,11 @@ class ProfileWidget extends ConsumerWidget {
         all: 8,
         color: color,
         child: const Icon(
-        Icons.edit,
-        color: Colors.black87,
-        size: 20,
-      ),
-    )
-  );
+          Icons.edit,
+          color: Colors.black87,
+          size: 20,
+        ),
+      ));
 
   Widget buildCircle({
     required Widget child,
@@ -67,5 +67,4 @@ class ProfileWidget extends ConsumerWidget {
           child: child,
         ),
       );
-
 }

@@ -2,6 +2,7 @@ import 'package:egote_services_v2/features/common/presentation/extensions/extens
 import 'package:egote_services_v2/features/devis/domain/providers/edit_devis_view_model_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class DevisEditScreen extends ConsumerWidget {
   final String devisId;
@@ -14,6 +15,8 @@ class DevisEditScreen extends ConsumerWidget {
     final scheme = theme.colorScheme;
     final style = theme.textTheme;
 
+    final viewModel = ref.watch(editDeviViewModelProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(context.tr!.addDevis),
@@ -24,21 +27,24 @@ class DevisEditScreen extends ConsumerWidget {
           padding: const EdgeInsets.all(16),
           color: scheme.primary,
           onPressed: () {
-            if (ref.read(editDeviViewModelProvider).isSuccess) {
-              ref.read(editDeviViewModelProvider).data;
+            if (viewModel.isSuccess) {
+              viewModel.data;
+              context.pop();
             }
           },
           child: Text(context.tr!.done.toUpperCase()),
         ),
       ),
-      body: CustomSingleChildScrollViewWidget(
-          scheme: scheme, theme: theme, style: style),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: CustomDevisForm(scheme: scheme, theme: theme, style: style),
+      ),
     );
   }
 }
 
-class CustomSingleChildScrollViewWidget extends ConsumerWidget {
-  const CustomSingleChildScrollViewWidget({
+class CustomDevisForm extends ConsumerWidget {
+  const CustomDevisForm({
     super.key,
     required this.scheme,
     required this.theme,
@@ -51,67 +57,90 @@ class CustomSingleChildScrollViewWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final produits = ref.watch(selectedProduitsProvider); // list of Produit
+    final total = produits.fold<double>(
+      0,
+      (prev, produit) => prev + (produit.price ?? 0) * (produit.quantity ?? 1),
+    );
+
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 200,
-            width: 200,
-            decoration: BoxDecoration(
-              color: scheme.primaryContainer,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Icon(
-                      Icons.photo,
-                      color: scheme.primaryContainer,
-                    ),
-                  ),
-                ),
-                Material(
-                  color: theme.cardColor.withValues(alpha: 0.5),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      context.tr!.pickImage.toUpperCase(),
-                      textAlign: TextAlign.center,
-                      style: style.bodySmall,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
+          _ImagePickerCard(scheme: scheme, style: style, theme: theme),
+          const SizedBox(height: 24),
+
           TextFormField(
-            textCapitalization: TextCapitalization.sentences,
-            decoration: InputDecoration(
-              labelText: context.tr!.title,
-            ),
+            decoration: InputDecoration(labelText: context.tr!.title),
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
+
           TextFormField(
             minLines: 5,
-            maxLines: 20,
-            textCapitalization: TextCapitalization.sentences,
-            decoration: InputDecoration(
-              labelText: context.tr!.description,
+            maxLines: 10,
+            decoration: InputDecoration(labelText: context.tr!.description),
+          ),
+          const SizedBox(height: 24),
+
+          // Dynamic product list preview
+          ...produits.map(
+            (p) => ListTile(
+              title: Text(p.name),
+              subtitle: Text("${p.quantity} × ${p.formattedPrice}"),
+              trailing: Text(p.formattedTotalPrice),
             ),
           ),
-          const SizedBox(
-            height: 24,
+          const Divider(),
+
+          // Total
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              "${context.tr!.total}: \$${total.toStringAsFixed(2)}",
+              style: style.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ImagePickerCard extends ConsumerWidget {
+  const _ImagePickerCard({
+    required this.scheme,
+    required this.style,
+    required this.theme,
+  });
+
+  final ColorScheme scheme;
+  final TextTheme style;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: scheme.primaryContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: InkWell(
+        onTap: () {
+          // Implement image picker logic here
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.photo, color: scheme.onPrimaryContainer),
+            const SizedBox(height: 8),
+            Text(
+              context.tr!.pickImage.toUpperCase(),
+              style: style.bodySmall,
+            ),
+          ],
+        ),
       ),
     );
   }

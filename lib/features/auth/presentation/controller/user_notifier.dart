@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 import 'package:egote_services_v2/features/auth/presentation/states/user/user_form_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -130,3 +132,18 @@ final userModelProvider = Provider<UserEntityModel>((ref) {
 final userFormStateNotifierProvider =
     StateNotifierProvider<UserFormStateController, UserFormState>(
         (ref) => UserFormStateController());
+
+class AvatarNotifier extends StateNotifier<File?> {
+  AvatarNotifier() : super(null);
+
+  void updateAvatar(File? avatar) {
+    state = avatar;
+  }
+
+  void resetAvatar() {
+    state = null;
+  }
+}
+
+final avatarNotifierProvider =
+    StateNotifierProvider<AvatarNotifier, File?>((ref) => AvatarNotifier());

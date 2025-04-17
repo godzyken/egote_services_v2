@@ -16,6 +16,7 @@ abstract class UserRepositoryInterface {
   Future<UserEntityModel> createUser(
     final String name,
     final String email,
+    final String avatarUrl,
     final String role,
     final String externalId,
     final String phone,
@@ -33,6 +34,7 @@ abstract class UserRepositoryInterface {
     final UserId id,
     final String name,
     final String email,
+    final String avatarUrl,
     final String role,
     final String externalId,
     final String phone,

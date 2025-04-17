@@ -65,4 +65,10 @@ abstract class Produit with _$Produit {
   String _formatCurrency(double amount) {
     return '\$${amount.toStringAsFixed(2)}';
   }
+
+  void updateQuantity(int newQuantity) {
+    if (newQuantity >= 0) {
+      quantity = newQuantity;
+    }
+  }
 }

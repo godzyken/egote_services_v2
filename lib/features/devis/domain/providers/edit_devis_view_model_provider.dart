@@ -10,6 +10,7 @@ import '../../../../config/app_shared/images/assets_images.dart';
 import '../../../../config/app_shared/images/list_local.dart';
 import '../entities/construction/mission_entity.dart';
 import '../entities/contact/contact_owner_entity.dart';
+import '../entities/products/produit_model_entity.dart';
 
 final editDeviViewModelProvider = StateNotifierProvider<
         EditDeviViewModelController, State<AsyncValue<DevisModelEntity>>>(
@@ -205,3 +206,11 @@ class EditDeviViewModelController
 
   bool get enabled => numDevis.isNotEmpty;
 }
+
+final selectedProduitsProvider = StateProvider<List<Produit>>(
+  (ref) => [],
+);
+
+final selectedTravauxProvider = StateProvider<List<TravauxEntity>>(
+  (ref) => [],
+);

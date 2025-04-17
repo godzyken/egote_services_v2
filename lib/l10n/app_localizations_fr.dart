@@ -48,6 +48,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addressDescription => 'Inclure des informations telles que les numéros de téléphone, les adresses électroniques et les adresses de livraison.';
 
   @override
+  String get addressDocking => 'Adresser a\'amarrage';
+
+  @override
   String get addressId => 'Identité de l\'adresse';
 
   @override
@@ -124,6 +127,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get available => 'Disponible';
+
+  @override
+  String get avatar => 'Avatar';
+
+  @override
+  String get avatarDelete => 'Avatar supprimer';
+
+  @override
+  String get avatarUpdate => 'Avatar mis à jour';
+
+  @override
+  String get avatarPreview => 'Aperçu de l’avatar';
 
   @override
   String get avisPage => 'Page d\'Avis';
@@ -427,6 +442,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get delete => 'Supprimer';
+
+  @override
+  String get deleteAvatar => 'Supprimer l\'avatar';
 
   @override
   String get deleteContact => 'Supprimer un contact';
@@ -1524,6 +1542,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get saveNow => 'Sauvegarder maintenant';
 
   @override
+  String get scanWithApp => 'Scanner avec l\'application';
+
+  @override
   String get screenWidth => 'Largeur d\'écran';
 
   @override
@@ -1591,6 +1612,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get showcaseListTileTrailing => 'Arrière';
+
+  @override
+  String get showSecretManually => 'montre le mot de passe manuellement';
 
   @override
   String get signInWithEmailPassword => 'Se connecter avec email et mot de passe';
@@ -1869,6 +1893,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get updateDialog => 'Actualiser la boîte de dialogue';
 
   @override
+  String get updateImage => 'mise à jour de l\'image';
+
+  @override
   String get updateOwner => 'mettre à jour du propriétaire';
 
   @override
@@ -1921,6 +1948,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get userNotFound => 'Impossible de trouver l\'utilisateur';
+
+  @override
+  String get validateMfa => 'Valider la multi-facteur d\'authentification';
 
   @override
   String get valueFive => 'cinq';

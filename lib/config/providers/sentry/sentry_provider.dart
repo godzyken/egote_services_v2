@@ -14,7 +14,8 @@ class SentryProviderObserver extends ProviderObserver {
   final _criticalProvider = <String>[
     'firebaseInitProvider',
     'userStreamProvider',
-    'supabaseInitProvider'
+    'supabaseInitProvider',
+    'datadogStreamProvider',
   ];
 
   final _timings = <String, DateTime>{};
@@ -98,7 +99,7 @@ class SentryProviderObserver extends ProviderObserver {
   }
 
   @override
-  void onProviderError(
+  void providerDidFail(
     ProviderBase provider,
     Object error,
     StackTrace stackTrace,

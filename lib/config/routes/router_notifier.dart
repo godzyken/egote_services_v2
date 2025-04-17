@@ -1,7 +1,8 @@
-import 'package:egote_services_v2/config/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../features/common/domain/failures/error_route.dart';
 
 part 'router_notifier.g.dart';
 

@@ -17,6 +17,7 @@ abstract class UserEntityModel with _$UserEntityModel {
     @UserIdConverter() required UserId id,
     required String name,
     required String email,
+    required String avatarUrl,
     required String role,
     required String externalId,
     required String phone,
@@ -42,6 +43,7 @@ abstract class UserEntityModel with _$UserEntityModel {
       id: UserId(value: int.parse(doc.id)),
       name: map['name'] ?? '',
       email: map['email'] ?? '',
+      avatarUrl: map['avatarUrl'] ?? '',
       role: map['role'] ?? '',
       externalId: map['externalId'] ?? '',
       phone: map['phone'] ?? '',
@@ -62,6 +64,7 @@ abstract class UserEntityModel with _$UserEntityModel {
   factory UserEntityModel.create(
     String name,
     String email,
+    String avatarUrl,
     String role,
     String externalId,
     String phone,
@@ -77,6 +80,7 @@ abstract class UserEntityModel with _$UserEntityModel {
         id: UserId(value: int.parse(_uuid.v4())),
         name: name,
         email: email,
+        avatarUrl: avatarUrl,
         role: role,
         externalId: externalId,
         phone: phone,
@@ -93,6 +97,7 @@ abstract class UserEntityModel with _$UserEntityModel {
         id: const UserId(value: 0),
         name: '',
         email: '',
+        avatarUrl: '',
         role: '',
         externalId: '',
         phone: '',
@@ -112,6 +117,7 @@ abstract class UserEntityModel with _$UserEntityModel {
         id: UserId(value: map['id']),
         name: map['name'],
         email: map['email'],
+        avatarUrl: map['avatarUrl'],
         role: map['role'],
         externalId: map['externalId'],
         phone: map['phone'],
@@ -150,4 +156,23 @@ abstract class UserModel with _$UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
+}
+
+extension UserEntityModelExt on UserEntityModel {
+  Map<String, dynamic> toPartialJson({
+    String? name,
+    String? email,
+    String? avatarUrl,
+    String? phone,
+    String? externalLink,
+  }) {
+    return {
+      if (name != null) 'name': name,
+      if (email != null) 'email': email,
+      if (avatarUrl != null) 'avatar_url': avatarUrl,
+      if (phone != null) 'phone': phone,
+      if (externalLink != null) 'external_link': externalLink,
+      'updated_at': DateTime.now().toIso8601String(),
+    };
+  }
 }

@@ -48,6 +48,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addressDescription => 'Include information like phone numbers, email, and shipping addresses';
 
   @override
+  String get addressDocking => 'Address Docking';
+
+  @override
   String get addressId => 'Address id';
 
   @override
@@ -124,6 +127,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get available => 'Available';
+
+  @override
+  String get avatar => 'Avatar Delete';
+
+  @override
+  String get avatarDelete => 'Avatar Delete';
+
+  @override
+  String get avatarUpdate => 'Avatar Update';
+
+  @override
+  String get avatarPreview => 'Avatar preview';
 
   @override
   String get avisPage => 'Opinion Page';
@@ -427,6 +442,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delete => 'delete';
+
+  @override
+  String get deleteAvatar => 'Delete Avatar';
 
   @override
   String get deleteContact => 'Delete contact';
@@ -1524,6 +1542,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveNow => 'Save now';
 
   @override
+  String get scanWithApp => 'Scan with your app';
+
+  @override
   String get screenWidth => 'Screen width';
 
   @override
@@ -1591,6 +1612,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showcaseListTileTrailing => 'Trailing';
+
+  @override
+  String get showSecretManually => 'Show Secret Manually';
 
   @override
   String get signInWithEmailPassword => 'Sign In With Email and Password';
@@ -1869,6 +1893,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateDialog => 'Update Dialog';
 
   @override
+  String get updateImage => 'Update Image';
+
+  @override
   String get updateOwner => 'update owner';
 
   @override
@@ -1921,6 +1948,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get userNotFound => 'Couldn\'t find user';
+
+  @override
+  String get validateMfa => 'Validate MFA';
 
   @override
   String get valueFive => 'five';

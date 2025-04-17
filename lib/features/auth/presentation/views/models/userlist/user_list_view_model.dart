@@ -44,6 +44,7 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
     var name = 'sasuke';
     var email = 'sasukeUtchiwa@yahoo.com';
     var role = 'renegade';
+    var avatarUrl = 'sasukeUtchiwa';
     var externalId = 'sasukeUtchiwa';
     var phone = '0987654321';
     var externalLink = 'Linkedin@sasukeUtchiwa';
@@ -57,6 +58,7 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
     await _createUserCase.execute(
         name,
         email,
+        avatarUrl,
         role,
         externalId,
         phone,
@@ -72,6 +74,7 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
   createUser(
     final String name,
     final String email,
+    final String avatarUrl,
     final String role,
     final String? externalId,
     final String? phone,
@@ -91,6 +94,7 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
           name,
           email,
           role,
+          avatarUrl,
           externalId!,
           phone!,
           externalLink!,
@@ -119,6 +123,7 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
         newUser.id,
         newUser.name,
         newUser.email,
+        newUser.avatarUrl,
         newUser.role,
         newUser.externalId,
         newUser.phone,

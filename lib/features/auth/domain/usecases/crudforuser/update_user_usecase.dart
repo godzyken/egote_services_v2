@@ -5,6 +5,7 @@ abstract class UpdateUserCase {
     final UserId id,
     final String name,
     final String email,
+    final String avatarUrl,
     final String role,
     final String externalId,
     final String phone,

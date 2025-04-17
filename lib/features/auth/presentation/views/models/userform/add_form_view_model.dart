@@ -8,6 +8,8 @@ class AddFormViewModel {
   var _name = '';
 
   var _email = '';
+
+  var _avatarUrl = '';
   var _role = '';
 
   var _externalId = '';
@@ -35,6 +37,7 @@ class AddFormViewModel {
       _id = userEntityModel.id;
       _name = userEntityModel.name;
       _email = userEntityModel.email;
+      _avatarUrl = userEntityModel.avatarUrl;
       _externalId = userEntityModel.externalId;
       _phone = userEntityModel.phone;
       _externalLink = userEntityModel.externalLink;
@@ -49,6 +52,7 @@ class AddFormViewModel {
       _userListViewModel.createUser(
           _name,
           _email,
+          _avatarUrl,
           _role,
           _externalId,
           _phone,
@@ -63,6 +67,7 @@ class AddFormViewModel {
       final newUser = UserEntityModel.create(
           _name,
           _email,
+          _avatarUrl,
           _role,
           _externalId,
           _phone,

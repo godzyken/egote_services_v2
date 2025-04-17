@@ -13,6 +13,7 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
   Future<UserEntityModel> createUser(
     final String name,
     final String email,
+    final String avatarUrl,
     final String role,
     final String externalId,
     final String phone,
@@ -28,6 +29,7 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
         await database.insertUser(UserMapper.transformToNewEntityMap(
       name,
       email,
+      avatarUrl,
       role,
       externalId,
       phone,
@@ -65,6 +67,7 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
       final UserId id,
       final String name,
       final String email,
+      final String avatarUrl,
       final String role,
       final String externalId,
       final String phone,
@@ -79,6 +82,7 @@ class AuthRepositoryImpl implements UserRepositoryInterface {
       id: id,
       name: name,
       email: email,
+      avatarUrl: avatarUrl,
       role: role,
       externalId: externalId,
       phone: phone,

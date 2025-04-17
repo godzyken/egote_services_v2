@@ -4,6 +4,7 @@ abstract class CreateUserCase {
   Future<UserEntityModel> execute(
     final String name,
     final String email,
+    final String avatarUrl,
     final String role,
     final String externalId,
     final String phone,

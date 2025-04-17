@@ -41,6 +41,13 @@ sealed class DevisModelEntity with _$DevisModelEntity {
   factory DevisModelEntity.empty() = _DevisModelEntityEmpty;
   factory DevisModelEntity.fromJson(Map<String, dynamic> json) =>
       _$DevisModelEntityFromJson(json);
+
+  double get amountHt => produits.fold(
+        0,
+        (sum, p) => sum + ((p.price ?? 0) * (p.quantity ?? 1)),
+      );
+
+  double get amountTtc => amountHt * (1 + (vatRates / 100));
 }
 
 /// La durée de validité du devis fait partie des mentions obligatoires,

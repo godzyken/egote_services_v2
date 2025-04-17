@@ -94,6 +94,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           ref.read(userListViewModelStateNotifierProvider.notifier).createUser(
               data.userEntityModel.name,
               data.userEntityModel.email,
+              data.userEntityModel.avatarUrl,
               data.userEntityModel.role,
               data.userEntityModel.externalId,
               data.userEntityModel.phone,

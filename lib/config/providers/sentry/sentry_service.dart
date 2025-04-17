@@ -234,6 +234,8 @@ class SentryService {
 
   static void Function(SentryFlutterOptions) get _sentryOptions =>
       (SentryFlutterOptions options) {
+        options.release = 'egote-services@1.0.0+1';
+        options.dist = '1';
         options.dsn =
             'https://0ee7fbe213ed4eeb9d8e2225896c1601@o573314.ingest.us.sentry.io/4505427558400000';
         options.tracesSampleRate = 1.0;
@@ -299,11 +301,10 @@ class SentryService {
         options.enableAutoSessionTracking = true;
         options.enableNativeCrashHandling = true;
         options.maxBreadcrumbs = 100;
-        options.environment = 'development';
         options.sendDefaultPii = true;
         options.experimental.replay.sessionSampleRate = 1.0;
         options.experimental.replay.onErrorSampleRate = 1.0;
-        options.experimental.replay.quality;
+        options.experimental.replay.quality = SentryReplayQuality.high;
       };
 
   static Future<void> testSendMessage() async {

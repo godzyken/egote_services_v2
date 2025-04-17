@@ -12,7 +12,6 @@ import 'package:egote_services_v2/config/providers/sentry/sentry_service.dart';
 import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
@@ -41,17 +40,21 @@ Future<Refreshable<AppStateNotifier>> initializeFirebase() async {
   return appStateProvider.notifier;
 }
 
-Future<void> initializeSentry() async {
-  await SentryService.initialize();
-}
-
 Future<void> sentryInitBinding() async {
   await SentryService.initBinding();
 }
 
+Future<void> initializeSentry() async {
+  await SentryService.initialize();
+}
+
+Future<void> sentryConfigureFlutterErrorHandling() async {
+  await SentryService.configureFlutterErrorHandling();
+}
+
 Future<void> initializeWorkManager() async {
   try {
-    await Workmanager().initialize(callbackDispatcher);
+    await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
 
     await Workmanager().registerOneOffTask(
       'id_unique',
@@ -87,7 +90,9 @@ Future<void> initializeDatadog() async {
 Future<void> flutterErrorFlow() async {
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
-    if (kReleaseMode) exit(1);
+    if (kReleaseMode) {
+      Sentry.captureException(details.exception, stackTrace: details.stack);
+    }
   };
 
   FlutterError.demangleStackTrace = (StackTrace stack) {
@@ -323,18 +328,16 @@ AndroidResource get androidResource =>
     AndroidResource(name: 'ic_launcher_foreground', defType: 'drawable');
 
 Future<ProviderContainer> bootstrap() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Configure global Flutter error -> Sentry
-  await SentryService.configureFlutterErrorHandling();
+  SentryWidgetsFlutterBinding.ensureInitialized();
 
   // Init services de fond (Sentry, Firebase, Supabase, WorkManager...)
   await Future.wait([
     initializeFirebase(),
     initializeSupabase(),
-    initializeSentry(),
-    sentryInitBinding(),
     initializeWorkManager(),
+    sentryInitBinding(),
+    initializeSentry(),
+    sentryConfigureFlutterErrorHandling(),
     flutterErrorFlow(),
   ], eagerError: true);
 

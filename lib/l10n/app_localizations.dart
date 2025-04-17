@@ -175,6 +175,12 @@ abstract class AppLocalizations {
   /// **'Include information like phone numbers, email, and shipping addresses'**
   String get addressDescription;
 
+  /// No description provided for @addressDocking.
+  ///
+  /// In en, this message translates to:
+  /// **'Address Docking'**
+  String get addressDocking;
+
   /// No description provided for @addressId.
   ///
   /// In en, this message translates to:
@@ -330,6 +336,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Available'**
   String get available;
+
+  /// No description provided for @avatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar Delete'**
+  String get avatar;
+
+  /// No description provided for @avatarDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar Delete'**
+  String get avatarDelete;
+
+  /// No description provided for @avatarUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar Update'**
+  String get avatarUpdate;
+
+  /// No description provided for @avatarPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar preview'**
+  String get avatarPreview;
 
   /// No description provided for @avisPage.
   ///
@@ -936,6 +966,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'delete'**
   String get delete;
+
+  /// No description provided for @deleteAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Avatar'**
+  String get deleteAvatar;
 
   /// No description provided for @deleteContact.
   ///
@@ -3127,6 +3163,12 @@ abstract class AppLocalizations {
   /// **'Save now'**
   String get saveNow;
 
+  /// No description provided for @scanWithApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan with your app'**
+  String get scanWithApp;
+
   /// No description provided for @screenWidth.
   ///
   /// In en, this message translates to:
@@ -3264,6 +3306,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trailing'**
   String get showcaseListTileTrailing;
+
+  /// No description provided for @showSecretManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Secret Manually'**
+  String get showSecretManually;
 
   /// No description provided for @signInWithEmailPassword.
   ///
@@ -3817,6 +3865,12 @@ abstract class AppLocalizations {
   /// **'Update Dialog'**
   String get updateDialog;
 
+  /// No description provided for @updateImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Image'**
+  String get updateImage;
+
   /// No description provided for @updateOwner.
   ///
   /// In en, this message translates to:
@@ -3924,6 +3978,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn\'t find user'**
   String get userNotFound;
+
+  /// No description provided for @validateMfa.
+  ///
+  /// In en, this message translates to:
+  /// **'Validate MFA'**
+  String get validateMfa;
 
   /// No description provided for @valueFive.
   ///

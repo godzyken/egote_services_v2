@@ -48,6 +48,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get addressDescription => 'Incluya información como números de teléfono, correo electrónico y direcciones de envío';
 
   @override
+  String get addressDocking => 'Dirección Docking';
+
+  @override
   String get addressId => 'Id de dirección';
 
   @override
@@ -124,6 +127,18 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get available => 'Disponible';
+
+  @override
+  String get avatar => 'Avatar';
+
+  @override
+  String get avatarDelete => 'Avatar Borrado';
+
+  @override
+  String get avatarUpdate => 'Avatar Actualizado';
+
+  @override
+  String get avatarPreview => 'vista previa del avatar';
 
   @override
   String get avisPage => 'Avis Página';
@@ -427,6 +442,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get delete => 'suprima';
+
+  @override
+  String get deleteAvatar => 'suprima el avatar';
 
   @override
   String get deleteContact => 'Borrar el contacto';
@@ -1524,6 +1542,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get saveNow => 'Salvar ahora';
 
   @override
+  String get scanWithApp => 'Escanear con la aplicación';
+
+  @override
   String get screenWidth => 'Ancho de pantalla';
 
   @override
@@ -1591,6 +1612,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get showcaseListTileTrailing => 'Trasero';
+
+  @override
+  String get showSecretManually => 'Mostrar el secreto manualmente';
 
   @override
   String get signInWithEmailPassword => 'Iniciar sesión con correo electrónico y contraseña';
@@ -1869,6 +1893,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get updateDialog => 'Actualizar diálogo';
 
   @override
+  String get updateImage => 'Actualizar imagen';
+
+  @override
   String get updateOwner => 'actualizar propietario';
 
   @override
@@ -1921,6 +1948,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get userNotFound => 'No se encuentra el usuario';
+
+  @override
+  String get validateMfa => 'Validar autenticación multifactor';
 
   @override
   String get valueFive => 'cinco';

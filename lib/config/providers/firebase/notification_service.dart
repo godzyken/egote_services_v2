@@ -125,6 +125,7 @@ class NotificationService {
       0, // ID
       title,
       body,
+      payload: 'default_payload',
       notificationDetails,
     );
   }

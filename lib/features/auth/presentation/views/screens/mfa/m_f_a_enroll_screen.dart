@@ -1,7 +1,6 @@
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/screens/mfa/verification_screen.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
-import 'package:egote_services_v2/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +20,7 @@ class MFAEnrollScreen extends ConsumerStatefulWidget {
 }
 
 class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
+  final codeController = TextEditingController();
   @override
   Widget build(BuildContext _) {
     final enrollFuture = ref.read(supabaseClientProvider).auth.mfa.enroll();
@@ -50,8 +50,18 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
             children: [
               Text(context.tr!.openViaQr),
               const SizedBox(height: 16),
-              Assets.lottie.models.frame
-                  .svg(package: qrCodeUrl, height: 150, width: 150),
+              // Assets.lottie.models.frame
+              //     .svg(package: qrCodeUrl, height: 150, width: 150),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Image.network(qrCodeUrl, height: 150),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(context.tr!.scanWithApp),
+                ],
+              ),
               const SizedBox(height: 16),
               Row(
                 children: [
@@ -61,63 +71,67 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   )),
-                  IconButton(
-                      onPressed: () {
-                        Clipboard.setData(ClipboardData(text: secret));
-                        context.showAlert(context.tr!.copiedClipBoard);
-                      },
-                      icon: const Icon(Icons.copy)),
+                  ExpansionTile(
+                    title: Text(context.tr!.showSecretManually),
+                    children: [
+                      SelectableText(secret,
+                          style: const TextStyle(
+                              fontSize: 16, fontFamily: 'monospace')),
+                      IconButton(
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: secret));
+                            context.showAlert(context.tr!.copiedClipBoard);
+                          },
+                          icon: const Icon(Icons.copy)),
+                    ],
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
               Text(context.tr!.enterCodeSent),
               const SizedBox(height: 16),
-              TextInputField(
-                  hintText: context.tr!.initCode,
-                  onChanged: (code) async {
-                    if (code.length != 6) return;
+              ElevatedButton.icon(
+                icon: const Icon(Icons.lock_open),
+                label: Text(context.tr!.validateMfa),
+                onPressed: () async {
+                  final code = codeController.text.trim();
+                  if (code.length != 6) {
+                    context.showAlert("Code invalide");
+                    return;
+                  }
 
-                    try {
-                      final challenge = await ref
-                          .read(supabaseClientProvider)
-                          .auth
-                          .mfa
-                          .challenge(factorId: factorId);
+                  try {
+                    final challenge = await ref
+                        .read(supabaseClientProvider)
+                        .auth
+                        .mfa
+                        .challenge(factorId: factorId);
 
-                      final client = await ref
-                          .read(supabaseClientProvider)
-                          .auth
-                          .mfa
-                          .verify(
-                              factorId: factorId,
-                              challengeId: challenge.id,
-                              code: code);
+                    final client = await ref
+                        .read(supabaseClientProvider)
+                        .auth
+                        .mfa
+                        .verify(
+                            factorId: factorId,
+                            challengeId: challenge.id,
+                            code: code);
 
-                      await ref
-                          .read(supabaseClientProvider)
-                          .auth
-                          .refreshSession();
+                    await ref
+                        .read(supabaseClientProvider)
+                        .auth
+                        .refreshSession();
 
-                      if (mounted) {
-                        setState(() => context.goNamed('user_home',
-                            pathParameters: {'pid': client.user.id}));
-                      }
-                    } on AuthException catch (error) {
-                      if (mounted) {
-                        setState(() {
-                          context.showAlert(error.message);
-                        });
-                      }
-                    } catch (error) {
-                      if (mounted) {
-                        setState(() {
-                          context.showAlert(error.toString());
-                        });
-                      }
+                    if (context.mounted) {
+                      context.goNamed('user_home',
+                          pathParameters: {'pid': client.user.id});
                     }
-                  },
-                  inputType: TextInputType.number,
-                  label: context.tr!.enterCode),
+                  } on AuthException catch (error) {
+                    if (context.mounted) context.showAlert(error.message);
+                  } catch (error) {
+                    if (context.mounted) context.showAlert(error.toString());
+                  }
+                },
+              ),
             ],
           );
         },
