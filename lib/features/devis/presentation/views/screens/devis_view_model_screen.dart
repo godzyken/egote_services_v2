@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:egote_services_v2/features/devis/domain/entities/value_objects/sku_value.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -14,7 +15,7 @@ Future<Uint8List> generateDevisPdf(
   final products = <Produit>[
     Produit(
         id: '61975',
-        sku: '100561265',
+        sku: SKUValue('100561265'),
         name: 'Gravity Aluminium Trace',
         manufacturer: 'Porcelanosa',
         imageUrl:
@@ -22,7 +23,7 @@ Future<Uint8List> generateDevisPdf(
         url: '/porcelanosa-gravity-aluminium-trace-1576811'),
     Produit(
         id: '47333',
-        sku: '101472081',
+        sku: SKUValue('101472081'),
         name: 'Affreschi Botticelli',
         manufacturer: 'Ceramiche Mariner',
         imageUrl:
@@ -30,7 +31,7 @@ Future<Uint8List> generateDevisPdf(
         url: '/ceramiche-mariner-affreschi-botticelli-2022081'),
     Produit(
         id: '23116',
-        sku: '101369355',
+        sku: SKUValue('101369355'),
         name: 'Dust Dune',
         manufacturer: 'Elios Ceramica',
         imageUrl:
@@ -38,7 +39,7 @@ Future<Uint8List> generateDevisPdf(
         url: '/elios-ceramica-dust-dune-1919355'),
     Produit(
         id: '71993',
-        sku: '101737964',
+        sku: SKUValue('101737964'),
         name: 'Camo',
         manufacturer: 'Palet.',
         imageUrl:
@@ -46,7 +47,7 @@ Future<Uint8List> generateDevisPdf(
         url: '/palet-camo-2287964'),
     Produit(
         id: '9623',
-        sku: '101301433',
+        sku: SKUValue('101301433'),
         name: 'Microcosmi Verde Alpi',
         manufacturer: 'Ceramica Magica',
         imageUrl:
@@ -54,7 +55,7 @@ Future<Uint8List> generateDevisPdf(
         url: '/ceramica-magica-microcosmi-verde-alpi-1851433'),
     Produit(
         id: '48829',
-        sku: '101473154',
+        sku: SKUValue('101301433'),
         name: 'Hex Pattern 1',
         manufacturer: 'ONIX',
         imageUrl:

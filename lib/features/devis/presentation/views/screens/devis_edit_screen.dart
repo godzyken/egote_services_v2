@@ -60,7 +60,8 @@ class CustomDevisForm extends ConsumerWidget {
     final produits = ref.watch(selectedProduitsProvider); // list of Produit
     final total = produits.fold<double>(
       0,
-      (prev, produit) => prev + (produit.price ?? 0) * (produit.quantity ?? 1),
+      (prev, produit) =>
+          prev + (produit.price.value ?? 0) * (produit.quantity.quantity ?? 1),
     );
 
     return SingleChildScrollView(

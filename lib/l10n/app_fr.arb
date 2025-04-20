@@ -614,6 +614,7 @@
   "tooltipShowcaseText3": "Texte avec info-bulle à trois rangs",
   "tooltipStandard": "Standard",
   "tooltipStandardDisabled": "Standard (désactivé)",
+  "total": "Total",
   "uiAutomationEnable": "Activer l'automatisation de l'IU",
   "uiAutomationTitle": "Automatisation de l'interface utilisateur",
   "ukctbTooltipMessP": "Utilisez la couleur primaire du thème de la lumière comme couleur clé pour initier votre ColorScheme.",

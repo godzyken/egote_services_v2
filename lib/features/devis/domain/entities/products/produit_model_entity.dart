@@ -1,49 +1,43 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../value_objects/value_objects_extensions.dart';
+
 part 'produit_model_entity.freezed.dart';
 part 'produit_model_entity.g.dart';
 
 @freezed
-abstract class Produit with _$Produit {
+class Produit with _$Produit {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory Produit({
     required String id,
-    required String sku,
+    @SKUValueConverter() required SKUValue sku,
     required String name,
     required String manufacturer,
     required String imageUrl,
     required String url,
+    @PriceValueConverter() @Default(PriceValue.zero) PriceValue price,
+    @QuantityValueConverter()
+    @Default(QuantityValue.zero)
+    QuantityValue quantity,
   }) = _Produit;
 
   const Produit._();
 
-  factory Produit.empty() => const Produit(
-        id: '',
-        sku: '',
-        name: '',
-        manufacturer: '',
-        imageUrl: '',
-        url: '',
-      );
+  /// Total HT du produit (prix unitaire × quantité)
+  double get totalPrice =>
+      (price.value * quantity.quantity).clamp(0.0, double.infinity);
 
-  double? get price => 0.0;
-  int? get quantity => 1;
-
-  factory Produit.fromJson(Map<String, dynamic> json) =>
-      _$ProduitFromJson(json);
-
-  double get totalPrice => price! * quantity!;
-
-  String get formattedPrice => _formatCurrency(price!);
-
+  /// Formaté en string (USD par défaut ici)
+  String get formattedPrice => _formatCurrency(price.value);
   String get formattedTotalPrice => _formatCurrency(totalPrice);
 
+  /// Retourne une des valeurs du produit selon un index donné
   String getIndex(int index) {
     switch (index) {
       case 0:
         return id;
       case 1:
-        return sku;
+        return sku.value;
       case 2:
         return name;
       case 3:
@@ -55,20 +49,32 @@ abstract class Produit with _$Produit {
       case 6:
         return formattedPrice;
       case 7:
-        return quantity.toString();
+        return quantity.quantity.toString();
       case 8:
         return formattedTotalPrice;
+      default:
+        return '';
     }
-    return '';
   }
 
   String _formatCurrency(double amount) {
     return '\$${amount.toStringAsFixed(2)}';
   }
 
-  void updateQuantity(int newQuantity) {
-    if (newQuantity >= 0) {
-      quantity = newQuantity;
-    }
+  /// Renvoie une copie du produit avec une nouvelle quantité
+  Produit updateQuantity(int newQuantity) {
+    return copyWith(
+        quantity: QuantityValue(newQuantity.clamp(0, 100))); // Ex: borné
   }
+
+  Produit applyDiscount(double discount) {
+    return copyWith(price: PriceValue(price.value * (1 - discount)));
+  }
+
+  Produit withSku(String newSku) {
+    return copyWith(sku: SKUValue(newSku));
+  }
+
+  factory Produit.fromJson(Map<String, dynamic> json) =>
+      _$ProduitFromJson(json);
 }

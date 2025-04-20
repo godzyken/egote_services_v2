@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../domain/entities/construction/travaux_entity.dart';
-import '../../../../domain/entities/construction/travaux_entity_converter.dart';
+import '../../../../domain/entities/value_objects/converter/extention_valueof_converters.dart';
 
 part 'travaux_entity_states.freezed.dart';
 part 'travaux_entity_states.g.dart';

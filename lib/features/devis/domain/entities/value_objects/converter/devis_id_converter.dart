@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'devi_id.dart';
+import '../../devis_model/devi_id.dart';
 
 class DevisIdConverter implements JsonConverter<DevisId, String> {
   const DevisIdConverter();

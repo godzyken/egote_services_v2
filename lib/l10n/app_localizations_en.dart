@@ -1854,6 +1854,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tooltipStandardDisabled => 'Standard (disabled)';
 
   @override
+  String get total => 'Total';
+
+  @override
   String get uiAutomationEnable => 'Enable UI Automation';
 
   @override

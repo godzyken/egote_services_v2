@@ -614,6 +614,7 @@
   "tooltipShowcaseText3": "Texto con información sobre herramientas en tres filas",
   "tooltipStandard": "Estándar",
   "tooltipStandardDisabled": "Estándar (desactivado)",
+  "total": "Total",
   "uiAutomationEnable": "Activar la automatización de la interfaz de usuario",
   "uiAutomationTitle": "Automatización de la interfaz de usuario",
   "ukctbTooltipMessP": "Utilice el color primario del tema claro como color clave para sembrar su esquema de color.",

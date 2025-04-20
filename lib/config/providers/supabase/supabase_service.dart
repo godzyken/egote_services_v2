@@ -46,6 +46,22 @@ class SupabaseService {
       developer.log('Data from Supabase: $data');
     }
   }
+
+  Future<void> syncUserWithSupabase(Ref ref, String uid) async {
+    final db = ref.watch(supabaseProvider).client;
+
+    final existing =
+        await db.from('auth_users').select().eq('uid', uid).maybeSingle();
+
+    if (existing == null) {
+      await db.from('auth_users').insert({
+        'uid': uid,
+        'email': 'email',
+        'role': 'user',
+        'created_at': DateTime.now().toIso8601String(),
+      });
+    }
+  }
 }
 
 @freezed

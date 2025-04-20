@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../config/providers/connectivity/dio_providers.dart';
 import '../../../../config/providers/localizations/localizations_provider.dart';
 import '../entities/products/produit_model_entity.dart';
+import 'devis_service.dart';
 
 part 'search_produit_service.g.dart';
 
@@ -83,7 +84,13 @@ class SearchProduitService extends _$SearchProduitService {
 
       if (response.statusCode == 200) {
         developer.log('Resultat de la requetes : ${response.data.toString()}');
-        return response.data ?? [];
+        final produits = response.data ?? [];
+        for (final produit in produits) {
+          // 💾 Log l'action de consultation
+          await ProduitLoggerService()
+              .logTransaction(produit: produit, action: 'fetch_produit');
+        }
+        return produits;
       } else {
         throw Exception('Failed to fetch produits filters');
       }
@@ -97,7 +104,13 @@ class SearchProduitService extends _$SearchProduitService {
     try {
       final response = await _dio.get('/produit/$id');
       if (response.statusCode == 200) {
-        return Produit.fromJson(response.data);
+        final produit = Produit.fromJson(response.data);
+
+        // 💾 Log l'action de consultation
+        await ProduitLoggerService()
+            .logTransaction(produit: produit, action: 'fetch_produit');
+
+        return produit;
       } else {
         throw Exception('Failed to fetch produit id');
       }

@@ -49,7 +49,7 @@ class EditDeviViewModelController
                   client: client,
                   pro: pro,
                   travauxEntity: travauxEntity,
-                  produits: produits,
+                  produitsDevis: produits,
                   quantity: quantity,
                   unitPrice: unitPrice,
                   vatRates: vatRates,

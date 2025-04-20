@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:egote_services_v2/features/devis/domain/entities/construction/mission_entity_converter.dart';
-import 'package:egote_services_v2/features/devis/domain/entities/construction/travau_id_converter.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/value_objects/converter/mission_entity_converter.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/value_objects/converter/travau_id_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'mission_entity.dart';

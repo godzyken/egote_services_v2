@@ -1,4 +1,4 @@
-import 'package:egote_services_v2/features/devis/domain/entities/construction/mission_entity_converter.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/value_objects/converter/mission_entity_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../domain/entities/construction/mission_entity.dart';

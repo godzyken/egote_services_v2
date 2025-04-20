@@ -614,6 +614,7 @@
   "tooltipShowcaseText3": "Text with three row tooltip",
   "tooltipStandard": "Standard",
   "tooltipStandardDisabled": "Standard (disabled)",
+  "total": "Total",
   "uiAutomationEnable": "Enable UI Automation",
   "uiAutomationTitle": "UI Automation",
   "ukctbTooltipMessP": "Use light theme Primary color\\nas key color to seed your ColorScheme",

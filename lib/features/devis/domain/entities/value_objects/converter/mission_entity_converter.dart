@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'mission_entity.dart';
+import '../../construction/mission_entity.dart';
 
 class MissionEntityConverter
     implements JsonConverter<MissionEntity, Map<String, dynamic>> {

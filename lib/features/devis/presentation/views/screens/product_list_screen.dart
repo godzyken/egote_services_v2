@@ -65,7 +65,7 @@ class ProduitFiche extends ConsumerWidget {
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        child: ProductEditScreen(produitId: produit.sku),
+        child: ProductEditScreen(produitId: produit.sku.value),
       ),
     );
   }
@@ -86,7 +86,7 @@ class ProduitFiche extends ConsumerWidget {
                     onPressed: () {
                       ref
                           .read(produitNotifierProvider.notifier)
-                          .deleteProduit(produit.sku);
+                          .deleteProduit(produit.sku.value);
                       Navigator.pop(context);
                     },
                     child: const Text('Supprimer'),

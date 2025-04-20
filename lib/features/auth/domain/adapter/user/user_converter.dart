@@ -1,4 +1,4 @@
-/*import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -33,4 +33,4 @@ class UserConverter implements JsonConverter<AuthUser, Map<String, dynamic>> {
         role: map['role'] ?? '',
         updatedAt: map['updatedAt'].toDate());
   }
-}*/
+}
