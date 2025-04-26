@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:egote_services_v2/config/providers/sentry/sentry_service.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/auth/application/controller/user_controller.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
@@ -12,6 +11,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa_user_exception;
 
 import '../../../../../config/providers/firebase/firebase_providers.dart';
+import '../../../../../config/providers/sentry/sentry_provider.dart';
 import '../../controller/user_controller_state.dart';
 import '../widgets/avatar_uploader.dart';
 import 'auth_screens.dart';
@@ -50,10 +50,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   }
 
   Future<void> _loadProfile() async {
-    await SentryService.traceTask(
+    final sentryService = ref.read(sentryServiceProvider);
+    await sentryService.traceTask(
         name: 'load_user_profile',
         task: (ISentrySpan span) async {
-          SentryService.addBreadcrumb(
+          sentryService.addBreadcrumb(
               message: 'Chargement du profil utilisateur', category: 'api');
 
           span.setTag('endpoint', '/users/me');

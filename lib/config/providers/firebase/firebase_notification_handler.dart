@@ -7,7 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../features/chat/application/services/notification_utils.dart';
-import '../../providers.dart';
+import '../customer/shared_prefs_provider.dart';
 
 class FirebaseNotificationHandler {
   final Ref ref;
@@ -62,8 +62,16 @@ class FirebaseNotificationHandler {
 final firebaseNotificationHandlerProvider =
     Provider<FirebaseNotificationHandler>((ref) {
   final plugin = FlutterLocalNotificationsPlugin();
-  final sharedPrefs = ref.watch(sharedPrefsProvider);
-  final utils = NotificationUtils(plugin, sharedPrefs);
+  final mockPrefs = ref.watch(sharedPrefsProvider).maybeWhen(
+        data: (prefs) => prefs,
+        orElse: () => null,
+      );
+
+  if (mockPrefs == null) {
+    throw Exception('SharedPreferences not initialized');
+  }
+
+  final utils = NotificationUtils(plugin, mockPrefs);
   return FirebaseNotificationHandler(
     ref: ref,
     notificationUtils: utils,

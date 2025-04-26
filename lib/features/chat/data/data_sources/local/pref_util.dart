@@ -152,4 +152,34 @@ class SharedPrefs {
   String? getSelectedDialogId() {
     return prefs.getString(prefSelectedDialogId);
   }
+
+  saveChatId(String chatId) {}
+  String? getChatId() {}
+
+  saveChatName(String chatName) {}
+  String? getChatName() {}
+
+  saveChatAvatar(String chatAvatar) {}
+  String? getChatAvatar() {}
+
+  saveChatType(String chatType) {}
+  String? getChatType() {}
+
+  saveChatLastMessage(String chatLastMessage) {}
+  String? getChatLastMessage() {}
+
+  saveChatLastMessageDate(String chatLastMessageDate) {}
+  String? getChatLastMessageDate() {}
+
+  saveChatUnreadMessages(int chatUnreadMessages) {}
+  int? getChatUnreadMessages() {}
+
+  saveChatUnreadMessagesCount(int chatUnreadMessagesCount) {}
+  int? getChatUnreadMessagesCount() {}
+
+  saveSelectedTheme(String selectedTheme) {}
+  String? getSelectedTheme() {}
+
+  saveSelectedLanguage(String selectedLanguage) {}
+  String? getSelectedLanguage() {}
 }

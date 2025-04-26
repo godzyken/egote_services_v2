@@ -17,15 +17,17 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 
 class MockCalculator extends Mock implements DevisCalculatorService {
-  DevisModelEntity ajouterProduitEtRecalculer({
+  // Generer par MockTail
+  /*DevisModelEntity ajouterProduitEtRecalculer({
     required DevisModelEntity devis,
     required ProduitDevis produitDevis,
   }) =>
-      devis;
+      devis;*/
 }
 
 class MockCheckoutService extends Mock implements CheckoutService {
-  Future<DevisModelEntity> update(String sku) async {
+  // Generer par MockTail
+  /*Future<DevisModelEntity> update(String sku) async {
     return DevisModelEntity.edit(
       id: DevisId(value: 'mock'),
       createdAt: DateTime.now(),
@@ -41,14 +43,57 @@ class MockCheckoutService extends Mock implements CheckoutService {
       approval: false,
       validity: DateTime.now().add(Duration(days: 30)),
     );
-  }
+  }*/
 }
 
 class MockLogger extends Mock implements TransactionLoggerService {
-  Future<void> logTransactionToSupabase(
+  // Generer par MockTail
+/*  Future<void> logTransactionToSupabase(
       Produit produit, String action, String ts) async {}
   Future<void> logTransactionToFile(
-      Produit produit, String action, String ts) async {}
+      Produit produit, String action, String ts) async {}*/
+}
+
+void setupMocktailFallbacks() {
+  registerFallbackValue(DevisModelEntity.edit(
+      id: DevisId(value: 'fallback'),
+      createdAt: DateTime.now(),
+      validity: DateTime.now().add(Duration(days: 30)),
+      client: ContactOwnerEntity.empty(),
+      pro: ContactOwnerEntity.empty(),
+      travauxEntity: [],
+      produitsDevis: [],
+      quantity: 0,
+      vatRates: 20,
+      amountHt: 0.0,
+      amountTtc: 0.0,
+      approval: false));
+
+  registerFallbackValue(ProduitDevis(
+    produit: Produit(
+      id: '1',
+      sku: SKUValue('sku-001'),
+      name: 'Produit Test',
+      quantity: QuantityValue(2),
+      price: PriceValue(50.0),
+      manufacturer: 'Polo',
+      imageUrl: '',
+      url: '',
+    ),
+    quantity: QuantityValue(2),
+    remise: 0.0,
+  ));
+
+  registerFallbackValue(Produit(
+    id: '1',
+    sku: SKUValue('sku-001'),
+    name: 'Produit Test',
+    quantity: QuantityValue(2),
+    price: PriceValue(50.0),
+    manufacturer: 'Polo',
+    imageUrl: '',
+    url: '',
+  ));
 }
 
 void main() {
@@ -56,6 +101,8 @@ void main() {
   late DevisServiceNotifier notifier;
   late ProduitDevis sampleProduitDevis;
   late Produit sampleProduit;
+
+  setUpAll(setupMocktailFallbacks);
 
   setUp(() {
     final calculator = MockCalculator();
@@ -360,9 +407,9 @@ void main() {
     final d1 =
         ProduitDevis(produit: p1, quantity: QuantityValue(1), remise: 0.0);
     final d2 =
-        ProduitDevis(produit: p2, quantity: QuantityValue(2), remise: 0.0);
+        ProduitDevis(produit: p2, quantity: QuantityValue(2), remise: 10.0);
     final d3 =
-        ProduitDevis(produit: p3, quantity: QuantityValue(2), remise: 0.0);
+        ProduitDevis(produit: p3, quantity: QuantityValue(2), remise: 50.0);
 
     final initial = notifier.devis!.maybeMap(
       edit: (d) => d.copyWith(

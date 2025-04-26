@@ -13,7 +13,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../config/app_shared/extensions/platform_utils.dart';
-import '../../../../config/providers.dart';
+import '../../../../config/providers/customer/shared_prefs_provider.dart';
 import '../../../../config/providers/firebase/firebase_providers.dart';
 import '../../data/data_sources/local/pref_util.dart';
 import '../../domain/models/entities/cube_environment/cube_environment_mig.dart';
@@ -40,7 +40,7 @@ class PushNotificationService {
   subscribe(String? token) async {
     developer.log('[subscribe] token: $token, ${PushNotificationService.TAG}');
 
-    SharedPrefs sharedPrefs = await _ref.read(sharedPrefsProvider).init();
+    SharedPrefs sharedPrefs = _ref.read(sharedPrefsProvider).requireValue!;
     if (sharedPrefs.getSubscriptionToken() == token) {
       developer.log(
           '[subscribe] skip subscription for same token, ${PushNotificationService.TAG}');
@@ -103,7 +103,9 @@ class PushNotificationService {
   }
 
   Future<void> unsubscribe() {
-    return _ref.read(sharedPrefsProvider).init().then((sharedPrefs) {
+    return _ref
+        .read(sharedPrefsAsyncNotifierProvider.future)
+        .then((sharedPrefs) {
       int subscriptionId = sharedPrefs.getSubscriptionId();
       if (subscriptionId != 0) {
         return deleteSubscription(subscriptionId).then((voidResult) {
@@ -223,7 +225,14 @@ final pushNotificationServiceProvider = Provider<PushNotificationService>(
 
 final notificationUtilsProvider = Provider<NotificationUtils>(
   (ref) {
-    final sharedPrefs = ref.watch(sharedPrefsProvider);
+    final prefs = ref.watch(sharedPrefsProvider).maybeWhen(
+          data: (sharedPrefs) => sharedPrefs,
+          orElse: () => null,
+        );
+    if (prefs == null) {
+      throw Exception('SharedPreferences not initialized');
+    }
+    final sharedPrefs = prefs;
     final flutterLocalNotificationsPlugin =
         ref.watch(flutterLocalNotificationsServiceProvider);
     return NotificationUtils(flutterLocalNotificationsPlugin, sharedPrefs);

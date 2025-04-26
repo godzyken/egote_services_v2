@@ -27,7 +27,7 @@ class DatadogObserver extends ProviderObserver {
 
     final log =
         '[Provider Updated] ${provider.name ?? provider.runtimeType}: $previousValue → $newValue';
-    datadogService.logInfo(log, attributes: {
+    datadogService.trackEvent(log, {
       'name': name,
       'previousValue': previousValue.toString(),
       'newValue': newValue.toString()
@@ -41,17 +41,12 @@ class DatadogObserver extends ProviderObserver {
   @override
   void didAddProvider(
       ProviderBase provider, Object? value, ProviderContainer container) {
-    // final log = container.read(datadogServiceProvider);
-    // log.logInfo(
-    //   '[Riverpod] Provider added: ${provider.name ?? provider.runtimeType}',
-    //   attributes: {'value': value.toString()},
-    // );
     final name = provider.name ?? provider.runtimeType.toString();
 
     final log =
         '[Provider Added] ${provider.name ?? provider.runtimeType} => $value';
-    datadogService.logInfo(log,
-        attributes: {'provider': name, 'value': value.toString()});
+    datadogService
+        .trackEvent(log, {'provider': name, 'value': value.toString()});
   }
 
   @override
@@ -63,8 +58,7 @@ class DatadogObserver extends ProviderObserver {
     final name = provider.name ?? provider.runtimeType.toString();
 
     final log = '[Provider Disposed] ${provider.name ?? provider.runtimeType}';
-    datadogService
-        .logInfo(log, attributes: {'provider': name, 'event': 'dispose'});
+    datadogService.trackEvent(log, {'provider': name, 'event': 'dispose'});
     developer.log(log);
   }
 
@@ -73,9 +67,10 @@ class DatadogObserver extends ProviderObserver {
       StackTrace stackTrace, ProviderContainer container) {
     final name = provider.name ?? provider.runtimeType.toString();
 
-    datadogService.logError('Error in $name', error, stackTrace, attributes: {
-      'provider': name,
+    datadogService.trackEvent('Provider did failed', {
+      'stackTrace': stackTrace.toString(),
       'error': error.toString(),
+      'provider': name,
     });
 
     if (enableSentry) {

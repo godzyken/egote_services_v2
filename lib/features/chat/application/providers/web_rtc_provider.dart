@@ -5,51 +5,145 @@ import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/models/entities/webrtc_connection/web_rtc_connection_state.dart';
+import '../../../common/domain/entities/states/webrtc_state.dart';
+import '../../../common/domain/entities/states/webrtc_video_state.dart';
+import 'call_service_provider.dart';
 
 class WebRTCStateNotifier extends StateNotifier<WebRTCState> {
-  WebRTCStateNotifier(this.peerConnection, this._ref)
-      : super(WebRTCState.initialized);
-
   final Ref _ref;
-  final RTCPeerConnection peerConnection;
+  WebRTCStateNotifier(this._ref) : super(const WebRTCState.initializing());
 
   // Initialize WebRTC state and setup peer connection
   Future<void> initialize() async {
-    final webRTCState = _ref.read(webRTCStateProvider);
-    final localRenderer = webRTCState.localRenderer;
-    final remoteRenderer = webRTCState.remoteRenderer;
-    final localStream = webRTCState.localStream;
-    final iceState = webRTCState.iceState;
-    final status = webRTCState.status;
-    final errorMessage = webRTCState.errorMessage;
+    try {
+      final localRenderer = RTCVideoRenderer();
+      final remoteRenderer = RTCVideoRenderer();
 
-    state = WebRTCState(
-      peerConnection: peerConnection,
-      localRenderer: localRenderer,
-      remoteRenderer: remoteRenderer,
-      status: status,
-      errorMessage: errorMessage,
-      iceState: iceState,
-      localStream: localStream,
-    );
+      await localRenderer.initialize();
+      await remoteRenderer.initialize();
 
-    final webRTCVideoState = _ref.read(webRTCVideoSateProvider);
+      final peerConnection = await web_r_t_c.createPeerConnection({
+        'iceServers': [
+          {'urls': 'stun:stun.l.google.com:19302'},
+        ],
+      });
 
-    state = WebRTCState.initialized;
+      final localStream = await navigator.mediaDevices.getUserMedia({
+        'audio': true,
+        'video': true,
+      });
 
-    // Initialize the renderers
-    await localRenderer?.initialize();
-    await remoteRenderer?.initialize();
+      for (var track in localStream.getTracks()) {
+        peerConnection.addTrack(track, localStream);
+      }
 
-    state =
-        WebRTCState.iceConnectionState(iceState: webRTCVideoState.toString());
+      peerConnection.onIceConnectionState = (stateICE) {
+        updateIceState(stateICE.toString());
+      };
 
-    return await Future.delayed(
-        Duration(seconds: 1), () => web_r_t_c.WebRTC.initialized);
+      peerConnection.onTrack = (event) {
+        remoteRenderer.srcObject = event.streams.first;
+      };
+
+      localRenderer.srcObject = localStream;
+
+      state = WebRTCState.initialized(
+          peerConnection: peerConnection,
+          localStream: localStream,
+          localRenderer: localRenderer,
+          remoteRenderer: remoteRenderer);
+    } catch (e, s) {
+      state = WebRTCState.error(errorMessage: e.toString());
+      if (kDebugMode) {
+        developer.log('Error initializing WebRTC: $e', stackTrace: s);
+      }
+    }
   }
 
-  Future<void> createPeerConnection(Map<String, dynamic> configuration) async {
+  void updateIceState(String newState) {
+    state = state.maybeWhen(
+      initialized: (pc, stream, local, remote, iceState) =>
+          WebRTCState.initialized(
+        peerConnection: pc,
+        localStream: stream,
+        localRenderer: local,
+        remoteRenderer: remote,
+        iceState: newState,
+      ),
+      orElse: () => state,
+    );
+  }
+
+  Future<void> makeCall(List<int> opponents) async {
+    final callService = _ref.read(callServiceProvider);
+
+    await callService.initSession(opponents);
+    callService.listenToCallEvents(onLocalStream: (stream) async {
+      final renderer = RTCVideoRenderer();
+      await renderer.initialize();
+      renderer.srcObject = stream;
+      state = state.maybeWhen(
+          initialized: (pc, _, __, remote, ice) => WebRTCState.initialized(
+                peerConnection: pc,
+                localStream: stream,
+                localRenderer: renderer,
+                remoteRenderer: remote,
+                iceState: ice,
+              ),
+          orElse: () => state);
+    }, onRemoteStream: (remoteStream) async {
+      final renderer = RTCVideoRenderer();
+      await renderer.initialize();
+      renderer.srcObject = remoteStream;
+
+      state = state.maybeWhen(
+          initialized: (pc, stream, local, _, ice) => WebRTCState.initialized(
+              peerConnection: pc,
+              localStream: stream,
+              localRenderer: local,
+              remoteRenderer: renderer,
+              iceState: ice),
+          orElse: () => state);
+    }, onDisconnected: () {
+      disposeWebRTC();
+    });
+  }
+
+  Future<void> acceptIncomingCall(String dialogId) async {
+    final callService = _ref.read(callServiceProvider);
+    await callService.acceptCall(dialogId: dialogId);
+  }
+
+  void onIncomingCallNotification(Map<String, dynamic> payload) {
+    final dialogId = payload['dialog_id'] ?? payload['dialogId'];
+    if (dialogId != null) {
+      acceptIncomingCall(dialogId);
+    } else {
+      rejectIncomingCall();
+    }
+  }
+
+  Future<void> rejectIncomingCall() async {
+    final callService = _ref.read(callServiceProvider);
+    await callService.rejectCall();
+  }
+
+  Future<void> hangUp() async {
+    final callService = _ref.read(callServiceProvider);
+    await callService.hangUp();
+  }
+
+  Future<void> disposeWebRTC() async {
+    await state.whenOrNull(initialized: (pc, stream, local, remote, _) async {
+      await pc.dispose();
+      await stream.dispose();
+      await local.dispose();
+      await remote.dispose();
+    });
+    state = const WebRTCState.initializing();
+  }
+
+/*  Future<void> createPeerConnection(Map<String, dynamic> configuration) async {
     final pc = await web_r_t_c.createPeerConnection(configuration);
 
     final localStream = await navigator.mediaDevices.getUserMedia({
@@ -84,42 +178,29 @@ class WebRTCStateNotifier extends StateNotifier<WebRTCState> {
       errorMessage: '',
       iceState: '',
     );
-  }
+  }*/
 }
 
 // WebRTC Video State Notifier
 class WebRTCVideoStateNotifier extends StateNotifier<WebRTCVideoState> {
-  WebRTCVideoStateNotifier(this.renderer, this.remoteRenderer)
+  WebRTCVideoStateNotifier()
       : super(WebRTCVideoState(
-            localRenderer: renderer, remoteRenderer: remoteRenderer));
-
-  final RTCVideoRenderer renderer;
-  final RTCVideoRenderer remoteRenderer;
-
-  RTCPeerConnection? peerConnection;
+            localRenderer: RTCVideoRenderer(),
+            remoteRenderer: RTCVideoRenderer()));
 
   Future<void> initialize() async {
-    final localRenderer = RTCVideoRenderer();
-    final remoteRenderer = RTCVideoRenderer();
-    await localRenderer.initialize();
-    await remoteRenderer.initialize();
-
-    state = state.copyWith(
-        localRenderer: localRenderer, remoteRenderer: remoteRenderer);
-  }
-
-  void disposeRenderer() {
-    state.localRenderer.dispose();
-    state = state.copyWith(
-        isConnected: false, // Add condition based on your logic
-        localRenderer: renderer,
-        peerConnection: peerConnection,
-        remoteRenderer: remoteRenderer);
-    state.peerConnection?.dispose();
+    await state.localRenderer.initialize();
+    await state.remoteRenderer.initialize();
   }
 
   void updateWebRTCVideoState(WebRTCVideoState newState) {
     state = newState;
+  }
+
+  void disposeRenderer() {
+    state.localRenderer.dispose();
+    state.remoteRenderer.dispose();
+    state = state.copyWith(isConnected: false);
   }
 }
 

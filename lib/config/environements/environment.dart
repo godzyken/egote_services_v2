@@ -1,11 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'flavors.dart';
+
 part 'environment.freezed.dart';
 part 'environment.g.dart';
 
 @freezed
 abstract class Environment with _$Environment {
   /// Default constructor for the [Environment] model
+  /// [Flavors] is the current flavor of the application
   /// [supabaseUrl] is the url of the Supabase environment
   /// [supabaseAnonKey] is the anon_key for Supabase
   /// [supabaseAuthCallbackUrlHostname] is the supabase auth callback url
@@ -24,6 +27,7 @@ abstract class Environment with _$Environment {
   /// [materialBankBaseUrl] is the baseUrl to Material Bank
 
   const factory Environment({
+    required Flavor appFlavor,
     required String supabaseUrl,
     required String supabaseAnonKey,
     String? supabaseAuthCallbackUrlHostname,

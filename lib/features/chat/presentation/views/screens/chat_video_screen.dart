@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/models/entities/webrtc_connection/webrtc_service.dart';
+import '../../../application/services/webrtc_signal_config_service.dart';
 import 'join_screen.dart';
 
 class ChatVideoScreen extends ConsumerStatefulWidget {

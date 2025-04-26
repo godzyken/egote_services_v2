@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:egote_services_v2/config/services/app_telemetry_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../features/auth/domain/providers/user_service_provider.dart';
@@ -122,9 +123,11 @@ final cubeChatConnectionNotifierProvider =
         (ref) => CubeChatConnectionNotifier());
 
 final cubeUserProvider = FutureProvider<CubeUser?>((ref) async {
-  final userService = ref.watch(userServiceProvider);
-  final user = await userService.createCubeUserFromFirebase();
-  return user;
+  await ref.runSafe('Cube User Provider', () async {
+    final userService = ref.watch(userServiceProvider);
+    final user = await userService.createCubeUserFromFirebase();
+    return user;
+  });
 });
 
 final cubeDialogueProvider = FutureProvider<CubeDialog?>((ref) async {

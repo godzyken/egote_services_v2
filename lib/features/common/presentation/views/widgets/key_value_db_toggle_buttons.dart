@@ -18,10 +18,15 @@ class KeyValueDbToggleButtons extends ConsumerWidget {
       keyValueDb == UsedKeyValueDb.hive,
     ];
     return ToggleButtons(
+      borderRadius: BorderRadius.circular(8),
+      color: Colors.grey,
+      selectedColor: Colors.white,
+      fillColor: Theme.of(context).colorScheme.primary,
+      textStyle: Theme.of(context).textTheme.bodyMedium,
       isSelected: isSelected,
       onPressed: (int newIndex) {
         ref.read(usedKeyValueDbProvider.notifier).state =
-        UsedKeyValueDb.values[newIndex];
+            UsedKeyValueDb.values[newIndex];
       },
       children: <Widget>[
         Padding(

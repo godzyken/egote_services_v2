@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 import '../../../../../config/providers/firebase/notification_service.dart';
-import '../../../domain/models/entities/webrtc_connection/webrtc_service.dart';
+import '../../../application/services/webrtc_signal_config_service.dart';
 
 class CallScreen extends ConsumerStatefulWidget {
   final String callerId, calleeId;

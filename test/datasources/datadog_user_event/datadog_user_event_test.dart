@@ -103,7 +103,9 @@ void main() {
               mockDatadogLoggerHelper.info(any(), extra: any(named: 'extra')))
           .thenReturn(null);
       when(() => mockDatadogLoggerHelper.error(any(), exception, any(),
-          extra: any(named: 'extra'))).thenReturn(null);
+              extra: any(named: 'extra')))
+          .thenReturn(
+              expectLater(exception.message, exception.code, reason: userId));
 
       // trace & api call handled already in setUp
 

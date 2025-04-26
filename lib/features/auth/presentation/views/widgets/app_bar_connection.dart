@@ -1,4 +1,5 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
+import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,28 +15,38 @@ class AppBarConnection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userStateStreamProvider.future);
     return Scaffold(
       appBar: AppBar(
         title: Text(context.tr!.mfaConnect),
         actions: [
           PopupMenuButton(
+            onSelected: (value) async {
+              switch (value) {
+                case 'unEnroll':
+                  context.goNamed('mfaList');
+                  break;
+                case 'signOut':
+                  await ref.read(supabaseClientProvider).auth.signOut();
+                  if (context.mounted) context.goNamed('auth');
+                  break;
+                case 'user_home':
+                  context.goNamed('user_home');
+              }
+            },
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
+                  value: 'unEnroll',
                   child: Text(context.tr!.unEnroll),
-                  onTap: () {
-                    context.push('mfaList');
-                  },
                 ),
                 PopupMenuItem(
+                  value: 'signOut',
                   child: Text(context.tr!.signOut),
-                  onTap: () {
-                    ref.watch(supabaseClientProvider).auth.signOut();
-                    context.push('auth');
-                  },
                 ),
               ];
             },
+            child: const Icon(Icons.more_vert),
           )
         ],
         centerTitle: true,

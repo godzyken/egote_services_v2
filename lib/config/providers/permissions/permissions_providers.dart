@@ -1,3 +1,5 @@
+import 'package:egote_services_v2/features/auth/application/providers/app_user_provider.dart';
+import 'package:egote_services_v2/features/auth/application/wrapper/adapter/app_user.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +10,8 @@ enum Permissions { read, write, admin }
 // State qui garde les permissions de l'utilisateur
 class UserPermissions {
   final Set<Permissions> permissions;
-  UserPermissions({required this.permissions});
+  final UserLevel level;
+  UserPermissions({required this.permissions, required this.level});
 
   bool hasPermission(Permissions permission) {
     return permissions.contains(permission);
@@ -17,8 +20,13 @@ class UserPermissions {
 
 // Provider pour gérer les permissions
 final permissionProvider = StateProvider<UserPermissions>((ref) {
+  // Ici, vous pouvez initialiser les permissions de l'utilisateur
+  final role = ref.watch(appUserProvider);
+  if (role == null) {
+    return UserPermissions(permissions: {}, level: UserLevel.guest);
+  }
   // Par défaut, l'utilisateur n'a aucune permission.
-  return UserPermissions(permissions: {});
+  return UserPermissions(permissions: {}, level: role.level);
 });
 
 // Simulons une fonction qui récupère le rôle de l'utilisateur de manière asynchrone

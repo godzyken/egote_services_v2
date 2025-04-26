@@ -36,9 +36,9 @@ class WatchdogLogger {
 
       // 🐶 Log to Datadog
 
-      _datadogService.logInfo(
+      _datadogService.trackEvent(
         message,
-        attributes: {
+        {
           if (attributes != null) ...attributes,
           if (error != null) 'error': error.toString(),
           if (stackTrace != null) 'stackTrace': stackTrace.toString(),

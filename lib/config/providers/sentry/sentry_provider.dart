@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/config/providers/sentry/sentry_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -128,3 +129,5 @@ class SentryProviderObserver extends ProviderObserver {
   }
   //Astuce : tu peux aussi utiliser un bool enableSentryLogging pour activer ou désactiver dynamiquement.
 }
+
+final sentryServiceProvider = Provider<SentryService>((ref) => SentryService());

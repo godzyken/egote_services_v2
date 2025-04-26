@@ -437,11 +437,12 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
     Future<CubeUser>? signInFuture;
 
-    var accessToken = await ref.watch(firebaseAuthProvider.select((auth) => auth
-        .currentUser
-        ?.getIdToken()
-        .onError((ExceptionCause error, stackTrace) =>
-            handleError(error, stackTrace))));
+    final app = ref.read(firebaseInitProvider).requireValue!;
+
+    var accessToken = await ref.watch(firebaseAuthProvider(app).select((auth) =>
+        auth.currentUser?.getIdToken().onError(
+            (ExceptionCause error, stackTrace) =>
+                handleError(error, stackTrace))));
 
     if (accessToken!.isEmpty) {
       _isLoginContinues = false;

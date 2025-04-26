@@ -14,6 +14,7 @@ class FirebaseMessagingService {
   BuildContext? applicationContext;
 
   Future<void> initialize(Ref ref) async {
+    final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
     await _pushNotificationsManager.initialize(ref);
 
     _firebaseMessaging = ref.watch(firebaseMessagingProvider);
@@ -23,7 +24,7 @@ class FirebaseMessagingService {
         alert: true, badge: true, sound: true);
 
     await _firebaseMessaging.setAutoInitEnabled(true).whenComplete(
-          () => ref.refresh(firebaseAuthProvider),
+          () => ref.refresh(firebaseAuthProvider(firebaseApp)),
         );
 
     final token = await _firebaseMessaging.getToken();

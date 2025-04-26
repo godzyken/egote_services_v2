@@ -1,11 +1,12 @@
-import 'dart:developer' as developer;
-
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-class DatadogService {
+import '../../environements/flavors.dart';
+import '../../services/app_telemetry_service.dart';
+
+class DatadogService extends AppTelemetryService with TelemetryMixin {
   static final DatadogService _instance = DatadogService._internal();
   factory DatadogService() => _instance;
   DatadogService._internal();
@@ -18,6 +19,13 @@ class DatadogService {
   late final Ref _ref;
 
   void setRef(Ref ref) => _ref = ref;
+
+  @override
+  bool get isEnabled => switch (F.appFlavor) {
+        Flavor.production => true,
+        Flavor.development => true,
+        Flavor.local => false,
+      };
 
   Future<void> init() async {
     if (_isInitialized) return;
@@ -52,53 +60,102 @@ class DatadogService {
     _logger?.addTag('env', config.env);
 
     _isInitialized = true;
-    developer.log('✅ Datadog initialized');
+    logDebug('✅ Datadog initialized');
   }
 
-  void logInfo(String message, {Map<String, Object?>? attributes}) async {
-    if (!_isInitialized) return;
-    _logger?.info(message, attributes: attributes!);
+  @override
+  Future<void> trackEvent(String eventName,
+      [Map<String, dynamic>? params]) async {
+    if (!isEnabled || !_isInitialized) return;
+    _datadog.rum?.addAction(RumActionType.custom, eventName);
+    _logger?.info('[EVENT] $eventName', attributes: params ?? {});
   }
 
-  void logError(String message, Object? error, StackTrace? stackTrace,
-      {Map<String, Object?>? attributes}) {
-    if (!_isInitialized) return;
-    _logger?.error(message,
-        errorKind: error.runtimeType.toString(),
-        errorMessage: error.toString(),
-        errorStackTrace: stackTrace,
-        attributes: attributes!);
+  @override
+  Future<void> trackError(dynamic error, [StackTrace? stackTrace]) async {
+    if (!isEnabled || !_isInitialized) return;
+    _logger?.error(
+      '[ERROR] ${error.toString()}',
+      errorKind: error.runtimeType.toString(),
+      errorStackTrace: stackTrace,
+    );
+    await Sentry.captureException(error, stackTrace: stackTrace);
   }
 
-  void logErrorWithSentry(
-      String message, Object? error, StackTrace? stackTrace) {
-    logError(message, error, stackTrace);
-    Sentry.captureException(error, stackTrace: stackTrace);
+  @override
+  Future<T> trace<T>(String name, Future<T> Function() task) async {
+    if (!isEnabled || !_isInitialized) return await task();
+
+    final span = Sentry.getSpan()?.startChild(name);
+    final stopwatch = Stopwatch()..start();
+
+    try {
+      final result = await task();
+      span?.finish(status: const SpanStatus.ok());
+      await trackEvent(
+          '$name:success', {'duration': stopwatch.elapsed.inMilliseconds});
+      return result;
+    } catch (e, s) {
+      span?.throwable = e;
+      span?.finish(status: const SpanStatus.internalError());
+      await trackError(e, s);
+      rethrow;
+    }
+  }
+
+  Future<void> logErrorWithSentry(
+    dynamic error, {
+    StackTrace? stackTrace,
+    String? contextMessage,
+  }) async {
+    if (!isEnabled || !_isInitialized) return;
+
+    final message = contextMessage != null
+        ? '[ERROR CONTEXT] $contextMessage\n$error'
+        : '[ERROR] ${error.toString()}';
+
+    _logger?.error(
+      message,
+      errorKind: error.runtimeType.toString(),
+      errorStackTrace: stackTrace,
+    );
+
+    await Sentry.captureException(
+      error,
+      stackTrace: stackTrace,
+    );
   }
 
   void startView(String name) {
+    if (!isEnabled || !_isInitialized) return;
     _datadog.rum?.startView(name);
   }
 
   void stopView(String name) {
+    if (!isEnabled || !_isInitialized) return;
+
     _datadog.rum?.stopView(name);
   }
 
   void addUserAction(String actionName) {
+    if (!isEnabled || !_isInitialized) return;
+
     _datadog.rum?.addAction(RumActionType.tap, actionName);
   }
 
-  void setUser({
+  void setUserContext({
     required String id,
     String? name,
     String? email,
     Map<String, Object?>? extra,
   }) {
+    if (!isEnabled || !_isInitialized) return;
+
     _datadog.setUserInfo(
       id: id,
       name: name,
       email: email,
-      extraInfo: extra!,
+      extraInfo: extra ?? {},
     );
   }
 
@@ -109,9 +166,7 @@ class DatadogService {
     RumHttpMethod? method = RumHttpMethod.get,
     RumResourceType type = RumResourceType.fetch,
   }) async {
-    if (!_isInitialized) {
-      throw Exception('Datadog track resource not initialized');
-    }
+    if (!isEnabled || !_isInitialized) return await action();
 
     _datadog.rum?.startResource(key, method!, url);
 
@@ -125,45 +180,7 @@ class DatadogService {
         e.toString(),
         e.runtimeType.toString(),
       );
-      rethrow;
-    }
-  }
-
-  Future<T> traceWithSentry<T>(
-      String name, Future<T> Function() callback) async {
-    if (!_isInitialized) {
-      throw Exception('trace with sentry not initialized');
-    }
-
-    // await Future.delayed(const Duration(seconds: 1)); final span = _datadog.traces?.startSpan(name);
-
-    final span = Sentry.getSpan()?.startChild(name);
-
-    try {
-      final result = await callback();
-      span?.finish(status: const SpanStatus.ok());
-      return result;
-    } catch (e) {
-      span?.throwable = e;
-      span?.finish(status: const SpanStatus.internalError());
-      rethrow;
-    } finally {
-      span?.finish();
-    }
-  }
-
-  Future<void> trackSupabaseCall(
-      String methodName, Future<void> Function() task) async {
-    _datadog.rum?.startResource(methodName, RumHttpMethod.get,
-        'https://supabase.com', {'attributes': RumResourceType.native});
-
-    try {
-      await task();
-      _datadog.rum?.stopResource(methodName, 200, RumResourceType.native);
-    } catch (e, s) {
-      _datadog.rum?.stopResourceWithErrorInfo(
-          methodName, e.runtimeType.toString(), s.toString());
-      logErrorWithSentry('Error in trackSupabaseCall', e, s);
+      trackError(e);
       rethrow;
     }
   }

@@ -12,11 +12,14 @@ import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
 import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'config/providers/connectivity/connectivity_providers.dart';
+import 'config/providers/customer/shared_prefs_provider.dart';
+import 'features/chat/application/services/push_notification_service.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
 import 'l10n/app_localizations.dart';
 
@@ -60,7 +63,9 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
 
   late StreamSubscription<List<ConnectivityResult>>
       connectivityStateSubscription;
-  AppLifecycleState? appState;
+  Timer? _suspensionTimer;
+  final Duration _maxInactivityDuration = Duration(seconds: 5);
+  bool _isAppLocked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +75,6 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     final lightTheme = ref.watch(lightThemeProvider);
     final darkTheme = ref.watch(darkThemeProvider);
     final settingsThemeMode = ref.watch(Settings.themeModeProvider);
-
-    connectivityStateSubscription =
-        ref.watch(connectivityStatusProviders.notifier).subscription!;
 
     return RumUserActionDetector(
         rum: datadog.rum,
@@ -113,8 +115,8 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _suspensionTimer?.cancel();
     connectivityStateSubscription.cancel();
-
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -123,14 +125,52 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     //initCube.asStream();
+    WidgetsBinding.instance.addObserver(this);
 
-    _getPlatformVersion();
+    connectivityStateSubscription =
+        ref.watch(connectivityStatusProviders.notifier).subscription!;
 
-    _getFirebaseData();
-
-    appState = WidgetsBinding.instance.lifecycleState;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _runDefferdInitializations();
+    });
 
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  void _runDefferdInitializations() {
+    Future.microtask(() => _getFirebaseData());
+    Future.microtask(() => _getPlatformVersion());
+
+    Future.delayed(const Duration(seconds: 1), () async {
+      await _initCubeFromPrefs();
+    });
+  }
+
+  Future<void> _initCubeFromPrefs() async {
+    final sharedPrefs = await ref.read(sharedPrefsAsyncNotifierProvider.future);
+
+    final CubeUser? user = await sharedPrefs.getUser();
+    if (user == null) return;
+
+    if (!CubeChatConnection.instance.isAuthenticated()) {
+      if (sharedPrefs.getLoginType() == LoginType.phone) {
+        if (CubeSessionManager.instance.isActiveSessionValid()) {
+          user.password = CubeSessionManager.instance.activeSession?.token;
+        } else {
+          final session =
+              await createSessionUsingFirebasePhone('projectId', 'accessToken');
+          user.password = session.token;
+        }
+      }
+      CubeChatConnection.instance.login(user);
+    } else {
+      CubeChatConnection.instance.markActive();
+    }
+    final token = sharedPrefs.getSubscriptionToken();
+    if (token.isNotEmpty) {
+      final pushService = ref.read(pushNotificationServiceProvider);
+      await pushService.subscribe(token);
+    }
   }
 
   @override
@@ -139,61 +179,94 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
       switch (state) {
         case AppLifecycleState.resumed:
           // L'application revient au premier plan
-          ref.watch(sharedPrefsProvider).init().then((sharedPrefs) async {
-            CubeUser? user =
-                await sharedPrefs.getUser().then((savedUser) => savedUser);
+          _resetInactivityTimer();
+          if (_isAppLocked) {
+            _unlockApp();
+          }
+          ref.watch(sharedPrefsAsyncNotifierProvider.notifier).listenSelf(
+            (_, next) async {
+              if (!next.hasValue) return;
+              unawaited(_initCubeFromPrefs());
+            },
+          );
 
-            if (user != null) {
-              // Si l'utilisateur est présent dans les préférences partagées
-              if (!CubeChatConnection.instance.isAuthenticated()) {
-                if (LoginType.phone == sharedPrefs.getLoginType()) {
-                  // Connexion par téléphone
-                  if (CubeSessionManager.instance.isActiveSessionValid()) {
-                    user.password =
-                        CubeSessionManager.instance.activeSession?.token;
-                  } else {
-                    var phoneAuthSession =
-                        await createSessionUsingFirebasePhone(
-                            'projectId', 'accessToken');
-                    user.password = phoneAuthSession.token;
-                  }
-                }
-                // Connexion à CubeChat
-                CubeChatConnection.instance.login(user);
-              } else {
-                // Si déjà connecté, on marque la connexion comme active
-                CubeChatConnection.instance.markActive();
-              }
-            }
-          });
           break;
 
         case AppLifecycleState.inactive:
           // L'application passe en mode inactif
           // Peut-être qu'on pourrait faire un nettoyage ou enregistrer des données ici
+          developer.log('App is inactive – saving lightweight state.');
+          // Exemple : enregistrer un état de vue temporaire
+          // await someLightweightCache.saveCurrentTab(tabController.index);
           break;
 
         case AppLifecycleState.paused:
           // L'application passe en arrière-plan
+          developer
+              .log('App paused – marking chat inactive & pausing services.');
+          _startInactivityTimer(); // Lancer le timer lorsque l'app passe en arrière-plan
+
           if (CubeChatConnection.instance.isAuthenticated()) {
             CubeChatConnection.instance.markInactive();
           }
+
+          // Exemple : pause du tracking analytics ou synchronisation
+          // await analytics.pauseSession();
           break;
 
         case AppLifecycleState.detached:
           // L'application se détache de l'arbre des widgets
           // Ici, il peut être utile de faire un nettoyage ou une sauvegarde des données
+          developer.log('App detached – cleaning up.');
+          // Exemple : sauvegarder un état complet
+          // await sharedPrefs.saveAppState();
+          // Fermer des connexions éventuelles
+          // await db.close();
           break;
 
         case AppLifecycleState.hidden:
           // L'application passe à l'état caché
           // Vous pouvez gérer ce cas si nécessaire
+          developer.log('App is hidden – no visible UI.');
+          // Exemple : pause des animations ou contenu visuel
+          // AnimationController.stop();
           break;
       }
     } catch (e) {
       // Gestion des erreurs globales
       developer.log('Error handling app lifecycle state: $e');
     }
+  }
+
+  void _startInactivityTimer() {
+    _suspensionTimer?.cancel();
+
+    _suspensionTimer = Timer(_maxInactivityDuration, _onInactivityTimeout);
+  }
+
+  void _resetInactivityTimer() {
+    _suspensionTimer?.cancel();
+  }
+
+  void _onInactivityTimeout() {
+    _lockApp();
+    _redirectToLockScree();
+  }
+
+  void _lockApp() {
+    setState(() {
+      _isAppLocked = true;
+    });
+  }
+
+  void _unlockApp() {
+    setState(() {
+      _isAppLocked = false;
+    });
+  }
+
+  void _redirectToLockScree() {
+    context.goNamed('lock');
   }
 }
 

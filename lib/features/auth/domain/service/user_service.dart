@@ -14,7 +14,7 @@ part 'user_service.g.dart';
 class FirebaseAuthService extends _$FirebaseAuthService {
   late final supabase.SupabaseClient _supabaseClient;
 
-  late FirebaseAuth _firebaseAuth;
+  late final FirebaseAuth _firebaseAuth;
 
   FirebaseAuthService() : supabaseAuthService = AsyncValue.loading();
 
@@ -44,8 +44,12 @@ class FirebaseAuthService extends _$FirebaseAuthService {
 
   @override
   Future<CubeUser?> build() async {
+    developer.log("🔥 build() appelé dans FirebaseAuthService");
+
+    final firebaseApp = ref.read(firebaseInitProvider).requireValue!;
+
     _supabaseClient = ref.read(supabaseClientProvider);
-    _firebaseAuth = ref.read(firebaseAuthProvider);
+    _firebaseAuth = ref.read(firebaseAuthProvider(firebaseApp));
     await signInAnonymous();
     return createCubeUserFromFirebase();
   }
@@ -142,7 +146,8 @@ class FirebaseAuthService extends _$FirebaseAuthService {
       }
 
       // Appliquer les modifications sur l'utilisateur actuel
-      await user.updateProfile(displayName: displayName, photoURL: photoUrl);
+      await user.updateDisplayName(displayName);
+      await user.updatePhotoURL(photoUrl);
 
       // Récupérer les informations mises à jour
       user = _firebaseAuth.currentUser;

@@ -1,10 +1,8 @@
 import 'dart:developer' as developer;
-import 'dart:developer' as devtools;
 
-import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart' as supabase;
 
 part 'supabase_service.freezed.dart';
 part 'supabase_service.g.dart';
@@ -12,55 +10,79 @@ part 'supabase_service.g.dart';
 class SupabaseService {
   static const MethodChannel _channel =
       MethodChannel('com.godzy.egote_services_v2/supabase');
+  final supabase.SupabaseClient _supabaseClient;
 
+  // Injection du SupabaseClient via le constructeur
+  SupabaseService(this._supabaseClient);
+
+  // Récupérer la liste des instruments
   Future<List<Instrument>> fetchInstruments() async {
-    try {
-      final List<dynamic> instrumentsJson =
-          await _channel.invokeMethod('fetchInstruments');
-
-      final List<Instrument> instruments =
-          instrumentsJson.map((json) => Instrument.fromJson(json)).toList();
-      return instruments;
-    } on PlatformException catch (e) {
-      devtools.log('Error fetching instruments: ${e.message}');
-      return [];
-    }
+    return _safeInvoke<List<Instrument>>(
+      () async {
+        final List<dynamic> instrumentsJson =
+            await _channel.invokeMethod('fetchInstruments');
+        return instrumentsJson
+            .map((json) => Instrument.fromJson(json))
+            .toList();
+      },
+      label: 'fetchInstruments',
+    );
   }
 
-  Future<void> sendTokenToBackend(Ref ref, String token) async {
-    final supabaseClient = ref.watch(supabaseProvider);
-
-    // Enregistrez le token dans Supabase dans la table 'fcm_tokens'
-    final response = await supabaseClient.client.from('fcm_tokens').upsert({
-      'token': token,
-      'created_at': DateTime.now().toIso8601String(),
-    });
-
-    if (response.error != null) {
-      developer.log(
-          'Erreur lors de l\'envoi du token à Supabase: ${response.error!.message}');
-    } else {
-      developer.log('Token FCM envoyé avec succès à Supabase');
-      final List<dynamic> data =
-          response.data(AsyncValue.data((json) => Instrument.fromJson(json)));
-      developer.log('Data from Supabase: $data');
+  // Envoi du token FCM à Supabase
+  Future<void> sendTokenToBackend(String token) async {
+    if (token.isEmpty) {
+      _log('Token is empty, cannot send to backend.',
+          label: 'sendTokenToBackend');
+      return;
     }
+
+    await _safeInvoke<void>(
+      () async {
+        final response = await _supabaseClient.from('fcm_tokens').upsert({
+          'token': token,
+          'created_at': DateTime.now().toIso8601String(),
+        });
+
+        if (response.error != null) {
+          _log(
+              'Erreur lors de l\'envoi du token à Supabase: ${response.error!.message}',
+              label: 'sendTokenToBackend');
+        } else {
+          _log('Token FCM envoyé avec succès à Supabase',
+              label: 'sendTokenToBackend');
+        }
+      },
+      label: 'sendTokenToBackend',
+    );
   }
 
-  Future<void> syncUserWithSupabase(Ref ref, String uid) async {
-    final db = ref.watch(supabaseProvider).client;
+  // Synchroniser l'utilisateur avec Supabase
+  Future<void> syncUserWithSupabase(String uid) async {
+    await _safeInvoke<void>(
+      () async {
+        final existing = await _supabaseClient
+            .from('auth_users')
+            .select()
+            .eq('uid', uid)
+            .maybeSingle();
 
-    final existing =
-        await db.from('auth_users').select().eq('uid', uid).maybeSingle();
-
-    if (existing == null) {
-      await db.from('auth_users').insert({
-        'uid': uid,
-        'email': 'email',
-        'role': 'user',
-        'created_at': DateTime.now().toIso8601String(),
-      });
-    }
+        if (existing == null) {
+          await _supabaseClient.from('auth_users').insert({
+            'uid': uid,
+            'email': 'email',
+            'role': 'user',
+            'created_at': DateTime.now().toIso8601String(),
+          });
+          _log('Utilisateur synchronisé avec Supabase',
+              label: 'syncUserWithSupabase');
+        } else {
+          _log('Utilisateur déjà synchronisé avec Supabase',
+              label: 'syncUserWithSupabase');
+        }
+      },
+      label: 'syncUserWithSupabase',
+    );
   }
 }
 
@@ -71,4 +93,23 @@ sealed class Instrument with _$Instrument {
 
   factory Instrument.fromJson(Map<String, dynamic> json) =>
       _$InstrumentFromJson(json);
+}
+
+// Méthode pour gérer les appels sécurisés avec gestion des erreurs
+Future<T> _safeInvoke<T>(Future<T> Function() action,
+    {required String label}) async {
+  try {
+    return await action();
+  } on PlatformException catch (e) {
+    _log('Error invoking $label: ${e.message}', label: label);
+    rethrow;
+  } catch (e) {
+    _log('Unexpected error in $label: $e', label: label);
+    rethrow;
+  }
+}
+
+// Logger centralisé pour éviter la répétition
+void _log(String message, {required String label}) {
+  developer.log(message, name: 'SupabaseService::$label');
 }

@@ -20,6 +20,7 @@ Environment _$EnvironmentFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Environment {
+  Flavor get appFlavor => throw _privateConstructorUsedError;
   String get supabaseUrl => throw _privateConstructorUsedError;
   String get supabaseAnonKey => throw _privateConstructorUsedError;
   String? get supabaseAuthCallbackUrlHostname =>
@@ -56,7 +57,8 @@ abstract class $EnvironmentCopyWith<$Res> {
       _$EnvironmentCopyWithImpl<$Res, Environment>;
   @useResult
   $Res call(
-      {String supabaseUrl,
+      {Flavor appFlavor,
+      String supabaseUrl,
       String supabaseAnonKey,
       String? supabaseAuthCallbackUrlHostname,
       String appId,
@@ -90,6 +92,7 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? appFlavor = null,
     Object? supabaseUrl = null,
     Object? supabaseAnonKey = null,
     Object? supabaseAuthCallbackUrlHostname = freezed,
@@ -109,6 +112,10 @@ class _$EnvironmentCopyWithImpl<$Res, $Val extends Environment>
     Object? materialBankBaseUrl = null,
   }) {
     return _then(_value.copyWith(
+      appFlavor: null == appFlavor
+          ? _value.appFlavor
+          : appFlavor // ignore: cast_nullable_to_non_nullable
+              as Flavor,
       supabaseUrl: null == supabaseUrl
           ? _value.supabaseUrl
           : supabaseUrl // ignore: cast_nullable_to_non_nullable
@@ -191,7 +198,8 @@ abstract class _$$EnvironmentImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String supabaseUrl,
+      {Flavor appFlavor,
+      String supabaseUrl,
       String supabaseAnonKey,
       String? supabaseAuthCallbackUrlHostname,
       String appId,
@@ -223,6 +231,7 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? appFlavor = null,
     Object? supabaseUrl = null,
     Object? supabaseAnonKey = null,
     Object? supabaseAuthCallbackUrlHostname = freezed,
@@ -242,6 +251,10 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
     Object? materialBankBaseUrl = null,
   }) {
     return _then(_$EnvironmentImpl(
+      appFlavor: null == appFlavor
+          ? _value.appFlavor
+          : appFlavor // ignore: cast_nullable_to_non_nullable
+              as Flavor,
       supabaseUrl: null == supabaseUrl
           ? _value.supabaseUrl
           : supabaseUrl // ignore: cast_nullable_to_non_nullable
@@ -319,7 +332,8 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$EnvironmentImpl implements _Environment {
   const _$EnvironmentImpl(
-      {required this.supabaseUrl,
+      {required this.appFlavor,
+      required this.supabaseUrl,
       required this.supabaseAnonKey,
       this.supabaseAuthCallbackUrlHostname,
       required this.appId,
@@ -341,6 +355,8 @@ class _$EnvironmentImpl implements _Environment {
   factory _$EnvironmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$EnvironmentImplFromJson(json);
 
+  @override
+  final Flavor appFlavor;
   @override
   final String supabaseUrl;
   @override
@@ -386,7 +402,7 @@ class _$EnvironmentImpl implements _Environment {
 
   @override
   String toString() {
-    return 'Environment(supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outpoint: $outpoint, clientToken: $clientToken, site: $site, applicationId: $applicationId, firstPartyHost: $firstPartyHost, accessToken: $accessToken, cubeApiKey: $cubeApiKey, chatEndpoint: $chatEndpoint, materialBankApiKey: $materialBankApiKey, materialBankBaseUrl: $materialBankBaseUrl)';
+    return 'Environment(appFlavor: $appFlavor, supabaseUrl: $supabaseUrl, supabaseAnonKey: $supabaseAnonKey, supabaseAuthCallbackUrlHostname: $supabaseAuthCallbackUrlHostname, appId: $appId, authKey: $authKey, authSecret: $authSecret, vapidKey: $vapidKey, outpoint: $outpoint, clientToken: $clientToken, site: $site, applicationId: $applicationId, firstPartyHost: $firstPartyHost, accessToken: $accessToken, cubeApiKey: $cubeApiKey, chatEndpoint: $chatEndpoint, materialBankApiKey: $materialBankApiKey, materialBankBaseUrl: $materialBankBaseUrl)';
   }
 
   @override
@@ -394,6 +410,8 @@ class _$EnvironmentImpl implements _Environment {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$EnvironmentImpl &&
+            (identical(other.appFlavor, appFlavor) ||
+                other.appFlavor == appFlavor) &&
             (identical(other.supabaseUrl, supabaseUrl) ||
                 other.supabaseUrl == supabaseUrl) &&
             (identical(other.supabaseAnonKey, supabaseAnonKey) ||
@@ -433,6 +451,7 @@ class _$EnvironmentImpl implements _Environment {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      appFlavor,
       supabaseUrl,
       supabaseAnonKey,
       supabaseAuthCallbackUrlHostname,
@@ -469,7 +488,8 @@ class _$EnvironmentImpl implements _Environment {
 
 abstract class _Environment implements Environment {
   const factory _Environment(
-      {required final String supabaseUrl,
+      {required final Flavor appFlavor,
+      required final String supabaseUrl,
       required final String supabaseAnonKey,
       final String? supabaseAuthCallbackUrlHostname,
       required final String appId,
@@ -490,6 +510,8 @@ abstract class _Environment implements Environment {
   factory _Environment.fromJson(Map<String, dynamic> json) =
       _$EnvironmentImpl.fromJson;
 
+  @override
+  Flavor get appFlavor;
   @override
   String get supabaseUrl;
   @override

@@ -9,25 +9,30 @@ class DatadogLoggerHelper {
   DatadogLoggerHelper(this._datadog);
 
   void info(String message, {Map<String, Object?>? extra}) {
-    _datadog.logInfo(message, attributes: extra);
-  }
-
-  void error(String message, Object error, StackTrace stack,
-      {Map<String, Object?>? extra}) {
-    _datadog.logError(message, error, stack,
-        attributes: {...?extra, 'level': 'error'});
+    _datadog.trackEvent(message, extra);
   }
 
   void warn(String message, {Map<String, Object?>? attributes}) {
-    _datadog.logInfo('[WARN] $message', attributes: {
+    _datadog.trackEvent('[WARN] $message', {
       ...?attributes,
       'level': 'warning',
     });
   }
 
+  Future<void> error(String message, Object error, StackTrace stack,
+      {Map<String, Object?>? extra}) async {
+    await _datadog.trackError(message, stack);
+    await _datadog.trackEvent('[ERROR] $message', {
+      ...?extra,
+      'error': error.toString(),
+      'stack': stack.toString(),
+    });
+  }
+
   void errorWithSentry(String message, Object error, StackTrace stack,
       {Map<String, Object?>? attributes}) {
-    _datadog.logErrorWithSentry(message, error, stack);
+    _datadog.logErrorWithSentry(error,
+        stackTrace: stack, contextMessage: message);
   }
 
   void userAction(String name, {Map<String, Object?>? attributes}) {
@@ -46,7 +51,7 @@ class DatadogLoggerHelper {
   }
 
   Future<T> trace<T>(String name, Future<T> Function() task) async {
-    return await _datadog.traceWithSentry<T>(name, task);
+    return await _datadog.trace<T>(name, task);
   }
 
   Future<void> resource({

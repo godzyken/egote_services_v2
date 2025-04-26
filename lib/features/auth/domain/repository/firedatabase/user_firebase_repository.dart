@@ -1,6 +1,7 @@
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../config/providers/firebase/firebase_providers.dart';
@@ -10,11 +11,13 @@ class UserFirebaseRepository {
 
   UserFirebaseRepository({required Ref ref}) : _ref = ref;
 
+  FirebaseApp? get firebaseApp => _ref.read(firebaseInitProvider).value;
+
   Future<UserEntityModel?> fetchCurrentUserEntity() async {
     final userId = _getCurrentUserId();
 
     final doc = await _ref
-        .watch(firebaseFirestoreProvider)
+        .watch(firebaseFirestoreProvider(firebaseApp!))
         .collection('users')
         .doc(userId)
         .get();
@@ -29,8 +32,10 @@ class UserFirebaseRepository {
 
   Future<UserEntityModel?> updateUserName(
       String userId, String fullName) async {
-    final docRef =
-        _ref.watch(firebaseFirestoreProvider).collection('users').doc(userId);
+    final docRef = _ref
+        .watch(firebaseFirestoreProvider(firebaseApp!))
+        .collection('users')
+        .doc(userId);
     await docRef.update({'fullName': fullName});
 
     final updated = await docRef.get();
@@ -43,7 +48,7 @@ class UserFirebaseRepository {
   }
 
   String _getCurrentUserId() {
-    final user = _ref.read(firebaseAuthProvider).currentUser;
+    final user = _ref.read(firebaseAuthProvider(firebaseApp!)).currentUser;
     if (user == null) {
       throw Exception('Aucun utilisateur connecté');
     }

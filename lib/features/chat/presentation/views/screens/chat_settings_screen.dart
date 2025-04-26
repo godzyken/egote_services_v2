@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../config/providers.dart';
 import '../../../../../config/providers/cube/cube_providers.dart';
+import '../../../../../config/providers/customer/shared_prefs_provider.dart';
 import '../../../../../config/providers/firebase/firebase_providers.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
 import '../../../application/services/push_notification_service.dart';
@@ -280,7 +280,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       _isUsersContinues = true;
     });
     updateUser(userToUpdate).then((user) {
-      ref.read(sharedPrefsProvider).updateUser(user);
+      ref.read(sharedPrefsAsyncNotifierProvider.notifier).updateUser(user);
       if (mounted) {
         context.showAlert(context.tr!.success);
         setState(() {
@@ -324,13 +324,16 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
                     } // cancel current Dialog
                   },
                 ).whenComplete(() {
+                  final app = ref.read(firebaseInitProvider).requireValue!;
                   ref.watch(cubeChatConnectionProvider).destroy();
                   _pushNotificationService.unsubscribe();
                   ref
-                      .watch(firebaseAuthProvider)
+                      .watch(firebaseAuthProvider(app))
                       .currentUser
                       ?.unlink(PhoneAuthProvider.PROVIDER_ID);
-                  ref.read(sharedPrefsProvider).deleteUser();
+                  ref
+                      .read(sharedPrefsAsyncNotifierProvider.notifier)
+                      .deleteUser();
                   if (context.mounted) {
                     context.pop(context); // cancel current screen
                   }
@@ -367,7 +370,9 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
               child: Text(context.tr!.ok),
               onPressed: () async {
                 CubeChatConnection.instance.destroy();
-                await ref.read(sharedPrefsProvider).deleteUser();
+                await ref
+                    .read(sharedPrefsAsyncNotifierProvider.notifier)
+                    .deleteUser();
 
                 deleteUser(widget.currentUser.id!).then(
                   (voidValue) {

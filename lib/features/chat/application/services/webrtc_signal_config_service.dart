@@ -142,3 +142,7 @@ class ConfigVideoService {
     callClient.destroy();
   }
 }
+
+final configVideoServiceProvider = Provider<ConfigVideoService>((ref) {
+  return ConfigVideoService();
+});

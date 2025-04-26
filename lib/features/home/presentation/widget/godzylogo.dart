@@ -12,6 +12,7 @@ class Godzylogo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
     final isLoggedIn = ref.watch(appStateProvider);
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -23,7 +24,8 @@ class Godzylogo extends ConsumerWidget {
             : ElevatedButton(
                 onPressed: () async {
                   await FirebaseUIAuth.signOut(
-                      context: context, auth: ref.watch(firebaseAuthProvider));
+                      context: context,
+                      auth: ref.watch(firebaseAuthProvider(firebaseApp)));
                 },
                 child: Text('Log in')));
   }

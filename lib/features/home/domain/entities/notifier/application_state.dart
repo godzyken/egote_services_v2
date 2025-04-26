@@ -21,6 +21,8 @@ class FirebaseServiceImpl implements FirebaseService {
   final Ref ref;
   FirebaseServiceImpl(this.ref);
 
+  FirebaseApp get firebaseApp => ref.read(firebaseInitProvider).requireValue!;
+
   @override
   Future<void> init() async {
     try {
@@ -54,7 +56,7 @@ class FirebaseServiceImpl implements FirebaseService {
   Future<auth.UserCredential> signInAnonymously() async {
     try {
       developer.log('Signing in anonymously...');
-      final auth = ref.watch(firebaseAuthProvider);
+      final auth = ref.watch(firebaseAuthProvider(firebaseApp));
       return await auth.signInAnonymously();
     } catch (error) {
       AuthErrorHandler.handleError(error);
@@ -66,7 +68,7 @@ class FirebaseServiceImpl implements FirebaseService {
   @override
   Future<void> signOut() async {
     try {
-      final auth = ref.watch(firebaseAuthProvider);
+      final auth = ref.watch(firebaseAuthProvider(firebaseApp));
       await auth.signOut();
       developer.log('User signed out');
     } catch (error) {
@@ -128,6 +130,8 @@ class AuthStateNotifier extends StateNotifier<auth.User?> {
   final Ref ref;
   late final StreamSubscription<auth.User?> _userSubscription;
 
+  FirebaseApp get firebaseApp => ref.read(firebaseInitProvider).requireValue!;
+
   // Log des erreurs
   void _logError(Object error) => AuthErrorHandler.handleError(error);
 
@@ -155,14 +159,14 @@ class AuthStateNotifier extends StateNotifier<auth.User?> {
 
   // Écoute des changements d'utilisateur
   Stream<auth.User?> get listenToUserChanges {
-    return ref.watch(firebaseAuthProvider).authStateChanges();
+    return ref.watch(firebaseAuthProvider(firebaseApp)).authStateChanges();
   }
 
   // Connexion anonyme
   Future<auth.UserCredential> signInAnonymously() async {
     try {
       developer.log('Connexion anonyme...');
-      final authInstance = ref.watch(firebaseAuthProvider);
+      final authInstance = ref.watch(firebaseAuthProvider(firebaseApp));
       final userCredential = await authInstance.signInAnonymously();
       state = userCredential.user;
       developer.log('Utilisateur connecté anonymement : ${state?.uid}');
@@ -177,7 +181,7 @@ class AuthStateNotifier extends StateNotifier<auth.User?> {
   // Déconnexion
   Future<void> signOut() async {
     try {
-      final authInstance = ref.watch(firebaseAuthProvider);
+      final authInstance = ref.watch(firebaseAuthProvider(firebaseApp));
       await authInstance.signOut();
       developer.log('Utilisateur déconnecté');
       state = null;
@@ -195,7 +199,8 @@ final authStateProvider =
 });
 
 final userStateStreamProvider = StreamProvider.autoDispose<auth.User?>((ref) {
-  final authState = ref.watch(firebaseAuthProvider);
+  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+  final authState = ref.watch(firebaseAuthProvider(firebaseApp));
 
   return authState.authStateChanges();
 });

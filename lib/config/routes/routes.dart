@@ -16,6 +16,7 @@ import '../../features/devis/presentation/views/screens/product_edit_screen.dart
 import '../../features/devis/presentation/views/screens/product_list_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
 import '../../features/home/presentation/widget/godzylogo.dart';
+import '../../features/home/presentation/widget/redirect_guard_page.dart';
 import '../../features/settings/presentation/view/gallery/gallery.dart';
 import '../../features/settings/presentation/view/settings_ui_page.dart';
 import '../../features/sketch/presentation/view/drawing_page.dart';
@@ -205,142 +206,120 @@ final homeShellRoute = StatefulShellRoute.indexedStack(branches: [
             factory: (context) => const ThemeShowcaseRoute(),
           )
         ]),
-  ])
-]);
-
-final authShellRoute = StatefulShellRoute.indexedStack(
-    branches: [
-      StatefulShellBranch(initialLocation: '/auth', routes: [
-        GoRouteData.$route(
-            path: AuthRoute.path,
-            name: 'auth',
-            factory: (context) => const AuthRoute(),
-            routes: [
-              GoRouteData.$route(
-                  path: LoginRoute.path,
-                  name: 'login',
-                  factory: (context) => const LoginRoute()),
-              GoRouteData.$route(
-                path: SignUpRoute.path,
-                name: 'sign_up',
-                factory: (context) => const SignUpRoute(),
-              ),
-              GoRouteData.$route(
-                  path: ListMfaRoute.path,
-                  name: 'mfaList',
-                  factory: (context) => const ListMfaRoute(),
-                  routes: [
-                    GoRouteData.$route(
-                      path: MFAEnrollRoute.path,
-                      name: 'enroll',
-                      factory: (context) => const MFAEnrollRoute(),
-                    ),
-                    GoRouteData.$route(
-                      path: VerificationRoute.path,
-                      name: 'verify',
-                      factory: (context) => const VerificationRoute(),
-                    ),
-                  ]),
-            ]),
-      ])
-    ],
-    builder: (context, state, navigationShell) {
-      return Scaffold(
-        body: navigationShell,
-      );
-    });
-
-final adminShellRoute = StatefulShellRoute.indexedStack(
-    branches: [
-      StatefulShellBranch(
-        initialLocation: '/admin',
+  ]),
+  StatefulShellBranch(initialLocation: '/auth', routes: [
+    GoRouteData.$route(
+        path: AuthRoute.path,
+        name: 'auth',
+        factory: (context) => const AuthRoute(),
         routes: [
           GoRouteData.$route(
-              path: AdminShellRoute.path,
-              name: AdminShellRoute.name,
-              factory: (context) => const AdminDashboardRoute(),
+              path: LoginRoute.path,
+              name: 'login',
+              factory: (context) => const LoginRoute()),
+          GoRouteData.$route(
+            path: SignUpRoute.path,
+            name: 'sign_up',
+            factory: (context) => const SignUpRoute(),
+          ),
+          GoRouteData.$route(
+              path: ListMfaRoute.path,
+              name: 'mfaList',
+              factory: (context) => const ListMfaRoute(),
               routes: [
                 GoRouteData.$route(
-                  path: AdminDashboardRoute.path,
-                  name: AdminDashboardRoute.name,
-                  factory: (context) => const AdminDashboardRoute(),
+                  path: MFAEnrollRoute.path,
+                  name: 'enroll',
+                  factory: (context) => const MFAEnrollRoute(),
                 ),
                 GoRouteData.$route(
-                  path: AdminUsersRoute.path,
-                  name: AdminUsersRoute.name,
-                  factory: (context) => const AdminUsersRoute(),
-                ),
-                GoRouteData.$route(
-                  path: AdminProductsRoute.path,
-                  name: AdminProductsRoute.name,
-                  factory: (context) => const AdminProductsRoute(),
-                ),
-                GoRouteData.$route(
-                  path: AdminOrdersRoute.path,
-                  name: AdminOrdersRoute.name,
-                  factory: (context) => const AdminOrdersRoute(),
-                ),
-                GoRouteData.$route(
-                  path: AdminReviewsRoute.path,
-                  name: AdminReviewsRoute.name,
-                  factory: (context) => const AdminReviewsRoute(),
-                ),
-                GoRouteData.$route(
-                  path: AdminCategoriesRoute.path,
-                  name: AdminCategoriesRoute.name,
-                  factory: (context) => const AdminCategoriesRoute(),
-                ),
-                GoRouteData.$route(
-                  path: AdminSettingsRoute.path,
-                  name: AdminSettingsRoute.name,
-                  factory: (context) => const AdminSettingsRoute(),
-                ),
-                GoRouteData.$route(
-                  path: AdminSupportRoute.path,
-                  name: AdminSupportRoute.name,
-                  factory: (context) => const AdminSupportRoute(),
+                  path: VerificationRoute.path,
+                  name: 'verify',
+                  factory: (context) => const VerificationRoute(),
                 ),
               ]),
-        ],
-      ),
+        ]),
+  ]),
+  StatefulShellBranch(
+    initialLocation: '/admin',
+    routes: [
+      GoRouteData.$route(
+          path: AdminShellRoute.path,
+          name: AdminShellRoute.name,
+          factory: (context) => const AdminDashboardRoute(),
+          routes: [
+            GoRouteData.$route(
+              path: AdminDashboardRoute.path,
+              name: AdminDashboardRoute.name,
+              factory: (context) => const AdminDashboardRoute(),
+            ),
+            GoRouteData.$route(
+              path: AdminUsersRoute.path,
+              name: AdminUsersRoute.name,
+              factory: (context) => const AdminUsersRoute(),
+            ),
+            GoRouteData.$route(
+              path: AdminProductsRoute.path,
+              name: AdminProductsRoute.name,
+              factory: (context) => const AdminProductsRoute(),
+            ),
+            GoRouteData.$route(
+              path: AdminOrdersRoute.path,
+              name: AdminOrdersRoute.name,
+              factory: (context) => const AdminOrdersRoute(),
+            ),
+            GoRouteData.$route(
+              path: AdminReviewsRoute.path,
+              name: AdminReviewsRoute.name,
+              factory: (context) => const AdminReviewsRoute(),
+            ),
+            GoRouteData.$route(
+              path: AdminCategoriesRoute.path,
+              name: AdminCategoriesRoute.name,
+              factory: (context) => const AdminCategoriesRoute(),
+            ),
+            GoRouteData.$route(
+              path: AdminSettingsRoute.path,
+              name: AdminSettingsRoute.name,
+              factory: (context) => const AdminSettingsRoute(),
+            ),
+            GoRouteData.$route(
+              path: AdminSupportRoute.path,
+              name: AdminSupportRoute.name,
+              factory: (context) => const AdminSupportRoute(),
+            ),
+          ]),
     ],
-    builder: (context, state, navigationShell) {
-      return AdminShell(navigationShell: navigationShell);
-    });
-
-final supportShellRoute = StatefulShellRoute.indexedStack(
-    branches: [
-      StatefulShellBranch(
-        initialLocation: '/support',
+  ),
+  StatefulShellBranch(
+    initialLocation: '/support',
+    routes: [
+      GoRouteData.$route(
+        path: SupportRoute.path,
+        name: SupportRoute.name,
+        factory: (context) => SupportRoute(),
         routes: [
           GoRouteData.$route(
-            path: SupportRoute.path,
-            name: SupportRoute.name,
-            factory: (context) => SupportRoute(),
-            routes: [
-              GoRouteData.$route(
-                path: SupportTicketsRoute.path,
-                name: SupportTicketsRoute.name,
-                factory: (context) => SupportTicketsRoute(),
-              ),
-              GoRouteData.$route(
-                path: SupportFAQRoute.path,
-                name: SupportFAQRoute.name,
-                factory: (context) => SupportFAQRoute(),
-              ),
-            ],
+            path: SupportTicketsRoute.path,
+            name: SupportTicketsRoute.name,
+            factory: (context) => SupportTicketsRoute(),
+          ),
+          GoRouteData.$route(
+            path: SupportFAQRoute.path,
+            name: SupportFAQRoute.name,
+            factory: (context) => SupportFAQRoute(),
           ),
         ],
       ),
     ],
-    builder: (context, state, navigationShell) {
-      final preload = state.extra as bool? ?? false;
+  ),
+]);
 
-      return AppBarConnection(
-        preload: preload,
-        child: navigationShell,
-      );
-    });
+final GoRoute redirectRootRoute = GoRoute(
+  path: '/',
+  name: 'root',
+  builder: (context, state) => RedirectGuardPage(state),
+);
 
 @TypedGoRoute<HomeRoute>(
   path: HomeRoute.path,

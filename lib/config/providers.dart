@@ -6,15 +6,15 @@ import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers/connectivity/connectivity_providers.dart';
 import 'package:egote_services_v2/config/providers/connectivity/dio_providers.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
+import 'package:egote_services_v2/config/providers/customer/shared_prefs_provider.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/permissions/device_permissions_providers.dart';
 import 'package:egote_services_v2/config/providers/permissions/permissions_providers.dart';
 import 'package:egote_services_v2/config/providers/platform/platform_provider.dart';
-import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
-import 'package:egote_services_v2/config/providers/watchdog/datadog_service.dart';
-import 'package:egote_services_v2/config/providers/webrtc/webrtc_provider.dart';
+import 'package:egote_services_v2/config/providers/webrtc/webrtc_initializer.dart';
+import 'package:egote_services_v2/config/services/app_telemetry_service.dart';
 import 'package:egote_services_v2/features/avis/domain/providers/feedback/feedback_provider.dart';
 import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +29,6 @@ import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
-import '../features/chat/data/data_sources/local/pref_util.dart';
 import '../features/chat/presentation/views/screens/chat_screens.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
 import '../features/devis/domain/providers/check_out_service_provider.dart';
@@ -66,9 +65,8 @@ void _initializeCoreServicesInBackground(SendPort sendPort) async {
     final container = ProviderContainer();
     // Lancer les initialisations en parallèle avec Future.any
     await Future.any([
-      container.read(supabaseInitProvider.future),
-      container.read(webrtcInitProvider.future),
       container.read(datadogProvider.future),
+      container.read(webrtcInitProvider.future),
       container.read(cubeUserProvider.future),
     ]).timeout(const Duration(seconds: 30));
 
@@ -81,23 +79,43 @@ void _initializeCoreServicesInBackground(SendPort sendPort) async {
 }
 
 Future<void> _initializeAdditionalProviders(ProviderContainer container) async {
-  final receivePort = ReceivePort();
+  final developerTag = '🔧 Additional Init';
 
-  // Créer un Isolate pour initialiser les fournisseurs supplémentaires
-  await Isolate.spawn(
-      _initializeAdditionalProvidersInBackground, receivePort.sendPort);
+  try {
+    // ✅ 1. Initialisation des SharedPreferences sur le thread principal
+    developer
+        .log('$developerTag - Initializing SharedPreferences on main isolate');
+    await container.read(sharedPreferencesProvider.future);
 
-  // Attendre la fin de l'initialisation des fournisseurs
-  final result = await receivePort.first;
+    // ✅ 2. Création d’un port pour communication avec l’isolate
+    final receivePort = ReceivePort();
 
-  if (result is String) {
-    developer.log('Error during additional provider initialization: $result');
-    throw Exception(result); // Gérer l'erreur d'initialisation
+    developer.log(
+        '$developerTag - Launching isolate for remaining async providers...');
+    await Isolate.spawn(
+      _initializeAdditionalProvidersInBackground,
+      receivePort.sendPort,
+    );
+
+    final result = await receivePort.first;
+
+    if (result is String && result.startsWith('Error')) {
+      developer.log('$developerTag - Error received: $result');
+      throw Exception(result);
+    }
+
+    developer
+        .log('$developerTag - Additional providers initialized successfully');
+
+    // 🧹 Cleanup logique ou autre tâche post-init si besoin
+    await _cleanupProviders(container);
+    container.dispose();
+  } catch (e, stack) {
+    developer
+        .log('$developerTag - Fatal error during additional provider init: $e');
+    developer.log(stack.toString());
+    rethrow;
   }
-
-  developer.log('Additional providers initialized successfully');
-  await _cleanupProviders(container);
-  container.dispose();
 }
 
 void _initializeAdditionalProvidersInBackground(SendPort sendPort) async {
@@ -107,15 +125,15 @@ void _initializeAdditionalProvidersInBackground(SendPort sendPort) async {
     await Future.wait(
       <Future<dynamic>>[
         container.read(permissionsInitProvider.future),
-        container.read(firebaseInitProvider.future),
         container.read(userFutureProvider.future),
         container.read(cubeUserProvider.future),
-        container.read(sharedPreferencesProvider.future),
         container.read(cubeChatConnectionSettingsProvider.future),
         container.read(produitFutureProvider.future),
       ],
-      eagerError: true, // Si une des futures échoue, l'exécution s'arrête
+      eagerError: true,
     );
+
+    sendPort.send('Additional providers initialized'); // Envoyer un succès
   } catch (e) {
     sendPort.send(
         'Error during additional providers initialization: $e'); // En cas d'erreur
@@ -151,11 +169,8 @@ void _cleanupProvidersInBackground(List<dynamic> args) async {
       container.read(appStateProvider);
       container.read(connectivityStatusProviders);
       container.read(sharedPrefsProvider);
-      container.read(firebaseDatabaseProvider);
-      container.read(firebaseFirestoreProvider);
       container.read(firebaseMessagingProvider);
       container.read(emulatorSettingsProvider);
-      container.read(firebaseAuthProvider);
       container.read(cubeUserControllerProvider);
       container.read(cubeSessionManagerProvider);
       container.read(cubeChatConnectionNotifierProvider);
@@ -172,7 +187,6 @@ void _cleanupProvidersInBackground(List<dynamic> args) async {
       container.read(userRoleProvider);
 
       // Read other services/providers
-      container.read(fireDatabaseProvider);
       container.read(backgroundTaskProvider);
       container.read(editDeviViewModelProvider);
       container.read(produitServiceProvider);
@@ -187,7 +201,6 @@ void _cleanupProvidersInBackground(List<dynamic> args) async {
       container.read(telemetryProvider);
       container.read(feedbacksProvider);
       container.read(authCubeStreamProvider);
-      container.read(datadogServiceProvider);
     });
 
     sendPort.send('Cleanup completed successfully');
@@ -196,18 +209,16 @@ void _cleanupProvidersInBackground(List<dynamic> args) async {
   }
 }
 
-final sharedPreferencesProvider = FutureProvider<SharedPreferences>(
+final sharedPreferencesProvider = FutureProvider<SharedPreferences?>(
   (ref) async {
     // Initialisation de SharedPreferences
-    final sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences;
+    return await ref.runSafe('Shared preferences provider', () async {
+      final sharedPreferences = await SharedPreferences.getInstance();
+      return sharedPreferences;
+    });
   },
   name: 'Shared preferences future provider',
 );
-
-final sharedPrefsProvider = Provider<SharedPrefs>((ref) {
-  return SharedPrefs.instance;
-});
 
 // <---------------- GoRouter Provider --------------------> //
 final goRouterProvider = Provider<GoRouter>((ref) {

@@ -70,14 +70,12 @@ final datadogInstanceProvider =
     Provider<DatadogSdk>((ref) => DatadogSdk.instance);
 
 final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
-  F.appFlavor = Flavor.development;
-
   final configFile = await rootBundle.loadString(F.envFileName, cache: false);
   final env =
       Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
   final String clientToken = env.clientToken;
-  final String environmentName = F.appFlavor.toString();
+  final String environmentName = F.appFlavor.name;
 
   final firstPartyHosts = env.firstPartyHost;
   final hostHeaders = {

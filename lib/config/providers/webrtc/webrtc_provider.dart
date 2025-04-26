@@ -1,127 +1,52 @@
-import 'dart:developer' as developer;
+import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as webrtc;
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
-import '../../../features/chat/domain/models/entities/webrtc_connection/web_rtc_connection_state.dart';
+import '../../../features/chat/application/services/webrtc_signal_config_service.dart';
+import '../../../features/common/domain/entities/states/webrtc_state.dart';
 
-final webrtcProvider = StateNotifierProvider<WebRTCNotifier, WebRTCState>(
-  (ref) => WebRTCNotifier(),
+final webrtcProvider = Provider<webrtc.WebRTC>(
+  (ref) => webrtc.WebRTC(),
 );
 
 class WebRTCNotifier extends StateNotifier<WebRTCState> {
-  WebRTCNotifier() : super(WebRTCState.initializing);
-
-  late final webrtc.RTCVideoRenderer localRenderer;
-  late final webrtc.RTCVideoRenderer remoteRenderer;
-  late final webrtc.RTCPeerConnection peerConnection;
-  late final webrtc.MediaStream localStream;
-
-  late final webrtc.RTCIceCandidate iceCandidate;
-
-  late final webrtc.RTCIceConnectionState iceState;
-
-  Future<void> initialize() async {
-    try {
-      localRenderer = webrtc.RTCVideoRenderer();
-      remoteRenderer = webrtc.RTCVideoRenderer();
-
-      await localRenderer.initialize();
-      await remoteRenderer.initialize();
-
-      await _setupWebRTC();
-
-      // Update state after initialization
-      state = WebRTCState.initialized;
-    } catch (e, s) {
-      if (kDebugMode) {
-        developer.log('Error initializing WebRTC: $e', stackTrace: s);
-      }
-      // Optionally, report the error
-      await Sentry.captureException(e, stackTrace: s);
-
-      // Update state to error state
-      state = WebRTCState.error(errorMessage: s.toString());
-    }
+  final Ref ref;
+  WebRTCNotifier(this.ref) : super(WebRTCState.initializing()) {
+    _initSignalling();
   }
 
-  Future<void> _setupWebRTC() async {
-    // WebRTC setup code here...
-    peerConnection = await webrtc.createPeerConnection({
-      'iceServers': [
-        {'urls': 'stun:stun.l.google.com:19302'}
-      ],
-    });
+  Future<void> _initSignalling() async {
+    final signalling = ref.read(signallingServiceProvider);
 
-    localStream = await webrtc.navigator.mediaDevices.getUserMedia({
-      'audio': true,
-      'video': true,
-    });
+    if (signalling.socket?.disconnected ?? true) {
+      final websocketUrl = "WEB_SOCKET_SERVER_URL";
+      final selfCallerID = Random().nextInt(999999).toString().padLeft(6, '0');
 
-    localStream.getTracks().forEach((track) {
-      peerConnection.addTrack(track, localStream);
-    });
-
-    localRenderer.srcObject = localStream;
-
-    peerConnection.onTrack = (webrtc.RTCTrackEvent event) {
-      remoteRenderer.srcObject = event.streams[0];
-    };
-
-    peerConnection.onIceCandidate = (webrtc.RTCIceCandidate candidate) {
-      // Handle ICE candidate events if needed
-    };
-
-    state = WebRTCState.iceConnectionState(iceState: iceState.toString());
-  }
-
-  @override
-  Future<void> dispose() async {
-    try {
-      await localRenderer.dispose();
-      await remoteRenderer.dispose();
-      await peerConnection.close();
-      await localStream.dispose();
-    } catch (e, s) {
-      if (kDebugMode) {
-        developer.log('Error during dispose: $e', stackTrace: s);
-      }
-      await Sentry.captureException(e, stackTrace: s);
+      signalling.init(websocketUrl: websocketUrl, selfCallerID: selfCallerID);
     }
 
-    super.dispose();
+    signalling.socket?.onConnect((data) {
+      // Optionnel : tu peux déclencher un changement d’état ici si tu veux
+    });
+  }
+
+  void setInitialized({
+    required webrtc.RTCPeerConnection peerConnection,
+    required webrtc.MediaStream localStream,
+    required webrtc.RTCVideoRenderer localRenderer,
+    required webrtc.RTCVideoRenderer remoteRenderer,
+  }) {
+    state = WebRTCState.initialized(
+      peerConnection: peerConnection,
+      localStream: localStream,
+      localRenderer: localRenderer,
+      remoteRenderer: remoteRenderer,
+    );
+  }
+
+  void setError({required String errorMessage}) {
+    state = WebRTCState.error(errorMessage: errorMessage);
   }
 }
-
-final webrtcInitProvider = FutureProvider<bool>((ref) async {
-  try {
-    // Check if WebRTC is initialized already
-    bool isInitialized = webrtc.WebRTC.initialized;
-
-    // If WebRTC is not initialized, try initializing it
-    if (!isInitialized) {
-      await webrtc.WebRTC.initialize(options: {
-        'androidAudioConfiguration':
-            webrtc.AndroidAudioConfiguration.media.toMap(),
-      });
-      webrtc.Helper.setAndroidAudioConfiguration(
-          webrtc.AndroidAudioConfiguration.media);
-    }
-
-    // Ensure the initialization is complete
-    return isInitialized;
-  } catch (e, s) {
-    // Log the error for debugging purposes
-    if (kDebugMode) {
-      developer.log('Error initializing WebRTC: $e', stackTrace: s);
-    }
-
-    // Report the error to Sentry
-    await Sentry.captureException(e, stackTrace: s);
-
-    // Return false indicating initialization failure
-    return false;
-  }
-});

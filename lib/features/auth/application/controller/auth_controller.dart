@@ -12,6 +12,7 @@ import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/list_generate_link_type_provider.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -154,8 +155,10 @@ class AutoAuthController extends StateNotifier<UserModel?> {
   final Ref _ref;
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? _docSub;
 
+  FirebaseApp get firebaseApp => _ref.watch(firebaseInitProvider).requireValue!;
   AuthRepository? get _repository => _ref.read(authRepositoryProvider);
-  FirebaseFirestore get _firestore => _ref.watch(firebaseFirestoreProvider);
+  FirebaseFirestore get _firestore =>
+      _ref.watch(firebaseFirestoreProvider(firebaseApp));
 
   late final CubeUser? _cubeUser;
   DocumentReference<Map<String, dynamic>> get _userDoc =>
@@ -351,7 +354,7 @@ class CustomAuthController extends StateNotifier<AsyncValue<void>> {
     final datadog = ref.read(datadogServiceProvider);
 
     try {
-      datadog.logInfo('Attempting login ', attributes: {'email': email});
+      datadog.trackEvent('Attempting login ', {'email': email});
 
       final res = await ref
           .read(authRepositoryProvider)
@@ -367,10 +370,10 @@ class CustomAuthController extends StateNotifier<AsyncValue<void>> {
 
       await Future.delayed(const Duration(seconds: 1));
 
-      datadog.logInfo('Login successful', attributes: {'email': email});
+      datadog.trackEvent('Login successful', {'email': email});
       state = const AsyncValue.data(null);
     } catch (e, st) {
-      datadog.logErrorWithSentry('Login failed', e, st);
+      datadog.trackError('Login failed: $e', st);
       state = AsyncValue.error(e, st);
     }
   }

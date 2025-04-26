@@ -1,9 +1,11 @@
-import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:isolate';
+import 'dart:ui' as ui;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:egote_services_v2/config/providers/launcherconfig/environment_provider.dart';
+import 'package:egote_services_v2/config/services/app_telemetry_service.dart';
 import 'package:egote_services_v2/features/chat/application/services/firebase_messaging_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,38 +18,40 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../firebase_options.dart';
 import '../../environements/environment.dart';
-import '../../environements/flavors.dart';
 
 // <---------------- Firebase Initialization -------------------> //
 @Riverpod(keepAlive: true)
-final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
-  // Vérifier si Firebase est déjà initialisé
-  if (Firebase.apps.isNotEmpty) {
-    return Firebase.apps.first; // Retourne l'instance Firebase existante
-  }
+final firebaseInitProvider = FutureProvider<FirebaseApp?>((ref) async {
+  return await ref.runSafe('firebaseInitProvider', () async {
+    // Vérifier si Firebase est déjà initialisé
+    if (Firebase.apps.isNotEmpty) {
+      return Firebase.apps.first; // Retourne l'instance Firebase existante
+    }
 
-  final env = await _loadEnvironmentConfig();
+    final env = await _loadEnvironmentConfig(ref);
 
-  await _initializeFirebaseServices(ref, env);
+// Utilise Future.any pour initialiser Firebase de manière optimisée
+    final instance = await _initializeFirebaseInBackground(env);
+    await _initializeFirebaseServices(ref, env, instance);
 
-  // Utilise Future.any pour initialiser Firebase de manière optimisée
-  final instance = await _initializeFirebaseInBackground(env);
-
-  return instance;
+    return instance;
+  });
 });
 
 // Méthode pour charger la configuration de l'environnement
-Future<Environment> _loadEnvironmentConfig() async {
-  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  return Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+Future<Environment> _loadEnvironmentConfig(Ref ref) async {
+  final configFile = ref.watch(environmentProvider);
+  return configFile;
 }
 
 // Initialize Firebase in background isolate
 Future<FirebaseApp> _initializeFirebaseInBackground(Environment env) async {
   final receivePort = ReceivePort();
+  final token = ui.RootIsolateToken.instance!;
+
   await Isolate.spawn(
     _initializeFirebaseIsolate,
-    FirebaseInitializationParams(env, receivePort.sendPort),
+    FirebaseInitializationParams(env, receivePort.sendPort, token),
   );
 
   // Wait for the result from the isolate
@@ -62,6 +66,8 @@ Future<FirebaseApp> _initializeFirebaseInBackground(Environment env) async {
 // Isolate function to initialize Firebase
 void _initializeFirebaseIsolate(FirebaseInitializationParams params) async {
   try {
+    BackgroundIsolateBinaryMessenger.ensureInitialized(params.token);
+
     final firebaseApp = await Future.any([
       _slowFirebaseInit(params.env),
       _delayedFirebaseInit(params.env),
@@ -120,23 +126,39 @@ Future<FirebaseApp> _fastFirebaseInit(Environment env) async {
 }
 
 // Méthode d'initialisation des services Firebase (Firestore, Auth, etc.)
-Future<void> _initializeFirebaseServices(Ref ref, Environment env) async {
-  await Future.delayed(Duration(seconds: 2), () {
-    ref.watch(firebaseFirestoreProvider).settings.persistenceEnabled;
-    ref.watch(firebaseAuthProvider).setPersistence(Persistence.LOCAL);
-    ref.watch(firebaseDatabaseProvider).setLoggingEnabled(true);
-    ref.watch(firebaseMessagingProvider)
-      ..setAutoInitEnabled(true)
-      ..getToken(vapidKey: env.vapidKey)
-      ..requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-        provisional: true,
-        providesAppNotificationSettings: true,
-        announcement: true,
-        criticalAlert: true,
-      );
+Future<void> _initializeFirebaseServices(
+    Ref ref, Environment env, FirebaseApp firebaseApp) async {
+  await ref.runSafe('firebase_firestore_settings', () async {
+    ref
+        .watch(firebaseFirestoreProvider(firebaseApp))
+        .settings
+        .persistenceEnabled;
+  });
+
+  await ref.runSafe('firebase_auth_persistence', () async {
+    await ref
+        .watch(firebaseAuthProvider(firebaseApp))
+        .setPersistence(Persistence.LOCAL);
+  });
+
+  await ref.runSafe('firebase_database_logging', () async {
+    ref.watch(firebaseDatabaseProvider(firebaseApp)).setLoggingEnabled(true);
+  });
+
+  await ref.runSafe('firebase_messaging_init', () async {
+    final messaging = ref.watch(firebaseMessagingProvider);
+
+    await messaging.setAutoInitEnabled(true);
+    await messaging.getToken(vapidKey: env.vapidKey);
+    await messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+      provisional: true,
+      providesAppNotificationSettings: true,
+      announcement: true,
+      criticalAlert: true,
+    );
   });
 }
 
@@ -151,28 +173,37 @@ class FirebaseInitializationException implements Exception {
 
 // <---------------- Firebase Auth Provider -----------------> //
 @Riverpod(keepAlive: true)
-final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
-  final auth = FirebaseAuth.instance;
-  return auth;
+final firebaseAuthProvider =
+    Provider.family<FirebaseAuth, FirebaseApp>((ref, firebaseApp) {
+  return FirebaseAuth.instanceFor(app: firebaseApp);
 });
 
 @Riverpod(keepAlive: true)
 final firebaseDatabaseProvider =
-    Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
+    Provider.family<FirebaseDatabase, FirebaseApp>((ref, firebaseApp) {
+  return FirebaseDatabase.instanceFor(app: firebaseApp);
+});
 
 @Riverpod(keepAlive: true)
 final firebaseFirestoreProvider =
-    Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
+    Provider.family<FirebaseFirestore, FirebaseApp>((ref, firebaseApp) {
+  return FirebaseFirestore.instanceFor(app: firebaseApp);
+});
 
 @Riverpod(keepAlive: true)
-final firebaseMessagingProvider =
-    Provider<FirebaseMessaging>((ref) => FirebaseMessaging.instance);
+final firebaseMessagingProvider = Provider<FirebaseMessaging>((ref) {
+  ref.watch(firebaseInitProvider);
+  return FirebaseMessaging.instance;
+});
+
 final firebaseMessagingServiceProvider =
     Provider<FirebaseMessagingService>((ref) => FirebaseMessagingService());
 
 // <---------------- Emulator Settings --------------------> //
 final emulatorSettingsProvider = Provider((ref) {
-  final fire = ref.watch(firebaseFirestoreProvider);
+  final firebaseApp = ref.read(firebaseInitProvider).requireValue!;
+
+  final fire = ref.watch(firebaseFirestoreProvider(firebaseApp));
   try {
     fire.settings = const Settings(
       host: kIsWeb ? 'localhost' : '10.2.2',
@@ -192,10 +223,14 @@ final emulatorSettingsProvider = Provider((ref) {
 });
 
 // <---------------- Authentication State Providers --------------------> //
-final authStateChangesProvider =
-    StreamProvider((ref) => ref.watch(firebaseAuthProvider).authStateChanges());
-final userChangesProvider =
-    StreamProvider((ref) => ref.watch(firebaseAuthProvider).userChanges());
+final authStateChangesProvider = StreamProvider((ref) {
+  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+  return ref.watch(firebaseAuthProvider(firebaseApp)).authStateChanges();
+});
+final userChangesProvider = StreamProvider((ref) {
+  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+  return ref.watch(firebaseAuthProvider(firebaseApp)).userChanges();
+});
 final authStreamProvider =
     StreamProvider.autoDispose<User?>((ref) => _mapAuthStream(ref));
 final idTokenStreamProvider =
@@ -204,7 +239,11 @@ final userStreamProvider =
     StreamProvider.autoDispose<User?>((ref) => _mapUserStream(ref));
 
 Stream<User?> _mapAuthStream(Ref ref) {
-  return ref.watch(firebaseAuthProvider).authStateChanges().map((user) {
+  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+  return ref
+      .watch(firebaseAuthProvider(firebaseApp))
+      .authStateChanges()
+      .map((user) {
     if (user != null) {
       return user;
     } else {
@@ -214,8 +253,9 @@ Stream<User?> _mapAuthStream(Ref ref) {
 }
 
 Stream<String?> _mapIdTokenStream(Ref ref) {
+  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
   return ref
-      .watch(firebaseAuthProvider)
+      .watch(firebaseAuthProvider(firebaseApp))
       .idTokenChanges()
       .asyncMap((event) async {
     if (event?.refreshToken != null) {
@@ -227,7 +267,11 @@ Stream<String?> _mapIdTokenStream(Ref ref) {
 }
 
 Stream<User?> _mapUserStream(Ref ref) {
-  return ref.watch(firebaseAuthProvider).userChanges().map((event) => event);
+  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+  return ref
+      .watch(firebaseAuthProvider(firebaseApp))
+      .userChanges()
+      .map((event) => event);
 }
 
 // firebase auth Cube User Stream converter Provider
@@ -235,8 +279,9 @@ final authCubeStreamProvider =
     StreamProvider.autoDispose((ref) => _mapAuthCubeStream(ref));
 
 Stream<CubeUser?> _mapAuthCubeStream(Ref ref) {
+  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
   return ref
-      .watch(firebaseAuthProvider)
+      .watch(firebaseAuthProvider(firebaseApp))
       .authStateChanges()
       .map((user) => user != null ? _convertToCubeUser(ref, user) : null);
 }
@@ -264,27 +309,11 @@ CubeUser _convertToCubeUser(Ref ref, User? user) {
   }
 }
 
-// <---------------- Firebase Realtime Database Provider -----------------> //
-final fireDatabaseProvider = Provider<FirebaseDatabase?>((ref) {
-  final auth = ref.watch(authStateChangesProvider);
-  final database = ref.watch(firebaseDatabaseProvider);
-
-  if (auth.asData?.value?.uid != null) {
-    try {
-      return FirebaseDatabase.instanceFor(
-          app: database.app, databaseURL: database.databaseURL);
-    } catch (e) {
-      developer.log('Error initializing Firebase Database: $e');
-      return null;
-    }
-  }
-  return null;
-});
-
 // Helper class for passing data between isolates
 class FirebaseInitializationParams {
   final Environment env;
   final SendPort sendPort;
+  final RootIsolateToken token;
 
-  FirebaseInitializationParams(this.env, this.sendPort);
+  FirebaseInitializationParams(this.env, this.sendPort, this.token);
 }

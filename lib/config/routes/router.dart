@@ -2,14 +2,14 @@ import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/routes/app_router_observer.dart';
 import 'package:egote_services_v2/config/routes/routes.dart';
 import 'package:egote_services_v2/config/routes/sentry_navigator_observer.dart';
-import 'package:egote_services_v2/features/auth/presentation/controller/user_controller_state.dart';
-import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
+import 'package:egote_services_v2/config/services/app_init_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../features/common/presentation/views/widgets/router_refresh_stream.dart';
+import '../../features/common/presentation/controller/providers/lock_screen/lock_screen_provider.dart';
+import '../providers/gorouteprovider/router_refresh_provider.dart';
 import '../providers/watchdog/datadog_service.dart';
 
 part 'router.g.dart';
@@ -38,13 +38,12 @@ RumViewInfo? infoExtractor(Route<dynamic> route) {
 // ignore: prefer-static-class
 GoRouter router(Ref ref) {
   //final notifier = ref.watch(routerProvider).configuration;
+  final isLocked = ref.watch(lockScreenProvider.notifier).state;
 
   return GoRouter(
       routes: [
+        redirectRootRoute,
         homeShellRoute,
-        authShellRoute,
-        adminShellRoute,
-        supportShellRoute,
         /*StatefulShellRoute(
           builder: (context, state, navigationShell) {
             final preload = state.extra as bool? ?? false;
@@ -117,57 +116,14 @@ GoRouter router(Ref ref) {
           },
         ),*/
       ],
-      refreshListenable: GoRouterRefreshStream(
-          ref.watch(authStateProvider.notifier).listenToUserChanges),
       redirect: (context, state) {
-        final user = ref.read(authStateProvider);
-        final userState = ref.read(userControllerStateProvider);
-
-        final isLoggedIn = user != null;
-        final isAdmin = userState.value?.role == 'admin';
-        final isSupport = userState.value?.role == 'support';
-        final path = state.uri.path;
-        final isOnLogin = state.path == '/auth';
-        final isOnCompleteProfile = state.path == '/complete-profile';
-
-        if (!isLoggedIn) return isOnLogin ? null : '/auth';
-
-        final isComplete = userState.maybeWhen(
-          data: (data) => data.isComplete,
-          orElse: () => false,
-        );
-
-        if (!isComplete && !isOnCompleteProfile) {
-          return '/complete-profile';
-        }
-
-        // Redirection basée sur le rôle après profil complété
-        final role = userState.maybeWhen(
-          data: (data) => data.role,
-          orElse: () => null,
-        );
-
-        // Empêche de boucler si déjà à la bonne route
-        if (state.path == '/') {
-          switch (role) {
-            case 'admin':
-              return '/admin/dashboard';
-            case 'client':
-              return '/user_home';
-            case 'agent':
-              return '/support';
-            default:
-              return '/user_home'; // fallback route
-          }
-        }
-
-        if (path.startsWith('/admin') && !isAdmin) return '/not-authorized';
-
-        if (path.startsWith('/support') && !isSupport) return '/not-authorized';
-
+        final container = ProviderScope.containerOf(context);
+        final init = container.read(appInitServiceProvider);
+        if (init.isLoading || !init.hasValue || init.hasError) return '/splash';
         return null;
       },
-      initialLocation: '/home',
+      refreshListenable: ref.watch(routerRefreshStreamProvider),
+      initialLocation: isLocked ? '/lockScreen' : '/home',
       debugLogDiagnostics: true,
       navigatorKey: rootRouterKey,
       observers: [observer, appRouterObserver, sentryNavigatorObserver],

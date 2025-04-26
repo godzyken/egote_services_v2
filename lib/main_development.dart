@@ -9,24 +9,29 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'app.dart';
 import 'config/environements/bootstrap.dart';
 import 'config/environements/flavors.dart';
+import 'config/providers/watchdog/custom/custom_stack_filter.dart';
 
 void main() async {
   F.appFlavor = Flavor.development;
 
-  runZonedGuarded(() async {
+  await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    final container = await bootstrap();
+
     runApp(UncontrolledProviderScope(
-        container: await bootstrap(),
+        container: container,
         child: SentryScreenshotWidget(child: EgoteApp())));
   }, (error, stack) async {
     // Gère les erreurs non capturées et applique le filtre de stack trace
-    final stackTraceFilter = CustomRepetitiveStackFrameFilter();
-    String filteredStack = stackTraceFilter.filter(stack.toString());
+    final stackFilter = CustomRepetitiveStackFrameFilter();
+    final filteredStack = stackFilter.filter(stack.toString());
 
-    // Affiche la stack trace filtrée dans la console (ou tu peux l'enregistrer dans un fichier ou serveur)
-    if (kDebugMode) {
-      developer.log('Erreur non capturée : $error');
+    developer.log('🛑 [Uncaught Error] $error');
+    developer.log('🧹 [Filtered Stack Trace]\n$filteredStack');
 
-      developer.log('Stack trace filtrée :\n$filteredStack');
+    if (kReleaseMode) {
+      await Sentry.captureException(error, stackTrace: stack);
     }
   });
 }

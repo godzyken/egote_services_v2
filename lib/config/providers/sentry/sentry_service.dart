@@ -6,13 +6,26 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stacktrace;
 
 import '../../environements/flavors.dart';
+import '../../providers.dart';
+import '../../services/app_telemetry_service.dart';
+import '../customer/shared_prefs_provider.dart';
+import 'i_sentry_service.dart';
 
-class SentryService {
-  static Future<void> initialize() async {
+class SentryService extends AppTelemetryService implements ISentryService {
+  @override
+  bool get isEnabled => switch (F.appFlavor) {
+        Flavor.production => true,
+        Flavor.development => true,
+        Flavor.local => false,
+      };
+
+  @override
+  Future<void> initialize() async {
     try {
       await SentryFlutter.init(
         _sentryOptions,
@@ -25,7 +38,8 @@ class SentryService {
     }
   }
 
-  static Future<void> configureFlutterErrorHandling() async {
+  @override
+  Future<void> configureFlutterErrorHandling() async {
     FlutterError.onError = (details) {
       FlutterError.presentError(details);
       if (kReleaseMode) exit(1);
@@ -38,11 +52,13 @@ class SentryService {
     };
   }
 
-  static Future<void> initBinding() async {
+  @override
+  Future<void> initBinding() async {
     SentryWidgetsFlutterBinding.ensureInitialized();
   }
 
-  static void addBreadcrumb({
+  @override
+  void addBreadcrumb({
     required String message,
     String? category,
     Map<String, dynamic>? data,
@@ -56,12 +72,13 @@ class SentryService {
       timestamp: DateTime.now().toUtc(),
     ));
     Sentry.configureScope((scope) {
-      scope.setTag('app_flavor', F.appFlavor!.name);
+      scope.setTag('app_flavor', F.appFlavor.name);
       scope.setTag('feature_flag', 'chat_enabled');
     });
   }
 
-  static void addPartialStackFrameFilters() {
+  @override
+  void addPartialStackFrameFilters() {
     FlutterError.addDefaultStackFilter(
       const RepetitiveStackFrameFilter(
         frames: [
@@ -107,7 +124,8 @@ class SentryService {
     );
   }
 
-  static Future<void> trackComplexFlow() async {
+  @override
+  Future<void> trackComplexFlow() async {
     final searchResults = [
       {'id': 1, 'name': 'Philipe Morice'},
       {'id': 2, 'name': 'Romain Roussel'},
@@ -147,7 +165,7 @@ class SentryService {
     }
   }
 
-  static Future<void> _tryProcessOrderBatch(ISentrySpan transaction) async {
+  Future<void> _tryProcessOrderBatch(ISentrySpan transaction) async {
     final span = transaction.startChild('task.process',
         description: 'Traitement des commandes');
     try {
@@ -160,7 +178,7 @@ class SentryService {
     }
   }
 
-  static Future<void> _tryStackFilter(ISentrySpan transaction) async {
+  Future<void> _tryStackFilter(ISentrySpan transaction) async {
     final span = transaction.startChild('task.stacktrace',
         description: 'Ajout des filtres');
     try {
@@ -172,7 +190,8 @@ class SentryService {
     }
   }
 
-  static Future<void> traceTask({
+  @override
+  Future<void> traceTask({
     required String name,
     required Future<void> Function(ISentrySpan span) task,
     Map<String, dynamic>? samplingContext,
@@ -189,7 +208,7 @@ class SentryService {
     }
   }
 
-  static Future<void> _sendDataToSupabase(ISentrySpan transaction) async {
+  Future<void> _sendDataToSupabase(ISentrySpan transaction) async {
     final client = SentryHttpClient();
     final span = transaction.startChild('http.supabase',
         description: 'Requête Supabase');
@@ -232,7 +251,7 @@ class SentryService {
     }
   }
 
-  static void Function(SentryFlutterOptions) get _sentryOptions =>
+  void Function(SentryFlutterOptions) get _sentryOptions =>
       (SentryFlutterOptions options) {
         options.release = 'egote-services@1.0.0+1';
         options.dist = '1';
@@ -307,13 +326,103 @@ class SentryService {
         options.experimental.replay.quality = SentryReplayQuality.high;
       };
 
-  static Future<void> testSendMessage() async {
+  @override
+  Future<void> testSendMessage() async {
     unawaited(Sentry.captureMessage('Sentry Message: Hello world',
         level: SentryLevel.info));
   }
 
-  static Future<void> testSendException() async {
+  @override
+  Future<void> testSendException() async {
     unawaited(
         Sentry.captureException(Exception('Sentry Exception: Hello world')));
+  }
+
+  @override
+  Future<void> trackError(dynamic error, [StackTrace? stackTrace]) async {
+    if (!isEnabled) return;
+    await Sentry.captureException(error, stackTrace: stackTrace);
+  }
+
+  @override
+  Future<void> trackEvent(String eventName,
+      [Map<String, dynamic>? params]) async {
+    if (!isEnabled) return;
+    Sentry.addBreadcrumb(Breadcrumb(
+      message: eventName,
+      category: 'event',
+      data: params,
+      level: SentryLevel.info,
+    ));
+  }
+
+  @override
+  Future<void> captureError(dynamic error, [StackTrace? stackTrace]) async {
+    if (!isEnabled) return;
+    developer.log('[Sentry] Error: $error');
+    if (stackTrace != null) {
+      await Sentry.captureException(error, stackTrace: stackTrace);
+    } else {
+      await Sentry.captureException(error);
+    }
+  }
+
+  @override
+  Future<void> wrapWithSentry(Future<void> Function() task) async {
+    try {
+      await task();
+    } catch (e, st) {
+      await captureError(e, st);
+      rethrow;
+    }
+  }
+
+  @override
+  void setUserContext(String userId, String? email) {
+    Sentry.configureScope((scope) {
+      scope.setUser(SentryUser(id: userId, email: email));
+    });
+  }
+
+  @override
+  Future<void> configureSentry(ProviderContainer container) async {
+    // Si Sentry est activé, configurez les informations dans le scope
+    if (Sentry.isEnabled) {
+      try {
+        // Configurer le scope Sentry avec des informations personnalisées
+        await Sentry.configureScope((scope) async {
+          // Ajouter un tag indiquant si l'application est en mode sombre
+          final sp = container.read(sharedPreferencesProvider);
+          final darkMode = sp.value?.getBool('dark_mode')?.toString() ?? 'null';
+          scope.setTag('dark_mode', darkMode);
+
+          // Ajouter d'autres informations spécifiques comme l'ID utilisateur ou la langue
+          final pref = container.read(sharedPrefsProvider).maybeWhen(
+                data: (prefs) {
+                  return prefs;
+                },
+                orElse: () => null,
+              );
+          final user = await pref?.getUser();
+          if (user != null) {
+            scope.setUser(SentryUser(
+              id: user.id?.toString(),
+              email: user.email,
+              username: user.fullName,
+            ));
+          }
+
+          // Vous pouvez également ajouter des informations spécifiques à l'environnement
+          scope.setTag('app_version', '1.0.0'); // Exemple de version
+          scope.setTag('app_flavor', F.appFlavor.toString());
+        });
+
+        developer.log("✅ Sentry scope configured");
+      } catch (e, stackTrace) {
+        // En cas d'erreur, vous pouvez capturer l'exception dans Sentry
+        await Sentry.captureException(e, stackTrace: stackTrace);
+        developer.log('Error while configuring Sentry: $e');
+      }
+    }
   }
 }

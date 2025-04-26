@@ -13,6 +13,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../domain/entities/notifier/application_state.dart';
+import '../widget/animated_slides_show.dart';
 
 final userDataProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
   final user = await ref.read(authStateProvider.notifier).signInAnonymously();
@@ -22,9 +23,14 @@ final userDataProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
       .from('auth_users_table')
       .select('*')
       .eq('id', user.user!.uid)
-      .single();
+      .maybeSingle();
 
-  return response;
+  return {
+    'isAnonymous': user.user!.isAnonymous,
+    'role': response?['role'] ?? 'guest',
+    'email': user.user!.email,
+    'id': user.user!.uid,
+  };
 });
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -85,18 +91,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (network == NetWorkStatus.off) {
       return _buildNoNetwork();
     }
-    final userDataAsync = ref.watch(userDataProvider);
 
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: _buildAppBar(context, network),
-      body: userDataAsync.when(
-          data: (data) => _buildStack,
-          error: (error, stackTrace) => ErrorScreen(error: error.toString()),
-          loading: () => Center(child: const CircularProgressIndicator(),),
-      ),
+      body: _buildUserData(),
       floatingActionButton: _buildFloatingActionButton(),
     );
+  }
+
+  Widget _buildUserData() {
+    return Consumer(builder: (context, ref, _) {
+      final userDataAsync = ref.watch(userDataProvider);
+      return userDataAsync.when(
+        data: (data) => _buildStack,
+        error: (error, stackTrace) => ErrorScreen(error: error.toString()),
+        loading: () => Center(
+          child: const CircularProgressIndicator(),
+        ),
+      );
+    });
   }
 
   Stack get _buildStack {
@@ -204,31 +218,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildAnimatedImage() {
-    return AnimatedPositioned(
-      duration: const Duration(milliseconds: 1600),
-      top: animate ? 0 : -80,
-      left: animate ? 0 : -80,
-      curve: Curves.elasticInOut,
-      child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 1600),
-        opacity: animate ? 1 : 0,
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 5000),
-          reverseDuration: const Duration(milliseconds: 500),
-          transitionBuilder: (child, animation) => ScaleTransition(
-            scale: animation,
-            child: child,
-          ),
-          switchInCurve: Curves.decelerate,
-          switchOutCurve: Curves.elasticOut,
-          child: ValueListenableBuilder<int>(
-            valueListenable: _imageIndexNotifier,
-            builder: (context, value, _) {
-              return imageWidgets[value];
-            },
-          ),
-        ),
-      ),
+    return AnimatedSlidesShow(
+      images: imageWidgets,
+      enableAnimation: true,
+      enableSwipe: true,
+      onSlideChange: (index) {
+        // Optionnel : print ou effet visuel
+        debugPrint('Slide changé: $index');
+      },
     );
   }
 
