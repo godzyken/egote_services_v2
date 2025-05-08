@@ -324,7 +324,8 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
                     } // cancel current Dialog
                   },
                 ).whenComplete(() {
-                  final app = ref.read(firebaseInitProvider).requireValue!;
+                  final app =
+                      ref.read(firebaseInitProviderProvider).requireValue;
                   ref.watch(cubeChatConnectionProvider).destroy();
                   _pushNotificationService.unsubscribe();
                   ref

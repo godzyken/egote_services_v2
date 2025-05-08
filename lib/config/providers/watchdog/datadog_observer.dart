@@ -74,7 +74,19 @@ class DatadogObserver extends ProviderObserver {
     });
 
     if (enableSentry) {
-      Sentry.captureException(error, stackTrace: stackTrace);
+      Sentry.captureException(error, stackTrace: stackTrace,
+          withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
     }
 
     developer.log('Error in provider: $name — $error');

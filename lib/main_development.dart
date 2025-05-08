@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,18 +11,25 @@ import 'app.dart';
 import 'config/environements/bootstrap.dart';
 import 'config/environements/flavors.dart';
 import 'config/providers/watchdog/custom/custom_stack_filter.dart';
+import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   F.appFlavor = Flavor.development;
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
+    // Initialisation du conteneur (si nécessaire)
     final container = await bootstrap();
 
-    runApp(UncontrolledProviderScope(
+    // Initialiser Sentry avec les options et l'exécution de l'application
+    runApp(
+      UncontrolledProviderScope(
         container: container,
-        child: SentryScreenshotWidget(child: EgoteApp())));
+        child: SentryScreenshotWidget(child: EgoteApp()),
+      ),
+    );
   }, (error, stack) async {
     // Gère les erreurs non capturées et applique le filtre de stack trace
     final stackFilter = CustomRepetitiveStackFrameFilter();

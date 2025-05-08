@@ -12,4 +12,6 @@ export 'userscreens/complete_profile_screen.dart';
 export 'userscreens/update_user_dialog_screen.dart';
 export 'userscreens/user_home_screen.dart';
 export 'userscreens/user_list_screen.dart';
-export 'userscreens/user_profile_screen.dart';
+export 'userscreens/user_profile/profile_body.dart';
+export 'userscreens/user_profile/show_avatar_bottom_sheet.dart';
+export 'userscreens/user_profile/user_profile_screen.dart';

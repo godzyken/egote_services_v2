@@ -1,3 +1,4 @@
+import 'package:egote_services_v2/config/environements/flavors.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/sentry/sentry_provider.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
@@ -21,6 +22,7 @@ void main() {
   late MockRef mockRef;
 
   setUpAll(() async {
+    F.appFlavor = Flavor.development;
     mockFirebaseApp = MockFirebaseApp();
     when(() => mockFirebaseApp.name).thenReturn('mock_firebase_app');
     //Firebase?.apps = [mockFirebaseApp];
@@ -36,9 +38,9 @@ void main() {
 
     container = ProviderContainer(overrides: [
       sentryServiceProvider.overrideWithValue(mockSentry),
-      firebaseInitProvider.overrideWith((ref) async => mockFirebaseApp),
+      firebaseInitProviderProvider.overrideWith((ref) async => mockFirebaseApp),
       supabaseInitProvider
-          .overrideWith((ref) async => mockSupabaseInitResult.initSupabase()),
+          .overrideWith((ref) async => mockSupabaseInitResult.client),
     ]);
 
     // Mocking Sentry and Firebase behaviors
@@ -62,7 +64,6 @@ void main() {
 
   test('AppInitService initializes successfully', () async {
     // Mock behavior for Sentry initialization
-    when(() => mockSentry.initBinding()).thenAnswer((_) async {});
     when(() => mockSentry.initialize()).thenAnswer((_) async {});
     when(() => mockSentry.configureFlutterErrorHandling())
         .thenAnswer((_) async {});
@@ -77,7 +78,6 @@ void main() {
     verify(() => Firebase.initializeApp()).called(1);
 
     verify(() => mockSentry.initialize()).called(1);
-    verify(() => mockSentry.initBinding()).called(1);
     verify(() => mockSentry.configureSentry(any())).called(1);
 
     expect(Firebase.apps.isNotEmpty, true);
@@ -86,10 +86,10 @@ void main() {
   test('AppInitService throws when Firebase init fails', () async {
     final errorContainer = ProviderContainer(overrides: [
       sentryServiceProvider.overrideWithValue(mockSentry),
-      firebaseInitProvider.overrideWith((ref) async =>
+      firebaseInitProviderProvider.overrideWith((ref) async =>
           throw Exception("Firebase error")), // Simulating Firebase error
       supabaseInitProvider
-          .overrideWith((ref) async => mockSupabaseInitResult.initSupabase()),
+          .overrideWith((ref) async => mockSupabaseInitResult.client),
     ]);
 
     final service = errorContainer.read(appInitServiceProvider.notifier);

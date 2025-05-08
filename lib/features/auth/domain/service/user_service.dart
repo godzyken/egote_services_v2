@@ -46,7 +46,7 @@ class FirebaseAuthService extends _$FirebaseAuthService {
   Future<CubeUser?> build() async {
     developer.log("🔥 build() appelé dans FirebaseAuthService");
 
-    final firebaseApp = ref.read(firebaseInitProvider).requireValue!;
+    final firebaseApp = ref.read(firebaseInitProviderProvider).requireValue;
 
     _supabaseClient = ref.read(supabaseClientProvider);
     _firebaseAuth = ref.read(firebaseAuthProvider(firebaseApp));

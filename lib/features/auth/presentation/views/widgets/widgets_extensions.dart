@@ -1,7 +1,11 @@
 export 'app_bar_connection.dart';
+export 'avatar_circle.dart';
+export 'avatar_uploader.dart';
 export 'chips_bar_widget.dart';
 export 'email_field.dart';
 export 'name_field.dart';
 export 'password_field.dart';
+export 'profile_app_bar.dart';
+export 'profile_bottom_bar.dart';
 export 'profile_widget.dart';
 export 'sign_in_with_google_button.dart';

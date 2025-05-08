@@ -1,4 +1,3 @@
-import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/features/auth/application/controller/auth_controller.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
@@ -6,30 +5,28 @@ import 'package:egote_services_v2/features/auth/infrastructure/repositories/list
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../config/providers/customer/shared_prefs_provider.dart';
 import '../../../../config/providers/supabase/supabase_providers.dart';
 import '../../infrastructure/repositories/auth_repository.dart';
 
 final authRepositoryProvider = Provider.autoDispose<AuthRepository>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider).value;
+  final prefsValue = ref.watch(sharedPrefsAsyncNotifierProvider);
+
   final client = ref.watch(supabaseClientProvider).auth;
   final link = ref.watch(generateLinkTypeNotifierProvider);
-  try {
-    client.startAutoRefresh();
-    prefs?.reload();
-
-    return AuthRepository(AuthTokenLocalDataSource(prefs!), client, link);
-  } on FlutterError catch (e) {
-    ref.onCancel(() {
-      client.startAutoRefresh();
-      prefs!.reload();
-    });
-    if (kDebugMode) {
-      print('Auth Repository error: $e');
-    }
-  }
 
   ref.keepAlive();
-  return AuthRepository(AuthTokenLocalDataSource(prefs!), client, link);
+
+  if (!prefsValue.hasValue) {
+    throw Exception('Shared preferences not initialized');
+  }
+
+  final prefs = prefsValue.requireValue;
+
+  client.startAutoRefresh();
+  prefs.prefs.reload();
+
+  return AuthRepository(AuthTokenLocalDataSource(prefs), client, link);
 }, name: 'Auth repository provider');
 
 final authStateListenable = ValueNotifier<bool>(false);

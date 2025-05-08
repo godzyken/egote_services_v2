@@ -14,13 +14,11 @@ import 'package:egote_services_v2/config/providers/permissions/permissions_provi
 import 'package:egote_services_v2/config/providers/platform/platform_provider.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/config/providers/webrtc/webrtc_initializer.dart';
-import 'package:egote_services_v2/config/services/app_telemetry_service.dart';
 import 'package:egote_services_v2/features/avis/domain/providers/feedback/feedback_provider.dart';
 import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/routes/routes.dart';
 import '../features/auth/data/data_source_providers.dart';
@@ -85,7 +83,7 @@ Future<void> _initializeAdditionalProviders(ProviderContainer container) async {
     // ✅ 1. Initialisation des SharedPreferences sur le thread principal
     developer
         .log('$developerTag - Initializing SharedPreferences on main isolate');
-    await container.read(sharedPreferencesProvider.future);
+    await container.read(sharedPrefsAsyncNotifierProvider.future);
 
     // ✅ 2. Création d’un port pour communication avec l’isolate
     final receivePort = ReceivePort();
@@ -208,17 +206,6 @@ void _cleanupProvidersInBackground(List<dynamic> args) async {
     sendPort.send('Error during cleanup: $e');
   }
 }
-
-final sharedPreferencesProvider = FutureProvider<SharedPreferences?>(
-  (ref) async {
-    // Initialisation de SharedPreferences
-    return await ref.runSafe('Shared preferences provider', () async {
-      final sharedPreferences = await SharedPreferences.getInstance();
-      return sharedPreferences;
-    });
-  },
-  name: 'Shared preferences future provider',
-);
 
 // <---------------- GoRouter Provider --------------------> //
 final goRouterProvider = Provider<GoRouter>((ref) {

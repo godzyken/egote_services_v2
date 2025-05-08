@@ -27,6 +27,7 @@ abstract class Environment with _$Environment {
   /// [materialBankBaseUrl] is the baseUrl to Material Bank
 
   const factory Environment({
+    @JsonKey(includeFromJson: true, includeToJson: true)
     required Flavor appFlavor,
     required String supabaseUrl,
     required String supabaseAnonKey,

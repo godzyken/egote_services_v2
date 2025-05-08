@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/config/providers/sentry/sentry_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/sentry/sentry_provider.dart';
@@ -126,15 +127,34 @@ extension TelemetryExtension on TelemetryManager {
 }
 
 extension RefSafeRun on Ref {
-  Future<T?> runSafe<T>(String label, Future<T> Function() task) async {
+  Future<T> runSafe<T>(
+    String label,
+    Future<T> Function() task, {
+    T? fallback,
+    int maxRetries = 3,
+  }) async {
     final telemetry = read(telemetryManagerProvider);
 
-    try {
-      final result = await telemetry.trace(label, task);
-      return result;
-    } catch (e, s) {
-      await telemetry.trackError(e, s);
-      return null;
+    int attempt = 0;
+
+    while (true) {
+      try {
+        return await telemetry.trace(label, task);
+      } catch (e, s) {
+        if (e is PlatformException && e.code == 'channel-error') {
+          if (attempt++ >= maxRetries) {
+            await telemetry.trackError(e, s);
+            if (fallback != null) return fallback;
+            rethrow;
+          }
+          await Future.delayed(Duration(seconds: 2));
+          continue;
+        }
+
+        await telemetry.trackError(e, s);
+        if (fallback != null) return fallback;
+        rethrow;
+      }
     }
   }
 

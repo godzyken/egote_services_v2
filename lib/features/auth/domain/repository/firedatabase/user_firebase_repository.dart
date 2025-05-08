@@ -11,7 +11,7 @@ class UserFirebaseRepository {
 
   UserFirebaseRepository({required Ref ref}) : _ref = ref;
 
-  FirebaseApp? get firebaseApp => _ref.read(firebaseInitProvider).value;
+  FirebaseApp? get firebaseApp => _ref.read(firebaseInitProviderProvider).value;
 
   Future<UserEntityModel?> fetchCurrentUserEntity() async {
     final userId = _getCurrentUserId();

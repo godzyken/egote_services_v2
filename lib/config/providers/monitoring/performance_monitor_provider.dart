@@ -3,21 +3,23 @@ import 'package:egote_services_v2/config/providers/supabase/supabase_providers.d
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers.dart';
+import '../customer/shared_prefs_provider.dart';
 import '../sentry/riverpod_performance_monitor.dart';
 
 final performanceMonitorProvider = Provider<RiverpodPerformanceMonitor>((ref) {
   final container = ref.read(containerProvider);
   final monitor = RiverpodPerformanceMonitor(container);
-  final firebaseApp = ref.read(firebaseInitProvider).requireValue!;
+  final firebaseApp = ref.read(firebaseInitProviderProvider).requireValue;
 
   // On observe tous les FutureProvider pour capturer leur exécution
-  ref.listen<AsyncValue<dynamic>>(firebaseInitProvider, (previous, next) {
+  ref.listen<AsyncValue<dynamic>>(firebaseInitProviderProvider,
+      (previous, next) {
     if (next is AsyncLoading) {
       monitor.startProviderTimer(firebaseAuthProvider(firebaseApp));
     } else if (next is AsyncData) {
       monitor.stopProviderTimer(supabaseInitProvider, next.value);
     } else if (next is AsyncError) {
-      monitor.stopProviderTimer(sharedPreferencesProvider, next.error);
+      monitor.stopProviderTimer(sharedPrefsAsyncNotifierProvider, next.error);
     }
   });
 

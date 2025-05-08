@@ -1,15 +1,14 @@
-import 'dart:convert';
 import 'dart:developer' as developer;
 
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
-import 'package:egote_services_v2/config/environements/environment.dart';
-import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/watchdog_logger_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../environements/flavors.dart';
+import '../customer/shared_prefs_provider.dart';
+import '../launcherconfig/environment_provider.dart';
 import 'datadog_service.dart';
 
 final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
@@ -70,9 +69,8 @@ final datadogInstanceProvider =
     Provider<DatadogSdk>((ref) => DatadogSdk.instance);
 
 final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
-  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  final env =
-      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  final env = ref.watch(environmentProvider);
+  ;
 
   final String clientToken = env.clientToken;
   final String environmentName = F.appFlavor.name;
@@ -131,19 +129,33 @@ class TrackingConsentNotifier extends StateNotifier<TrackingConsent> {
     _loadConsent();
   }
 
-  Ref? _ref;
+  late final Ref _ref;
 
   Future<void> _loadConsent() async {
-    final prefs = _ref?.watch(sharedPreferencesProvider).value;
+    final prefsValue = _ref.watch(sharedPrefsAsyncNotifierProvider);
+
+    if (!prefsValue.hasValue) {
+      return;
+    }
+
+    final prefsAsync = prefsValue.requireValue;
+
     final consentString =
-        prefs!.getString('trackingConsent') ?? 'notDetermined';
+        prefsAsync.prefs.getString('trackingConsent') ?? 'notDetermined';
     state = TrackingConsent.values
         .firstWhere((e) => e.toString() == 'TrackingConsent.$consentString');
   }
 
   Future<void> _saveConsent() async {
-    final prefs = _ref?.watch(sharedPreferencesProvider).value;
-    await prefs!.setString('trackingConsent', state.toString().split('.').last);
+    final prefsValue = _ref.read(sharedPrefsAsyncNotifierProvider);
+    if (!prefsValue.hasValue) {
+      return;
+    }
+
+    final prefsAsync = prefsValue.requireValue;
+
+    await prefsAsync.prefs
+        .setString('trackingConsent', state.toString().split('.').last);
   }
 
   // Met à jour l'état du consentement à "Granted"

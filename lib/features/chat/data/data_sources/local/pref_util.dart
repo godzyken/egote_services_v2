@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +18,16 @@ const String prefSubscriptionId = "pref_subscription_id";
 const String prefSelectedDialogId = "pref_selected_dialog_id";
 
 class SharedPrefs {
-  static final SharedPrefs _instance = SharedPrefs._internal();
+  final SharedPreferences prefs;
+
+  SharedPrefs._(this.prefs);
+
+  static Future<SharedPrefs> create() async {
+    final prefs = await SharedPreferences.getInstance();
+    return SharedPrefs._(prefs);
+  }
+
+/*  static final SharedPrefs _instance = SharedPrefs._internal();
   late SharedPreferences prefs;
 
   SharedPrefs._internal();
@@ -42,7 +50,7 @@ class SharedPrefs {
       completer.complete(_instance);
     }
     return completer.future;
-  }
+  }*/
 
   saveNewUser(CubeUser cubeUser, LoginType loginType) {
     // prefs.clear();
@@ -154,32 +162,52 @@ class SharedPrefs {
   }
 
   saveChatId(String chatId) {}
-  String? getChatId() {}
+  String? getChatId() {
+    return null;
+  }
 
   saveChatName(String chatName) {}
-  String? getChatName() {}
+  String? getChatName() {
+    return null;
+  }
 
   saveChatAvatar(String chatAvatar) {}
-  String? getChatAvatar() {}
+  String? getChatAvatar() {
+    return null;
+  }
 
   saveChatType(String chatType) {}
-  String? getChatType() {}
+  String? getChatType() {
+    return null;
+  }
 
   saveChatLastMessage(String chatLastMessage) {}
-  String? getChatLastMessage() {}
+  String? getChatLastMessage() {
+    return null;
+  }
 
   saveChatLastMessageDate(String chatLastMessageDate) {}
-  String? getChatLastMessageDate() {}
+  String? getChatLastMessageDate() {
+    return null;
+  }
 
   saveChatUnreadMessages(int chatUnreadMessages) {}
-  int? getChatUnreadMessages() {}
+  int? getChatUnreadMessages() {
+    return null;
+  }
 
   saveChatUnreadMessagesCount(int chatUnreadMessagesCount) {}
-  int? getChatUnreadMessagesCount() {}
+  int? getChatUnreadMessagesCount() {
+    return null;
+  }
 
   saveSelectedTheme(String selectedTheme) {}
-  String? getSelectedTheme() {}
+  String? getSelectedTheme() {
+    return null;
+  }
 
   saveSelectedLanguage(String selectedLanguage) {}
-  String? getSelectedLanguage() {}
+  String? getSelectedLanguage() {
+    return null;
+  }
 }

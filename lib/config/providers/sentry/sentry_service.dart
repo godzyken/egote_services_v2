@@ -3,15 +3,14 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:io';
 
+import 'package:egote_services_v2/config/providers/watchdog/custom/custom_logger.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:stack_trace/stack_trace.dart' as stacktrace;
 
 import '../../environements/flavors.dart';
-import '../../providers.dart';
 import '../../services/app_telemetry_service.dart';
 import '../customer/shared_prefs_provider.dart';
 import 'i_sentry_service.dart';
@@ -26,15 +25,25 @@ class SentryService extends AppTelemetryService implements ISentryService {
 
   @override
   Future<void> initialize() async {
+    SentryWidgetsFlutterBinding.ensureInitialized();
     try {
-      await SentryFlutter.init(
-        _sentryOptions,
-      );
-      developer.log('Sentry initialisé avec succès');
-    } on MissingPluginException catch (e, st) {
-      developer.log('Erreur lors de l\'initialisation de Sentry: $e');
-      await Sentry.captureException(e, stackTrace: st);
-      rethrow;
+      final screenshot = await SentryFlutter.captureScreenshot();
+      CustomLogger()
+          .info('✅ Sentry initialized from initializeService: $screenshot');
+    } catch (e, st) {
+      await Sentry.captureException(e, stackTrace: st, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
+      developer.log('❌ Error while initializing Sentry: $e');
     }
   }
 
@@ -43,6 +52,7 @@ class SentryService extends AppTelemetryService implements ISentryService {
     FlutterError.onError = (details) {
       FlutterError.presentError(details);
       if (kReleaseMode) exit(1);
+      Sentry.captureException(details.exception, stackTrace: details.stack);
     };
 
     FlutterError.demangleStackTrace = (StackTrace stack) {
@@ -53,28 +63,40 @@ class SentryService extends AppTelemetryService implements ISentryService {
   }
 
   @override
-  Future<void> initBinding() async {
-    SentryWidgetsFlutterBinding.ensureInitialized();
-  }
-
-  @override
   void addBreadcrumb({
     required String message,
     String? category,
     Map<String, dynamic>? data,
     SentryLevel? level = SentryLevel.info,
   }) {
-    Sentry.addBreadcrumb(Breadcrumb(
-      message: message,
-      category: category ?? 'custom',
-      data: data,
-      level: level,
-      timestamp: DateTime.now().toUtc(),
-    ));
-    Sentry.configureScope((scope) {
-      scope.setTag('app_flavor', F.appFlavor.name);
-      scope.setTag('feature_flag', 'chat_enabled');
-    });
+    try {
+      Sentry.addBreadcrumb(Breadcrumb(
+        message: message,
+        category: category ?? 'custom',
+        data: data,
+        level: level,
+        timestamp: DateTime.now().toUtc(),
+      ));
+      Sentry.configureScope((scope) {
+        scope.setTag('app_flavor', F.appFlavor.name);
+        scope.setTag('feature_flag', 'chat_enabled');
+      });
+    } catch (e, st) {
+      Sentry.captureException('❌ Error while adding breadcrumb: $e',
+          stackTrace: st, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
+      developer.log('<- Error In sentry service while adding breadcrumb');
+    }
   }
 
   @override
@@ -161,7 +183,18 @@ class SentryService extends AppTelemetryService implements ISentryService {
       await transaction.finish(status: SpanStatus.ok());
     } catch (e, st) {
       await transaction?.finish(status: SpanStatus.internalError());
-      await Sentry.captureException(e, stackTrace: st);
+      await Sentry.captureException(e, stackTrace: st, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
     }
   }
 
@@ -174,7 +207,18 @@ class SentryService extends AppTelemetryService implements ISentryService {
     } catch (e, st) {
       span.throwable = e;
       await span.finish(status: SpanStatus.internalError());
-      await Sentry.captureException(e, stackTrace: st);
+      await Sentry.captureException(e, stackTrace: st, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
     }
   }
 
@@ -186,7 +230,18 @@ class SentryService extends AppTelemetryService implements ISentryService {
       await span.finish(status: SpanStatus.ok());
     } catch (e, st) {
       await span.finish(status: SpanStatus.internalError());
-      await Sentry.captureException(e, stackTrace: st);
+      await Sentry.captureException(e, stackTrace: st, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
     }
   }
 
@@ -204,7 +259,18 @@ class SentryService extends AppTelemetryService implements ISentryService {
     } catch (e, st) {
       span.throwable = e;
       await span.finish(status: SpanStatus.internalError());
-      await Sentry.captureException(e, stackTrace: st);
+      await Sentry.captureException(e, stackTrace: st, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
     }
   }
 
@@ -245,19 +311,29 @@ class SentryService extends AppTelemetryService implements ISentryService {
       await span.finish(status: SpanStatus.ok());
     } catch (e, st) {
       await span.finish(status: SpanStatus.internalError());
-      await Sentry.captureException(e, stackTrace: st);
+      await Sentry.captureException(e, stackTrace: st, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
     } finally {
       client.close();
     }
   }
 
-  void Function(SentryFlutterOptions) get _sentryOptions =>
+  void Function(SentryFlutterOptions) get sentryOptions =>
       (SentryFlutterOptions options) {
         options.release = 'egote-services@1.0.0+1';
         options.dist = '1';
         options.dsn =
             'https://0ee7fbe213ed4eeb9d8e2225896c1601@o573314.ingest.us.sentry.io/4505427558400000';
-        options.tracesSampleRate = 1.0;
         options.debug = !kReleaseMode;
         options.environment = kReleaseMode ? 'production' : 'development';
         options.enableAutoPerformanceTracing = true;
@@ -294,7 +370,6 @@ class SentryService extends AppTelemetryService implements ISentryService {
 
           return event;
         };
-        options.tracesSampleRate = 1.0;
         options.tracesSampler = (samplingContext) {
           final ctx = samplingContext.customSamplingContext;
           // If this is the continuation of a trace, just use that decision (rate controlled by the caller).
@@ -341,19 +416,48 @@ class SentryService extends AppTelemetryService implements ISentryService {
   @override
   Future<void> trackError(dynamic error, [StackTrace? stackTrace]) async {
     if (!isEnabled) return;
-    await Sentry.captureException(error, stackTrace: stackTrace);
+    await Sentry.captureException(error, stackTrace: stackTrace,
+        withScope: (scope) {
+      scope.setTag('env', 'development');
+      scope.extra;
+      scope.user;
+      scope.transaction;
+      scope.level;
+      scope.contexts;
+      scope.breadcrumbs;
+      scope.span;
+      scope.clearBreadcrumbs();
+      scope.removeContexts('id');
+    });
   }
 
   @override
   Future<void> trackEvent(String eventName,
       [Map<String, dynamic>? params]) async {
     if (!isEnabled) return;
-    Sentry.addBreadcrumb(Breadcrumb(
-      message: eventName,
-      category: 'event',
-      data: params,
-      level: SentryLevel.info,
-    ));
+    try {
+      Sentry.addBreadcrumb(Breadcrumb(
+        message: eventName,
+        category: 'event',
+        data: params,
+        level: SentryLevel.info,
+      ));
+    } catch (e, st) {
+      await Sentry.captureException('❌ Error while adding breadcrumb: $e',
+          stackTrace: st, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
+      developer.log('❌ Error Sentry while tracking event: $e');
+    }
   }
 
   @override
@@ -361,7 +465,19 @@ class SentryService extends AppTelemetryService implements ISentryService {
     if (!isEnabled) return;
     developer.log('[Sentry] Error: $error');
     if (stackTrace != null) {
-      await Sentry.captureException(error, stackTrace: stackTrace);
+      await Sentry.captureException(error, stackTrace: stackTrace,
+          withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
     } else {
       await Sentry.captureException(error);
     }
@@ -386,43 +502,51 @@ class SentryService extends AppTelemetryService implements ISentryService {
 
   @override
   Future<void> configureSentry(ProviderContainer container) async {
-    // Si Sentry est activé, configurez les informations dans le scope
-    if (Sentry.isEnabled) {
-      try {
-        // Configurer le scope Sentry avec des informations personnalisées
-        await Sentry.configureScope((scope) async {
-          // Ajouter un tag indiquant si l'application est en mode sombre
-          final sp = container.read(sharedPreferencesProvider);
-          final darkMode = sp.value?.getBool('dark_mode')?.toString() ?? 'null';
-          scope.setTag('dark_mode', darkMode);
+    if (!Sentry.isEnabled) return;
 
-          // Ajouter d'autres informations spécifiques comme l'ID utilisateur ou la langue
-          final pref = container.read(sharedPrefsProvider).maybeWhen(
-                data: (prefs) {
-                  return prefs;
-                },
-                orElse: () => null,
-              );
-          final user = await pref?.getUser();
-          if (user != null) {
-            scope.setUser(SentryUser(
-              id: user.id?.toString(),
-              email: user.email,
-              username: user.fullName,
-            ));
-          }
+    try {
+      final sharedPrefsValue = container.read(sharedPrefsAsyncNotifierProvider);
 
-          // Vous pouvez également ajouter des informations spécifiques à l'environnement
-          scope.setTag('app_version', '1.0.0'); // Exemple de version
-          scope.setTag('app_flavor', F.appFlavor.toString());
-        });
+      // Si SharedPrefs n'est pas encore chargé, on ne peut pas configurer Sentry
+      if (!sharedPrefsValue.hasValue) return;
 
-        developer.log("✅ Sentry scope configured");
-      } catch (e, stackTrace) {
-        // En cas d'erreur, vous pouvez capturer l'exception dans Sentry
-        await Sentry.captureException(e, stackTrace: stackTrace);
-        developer.log('Error while configuring Sentry: $e');
-      }
+      final sharedPrefs = sharedPrefsValue.requireValue;
+
+      final darkMode =
+          sharedPrefs.getSelectedTheme() == "dark" ? "true" : "false";
+
+      final user = await sharedPrefs.getUser();
+
+      Sentry.configureScope((scope) {
+        scope.setTag('dark_mode', darkMode);
+        scope.setTag('app_version', '1.0.0');
+        scope.setTag('app_flavor', F.appFlavor.toString());
+
+        if (user != null) {
+          scope.setUser(SentryUser(
+            id: user.id?.toString(),
+            email: user.email,
+            username: user.fullName,
+          ));
+        }
+      });
+
+      developer.log("✅ Sentry scope configured");
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace,
+          withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
+      developer.log('❌ Error while configuring Sentry: $e');
     }
   }
 }

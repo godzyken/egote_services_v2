@@ -1,13 +1,11 @@
 import 'dart:developer' as developer;
-import 'dart:isolate';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:workmanager/workmanager.dart';
 
-import '../../providers.dart';
-import '../watchdog/datadog_logger.dart';
+import '../../../features/chat/data/data_sources/local/pref_util.dart';
 
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
@@ -17,12 +15,19 @@ void callbackDispatcher() {
     developer.log('🔁 WorkManager Task triggered: $task');
     developer.log('📦 Data received: $inputData');
 
+    SentryWidgetsFlutterBinding.ensureInitialized();
+
     try {
       final bool result = await myTaskFunction(task);
       if (result == true) {
         final sharedPreferences = inputData?['sharedPreferences'];
-        final totalExecutions = sharedPreferences.getInt('totalExecutions');
-        sharedPreferences.setInt('totalExecutions', totalExecutions! + 1);
+        if (sharedPreferences == null) {
+          return Future.value(false);
+        }
+        if (sharedPreferences is! List) {
+          final totalExecutions = sharedPreferences.getInt('totalExecutions');
+          sharedPreferences.setInt('totalExecutions', totalExecutions! + 1);
+        }
 
         return Future.value(true);
       } else {
@@ -45,26 +50,21 @@ const simplePeriodic1HourTask =
     "be.tramckrijte.workmanagerExample.simplePeriodic1HourTask";
 
 Future<void> providerTaskIsolate() async {
-  Ref? ref;
   Workmanager().executeTask((task, inputData) async {
-    developer.log(
-        "Native called background task: $task"); //simpleTask will be emitted here.
-
-    int? totalExecutions;
-    final sharedPreferences = ref!.read(sharedPreferencesProvider).value;
+    developer.log("📦 Native called background task: $task");
 
     try {
-      totalExecutions = sharedPreferences?.getInt('totalExecutions');
-      ref
-          .read(sharedPreferencesProvider)
-          .value!
-          .setInt('totalExecutions', totalExecutions! + 1);
-    } on IsolateSpawnException catch (err) {
-      Logger().providerDidFail(sharedPreferencesProvider, err,
-          StackTrace.fromString(err.message), ref.container);
-    }
+      final sharedPrefs = await SharedPrefs.create();
+      int totalExecutions = sharedPrefs.prefs.getInt('totalExecutions') ?? 0;
 
-    return Future.value(true);
+      await sharedPrefs.prefs.setInt('totalExecutions', totalExecutions + 1);
+
+      developer.log("✅ Background execution count: ${totalExecutions + 1}");
+      return Future.value(true);
+    } catch (e, st) {
+      developer.log("❌ Error in background task: $e", stackTrace: st);
+      return Future.value(false);
+    }
   });
 
   Workmanager().registerOneOffTask("1", "background_task",

@@ -3,7 +3,8 @@ import 'dart:developer' as developer;
 import 'dart:ui';
 
 import 'package:connectycube_sdk/connectycube_calls.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../data/data_sources/local/pref_util.dart';
 
 typedef StreamCallback = void Function(MediaStream stream);
 typedef ErrorCallback = void Function(String message);
@@ -23,7 +24,7 @@ class WebRTCP2PService {
   Duration _reconnectDelay = const Duration(seconds: 2);
 
   // Variables pour gérer SharedPreferences
-  SharedPreferences prefs;
+  SharedPrefs prefs;
 
   /// Callbacks
   StreamCallback? onLocalStream;
@@ -45,8 +46,9 @@ class WebRTCP2PService {
   }
 
   void _initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    _reconnectDelay = Duration(seconds: prefs.getInt('reconnectDelay') ?? 2);
+    prefs = await SharedPrefs.create();
+    _reconnectDelay =
+        Duration(seconds: prefs.prefs.getInt('reconnectDelay') ?? 2);
   }
 
   void dispose() {
@@ -158,13 +160,14 @@ class WebRTCP2PService {
     developer.log(
         "🔁 Tentative #$_currentReconnectAttempt dans ${delay.inSeconds}s...");
 
-    List<int>? savedOpponents = prefs
+    List<int>? savedOpponents = prefs.prefs
         .getStringList('opponentsIds')
         ?.map((id) => int.parse(id))
         .toList();
 
-    bool? savedIsVideo = prefs.getBool('isVideo');
-    Duration? savedTimeout = Duration(seconds: prefs.getInt('timeout') ?? 30);
+    bool? savedIsVideo = prefs.prefs.getBool('isVideo');
+    Duration? savedTimeout =
+        Duration(seconds: prefs.prefs.getInt('timeout') ?? 30);
 
     if (savedOpponents != null && savedIsVideo != null) {
       Future.delayed(delay, () {
@@ -199,26 +202,26 @@ class WebRTCP2PService {
   // Sauvegarder les données de reconnexion
   Future<void> _saveReconnectData(
       List<int> opponentsIds, bool isVideo, Duration timeout) async {
-    await prefs.setStringList(
+    await prefs.prefs.setStringList(
         'opponentsIds', opponentsIds.map((id) => id.toString()).toList());
-    await prefs.setBool('isVideo', isVideo);
-    await prefs.setInt('timeout', timeout.inSeconds);
-    await prefs.setBool('shouldReconnect', true);
+    await prefs.prefs.setBool('isVideo', isVideo);
+    await prefs.prefs.setInt('timeout', timeout.inSeconds);
+    await prefs.prefs.setBool('shouldReconnect', true);
   }
 
   // Effacer les données de reconnexion
   Future<void> _clearReconnectData() async {
-    await prefs.remove('opponentsIds');
-    await prefs.remove('isVideo');
-    await prefs.remove('timeout');
-    await prefs.setBool('shouldReconnect', false);
+    await prefs.prefs.remove('opponentsIds');
+    await prefs.prefs.remove('isVideo');
+    await prefs.prefs.remove('timeout');
+    await prefs.prefs.setBool('shouldReconnect', false);
   }
 
   Future<void> tryReconnectIfNeeded() async {
-    final opponentsStr = prefs.getStringList('opponentsIds');
-    final isVideo = prefs.getBool('isVideo') ?? true;
-    final timeoutSeconds = prefs.getInt('timeout') ?? 30;
-    final shouldReconnect = prefs.getBool('shouldReconnect') ?? false;
+    final opponentsStr = prefs.prefs.getStringList('opponentsIds');
+    final isVideo = prefs.prefs.getBool('isVideo') ?? true;
+    final timeoutSeconds = prefs.prefs.getInt('timeout') ?? 30;
+    final shouldReconnect = prefs.prefs.getBool('shouldReconnect') ?? false;
 
     if (!shouldReconnect) {
       developer.log("🚫 Reconnexion non autorisée");

@@ -14,7 +14,7 @@ class FirebaseMessagingService {
   BuildContext? applicationContext;
 
   Future<void> initialize(Ref ref) async {
-    final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+    final firebaseApp = ref.watch(firebaseInitProviderProvider).requireValue;
     await _pushNotificationsManager.initialize(ref);
 
     _firebaseMessaging = ref.watch(firebaseMessagingProvider);

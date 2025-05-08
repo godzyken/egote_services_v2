@@ -12,7 +12,7 @@ class Godzylogo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+    final firebaseApp = ref.watch(firebaseInitProviderProvider).requireValue;
     final isLoggedIn = ref.watch(appStateProvider);
     return Scaffold(
         resizeToAvoidBottomInset: true,

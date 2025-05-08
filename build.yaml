@@ -1,0 +1,13 @@
+targets:
+  $default:
+    builders:
+      flutter_gen|flutter_gen:
+        options:
+          enabled: true
+          assets:
+            enabled: true
+          fonts:
+            enabled: true
+          integrations:
+            flutter_svg: true
+            flare_flutter: true

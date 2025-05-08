@@ -1,21 +1,38 @@
-enum Flavor { local, development, production }
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'flavors.g.dart';
+
+@JsonEnum(alwaysCreate: true)
+enum Flavor {
+  @JsonValue('local')
+  local,
+  @JsonValue('development')
+  development,
+  @JsonValue('production')
+  production
+}
 
 class F {
-  static late final Flavor appFlavor;
+  static Flavor? _appFlavor;
 
-  static String get title {
-    if (appFlavor == null) {
-      throw Exception('appFlavor must be initialized before use');
+  static Flavor get appFlavor {
+    if (_appFlavor == null) {
+      throw StateError('F.appFlavor has not been initialized');
     }
-    return appFlavor.label;
+    return _appFlavor!;
   }
 
-  static String get envFileName {
-    if (appFlavor == null) {
-      throw Exception('appFlavor must be initialized before use');
-    }
-    return appFlavor.enFilePath;
+  static set appFlavor(Flavor flavor) {
+    _appFlavor = flavor;
   }
+
+  static void reset() {
+    _appFlavor = null;
+  }
+
+  static String get title => appFlavor.label;
+
+  static String get envFileName => appFlavor.enFilePath;
 }
 
 extension FlavorX on Flavor {

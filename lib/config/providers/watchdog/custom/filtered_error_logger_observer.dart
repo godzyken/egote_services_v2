@@ -36,7 +36,18 @@ class FilteredErrorLoggerObserver extends ProviderObserver {
       developer.log('🧹 Filtered stack:\n$filteredStack');
 
       if (kReleaseMode) {
-        Sentry.captureException(error, stackTrace: stack);
+        Sentry.captureException(error, stackTrace: stack, withScope: (scope) {
+          scope.setTag('env', 'development');
+          scope.extra;
+          scope.user;
+          scope.transaction;
+          scope.level;
+          scope.contexts;
+          scope.breadcrumbs;
+          scope.span;
+          scope.clearBreadcrumbs();
+          scope.removeContexts('id');
+        });
       }
     }
   }

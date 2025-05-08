@@ -20,6 +20,7 @@ Environment _$EnvironmentFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Environment {
+  @JsonKey(includeFromJson: true, includeToJson: true)
   Flavor get appFlavor => throw _privateConstructorUsedError;
   String get supabaseUrl => throw _privateConstructorUsedError;
   String get supabaseAnonKey => throw _privateConstructorUsedError;
@@ -57,7 +58,7 @@ abstract class $EnvironmentCopyWith<$Res> {
       _$EnvironmentCopyWithImpl<$Res, Environment>;
   @useResult
   $Res call(
-      {Flavor appFlavor,
+      {@JsonKey(includeFromJson: true, includeToJson: true) Flavor appFlavor,
       String supabaseUrl,
       String supabaseAnonKey,
       String? supabaseAuthCallbackUrlHostname,
@@ -198,7 +199,7 @@ abstract class _$$EnvironmentImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Flavor appFlavor,
+      {@JsonKey(includeFromJson: true, includeToJson: true) Flavor appFlavor,
       String supabaseUrl,
       String supabaseAnonKey,
       String? supabaseAuthCallbackUrlHostname,
@@ -332,7 +333,8 @@ class __$$EnvironmentImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$EnvironmentImpl implements _Environment {
   const _$EnvironmentImpl(
-      {required this.appFlavor,
+      {@JsonKey(includeFromJson: true, includeToJson: true)
+      required this.appFlavor,
       required this.supabaseUrl,
       required this.supabaseAnonKey,
       this.supabaseAuthCallbackUrlHostname,
@@ -356,6 +358,7 @@ class _$EnvironmentImpl implements _Environment {
       _$$EnvironmentImplFromJson(json);
 
   @override
+  @JsonKey(includeFromJson: true, includeToJson: true)
   final Flavor appFlavor;
   @override
   final String supabaseUrl;
@@ -488,7 +491,8 @@ class _$EnvironmentImpl implements _Environment {
 
 abstract class _Environment implements Environment {
   const factory _Environment(
-      {required final Flavor appFlavor,
+      {@JsonKey(includeFromJson: true, includeToJson: true)
+      required final Flavor appFlavor,
       required final String supabaseUrl,
       required final String supabaseAnonKey,
       final String? supabaseAuthCallbackUrlHostname,
@@ -511,6 +515,7 @@ abstract class _Environment implements Environment {
       _$EnvironmentImpl.fromJson;
 
   @override
+  @JsonKey(includeFromJson: true, includeToJson: true)
   Flavor get appFlavor;
   @override
   String get supabaseUrl;

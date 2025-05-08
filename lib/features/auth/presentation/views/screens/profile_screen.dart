@@ -13,7 +13,6 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supa_user_exception;
 import '../../../../../config/providers/firebase/firebase_providers.dart';
 import '../../../../../config/providers/sentry/sentry_provider.dart';
 import '../../controller/user_controller_state.dart';
-import '../widgets/avatar_uploader.dart';
 import 'auth_screens.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -54,16 +53,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     await sentryService.traceTask(
         name: 'load_user_profile',
         task: (ISentrySpan span) async {
-          sentryService.addBreadcrumb(
-              message: 'Chargement du profil utilisateur', category: 'api');
-
-          span.setTag('endpoint', '/users/me');
-          span.setData('user_id', '1234');
-
           try {
+            sentryService.addBreadcrumb(
+                message: 'Chargement du profil utilisateur', category: 'api');
+
+            span.setTag('endpoint', '/users/me');
+            span.setData('user_id', '1234');
+
             throw Exception('Erreur lors du chargement du profil');
           } catch (e, st) {
-            await Sentry.captureException(e, stackTrace: st);
+            await Sentry.captureException(e, stackTrace: st,
+                withScope: (scope) {
+              scope.setTag('env', 'development');
+              scope.extra;
+              scope.user;
+              scope.transaction;
+              scope.level;
+              scope.contexts;
+              scope.breadcrumbs;
+              scope.span;
+              scope.clearBreadcrumbs();
+              scope.removeContexts('id');
+            });
             rethrow;
           }
         });

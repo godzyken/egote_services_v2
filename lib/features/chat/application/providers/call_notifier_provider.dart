@@ -1,6 +1,6 @@
-import 'package:egote_services_v2/config/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../config/providers/customer/shared_prefs_provider.dart';
 import '../../domain/models/states/call_state/call_state.dart';
 import '../services/webrtc_service.dart';
 
@@ -24,7 +24,7 @@ class CallNotifier extends StateNotifier<CallState> {
   }
 
   Future<void> _tryReconnect() async {
-    final hasData = _webrtcService.prefs.containsKey('opponentsIds');
+    final hasData = _webrtcService.prefs.prefs.containsKey('opponentsIds');
     if (hasData) {
       state = state.copyWith(status: CallStatus.reconnecting);
       await _webrtcService.tryReconnectIfNeeded();
@@ -57,7 +57,7 @@ class CallNotifier extends StateNotifier<CallState> {
 
 final callNotifierProvider =
     StateNotifierProvider<CallNotifier, CallState>((ref) {
-  final sharedPrefs = ref.watch(sharedPreferencesProvider).maybeWhen(
+  final sharedPrefs = ref.watch(sharedPrefsAsyncNotifierProvider).maybeWhen(
         data: (prefs) => prefs,
         orElse: () => null,
       );

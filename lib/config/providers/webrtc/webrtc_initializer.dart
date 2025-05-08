@@ -65,7 +65,18 @@ Future<bool> _initializeWebRTC() async {
   } catch (e, s) {
     developer.log("Erreur lors de l'initialisation de WebRTC: $e",
         stackTrace: s);
-    await Sentry.captureException(e, stackTrace: s);
+    await Sentry.captureException(e, stackTrace: s, withScope: (scope) {
+      scope.setTag('env', 'development');
+      scope.extra;
+      scope.user;
+      scope.transaction;
+      scope.level;
+      scope.contexts;
+      scope.breadcrumbs;
+      scope.span;
+      scope.clearBreadcrumbs();
+      scope.removeContexts('id');
+    });
     return false;
   }
 }

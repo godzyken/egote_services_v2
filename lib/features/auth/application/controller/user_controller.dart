@@ -246,8 +246,9 @@ final userEntityModelProvider = FutureProvider<UserEntityModel?>((ref) async {
 });
 
 final firebaseUserProvider = StreamProvider<firebase_auth.User?>((ref) {
-  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+  final firebaseApp = ref.watch(firebaseInitProviderProvider).requireValue;
   final auth = ref.watch(firebaseAuthProvider(firebaseApp));
+  developer.log('[FirebaseUserProvider] user = ${auth.currentUser?.uid}');
   return auth.authStateChanges();
 });
 

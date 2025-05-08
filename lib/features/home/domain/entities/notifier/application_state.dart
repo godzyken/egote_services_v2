@@ -21,7 +21,8 @@ class FirebaseServiceImpl implements FirebaseService {
   final Ref ref;
   FirebaseServiceImpl(this.ref);
 
-  FirebaseApp get firebaseApp => ref.read(firebaseInitProvider).requireValue!;
+  FirebaseApp get firebaseApp =>
+      ref.read(firebaseInitProviderProvider).requireValue;
 
   @override
   Future<void> init() async {
@@ -43,7 +44,7 @@ class FirebaseServiceImpl implements FirebaseService {
     try {
       await Future.delayed(Duration(seconds: 2));
       developer.log('FirebaseUIAuth configured');
-      final app = ref.watch(firebaseInitProvider).value;
+      final app = ref.watch(firebaseInitProviderProvider).value;
       developer.log('Firebase app initialized: $app');
     } on Exception catch (error) {
       developer.log('Firebase configuration failed: $error');
@@ -130,7 +131,8 @@ class AuthStateNotifier extends StateNotifier<auth.User?> {
   final Ref ref;
   late final StreamSubscription<auth.User?> _userSubscription;
 
-  FirebaseApp get firebaseApp => ref.read(firebaseInitProvider).requireValue!;
+  FirebaseApp get firebaseApp =>
+      ref.read(firebaseInitProviderProvider).requireValue;
 
   // Log des erreurs
   void _logError(Object error) => AuthErrorHandler.handleError(error);
@@ -199,7 +201,7 @@ final authStateProvider =
 });
 
 final userStateStreamProvider = StreamProvider.autoDispose<auth.User?>((ref) {
-  final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+  final firebaseApp = ref.watch(firebaseInitProviderProvider).requireValue;
   final authState = ref.watch(firebaseAuthProvider(firebaseApp));
 
   return authState.authStateChanges();

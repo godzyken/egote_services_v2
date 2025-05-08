@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 class RiverpodPerformanceMonitor {
@@ -35,14 +35,31 @@ class RiverpodPerformanceMonitor {
         .log('Provider $name executed in $duration ms with result: $value');
 
     // Tu peux aussi capturer ces logs dans Sentry ou Datadog
-    Sentry.addBreadcrumb(
-      Breadcrumb(
-        message: 'Provider $name executed in $duration ms',
-        category: 'performance',
-        data: {'result': value.toString()},
-        level: SentryLevel.info,
-      ),
-    );
+    try {
+      Sentry.addBreadcrumb(
+        Breadcrumb(
+          message: 'Provider $name executed in $duration ms',
+          category: 'performance',
+          data: {'result': value.toString()},
+          level: SentryLevel.info,
+        ),
+      );
+    } catch (e, stackTrace) {
+      Sentry.captureException('capture sentry & datadog error : $e',
+          stackTrace: stackTrace, withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
+      developer.log('Erreur lors de l\'ajout du breadcrumb dans Sentry: $e');
+    }
   }
 
   // Fonction pour obtenir les performances des providers

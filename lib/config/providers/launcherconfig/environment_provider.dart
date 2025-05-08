@@ -23,3 +23,8 @@ class EnvironmentReader {
     return (flavor, env);
   }
 }
+
+// Méthode pour charger la configuration de l'environnement
+Future<Environment> loadEnvironmentConfig(Ref ref) async {
+  return ref.watch(environmentProvider);
+}

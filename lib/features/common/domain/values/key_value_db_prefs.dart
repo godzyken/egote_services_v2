@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../config/app_shared/extensions/same_types.dart';
+import '../../../chat/data/data_sources/local/pref_util.dart';
 import 'key_value_db.dart';
 // ignore_for_file: comment_references
 
@@ -37,7 +38,9 @@ class KeyValueDbPrefs implements KeyValueDb {
   Future<void> init() async {
     if (_debug) debugPrint('KeyValueDbPrefs: init called');
     // Get the SharedPreferences instance and assign it to our instance.
-    _prefs = await SharedPreferences.getInstance();
+    final instance = await SharedPrefs.create();
+
+    _prefs = instance.prefs;
   }
 
   /// [KeyValueDbPrefs] implementation needs no dispose.

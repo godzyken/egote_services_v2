@@ -52,15 +52,18 @@ class VerifyPhoneNumber extends ConsumerWidget {
                       actions: [
                         AuthStateChangeAction<SignedIn>((ctx3, state) {
                           log('[AuthStateChangeAction] SignedIn');
-                          state.user?.getIdToken().then((idToken) {
-                            SharedPrefs.instance.saveLoginType(LoginType.phone);
+                          state.user?.getIdToken().then((idToken) async {
+                            final prefs = await SharedPrefs.create();
+                            prefs.saveLoginType(LoginType.phone);
                             /*signInUsingFirebasePhone( DefaultFirebaseOptions.currentPlatform.projectId, idToken! ).then( (value) =>  Navigator.of(ctx3, rootNavigator: true) .pushNamedAndRemoveUntil('loginToChat', (route) => route.isFirst) ).catchError((onError) => context.showAlert(onError.toString()));*/
                           });
                         }),
                         AuthStateChangeAction<CredentialLinked>((ctx3, state) {
                           log('[AuthStateChangeAction] CredentialLinked');
-                          state.user.getIdToken().then((idToken) {
-                            SharedPrefs.instance.saveLoginType(LoginType.phone);
+                          state.user.getIdToken().then((idToken) async {
+                            final prefs = await SharedPrefs.create();
+
+                            prefs.saveLoginType(LoginType.phone);
                             if (context.mounted) {
                               Navigator.of(ctx3, rootNavigator: true)
                                   .pushNamedAndRemoveUntil(
@@ -80,8 +83,12 @@ class VerifyPhoneNumber extends ConsumerWidget {
                         }),
                         AuthStateChangeAction<UserCreated>((ctx3, state) {
                           log('[AuthStateChangeAction] UserCreated');
-                          state.credential.user?.getIdToken().then((idToken) {
-                            SharedPrefs.instance.saveLoginType(LoginType.phone);
+                          state.credential.user
+                              ?.getIdToken()
+                              .then((idToken) async {
+                            final prefs = await SharedPrefs.create();
+
+                            prefs.saveLoginType(LoginType.phone);
                             if (context.mounted) {
                               Navigator.of(ctx3, rootNavigator: true)
                                   .pushNamedAndRemoveUntil(

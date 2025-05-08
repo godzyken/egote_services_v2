@@ -1,6 +1,8 @@
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:egote_services_v2/config/providers/watchdog/datadog_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +12,16 @@ import 'config/environements/bootstrap.dart';
 import 'config/providers/watchdog/datadog_observer.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    final app = await Firebase.initializeApp();
+    developer.log("✅ Firebase initialized: ${app.name}");
+  } catch (e, st) {
+    developer.log("❌ Firebase init failed: $e");
+    developer.log(st.toString());
+  }
+
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
     if (kReleaseMode) exit(1);

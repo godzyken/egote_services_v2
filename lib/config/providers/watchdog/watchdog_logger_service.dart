@@ -50,7 +50,19 @@ class WatchdogLogger {
     if (enableSentry &&
         level.index >= AppLogLevel.error.index &&
         error != null) {
-      Sentry.captureException(error, stackTrace: stackTrace);
+      Sentry.captureException(error, stackTrace: stackTrace,
+          withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
     }
   }
 

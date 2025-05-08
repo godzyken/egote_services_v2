@@ -1,5 +1,6 @@
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -16,7 +17,7 @@ class DatadogService extends AppTelemetryService with TelemetryMixin {
 
   DatadogLogger? _logger;
 
-  late final Ref _ref;
+  Ref<Object?>? _ref;
 
   void setRef(Ref ref) => _ref = ref;
 
@@ -30,37 +31,41 @@ class DatadogService extends AppTelemetryService with TelemetryMixin {
   Future<void> init() async {
     if (_isInitialized) return;
 
-    final configAsync = _ref.read(datadogConfigProvider);
-    if (configAsync is! AsyncData<DatadogConfiguration>) {
-      await _ref.read(datadogConfigProvider.future); // 🧠 attend la future
+    try {
+      final configAsync = _ref!.read(datadogConfigProvider);
+      if (configAsync is! AsyncData<DatadogConfiguration>) {
+        await _ref!.read(datadogConfigProvider.future); // 🧠 attend la future
+      }
+
+      final config = _ref!.read(datadogConfigProvider).value;
+      if (config == null) return;
+
+      await DatadogSdk.runApp(
+        DatadogConfiguration(
+          clientToken: config.clientToken,
+          env: config.env,
+          site: config.site,
+        ),
+        TrackingConsent.granted,
+        () {},
+      );
+
+      _datadog = DatadogSdk.instance;
+
+      _logger = _datadog.logs?.createLogger(DatadogLoggerConfiguration(
+        name: 'egote_logger',
+        remoteLogThreshold: LogLevel.warning,
+      ));
+
+      // Ajout d'attributs RUM
+      _datadog.rum?.addAttribute('env', config.env);
+      _logger?.addTag('env', config.env);
+
+      _isInitialized = true;
+      logDebug('✅ Datadog initialized');
+    } catch (e, st) {
+      logErrorWithSentry('❌ Datadog not initialized: $e', stackTrace: st);
     }
-
-    final config = _ref.read(datadogConfigProvider).value;
-    if (config == null) return;
-
-    await DatadogSdk.runApp(
-      DatadogConfiguration(
-        clientToken: config.clientToken,
-        env: config.env,
-        site: config.site,
-      ),
-      TrackingConsent.granted,
-      () {},
-    );
-
-    _datadog = DatadogSdk.instance;
-
-    _logger = _datadog.logs?.createLogger(DatadogLoggerConfiguration(
-      name: 'egote_logger',
-      remoteLogThreshold: LogLevel.warning,
-    ));
-
-    // Ajout d'attributs RUM
-    _datadog.rum?.addAttribute('env', config.env);
-    _logger?.addTag('env', config.env);
-
-    _isInitialized = true;
-    logDebug('✅ Datadog initialized');
   }
 
   @override
@@ -79,7 +84,19 @@ class DatadogService extends AppTelemetryService with TelemetryMixin {
       errorKind: error.runtimeType.toString(),
       errorStackTrace: stackTrace,
     );
-    await Sentry.captureException(error, stackTrace: stackTrace);
+    await Sentry.captureException(error, stackTrace: stackTrace,
+        withScope: (scope) {
+      scope.setTag('env', 'development');
+      scope.extra;
+      scope.user;
+      scope.transaction;
+      scope.level;
+      scope.contexts;
+      scope.breadcrumbs;
+      scope.span;
+      scope.clearBreadcrumbs();
+      scope.removeContexts('id');
+    });
   }
 
   @override
@@ -120,10 +137,19 @@ class DatadogService extends AppTelemetryService with TelemetryMixin {
       errorStackTrace: stackTrace,
     );
 
-    await Sentry.captureException(
-      error,
-      stackTrace: stackTrace,
-    );
+    await Sentry.captureException(error, stackTrace: stackTrace,
+        withScope: (scope) {
+      scope.setTag('env', 'development');
+      scope.extra;
+      scope.user;
+      scope.transaction;
+      scope.level;
+      scope.contexts;
+      scope.breadcrumbs;
+      scope.span;
+      scope.clearBreadcrumbs();
+      scope.removeContexts('id');
+    });
   }
 
   void startView(String name) {
@@ -157,6 +183,11 @@ class DatadogService extends AppTelemetryService with TelemetryMixin {
       email: email,
       extraInfo: extra ?? {},
     );
+  }
+
+  @visibleForTesting
+  void resetRef() {
+    _ref = null;
   }
 
   Future<T> trackResource<T>({

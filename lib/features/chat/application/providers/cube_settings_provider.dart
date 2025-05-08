@@ -1,21 +1,16 @@
-import 'dart:convert';
-
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:egote_services_v2/config/providers/launcherconfig/environment_provider.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:egote_services_v2/features/chat/application/controllers/cube_user_controller.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/cube_config/cube_config.dart';
 import '../../../../config/environements/environment.dart';
-import '../../../../config/environements/flavors.dart';
 import '../../../../config/providers/cube/cube_providers.dart';
 
 final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
-  final configFile = await rootBundle.loadString(F.envFileName);
-  final env =
-      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  final env = ref.watch(environmentProvider);
 
   final settings = ref.watch(cubeSettingsProvider);
 

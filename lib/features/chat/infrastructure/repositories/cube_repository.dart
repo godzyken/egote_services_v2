@@ -29,7 +29,7 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<Either<Failure, CubeSession>> createPhoneAuthSession(Ref ref) async {
-    final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+    final firebaseApp = ref.watch(firebaseInitProviderProvider).requireValue;
     try {
       final auth = ref.watch(firebaseAuthProvider(firebaseApp));
 
@@ -76,7 +76,7 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<Either<Failure, CubeSession>> createGoogleAuthSession(Ref ref) async {
-    final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+    final firebaseApp = ref.watch(firebaseInitProviderProvider).requireValue;
     try {
       final auth = ref.watch(firebaseAuthProvider(firebaseApp));
 

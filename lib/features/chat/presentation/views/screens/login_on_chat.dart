@@ -144,7 +144,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
   Future<Widget> getFilterChipsWidgets() async {
     if (_isLoginContinues) return const SizedBox.shrink();
-    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
+    SharedPrefs sharedPrefs = await SharedPrefs.create();
     var loginType = sharedPrefs.getLoginType();
     var user = await sharedPrefs.getUser().then((value) => value);
     if ((user != null && loginType == null) || loginType != null) {
@@ -361,7 +361,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       _isLoginContinues = true;
     });
     if (!ref.watch(cubeSessionManagerProvider).isActiveSessionValid()) {
-      final state = SharedPrefs.instance;
+      final state = await SharedPrefs.create();
       try {
         await createSession(user).then((cubeSession) {
           if (cubeSession.userId != null) {
@@ -386,10 +386,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         rethrow;
       }
     }
-    await signUp(user).then((newUser) {
+    await signUp(user).then((newUser) async {
       log("signUp newUser $newUser");
       user.id = newUser.id;
-      SharedPrefs.instance.saveNewUser(
+      final prefs = await SharedPrefs.create();
+      prefs.saveNewUser(
           user, isEmailSelected ? LoginType.email : LoginType.login);
       _pushNotificationService.initialize;
       createSession(user).then((result) {
@@ -415,7 +416,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       var tempUser = user;
       user = cubeSession.user!..password = tempUser.password;
       if (saveUser) {
-        SharedPrefs.instance.init().then((sharedPrefs) {
+        SharedPrefs.create().then((sharedPrefs) {
           sharedPrefs.saveNewUser(
               user, isEmailSelected ? LoginType.email : LoginType.login);
         });
@@ -437,7 +438,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
     Future<CubeUser>? signInFuture;
 
-    final app = ref.read(firebaseInitProvider).requireValue!;
+    final app = ref.read(firebaseInitProviderProvider).requireValue;
 
     var accessToken = await ref.watch(firebaseAuthProvider(app).select((auth) =>
         auth.currentUser?.getIdToken().onError(
@@ -459,8 +460,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
                 .then((cubeSession) {
           // todo: 'signInUsingFirebaseEmail' is deprecated and shouldn't be used. Use [createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret)] instead
           return createSessionUsingSocialProvider(projectId, accessToken)
-              .then((cubeUser) => SharedPrefs.instance
-                      .init()
+              .then((cubeUser) async => SharedPrefs.create()
                       .then((sharedPrefs) {
                     return sharedPrefs.getUser().then((savedUser) =>
                         savedUser!..password = cubeUser.user!.password);
@@ -472,8 +472,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
       case LoginType.phone:
         signInFuture = createSessionUsingFirebasePhone(projectId, accessToken)
-            .then((cubeSession) => SharedPrefs.instance
-                    .init()
+            .then((cubeSession) async => await SharedPrefs.create()
                     .then((sharedPrefs) {
                   return sharedPrefs.getUser().then((savedUser) =>
                       savedUser!..password = cubeSession.user!.password);
@@ -485,8 +484,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       case LoginType.facebook:
         // TODO: Handle this case.
         signInFuture = createSessionUsingSocialProvider(projectId, accessToken)
-            .then((cubeSession) => SharedPrefs.instance
-                    .init()
+            .then((cubeSession) async => await SharedPrefs.create()
                     .then((sharedPrefs) {
                   return sharedPrefs.getUser().then((savedUser) =>
                       savedUser!..password = cubeSession.user!.password);
@@ -540,15 +538,16 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     log("_goDialogScreen");
     FlutterLocalNotificationsPlugin()
         .getNotificationAppLaunchDetails()
-        .then((details) {
+        .then((details) async {
       log("getNotificationAppLaunchDetails");
+      final prefs = await SharedPrefs.create();
       String? payload = details!.notificationResponse?.payload;
 
       log("getNotificationAppLaunchDetails, payload: $payload");
 
       String? dialogId = Uuid().v1();
       if (getToken(payload!).isEmpty) {
-        dialogId = SharedPrefs.instance.getSelectedDialogId();
+        dialogId = prefs.getSelectedDialogId();
         log("getNotificationAppLaunchDetails, selectedDialogId: $dialogId");
       } else {
         Map<String, dynamic> payloadObject = jsonDecode(getToken(payload));
@@ -578,15 +577,21 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     });
   }
 
-  void navigateToNextScreen(CubeUser cubeUser, CubeDialog? dialog) {
-    final cid = SharedPrefs.instance.getSelectedDialogId();
-    context.pushReplacementNamed(
-      'select_dialog',
-      pathParameters: {'cid': cid!},
-      extra: {USER_ARG_NAME: cubeUser.fullName, DIALOG_ARG_NAME: dialog?.name},
-    );
+  void navigateToNextScreen(CubeUser cubeUser, CubeDialog? dialog) async {
+    final prefs = await SharedPrefs.create();
+    final cid = prefs.getSelectedDialogId();
+    if (mounted) {
+      context.pushReplacementNamed(
+        'select_dialog',
+        pathParameters: {'cid': cid!},
+        extra: {
+          USER_ARG_NAME: cubeUser.fullName,
+          DIALOG_ARG_NAME: dialog?.name
+        },
+      );
+    }
 
-    if (dialog?.dialogId != null && !platform_utils.isDesktop()) {
+    if (mounted && dialog?.dialogId != null && !platform_utils.isDesktop()) {
       context.pushNamed('chat_dialog', extra: {
         USER_ARG_NAME: cubeUser.fullName,
         DIALOG_ARG_NAME: dialog?.name

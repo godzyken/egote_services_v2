@@ -127,9 +127,6 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     //initCube.asStream();
     WidgetsBinding.instance.addObserver(this);
 
-    connectivityStateSubscription =
-        ref.watch(connectivityStatusProviders.notifier).subscription!;
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _runDefferdInitializations();
     });
@@ -242,6 +239,9 @@ class _MyAppState extends ConsumerState<EgoteApp> with WidgetsBindingObserver {
     _suspensionTimer?.cancel();
 
     _suspensionTimer = Timer(_maxInactivityDuration, _onInactivityTimeout);
+
+    connectivityStateSubscription =
+        ref.watch(connectivityStatusProviders.notifier).subscription!;
   }
 
   void _resetInactivityTimer() {

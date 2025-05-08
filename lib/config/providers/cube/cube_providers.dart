@@ -123,9 +123,10 @@ final cubeChatConnectionNotifierProvider =
         (ref) => CubeChatConnectionNotifier());
 
 final cubeUserProvider = FutureProvider<CubeUser?>((ref) async {
-  await ref.runSafe('Cube User Provider', () async {
+  return await ref.runSafe('Cube User Provider', () async {
     final userService = ref.watch(userServiceProvider);
     final user = await userService.createCubeUserFromFirebase();
+    if (user == null) return CubeUser.fromJson(user!.toJson());
     return user;
   });
 });

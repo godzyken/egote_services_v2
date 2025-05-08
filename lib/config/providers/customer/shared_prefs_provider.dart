@@ -12,17 +12,20 @@ import '../../../features/common/domain/values/key_value_db.dart';
 
 final sharedPrefsProvider = FutureProvider<SharedPrefs?>((ref) async {
   return await ref.runSafeIsolate('SharedPrefs', () async {
-    final sharedPrefs = SharedPrefs.instance;
-    await sharedPrefs.init();
-    return sharedPrefs;
-  }, fallback: SharedPrefs.instance);
+    return await SharedPrefs.create();
+  }, fallback: await SharedPrefs.create());
 });
 
 class SharedPrefsAsyncNotifier extends AsyncNotifier<SharedPrefs> {
   @override
   Future<SharedPrefs> build() async {
-    final sharedPrefs = SharedPrefs.instance;
-    return await sharedPrefs.init().then((_) => sharedPrefs);
+    return Future.error("SharedPrefs not initialized yet");
+  }
+
+  Future<void> loadPrefs() async {
+    state = const AsyncLoading();
+    final prefs = await SharedPrefs.create();
+    state = AsyncData(prefs);
   }
 
   Future<void> clearAll() async {
@@ -102,8 +105,7 @@ class SharedPrefsAsyncNotifier extends AsyncNotifier<SharedPrefs> {
 
 final sharedPrefsAsyncNotifierProvider =
     AsyncNotifierProvider<SharedPrefsAsyncNotifier, SharedPrefs>(
-  () => SharedPrefsAsyncNotifier(),
-);
+        SharedPrefsAsyncNotifier.new);
 
 final keyValueDbProvider = Provider<KeyValueDb>((ref) {
   final usedDb = ref.watch(usedKeyValueDbProvider);

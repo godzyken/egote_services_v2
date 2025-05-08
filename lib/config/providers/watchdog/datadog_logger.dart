@@ -1,9 +1,9 @@
 import 'dart:developer' as developer;
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart' as dart_logger;
-import 'package:riverpod/riverpod.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+
+import 'custom/custom_logger.dart';
 
 /// Optional: only if you're using `firebase_dart`
 tryInitFirebaseLogger() {
@@ -31,6 +31,12 @@ class Logger extends ProviderObserver {
     'localizationProvider',
   };
 
+  bool _shouldLog(String providerName) {
+    return !excludedProviders.contains(providerName) &&
+        !providerName.toLowerCase().contains('theme') &&
+        !providerName.toLowerCase().contains('l10n');
+  }
+
   @override
   void didUpdateProvider(
     ProviderBase<Object?> provider,
@@ -47,7 +53,7 @@ class Logger extends ProviderObserver {
   → Previous : $previousValue
   → New      : $newValue
 ''';
-    _log(logMessage);
+    if (_shouldLog(name)) CustomLogger().sendLogToDatadog(logMessage);
   }
 
   @override
@@ -57,7 +63,10 @@ class Logger extends ProviderObserver {
     ProviderContainer container,
   ) {
     final name = provider.name ?? provider.runtimeType.toString();
-    _log('➕ Provider Added: $name → Value: $value');
+    if (_shouldLog(name)) {
+      CustomLogger()
+          .sendLogToDatadog('➕ Provider Added: $name → Value: $value');
+    }
   }
 
   @override
@@ -66,19 +75,8 @@ class Logger extends ProviderObserver {
     ProviderContainer container,
   ) {
     final name = provider.name ?? provider.runtimeType.toString();
-    _log('🗑️ Provider Disposed: $name');
-  }
-
-  void _log(String message) {
-    developer.log(message);
-    developer.log(message, name: 'AppLogger');
-
-    // Envoyer aussi à Sentry si prod ?
-    if (kReleaseMode) {
-      Sentry.captureMessage(message);
+    if (_shouldLog(name)) {
+      CustomLogger().sendLogToDatadog('🗑️ Provider Disposed: $name');
     }
-
-    // Optionnel: tu peux ajouter un hook pour Datadog ici
-    // DatadogSdk.instance.log(message);
   }
 }

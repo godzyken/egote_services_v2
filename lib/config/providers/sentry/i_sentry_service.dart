@@ -4,7 +4,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 abstract class ISentryService {
   Future<void> initialize();
   Future<void> configureFlutterErrorHandling();
-  Future<void> initBinding();
 
   void addBreadcrumb({
     required String message,

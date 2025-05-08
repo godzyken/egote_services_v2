@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../environements/flavors.dart';
-import '../providers.dart';
 import '../providers/customer/shared_prefs_provider.dart';
 
 Future<void> configureSentry(ProviderContainer container) async {
@@ -14,8 +13,13 @@ Future<void> configureSentry(ProviderContainer container) async {
       // Configurer le scope Sentry avec des informations personnalisées
       await Sentry.configureScope((scope) async {
         // Ajouter un tag indiquant si l'application est en mode sombre
-        final sp = container.read(sharedPreferencesProvider);
-        final darkMode = sp.value?.getBool('dark_mode')?.toString() ?? 'null';
+        final spValue = container.read(sharedPrefsAsyncNotifierProvider);
+
+        if (!spValue.hasValue) throw Exception('SharedPrefs not initialized');
+
+        final sp = spValue.requireValue;
+
+        final darkMode = sp.prefs.getBool('dark_mode')?.toString() ?? 'null';
         scope.setTag('dark_mode', darkMode);
 
         // Ajouter d'autres informations spécifiques comme l'ID utilisateur ou la langue
@@ -42,7 +46,19 @@ Future<void> configureSentry(ProviderContainer container) async {
       developer.log("✅ Sentry scope configured");
     } catch (e, stackTrace) {
       // En cas d'erreur, vous pouvez capturer l'exception dans Sentry
-      await Sentry.captureException(e, stackTrace: stackTrace);
+      await Sentry.captureException(e, stackTrace: stackTrace,
+          withScope: (scope) {
+        scope.setTag('env', 'development');
+        scope.extra;
+        scope.user;
+        scope.transaction;
+        scope.level;
+        scope.contexts;
+        scope.breadcrumbs;
+        scope.span;
+        scope.clearBreadcrumbs();
+        scope.removeContexts('id');
+      });
       developer.log('Error while configuring Sentry: $e');
     }
   }

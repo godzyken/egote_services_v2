@@ -129,7 +129,7 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
   }
 
   Future<supabase.User?> _getUser() async {
-    final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+    final firebaseApp = ref.watch(firebaseInitProviderProvider).requireValue;
     final auth = ref.watch(firebaseAuthProvider(firebaseApp));
     final user = auth.currentUser;
     if (user != null) {
@@ -163,7 +163,7 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
 
   @override
   Widget build(BuildContext context) {
-    final firebaseApp = ref.watch(firebaseInitProvider).requireValue!;
+    final firebaseApp = ref.watch(firebaseInitProviderProvider).requireValue;
     // Récupérer l'utilisateur connecté
     final auth = ref.watch(firebaseAuthProvider(firebaseApp));
     final user = auth.currentUser;

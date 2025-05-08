@@ -1,10 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../config/providers.dart';
+import '../../../../config/providers/customer/shared_prefs_provider.dart';
 import '../services/webrtc_service.dart';
 
 final webRTCP2PServiceProvider = Provider<WebRTCP2PService>((ref) {
-  final sharedPreferences = ref.read(sharedPreferencesProvider).value;
+  final sharedPrefs = ref.read(sharedPrefsAsyncNotifierProvider);
+  final sharedPreferences = sharedPrefs.when(
+    data: (data) => data,
+    error: (error, stackTrace) {
+      throw Exception('SharedPreferences are not initialized.');
+    },
+    loading: () => throw Exception('SharedPreferences are not initialized.'),
+  );
   if (sharedPreferences == null) {
     throw Exception('SharedPreferences are not initialized.');
   }

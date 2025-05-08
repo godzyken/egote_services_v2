@@ -155,7 +155,8 @@ class AutoAuthController extends StateNotifier<UserModel?> {
   final Ref _ref;
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? _docSub;
 
-  FirebaseApp get firebaseApp => _ref.watch(firebaseInitProvider).requireValue!;
+  FirebaseApp get firebaseApp =>
+      _ref.watch(firebaseInitProviderProvider).requireValue;
   AuthRepository? get _repository => _ref.read(authRepositoryProvider);
   FirebaseFirestore get _firestore =>
       _ref.watch(firebaseFirestoreProvider(firebaseApp));

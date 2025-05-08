@@ -11,19 +11,17 @@ import 'package:egote_services_v2/config/providers/sentry/sentry_provider.dart';
 import 'package:egote_services_v2/config/providers/watchdog/custom/filtered_error_logger_observer.dart';
 import 'package:egote_services_v2/features/home/domain/entities/notifier/application_state.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stacktrace;
 
 import '../../features/chat/application/services/notification_utils.dart';
 import '../providers.dart' as providers;
-import '../providers.dart';
 import '../providers/customer/shared_prefs_provider.dart';
 import '../providers/launcherconfig/environment_provider.dart';
 import '../providers/sentry/riverpod_performance_monitor.dart';
+import '../providers/sentry/sentry_service.dart';
 import '../providers/watchdog/datadog_config.dart';
 import '../providers/watchdog/datadog_logger.dart';
 import '../providers/watchdog/datadog_service.dart';
@@ -85,7 +83,10 @@ Future<void> flutterErrorFlow() async {
   };
 }
 
-/// Wrapper pour transmettre le [SendPort] + le [RootIsolateToken]
+/// Wrapper pour transmettre le [SendPort]
+/// /// Wrapper pour transmettre le [SendPort] et le [RootIsolateToken] à un isolate.
+// /// Cette classe permet de s'assurer que l'isolate secondaire puisse accéder aux
+// /// fonctionnalités de Flutter tout en permettant une communication asynchrone. + le [RootIsolateToken]
 class SendPortWrapper {
   final SendPort port;
   final ui.RootIsolateToken token;
@@ -124,12 +125,17 @@ void runHeavyTask(SendPortWrapper wrapper) async {
 }
 
 Future<ProviderContainer> bootstrap() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
 
   // final bool isSentryEnabled = !kDebugMode && F.appFlavor != Flavor.local;
 
   final (flavor, env) = await EnvironmentReader.load(F.appFlavor);
   developer.log('👀 Loaded Flavor: $flavor');
+
+  await SentryFlutter.init(
+    SentryService().sentryOptions,
+    // Ici, on ne fournit PAS appRunner, car on gère manuellement runApp après
+  );
 
   final observers = buildObservers();
 
@@ -180,9 +186,8 @@ Future<List<Override>> buildProviderOverrides(Environment env) async {
     localizationProvider.overrideWith(
       (ref) => MultiLang(ref.read(localeProvider).languageCode),
     ),
-    sharedPreferencesProvider.overrideWith((ref) async {
-      return await SharedPreferences.getInstance();
-    }),
+    sharedPrefsAsyncNotifierProvider
+        .overrideWith(() => SharedPrefsAsyncNotifier()),
     firebaseNotificationHandlerProvider.overrideWith((ref) {
       return FirebaseNotificationHandler(
         ref: ref,
