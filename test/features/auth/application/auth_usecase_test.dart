@@ -1,11 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:egote_services_v2/features/auth/domain/repositories/auth_repository.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+import 'package:egote_services_v2/features/auth/domain/repository/auth_repository_interface.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
+import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
+import 'package:egote_services_v2/features/auth/domain/entities/user_preferences/user_pref.dart';
 
-import '../../../mocks/mock_auth.dart';
 import '../../../helpers/test_utils.dart';
 
-class MockAuthRepository extends Mock implements AuthRepository {}
+class MockAuthRepository extends Mock implements AuthRepositoryInterface {}
+class MockSupabaseUser extends Mock implements supabase.User {}
+class MockSupabaseSession extends Mock implements supabase.Session {}
 
 void main() {
   group('Auth Feature - Login Use Case', () {
@@ -20,26 +26,24 @@ void main() {
       // Arrange
       const email = TestHelpers.testEmail;
       const password = TestHelpers.testPassword;
-      final mockUser = MockUser.create(email: email);
+      final mockSupabaseUser = MockSupabaseUser();
 
-      when(() => mockAuthRepository.loginWithEmail(
-            email: email,
-            password: password,
-          )).thenAnswer((_) async => mockUser);
+      when(() => mockAuthRepository.signInWithPassword(
+            email,
+            password,
+          )).thenAnswer((_) async => right(mockSupabaseUser));
 
       // Act
-      final result = await mockAuthRepository.loginWithEmail(
-        email: email,
-        password: password,
+      final result = await mockAuthRepository.signInWithPassword(
+        email,
+        password,
       );
 
       // Assert
-      expect(result, isNotNull);
-      expect(result.email, email);
-      expect(result.id, TestHelpers.testUserId);
-      verify(() => mockAuthRepository.loginWithEmail(
-            email: email,
-            password: password,
+      expect(result.isRight(), true);
+      verify(() => mockAuthRepository.signInWithPassword(
+            email,
+            password,
           )).called(1);
     });
 
@@ -47,69 +51,54 @@ void main() {
       // Arrange
       const invalidEmail = 'not-an-email';
       const password = TestHelpers.testPassword;
+      final failure = Failure.badRequest();
 
-      when(() => mockAuthRepository.loginWithEmail(
-            email: invalidEmail,
-            password: password,
-          )).thenThrow(Exception('Invalid email format'));
+      when(() => mockAuthRepository.signInWithPassword(
+            invalidEmail,
+            password,
+          )).thenAnswer((_) async => left(failure));
 
-      // Act & Assert
-      expect(
-        () => mockAuthRepository.loginWithEmail(
-          email: invalidEmail,
-          password: password,
-        ),
-        throwsException,
+      // Act
+      final result = await mockAuthRepository.signInWithPassword(
+        invalidEmail,
+        password,
       );
+
+      // Assert
+      expect(result.isLeft(), true);
+      verify(() => mockAuthRepository.signInWithPassword(
+            invalidEmail,
+            password,
+          )).called(1);
     });
 
     test('should return error with wrong password', () async {
       // Arrange
       const email = TestHelpers.testEmail;
-      const wrongPassword = 'WrongPassword123!';
+      const wrongPassword = 'wrongpassword123';
+      final failure = Failure.unauthorized();
 
-      when(() => mockAuthRepository.loginWithEmail(
-            email: email,
-            password: wrongPassword,
-          )).thenThrow(Exception('Invalid credentials'));
-
-      // Act & Assert
-      expect(
-        () => mockAuthRepository.loginWithEmail(
-          email: email,
-          password: wrongPassword,
-        ),
-        throwsException,
-      );
-    });
-
-    test('should persist session token', () async {
-      // Arrange
-      const email = TestHelpers.testEmail;
-      const password = TestHelpers.testPassword;
-      const token = 'session_token_xyz123';
-
-      when(() => mockAuthRepository.loginWithEmail(
-            email: email,
-            password: password,
-          )).thenAnswer((_) async => MockUser.create(email: email));
-
-      when(() => mockAuthRepository.getToken()).thenAnswer((_) async => token);
+      when(() => mockAuthRepository.signInWithPassword(
+            email,
+            wrongPassword,
+          )).thenAnswer((_) async => left(failure));
 
       // Act
-      await mockAuthRepository.loginWithEmail(
-        email: email,
-        password: password,
+      final result = await mockAuthRepository.signInWithPassword(
+        email,
+        wrongPassword,
       );
-      final persistedToken = await mockAuthRepository.getToken();
 
       // Assert
-      expect(persistedToken, token);
-      expect(persistedToken, isNotEmpty);
+      expect(result.isLeft(), true);
+      verify(() => mockAuthRepository.signInWithPassword(
+            email,
+            wrongPassword,
+          )).called(1);
     });
   });
 
-  group('Auth Feature - Sign Up Use Case', () {
+  group('Auth Feature - SignUp Use Case', () {
     late MockAuthRepository mockAuthRepository;
 
     setUp(() {
@@ -117,82 +106,94 @@ void main() {
       TestHelpers.setupAll();
     });
 
-    test('should create account with valid data', () async {
+    test('should signup with valid data', () async {
       // Arrange
       const email = TestHelpers.testEmail;
+      const name = 'Test User';
       const password = TestHelpers.testPassword;
-      const displayName = 'Test Artisan';
-
-      final newUser = MockUser.create(
+      final mockUserModel = UserModel.create(
+        id: TestHelpers.testUserId,
         email: email,
-        displayName: displayName,
+        name: name,
       );
 
-      when(() => mockAuthRepository.signUpWithEmail(
-            email: email,
-            password: password,
-            displayName: displayName,
-          )).thenAnswer((_) async => newUser);
+      when(() => mockAuthRepository.signUp(
+            email,
+            name,
+            password,
+          )).thenAnswer((_) async => right(mockUserModel));
 
       // Act
-      final result = await mockAuthRepository.signUpWithEmail(
-        email: email,
-        password: password,
-        displayName: displayName,
+      final result = await mockAuthRepository.signUp(
+        email,
+        name,
+        password,
       );
 
       // Assert
-      expect(result, isNotNull);
-      expect(result.email, email);
-      expect(result.displayName, displayName);
+      expect(result.isRight(), true);
+      verify(() => mockAuthRepository.signUp(
+            email,
+            name,
+            password,
+          )).called(1);
     });
 
-    test('should reject weak password', () async {
+    test('should return error with weak password', () async {
       // Arrange
       const email = TestHelpers.testEmail;
-      const weakPassword = '123'; // Too weak
+      const name = 'Test User';
+      const weakPassword = '123'; // too short
+      final failure = Failure.badRequest();
 
-      when(() => mockAuthRepository.signUpWithEmail(
-            email: email,
-            password: weakPassword,
-            displayName: 'User',
-          )).thenThrow(Exception('Password too weak'));
+      when(() => mockAuthRepository.signUp(
+            email,
+            name,
+            weakPassword,
+          )).thenAnswer((_) async => left(failure));
 
-      // Act & Assert
-      expect(
-        () => mockAuthRepository.signUpWithEmail(
-          email: email,
-          password: weakPassword,
-          displayName: 'User',
-        ),
-        throwsException,
+      // Act
+      final result = await mockAuthRepository.signUp(
+        email,
+        name,
+        weakPassword,
       );
+
+      // Assert
+      expect(result.isLeft(), true);
+      verify(() => mockAuthRepository.signUp(
+            email,
+            name,
+            weakPassword,
+          )).called(1);
     });
 
-    test('should reject duplicate email', () async {
+    test('should return error with duplicate email', () async {
       // Arrange
       const email = TestHelpers.testEmail;
+      const name = 'Test User';
       const password = TestHelpers.testPassword;
+      final failure = Failure.badRequest();
 
-      when(() => mockAuthRepository.signUpWithEmail(
-            email: email,
-            password: password,
-            displayName: 'User',
-          )).thenThrow(Exception('Email already exists'));
+      when(() => mockAuthRepository.signUp(
+            email,
+            name,
+            password,
+          )).thenAnswer((_) async => left(failure));
 
-      // Act & Assert
-      expect(
-        () => mockAuthRepository.signUpWithEmail(
-          email: email,
-          password: password,
-          displayName: 'User',
-        ),
-        throwsException,
+      // Act
+      final result = await mockAuthRepository.signUp(
+        email,
+        name,
+        password,
       );
+
+      // Assert
+      expect(result.isLeft(), true);
     });
   });
 
-  group('Auth Feature - User Profile', () {
+  group('Auth Feature - Profile Use Case', () {
     late MockAuthRepository mockAuthRepository;
 
     setUp(() {
@@ -202,48 +203,49 @@ void main() {
 
     test('should load user profile', () async {
       // Arrange
-      final mockUser = MockUser.create();
+      final mockUserModel = UserModel.create(
+        id: TestHelpers.testUserId,
+        email: TestHelpers.testEmail,
+        name: 'Test User',
+      );
 
-      when(() => mockAuthRepository.getUserProfile())
-          .thenAnswer((_) async => mockUser);
-
-      // Act
-      final result = await mockAuthRepository.getUserProfile();
-
-      // Assert
-      expect(result, isNotNull);
-      expect(result.email, TestHelpers.testEmail);
-      expect(result.id, TestHelpers.testUserId);
-    });
-
-    test('should update user profile', () async {
-      // Arrange
-      const newDisplayName = 'Updated Name';
-      final updatedUser = MockUser.create(displayName: newDisplayName);
-
-      when(() => mockAuthRepository.updateProfile(displayName: newDisplayName))
-          .thenAnswer((_) async => updatedUser);
+      when(() => mockAuthRepository.restoreSession())
+          .thenAnswer((_) async => right(mockUserModel));
 
       // Act
-      final result =
-          await mockAuthRepository.updateProfile(displayName: newDisplayName);
+      final result = await mockAuthRepository.restoreSession();
 
       // Assert
-      expect(result.displayName, newDisplayName);
-      verify(() => mockAuthRepository.updateProfile(displayName: newDisplayName))
-          .called(1);
+      expect(result.isRight(), true);
+      verify(() => mockAuthRepository.restoreSession()).called(1);
     });
 
     test('should handle profile not found', () async {
       // Arrange
-      when(() => mockAuthRepository.getUserProfile())
-          .thenThrow(Exception('User not found'));
+      final failure = Failure.notFound();
 
-      // Act & Assert
-      expect(
-        () => mockAuthRepository.getUserProfile(),
-        throwsException,
-      );
+      when(() => mockAuthRepository.restoreSession())
+          .thenAnswer((_) async => left(failure));
+
+      // Act
+      final result = await mockAuthRepository.restoreSession();
+
+      // Assert
+      expect(result.isLeft(), true);
+      verify(() => mockAuthRepository.restoreSession()).called(1);
+    });
+
+    test('should sign out successfully', () async {
+      // Arrange
+      when(() => mockAuthRepository.signOut())
+          .thenAnswer((_) async => right(true));
+
+      // Act
+      final result = await mockAuthRepository.signOut();
+
+      // Assert
+      expect(result.isRight(), true);
+      verify(() => mockAuthRepository.signOut()).called(1);
     });
   });
 }

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -273,7 +273,7 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
 
   if (payload != null) {
     return SharedPrefs.instance.init().then((sharedPrefs) async {
-      CubeUserMig? user =
+      CubeUser? user =
           await sharedPrefs.getUser().then((savedUser) => savedUser);
 
       Map<String, dynamic> payloadObject = jsonDecode(payload);

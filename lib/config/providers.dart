@@ -1,6 +1,6 @@
-// import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
-// import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
+import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
@@ -36,7 +36,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(datadogProvider.future);
   await container.read(datadogConfigProvider.future);
 
-  // container.read(cubeSettingsInitProvider.future);
+  await container.read(cubeSettingsInitProvider.future);
 
   container.read(sharedPreferencesProvider);
   container.read(firebaseDatabaseProvider);
@@ -45,13 +45,12 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(emulatorSettingsProvider);
   container.read(geoFlutterFireProvider);
   container.read(firebaseAuthProvider);
-  // container.read(cubeUserControllerProvider);
-  // container.read(cubeSessionManagerProvider);
-  // container.read(cubeChatConnectionSettingsProvider);
-  // container.read(cubeChatConnectionProvider);
+  container.read(cubeUserControllerProvider);
+  container.read(cubeSessionManagerProvider);
+  container.read(cubeChatConnectionSettingsProvider);
+  container.read(cubeChatConnectionProvider);
   container.read(goRouterProvider);
   // container.read(localizationProvider);
-  // container.read(cubeProvider);
 
   // container.read(authStateChangesProvider);
   // container.read(authStateProvider);

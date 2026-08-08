@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
-// import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
-import '../../../domain/models/entities/cube_user/cube_user_mig.dart';
 
 const String prefLoginType = "pref_login_type";
 const String prefUserLogin = "pref_user_login";
@@ -45,7 +44,7 @@ class SharedPrefs {
     return completer.future;
   }
 
-  saveNewUser(CubeUserMig cubeUser, LoginType loginType) {
+  saveNewUser(CubeUser cubeUser, LoginType loginType) {
     prefs.clear();
 
     prefs.setString(prefLoginType, loginType.name);
@@ -77,7 +76,7 @@ class SharedPrefs {
     }
   }*/
 
-  updateUser(CubeUserMig cubeUser) {
+  updateUser(CubeUser cubeUser) {
     if (cubeUser.password != null) {
       prefs.setString(prefUserPsw, cubeUser.password!);
     }
@@ -92,17 +91,17 @@ class SharedPrefs {
     }
   }
 
-  Future<CubeUserMig?> getUser() {
+  Future<CubeUser?> getUser() {
     if (prefs.getString(prefUserLogin) == null &&
         prefs.getString(prefUserEmail) == null) return Future.value();
-    var user = const CubeUserMig();
-/*    user.login = prefs.getString(prefUserLogin);
-    user.email = prefs.getString(prefUserEmail);
-    user.phone = prefs.getString(prefUserPhone);
-    user.password = prefs.getString(prefUserPsw);
-    user.fullName = prefs.getString(prefUserName);
-    user.id = prefs.getInt(prefUserId);
-    user.avatar = prefs.getString(prefUserAvatar);*/
+    var user = CubeUser()
+      ..login = prefs.getString(prefUserLogin)
+      ..email = prefs.getString(prefUserEmail)
+      ..phone = prefs.getString(prefUserPhone)
+      ..password = prefs.getString(prefUserPsw)
+      ..fullName = prefs.getString(prefUserName)
+      ..id = prefs.getInt(prefUserId)
+      ..avatar = prefs.getString(prefUserAvatar);
     return Future.value(user);
   }
 

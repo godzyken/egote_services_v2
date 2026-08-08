@@ -1,14 +1,12 @@
 import 'dart:developer' as developer;
 
-// import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../domain/models/entities/cube_user/cube_user_mig.dart';
-
-class CubeUserController extends StateNotifier<CubeUserMig?> {
+class CubeUserController extends StateNotifier<CubeUser?> {
   CubeUserController(this._ref) : super(null) {
     _initialize();
   }
@@ -21,7 +19,7 @@ class CubeUserController extends StateNotifier<CubeUserMig?> {
       final authModelEntity = _ref.watch(autoAuthControllerProvider);
 
       do {
-        state = CubeUserMig(
+        state = CubeUser(
           id: authModelEntity?.userEntityModel.id.value,
           fullName: authModelEntity!.userEntityModel.name,
           email: authModelEntity.authUser.email!,
@@ -32,7 +30,7 @@ class CubeUserController extends StateNotifier<CubeUserMig?> {
       } while (userModelEntity.previousUser!.id == authModelEntity.id);
     } on AuthException catch (e) {
       developer.log(e.toString());
-      state = const CubeUserMig();
+      state = CubeUser();
     }
   }
 }

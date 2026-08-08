@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'dart:developer';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
-//import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
@@ -13,10 +15,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
-// import 'config/cube_config/cube_config.dart';
+import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
-import 'features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
 
 class MyApp extends ConsumerStatefulWidget {
@@ -73,7 +74,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    /*  connectivityStateSubscription =
+    connectivityStateSubscription =
         Connectivity().onConnectivityChanged.listen((connectivityType) {
       if (AppLifecycleState.resumed != appState) return;
 
@@ -97,13 +98,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         // TODO: Handle this case.
         case ConnectivityResult.mobile:
           log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
-          bool isChatDisconnected =
+          bool isChatDisconnected2 =
               CubeChatConnection.instance.chatConnectionState ==
                       CubeChatConnectionState.Closed ||
                   CubeChatConnection.instance.chatConnectionState ==
                       CubeChatConnectionState.ForceClosed;
 
-          if (isChatDisconnected &&
+          if (isChatDisconnected2 &&
               CubeChatConnection.instance.currentUser != null) {
             CubeChatConnection.instance.relogin();
           }
@@ -113,9 +114,10 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         case ConnectivityResult.vpn:
         // TODO: Handle this case.
         case ConnectivityResult.other:
-        // TODO: Handle this case.
+          // TODO: Handle this case.
+          break;
       }
-    });*/
+    });
     late final initCube = initConnectyCube();
 
     initCube.asStream();
@@ -158,16 +160,19 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         SharedPrefs.instance.init().then((sharedPrefs) async {
-          CubeUserMig? user =
+          CubeUser? user =
               await sharedPrefs.getUser().then((savedUser) => savedUser!);
 
           if (user != null) {
-            /*   if (!CubeChatConnection.instance.isAuthenticated()) {
+            if (!CubeChatConnection.instance.isAuthenticated()) {
               if (LoginType.phone == sharedPrefs.getLoginType()) {
                 if (CubeSessionManager.instance.isActiveSessionValid()) {
                   user.password =
                       CubeSessionManager.instance.activeSession?.token;
                 } else {
+                  // TODO: replace placeholder projectId/accessToken with real
+                  // Firebase project id + user access token before relying on
+                  // this phone-auth reconnection path.
                   var phoneAuthSession = await createSessionUsingFirebasePhone(
                       'projectId', 'accessToken');
                   user.password = phoneAuthSession.token;
@@ -176,15 +181,15 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
               CubeChatConnection.instance.login(user);
             } else {
               CubeChatConnection.instance.markActive();
-            }*/
+            }
           }
         });
       case AppLifecycleState.inactive:
       // TODO: Handle this case.
       case AppLifecycleState.paused:
-      /*if (CubeChatConnection.instance.isAuthenticated()) {
+        if (CubeChatConnection.instance.isAuthenticated()) {
           CubeChatConnection.instance.markInactive();
-        }*/
+        }
       case AppLifecycleState.detached:
       // TODO: Handle this case.
       case AppLifecycleState.hidden:
