@@ -1,4 +1,5 @@
-// import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,6 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/domain/entities/entities_extension.dart';
 import '../../features/auth/presentation/views/screens/auth_screens.dart';
 import '../../features/avis/presentation/view/avis_box_page.dart';
-import '../../features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import '../../features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
 import '../../features/devis/presentation/views/screens/devis_edit_screen.dart';
 import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../../features/home/presentation/view/home_screen.dart';
@@ -89,7 +88,7 @@ part 'routes.g.dart';
         path: ThemeShowcaseRoute.path, name: 'themes')
   ],
 )
-class HomeRoute extends GoRouteData {
+class HomeRoute extends GoRouteData with $HomeRoute {
   static const path = '/';
 
   const HomeRoute();
@@ -110,7 +109,7 @@ class HomeRoute extends GoRouteData {
   }
 }
 
-class UserHomeRoute extends GoRouteData {
+class UserHomeRoute extends GoRouteData with $UserHomeRoute {
   static const path = 'user_home/:pid';
 
   const UserHomeRoute({required this.pid});
@@ -126,7 +125,7 @@ class UserHomeRoute extends GoRouteData {
   }
 }
 
-class PersonRoute extends GoRouteData {
+class PersonRoute extends GoRouteData with $PersonRoute {
   static const path = 'person/:uid';
 
   const PersonRoute({required this.uid, required this.pid});
@@ -143,7 +142,7 @@ class PersonRoute extends GoRouteData {
   }
 }
 
-class UserListRoute extends GoRouteData {
+class UserListRoute extends GoRouteData with $UserListRoute {
   static const path = 'userList/:uid';
 
   const UserListRoute({required this.pid, required this.uid});
@@ -160,7 +159,7 @@ class UserListRoute extends GoRouteData {
   }
 }
 
-class AddUserFormRoute extends GoRouteData {
+class AddUserFormRoute extends GoRouteData with $AddUserFormRoute {
   static const path = 'userForm/:uid&:pid';
 
   AddUserFormRoute({required this.uid, required this.pid});
@@ -205,7 +204,7 @@ class AddUserFormRoute extends GoRouteData {
     ),
   ],
 )
-class AuthRoute extends GoRouteData {
+class AuthRoute extends GoRouteData with $AuthRoute {
   static const path = '/authRoute';
 
   const AuthRoute();
@@ -223,7 +222,7 @@ class AuthRoute extends GoRouteData {
   }
 }
 
-class LoginRoute extends GoRouteData {
+class LoginRoute extends GoRouteData with $LoginRoute {
   static const path = 'loginRoute';
 
   const LoginRoute();
@@ -241,7 +240,7 @@ class LoginRoute extends GoRouteData {
   }
 }
 
-class SignUpRoute extends GoRouteData {
+class SignUpRoute extends GoRouteData with $SignUpRoute {
   static const path = 'signUpRoute';
 
   const SignUpRoute();
@@ -259,7 +258,7 @@ class SignUpRoute extends GoRouteData {
   }
 }
 
-class ListMfaRoute extends GoRouteData {
+class ListMfaRoute extends GoRouteData with $ListMfaRoute {
   static const path = 'mfaListRoute';
 
   const ListMfaRoute();
@@ -275,7 +274,7 @@ class ListMfaRoute extends GoRouteData {
   }
 }
 
-class MFAEnrollRoute extends GoRouteData {
+class MFAEnrollRoute extends GoRouteData with $MFAEnrollRoute {
   static const path = 'enrollRoute';
 
   const MFAEnrollRoute();
@@ -296,7 +295,7 @@ class MFAEnrollRoute extends GoRouteData {
   }
 }
 
-class VerificationRoute extends GoRouteData {
+class VerificationRoute extends GoRouteData with $VerificationRoute {
   static const path = 'verificationRoute';
 
   const VerificationRoute();
@@ -318,7 +317,7 @@ class VerificationRoute extends GoRouteData {
 }
 
 /// [Themes Settings Pages Routes]
-class SettingsUiRoute extends GoRouteData {
+class SettingsUiRoute extends GoRouteData with $SettingsUiRoute {
   static const path = 'settingsRoute';
 
   const SettingsUiRoute();
@@ -336,7 +335,7 @@ class SettingsUiRoute extends GoRouteData {
   }
 }
 
-class CrossPlatformSettingsRoute extends GoRouteData {
+class CrossPlatformSettingsRoute extends GoRouteData with $CrossPlatformSettingsRoute {
   static const path = 'crossPlatformRoute';
 
   const CrossPlatformSettingsRoute();
@@ -354,7 +353,7 @@ class CrossPlatformSettingsRoute extends GoRouteData {
   }
 }
 
-class WebChromeAddressesRoute extends GoRouteData {
+class WebChromeAddressesRoute extends GoRouteData with $WebChromeAddressesRoute {
   static const path = 'webChromeAddressesRoute';
 
   const WebChromeAddressesRoute();
@@ -372,7 +371,7 @@ class WebChromeAddressesRoute extends GoRouteData {
   }
 }
 
-class AndroidNotificationsRoute extends GoRouteData {
+class AndroidNotificationsRoute extends GoRouteData with $AndroidNotificationsRoute {
   static const path = 'androidNotificationsRoute';
 
   const AndroidNotificationsRoute();
@@ -390,7 +389,7 @@ class AndroidNotificationsRoute extends GoRouteData {
   }
 }
 
-class WebChromeSettingsRoute extends GoRouteData {
+class WebChromeSettingsRoute extends GoRouteData with $WebChromeSettingsRoute {
   static const path = 'webChromeSettingsRoute';
 
   const WebChromeSettingsRoute();
@@ -408,7 +407,7 @@ class WebChromeSettingsRoute extends GoRouteData {
   }
 }
 
-class DrawingRoute extends GoRouteData {
+class DrawingRoute extends GoRouteData with $DrawingRoute {
   static const path = 'drawingRoute';
 
   const DrawingRoute();
@@ -426,7 +425,7 @@ class DrawingRoute extends GoRouteData {
   }
 }
 
-class ThemeShowcaseRoute extends GoRouteData {
+class ThemeShowcaseRoute extends GoRouteData with $ThemeShowcaseRoute {
   static const path = 'themeshowcase';
 
   const ThemeShowcaseRoute();
@@ -444,7 +443,7 @@ class ThemeShowcaseRoute extends GoRouteData {
   }
 }
 
-class ChatRoute extends GoRouteData {
+class ChatRoute extends GoRouteData with $ChatRoute {
   static const path = 'chatRoute';
 
   const ChatRoute();
@@ -457,14 +456,14 @@ class ChatRoute extends GoRouteData {
   }
 }
 
-class SelectDialogRoute extends GoRouteData {
+class SelectDialogRoute extends GoRouteData with $SelectDialogRoute {
   static const path = 'selectDialogRoute:cid';
 
   int cid;
 
   SelectDialogRoute({required this.cid});
 
-  CubeUserMig? currentUser;
+  CubeUser? currentUser;
 
   int? get _cid => cid = currentUser!.id!;
 
@@ -481,18 +480,18 @@ class SelectDialogRoute extends GoRouteData {
   }
 }
 
-class ChatDialogRoute extends GoRouteData {
+class ChatDialogRoute extends GoRouteData with $ChatDialogRoute {
   static const path = 'chatDialogRoute:cdid';
 
   ChatDialogRoute({required this.cid, required this.cdid});
 
   int cid;
-  CubeUserMig? currentUser;
+  CubeUser? currentUser;
 
   int? get _cid => cid = currentUser!.id!;
 
   int cdid;
-  CubeDialogMig? cubeDialog;
+  CubeDialog? cubeDialog;
 
   int? get _cdid => cdid = cubeDialog!.type!;
 
@@ -511,7 +510,7 @@ class ChatDialogRoute extends GoRouteData {
 }
 
 /// [Other Pages Routes]
-class DevisEditRoute extends GoRouteData {
+class DevisEditRoute extends GoRouteData with $DevisEditRoute {
   static const path = 'edit_devis/:devisId';
 
   const DevisEditRoute({required this.devisId});
@@ -520,12 +519,12 @@ class DevisEditRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    final devisId = state.pathParameters['userId'] as String;
+    final devisId = state.pathParameters['devisId'] as String;
     return DevisEditScreen(key: state.pageKey, devisId: devisId);
   }
 }
 
-class DevisListRoute extends GoRouteData {
+class DevisListRoute extends GoRouteData with $DevisListRoute {
   static const path = 'devisList';
 
   const DevisListRoute();
@@ -536,7 +535,7 @@ class DevisListRoute extends GoRouteData {
   }
 }
 
-class GodzyLogoRoute extends GoRouteData {
+class GodzyLogoRoute extends GoRouteData with $GodzyLogoRoute {
   static const path = 'godzyRoute';
 
   const GodzyLogoRoute();
@@ -554,7 +553,7 @@ class GodzyLogoRoute extends GoRouteData {
   }
 }
 
-class AvisBoxRoute extends GoRouteData {
+class AvisBoxRoute extends GoRouteData with $AvisBoxRoute {
   static const path = 'avisRoute';
 
   const AvisBoxRoute();

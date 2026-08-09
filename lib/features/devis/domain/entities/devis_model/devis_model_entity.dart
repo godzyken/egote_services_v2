@@ -22,7 +22,7 @@ class DevisModelEntity with _$DevisModelEntity {
     required double amountHt,
     required double amountTtc,
     required bool approval,
-  }) = _DevisModelEntity;
+  }) = _DevisModelEntityDefault;
 
   factory DevisModelEntity.initialize({
     required DevisId id,

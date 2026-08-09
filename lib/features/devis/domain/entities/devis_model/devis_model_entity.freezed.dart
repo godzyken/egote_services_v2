@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,15 +9,12 @@ part of 'devis_model_entity.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 DevisModelEntity _$DevisModelEntityFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'approved':
-      return _DevisModelEntity.fromJson(json);
+      return _DevisModelEntityDefault.fromJson(json);
     case 'initialize':
       return _DevisModelEntityInitialize.fromJson(json);
     case 'empty':
@@ -30,47 +27,146 @@ DevisModelEntity _$DevisModelEntityFromJson(Map<String, dynamic> json) {
 }
 
 /// @nodoc
-mixin _$DevisModelEntity {
+mixin _$DevisModelEntity implements DiagnosticableTreeMixin {
+  /// Serializes this DevisModelEntity to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    properties..add(DiagnosticsProperty('type', 'DevisModelEntity'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is DevisModelEntity);
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'DevisModelEntity()';
+  }
+}
+
+/// @nodoc
+class $DevisModelEntityCopyWith<$Res> {
+  $DevisModelEntityCopyWith(
+      DevisModelEntity _, $Res Function(DevisModelEntity) __);
+}
+
+/// Adds pattern-matching-related methods to [DevisModelEntity].
+extension DevisModelEntityPatterns on DevisModelEntity {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)
-        approved,
-    required TResult Function(DevisId id, DateTime createdAt) initialize,
-    required TResult Function() empty,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_DevisModelEntityDefault value)? approved,
+    TResult Function(_DevisModelEntityInitialize value)? initialize,
+    TResult Function(_DevisModelEntityEmpty value)? empty,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _DevisModelEntityDefault() when approved != null:
+        return approved(_that);
+      case _DevisModelEntityInitialize() when initialize != null:
+        return initialize(_that);
+      case _DevisModelEntityEmpty() when empty != null:
+        return empty(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)?
-        approved,
-    TResult? Function(DevisId id, DateTime createdAt)? initialize,
-    TResult? Function()? empty,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult map<TResult extends Object?>({
+    required TResult Function(_DevisModelEntityDefault value) approved,
+    required TResult Function(_DevisModelEntityInitialize value) initialize,
+    required TResult Function(_DevisModelEntityEmpty value) empty,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _DevisModelEntityDefault():
+        return approved(_that);
+      case _DevisModelEntityInitialize():
+        return initialize(_that);
+      case _DevisModelEntityEmpty():
+        return empty(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_DevisModelEntityDefault value)? approved,
+    TResult? Function(_DevisModelEntityInitialize value)? initialize,
+    TResult? Function(_DevisModelEntityEmpty value)? empty,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _DevisModelEntityDefault() when approved != null:
+        return approved(_that);
+      case _DevisModelEntityInitialize() when initialize != null:
+        return initialize(_that);
+      case _DevisModelEntityEmpty() when empty != null:
+        return empty(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
@@ -90,183 +186,152 @@ mixin _$DevisModelEntity {
     TResult Function(DevisId id, DateTime createdAt)? initialize,
     TResult Function()? empty,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_DevisModelEntity value) approved,
-    required TResult Function(_DevisModelEntityInitialize value) initialize,
-    required TResult Function(_DevisModelEntityEmpty value) empty,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_DevisModelEntity value)? approved,
-    TResult? Function(_DevisModelEntityInitialize value)? initialize,
-    TResult? Function(_DevisModelEntityEmpty value)? empty,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DevisModelEntity value)? approved,
-    TResult Function(_DevisModelEntityInitialize value)? initialize,
-    TResult Function(_DevisModelEntityEmpty value)? empty,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DevisModelEntityCopyWith<$Res> {
-  factory $DevisModelEntityCopyWith(
-          DevisModelEntity value, $Res Function(DevisModelEntity) then) =
-      _$DevisModelEntityCopyWithImpl<$Res, DevisModelEntity>;
-}
-
-/// @nodoc
-class _$DevisModelEntityCopyWithImpl<$Res, $Val extends DevisModelEntity>
-    implements $DevisModelEntityCopyWith<$Res> {
-  _$DevisModelEntityCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$DevisModelEntityImplCopyWith<$Res> {
-  factory _$$DevisModelEntityImplCopyWith(_$DevisModelEntityImpl value,
-          $Res Function(_$DevisModelEntityImpl) then) =
-      __$$DevisModelEntityImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call(
-      {DevisId id,
-      DateTime createdAt,
-      DateTime validity,
-      ContactOwnerEntity client,
-      ContactOwnerEntity pro,
-      List<TravauxEntity> travauxEntity,
-      int quantity,
-      int unitPrice,
-      double vatRates,
-      double amountHt,
-      double amountTtc,
-      bool approval});
-
-  $DevisIdCopyWith<$Res> get id;
-  $ContactOwnerEntityCopyWith<$Res> get client;
-  $ContactOwnerEntityCopyWith<$Res> get pro;
-}
-
-/// @nodoc
-class __$$DevisModelEntityImplCopyWithImpl<$Res>
-    extends _$DevisModelEntityCopyWithImpl<$Res, _$DevisModelEntityImpl>
-    implements _$$DevisModelEntityImplCopyWith<$Res> {
-  __$$DevisModelEntityImplCopyWithImpl(_$DevisModelEntityImpl _value,
-      $Res Function(_$DevisModelEntityImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? createdAt = null,
-    Object? validity = null,
-    Object? client = null,
-    Object? pro = null,
-    Object? travauxEntity = null,
-    Object? quantity = null,
-    Object? unitPrice = null,
-    Object? vatRates = null,
-    Object? amountHt = null,
-    Object? amountTtc = null,
-    Object? approval = null,
   }) {
-    return _then(_$DevisModelEntityImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as DevisId,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      validity: null == validity
-          ? _value.validity
-          : validity // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      client: null == client
-          ? _value.client
-          : client // ignore: cast_nullable_to_non_nullable
-              as ContactOwnerEntity,
-      pro: null == pro
-          ? _value.pro
-          : pro // ignore: cast_nullable_to_non_nullable
-              as ContactOwnerEntity,
-      travauxEntity: null == travauxEntity
-          ? _value._travauxEntity
-          : travauxEntity // ignore: cast_nullable_to_non_nullable
-              as List<TravauxEntity>,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      unitPrice: null == unitPrice
-          ? _value.unitPrice
-          : unitPrice // ignore: cast_nullable_to_non_nullable
-              as int,
-      vatRates: null == vatRates
-          ? _value.vatRates
-          : vatRates // ignore: cast_nullable_to_non_nullable
-              as double,
-      amountHt: null == amountHt
-          ? _value.amountHt
-          : amountHt // ignore: cast_nullable_to_non_nullable
-              as double,
-      amountTtc: null == amountTtc
-          ? _value.amountTtc
-          : amountTtc // ignore: cast_nullable_to_non_nullable
-              as double,
-      approval: null == approval
-          ? _value.approval
-          : approval // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _DevisModelEntityDefault() when approved != null:
+        return approved(
+            _that.id,
+            _that.createdAt,
+            _that.validity,
+            _that.client,
+            _that.pro,
+            _that.travauxEntity,
+            _that.quantity,
+            _that.unitPrice,
+            _that.vatRates,
+            _that.amountHt,
+            _that.amountTtc,
+            _that.approval);
+      case _DevisModelEntityInitialize() when initialize != null:
+        return initialize(_that.id, _that.createdAt);
+      case _DevisModelEntityEmpty() when empty != null:
+        return empty();
+      case _:
+        return orElse();
+    }
   }
 
-  @override
-  @pragma('vm:prefer-inline')
-  $DevisIdCopyWith<$Res> get id {
-    return $DevisIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value));
-    });
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            DevisId id,
+            DateTime createdAt,
+            DateTime validity,
+            ContactOwnerEntity client,
+            ContactOwnerEntity pro,
+            List<TravauxEntity> travauxEntity,
+            int quantity,
+            int unitPrice,
+            double vatRates,
+            double amountHt,
+            double amountTtc,
+            bool approval)
+        approved,
+    required TResult Function(DevisId id, DateTime createdAt) initialize,
+    required TResult Function() empty,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _DevisModelEntityDefault():
+        return approved(
+            _that.id,
+            _that.createdAt,
+            _that.validity,
+            _that.client,
+            _that.pro,
+            _that.travauxEntity,
+            _that.quantity,
+            _that.unitPrice,
+            _that.vatRates,
+            _that.amountHt,
+            _that.amountTtc,
+            _that.approval);
+      case _DevisModelEntityInitialize():
+        return initialize(_that.id, _that.createdAt);
+      case _DevisModelEntityEmpty():
+        return empty();
+      case _:
+        throw StateError('Unexpected subclass');
+    }
   }
 
-  @override
-  @pragma('vm:prefer-inline')
-  $ContactOwnerEntityCopyWith<$Res> get client {
-    return $ContactOwnerEntityCopyWith<$Res>(_value.client, (value) {
-      return _then(_value.copyWith(client: value));
-    });
-  }
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
 
-  @override
-  @pragma('vm:prefer-inline')
-  $ContactOwnerEntityCopyWith<$Res> get pro {
-    return $ContactOwnerEntityCopyWith<$Res>(_value.pro, (value) {
-      return _then(_value.copyWith(pro: value));
-    });
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            DevisId id,
+            DateTime createdAt,
+            DateTime validity,
+            ContactOwnerEntity client,
+            ContactOwnerEntity pro,
+            List<TravauxEntity> travauxEntity,
+            int quantity,
+            int unitPrice,
+            double vatRates,
+            double amountHt,
+            double amountTtc,
+            bool approval)?
+        approved,
+    TResult? Function(DevisId id, DateTime createdAt)? initialize,
+    TResult? Function()? empty,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _DevisModelEntityDefault() when approved != null:
+        return approved(
+            _that.id,
+            _that.createdAt,
+            _that.validity,
+            _that.client,
+            _that.pro,
+            _that.travauxEntity,
+            _that.quantity,
+            _that.unitPrice,
+            _that.vatRates,
+            _that.amountHt,
+            _that.amountTtc,
+            _that.approval);
+      case _DevisModelEntityInitialize() when initialize != null:
+        return initialize(_that.id, _that.createdAt);
+      case _DevisModelEntityEmpty() when empty != null:
+        return empty();
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$DevisModelEntityImpl
+class _DevisModelEntityDefault
     with DiagnosticableTreeMixin
-    implements _DevisModelEntity {
-  const _$DevisModelEntityImpl(
+    implements DevisModelEntity {
+  const _DevisModelEntityDefault(
       {required this.id,
       required this.createdAt,
       required this.validity,
@@ -282,52 +347,48 @@ class _$DevisModelEntityImpl
       final String? $type})
       : _travauxEntity = travauxEntity,
         $type = $type ?? 'approved';
+  factory _DevisModelEntityDefault.fromJson(Map<String, dynamic> json) =>
+      _$DevisModelEntityDefaultFromJson(json);
 
-  factory _$DevisModelEntityImpl.fromJson(Map<String, dynamic> json) =>
-      _$$DevisModelEntityImplFromJson(json);
-
-  @override
   final DevisId id;
-  @override
   final DateTime createdAt;
-  @override
   final DateTime validity;
-  @override
   final ContactOwnerEntity client;
-  @override
   final ContactOwnerEntity pro;
   final List<TravauxEntity> _travauxEntity;
-  @override
   List<TravauxEntity> get travauxEntity {
     if (_travauxEntity is EqualUnmodifiableListView) return _travauxEntity;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_travauxEntity);
   }
 
-  @override
   final int quantity;
-  @override
   final int unitPrice;
-  @override
   final double vatRates;
-  @override
   final double amountHt;
-  @override
   final double amountTtc;
-  @override
   final bool approval;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$DevisModelEntityDefaultCopyWith<_DevisModelEntityDefault> get copyWith =>
+      __$DevisModelEntityDefaultCopyWithImpl<_DevisModelEntityDefault>(
+          this, _$identity);
+
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DevisModelEntity.approved(id: $id, createdAt: $createdAt, validity: $validity, client: $client, pro: $pro, travauxEntity: $travauxEntity, quantity: $quantity, unitPrice: $unitPrice, vatRates: $vatRates, amountHt: $amountHt, amountTtc: $amountTtc, approval: $approval)';
+  Map<String, dynamic> toJson() {
+    return _$DevisModelEntityDefaultToJson(
+      this,
+    );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'DevisModelEntity.approved'))
       ..add(DiagnosticsProperty('id', id))
@@ -348,7 +409,7 @@ class _$DevisModelEntityImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DevisModelEntityImpl &&
+            other is _DevisModelEntityDefault &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -372,7 +433,7 @@ class _$DevisModelEntityImpl
                 other.approval == approval));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -389,244 +450,180 @@ class _$DevisModelEntityImpl
       amountTtc,
       approval);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$DevisModelEntityImplCopyWith<_$DevisModelEntityImpl> get copyWith =>
-      __$$DevisModelEntityImplCopyWithImpl<_$DevisModelEntityImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)
-        approved,
-    required TResult Function(DevisId id, DateTime createdAt) initialize,
-    required TResult Function() empty,
-  }) {
-    return approved(id, createdAt, validity, client, pro, travauxEntity,
-        quantity, unitPrice, vatRates, amountHt, amountTtc, approval);
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'DevisModelEntity.approved(id: $id, createdAt: $createdAt, validity: $validity, client: $client, pro: $pro, travauxEntity: $travauxEntity, quantity: $quantity, unitPrice: $unitPrice, vatRates: $vatRates, amountHt: $amountHt, amountTtc: $amountTtc, approval: $approval)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)?
-        approved,
-    TResult? Function(DevisId id, DateTime createdAt)? initialize,
-    TResult? Function()? empty,
-  }) {
-    return approved?.call(id, createdAt, validity, client, pro, travauxEntity,
-        quantity, unitPrice, vatRates, amountHt, amountTtc, approval);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)?
-        approved,
-    TResult Function(DevisId id, DateTime createdAt)? initialize,
-    TResult Function()? empty,
-    required TResult orElse(),
-  }) {
-    if (approved != null) {
-      return approved(id, createdAt, validity, client, pro, travauxEntity,
-          quantity, unitPrice, vatRates, amountHt, amountTtc, approval);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_DevisModelEntity value) approved,
-    required TResult Function(_DevisModelEntityInitialize value) initialize,
-    required TResult Function(_DevisModelEntityEmpty value) empty,
-  }) {
-    return approved(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_DevisModelEntity value)? approved,
-    TResult? Function(_DevisModelEntityInitialize value)? initialize,
-    TResult? Function(_DevisModelEntityEmpty value)? empty,
-  }) {
-    return approved?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DevisModelEntity value)? approved,
-    TResult Function(_DevisModelEntityInitialize value)? initialize,
-    TResult Function(_DevisModelEntityEmpty value)? empty,
-    required TResult orElse(),
-  }) {
-    if (approved != null) {
-      return approved(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$DevisModelEntityImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _DevisModelEntity implements DevisModelEntity {
-  const factory _DevisModelEntity(
-      {required final DevisId id,
-      required final DateTime createdAt,
-      required final DateTime validity,
-      required final ContactOwnerEntity client,
-      required final ContactOwnerEntity pro,
-      required final List<TravauxEntity> travauxEntity,
-      required final int quantity,
-      required final int unitPrice,
-      required final double vatRates,
-      required final double amountHt,
-      required final double amountTtc,
-      required final bool approval}) = _$DevisModelEntityImpl;
-
-  factory _DevisModelEntity.fromJson(Map<String, dynamic> json) =
-      _$DevisModelEntityImpl.fromJson;
-
-  DevisId get id;
-  DateTime get createdAt;
-  DateTime get validity;
-  ContactOwnerEntity get client;
-  ContactOwnerEntity get pro;
-  List<TravauxEntity> get travauxEntity;
-  int get quantity;
-  int get unitPrice;
-  double get vatRates;
-  double get amountHt;
-  double get amountTtc;
-  bool get approval;
-  @JsonKey(ignore: true)
-  _$$DevisModelEntityImplCopyWith<_$DevisModelEntityImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DevisModelEntityInitializeImplCopyWith<$Res> {
-  factory _$$DevisModelEntityInitializeImplCopyWith(
-          _$DevisModelEntityInitializeImpl value,
-          $Res Function(_$DevisModelEntityInitializeImpl) then) =
-      __$$DevisModelEntityInitializeImplCopyWithImpl<$Res>;
+abstract mixin class _$DevisModelEntityDefaultCopyWith<$Res>
+    implements $DevisModelEntityCopyWith<$Res> {
+  factory _$DevisModelEntityDefaultCopyWith(_DevisModelEntityDefault value,
+          $Res Function(_DevisModelEntityDefault) _then) =
+      __$DevisModelEntityDefaultCopyWithImpl;
   @useResult
-  $Res call({DevisId id, DateTime createdAt});
+  $Res call(
+      {DevisId id,
+      DateTime createdAt,
+      DateTime validity,
+      ContactOwnerEntity client,
+      ContactOwnerEntity pro,
+      List<TravauxEntity> travauxEntity,
+      int quantity,
+      int unitPrice,
+      double vatRates,
+      double amountHt,
+      double amountTtc,
+      bool approval});
 
   $DevisIdCopyWith<$Res> get id;
+  $ContactOwnerEntityCopyWith<$Res> get client;
+  $ContactOwnerEntityCopyWith<$Res> get pro;
 }
 
 /// @nodoc
-class __$$DevisModelEntityInitializeImplCopyWithImpl<$Res>
-    extends _$DevisModelEntityCopyWithImpl<$Res,
-        _$DevisModelEntityInitializeImpl>
-    implements _$$DevisModelEntityInitializeImplCopyWith<$Res> {
-  __$$DevisModelEntityInitializeImplCopyWithImpl(
-      _$DevisModelEntityInitializeImpl _value,
-      $Res Function(_$DevisModelEntityInitializeImpl) _then)
-      : super(_value, _then);
+class __$DevisModelEntityDefaultCopyWithImpl<$Res>
+    implements _$DevisModelEntityDefaultCopyWith<$Res> {
+  __$DevisModelEntityDefaultCopyWithImpl(this._self, this._then);
 
+  final _DevisModelEntityDefault _self;
+  final $Res Function(_DevisModelEntityDefault) _then;
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? id = null,
     Object? createdAt = null,
+    Object? validity = null,
+    Object? client = null,
+    Object? pro = null,
+    Object? travauxEntity = null,
+    Object? quantity = null,
+    Object? unitPrice = null,
+    Object? vatRates = null,
+    Object? amountHt = null,
+    Object? amountTtc = null,
+    Object? approval = null,
   }) {
-    return _then(_$DevisModelEntityInitializeImpl(
+    return _then(_DevisModelEntityDefault(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as DevisId,
       createdAt: null == createdAt
-          ? _value.createdAt
+          ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      validity: null == validity
+          ? _self.validity
+          : validity // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      client: null == client
+          ? _self.client
+          : client // ignore: cast_nullable_to_non_nullable
+              as ContactOwnerEntity,
+      pro: null == pro
+          ? _self.pro
+          : pro // ignore: cast_nullable_to_non_nullable
+              as ContactOwnerEntity,
+      travauxEntity: null == travauxEntity
+          ? _self._travauxEntity
+          : travauxEntity // ignore: cast_nullable_to_non_nullable
+              as List<TravauxEntity>,
+      quantity: null == quantity
+          ? _self.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as int,
+      unitPrice: null == unitPrice
+          ? _self.unitPrice
+          : unitPrice // ignore: cast_nullable_to_non_nullable
+              as int,
+      vatRates: null == vatRates
+          ? _self.vatRates
+          : vatRates // ignore: cast_nullable_to_non_nullable
+              as double,
+      amountHt: null == amountHt
+          ? _self.amountHt
+          : amountHt // ignore: cast_nullable_to_non_nullable
+              as double,
+      amountTtc: null == amountTtc
+          ? _self.amountTtc
+          : amountTtc // ignore: cast_nullable_to_non_nullable
+              as double,
+      approval: null == approval
+          ? _self.approval
+          : approval // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DevisIdCopyWith<$Res> get id {
-    return $DevisIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value));
+    return $DevisIdCopyWith<$Res>(_self.id, (value) {
+      return _then(_self.copyWith(id: value));
+    });
+  }
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ContactOwnerEntityCopyWith<$Res> get client {
+    return $ContactOwnerEntityCopyWith<$Res>(_self.client, (value) {
+      return _then(_self.copyWith(client: value));
+    });
+  }
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ContactOwnerEntityCopyWith<$Res> get pro {
+    return $ContactOwnerEntityCopyWith<$Res>(_self.pro, (value) {
+      return _then(_self.copyWith(pro: value));
     });
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$DevisModelEntityInitializeImpl
+class _DevisModelEntityInitialize
     with DiagnosticableTreeMixin
-    implements _DevisModelEntityInitialize {
-  _$DevisModelEntityInitializeImpl(
+    implements DevisModelEntity {
+  _DevisModelEntityInitialize(
       {required this.id, required this.createdAt, final String? $type})
       : $type = $type ?? 'initialize';
+  factory _DevisModelEntityInitialize.fromJson(Map<String, dynamic> json) =>
+      _$DevisModelEntityInitializeFromJson(json);
 
-  factory _$DevisModelEntityInitializeImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$DevisModelEntityInitializeImplFromJson(json);
-
-  @override
   final DevisId id;
-  @override
   final DateTime createdAt;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$DevisModelEntityInitializeCopyWith<_DevisModelEntityInitialize>
+      get copyWith => __$DevisModelEntityInitializeCopyWithImpl<
+          _DevisModelEntityInitialize>(this, _$identity);
+
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DevisModelEntity.initialize(id: $id, createdAt: $createdAt)';
+  Map<String, dynamic> toJson() {
+    return _$DevisModelEntityInitializeToJson(
+      this,
+    );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'DevisModelEntity.initialize'))
       ..add(DiagnosticsProperty('id', id))
@@ -637,323 +634,111 @@ class _$DevisModelEntityInitializeImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DevisModelEntityInitializeImpl &&
+            other is _DevisModelEntityInitialize &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, createdAt);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'DevisModelEntity.initialize(id: $id, createdAt: $createdAt)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$DevisModelEntityInitializeCopyWith<$Res>
+    implements $DevisModelEntityCopyWith<$Res> {
+  factory _$DevisModelEntityInitializeCopyWith(
+          _DevisModelEntityInitialize value,
+          $Res Function(_DevisModelEntityInitialize) _then) =
+      __$DevisModelEntityInitializeCopyWithImpl;
+  @useResult
+  $Res call({DevisId id, DateTime createdAt});
+
+  $DevisIdCopyWith<$Res> get id;
+}
+
+/// @nodoc
+class __$DevisModelEntityInitializeCopyWithImpl<$Res>
+    implements _$DevisModelEntityInitializeCopyWith<$Res> {
+  __$DevisModelEntityInitializeCopyWithImpl(this._self, this._then);
+
+  final _DevisModelEntityInitialize _self;
+  final $Res Function(_DevisModelEntityInitialize) _then;
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? createdAt = null,
+  }) {
+    return _then(_DevisModelEntityInitialize(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as DevisId,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+
+  /// Create a copy of DevisModelEntity
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$DevisModelEntityInitializeImplCopyWith<_$DevisModelEntityInitializeImpl>
-      get copyWith => __$$DevisModelEntityInitializeImplCopyWithImpl<
-          _$DevisModelEntityInitializeImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)
-        approved,
-    required TResult Function(DevisId id, DateTime createdAt) initialize,
-    required TResult Function() empty,
-  }) {
-    return initialize(id, createdAt);
+  $DevisIdCopyWith<$Res> get id {
+    return $DevisIdCopyWith<$Res>(_self.id, (value) {
+      return _then(_self.copyWith(id: value));
+    });
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)?
-        approved,
-    TResult? Function(DevisId id, DateTime createdAt)? initialize,
-    TResult? Function()? empty,
-  }) {
-    return initialize?.call(id, createdAt);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)?
-        approved,
-    TResult Function(DevisId id, DateTime createdAt)? initialize,
-    TResult Function()? empty,
-    required TResult orElse(),
-  }) {
-    if (initialize != null) {
-      return initialize(id, createdAt);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_DevisModelEntity value) approved,
-    required TResult Function(_DevisModelEntityInitialize value) initialize,
-    required TResult Function(_DevisModelEntityEmpty value) empty,
-  }) {
-    return initialize(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_DevisModelEntity value)? approved,
-    TResult? Function(_DevisModelEntityInitialize value)? initialize,
-    TResult? Function(_DevisModelEntityEmpty value)? empty,
-  }) {
-    return initialize?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DevisModelEntity value)? approved,
-    TResult Function(_DevisModelEntityInitialize value)? initialize,
-    TResult Function(_DevisModelEntityEmpty value)? empty,
-    required TResult orElse(),
-  }) {
-    if (initialize != null) {
-      return initialize(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$DevisModelEntityInitializeImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _DevisModelEntityInitialize implements DevisModelEntity {
-  factory _DevisModelEntityInitialize(
-      {required final DevisId id,
-      required final DateTime createdAt}) = _$DevisModelEntityInitializeImpl;
-
-  factory _DevisModelEntityInitialize.fromJson(Map<String, dynamic> json) =
-      _$DevisModelEntityInitializeImpl.fromJson;
-
-  DevisId get id;
-  DateTime get createdAt;
-  @JsonKey(ignore: true)
-  _$$DevisModelEntityInitializeImplCopyWith<_$DevisModelEntityInitializeImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$DevisModelEntityEmptyImplCopyWith<$Res> {
-  factory _$$DevisModelEntityEmptyImplCopyWith(
-          _$DevisModelEntityEmptyImpl value,
-          $Res Function(_$DevisModelEntityEmptyImpl) then) =
-      __$$DevisModelEntityEmptyImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$DevisModelEntityEmptyImplCopyWithImpl<$Res>
-    extends _$DevisModelEntityCopyWithImpl<$Res, _$DevisModelEntityEmptyImpl>
-    implements _$$DevisModelEntityEmptyImplCopyWith<$Res> {
-  __$$DevisModelEntityEmptyImplCopyWithImpl(_$DevisModelEntityEmptyImpl _value,
-      $Res Function(_$DevisModelEntityEmptyImpl) _then)
-      : super(_value, _then);
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$DevisModelEntityEmptyImpl
+class _DevisModelEntityEmpty
     with DiagnosticableTreeMixin
-    implements _DevisModelEntityEmpty {
-  _$DevisModelEntityEmptyImpl({final String? $type}) : $type = $type ?? 'empty';
-
-  factory _$DevisModelEntityEmptyImpl.fromJson(Map<String, dynamic> json) =>
-      _$$DevisModelEntityEmptyImplFromJson(json);
+    implements DevisModelEntity {
+  _DevisModelEntityEmpty({final String? $type}) : $type = $type ?? 'empty';
+  factory _DevisModelEntityEmpty.fromJson(Map<String, dynamic> json) =>
+      _$DevisModelEntityEmptyFromJson(json);
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DevisModelEntity.empty()';
+  Map<String, dynamic> toJson() {
+    return _$DevisModelEntityEmptyToJson(
+      this,
+    );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'DevisModelEntity.empty'));
+    properties..add(DiagnosticsProperty('type', 'DevisModelEntity.empty'));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DevisModelEntityEmptyImpl);
+        (other.runtimeType == runtimeType && other is _DevisModelEntityEmpty);
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)
-        approved,
-    required TResult Function(DevisId id, DateTime createdAt) initialize,
-    required TResult Function() empty,
-  }) {
-    return empty();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)?
-        approved,
-    TResult? Function(DevisId id, DateTime createdAt)? initialize,
-    TResult? Function()? empty,
-  }) {
-    return empty?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            DevisId id,
-            DateTime createdAt,
-            DateTime validity,
-            ContactOwnerEntity client,
-            ContactOwnerEntity pro,
-            List<TravauxEntity> travauxEntity,
-            int quantity,
-            int unitPrice,
-            double vatRates,
-            double amountHt,
-            double amountTtc,
-            bool approval)?
-        approved,
-    TResult Function(DevisId id, DateTime createdAt)? initialize,
-    TResult Function()? empty,
-    required TResult orElse(),
-  }) {
-    if (empty != null) {
-      return empty();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_DevisModelEntity value) approved,
-    required TResult Function(_DevisModelEntityInitialize value) initialize,
-    required TResult Function(_DevisModelEntityEmpty value) empty,
-  }) {
-    return empty(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_DevisModelEntity value)? approved,
-    TResult? Function(_DevisModelEntityInitialize value)? initialize,
-    TResult? Function(_DevisModelEntityEmpty value)? empty,
-  }) {
-    return empty?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_DevisModelEntity value)? approved,
-    TResult Function(_DevisModelEntityInitialize value)? initialize,
-    TResult Function(_DevisModelEntityEmpty value)? empty,
-    required TResult orElse(),
-  }) {
-    if (empty != null) {
-      return empty(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$DevisModelEntityEmptyImplToJson(
-      this,
-    );
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'DevisModelEntity.empty()';
   }
 }
 
-abstract class _DevisModelEntityEmpty implements DevisModelEntity {
-  factory _DevisModelEntityEmpty() = _$DevisModelEntityEmptyImpl;
-
-  factory _DevisModelEntityEmpty.fromJson(Map<String, dynamic> json) =
-      _$DevisModelEntityEmptyImpl.fromJson;
-}
+// dart format on

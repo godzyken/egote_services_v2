@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import '../../../../domain/providers/auth_repository_provider.dart';
 
 class VerificationScreenParams {
@@ -130,7 +130,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                       role: l.error,
                       updatedAt: l.error,
                     ),
-                    cubeUser: const CubeUserMig()));
+                    cubeUser: const CubeUser()));
 
                 final client = code.getOrElse((l) => AuthResponse(
                     user: user.authUser,

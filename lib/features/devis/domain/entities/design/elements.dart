@@ -10,7 +10,7 @@ class ElementsEntityModel with _$ElementsEntityModel {
       required String name,
       Figures? figures,
       Polygones? polygones,
-      Volumes? volumes}) = _ElementsEntityModel;
+      Volumes? volumes}) = _ElementsEntityModelDefault;
 
   const factory ElementsEntityModel.figures(
       {required int id,

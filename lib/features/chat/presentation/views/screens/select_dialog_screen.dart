@@ -1,5 +1,4 @@
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,9 +13,9 @@ class SelectDialogScreen extends ConsumerWidget {
     this.selectedDialog,
   });
 
-  final CubeUserMig currentUser;
-  final Function(CubeDialogMig)? onDialogSelectedCallback;
-  final CubeDialogMig? selectedDialog;
+  final CubeUser currentUser;
+  final Function(CubeDialog)? onDialogSelectedCallback;
+  final CubeDialog? selectedDialog;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

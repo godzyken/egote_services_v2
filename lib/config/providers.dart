@@ -19,7 +19,6 @@ import '../features/auth/domain/providers/auth_repository_provider.dart';
 import '../features/auth/presentation/views/screens/auth_screens.dart';
 import '../features/avis/presentation/view/avis_box_page.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
-import '../features/chat/domain/models/entities/cube_dialog/cube_dialog_mig.dart';
 import '../features/common/presentation/views/screens/error_screen.dart';
 import '../features/devis/presentation/views/screens/devis_list_screen.dart';
 import '../features/home/presentation/view/home_screen.dart';
@@ -32,7 +31,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(firebaseInitProvider.future);
   await container.read(supabaseInitProvider.future);
   await container.read(userFutureProvider.future);
-  //await container.read(webrtcInitProvider.future);
+  await container.read(webrtcInitProvider.future);
   await container.read(datadogProvider.future);
   await container.read(datadogConfigProvider.future);
 
@@ -50,12 +49,12 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(cubeChatConnectionSettingsProvider);
   container.read(cubeChatConnectionProvider);
   container.read(goRouterProvider);
-  // container.read(localizationProvider);
+  container.read(localizationProvider);
 
-  // container.read(authStateChangesProvider);
-  // container.read(authStateProvider);
-  // container.read(idTokenChangesProvider);
-  // container.read(userChangesProvider);
+  container.read(authStateChangesProvider);
+  container.read(authStateProvider);
+  container.read(idTokenChangesProvider);
+  container.read(userChangesProvider);
 
   container.read(fireDatabaseProvider);
 
@@ -92,8 +91,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                       return ProfileScreen(
                           key: state.pageKey,
                           uid: ref.watch(authStateChangesProvider).value!.uid,
-                          pid:
-                              '1335' //ref.watch(cubeUserControllerProvider)!.id.toString()
+                          pid: ref.watch(cubeUserControllerProvider)!.id.toString()
                           );
                     },
                   ),
@@ -133,7 +131,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                             path: ChatDialogRoute.path,
                             name: 'chat_dialog',
                             builder: (context, state) {
-                              CubeDialogMig? cubeDialog;
+                              CubeDialog? cubeDialog = state.extra as CubeDialog?;
                               return ChatDialogScreen(
                                   cubeUser: ref.watch(cubeUserControllerProvider
                                       .select((value) => value!)),

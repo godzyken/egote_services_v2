@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,120 +9,26 @@ part of 'mission_entity_states.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
 
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-MissionEntityStates _$MissionEntityStatesFromJson(Map<String, dynamic> json) {
-  return _MissionEntityStates.fromJson(json);
-}
-
 /// @nodoc
-mixin _$MissionEntityStates {
-  List<MissionEntity> get missionEntities => throw _privateConstructorUsedError;
+mixin _$MissionEntityStates implements DiagnosticableTreeMixin {
+  List<MissionEntity> get missionEntities;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+  /// Create a copy of MissionEntityStates
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $MissionEntityStatesCopyWith<MissionEntityStates> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$MissionEntityStatesCopyWithImpl<MissionEntityStates>(
+          this as MissionEntityStates, _$identity);
 
-/// @nodoc
-abstract class $MissionEntityStatesCopyWith<$Res> {
-  factory $MissionEntityStatesCopyWith(
-          MissionEntityStates value, $Res Function(MissionEntityStates) then) =
-      _$MissionEntityStatesCopyWithImpl<$Res, MissionEntityStates>;
-  @useResult
-  $Res call({List<MissionEntity> missionEntities});
-}
-
-/// @nodoc
-class _$MissionEntityStatesCopyWithImpl<$Res, $Val extends MissionEntityStates>
-    implements $MissionEntityStatesCopyWith<$Res> {
-  _$MissionEntityStatesCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? missionEntities = null,
-  }) {
-    return _then(_value.copyWith(
-      missionEntities: null == missionEntities
-          ? _value.missionEntities
-          : missionEntities // ignore: cast_nullable_to_non_nullable
-              as List<MissionEntity>,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$MissionEntityStatesImplCopyWith<$Res>
-    implements $MissionEntityStatesCopyWith<$Res> {
-  factory _$$MissionEntityStatesImplCopyWith(_$MissionEntityStatesImpl value,
-          $Res Function(_$MissionEntityStatesImpl) then) =
-      __$$MissionEntityStatesImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({List<MissionEntity> missionEntities});
-}
-
-/// @nodoc
-class __$$MissionEntityStatesImplCopyWithImpl<$Res>
-    extends _$MissionEntityStatesCopyWithImpl<$Res, _$MissionEntityStatesImpl>
-    implements _$$MissionEntityStatesImplCopyWith<$Res> {
-  __$$MissionEntityStatesImplCopyWithImpl(_$MissionEntityStatesImpl _value,
-      $Res Function(_$MissionEntityStatesImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? missionEntities = null,
-  }) {
-    return _then(_$MissionEntityStatesImpl(
-      missionEntities: null == missionEntities
-          ? _value._missionEntities
-          : missionEntities // ignore: cast_nullable_to_non_nullable
-              as List<MissionEntity>,
-    ));
-  }
-}
-
-/// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$MissionEntityStatesImpl
-    with DiagnosticableTreeMixin
-    implements _MissionEntityStates {
-  const _$MissionEntityStatesImpl(
-      {required final List<MissionEntity> missionEntities})
-      : _missionEntities = missionEntities;
-
-  factory _$MissionEntityStatesImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MissionEntityStatesImplFromJson(json);
-
-  final List<MissionEntity> _missionEntities;
-  @override
-  List<MissionEntity> get missionEntities {
-    if (_missionEntities is EqualUnmodifiableListView) return _missionEntities;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_missionEntities);
-  }
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MissionEntityStates(missionEntities: $missionEntities)';
-  }
+  /// Serializes this MissionEntityStates to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MissionEntityStates'))
       ..add(DiagnosticsProperty('missionEntities', missionEntities));
@@ -132,43 +38,308 @@ class _$MissionEntityStatesImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MissionEntityStatesImpl &&
+            other is MissionEntityStates &&
             const DeepCollectionEquality()
-                .equals(other._missionEntities, _missionEntities));
+                .equals(other.missionEntities, missionEntities));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_missionEntities));
+      runtimeType, const DeepCollectionEquality().hash(missionEntities));
 
-  @JsonKey(ignore: true)
   @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MissionEntityStates(missionEntities: $missionEntities)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $MissionEntityStatesCopyWith<$Res> {
+  factory $MissionEntityStatesCopyWith(
+          MissionEntityStates value, $Res Function(MissionEntityStates) _then) =
+      _$MissionEntityStatesCopyWithImpl;
+  @useResult
+  $Res call({List<MissionEntity> missionEntities});
+}
+
+/// @nodoc
+class _$MissionEntityStatesCopyWithImpl<$Res>
+    implements $MissionEntityStatesCopyWith<$Res> {
+  _$MissionEntityStatesCopyWithImpl(this._self, this._then);
+
+  final MissionEntityStates _self;
+  final $Res Function(MissionEntityStates) _then;
+
+  /// Create a copy of MissionEntityStates
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$MissionEntityStatesImplCopyWith<_$MissionEntityStatesImpl> get copyWith =>
-      __$$MissionEntityStatesImplCopyWithImpl<_$MissionEntityStatesImpl>(
+  @override
+  $Res call({
+    Object? missionEntities = null,
+  }) {
+    return _then(_self.copyWith(
+      missionEntities: null == missionEntities
+          ? _self.missionEntities
+          : missionEntities // ignore: cast_nullable_to_non_nullable
+              as List<MissionEntity>,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [MissionEntityStates].
+extension MissionEntityStatesPatterns on MissionEntityStates {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_MissionEntityStates value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _MissionEntityStates() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_MissionEntityStates value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MissionEntityStates():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_MissionEntityStates value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MissionEntityStates() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(List<MissionEntity> missionEntities)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _MissionEntityStates() when $default != null:
+        return $default(_that.missionEntities);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(List<MissionEntity> missionEntities) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MissionEntityStates():
+        return $default(_that.missionEntities);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(List<MissionEntity> missionEntities)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MissionEntityStates() when $default != null:
+        return $default(_that.missionEntities);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class _MissionEntityStates
+    with DiagnosticableTreeMixin
+    implements MissionEntityStates {
+  const _MissionEntityStates(
+      {required final List<MissionEntity> missionEntities})
+      : _missionEntities = missionEntities;
+  factory _MissionEntityStates.fromJson(Map<String, dynamic> json) =>
+      _$MissionEntityStatesFromJson(json);
+
+  final List<MissionEntity> _missionEntities;
+  @override
+  List<MissionEntity> get missionEntities {
+    if (_missionEntities is EqualUnmodifiableListView) return _missionEntities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_missionEntities);
+  }
+
+  /// Create a copy of MissionEntityStates
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$MissionEntityStatesCopyWith<_MissionEntityStates> get copyWith =>
+      __$MissionEntityStatesCopyWithImpl<_MissionEntityStates>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MissionEntityStatesImplToJson(
+    return _$MissionEntityStatesToJson(
       this,
     );
   }
-}
-
-abstract class _MissionEntityStates implements MissionEntityStates {
-  const factory _MissionEntityStates(
-          {required final List<MissionEntity> missionEntities}) =
-      _$MissionEntityStatesImpl;
-
-  factory _MissionEntityStates.fromJson(Map<String, dynamic> json) =
-      _$MissionEntityStatesImpl.fromJson;
 
   @override
-  List<MissionEntity> get missionEntities;
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    properties
+      ..add(DiagnosticsProperty('type', 'MissionEntityStates'))
+      ..add(DiagnosticsProperty('missionEntities', missionEntities));
+  }
+
   @override
-  @JsonKey(ignore: true)
-  _$$MissionEntityStatesImplCopyWith<_$MissionEntityStatesImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _MissionEntityStates &&
+            const DeepCollectionEquality()
+                .equals(other._missionEntities, _missionEntities));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_missionEntities));
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MissionEntityStates(missionEntities: $missionEntities)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$MissionEntityStatesCopyWith<$Res>
+    implements $MissionEntityStatesCopyWith<$Res> {
+  factory _$MissionEntityStatesCopyWith(_MissionEntityStates value,
+          $Res Function(_MissionEntityStates) _then) =
+      __$MissionEntityStatesCopyWithImpl;
+  @override
+  @useResult
+  $Res call({List<MissionEntity> missionEntities});
+}
+
+/// @nodoc
+class __$MissionEntityStatesCopyWithImpl<$Res>
+    implements _$MissionEntityStatesCopyWith<$Res> {
+  __$MissionEntityStatesCopyWithImpl(this._self, this._then);
+
+  final _MissionEntityStates _self;
+  final $Res Function(_MissionEntityStates) _then;
+
+  /// Create a copy of MissionEntityStates
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? missionEntities = null,
+  }) {
+    return _then(_MissionEntityStates(
+      missionEntities: null == missionEntities
+          ? _self._missionEntities
+          : missionEntities // ignore: cast_nullable_to_non_nullable
+              as List<MissionEntity>,
+    ));
+  }
+}
+
+// dart format on

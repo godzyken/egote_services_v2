@@ -15,10 +15,12 @@ import '../../../../config/environements/environment.dart';
 import '../../../../config/environements/flavors.dart';
 import '../../../../config/providers/cube/cube_providers.dart';
 
+// --- PROVIDERS ---
+
 final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   final configFile = await rootBundle.loadString(F.envFileName, cache: false);
   final env =
-      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
   final settings = ref.watch(cubeSettingsProvider);
 
@@ -30,41 +32,54 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
 
   await settings.setEndpoints(settings.apiEndpoint, settings.chatEndpoint);
 
-  await settings.init(env.appId, env.authKey, env.authSecret,
-      onSessionRestore: () async {
-    SharedPrefs preferences = await SharedPrefs.instance.init();
+  await settings.init(
+    env.appId,
+    env.authKey,
+    env.authSecret,
+    onSessionRestore: () async {
+      final preferences = await SharedPrefs.instance.init();
 
-    if (LoginType.phone == preferences.getLoginType()) {
-      return ref.read(cubeRepositoryProvider).createPhoneAuthSession();
-    }
+      if (preferences.getLoginType() == LoginType.phone) {
+        return ref.read(cubeRepositoryProvider).createPhoneAuthSession();
+      }
 
-    return await preferences.getUser().then((value) =>
-        ref.read(cubeRepositoryProvider).restoreSession());
-  });
+      final user = await preferences.getUser();
+      if (user != null) {
+        return ref.read(cubeRepositoryProvider).restoreSession();
+      }
+      return null;
+    },
+  );
 
   return settings;
-}, dependencies: [cubeSettingsProvider], name: 'Cube settings init provider');
+}, name: 'Cube settings init provider');
 
 final cubeUserControllerProvider =
-    StateNotifierProvider<CubeUserController, CubeUser?>(
-        (ref) => CubeUserController(ref),
-        dependencies: [autoAuthControllerProvider, userNotifierProvider],
-        name: 'cube user authentication state notifier');
+NotifierProvider<CubeUserController, CubeUser?>(
+  CubeUserController.new,
+  name: 'cube user authentication state notifier',
+);
 
-final filterLoginTypeStateNotifier =
-    StateNotifierProvider.autoDispose<FilterLoginTypeView, LoginType>(
-        (ref) => FilterLoginTypeView());
+final filterLoginTypeNotifierProvider =
+NotifierProvider.autoDispose<FilterLoginTypeNotifier, LoginType>(
+  FilterLoginTypeNotifier.new,
+);
 
-class FilterLoginTypeView extends StateNotifier<LoginType> {
-  FilterLoginTypeView() : super(LoginType.facebook);
+// --- NOTIFIERS (Remplacement de StateNotifier) ---
 
-  filterByPhone() => state = LoginType.phone;
+class FilterLoginTypeNotifier extends AutoDisposeNotifier<LoginType> {
+  @override
+  LoginType build() {
+    return LoginType.facebook;
+  }
 
-  filterByEmail() => state = LoginType.email;
+  void filterByPhone() => state = LoginType.phone;
 
-  filterByLogin() => state = LoginType.login;
+  void filterByEmail() => state = LoginType.email;
 
-  filterByFacebook() => state = LoginType.facebook;
+  void filterByLogin() => state = LoginType.login;
+
+  void filterByFacebook() => state = LoginType.facebook;
 
   bool isFilterByPhone() => state == LoginType.phone;
 

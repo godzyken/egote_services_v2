@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,114 +9,67 @@ part of 'sign_up_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-SignUpState _$SignUpStateFromJson(Map<String, dynamic> json) {
-  return _SignUpState.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SignUpState {
   @JsonKey(
       defaultValue: 'NameFormz', includeToJson: false, includeFromJson: false)
-  NameFormz? get nameFormz => throw _privateConstructorUsedError;
+  NameFormz? get nameFormz;
   @JsonKey(
       defaultValue: 'EmailFormz', includeFromJson: false, includeToJson: false)
-  EmailFormz? get emailFormz => throw _privateConstructorUsedError;
+  EmailFormz? get emailFormz;
   @JsonKey(
       defaultValue: 'PasswordFormz',
       includeFromJson: false,
       includeToJson: false)
-  PasswordFormz? get passwordFormz => throw _privateConstructorUsedError;
-  FormzSubmissionStatus? get status => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
+  PasswordFormz? get passwordFormz;
+  FormzSubmissionStatus? get status;
+  String? get errorMessage;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $SignUpStateCopyWith<SignUpState> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SignUpStateCopyWith<$Res> {
-  factory $SignUpStateCopyWith(
-          SignUpState value, $Res Function(SignUpState) then) =
-      _$SignUpStateCopyWithImpl<$Res, SignUpState>;
-  @useResult
-  $Res call(
-      {@JsonKey(
-          defaultValue: 'NameFormz',
-          includeToJson: false,
-          includeFromJson: false)
-      NameFormz? nameFormz,
-      @JsonKey(
-          defaultValue: 'EmailFormz',
-          includeFromJson: false,
-          includeToJson: false)
-      EmailFormz? emailFormz,
-      @JsonKey(
-          defaultValue: 'PasswordFormz',
-          includeFromJson: false,
-          includeToJson: false)
-      PasswordFormz? passwordFormz,
-      FormzSubmissionStatus? status,
-      String? errorMessage});
-}
-
-/// @nodoc
-class _$SignUpStateCopyWithImpl<$Res, $Val extends SignUpState>
-    implements $SignUpStateCopyWith<$Res> {
-  _$SignUpStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of SignUpState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $SignUpStateCopyWith<SignUpState> get copyWith =>
+      _$SignUpStateCopyWithImpl<SignUpState>(this as SignUpState, _$identity);
+
+  /// Serializes this SignUpState to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? nameFormz = freezed,
-    Object? emailFormz = freezed,
-    Object? passwordFormz = freezed,
-    Object? status = freezed,
-    Object? errorMessage = freezed,
-  }) {
-    return _then(_value.copyWith(
-      nameFormz: freezed == nameFormz
-          ? _value.nameFormz
-          : nameFormz // ignore: cast_nullable_to_non_nullable
-              as NameFormz?,
-      emailFormz: freezed == emailFormz
-          ? _value.emailFormz
-          : emailFormz // ignore: cast_nullable_to_non_nullable
-              as EmailFormz?,
-      passwordFormz: freezed == passwordFormz
-          ? _value.passwordFormz
-          : passwordFormz // ignore: cast_nullable_to_non_nullable
-              as PasswordFormz?,
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as FormzSubmissionStatus?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SignUpState &&
+            (identical(other.nameFormz, nameFormz) ||
+                other.nameFormz == nameFormz) &&
+            (identical(other.emailFormz, emailFormz) ||
+                other.emailFormz == emailFormz) &&
+            (identical(other.passwordFormz, passwordFormz) ||
+                other.passwordFormz == passwordFormz) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, nameFormz, emailFormz, passwordFormz, status, errorMessage);
+
+  @override
+  String toString() {
+    return 'SignUpState(nameFormz: $nameFormz, emailFormz: $emailFormz, passwordFormz: $passwordFormz, status: $status, errorMessage: $errorMessage)';
   }
 }
 
 /// @nodoc
-abstract class _$$SignUpStateImplCopyWith<$Res>
-    implements $SignUpStateCopyWith<$Res> {
-  factory _$$SignUpStateImplCopyWith(
-          _$SignUpStateImpl value, $Res Function(_$SignUpStateImpl) then) =
-      __$$SignUpStateImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SignUpStateCopyWith<$Res> {
+  factory $SignUpStateCopyWith(
+          SignUpState value, $Res Function(SignUpState) _then) =
+      _$SignUpStateCopyWithImpl;
   @useResult
   $Res call(
       {@JsonKey(
@@ -139,13 +92,14 @@ abstract class _$$SignUpStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$SignUpStateImplCopyWithImpl<$Res>
-    extends _$SignUpStateCopyWithImpl<$Res, _$SignUpStateImpl>
-    implements _$$SignUpStateImplCopyWith<$Res> {
-  __$$SignUpStateImplCopyWithImpl(
-      _$SignUpStateImpl _value, $Res Function(_$SignUpStateImpl) _then)
-      : super(_value, _then);
+class _$SignUpStateCopyWithImpl<$Res> implements $SignUpStateCopyWith<$Res> {
+  _$SignUpStateCopyWithImpl(this._self, this._then);
 
+  final SignUpState _self;
+  final $Res Function(SignUpState) _then;
+
+  /// Create a copy of SignUpState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -155,36 +109,250 @@ class __$$SignUpStateImplCopyWithImpl<$Res>
     Object? status = freezed,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$SignUpStateImpl(
+    return _then(_self.copyWith(
       nameFormz: freezed == nameFormz
-          ? _value.nameFormz
+          ? _self.nameFormz
           : nameFormz // ignore: cast_nullable_to_non_nullable
               as NameFormz?,
       emailFormz: freezed == emailFormz
-          ? _value.emailFormz
+          ? _self.emailFormz
           : emailFormz // ignore: cast_nullable_to_non_nullable
               as EmailFormz?,
       passwordFormz: freezed == passwordFormz
-          ? _value.passwordFormz
+          ? _self.passwordFormz
           : passwordFormz // ignore: cast_nullable_to_non_nullable
               as PasswordFormz?,
       status: freezed == status
-          ? _value.status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as FormzSubmissionStatus?,
       errorMessage: freezed == errorMessage
-          ? _value.errorMessage
+          ? _self.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [SignUpState].
+extension SignUpStatePatterns on SignUpState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_SignUpState value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SignUpState() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_SignUpState value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SignUpState():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_SignUpState value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SignUpState() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(
+                defaultValue: 'NameFormz',
+                includeToJson: false,
+                includeFromJson: false)
+            NameFormz? nameFormz,
+            @JsonKey(
+                defaultValue: 'EmailFormz',
+                includeFromJson: false,
+                includeToJson: false)
+            EmailFormz? emailFormz,
+            @JsonKey(
+                defaultValue: 'PasswordFormz',
+                includeFromJson: false,
+                includeToJson: false)
+            PasswordFormz? passwordFormz,
+            FormzSubmissionStatus? status,
+            String? errorMessage)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SignUpState() when $default != null:
+        return $default(_that.nameFormz, _that.emailFormz, _that.passwordFormz,
+            _that.status, _that.errorMessage);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            @JsonKey(
+                defaultValue: 'NameFormz',
+                includeToJson: false,
+                includeFromJson: false)
+            NameFormz? nameFormz,
+            @JsonKey(
+                defaultValue: 'EmailFormz',
+                includeFromJson: false,
+                includeToJson: false)
+            EmailFormz? emailFormz,
+            @JsonKey(
+                defaultValue: 'PasswordFormz',
+                includeFromJson: false,
+                includeToJson: false)
+            PasswordFormz? passwordFormz,
+            FormzSubmissionStatus? status,
+            String? errorMessage)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SignUpState():
+        return $default(_that.nameFormz, _that.emailFormz, _that.passwordFormz,
+            _that.status, _that.errorMessage);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            @JsonKey(
+                defaultValue: 'NameFormz',
+                includeToJson: false,
+                includeFromJson: false)
+            NameFormz? nameFormz,
+            @JsonKey(
+                defaultValue: 'EmailFormz',
+                includeFromJson: false,
+                includeToJson: false)
+            EmailFormz? emailFormz,
+            @JsonKey(
+                defaultValue: 'PasswordFormz',
+                includeFromJson: false,
+                includeToJson: false)
+            PasswordFormz? passwordFormz,
+            FormzSubmissionStatus? status,
+            String? errorMessage)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SignUpState() when $default != null:
+        return $default(_that.nameFormz, _that.emailFormz, _that.passwordFormz,
+            _that.status, _that.errorMessage);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$SignUpStateImpl implements _SignUpState {
-  const _$SignUpStateImpl(
+class _SignUpState implements SignUpState {
+  const _SignUpState(
       {@JsonKey(
           defaultValue: 'NameFormz',
           includeToJson: false,
@@ -202,9 +370,8 @@ class _$SignUpStateImpl implements _SignUpState {
       this.passwordFormz,
       this.status = FormzSubmissionStatus.initial,
       this.errorMessage});
-
-  factory _$SignUpStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SignUpStateImplFromJson(json);
+  factory _SignUpState.fromJson(Map<String, dynamic> json) =>
+      _$SignUpStateFromJson(json);
 
   @override
   @JsonKey(
@@ -226,16 +393,26 @@ class _$SignUpStateImpl implements _SignUpState {
   @override
   final String? errorMessage;
 
+  /// Create a copy of SignUpState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SignUpState(nameFormz: $nameFormz, emailFormz: $emailFormz, passwordFormz: $passwordFormz, status: $status, errorMessage: $errorMessage)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SignUpStateCopyWith<_SignUpState> get copyWith =>
+      __$SignUpStateCopyWithImpl<_SignUpState>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SignUpStateToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SignUpStateImpl &&
+            other is _SignUpState &&
             (identical(other.nameFormz, nameFormz) ||
                 other.nameFormz == nameFormz) &&
             (identical(other.emailFormz, emailFormz) ||
@@ -247,68 +424,86 @@ class _$SignUpStateImpl implements _SignUpState {
                 other.errorMessage == errorMessage));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, nameFormz, emailFormz, passwordFormz, status, errorMessage);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SignUpStateImplCopyWith<_$SignUpStateImpl> get copyWith =>
-      __$$SignUpStateImplCopyWithImpl<_$SignUpStateImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SignUpStateImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SignUpState(nameFormz: $nameFormz, emailFormz: $emailFormz, passwordFormz: $passwordFormz, status: $status, errorMessage: $errorMessage)';
   }
 }
 
-abstract class _SignUpState implements SignUpState {
-  const factory _SignUpState(
+/// @nodoc
+abstract mixin class _$SignUpStateCopyWith<$Res>
+    implements $SignUpStateCopyWith<$Res> {
+  factory _$SignUpStateCopyWith(
+          _SignUpState value, $Res Function(_SignUpState) _then) =
+      __$SignUpStateCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
       {@JsonKey(
           defaultValue: 'NameFormz',
           includeToJson: false,
           includeFromJson: false)
-      final NameFormz? nameFormz,
+      NameFormz? nameFormz,
       @JsonKey(
           defaultValue: 'EmailFormz',
           includeFromJson: false,
           includeToJson: false)
-      final EmailFormz? emailFormz,
+      EmailFormz? emailFormz,
       @JsonKey(
           defaultValue: 'PasswordFormz',
           includeFromJson: false,
           includeToJson: false)
-      final PasswordFormz? passwordFormz,
-      final FormzSubmissionStatus? status,
-      final String? errorMessage}) = _$SignUpStateImpl;
-
-  factory _SignUpState.fromJson(Map<String, dynamic> json) =
-      _$SignUpStateImpl.fromJson;
-
-  @override
-  @JsonKey(
-      defaultValue: 'NameFormz', includeToJson: false, includeFromJson: false)
-  NameFormz? get nameFormz;
-  @override
-  @JsonKey(
-      defaultValue: 'EmailFormz', includeFromJson: false, includeToJson: false)
-  EmailFormz? get emailFormz;
-  @override
-  @JsonKey(
-      defaultValue: 'PasswordFormz',
-      includeFromJson: false,
-      includeToJson: false)
-  PasswordFormz? get passwordFormz;
-  @override
-  FormzSubmissionStatus? get status;
-  @override
-  String? get errorMessage;
-  @override
-  @JsonKey(ignore: true)
-  _$$SignUpStateImplCopyWith<_$SignUpStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+      PasswordFormz? passwordFormz,
+      FormzSubmissionStatus? status,
+      String? errorMessage});
 }
+
+/// @nodoc
+class __$SignUpStateCopyWithImpl<$Res> implements _$SignUpStateCopyWith<$Res> {
+  __$SignUpStateCopyWithImpl(this._self, this._then);
+
+  final _SignUpState _self;
+  final $Res Function(_SignUpState) _then;
+
+  /// Create a copy of SignUpState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? nameFormz = freezed,
+    Object? emailFormz = freezed,
+    Object? passwordFormz = freezed,
+    Object? status = freezed,
+    Object? errorMessage = freezed,
+  }) {
+    return _then(_SignUpState(
+      nameFormz: freezed == nameFormz
+          ? _self.nameFormz
+          : nameFormz // ignore: cast_nullable_to_non_nullable
+              as NameFormz?,
+      emailFormz: freezed == emailFormz
+          ? _self.emailFormz
+          : emailFormz // ignore: cast_nullable_to_non_nullable
+              as EmailFormz?,
+      passwordFormz: freezed == passwordFormz
+          ? _self.passwordFormz
+          : passwordFormz // ignore: cast_nullable_to_non_nullable
+              as PasswordFormz?,
+      status: freezed == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as FormzSubmissionStatus?,
+      errorMessage: freezed == errorMessage
+          ? _self.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+// dart format on

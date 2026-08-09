@@ -1,109 +1,122 @@
-/*// TODO: Migration, `CubeDialog` est remplacé par 'CubeDialogMig'
-class CubeDialogController extends StateNotifier<CubeDialogMig?> {
-  CubeDialogController(this._ref) : super(null) {
-    _initialize();
-  }
+import 'dart:async';
+import 'dart:developer' as developer;
 
-  final Ref _ref;
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-  Future<void> _initialize() async {
-    _ref.notifyListeners();
+// --- PROVIDERS ---
+
+final cubeDialogControllerProvider =
+NotifierProvider<CubeDialogController, CubeDialog?>(
+  CubeDialogController.new,
+);
+
+final cubeDialogStateControllerProvider =
+NotifierProvider<CubeDialogStateController, RTCDataChannelState>(
+  CubeDialogStateController.new,
+);
+
+// --- CONTROLLERS ---
+
+class CubeDialogController extends Notifier<CubeDialog?> {
+  @override
+  CubeDialog? build() {
+    return null;
   }
 
   Future<RTCDataChannelState> channelInit(int? id) async {
     RTCDataChannelInit channelInit = RTCDataChannelInit();
     if (channelInit.id == id) {
-      return rtcDataChannelStateForString(state!.name!);
+      return rtcDataChannelStateForString(state?.name ?? '');
     } else {
       return rtcDataChannelStateForString(channelInit.protocol);
     }
   }
 
-  Future<int?> createNewGroupDialog(CubeDialogMig newGroupDialog) async {
-    CubeDialogMig groupDialog = CubeDialogMig(
-        CubeDialogTypeMig.GROUP(newGroupDialog.type).id,
-        dialogId: newGroupDialog.dialogId,
-        name: newGroupDialog.name);
+  Future<CubeDialog?> createNewGroupDialog(CubeDialog newGroupDialog) async {
+    CubeDialog groupDialog = CubeDialog(
+      CubeDialogType.GROUP,
+      dialogId: newGroupDialog.dialogId,
+      name: newGroupDialog.name,
+    );
 
-    return await createNewGroupDialog(groupDialog)
-        .then((createdDialog) => groupDialog.type)
-        .catchError((onError) => onError);
+    try {
+      final createdDialog = await createDialog(groupDialog);
+      state = createdDialog;
+      return createdDialog;
+    } catch (onError) {
+      developer.log("Erreur création groupe: $onError");
+      rethrow;
+    }
   }
 }
 
-class CubeDialogStateController extends StateNotifier<RTCDataChannelState> {
-  CubeDialogStateController(this.ref)
-      : super(RTCDataChannelState.RTCDataChannelClosed);
+class CubeDialogStateController extends Notifier<RTCDataChannelState> {
+  StreamSubscription? _connectivitySubscription;
 
-  final Ref ref;
-
-  connectionStateStream() async {
-    final cubeChatConnectionStateSubscription =
-        createLocalMediaStream('Subscribe')
-            .asStream()
-            .listen((mediaStream) async {
-      developer.log("New chat connection state is $mediaStream");
-
-      final tracks = mediaStream.getTracks();
-
-      for (var track in tracks) {
-        if (tracks.isEmpty) {
-          return await mediaStream.addTrack(track);
-        }
-      }
-
-      */ /*switch (state) {
-        case CubeChatConnectionState.Idle:
-        // TODO: instance of connection was created.
-        case CubeChatConnectionState.Connecting:
-        // TODO: Handle this case.
-        case CubeChatConnectionState.Authenticated:
-        // TODO: user successfully authorised on ConnectyCube server.
-        case CubeChatConnectionState.AuthenticationFailure:
-        // TODO: error(s) was occurred during authorisation on ConnectyCube server.
-        case CubeChatConnectionState.Reconnecting:
-        // TODO: started reconnection to the chat.
-        case CubeChatConnectionState.Resumed:
-        // TODO: chat connection was resumed.
-        case CubeChatConnectionState.Ready:
-        // TODO: chat connection fully ready for realtime communications.
-        case CubeChatConnectionState.Closing:
-        // TODO: Handle this case.
-        case CubeChatConnectionState.ForceClosed:
-        // TODO: chat connection was interrupted.
-        case CubeChatConnectionState.Closed:
-          // TODO: chat connection was closed.
-          Connectivity().checkConnectivity().then((connectivityType) {
-            if (connectivityType != ConnectivityResult.none) {
-              if (CubeChatConnection.instance.currentUser != null) {
-                CubeChatConnection.instance.relogin();
-              }
-            }
-          });
-          break;
-      }*/ /*
+  @override
+  RTCDataChannelState build() {
+    ref.onDispose(() {
+      _connectivitySubscription?.cancel();
     });
 
-    return cubeChatConnectionStateSubscription.resume();
+    return RTCDataChannelState.RTCDataChannelClosed;
   }
 
-*/ /*reconnection() {
-    CubeChatConnectionSettings chatConnectionSettings =
-        CubeChatConnectionSettings.instance;
-    chatConnectionSettings.reconnectionTimeout = 5000;
-    chatConnectionSettings.totalReconnections = 5;
-    var connectivityStateSubscription =
-        Connectivity().onConnectivityChanged.listen((connectivityType) {
-      if (connectivityType != ConnectivityResult.none) {
-        bool isChatDisconnected =
-            CubeChatConnection.instance.chatConnectionState ==
-                CubeChatConnectionState.Closed;
+  Future<void> connectionStateStream() async {
+    // 1. Récupération du MediaStream local
+    final MediaStream mediaStream = await createLocalMediaStream('Subscribe');
 
-        if (isChatDisconnected &&
-            CubeChatConnection.instance.currentUser != null) {
+    developer.log("Nouveau media stream initialisé: ${mediaStream.id}");
+
+    // 2. Traitement direct de la liste synchronisée de pistes (MediaStreamTrack)
+    final List<MediaStreamTrack> tracks = mediaStream.getTracks();
+
+    if (tracks.isEmpty) {
+      developer.log("Aucune piste vidéo/audio trouvée dans le mediaStream");
+    } else {
+      for (final track in tracks) {
+        developer.log("Piste trouvée - ID: ${track.id}, Kind: ${track.kind}");
+      }
+    }
+
+    // 3. Écoute dynamique de l'ajout de nouvelles pistes sur le MediaStream
+    mediaStream.onAddTrack = (MediaStreamTrack track) {
+      developer.log("Nouvelle piste ajoutée au stream: ${track.id}");
+    };
+
+    // 4. Vérification de l'état du chat ConnectyCube
+    final currentChatState = CubeChatConnection.instance.chatConnectionState;
+
+    if (currentChatState == CubeChatConnectionState.Closed) {
+      final connectivityResults = await Connectivity().checkConnectivity();
+      if (!connectivityResults.contains(ConnectivityResult.none)) {
+        if (CubeChatConnection.instance.currentUser != null) {
           CubeChatConnection.instance.relogin();
         }
       }
-    });
-  }*/ /*
-}*/
+    }
+  }
+
+  void setupReconnectionListener() {
+    CubeChatConnectionSettings.instance
+      ..reconnectionTimeout = 5000
+      ..totalReconnections = 5;
+
+    _connectivitySubscription =
+        Connectivity().onConnectivityChanged.listen((results) {
+          if (!results.contains(ConnectivityResult.none)) {
+            bool isChatDisconnected =
+                CubeChatConnection.instance.chatConnectionState ==
+                    CubeChatConnectionState.Closed;
+
+            if (isChatDisconnected &&
+                CubeChatConnection.instance.currentUser != null) {
+              CubeChatConnection.instance.relogin();
+            }
+          }
+        });
+  }
+}

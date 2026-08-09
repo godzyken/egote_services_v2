@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:egote_services_v2/features/chat/domain/models/entities/cube_user/cube_user_mig.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +11,7 @@ import '../../../../common/presentation/extensions/extensions.dart';
 class ChatSettingsScreen extends ConsumerWidget {
   const ChatSettingsScreen({super.key, required this.currentUser});
 
-  final CubeUserMig currentUser;
+  final CubeUser currentUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,7 +39,7 @@ class ChatSettingsScreen extends ConsumerWidget {
 }
 
 class BodySettingsLayout extends ConsumerStatefulWidget {
-  final CubeUserMig currentUser;
+  final CubeUser currentUser;
 
   const BodySettingsLayout(this.currentUser, {super.key});
 
@@ -264,7 +264,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
       context.showAlert(context.tr!.nothingToSave);
       return;
     }
-/*    var userToUpdate = const CubeUserMig()..id = widget.currentUser.id;
+/*    var userToUpdate = const CubeUser()..id = widget.currentUser.id;
 
     if (_name.isNotEmpty) userToUpdate.fullName = _name;
     if (_login.isNotEmpty) userToUpdate.login = _login;

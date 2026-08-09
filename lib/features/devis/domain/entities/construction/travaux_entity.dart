@@ -16,7 +16,7 @@ abstract class TravauxEntity with _$TravauxEntity {
     required List<TypesOfWork> typesOfWorks,
     required List<AreaOfServices> areaOfServices,
     required List<MissionEntity> missionEntity,
-  }) = _TravauxEntity;
+  }) = _TravauxEntityDefault;
 
   factory TravauxEntity.Init({
     required TravauId id,

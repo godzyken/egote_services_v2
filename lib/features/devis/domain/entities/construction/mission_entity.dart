@@ -10,7 +10,7 @@ class MissionEntity with _$MissionEntity {
   const factory MissionEntity({
     required MissionId id,
     required String denomination,
-  }) = _MissionEntity;
+  }) = _MissionEntityDefault;
 
   const factory MissionEntity.init(
       {required MissionId id}) = _MissionEntityInit;

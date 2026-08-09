@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,15 +9,12 @@ part of 'elements.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 ElementsEntityModel _$ElementsEntityModelFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'default':
-      return _ElementsEntityModel.fromJson(json);
+      return _ElementsEntityModelDefault.fromJson(json);
     case 'figures':
       return _ElementsEntityModelFigures.fromJson(json);
     case 'polygones':
@@ -33,29 +30,195 @@ ElementsEntityModel _$ElementsEntityModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ElementsEntityModel {
-  int get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  int get id;
+  String get name;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $ElementsEntityModelCopyWith<ElementsEntityModel> get copyWith =>
+      _$ElementsEntityModelCopyWithImpl<ElementsEntityModel>(
+          this as ElementsEntityModel, _$identity);
+
+  /// Serializes this ElementsEntityModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ElementsEntityModel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name);
+
+  @override
+  String toString() {
+    return 'ElementsEntityModel(id: $id, name: $name)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $ElementsEntityModelCopyWith<$Res> {
+  factory $ElementsEntityModelCopyWith(
+          ElementsEntityModel value, $Res Function(ElementsEntityModel) _then) =
+      _$ElementsEntityModelCopyWithImpl;
+  @useResult
+  $Res call({int id, String name});
+}
+
+/// @nodoc
+class _$ElementsEntityModelCopyWithImpl<$Res>
+    implements $ElementsEntityModelCopyWith<$Res> {
+  _$ElementsEntityModelCopyWithImpl(this._self, this._then);
+
+  final ElementsEntityModel _self;
+  final $Res Function(ElementsEntityModel) _then;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+  }) {
+    return _then(_self.copyWith(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [ElementsEntityModel].
+extension ElementsEntityModelPatterns on ElementsEntityModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)
-        $default, {
-    required TResult Function(int id, String name, Figures figures) figures,
-    required TResult Function(int id, String name, Polygones polygones)
-        polygones,
-    required TResult Function(int id, String name, Volumes volumes) volumes,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_ElementsEntityModelDefault value)? $default, {
+    TResult Function(_ElementsEntityModelFigures value)? figures,
+    TResult Function(_ElementsEntityModelPolygones value)? polygones,
+    TResult Function(_ElementsEntityModelVolumes value)? volumes,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ElementsEntityModelDefault() when $default != null:
+        return $default(_that);
+      case _ElementsEntityModelFigures() when figures != null:
+        return figures(_that);
+      case _ElementsEntityModelPolygones() when polygones != null:
+        return polygones(_that);
+      case _ElementsEntityModelVolumes() when volumes != null:
+        return volumes(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult? Function(int id, String name, Figures figures)? figures,
-    TResult? Function(int id, String name, Polygones polygones)? polygones,
-    TResult? Function(int id, String name, Volumes volumes)? volumes,
-  }) =>
-      throw _privateConstructorUsedError;
+  TResult map<TResult extends Object?>(
+    TResult Function(_ElementsEntityModelDefault value) $default, {
+    required TResult Function(_ElementsEntityModelFigures value) figures,
+    required TResult Function(_ElementsEntityModelPolygones value) polygones,
+    required TResult Function(_ElementsEntityModelVolumes value) volumes,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ElementsEntityModelDefault():
+        return $default(_that);
+      case _ElementsEntityModelFigures():
+        return figures(_that);
+      case _ElementsEntityModelPolygones():
+        return polygones(_that);
+      case _ElementsEntityModelVolumes():
+        return volumes(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_ElementsEntityModelDefault value)? $default, {
+    TResult? Function(_ElementsEntityModelFigures value)? figures,
+    TResult? Function(_ElementsEntityModelPolygones value)? polygones,
+    TResult? Function(_ElementsEntityModelVolumes value)? volumes,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ElementsEntityModelDefault() when $default != null:
+        return $default(_that);
+      case _ElementsEntityModelFigures() when figures != null:
+        return figures(_that);
+      case _ElementsEntityModelPolygones() when polygones != null:
+        return polygones(_that);
+      case _ElementsEntityModelVolumes() when volumes != null:
+        return volumes(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(int id, String name, Figures? figures,
@@ -65,83 +228,172 @@ mixin _$ElementsEntityModel {
     TResult Function(int id, String name, Polygones polygones)? polygones,
     TResult Function(int id, String name, Volumes volumes)? volumes,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
-    required TResult Function(_ElementsEntityModelFigures value) figures,
-    required TResult Function(_ElementsEntityModelPolygones value) polygones,
-    required TResult Function(_ElementsEntityModelVolumes value) volumes,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
-    TResult? Function(_ElementsEntityModelFigures value)? figures,
-    TResult? Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult? Function(_ElementsEntityModelVolumes value)? volumes,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
-    TResult Function(_ElementsEntityModelFigures value)? figures,
-    TResult Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult Function(_ElementsEntityModelVolumes value)? volumes,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ElementsEntityModelCopyWith<ElementsEntityModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ElementsEntityModelCopyWith<$Res> {
-  factory $ElementsEntityModelCopyWith(
-          ElementsEntityModel value, $Res Function(ElementsEntityModel) then) =
-      _$ElementsEntityModelCopyWithImpl<$Res, ElementsEntityModel>;
-  @useResult
-  $Res call({int id, String name});
-}
-
-/// @nodoc
-class _$ElementsEntityModelCopyWithImpl<$Res, $Val extends ElementsEntityModel>
-    implements $ElementsEntityModelCopyWith<$Res> {
-  _$ElementsEntityModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+    final _that = this;
+    switch (_that) {
+      case _ElementsEntityModelDefault() when $default != null:
+        return $default(_that.id, _that.name, _that.figures, _that.polygones,
+            _that.volumes);
+      case _ElementsEntityModelFigures() when figures != null:
+        return figures(_that.id, _that.name, _that.figures);
+      case _ElementsEntityModelPolygones() when polygones != null:
+        return polygones(_that.id, _that.name, _that.polygones);
+      case _ElementsEntityModelVolumes() when volumes != null:
+        return volumes(_that.id, _that.name, _that.volumes);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(int id, String name, Figures? figures,
+            Polygones? polygones, Volumes? volumes)
+        $default, {
+    required TResult Function(int id, String name, Figures figures) figures,
+    required TResult Function(int id, String name, Polygones polygones)
+        polygones,
+    required TResult Function(int id, String name, Volumes volumes) volumes,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ElementsEntityModelDefault():
+        return $default(_that.id, _that.name, _that.figures, _that.polygones,
+            _that.volumes);
+      case _ElementsEntityModelFigures():
+        return figures(_that.id, _that.name, _that.figures);
+      case _ElementsEntityModelPolygones():
+        return polygones(_that.id, _that.name, _that.polygones);
+      case _ElementsEntityModelVolumes():
+        return volumes(_that.id, _that.name, _that.volumes);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int id, String name, Figures? figures,
+            Polygones? polygones, Volumes? volumes)?
+        $default, {
+    TResult? Function(int id, String name, Figures figures)? figures,
+    TResult? Function(int id, String name, Polygones polygones)? polygones,
+    TResult? Function(int id, String name, Volumes volumes)? volumes,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _ElementsEntityModelDefault() when $default != null:
+        return $default(_that.id, _that.name, _that.figures, _that.polygones,
+            _that.volumes);
+      case _ElementsEntityModelFigures() when figures != null:
+        return figures(_that.id, _that.name, _that.figures);
+      case _ElementsEntityModelPolygones() when polygones != null:
+        return polygones(_that.id, _that.name, _that.polygones);
+      case _ElementsEntityModelVolumes() when volumes != null:
+        return volumes(_that.id, _that.name, _that.volumes);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
-abstract class _$$ElementsEntityModelImplCopyWith<$Res>
+@JsonSerializable()
+class _ElementsEntityModelDefault implements ElementsEntityModel {
+  const _ElementsEntityModelDefault(
+      {required this.id,
+      required this.name,
+      this.figures,
+      this.polygones,
+      this.volumes,
+      final String? $type})
+      : $type = $type ?? 'default';
+  factory _ElementsEntityModelDefault.fromJson(Map<String, dynamic> json) =>
+      _$ElementsEntityModelDefaultFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String name;
+  final Figures? figures;
+  final Polygones? polygones;
+  final Volumes? volumes;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ElementsEntityModelDefaultCopyWith<_ElementsEntityModelDefault>
+      get copyWith => __$ElementsEntityModelDefaultCopyWithImpl<
+          _ElementsEntityModelDefault>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ElementsEntityModelDefaultToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ElementsEntityModelDefault &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.figures, figures) || other.figures == figures) &&
+            (identical(other.polygones, polygones) ||
+                other.polygones == polygones) &&
+            (identical(other.volumes, volumes) || other.volumes == volumes));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, figures, polygones, volumes);
+
+  @override
+  String toString() {
+    return 'ElementsEntityModel(id: $id, name: $name, figures: $figures, polygones: $polygones, volumes: $volumes)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ElementsEntityModelDefaultCopyWith<$Res>
     implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$ElementsEntityModelImplCopyWith(_$ElementsEntityModelImpl value,
-          $Res Function(_$ElementsEntityModelImpl) then) =
-      __$$ElementsEntityModelImplCopyWithImpl<$Res>;
+  factory _$ElementsEntityModelDefaultCopyWith(
+          _ElementsEntityModelDefault value,
+          $Res Function(_ElementsEntityModelDefault) _then) =
+      __$ElementsEntityModelDefaultCopyWithImpl;
   @override
   @useResult
   $Res call(
@@ -153,15 +405,17 @@ abstract class _$$ElementsEntityModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ElementsEntityModelImplCopyWithImpl<$Res>
-    extends _$ElementsEntityModelCopyWithImpl<$Res, _$ElementsEntityModelImpl>
-    implements _$$ElementsEntityModelImplCopyWith<$Res> {
-  __$$ElementsEntityModelImplCopyWithImpl(_$ElementsEntityModelImpl _value,
-      $Res Function(_$ElementsEntityModelImpl) _then)
-      : super(_value, _then);
+class __$ElementsEntityModelDefaultCopyWithImpl<$Res>
+    implements _$ElementsEntityModelDefaultCopyWith<$Res> {
+  __$ElementsEntityModelDefaultCopyWithImpl(this._self, this._then);
 
-  @pragma('vm:prefer-inline')
+  final _ElementsEntityModelDefault _self;
+  final $Res Function(_ElementsEntityModelDefault) _then;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
     Object? name = null,
@@ -169,25 +423,25 @@ class __$$ElementsEntityModelImplCopyWithImpl<$Res>
     Object? polygones = freezed,
     Object? volumes = freezed,
   }) {
-    return _then(_$ElementsEntityModelImpl(
+    return _then(_ElementsEntityModelDefault(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       figures: freezed == figures
-          ? _value.figures
+          ? _self.figures
           : figures // ignore: cast_nullable_to_non_nullable
               as Figures?,
       polygones: freezed == polygones
-          ? _value.polygones
+          ? _self.polygones
           : polygones // ignore: cast_nullable_to_non_nullable
               as Polygones?,
       volumes: freezed == volumes
-          ? _value.volumes
+          ? _self.volumes
           : volumes // ignore: cast_nullable_to_non_nullable
               as Volumes?,
     ));
@@ -196,216 +450,102 @@ class __$$ElementsEntityModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ElementsEntityModelImpl implements _ElementsEntityModel {
-  const _$ElementsEntityModelImpl(
+class _ElementsEntityModelFigures implements ElementsEntityModel {
+  const _ElementsEntityModelFigures(
       {required this.id,
       required this.name,
-      this.figures,
-      this.polygones,
-      this.volumes,
+      this.figures = Figures.cercle,
       final String? $type})
-      : $type = $type ?? 'default';
-
-  factory _$ElementsEntityModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ElementsEntityModelImplFromJson(json);
+      : $type = $type ?? 'figures';
+  factory _ElementsEntityModelFigures.fromJson(Map<String, dynamic> json) =>
+      _$ElementsEntityModelFiguresFromJson(json);
 
   @override
   final int id;
   @override
   final String name;
-  @override
-  final Figures? figures;
-  @override
-  final Polygones? polygones;
-  @override
-  final Volumes? volumes;
+  @JsonKey()
+  final Figures figures;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ElementsEntityModel(id: $id, name: $name, figures: $figures, polygones: $polygones, volumes: $volumes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ElementsEntityModelFiguresCopyWith<_ElementsEntityModelFigures>
+      get copyWith => __$ElementsEntityModelFiguresCopyWithImpl<
+          _ElementsEntityModelFigures>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ElementsEntityModelFiguresToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ElementsEntityModelImpl &&
+            other is _ElementsEntityModelFigures &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.figures, figures) || other.figures == figures) &&
-            (identical(other.polygones, polygones) ||
-                other.polygones == polygones) &&
-            (identical(other.volumes, volumes) || other.volumes == volumes));
+            (identical(other.figures, figures) || other.figures == figures));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, figures, polygones, volumes);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ElementsEntityModelImplCopyWith<_$ElementsEntityModelImpl> get copyWith =>
-      __$$ElementsEntityModelImplCopyWithImpl<_$ElementsEntityModelImpl>(
-          this, _$identity);
+  int get hashCode => Object.hash(runtimeType, id, name, figures);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)
-        $default, {
-    required TResult Function(int id, String name, Figures figures) figures,
-    required TResult Function(int id, String name, Polygones polygones)
-        polygones,
-    required TResult Function(int id, String name, Volumes volumes) volumes,
-  }) {
-    return $default(id, name, this.figures, this.polygones, this.volumes);
+  String toString() {
+    return 'ElementsEntityModel.figures(id: $id, name: $name, figures: $figures)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult? Function(int id, String name, Figures figures)? figures,
-    TResult? Function(int id, String name, Polygones polygones)? polygones,
-    TResult? Function(int id, String name, Volumes volumes)? volumes,
-  }) {
-    return $default?.call(id, name, this.figures, this.polygones, this.volumes);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult Function(int id, String name, Figures figures)? figures,
-    TResult Function(int id, String name, Polygones polygones)? polygones,
-    TResult Function(int id, String name, Volumes volumes)? volumes,
-    required TResult orElse(),
-  }) {
-    if ($default != null) {
-      return $default(id, name, this.figures, this.polygones, this.volumes);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
-    required TResult Function(_ElementsEntityModelFigures value) figures,
-    required TResult Function(_ElementsEntityModelPolygones value) polygones,
-    required TResult Function(_ElementsEntityModelVolumes value) volumes,
-  }) {
-    return $default(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
-    TResult? Function(_ElementsEntityModelFigures value)? figures,
-    TResult? Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult? Function(_ElementsEntityModelVolumes value)? volumes,
-  }) {
-    return $default?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
-    TResult Function(_ElementsEntityModelFigures value)? figures,
-    TResult Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult Function(_ElementsEntityModelVolumes value)? volumes,
-    required TResult orElse(),
-  }) {
-    if ($default != null) {
-      return $default(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ElementsEntityModelImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _ElementsEntityModel implements ElementsEntityModel {
-  const factory _ElementsEntityModel(
-      {required final int id,
-      required final String name,
-      final Figures? figures,
-      final Polygones? polygones,
-      final Volumes? volumes}) = _$ElementsEntityModelImpl;
-
-  factory _ElementsEntityModel.fromJson(Map<String, dynamic> json) =
-      _$ElementsEntityModelImpl.fromJson;
-
-  @override
-  int get id;
-  @override
-  String get name;
-  Figures? get figures;
-  Polygones? get polygones;
-  Volumes? get volumes;
-  @override
-  @JsonKey(ignore: true)
-  _$$ElementsEntityModelImplCopyWith<_$ElementsEntityModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ElementsEntityModelFiguresImplCopyWith<$Res>
+abstract mixin class _$ElementsEntityModelFiguresCopyWith<$Res>
     implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$ElementsEntityModelFiguresImplCopyWith(
-          _$ElementsEntityModelFiguresImpl value,
-          $Res Function(_$ElementsEntityModelFiguresImpl) then) =
-      __$$ElementsEntityModelFiguresImplCopyWithImpl<$Res>;
+  factory _$ElementsEntityModelFiguresCopyWith(
+          _ElementsEntityModelFigures value,
+          $Res Function(_ElementsEntityModelFigures) _then) =
+      __$ElementsEntityModelFiguresCopyWithImpl;
   @override
   @useResult
   $Res call({int id, String name, Figures figures});
 }
 
 /// @nodoc
-class __$$ElementsEntityModelFiguresImplCopyWithImpl<$Res>
-    extends _$ElementsEntityModelCopyWithImpl<$Res,
-        _$ElementsEntityModelFiguresImpl>
-    implements _$$ElementsEntityModelFiguresImplCopyWith<$Res> {
-  __$$ElementsEntityModelFiguresImplCopyWithImpl(
-      _$ElementsEntityModelFiguresImpl _value,
-      $Res Function(_$ElementsEntityModelFiguresImpl) _then)
-      : super(_value, _then);
+class __$ElementsEntityModelFiguresCopyWithImpl<$Res>
+    implements _$ElementsEntityModelFiguresCopyWith<$Res> {
+  __$ElementsEntityModelFiguresCopyWithImpl(this._self, this._then);
 
-  @pragma('vm:prefer-inline')
+  final _ElementsEntityModelFigures _self;
+  final $Res Function(_ElementsEntityModelFigures) _then;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
     Object? name = null,
     Object? figures = null,
   }) {
-    return _then(_$ElementsEntityModelFiguresImpl(
+    return _then(_ElementsEntityModelFigures(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       figures: null == figures
-          ? _value.figures
+          ? _self.figures
           : figures // ignore: cast_nullable_to_non_nullable
               as Figures,
     ));
@@ -414,204 +554,103 @@ class __$$ElementsEntityModelFiguresImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ElementsEntityModelFiguresImpl implements _ElementsEntityModelFigures {
-  const _$ElementsEntityModelFiguresImpl(
+class _ElementsEntityModelPolygones implements ElementsEntityModel {
+  const _ElementsEntityModelPolygones(
       {required this.id,
       required this.name,
-      this.figures = Figures.cercle,
+      this.polygones = Polygones.quadrilatere,
       final String? $type})
-      : $type = $type ?? 'figures';
-
-  factory _$ElementsEntityModelFiguresImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$ElementsEntityModelFiguresImplFromJson(json);
+      : $type = $type ?? 'polygones';
+  factory _ElementsEntityModelPolygones.fromJson(Map<String, dynamic> json) =>
+      _$ElementsEntityModelPolygonesFromJson(json);
 
   @override
   final int id;
   @override
   final String name;
-  @override
   @JsonKey()
-  final Figures figures;
+  final Polygones polygones;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ElementsEntityModel.figures(id: $id, name: $name, figures: $figures)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ElementsEntityModelPolygonesCopyWith<_ElementsEntityModelPolygones>
+      get copyWith => __$ElementsEntityModelPolygonesCopyWithImpl<
+          _ElementsEntityModelPolygones>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ElementsEntityModelPolygonesToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ElementsEntityModelFiguresImpl &&
+            other is _ElementsEntityModelPolygones &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.figures, figures) || other.figures == figures));
+            (identical(other.polygones, polygones) ||
+                other.polygones == polygones));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, figures);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ElementsEntityModelFiguresImplCopyWith<_$ElementsEntityModelFiguresImpl>
-      get copyWith => __$$ElementsEntityModelFiguresImplCopyWithImpl<
-          _$ElementsEntityModelFiguresImpl>(this, _$identity);
+  int get hashCode => Object.hash(runtimeType, id, name, polygones);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)
-        $default, {
-    required TResult Function(int id, String name, Figures figures) figures,
-    required TResult Function(int id, String name, Polygones polygones)
-        polygones,
-    required TResult Function(int id, String name, Volumes volumes) volumes,
-  }) {
-    return figures(id, name, this.figures);
+  String toString() {
+    return 'ElementsEntityModel.polygones(id: $id, name: $name, polygones: $polygones)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult? Function(int id, String name, Figures figures)? figures,
-    TResult? Function(int id, String name, Polygones polygones)? polygones,
-    TResult? Function(int id, String name, Volumes volumes)? volumes,
-  }) {
-    return figures?.call(id, name, this.figures);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult Function(int id, String name, Figures figures)? figures,
-    TResult Function(int id, String name, Polygones polygones)? polygones,
-    TResult Function(int id, String name, Volumes volumes)? volumes,
-    required TResult orElse(),
-  }) {
-    if (figures != null) {
-      return figures(id, name, this.figures);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
-    required TResult Function(_ElementsEntityModelFigures value) figures,
-    required TResult Function(_ElementsEntityModelPolygones value) polygones,
-    required TResult Function(_ElementsEntityModelVolumes value) volumes,
-  }) {
-    return figures(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
-    TResult? Function(_ElementsEntityModelFigures value)? figures,
-    TResult? Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult? Function(_ElementsEntityModelVolumes value)? volumes,
-  }) {
-    return figures?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
-    TResult Function(_ElementsEntityModelFigures value)? figures,
-    TResult Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult Function(_ElementsEntityModelVolumes value)? volumes,
-    required TResult orElse(),
-  }) {
-    if (figures != null) {
-      return figures(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ElementsEntityModelFiguresImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _ElementsEntityModelFigures implements ElementsEntityModel {
-  const factory _ElementsEntityModelFigures(
-      {required final int id,
-      required final String name,
-      final Figures figures}) = _$ElementsEntityModelFiguresImpl;
-
-  factory _ElementsEntityModelFigures.fromJson(Map<String, dynamic> json) =
-      _$ElementsEntityModelFiguresImpl.fromJson;
-
-  @override
-  int get id;
-  @override
-  String get name;
-  Figures get figures;
-  @override
-  @JsonKey(ignore: true)
-  _$$ElementsEntityModelFiguresImplCopyWith<_$ElementsEntityModelFiguresImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ElementsEntityModelPolygonesImplCopyWith<$Res>
+abstract mixin class _$ElementsEntityModelPolygonesCopyWith<$Res>
     implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$ElementsEntityModelPolygonesImplCopyWith(
-          _$ElementsEntityModelPolygonesImpl value,
-          $Res Function(_$ElementsEntityModelPolygonesImpl) then) =
-      __$$ElementsEntityModelPolygonesImplCopyWithImpl<$Res>;
+  factory _$ElementsEntityModelPolygonesCopyWith(
+          _ElementsEntityModelPolygones value,
+          $Res Function(_ElementsEntityModelPolygones) _then) =
+      __$ElementsEntityModelPolygonesCopyWithImpl;
   @override
   @useResult
   $Res call({int id, String name, Polygones polygones});
 }
 
 /// @nodoc
-class __$$ElementsEntityModelPolygonesImplCopyWithImpl<$Res>
-    extends _$ElementsEntityModelCopyWithImpl<$Res,
-        _$ElementsEntityModelPolygonesImpl>
-    implements _$$ElementsEntityModelPolygonesImplCopyWith<$Res> {
-  __$$ElementsEntityModelPolygonesImplCopyWithImpl(
-      _$ElementsEntityModelPolygonesImpl _value,
-      $Res Function(_$ElementsEntityModelPolygonesImpl) _then)
-      : super(_value, _then);
+class __$ElementsEntityModelPolygonesCopyWithImpl<$Res>
+    implements _$ElementsEntityModelPolygonesCopyWith<$Res> {
+  __$ElementsEntityModelPolygonesCopyWithImpl(this._self, this._then);
 
-  @pragma('vm:prefer-inline')
+  final _ElementsEntityModelPolygones _self;
+  final $Res Function(_ElementsEntityModelPolygones) _then;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
     Object? name = null,
     Object? polygones = null,
   }) {
-    return _then(_$ElementsEntityModelPolygonesImpl(
+    return _then(_ElementsEntityModelPolygones(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       polygones: null == polygones
-          ? _value.polygones
+          ? _self.polygones
           : polygones // ignore: cast_nullable_to_non_nullable
               as Polygones,
     ));
@@ -620,370 +659,106 @@ class __$$ElementsEntityModelPolygonesImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ElementsEntityModelPolygonesImpl
-    implements _ElementsEntityModelPolygones {
-  const _$ElementsEntityModelPolygonesImpl(
-      {required this.id,
-      required this.name,
-      this.polygones = Polygones.quadrilatere,
-      final String? $type})
-      : $type = $type ?? 'polygones';
-
-  factory _$ElementsEntityModelPolygonesImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$ElementsEntityModelPolygonesImplFromJson(json);
-
-  @override
-  final int id;
-  @override
-  final String name;
-  @override
-  @JsonKey()
-  final Polygones polygones;
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
-  @override
-  String toString() {
-    return 'ElementsEntityModel.polygones(id: $id, name: $name, polygones: $polygones)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ElementsEntityModelPolygonesImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.polygones, polygones) ||
-                other.polygones == polygones));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, polygones);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ElementsEntityModelPolygonesImplCopyWith<
-          _$ElementsEntityModelPolygonesImpl>
-      get copyWith => __$$ElementsEntityModelPolygonesImplCopyWithImpl<
-          _$ElementsEntityModelPolygonesImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)
-        $default, {
-    required TResult Function(int id, String name, Figures figures) figures,
-    required TResult Function(int id, String name, Polygones polygones)
-        polygones,
-    required TResult Function(int id, String name, Volumes volumes) volumes,
-  }) {
-    return polygones(id, name, this.polygones);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult? Function(int id, String name, Figures figures)? figures,
-    TResult? Function(int id, String name, Polygones polygones)? polygones,
-    TResult? Function(int id, String name, Volumes volumes)? volumes,
-  }) {
-    return polygones?.call(id, name, this.polygones);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult Function(int id, String name, Figures figures)? figures,
-    TResult Function(int id, String name, Polygones polygones)? polygones,
-    TResult Function(int id, String name, Volumes volumes)? volumes,
-    required TResult orElse(),
-  }) {
-    if (polygones != null) {
-      return polygones(id, name, this.polygones);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
-    required TResult Function(_ElementsEntityModelFigures value) figures,
-    required TResult Function(_ElementsEntityModelPolygones value) polygones,
-    required TResult Function(_ElementsEntityModelVolumes value) volumes,
-  }) {
-    return polygones(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
-    TResult? Function(_ElementsEntityModelFigures value)? figures,
-    TResult? Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult? Function(_ElementsEntityModelVolumes value)? volumes,
-  }) {
-    return polygones?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
-    TResult Function(_ElementsEntityModelFigures value)? figures,
-    TResult Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult Function(_ElementsEntityModelVolumes value)? volumes,
-    required TResult orElse(),
-  }) {
-    if (polygones != null) {
-      return polygones(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ElementsEntityModelPolygonesImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _ElementsEntityModelPolygones implements ElementsEntityModel {
-  const factory _ElementsEntityModelPolygones(
-      {required final int id,
-      required final String name,
-      final Polygones polygones}) = _$ElementsEntityModelPolygonesImpl;
-
-  factory _ElementsEntityModelPolygones.fromJson(Map<String, dynamic> json) =
-      _$ElementsEntityModelPolygonesImpl.fromJson;
-
-  @override
-  int get id;
-  @override
-  String get name;
-  Polygones get polygones;
-  @override
-  @JsonKey(ignore: true)
-  _$$ElementsEntityModelPolygonesImplCopyWith<
-          _$ElementsEntityModelPolygonesImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ElementsEntityModelVolumesImplCopyWith<$Res>
-    implements $ElementsEntityModelCopyWith<$Res> {
-  factory _$$ElementsEntityModelVolumesImplCopyWith(
-          _$ElementsEntityModelVolumesImpl value,
-          $Res Function(_$ElementsEntityModelVolumesImpl) then) =
-      __$$ElementsEntityModelVolumesImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int id, String name, Volumes volumes});
-}
-
-/// @nodoc
-class __$$ElementsEntityModelVolumesImplCopyWithImpl<$Res>
-    extends _$ElementsEntityModelCopyWithImpl<$Res,
-        _$ElementsEntityModelVolumesImpl>
-    implements _$$ElementsEntityModelVolumesImplCopyWith<$Res> {
-  __$$ElementsEntityModelVolumesImplCopyWithImpl(
-      _$ElementsEntityModelVolumesImpl _value,
-      $Res Function(_$ElementsEntityModelVolumesImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? volumes = null,
-  }) {
-    return _then(_$ElementsEntityModelVolumesImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      volumes: null == volumes
-          ? _value.volumes
-          : volumes // ignore: cast_nullable_to_non_nullable
-              as Volumes,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$ElementsEntityModelVolumesImpl implements _ElementsEntityModelVolumes {
-  const _$ElementsEntityModelVolumesImpl(
+class _ElementsEntityModelVolumes implements ElementsEntityModel {
+  const _ElementsEntityModelVolumes(
       {required this.id,
       required this.name,
       this.volumes = Volumes.cube,
       final String? $type})
       : $type = $type ?? 'volumes';
-
-  factory _$ElementsEntityModelVolumesImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$ElementsEntityModelVolumesImplFromJson(json);
+  factory _ElementsEntityModelVolumes.fromJson(Map<String, dynamic> json) =>
+      _$ElementsEntityModelVolumesFromJson(json);
 
   @override
   final int id;
   @override
   final String name;
-  @override
   @JsonKey()
   final Volumes volumes;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'ElementsEntityModel.volumes(id: $id, name: $name, volumes: $volumes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ElementsEntityModelVolumesCopyWith<_ElementsEntityModelVolumes>
+      get copyWith => __$ElementsEntityModelVolumesCopyWithImpl<
+          _ElementsEntityModelVolumes>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ElementsEntityModelVolumesToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ElementsEntityModelVolumesImpl &&
+            other is _ElementsEntityModelVolumes &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.volumes, volumes) || other.volumes == volumes));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, volumes);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'ElementsEntityModel.volumes(id: $id, name: $name, volumes: $volumes)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ElementsEntityModelVolumesCopyWith<$Res>
+    implements $ElementsEntityModelCopyWith<$Res> {
+  factory _$ElementsEntityModelVolumesCopyWith(
+          _ElementsEntityModelVolumes value,
+          $Res Function(_ElementsEntityModelVolumes) _then) =
+      __$ElementsEntityModelVolumesCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int id, String name, Volumes volumes});
+}
+
+/// @nodoc
+class __$ElementsEntityModelVolumesCopyWithImpl<$Res>
+    implements _$ElementsEntityModelVolumesCopyWith<$Res> {
+  __$ElementsEntityModelVolumesCopyWithImpl(this._self, this._then);
+
+  final _ElementsEntityModelVolumes _self;
+  final $Res Function(_ElementsEntityModelVolumes) _then;
+
+  /// Create a copy of ElementsEntityModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$ElementsEntityModelVolumesImplCopyWith<_$ElementsEntityModelVolumesImpl>
-      get copyWith => __$$ElementsEntityModelVolumesImplCopyWithImpl<
-          _$ElementsEntityModelVolumesImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)
-        $default, {
-    required TResult Function(int id, String name, Figures figures) figures,
-    required TResult Function(int id, String name, Polygones polygones)
-        polygones,
-    required TResult Function(int id, String name, Volumes volumes) volumes,
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? volumes = null,
   }) {
-    return volumes(id, name, this.volumes);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult? Function(int id, String name, Figures figures)? figures,
-    TResult? Function(int id, String name, Polygones polygones)? polygones,
-    TResult? Function(int id, String name, Volumes volumes)? volumes,
-  }) {
-    return volumes?.call(id, name, this.volumes);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int id, String name, Figures? figures,
-            Polygones? polygones, Volumes? volumes)?
-        $default, {
-    TResult Function(int id, String name, Figures figures)? figures,
-    TResult Function(int id, String name, Polygones polygones)? polygones,
-    TResult Function(int id, String name, Volumes volumes)? volumes,
-    required TResult orElse(),
-  }) {
-    if (volumes != null) {
-      return volumes(id, name, this.volumes);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value) $default, {
-    required TResult Function(_ElementsEntityModelFigures value) figures,
-    required TResult Function(_ElementsEntityModelPolygones value) polygones,
-    required TResult Function(_ElementsEntityModelVolumes value) volumes,
-  }) {
-    return volumes(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ElementsEntityModel value)? $default, {
-    TResult? Function(_ElementsEntityModelFigures value)? figures,
-    TResult? Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult? Function(_ElementsEntityModelVolumes value)? volumes,
-  }) {
-    return volumes?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ElementsEntityModel value)? $default, {
-    TResult Function(_ElementsEntityModelFigures value)? figures,
-    TResult Function(_ElementsEntityModelPolygones value)? polygones,
-    TResult Function(_ElementsEntityModelVolumes value)? volumes,
-    required TResult orElse(),
-  }) {
-    if (volumes != null) {
-      return volumes(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ElementsEntityModelVolumesImplToJson(
-      this,
-    );
+    return _then(_ElementsEntityModelVolumes(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      volumes: null == volumes
+          ? _self.volumes
+          : volumes // ignore: cast_nullable_to_non_nullable
+              as Volumes,
+    ));
   }
 }
 
-abstract class _ElementsEntityModelVolumes implements ElementsEntityModel {
-  const factory _ElementsEntityModelVolumes(
-      {required final int id,
-      required final String name,
-      final Volumes volumes}) = _$ElementsEntityModelVolumesImpl;
-
-  factory _ElementsEntityModelVolumes.fromJson(Map<String, dynamic> json) =
-      _$ElementsEntityModelVolumesImpl.fromJson;
-
-  @override
-  int get id;
-  @override
-  String get name;
-  Volumes get volumes;
-  @override
-  @JsonKey(ignore: true)
-  _$$ElementsEntityModelVolumesImplCopyWith<_$ElementsEntityModelVolumesImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

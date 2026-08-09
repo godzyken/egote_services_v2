@@ -12,7 +12,7 @@ class ContactOwnerEntity with _$ContactOwnerEntity {
     required String lastName,
     required String phone,
     required String email,
-  }) = _ContactOwnerEntity;
+  }) = _ContactOwnerEntityDefault;
 
   const factory ContactOwnerEntity.empty() = _ContactOwnerEntityEmpty;
 

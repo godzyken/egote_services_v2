@@ -11,14 +11,16 @@ import '../../../../config/app_shared/images/list_local.dart';
 import '../entities/construction/mission_entity.dart';
 import '../entities/contact/contact_owner_entity.dart';
 
-final editDeviViewModelProvider = StateNotifierProvider<
+final editDeviViewModelProvider = NotifierProvider<
         EditDeviViewModelController, State<AsyncValue<DevisModelEntity>>>(
-    (ref) => EditDeviViewModelController());
+    EditDeviViewModelController.new);
 
 class EditDeviViewModelController
-    extends StateNotifier<State<AsyncValue<DevisModelEntity>>> {
-  EditDeviViewModelController([DevisModelEntity? devisModelEntity])
-      : super(const State.init());
+    extends Notifier<State<AsyncValue<DevisModelEntity>>> {
+  @override
+  State<AsyncValue<DevisModelEntity>> build() {
+    return const State.init();
+  }
 
   DevisModelEntity initial = DevisModelEntity.empty();
   SuperficieEntity initialSup =

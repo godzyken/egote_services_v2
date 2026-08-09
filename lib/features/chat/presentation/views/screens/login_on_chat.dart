@@ -17,8 +17,7 @@ import '../../../../../firebase_options.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../auth/presentation/views/widgets/widgets_extensions.dart';
 import '../../../data/data_sources/local/pref_util.dart';
-import '../../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import '../../../domain/models/entities/cube_user/cube_user_mig.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 
 class LoginOnChat extends ConsumerStatefulWidget {
   const LoginOnChat({super.key});
@@ -322,7 +321,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
   void _loginPressed() {
     log('login with $_login and $_password');
-    var userToLogin = const CubeUserMig();
+    var userToLogin = const CubeUser();
 /*
     if (isEmailSelected) {
       userToLogin.email = _login;
@@ -338,7 +337,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
   void _createAccountPressed() {
     log('create an user with $_login and $_password');
-    var userToSignUp = const CubeUserMig();
+    var userToSignUp = const CubeUser();
 /*    if (isEmailSelected) {
       userToSignUp.email = _login;
     } else {
@@ -351,7 +350,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     _signInCC(context, userToSignUp);
   }
 
-  _signInCC(BuildContext context, CubeUserMig user) async {
+  _signInCC(BuildContext context, CubeUser user) async {
     if (_isLoginContinues) return;
 
     setState(() {
@@ -397,7 +396,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     });*/
   }
 
-  _loginToCC(BuildContext context, CubeUserMig user,
+  _loginToCC(BuildContext context, CubeUser user,
       {bool saveUser = false}) async {
     log("_loginToCC user: $user");
     /*   if (_isLoginContinues) return;
@@ -428,7 +427,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     log("[_loginToCCWithSavedUser] user: $loginType");
     if (_isLoginContinues) return;
 
-    //Future<CubeUserMig>? signInFuture;
+    //Future<CubeUser>? signInFuture;
 
     var accessToken = await ref.watch(firebaseAuthProvider.select((auth) => auth
         .currentUser
@@ -491,7 +490,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
   String get projectId => DefaultFirebaseOptions.currentPlatform.projectId;
 
-/*  _loginToCubeChat(BuildContext context, CubeUserMig user) {
+/*  _loginToCubeChat(BuildContext context, CubeUser user) {
     log("_loginToCubeChat user $user");
     */ /* ref.watch(cubeChatConnectionSettingsProvider)
       ..totalReconnections = 0
@@ -513,7 +512,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     context.showAlert(exception!.toString());
   }
 
-  /* void _goDialogScreen(BuildContext context, CubeUserMig cubeUser) async {
+  /* void _goDialogScreen(BuildContext context, CubeUser cubeUser) async {
     log("_goDialogScreen");
     FlutterLocalNotificationsPlugin()
         .getNotificationAppLaunchDetails()
@@ -535,7 +534,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       if (dialogId != null && dialogId.isNotEmpty) {
         */ /*  getDialogs({'id': dialogId}).then((dialogs) {
           if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
-            CubeDialogMig dialog = dialogs.items.first;
+            CubeDialog dialog = dialogs.items.first;
             if (mounted) {
               setState(() {
                 navigateToNextScreen(cubeUser, dialog);
@@ -555,7 +554,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     });
   }*/
 
-  void navigateToNextScreen(CubeUserMig cubeUser, CubeDialogMig? dialog) {
+  void navigateToNextScreen(CubeUser cubeUser, CubeDialog? dialog) {
     final cid = SharedPrefs.instance.getSelectedDialogId();
     context.pushReplacementNamed(
       'select_dialog',

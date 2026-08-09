@@ -11,7 +11,6 @@ import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart'
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'config/app_shared/extensions/extensions.dart';
@@ -19,6 +18,7 @@ import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
+import 'l10n/app_localizations.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
@@ -57,7 +57,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeMetrics() {
-    ref.read(drawerWidthProvider.notifier).state = drawerWidth();
+    ref.read(drawerWidthProvider.notifier).setWidth(drawerWidth());
 
     super.didChangeMetrics();
   }

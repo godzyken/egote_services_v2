@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,11 +9,8 @@ part of 'superficie_entity.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 SuperficieEntity _$SuperficieEntityFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'initialize':
@@ -35,53 +32,45 @@ SuperficieEntity _$SuperficieEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SuperficieEntity {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur) $default, {
-    required TResult Function(int longueur, int largeur, int? hauteur)
-        initialize,
-    required TResult Function(int surface) surface,
-    required TResult Function(int perimetre) perimetre,
-    required TResult Function(int volume) volume,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult? Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult? Function(int surface)? surface,
-    TResult? Function(int perimetre)? perimetre,
-    TResult? Function(int volume)? volume,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult Function(int surface)? surface,
-    TResult Function(int perimetre)? perimetre,
-    TResult Function(int volume)? volume,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value) $default, {
-    required TResult Function(_SuperficieEntityInitialize value) initialize,
-    required TResult Function(_SuperficieEntityAir value) surface,
-    required TResult Function(_SuperficieEntityPerimetre value) perimetre,
-    required TResult Function(_SuperficieEntityVolume value) volume,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_SuperficieEntityData value)? $default, {
-    TResult? Function(_SuperficieEntityInitialize value)? initialize,
-    TResult? Function(_SuperficieEntityAir value)? surface,
-    TResult? Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult? Function(_SuperficieEntityVolume value)? volume,
-  }) =>
-      throw _privateConstructorUsedError;
+  /// Serializes this SuperficieEntity to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is SuperficieEntity);
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'SuperficieEntity()';
+  }
+}
+
+/// @nodoc
+class $SuperficieEntityCopyWith<$Res> {
+  $SuperficieEntityCopyWith(
+      SuperficieEntity _, $Res Function(SuperficieEntity) __);
+}
+
+/// Adds pattern-matching-related methods to [SuperficieEntity].
+extension SuperficieEntityPatterns on SuperficieEntity {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
     TResult Function(_SuperficieEntityData value)? $default, {
@@ -90,267 +79,308 @@ mixin _$SuperficieEntity {
     TResult Function(_SuperficieEntityPerimetre value)? perimetre,
     TResult Function(_SuperficieEntityVolume value)? volume,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SuperficieEntityCopyWith<$Res> {
-  factory $SuperficieEntityCopyWith(
-          SuperficieEntity value, $Res Function(SuperficieEntity) then) =
-      _$SuperficieEntityCopyWithImpl<$Res, SuperficieEntity>;
-}
-
-/// @nodoc
-class _$SuperficieEntityCopyWithImpl<$Res, $Val extends SuperficieEntity>
-    implements $SuperficieEntityCopyWith<$Res> {
-  _$SuperficieEntityCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$SuperficieEntityInitializeImplCopyWith<$Res> {
-  factory _$$SuperficieEntityInitializeImplCopyWith(
-          _$SuperficieEntityInitializeImpl value,
-          $Res Function(_$SuperficieEntityInitializeImpl) then) =
-      __$$SuperficieEntityInitializeImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int longueur, int largeur, int? hauteur});
-}
-
-/// @nodoc
-class __$$SuperficieEntityInitializeImplCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res,
-        _$SuperficieEntityInitializeImpl>
-    implements _$$SuperficieEntityInitializeImplCopyWith<$Res> {
-  __$$SuperficieEntityInitializeImplCopyWithImpl(
-      _$SuperficieEntityInitializeImpl _value,
-      $Res Function(_$SuperficieEntityInitializeImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? longueur = null,
-    Object? largeur = null,
-    Object? hauteur = freezed,
   }) {
-    return _then(_$SuperficieEntityInitializeImpl(
-      longueur: null == longueur
-          ? _value.longueur
-          : longueur // ignore: cast_nullable_to_non_nullable
-              as int,
-      largeur: null == largeur
-          ? _value.largeur
-          : largeur // ignore: cast_nullable_to_non_nullable
-              as int,
-      hauteur: freezed == hauteur
-          ? _value.hauteur
-          : hauteur // ignore: cast_nullable_to_non_nullable
-              as int?,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _SuperficieEntityInitialize() when initialize != null:
+        return initialize(_that);
+      case _SuperficieEntityData() when $default != null:
+        return $default(_that);
+      case _SuperficieEntityAir() when surface != null:
+        return surface(_that);
+      case _SuperficieEntityPerimetre() when perimetre != null:
+        return perimetre(_that);
+      case _SuperficieEntityVolume() when volume != null:
+        return volume(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_SuperficieEntityData value) $default, {
+    required TResult Function(_SuperficieEntityInitialize value) initialize,
+    required TResult Function(_SuperficieEntityAir value) surface,
+    required TResult Function(_SuperficieEntityPerimetre value) perimetre,
+    required TResult Function(_SuperficieEntityVolume value) volume,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SuperficieEntityInitialize():
+        return initialize(_that);
+      case _SuperficieEntityData():
+        return $default(_that);
+      case _SuperficieEntityAir():
+        return surface(_that);
+      case _SuperficieEntityPerimetre():
+        return perimetre(_that);
+      case _SuperficieEntityVolume():
+        return volume(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_SuperficieEntityData value)? $default, {
+    TResult? Function(_SuperficieEntityInitialize value)? initialize,
+    TResult? Function(_SuperficieEntityAir value)? surface,
+    TResult? Function(_SuperficieEntityPerimetre value)? perimetre,
+    TResult? Function(_SuperficieEntityVolume value)? volume,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SuperficieEntityInitialize() when initialize != null:
+        return initialize(_that);
+      case _SuperficieEntityData() when $default != null:
+        return $default(_that);
+      case _SuperficieEntityAir() when surface != null:
+        return surface(_that);
+      case _SuperficieEntityPerimetre() when perimetre != null:
+        return perimetre(_that);
+      case _SuperficieEntityVolume() when volume != null:
+        return volume(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int longueur, int largeur, int? hauteur)? $default, {
+    TResult Function(int longueur, int largeur, int? hauteur)? initialize,
+    TResult Function(int surface)? surface,
+    TResult Function(int perimetre)? perimetre,
+    TResult Function(int volume)? volume,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SuperficieEntityInitialize() when initialize != null:
+        return initialize(_that.longueur, _that.largeur, _that.hauteur);
+      case _SuperficieEntityData() when $default != null:
+        return $default(_that.longueur, _that.largeur, _that.hauteur);
+      case _SuperficieEntityAir() when surface != null:
+        return surface(_that.surface);
+      case _SuperficieEntityPerimetre() when perimetre != null:
+        return perimetre(_that.perimetre);
+      case _SuperficieEntityVolume() when volume != null:
+        return volume(_that.volume);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(int longueur, int largeur, int? hauteur) $default, {
+    required TResult Function(int longueur, int largeur, int? hauteur)
+        initialize,
+    required TResult Function(int surface) surface,
+    required TResult Function(int perimetre) perimetre,
+    required TResult Function(int volume) volume,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SuperficieEntityInitialize():
+        return initialize(_that.longueur, _that.largeur, _that.hauteur);
+      case _SuperficieEntityData():
+        return $default(_that.longueur, _that.largeur, _that.hauteur);
+      case _SuperficieEntityAir():
+        return surface(_that.surface);
+      case _SuperficieEntityPerimetre():
+        return perimetre(_that.perimetre);
+      case _SuperficieEntityVolume():
+        return volume(_that.volume);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int longueur, int largeur, int? hauteur)? $default, {
+    TResult? Function(int longueur, int largeur, int? hauteur)? initialize,
+    TResult? Function(int surface)? surface,
+    TResult? Function(int perimetre)? perimetre,
+    TResult? Function(int volume)? volume,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SuperficieEntityInitialize() when initialize != null:
+        return initialize(_that.longueur, _that.largeur, _that.hauteur);
+      case _SuperficieEntityData() when $default != null:
+        return $default(_that.longueur, _that.largeur, _that.hauteur);
+      case _SuperficieEntityAir() when surface != null:
+        return surface(_that.surface);
+      case _SuperficieEntityPerimetre() when perimetre != null:
+        return perimetre(_that.perimetre);
+      case _SuperficieEntityVolume() when volume != null:
+        return volume(_that.volume);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$SuperficieEntityInitializeImpl extends _SuperficieEntityInitialize {
-  const _$SuperficieEntityInitializeImpl(
+class _SuperficieEntityInitialize extends SuperficieEntity {
+  const _SuperficieEntityInitialize(
       {required this.longueur,
       required this.largeur,
       this.hauteur,
       final String? $type})
       : $type = $type ?? 'initialize',
         super._();
+  factory _SuperficieEntityInitialize.fromJson(Map<String, dynamic> json) =>
+      _$SuperficieEntityInitializeFromJson(json);
 
-  factory _$SuperficieEntityInitializeImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$SuperficieEntityInitializeImplFromJson(json);
-
-  @override
   final int longueur;
-  @override
   final int largeur;
-  @override
   final int? hauteur;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SuperficieEntityInitializeCopyWith<_SuperficieEntityInitialize>
+      get copyWith => __$SuperficieEntityInitializeCopyWithImpl<
+          _SuperficieEntityInitialize>(this, _$identity);
+
   @override
-  String toString() {
-    return 'SuperficieEntity.initialize(longueur: $longueur, largeur: $largeur, hauteur: $hauteur)';
+  Map<String, dynamic> toJson() {
+    return _$SuperficieEntityInitializeToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SuperficieEntityInitializeImpl &&
+            other is _SuperficieEntityInitialize &&
             (identical(other.longueur, longueur) ||
                 other.longueur == longueur) &&
             (identical(other.largeur, largeur) || other.largeur == largeur) &&
             (identical(other.hauteur, hauteur) || other.hauteur == hauteur));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, longueur, largeur, hauteur);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SuperficieEntityInitializeImplCopyWith<_$SuperficieEntityInitializeImpl>
-      get copyWith => __$$SuperficieEntityInitializeImplCopyWithImpl<
-          _$SuperficieEntityInitializeImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur) $default, {
-    required TResult Function(int longueur, int largeur, int? hauteur)
-        initialize,
-    required TResult Function(int surface) surface,
-    required TResult Function(int perimetre) perimetre,
-    required TResult Function(int volume) volume,
-  }) {
-    return initialize(longueur, largeur, hauteur);
+  String toString() {
+    return 'SuperficieEntity.initialize(longueur: $longueur, largeur: $largeur, hauteur: $hauteur)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult? Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult? Function(int surface)? surface,
-    TResult? Function(int perimetre)? perimetre,
-    TResult? Function(int volume)? volume,
-  }) {
-    return initialize?.call(longueur, largeur, hauteur);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult Function(int surface)? surface,
-    TResult Function(int perimetre)? perimetre,
-    TResult Function(int volume)? volume,
-    required TResult orElse(),
-  }) {
-    if (initialize != null) {
-      return initialize(longueur, largeur, hauteur);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value) $default, {
-    required TResult Function(_SuperficieEntityInitialize value) initialize,
-    required TResult Function(_SuperficieEntityAir value) surface,
-    required TResult Function(_SuperficieEntityPerimetre value) perimetre,
-    required TResult Function(_SuperficieEntityVolume value) volume,
-  }) {
-    return initialize(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_SuperficieEntityData value)? $default, {
-    TResult? Function(_SuperficieEntityInitialize value)? initialize,
-    TResult? Function(_SuperficieEntityAir value)? surface,
-    TResult? Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult? Function(_SuperficieEntityVolume value)? volume,
-  }) {
-    return initialize?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value)? $default, {
-    TResult Function(_SuperficieEntityInitialize value)? initialize,
-    TResult Function(_SuperficieEntityAir value)? surface,
-    TResult Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult Function(_SuperficieEntityVolume value)? volume,
-    required TResult orElse(),
-  }) {
-    if (initialize != null) {
-      return initialize(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SuperficieEntityInitializeImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _SuperficieEntityInitialize extends SuperficieEntity {
-  const factory _SuperficieEntityInitialize(
-      {required final int longueur,
-      required final int largeur,
-      final int? hauteur}) = _$SuperficieEntityInitializeImpl;
-  const _SuperficieEntityInitialize._() : super._();
-
-  factory _SuperficieEntityInitialize.fromJson(Map<String, dynamic> json) =
-      _$SuperficieEntityInitializeImpl.fromJson;
-
-  int get longueur;
-  int get largeur;
-  int? get hauteur;
-  @JsonKey(ignore: true)
-  _$$SuperficieEntityInitializeImplCopyWith<_$SuperficieEntityInitializeImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SuperficieEntityDataImplCopyWith<$Res> {
-  factory _$$SuperficieEntityDataImplCopyWith(_$SuperficieEntityDataImpl value,
-          $Res Function(_$SuperficieEntityDataImpl) then) =
-      __$$SuperficieEntityDataImplCopyWithImpl<$Res>;
+abstract mixin class _$SuperficieEntityInitializeCopyWith<$Res>
+    implements $SuperficieEntityCopyWith<$Res> {
+  factory _$SuperficieEntityInitializeCopyWith(
+          _SuperficieEntityInitialize value,
+          $Res Function(_SuperficieEntityInitialize) _then) =
+      __$SuperficieEntityInitializeCopyWithImpl;
   @useResult
   $Res call({int longueur, int largeur, int? hauteur});
 }
 
 /// @nodoc
-class __$$SuperficieEntityDataImplCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res, _$SuperficieEntityDataImpl>
-    implements _$$SuperficieEntityDataImplCopyWith<$Res> {
-  __$$SuperficieEntityDataImplCopyWithImpl(_$SuperficieEntityDataImpl _value,
-      $Res Function(_$SuperficieEntityDataImpl) _then)
-      : super(_value, _then);
+class __$SuperficieEntityInitializeCopyWithImpl<$Res>
+    implements _$SuperficieEntityInitializeCopyWith<$Res> {
+  __$SuperficieEntityInitializeCopyWithImpl(this._self, this._then);
 
+  final _SuperficieEntityInitialize _self;
+  final $Res Function(_SuperficieEntityInitialize) _then;
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? longueur = null,
     Object? largeur = null,
     Object? hauteur = freezed,
   }) {
-    return _then(_$SuperficieEntityDataImpl(
+    return _then(_SuperficieEntityInitialize(
       longueur: null == longueur
-          ? _value.longueur
+          ? _self.longueur
           : longueur // ignore: cast_nullable_to_non_nullable
               as int,
       largeur: null == largeur
-          ? _value.largeur
+          ? _self.largeur
           : largeur // ignore: cast_nullable_to_non_nullable
               as int,
       hauteur: freezed == hauteur
-          ? _value.hauteur
+          ? _self.hauteur
           : hauteur // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
@@ -359,188 +389,177 @@ class __$$SuperficieEntityDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SuperficieEntityDataImpl extends _SuperficieEntityData {
-  const _$SuperficieEntityDataImpl(
+class _SuperficieEntityData extends SuperficieEntity {
+  const _SuperficieEntityData(
       {required this.longueur,
       required this.largeur,
       this.hauteur,
       final String? $type})
       : $type = $type ?? 'default',
         super._();
+  factory _SuperficieEntityData.fromJson(Map<String, dynamic> json) =>
+      _$SuperficieEntityDataFromJson(json);
 
-  factory _$SuperficieEntityDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SuperficieEntityDataImplFromJson(json);
-
-  @override
   final int longueur;
-  @override
   final int largeur;
-  @override
   final int? hauteur;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SuperficieEntityDataCopyWith<_SuperficieEntityData> get copyWith =>
+      __$SuperficieEntityDataCopyWithImpl<_SuperficieEntityData>(
+          this, _$identity);
+
   @override
-  String toString() {
-    return 'SuperficieEntity(longueur: $longueur, largeur: $largeur, hauteur: $hauteur)';
+  Map<String, dynamic> toJson() {
+    return _$SuperficieEntityDataToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SuperficieEntityDataImpl &&
+            other is _SuperficieEntityData &&
             (identical(other.longueur, longueur) ||
                 other.longueur == longueur) &&
             (identical(other.largeur, largeur) || other.largeur == largeur) &&
             (identical(other.hauteur, hauteur) || other.hauteur == hauteur));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, longueur, largeur, hauteur);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SuperficieEntityDataImplCopyWith<_$SuperficieEntityDataImpl>
-      get copyWith =>
-          __$$SuperficieEntityDataImplCopyWithImpl<_$SuperficieEntityDataImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur) $default, {
-    required TResult Function(int longueur, int largeur, int? hauteur)
-        initialize,
-    required TResult Function(int surface) surface,
-    required TResult Function(int perimetre) perimetre,
-    required TResult Function(int volume) volume,
-  }) {
-    return $default(longueur, largeur, hauteur);
+  String toString() {
+    return 'SuperficieEntity(longueur: $longueur, largeur: $largeur, hauteur: $hauteur)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult? Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult? Function(int surface)? surface,
-    TResult? Function(int perimetre)? perimetre,
-    TResult? Function(int volume)? volume,
-  }) {
-    return $default?.call(longueur, largeur, hauteur);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult Function(int surface)? surface,
-    TResult Function(int perimetre)? perimetre,
-    TResult Function(int volume)? volume,
-    required TResult orElse(),
-  }) {
-    if ($default != null) {
-      return $default(longueur, largeur, hauteur);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value) $default, {
-    required TResult Function(_SuperficieEntityInitialize value) initialize,
-    required TResult Function(_SuperficieEntityAir value) surface,
-    required TResult Function(_SuperficieEntityPerimetre value) perimetre,
-    required TResult Function(_SuperficieEntityVolume value) volume,
-  }) {
-    return $default(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_SuperficieEntityData value)? $default, {
-    TResult? Function(_SuperficieEntityInitialize value)? initialize,
-    TResult? Function(_SuperficieEntityAir value)? surface,
-    TResult? Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult? Function(_SuperficieEntityVolume value)? volume,
-  }) {
-    return $default?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value)? $default, {
-    TResult Function(_SuperficieEntityInitialize value)? initialize,
-    TResult Function(_SuperficieEntityAir value)? surface,
-    TResult Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult Function(_SuperficieEntityVolume value)? volume,
-    required TResult orElse(),
-  }) {
-    if ($default != null) {
-      return $default(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SuperficieEntityDataImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _SuperficieEntityData extends SuperficieEntity {
-  const factory _SuperficieEntityData(
-      {required final int longueur,
-      required final int largeur,
-      final int? hauteur}) = _$SuperficieEntityDataImpl;
-  const _SuperficieEntityData._() : super._();
-
-  factory _SuperficieEntityData.fromJson(Map<String, dynamic> json) =
-      _$SuperficieEntityDataImpl.fromJson;
-
-  int get longueur;
-  int get largeur;
-  int? get hauteur;
-  @JsonKey(ignore: true)
-  _$$SuperficieEntityDataImplCopyWith<_$SuperficieEntityDataImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SuperficieEntityAirImplCopyWith<$Res> {
-  factory _$$SuperficieEntityAirImplCopyWith(_$SuperficieEntityAirImpl value,
-          $Res Function(_$SuperficieEntityAirImpl) then) =
-      __$$SuperficieEntityAirImplCopyWithImpl<$Res>;
+abstract mixin class _$SuperficieEntityDataCopyWith<$Res>
+    implements $SuperficieEntityCopyWith<$Res> {
+  factory _$SuperficieEntityDataCopyWith(_SuperficieEntityData value,
+          $Res Function(_SuperficieEntityData) _then) =
+      __$SuperficieEntityDataCopyWithImpl;
+  @useResult
+  $Res call({int longueur, int largeur, int? hauteur});
+}
+
+/// @nodoc
+class __$SuperficieEntityDataCopyWithImpl<$Res>
+    implements _$SuperficieEntityDataCopyWith<$Res> {
+  __$SuperficieEntityDataCopyWithImpl(this._self, this._then);
+
+  final _SuperficieEntityData _self;
+  final $Res Function(_SuperficieEntityData) _then;
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? longueur = null,
+    Object? largeur = null,
+    Object? hauteur = freezed,
+  }) {
+    return _then(_SuperficieEntityData(
+      longueur: null == longueur
+          ? _self.longueur
+          : longueur // ignore: cast_nullable_to_non_nullable
+              as int,
+      largeur: null == largeur
+          ? _self.largeur
+          : largeur // ignore: cast_nullable_to_non_nullable
+              as int,
+      hauteur: freezed == hauteur
+          ? _self.hauteur
+          : hauteur // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _SuperficieEntityAir extends SuperficieEntity {
+  const _SuperficieEntityAir({required this.surface, final String? $type})
+      : $type = $type ?? 'surface',
+        super._();
+  factory _SuperficieEntityAir.fromJson(Map<String, dynamic> json) =>
+      _$SuperficieEntityAirFromJson(json);
+
+  final int surface;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SuperficieEntityAirCopyWith<_SuperficieEntityAir> get copyWith =>
+      __$SuperficieEntityAirCopyWithImpl<_SuperficieEntityAir>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SuperficieEntityAirToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _SuperficieEntityAir &&
+            (identical(other.surface, surface) || other.surface == surface));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, surface);
+
+  @override
+  String toString() {
+    return 'SuperficieEntity.surface(surface: $surface)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$SuperficieEntityAirCopyWith<$Res>
+    implements $SuperficieEntityCopyWith<$Res> {
+  factory _$SuperficieEntityAirCopyWith(_SuperficieEntityAir value,
+          $Res Function(_SuperficieEntityAir) _then) =
+      __$SuperficieEntityAirCopyWithImpl;
   @useResult
   $Res call({int surface});
 }
 
 /// @nodoc
-class __$$SuperficieEntityAirImplCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res, _$SuperficieEntityAirImpl>
-    implements _$$SuperficieEntityAirImplCopyWith<$Res> {
-  __$$SuperficieEntityAirImplCopyWithImpl(_$SuperficieEntityAirImpl _value,
-      $Res Function(_$SuperficieEntityAirImpl) _then)
-      : super(_value, _then);
+class __$SuperficieEntityAirCopyWithImpl<$Res>
+    implements _$SuperficieEntityAirCopyWith<$Res> {
+  __$SuperficieEntityAirCopyWithImpl(this._self, this._then);
 
+  final _SuperficieEntityAir _self;
+  final $Res Function(_SuperficieEntityAir) _then;
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? surface = null,
   }) {
-    return _then(_$SuperficieEntityAirImpl(
+    return _then(_SuperficieEntityAir(
       surface: null == surface
-          ? _value.surface
+          ? _self.surface
           : surface // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -549,175 +568,81 @@ class __$$SuperficieEntityAirImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SuperficieEntityAirImpl extends _SuperficieEntityAir {
-  const _$SuperficieEntityAirImpl({required this.surface, final String? $type})
-      : $type = $type ?? 'surface',
+class _SuperficieEntityPerimetre extends SuperficieEntity {
+  const _SuperficieEntityPerimetre(
+      {required this.perimetre, final String? $type})
+      : $type = $type ?? 'perimetre',
         super._();
+  factory _SuperficieEntityPerimetre.fromJson(Map<String, dynamic> json) =>
+      _$SuperficieEntityPerimetreFromJson(json);
 
-  factory _$SuperficieEntityAirImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SuperficieEntityAirImplFromJson(json);
-
-  @override
-  final int surface;
+  final int perimetre;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SuperficieEntityPerimetreCopyWith<_SuperficieEntityPerimetre>
+      get copyWith =>
+          __$SuperficieEntityPerimetreCopyWithImpl<_SuperficieEntityPerimetre>(
+              this, _$identity);
+
   @override
-  String toString() {
-    return 'SuperficieEntity.surface(surface: $surface)';
+  Map<String, dynamic> toJson() {
+    return _$SuperficieEntityPerimetreToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SuperficieEntityAirImpl &&
-            (identical(other.surface, surface) || other.surface == surface));
+            other is _SuperficieEntityPerimetre &&
+            (identical(other.perimetre, perimetre) ||
+                other.perimetre == perimetre));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, surface);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuperficieEntityAirImplCopyWith<_$SuperficieEntityAirImpl> get copyWith =>
-      __$$SuperficieEntityAirImplCopyWithImpl<_$SuperficieEntityAirImpl>(
-          this, _$identity);
+  int get hashCode => Object.hash(runtimeType, perimetre);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur) $default, {
-    required TResult Function(int longueur, int largeur, int? hauteur)
-        initialize,
-    required TResult Function(int surface) surface,
-    required TResult Function(int perimetre) perimetre,
-    required TResult Function(int volume) volume,
-  }) {
-    return surface(this.surface);
+  String toString() {
+    return 'SuperficieEntity.perimetre(perimetre: $perimetre)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult? Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult? Function(int surface)? surface,
-    TResult? Function(int perimetre)? perimetre,
-    TResult? Function(int volume)? volume,
-  }) {
-    return surface?.call(this.surface);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult Function(int surface)? surface,
-    TResult Function(int perimetre)? perimetre,
-    TResult Function(int volume)? volume,
-    required TResult orElse(),
-  }) {
-    if (surface != null) {
-      return surface(this.surface);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value) $default, {
-    required TResult Function(_SuperficieEntityInitialize value) initialize,
-    required TResult Function(_SuperficieEntityAir value) surface,
-    required TResult Function(_SuperficieEntityPerimetre value) perimetre,
-    required TResult Function(_SuperficieEntityVolume value) volume,
-  }) {
-    return surface(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_SuperficieEntityData value)? $default, {
-    TResult? Function(_SuperficieEntityInitialize value)? initialize,
-    TResult? Function(_SuperficieEntityAir value)? surface,
-    TResult? Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult? Function(_SuperficieEntityVolume value)? volume,
-  }) {
-    return surface?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value)? $default, {
-    TResult Function(_SuperficieEntityInitialize value)? initialize,
-    TResult Function(_SuperficieEntityAir value)? surface,
-    TResult Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult Function(_SuperficieEntityVolume value)? volume,
-    required TResult orElse(),
-  }) {
-    if (surface != null) {
-      return surface(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SuperficieEntityAirImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _SuperficieEntityAir extends SuperficieEntity {
-  const factory _SuperficieEntityAir({required final int surface}) =
-      _$SuperficieEntityAirImpl;
-  const _SuperficieEntityAir._() : super._();
-
-  factory _SuperficieEntityAir.fromJson(Map<String, dynamic> json) =
-      _$SuperficieEntityAirImpl.fromJson;
-
-  int get surface;
-  @JsonKey(ignore: true)
-  _$$SuperficieEntityAirImplCopyWith<_$SuperficieEntityAirImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SuperficieEntityPerimetreImplCopyWith<$Res> {
-  factory _$$SuperficieEntityPerimetreImplCopyWith(
-          _$SuperficieEntityPerimetreImpl value,
-          $Res Function(_$SuperficieEntityPerimetreImpl) then) =
-      __$$SuperficieEntityPerimetreImplCopyWithImpl<$Res>;
+abstract mixin class _$SuperficieEntityPerimetreCopyWith<$Res>
+    implements $SuperficieEntityCopyWith<$Res> {
+  factory _$SuperficieEntityPerimetreCopyWith(_SuperficieEntityPerimetre value,
+          $Res Function(_SuperficieEntityPerimetre) _then) =
+      __$SuperficieEntityPerimetreCopyWithImpl;
   @useResult
   $Res call({int perimetre});
 }
 
 /// @nodoc
-class __$$SuperficieEntityPerimetreImplCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res,
-        _$SuperficieEntityPerimetreImpl>
-    implements _$$SuperficieEntityPerimetreImplCopyWith<$Res> {
-  __$$SuperficieEntityPerimetreImplCopyWithImpl(
-      _$SuperficieEntityPerimetreImpl _value,
-      $Res Function(_$SuperficieEntityPerimetreImpl) _then)
-      : super(_value, _then);
+class __$SuperficieEntityPerimetreCopyWithImpl<$Res>
+    implements _$SuperficieEntityPerimetreCopyWith<$Res> {
+  __$SuperficieEntityPerimetreCopyWithImpl(this._self, this._then);
 
+  final _SuperficieEntityPerimetre _self;
+  final $Res Function(_SuperficieEntityPerimetre) _then;
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? perimetre = null,
   }) {
-    return _then(_$SuperficieEntityPerimetreImpl(
+    return _then(_SuperficieEntityPerimetre(
       perimetre: null == perimetre
-          ? _value.perimetre
+          ? _self.perimetre
           : perimetre // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -726,322 +651,82 @@ class __$$SuperficieEntityPerimetreImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SuperficieEntityPerimetreImpl extends _SuperficieEntityPerimetre {
-  const _$SuperficieEntityPerimetreImpl(
-      {required this.perimetre, final String? $type})
-      : $type = $type ?? 'perimetre',
+class _SuperficieEntityVolume extends SuperficieEntity {
+  const _SuperficieEntityVolume({required this.volume, final String? $type})
+      : $type = $type ?? 'volume',
         super._();
+  factory _SuperficieEntityVolume.fromJson(Map<String, dynamic> json) =>
+      _$SuperficieEntityVolumeFromJson(json);
 
-  factory _$SuperficieEntityPerimetreImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SuperficieEntityPerimetreImplFromJson(json);
-
-  @override
-  final int perimetre;
+  final int volume;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SuperficieEntityVolumeCopyWith<_SuperficieEntityVolume> get copyWith =>
+      __$SuperficieEntityVolumeCopyWithImpl<_SuperficieEntityVolume>(
+          this, _$identity);
+
   @override
-  String toString() {
-    return 'SuperficieEntity.perimetre(perimetre: $perimetre)';
+  Map<String, dynamic> toJson() {
+    return _$SuperficieEntityVolumeToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SuperficieEntityPerimetreImpl &&
-            (identical(other.perimetre, perimetre) ||
-                other.perimetre == perimetre));
+            other is _SuperficieEntityVolume &&
+            (identical(other.volume, volume) || other.volume == volume));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, perimetre);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuperficieEntityPerimetreImplCopyWith<_$SuperficieEntityPerimetreImpl>
-      get copyWith => __$$SuperficieEntityPerimetreImplCopyWithImpl<
-          _$SuperficieEntityPerimetreImpl>(this, _$identity);
+  int get hashCode => Object.hash(runtimeType, volume);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur) $default, {
-    required TResult Function(int longueur, int largeur, int? hauteur)
-        initialize,
-    required TResult Function(int surface) surface,
-    required TResult Function(int perimetre) perimetre,
-    required TResult Function(int volume) volume,
-  }) {
-    return perimetre(this.perimetre);
+  String toString() {
+    return 'SuperficieEntity.volume(volume: $volume)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult? Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult? Function(int surface)? surface,
-    TResult? Function(int perimetre)? perimetre,
-    TResult? Function(int volume)? volume,
-  }) {
-    return perimetre?.call(this.perimetre);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult Function(int surface)? surface,
-    TResult Function(int perimetre)? perimetre,
-    TResult Function(int volume)? volume,
-    required TResult orElse(),
-  }) {
-    if (perimetre != null) {
-      return perimetre(this.perimetre);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value) $default, {
-    required TResult Function(_SuperficieEntityInitialize value) initialize,
-    required TResult Function(_SuperficieEntityAir value) surface,
-    required TResult Function(_SuperficieEntityPerimetre value) perimetre,
-    required TResult Function(_SuperficieEntityVolume value) volume,
-  }) {
-    return perimetre(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_SuperficieEntityData value)? $default, {
-    TResult? Function(_SuperficieEntityInitialize value)? initialize,
-    TResult? Function(_SuperficieEntityAir value)? surface,
-    TResult? Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult? Function(_SuperficieEntityVolume value)? volume,
-  }) {
-    return perimetre?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value)? $default, {
-    TResult Function(_SuperficieEntityInitialize value)? initialize,
-    TResult Function(_SuperficieEntityAir value)? surface,
-    TResult Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult Function(_SuperficieEntityVolume value)? volume,
-    required TResult orElse(),
-  }) {
-    if (perimetre != null) {
-      return perimetre(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SuperficieEntityPerimetreImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _SuperficieEntityPerimetre extends SuperficieEntity {
-  const factory _SuperficieEntityPerimetre({required final int perimetre}) =
-      _$SuperficieEntityPerimetreImpl;
-  const _SuperficieEntityPerimetre._() : super._();
-
-  factory _SuperficieEntityPerimetre.fromJson(Map<String, dynamic> json) =
-      _$SuperficieEntityPerimetreImpl.fromJson;
-
-  int get perimetre;
-  @JsonKey(ignore: true)
-  _$$SuperficieEntityPerimetreImplCopyWith<_$SuperficieEntityPerimetreImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SuperficieEntityVolumeImplCopyWith<$Res> {
-  factory _$$SuperficieEntityVolumeImplCopyWith(
-          _$SuperficieEntityVolumeImpl value,
-          $Res Function(_$SuperficieEntityVolumeImpl) then) =
-      __$$SuperficieEntityVolumeImplCopyWithImpl<$Res>;
+abstract mixin class _$SuperficieEntityVolumeCopyWith<$Res>
+    implements $SuperficieEntityCopyWith<$Res> {
+  factory _$SuperficieEntityVolumeCopyWith(_SuperficieEntityVolume value,
+          $Res Function(_SuperficieEntityVolume) _then) =
+      __$SuperficieEntityVolumeCopyWithImpl;
   @useResult
   $Res call({int volume});
 }
 
 /// @nodoc
-class __$$SuperficieEntityVolumeImplCopyWithImpl<$Res>
-    extends _$SuperficieEntityCopyWithImpl<$Res, _$SuperficieEntityVolumeImpl>
-    implements _$$SuperficieEntityVolumeImplCopyWith<$Res> {
-  __$$SuperficieEntityVolumeImplCopyWithImpl(
-      _$SuperficieEntityVolumeImpl _value,
-      $Res Function(_$SuperficieEntityVolumeImpl) _then)
-      : super(_value, _then);
+class __$SuperficieEntityVolumeCopyWithImpl<$Res>
+    implements _$SuperficieEntityVolumeCopyWith<$Res> {
+  __$SuperficieEntityVolumeCopyWithImpl(this._self, this._then);
 
+  final _SuperficieEntityVolume _self;
+  final $Res Function(_SuperficieEntityVolume) _then;
+
+  /// Create a copy of SuperficieEntity
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? volume = null,
   }) {
-    return _then(_$SuperficieEntityVolumeImpl(
+    return _then(_SuperficieEntityVolume(
       volume: null == volume
-          ? _value.volume
+          ? _self.volume
           : volume // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
 }
 
-/// @nodoc
-@JsonSerializable()
-class _$SuperficieEntityVolumeImpl extends _SuperficieEntityVolume {
-  const _$SuperficieEntityVolumeImpl(
-      {required this.volume, final String? $type})
-      : $type = $type ?? 'volume',
-        super._();
-
-  factory _$SuperficieEntityVolumeImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SuperficieEntityVolumeImplFromJson(json);
-
-  @override
-  final int volume;
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
-
-  @override
-  String toString() {
-    return 'SuperficieEntity.volume(volume: $volume)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SuperficieEntityVolumeImpl &&
-            (identical(other.volume, volume) || other.volume == volume));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, volume);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuperficieEntityVolumeImplCopyWith<_$SuperficieEntityVolumeImpl>
-      get copyWith => __$$SuperficieEntityVolumeImplCopyWithImpl<
-          _$SuperficieEntityVolumeImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur) $default, {
-    required TResult Function(int longueur, int largeur, int? hauteur)
-        initialize,
-    required TResult Function(int surface) surface,
-    required TResult Function(int perimetre) perimetre,
-    required TResult Function(int volume) volume,
-  }) {
-    return volume(this.volume);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult? Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult? Function(int surface)? surface,
-    TResult? Function(int perimetre)? perimetre,
-    TResult? Function(int volume)? volume,
-  }) {
-    return volume?.call(this.volume);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int longueur, int largeur, int? hauteur)? $default, {
-    TResult Function(int longueur, int largeur, int? hauteur)? initialize,
-    TResult Function(int surface)? surface,
-    TResult Function(int perimetre)? perimetre,
-    TResult Function(int volume)? volume,
-    required TResult orElse(),
-  }) {
-    if (volume != null) {
-      return volume(this.volume);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value) $default, {
-    required TResult Function(_SuperficieEntityInitialize value) initialize,
-    required TResult Function(_SuperficieEntityAir value) surface,
-    required TResult Function(_SuperficieEntityPerimetre value) perimetre,
-    required TResult Function(_SuperficieEntityVolume value) volume,
-  }) {
-    return volume(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_SuperficieEntityData value)? $default, {
-    TResult? Function(_SuperficieEntityInitialize value)? initialize,
-    TResult? Function(_SuperficieEntityAir value)? surface,
-    TResult? Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult? Function(_SuperficieEntityVolume value)? volume,
-  }) {
-    return volume?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_SuperficieEntityData value)? $default, {
-    TResult Function(_SuperficieEntityInitialize value)? initialize,
-    TResult Function(_SuperficieEntityAir value)? surface,
-    TResult Function(_SuperficieEntityPerimetre value)? perimetre,
-    TResult Function(_SuperficieEntityVolume value)? volume,
-    required TResult orElse(),
-  }) {
-    if (volume != null) {
-      return volume(this);
-    }
-    return orElse();
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SuperficieEntityVolumeImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _SuperficieEntityVolume extends SuperficieEntity {
-  const factory _SuperficieEntityVolume({required final int volume}) =
-      _$SuperficieEntityVolumeImpl;
-  const _SuperficieEntityVolume._() : super._();
-
-  factory _SuperficieEntityVolume.fromJson(Map<String, dynamic> json) =
-      _$SuperficieEntityVolumeImpl.fromJson;
-
-  int get volume;
-  @JsonKey(ignore: true)
-  _$$SuperficieEntityVolumeImplCopyWith<_$SuperficieEntityVolumeImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

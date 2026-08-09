@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,36 +9,59 @@ part of 'user_form_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-UserFormState _$UserFormStateFromJson(Map<String, dynamic> json) {
-  return _UserFormState.fromJson(json);
-}
 
 /// @nodoc
 mixin _$UserFormState {
-  UserEntityModel get userEntityModel => throw _privateConstructorUsedError;
+  UserEntityModel get userEntityModel;
   @JsonKey(
       defaultValue: 'UserName', includeToJson: false, includeFromJson: false)
-  NameFormz? get nameFormz => throw _privateConstructorUsedError;
+  NameFormz? get nameFormz;
   @JsonKey(
       defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
-  RoleFormz? get roleFormz => throw _privateConstructorUsedError;
+  RoleFormz? get roleFormz;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $UserFormStateCopyWith<UserFormState> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$UserFormStateCopyWithImpl<UserFormState>(
+          this as UserFormState, _$identity);
+
+  /// Serializes this UserFormState to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is UserFormState &&
+            (identical(other.userEntityModel, userEntityModel) ||
+                other.userEntityModel == userEntityModel) &&
+            (identical(other.nameFormz, nameFormz) ||
+                other.nameFormz == nameFormz) &&
+            (identical(other.roleFormz, roleFormz) ||
+                other.roleFormz == roleFormz));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, userEntityModel, nameFormz, roleFormz);
+
+  @override
+  String toString() {
+    return 'UserFormState(userEntityModel: $userEntityModel, nameFormz: $nameFormz, roleFormz: $roleFormz)';
+  }
 }
 
 /// @nodoc
-abstract class $UserFormStateCopyWith<$Res> {
+abstract mixin class $UserFormStateCopyWith<$Res> {
   factory $UserFormStateCopyWith(
-          UserFormState value, $Res Function(UserFormState) then) =
-      _$UserFormStateCopyWithImpl<$Res, UserFormState>;
+          UserFormState value, $Res Function(UserFormState) _then) =
+      _$UserFormStateCopyWithImpl;
   @useResult
   $Res call(
       {UserEntityModel userEntityModel,
@@ -57,15 +80,15 @@ abstract class $UserFormStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserFormStateCopyWithImpl<$Res, $Val extends UserFormState>
+class _$UserFormStateCopyWithImpl<$Res>
     implements $UserFormStateCopyWith<$Res> {
-  _$UserFormStateCopyWithImpl(this._value, this._then);
+  _$UserFormStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final UserFormState _self;
+  final $Res Function(UserFormState) _then;
 
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -73,92 +96,233 @@ class _$UserFormStateCopyWithImpl<$Res, $Val extends UserFormState>
     Object? nameFormz = freezed,
     Object? roleFormz = freezed,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       userEntityModel: null == userEntityModel
-          ? _value.userEntityModel
+          ? _self.userEntityModel
           : userEntityModel // ignore: cast_nullable_to_non_nullable
               as UserEntityModel,
       nameFormz: freezed == nameFormz
-          ? _value.nameFormz
+          ? _self.nameFormz
           : nameFormz // ignore: cast_nullable_to_non_nullable
               as NameFormz?,
       roleFormz: freezed == roleFormz
-          ? _value.roleFormz
+          ? _self.roleFormz
           : roleFormz // ignore: cast_nullable_to_non_nullable
               as RoleFormz?,
-    ) as $Val);
+    ));
   }
 
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserEntityModelCopyWith<$Res> get userEntityModel {
-    return $UserEntityModelCopyWith<$Res>(_value.userEntityModel, (value) {
-      return _then(_value.copyWith(userEntityModel: value) as $Val);
+    return $UserEntityModelCopyWith<$Res>(_self.userEntityModel, (value) {
+      return _then(_self.copyWith(userEntityModel: value));
     });
   }
 }
 
-/// @nodoc
-abstract class _$$UserFormStateImplCopyWith<$Res>
-    implements $UserFormStateCopyWith<$Res> {
-  factory _$$UserFormStateImplCopyWith(
-          _$UserFormStateImpl value, $Res Function(_$UserFormStateImpl) then) =
-      __$$UserFormStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {UserEntityModel userEntityModel,
-      @JsonKey(
-          defaultValue: 'UserName',
-          includeToJson: false,
-          includeFromJson: false)
-      NameFormz? nameFormz,
-      @JsonKey(
-          defaultValue: 'UserRole',
-          includeToJson: false,
-          includeFromJson: false)
-      RoleFormz? roleFormz});
+/// Adds pattern-matching-related methods to [UserFormState].
+extension UserFormStatePatterns on UserFormState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  $UserEntityModelCopyWith<$Res> get userEntityModel;
-}
-
-/// @nodoc
-class __$$UserFormStateImplCopyWithImpl<$Res>
-    extends _$UserFormStateCopyWithImpl<$Res, _$UserFormStateImpl>
-    implements _$$UserFormStateImplCopyWith<$Res> {
-  __$$UserFormStateImplCopyWithImpl(
-      _$UserFormStateImpl _value, $Res Function(_$UserFormStateImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? userEntityModel = null,
-    Object? nameFormz = freezed,
-    Object? roleFormz = freezed,
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_UserFormState value)? $default, {
+    required TResult orElse(),
   }) {
-    return _then(_$UserFormStateImpl(
-      null == userEntityModel
-          ? _value.userEntityModel
-          : userEntityModel // ignore: cast_nullable_to_non_nullable
-              as UserEntityModel,
-      nameFormz: freezed == nameFormz
-          ? _value.nameFormz
-          : nameFormz // ignore: cast_nullable_to_non_nullable
-              as NameFormz?,
-      roleFormz: freezed == roleFormz
-          ? _value.roleFormz
-          : roleFormz // ignore: cast_nullable_to_non_nullable
-              as RoleFormz?,
-    ));
+    final _that = this;
+    switch (_that) {
+      case _UserFormState() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_UserFormState value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _UserFormState():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_UserFormState value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _UserFormState() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            UserEntityModel userEntityModel,
+            @JsonKey(
+                defaultValue: 'UserName',
+                includeToJson: false,
+                includeFromJson: false)
+            NameFormz? nameFormz,
+            @JsonKey(
+                defaultValue: 'UserRole',
+                includeToJson: false,
+                includeFromJson: false)
+            RoleFormz? roleFormz)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _UserFormState() when $default != null:
+        return $default(
+            _that.userEntityModel, _that.nameFormz, _that.roleFormz);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            UserEntityModel userEntityModel,
+            @JsonKey(
+                defaultValue: 'UserName',
+                includeToJson: false,
+                includeFromJson: false)
+            NameFormz? nameFormz,
+            @JsonKey(
+                defaultValue: 'UserRole',
+                includeToJson: false,
+                includeFromJson: false)
+            RoleFormz? roleFormz)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _UserFormState():
+        return $default(
+            _that.userEntityModel, _that.nameFormz, _that.roleFormz);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            UserEntityModel userEntityModel,
+            @JsonKey(
+                defaultValue: 'UserName',
+                includeToJson: false,
+                includeFromJson: false)
+            NameFormz? nameFormz,
+            @JsonKey(
+                defaultValue: 'UserRole',
+                includeToJson: false,
+                includeFromJson: false)
+            RoleFormz? roleFormz)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _UserFormState() when $default != null:
+        return $default(
+            _that.userEntityModel, _that.nameFormz, _that.roleFormz);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserFormStateImpl implements _UserFormState {
-  const _$UserFormStateImpl(this.userEntityModel,
+class _UserFormState implements UserFormState {
+  const _UserFormState(this.userEntityModel,
       {@JsonKey(
           defaultValue: 'UserName',
           includeToJson: false,
@@ -169,9 +333,8 @@ class _$UserFormStateImpl implements _UserFormState {
           includeToJson: false,
           includeFromJson: false)
       this.roleFormz});
-
-  factory _$UserFormStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UserFormStateImplFromJson(json);
+  factory _UserFormState.fromJson(Map<String, dynamic> json) =>
+      _$UserFormStateFromJson(json);
 
   @override
   final UserEntityModel userEntityModel;
@@ -184,16 +347,26 @@ class _$UserFormStateImpl implements _UserFormState {
       defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
   final RoleFormz? roleFormz;
 
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'UserFormState(userEntityModel: $userEntityModel, nameFormz: $nameFormz, roleFormz: $roleFormz)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$UserFormStateCopyWith<_UserFormState> get copyWith =>
+      __$UserFormStateCopyWithImpl<_UserFormState>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$UserFormStateToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserFormStateImpl &&
+            other is _UserFormState &&
             (identical(other.userEntityModel, userEntityModel) ||
                 other.userEntityModel == userEntityModel) &&
             (identical(other.nameFormz, nameFormz) ||
@@ -202,53 +375,84 @@ class _$UserFormStateImpl implements _UserFormState {
                 other.roleFormz == roleFormz));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, userEntityModel, nameFormz, roleFormz);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$UserFormStateImplCopyWith<_$UserFormStateImpl> get copyWith =>
-      __$$UserFormStateImplCopyWithImpl<_$UserFormStateImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$UserFormStateImplToJson(
-      this,
-    );
+  String toString() {
+    return 'UserFormState(userEntityModel: $userEntityModel, nameFormz: $nameFormz, roleFormz: $roleFormz)';
   }
 }
 
-abstract class _UserFormState implements UserFormState {
-  const factory _UserFormState(final UserEntityModel userEntityModel,
-      {@JsonKey(
+/// @nodoc
+abstract mixin class _$UserFormStateCopyWith<$Res>
+    implements $UserFormStateCopyWith<$Res> {
+  factory _$UserFormStateCopyWith(
+          _UserFormState value, $Res Function(_UserFormState) _then) =
+      __$UserFormStateCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {UserEntityModel userEntityModel,
+      @JsonKey(
           defaultValue: 'UserName',
           includeToJson: false,
           includeFromJson: false)
-      final NameFormz? nameFormz,
+      NameFormz? nameFormz,
       @JsonKey(
           defaultValue: 'UserRole',
           includeToJson: false,
           includeFromJson: false)
-      final RoleFormz? roleFormz}) = _$UserFormStateImpl;
-
-  factory _UserFormState.fromJson(Map<String, dynamic> json) =
-      _$UserFormStateImpl.fromJson;
+      RoleFormz? roleFormz});
 
   @override
-  UserEntityModel get userEntityModel;
-  @override
-  @JsonKey(
-      defaultValue: 'UserName', includeToJson: false, includeFromJson: false)
-  NameFormz? get nameFormz;
-  @override
-  @JsonKey(
-      defaultValue: 'UserRole', includeToJson: false, includeFromJson: false)
-  RoleFormz? get roleFormz;
-  @override
-  @JsonKey(ignore: true)
-  _$$UserFormStateImplCopyWith<_$UserFormStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  $UserEntityModelCopyWith<$Res> get userEntityModel;
 }
+
+/// @nodoc
+class __$UserFormStateCopyWithImpl<$Res>
+    implements _$UserFormStateCopyWith<$Res> {
+  __$UserFormStateCopyWithImpl(this._self, this._then);
+
+  final _UserFormState _self;
+  final $Res Function(_UserFormState) _then;
+
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? userEntityModel = null,
+    Object? nameFormz = freezed,
+    Object? roleFormz = freezed,
+  }) {
+    return _then(_UserFormState(
+      null == userEntityModel
+          ? _self.userEntityModel
+          : userEntityModel // ignore: cast_nullable_to_non_nullable
+              as UserEntityModel,
+      nameFormz: freezed == nameFormz
+          ? _self.nameFormz
+          : nameFormz // ignore: cast_nullable_to_non_nullable
+              as NameFormz?,
+      roleFormz: freezed == roleFormz
+          ? _self.roleFormz
+          : roleFormz // ignore: cast_nullable_to_non_nullable
+              as RoleFormz?,
+    ));
+  }
+
+  /// Create a copy of UserFormState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserEntityModelCopyWith<$Res> get userEntityModel {
+    return $UserEntityModelCopyWith<$Res>(_self.userEntityModel, (value) {
+      return _then(_self.copyWith(userEntityModel: value));
+    });
+  }
+}
+
+// dart format on

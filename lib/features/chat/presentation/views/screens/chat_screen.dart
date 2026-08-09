@@ -1,123 +1,75 @@
 import 'dart:async';
+import 'dart:developer' as dev;
 
-//import 'dart:developer' as dev;
-
-//import 'package:cached_network_image/cached_network_image.dart';
-//import 'package:collection/collection.dart' show IterableExtension;
 import 'package:connectivity_plus/connectivity_plus.dart';
-// import 'package:connectycube_sdk/connectycube_sdk.dart';
-// import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart'
-// as platform_utils;
-// import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
-//import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
-//import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:file_picker/file_picker.dart' as fp;
-//import 'package:flutter/foundation.dart' as fd;
+import 'package:flutter/foundation.dart' as fd;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:universal_io/io.dart';
 
-//import 'package:flutter_webrtc/flutter_webrtc.dart';
-
-//import 'package:go_router/go_router.dart';
-//import 'package:intl/intl.dart';
-//import 'package:universal_io/io.dart';
-
-import '../../../../../config/cube_config/cube_config.dart';
-import '../../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import '../../../domain/models/entities/cube_user/cube_user_mig.dart';
-
-//import '../../../../../gen/assets.gen.dart';
-//import '../../../application/managers/chat_manager.dart';
-//import '../../../infrastructure/repositories/cube_repository.dart';
+import '../../../application/managers/chat_manager.dart';
+import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
-  const ChatScreen(
-      {super.key, required this.cubeUser, required this.cubeDialog});
+  const ChatScreen({
+    super.key,
+    required this.cubeUser,
+    required this.cubeDialog,
+  });
 
-  final CubeUserMig cubeUser;
-  final CubeDialogMig cubeDialog;
+  final CubeUser cubeUser;
+  final CubeDialog cubeDialog;
 
   @override
-  ConsumerState createState() => _ChatScreenState();
+  ConsumerState<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
-  //final Map<int?, CubeUserMig?> _occupants = {};
+  final Map<int?, CubeUser?> _occupants = {};
 
   late bool isLoading;
-  late StreamSubscription<List<ConnectivityResult>>
-      connectivityStateSubscription;
+  late StreamSubscription<List<ConnectivityResult>> connectivityStateSubscription;
   String? imageUrl;
 
-  // à changer avec le commit du 29/04/2024
-  List<CubeDialogTypeMig> listMessage = [];
+  List<CubeMessage> listMessage = [];
   Timer? typingTimer;
   bool isTyping = false;
   String userStatus = '';
 
-  //static const int messagesPerPage = 50;
-  //static const int TYPING_TIMEOUT = 700;
-  //static const int STOP_TYPING_TIMEOUT = 2000;
-
-  //int _sendIsTypingTime = DateTime.now().millisecondsSinceEpoch;
-  int lastPartSize = 0;
-
-  //Timer? _sendStopTypingTimer;
+  static const int messagesPerPage = 50;
 
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController listScrollController = ScrollController();
 
-  StreamSubscription<CubeDialogTypeMig>? msgSubscription;
-  StreamSubscription<CubeDialogTypeMig>? deliveredSubscription;
-  StreamSubscription<CubeDialogTypeMig>? readSubscription;
-  StreamSubscription<CubeDialogTypeMig>? typingSubscription;
-  StreamSubscription<CubeDialogTypeMig>? reactionsSubscription;
+  StreamSubscription<CubeMessage>? msgSubscription;
+  StreamSubscription<MessageStatus>? deliveredSubscription;
+  StreamSubscription<MessageStatus>? readSubscription;
+  StreamSubscription<TypingStatus>? typingSubscription;
 
-  List<CubeDialogTypeMig> oldMessages = [];
-
-  //final List<RTCDataChannelMessage> _unreadMessages = [];
-  //final List<RTCDataChannelMessage> _unsentMessages = [];
+  final List<CubeMessage> _unreadMessages = [];
 
   late FocusNode _editMessageFocusNode;
-
-  @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (isLoading) {}, //onBackPress,
-      child: const SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                // List of messages
-                //buildListMessage(),
-                //Typing content
-                //buildTyping(),
-                // Input content
-                //buildInput(),
-              ],
-            ),
-
-            // Loading
-            //buildLoading()
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   void initState() {
     super.initState();
 
-    //_initCubeChat();
+    _initCubeChat();
 
     isLoading = false;
     imageUrl = '';
-    //listScrollController.addListener(onScrollChanged);
-    // connectivityStateSubscription = Connectivity().onConnectivityChanged.listen(onConnectivityChanged);
-    _editMessageFocusNode = createEditMessageFocusNode();
+    listScrollController.addListener(onScrollChanged);
+
+    connectivityStateSubscription = Connectivity()
+        .onConnectivityChanged
+        .listen(onConnectivityChanged);
+
+    _editMessageFocusNode = FocusNode();
   }
 
   @override
@@ -126,14 +78,66 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     deliveredSubscription?.cancel();
     readSubscription?.cancel();
     typingSubscription?.cancel();
-    reactionsSubscription?.cancel();
     textEditingController.dispose();
+    listScrollController.dispose();
+    _editMessageFocusNode.dispose();
     connectivityStateSubscription.cancel();
     super.dispose();
   }
 
+  void _initCubeChat() {
+    msgSubscription = ChatManager.instance.chatMessagesStream.listen((message) {
+      if (message.dialogId == widget.cubeDialog.dialogId) {
+        addMessageToListView(message);
+      }
+    });
+
+    deliveredSubscription = ChatManager.instance.deliveredMessagesStream.listen((status) {
+      if (status.dialogId == widget.cubeDialog.dialogId) {
+        onDeliveredMessage(status);
+      }
+    });
+
+    readSubscription = ChatManager.instance.readMessagesStream.listen((status) {
+      if (status.dialogId == widget.cubeDialog.dialogId) {
+        onReadMessage(status);
+      }
+    });
+
+    typingSubscription = ChatManager.instance.typingStatusStream.listen((status) {
+      if (status.dialogId == widget.cubeDialog.dialogId) {
+        onTypingMessage(status);
+      }
+    });
+  }
+
+  void onConnectivityChanged(List<ConnectivityResult> results) {
+    if (results.contains(ConnectivityResult.none)) {
+      dev.log('[Connectivity] Connexion perdue');
+    } else {
+      dev.log('[Connectivity] Connexion rétablie');
+      _resendUnreadMessages();
+    }
+  }
+
+  void _resendUnreadMessages() {
+    if (_unreadMessages.isNotEmpty &&
+        CubeChatConnection.instance.chatConnectionState == CubeChatConnectionState.Ready) {
+      for (var msg in List<CubeMessage>.from(_unreadMessages)) {
+        widget.cubeDialog.readMessage(msg);
+        _unreadMessages.remove(msg);
+      }
+    }
+  }
+
+  void onScrollChanged() {
+    if (listScrollController.position.pixels == listScrollController.position.maxScrollExtent) {
+      // Charger la page suivante si nécessaire
+    }
+  }
+
   void openGallery() async {
-    fp.FilePickerResult? result = await fp.FilePicker.platform.pickFiles(
+    fp.FilePickerResult? result = await fp.FilePicker.pickFiles(
       type: fp.FileType.image,
     );
 
@@ -143,8 +147,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       isLoading = true;
     });
 
-    //var uploadImageFuture = ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);
-    /* Uint8List imageData;
+    final uploadImageFuture = ref.read(cubeRepositoryProvider).getUploadingImageFuture(result);
+    Uint8List imageData;
 
     if (fd.kIsWeb) {
       imageData = result.files.single.bytes!;
@@ -152,49 +156,38 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       imageData = File(result.files.single.path!).readAsBytesSync();
     }
 
-    var decodedImage = await decodeImageFromList(imageData);*/ /*
-
-    //uploadImageFile(uploadImageFuture, decodedImage);*/
+    final decodedImage = await decodeImageFromList(imageData);
+    uploadImageFile(uploadImageFuture, decodedImage);
   }
 
-/*  Future uploadImageFile(Future<CubeFile> uploadAction, imageData) async {
-    uploadAction.then((cubeFile) {
+  Future<void> uploadImageFile(Future<CubeFile> uploadAction, dynamic imageData) async {
+    try {
+      final cubeFile = await uploadAction;
       onSendChatAttachment(cubeFile, imageData);
-    }).catchError((ex) {
+    } catch (ex) {
       setState(() {
         isLoading = false;
       });
-      context.showAlert('This file is not an image');
-    });
-  }*/
+      if (mounted) {
+        context.showAlert('Impossible de charger ce fichier image');
+      }
+    }
+  }
 
-/*  void onReceiveMessage(MediaStream message) {
-    dev.log("onReceiveMessage message= $message");
-    if (message.id != widget.cubeDialog.dialogId) return;
-
-    //addMessageToListView(message);
-  }*/
-
-/*  void onDeliveredMessage(MessageStatus status) {
+  void onDeliveredMessage(MessageStatus status) {
     dev.log("onDeliveredMessage message= $status");
-    //updateReadDeliveredStatusMessage(status, false);
+    updateReadDeliveredStatusMessage(status, false);
   }
 
   void onReadMessage(MessageStatus status) {
     dev.log("onReadMessage message= ${status.messageId}");
-    //updateReadDeliveredStatusMessage(status, true);
-  }*/
-
-/*  void onReactionReceived(MessageReaction reaction) {
-    dev.log("onReactionReceived message= ${reaction.messageId}");
-    _updateMessageReactions(reaction);
+    updateReadDeliveredStatusMessage(status, true);
   }
 
   void onTypingMessage(TypingStatus status) {
     dev.log("TypingStatus message= ${status.userId}");
     if (status.userId == widget.cubeUser.id ||
-        (status.dialogId != null &&
-            status.dialogId != widget.cubeDialog.dialogId)) {
+        (status.dialogId != null && status.dialogId != widget.cubeDialog.dialogId)) {
       return;
     }
     userStatus = _occupants[status.userId]?.fullName ??
@@ -202,50 +195,53 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         _occupants[status.userId]?.email ??
         '';
     if (userStatus.isEmpty) return;
-    userStatus = "$userStatus is typing ...";
+    userStatus = "$userStatus est en train d'écrire...";
 
-    if (isTyping != true) {
+    if (!isTyping) {
       setState(() {
         isTyping = true;
       });
     }
     startTypingTimer();
-  }*/
+  }
 
-  startTypingTimer() {
+  void startTypingTimer() {
     typingTimer?.cancel();
     typingTimer = Timer(const Duration(milliseconds: 900), () {
-      setState(() {
-        isTyping = false;
-      });
+      if (mounted) {
+        setState(() {
+          isTyping = false;
+        });
+      }
     });
   }
 
-/*  void onSendChatMessage(String content) {
-    if (content.trim() != '') {
+  void onSendChatMessage(String content) {
+    if (content.trim().isNotEmpty) {
       final message = createCubeMsg();
       message.body = content.trim();
       onSendMessage(message);
     } else {
-      context.showAlert('Nothing to send');
+      context.showAlert('Aucun texte à envoyer');
     }
-  }*/
+  }
 
-  /* void onSendChatAttachment(CubeFile cubeFile, imageData) async {
+  void onSendChatAttachment(CubeFile cubeFile, dynamic imageData) async {
     final attachment = CubeAttachment();
     attachment.id = cubeFile.uid;
     attachment.type = CubeAttachmentType.IMAGE_TYPE;
     attachment.url = cubeFile.getPublicUrl();
     attachment.height = imageData.height;
     attachment.width = imageData.width;
+
     final message = createCubeMsg();
-    message.body = "Attachment";
+    message.body = "Pièce jointe";
     message.attachments = [attachment];
     onSendMessage(message);
   }
 
   CubeMessage createCubeMsg() {
-    var message = CubeMessage();
+    final message = CubeMessage();
     message.dateSent = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     message.markable = true;
     message.saveToHistory = true;
@@ -258,34 +254,36 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     await widget.cubeDialog.sendMessage(message);
     message.senderId = widget.cubeUser.id;
     addMessageToListView(message);
-    listScrollController.animateTo(0.0,
-        duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+    if (listScrollController.hasClients) {
+      listScrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
     if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
-      ChatManager.instance.sentMessagesController
-          .add(message..dialogId = widget.cubeDialog.dialogId);
+      ChatManager.instance.sentMessagesController.add(
+        message..dialogId = widget.cubeDialog.dialogId,
+      );
     }
   }
 
-  updateReadDeliveredStatusMessage(MessageStatus status, bool isRead) {
+  void updateReadDeliveredStatusMessage(MessageStatus status, bool isRead) {
     dev.log('[updateReadDeliveredStatusMessage]');
     setState(() {
-      CubeMessage? msg =
-          listMessage.firstWhere((msg) => msg.messageId == status.messageId);
-      if (isRead) {
-        msg.readIds == null
-            ? msg.readIds = [status.userId]
-            : msg.readIds?.add(status.userId);
-      } else {
-        msg.deliveredIds == null
-            ? msg.deliveredIds = [status.userId]
-            : msg.deliveredIds?.add(status.userId);
+      final index = listMessage.indexWhere((msg) => msg.messageId == status.messageId);
+      if (index != -1) {
+        final msg = listMessage[index];
+        if (isRead) {
+          msg.readIds == null ? msg.readIds = [status.userId] : msg.readIds?.add(status.userId);
+        } else {
+          msg.deliveredIds == null ? msg.deliveredIds = [status.userId] : msg.deliveredIds?.add(status.userId);
+        }
       }
-
-      dev.log('[updateReadDeliveredStatusMessage] status updated for $msg');
     });
   }
 
-  addMessageToListView(CubeMessage message) {
+  void addMessageToListView(CubeMessage message) {
     setState(() {
       isLoading = false;
       int existMessageIndex = listMessage.indexWhere((cubeMessage) {
@@ -301,11 +299,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   Widget buildItem(int index, CubeMessage message) {
-    markAsReadIfNeed() {
-      var isOpponentMsgRead = message.readIds != null &&
-          message.readIds!.contains(widget.cubeUser.id);
-      dev.log(
-          "markAsReadIfNeed message= $message, isOpponentMsgRead= $isOpponentMsgRead");
+    void markAsReadIfNeed() {
+      var isOpponentMsgRead = message.readIds != null && message.readIds!.contains(widget.cubeUser.id);
       if (message.senderId != widget.cubeUser.id && !isOpponentMsgRead) {
         if (message.readIds == null) {
           message.readIds = [widget.cubeUser.id!];
@@ -313,406 +308,84 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           message.readIds!.add(widget.cubeUser.id!);
         }
 
-        if (CubeChatConnection.instance.chatConnectionState ==
-            CubeChatConnectionState.Ready) {
+        if (CubeChatConnection.instance.chatConnectionState == CubeChatConnectionState.Ready) {
           widget.cubeDialog.readMessage(message);
-          // } else {
-          //   _unreadMessages.add(message);
+        } else {
+          _unreadMessages.add(message);
         }
 
-        ChatManager.instance.readMessagesController.add(MessageStatus(
-            widget.cubeUser.id!,
-            message.messageId!,
-            widget.cubeDialog.dialogId!));
-      }
-    }
-
-    Widget getReadDeliveredWidget() {
-      dev.log("[getReadDeliveredWidget]");
-      bool messageIsRead() {
-        dev.log("[getReadDeliveredWidget] messageIsRead");
-        if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
-          return message.readIds != null &&
-              (message.recipientId == null ||
-                  message.readIds!.contains(message.recipientId));
-        }
-        return message.readIds != null &&
-            message.readIds!.any((int id) =>
-                id != widget.cubeUser.id && _occupants.keys.contains(id));
-      }
-
-      bool messageIsDelivered() {
-        dev.log("[getReadDeliveredWidget] messageIsDelivered");
-        if (widget.cubeDialog.type == CubeDialogType.PRIVATE) {
-          return message.deliveredIds != null &&
-              (message.recipientId == null ||
-                  message.deliveredIds!.contains(message.recipientId));
-        }
-        return message.deliveredIds != null &&
-            message.deliveredIds!.any((int id) =>
-                id != widget.cubeUser.id && _occupants.keys.contains(id));
-      }
-
-      if (messageIsRead()) {
-        dev.log("[getReadDeliveredWidget] if messageIsRead");
-        return getMessageStateWidget(MessageState.read);
-      } else if (messageIsDelivered()) {
-        dev.log("[getReadDeliveredWidget] if messageIsDelivered");
-        return getMessageStateWidget(MessageState.delivered);
-      } else {
-        dev.log("[getReadDeliveredWidget] sent");
-        return getMessageStateWidget(MessageState.sent);
+        ChatManager.instance.readMessagesController.add(
+          MessageStatus(widget.cubeUser.id!, message.messageId!, widget.cubeDialog.dialogId!),
+        );
       }
     }
 
     Widget getDateWidget() {
       return Text(
         DateFormat('HH:mm').format(
-            DateTime.fromMillisecondsSinceEpoch(message.dateSent! * 1000)),
-        style: const TextStyle(
-            color: Colors.grey, fontSize: 12.0, fontStyle: FontStyle.italic),
-      );
-    }
-
-    Widget getHeaderDateWidget() {
-      return Container(
-        alignment: Alignment.center,
-        margin: const EdgeInsets.all(10.0),
-        child: Text(
-          DateFormat('dd MMMM').format(
-              DateTime.fromMillisecondsSinceEpoch(message.dateSent! * 1000)),
-          style: TextStyle(
-              color: Colors.primaries.single,
-              fontSize: 20.0,
-              fontStyle: FontStyle.italic),
+          DateTime.fromMillisecondsSinceEpoch((message.dateSent ?? 0) * 1000),
         ),
+        style: const TextStyle(color: Colors.grey, fontSize: 12.0, fontStyle: FontStyle.italic),
       );
-    }
-
-    bool isHeaderView() {
-      int headerId = int.parse(DateFormat('ddMMyyyy').format(
-          DateTime.fromMillisecondsSinceEpoch(message.dateSent! * 1000)));
-      if (index >= listMessage.length - 1) {
-        return false;
-      }
-      var msgPrev = listMessage[index + 1];
-      int nextItemHeaderId = int.parse(DateFormat('ddMMyyyy').format(
-          DateTime.fromMillisecondsSinceEpoch(msgPrev.dateSent! * 1000)));
-      var result = headerId != nextItemHeaderId;
-      return result;
     }
 
     if (message.senderId == widget.cubeUser.id) {
-      // Right (own message)
-      return Column(
-        children: <Widget>[
-          isHeaderView() ? getHeaderDateWidget() : const SizedBox.shrink(),
-          GestureDetector(
-            onLongPress: () => _reactOnMessage(message),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                      right: 4.0),
-                  child: GestureDetector(
-                    onTap: () => _reactOnMessage(message),
-                    child: const Icon(Icons.add_reaction_outlined,
-                        size: 16, color: Colors.grey),
-                  ),
-                ),
-                message.attachments?.isNotEmpty ?? false
-                    // Image
-                    ? Container(
-                        margin: EdgeInsets.only(
-                            bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                            right: 10.0),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // TODO: regler se shit
-                                  context.push('fullPhoto',
-                                      extra: MaterialPageRoute(
-                                          builder: (context) => FullPhoto(
-                                              url: message
-                                                  .attachments!.first.url!)));
-                                },
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(8.0),
-                                      topRight: Radius.circular(8.0)),
-                                  child: CachedNetworkImage(
-                                    placeholder: (context, url) => Container(
-                                      width: 200.0,
-                                      height: 200.0,
-                                      padding: const EdgeInsets.all(70.0),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8.0),
-                                        ),
-                                      ),
-                                      child: const CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.grey),
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Material(
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(8.0),
-                                      ),
-                                      clipBehavior: Clip.hardEdge,
-                                      child: Assets.lottie.image.imgNotAvailable
-                                          .image(
-                                        width: 200.0,
-                                        height: 200.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    imageUrl: message.attachments!.first.url!,
-                                    width: 200.0,
-                                    height: 200.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              if (message.reactions != null &&
-                                  message.reactions!.total.isNotEmpty)
-                                getReactionsWidget(message),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  getDateWidget(),
-                                  getReadDeliveredWidget(),
-                                ],
-                              ),
-                            ]),
-                      )
-                    : message.body != null && message.body!.isNotEmpty
-                        // Text
-                        ? Flexible(
-                            child: Container(
-                              constraints: const BoxConstraints(maxWidth: 480),
-                              padding: const EdgeInsets.fromLTRB(
-                                  15.0, 10.0, 15.0, 10.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8.0)),
-                              margin: EdgeInsets.only(
-                                  bottom:
-                                      isLastMessageRight(index) ? 20.0 : 10.0,
-                                  right: 10.0),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      message.body!,
-                                      style: TextStyle(
-                                          color: Colors.primaries.single),
-                                    ),
-                                    if (message.reactions != null &&
-                                        message.reactions!.total.isNotEmpty)
-                                      getReactionsWidget(message),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        getDateWidget(),
-                                        getReadDeliveredWidget(),
-                                      ],
-                                    ),
-                                  ]),
-                            ),
-                          )
-                        : Container(
-                            padding: const EdgeInsets.fromLTRB(
-                                15.0, 10.0, 15.0, 10.0),
-                            width: 200.0,
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8.0)),
-                            margin: EdgeInsets.only(
-                                bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                                right: 10.0),
-                            child: Text(
-                              context.tr!.empty,
-                              style: TextStyle(color: Colors.primaries.single),
-                            ),
-                          ),
-              ],
+      return Container(
+        margin: const EdgeInsets.only(bottom: 10.0, right: 10.0),
+        alignment: Alignment.centerRight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Text(
+                message.body ?? '',
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
+              ),
             ),
-          ),
-        ],
+            getDateWidget(),
+          ],
+        ),
       );
     } else {
-      // Left (opponent message)
       markAsReadIfNeed();
       return Container(
-        margin: const EdgeInsets.only(bottom: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            isHeaderView() ? getHeaderDateWidget() : const SizedBox.shrink(),
-            GestureDetector(
-              onLongPress: () => _reactOnMessage(message),
-              child: Row(
-                children: <Widget>[
-                  getUserAvatarWidget(_occupants[message.senderId], 30),
-                  message.attachments?.isNotEmpty ?? false
-                      ? Container(
-                          margin: const EdgeInsets.only(left: 10.0),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    //TODO: fix this shit
-                                    context.push('fullPhoto',
-                                        extra: MaterialPageRoute(
-                                            builder: (context) => FullPhoto(
-                                                url: message
-                                                    .attachments!.first.url!)));
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(8.0),
-                                        topRight: Radius.circular(8.0)),
-                                    child: CachedNetworkImage(
-                                      placeholder: (context, url) => Container(
-                                        width: 200.0,
-                                        height: 200.0,
-                                        padding: const EdgeInsets.all(70.0),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(8.0),
-                                          ),
-                                        ),
-                                        child: const CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.grey),
-                                        ),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Material(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(8.0),
-                                        ),
-                                        clipBehavior: Clip.hardEdge,
-                                        child: Image.asset(
-                                          'images/img_not_available.jpeg',
-                                          width: 200.0,
-                                          height: 200.0,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      imageUrl: message.attachments!.first.url!,
-                                      width: 200.0,
-                                      height: 200.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                if (message.reactions != null &&
-                                    message.reactions!.total.isNotEmpty)
-                                  getReactionsWidget(message),
-                                getDateWidget(),
-                              ]),
-                        )
-                      : message.body != null && message.body!.isNotEmpty
-                          ? Flexible(
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                    minWidth: 0.0, maxWidth: 480),
-                                padding: const EdgeInsets.fromLTRB(
-                                    15.0, 10.0, 15.0, 10.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.primaries.single,
-                                    borderRadius: BorderRadius.circular(8.0)),
-                                margin: const EdgeInsets.only(left: 10.0),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        message.body!,
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
-                                      if (message.reactions != null &&
-                                          message.reactions!.total.isNotEmpty)
-                                        getReactionsWidget(message),
-                                      getDateWidget(),
-                                    ]),
-                              ),
-                            )
-                          : Container(
-                              padding: const EdgeInsets.fromLTRB(
-                                  15.0, 10.0, 15.0, 10.0),
-                              width: 200.0,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8.0)),
-                              margin: EdgeInsets.only(
-                                  bottom:
-                                      isLastMessageRight(index) ? 20.0 : 10.0,
-                                  right: 10.0),
-                              child: Text(
-                                "Empty",
-                                style:
-                                    TextStyle(color: Colors.primaries.single),
-                              ),
-                            ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        // bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                        left: 4.0),
-                    child: GestureDetector(
-                      onTap: () => _reactOnMessage(message),
-                      child: Icon(Icons.add_reaction_outlined,
-                          size: 16, color: Colors.primaries.single),
-                    ),
-                  ),
-                ],
+        margin: const EdgeInsets.only(bottom: 10.0, left: 10.0),
+        alignment: Alignment.centerLeft,
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 15,
+              child: Text(
+                (_occupants[message.senderId]?.fullName ?? '?')[0].toUpperCase(),
               ),
-            )
+            ),
+            const SizedBox(width: 8.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    message.body ?? '',
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                ),
+                getDateWidget(),
+              ],
+            ),
           ],
         ),
       );
     }
-  }
-
-  bool isLastMessageLeft(int index) {
-    if ((index > 0 && listMessage[index - 1].id == widget.cubeUser.id) ||
-        index == 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool isLastMessageRight(int index) {
-    if ((index > 0 && listMessage[index - 1].id != widget.cubeUser.id) ||
-        index == 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }*/
-
-  Widget buildLoading() {
-    return Positioned(
-      child: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(),
-    );
   }
 
   Widget buildTyping() {
@@ -723,7 +396,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         margin: const EdgeInsets.all(16.0),
         child: Text(
           userStatus,
-          style: TextStyle(color: Colors.primaries.single),
+          style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
         ),
       ),
     );
@@ -734,56 +407,38 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       width: double.infinity,
       height: 50.0,
       decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.grey, width: 0.5)),
-          color: Colors.white),
+        border: Border(top: BorderSide(color: Colors.grey, width: 0.5)),
+        color: Colors.white,
+      ),
       child: Row(
         children: <Widget>[
-          // Button send image
           Material(
             color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 1.0),
-              child: IconButton(
-                icon: const Icon(Icons.image),
-                onPressed: () {
-                  //openGallery();
-                },
-                color: Colors.primaries.single,
-              ),
+            child: IconButton(
+              icon: const Icon(Icons.image),
+              onPressed: openGallery,
+              color: Theme.of(context).primaryColor,
             ),
           ),
-
-          // Edit text
           Flexible(
             child: TextField(
-              //autofocus: platform_utils.isDesktop(),
               autofocus: true,
               focusNode: _editMessageFocusNode,
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              style: TextStyle(color: Colors.primaries.single, fontSize: 15.0),
               controller: textEditingController,
               decoration: const InputDecoration.collapsed(
-                hintText: 'Type your message...',
+                hintText: 'Saisissez votre message...',
                 hintStyle: TextStyle(color: Colors.grey),
               ),
-              onChanged: (text) {
-                //sendIsTypingStatus();
-              },
             ),
           ),
-
-          // Button send message
           Material(
             color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: IconButton(
-                icon: const Icon(Icons.send),
-                onPressed: () {},
-                //onSendChatMessage(textEditingController.text),
-                color: Colors.primaries.single,
-              ),
+            child: IconButton(
+              icon: const Icon(Icons.send),
+              onPressed: () => onSendChatMessage(textEditingController.text),
+              color: Theme.of(context).primaryColor,
             ),
           ),
         ],
@@ -791,28 +446,24 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-/*  Widget buildListMessage() {
-    getWidgetMessages(listMessage) {
-      return ListView.builder(
-        padding: const EdgeInsets.all(10.0),
-        itemBuilder: (context, index) => buildItem(index, listMessage[index]),
-        itemCount: listMessage.length,
-        reverse: true,
-        controller: listScrollController,
-      );
-    }
-
+  Widget buildListMessage() {
     return Flexible(
-      child: StreamBuilder<List<CubeMessage>>(
-        stream: getMessagesList().asStream(),
+      child: FutureBuilder<List<CubeMessage>>(
+        future: getMessagesList(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
-                child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.grey)));
+              child: CircularProgressIndicator(),
+            );
           } else {
             listMessage = snapshot.data ?? [];
-            return getWidgetMessages(listMessage);
+            return ListView.builder(
+              padding: const EdgeInsets.all(10.0),
+              itemBuilder: (context, index) => buildItem(index, listMessage[index]),
+              itemCount: listMessage.length,
+              reverse: true,
+              controller: listScrollController,
+            );
           }
         },
       ),
@@ -820,462 +471,50 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   Future<List<CubeMessage>> getMessagesList() async {
-    if (listMessage.isNotEmpty) return Future.value(listMessage);
+    if (listMessage.isNotEmpty) return listMessage;
 
-    Completer<List<CubeMessage>> completer = Completer();
-    List<CubeMessage>? messages;
     try {
-      await Future.wait<void>([
-        getMessagesByDate(0, false).then((loadedMessages) {
-          isLoading = false;
-          messages = loadedMessages;
-        }),
-        getAllUsersByIds(widget.cubeDialog.occupantsIds!.toSet()).then(
-            (result) => _occupants
-                .addAll({for (var item in result!.items) item.id: item}))
-      ]);
-      completer.complete(messages);
+      final pagedResult = await getMessages(
+        widget.cubeDialog.dialogId!,
+        {
+          'limit': messagesPerPage,
+          'sort_desc': 'date_sent',
+        },
+      );
+      listMessage = pagedResult?.items.cast<CubeMessage>() ?? [];
+      return listMessage;
     } catch (error) {
-      completer.completeError(error);
-    }
-    return completer.future;
-  }*/
-
-/*  void onScrollChanged() {
-    if ((listScrollController.position.pixels ==
-            listScrollController.position.maxScrollExtent) &&
-        messagesPerPage >= lastPartSize) {
-      setState(() {
-        isLoading = true;
-
-        if (oldMessages.isNotEmpty) {
-          getMessagesBetweenDates(
-                  oldMessages.first.dateSent ?? 0,
-                  listMessage.last.dateSent ??
-                      DateTime.now().millisecondsSinceEpoch ~/ 1000)
-              .then((newMessages) {
-            setState(() {
-              isLoading = false;
-
-              listMessage.addAll(newMessages);
-
-              if (newMessages.length < messagesPerPage) {
-                oldMessages.insertAll(0, listMessage);
-                listMessage = List.from(oldMessages);
-                oldMessages.clear();
-              }
-            });
-          });
-        } else {
-          getMessagesByDate(listMessage.last.dateSent ?? 0, false)
-              .then((messages) {
-            setState(() {
-              isLoading = false;
-              listMessage.addAll(messages);
-            });
-          });
-        }
-      });
-    }
-  }*/
-
-  void onBackPress(isLoading) {
-    //TODO: fix that too
-    Navigator.pushNamedAndRemoveUntil(context, 'select_dialog', (r) => false,
-        arguments: {USER_ARG_NAME: widget.cubeUser}).then((value) {
-      return true;
-    });
-  }
-
-  /* _initChatListeners() {
-    dev.log("[_initChatListeners]");
-    msgSubscription = CubeChatConnection
-        .instance.chatMessagesManager!.chatMessagesStream
-        .listen(onReceiveMessage);
-    deliveredSubscription = CubeChatConnection
-        .instance.messagesStatusesManager!.deliveredStream
-        .listen(onDeliveredMessage);
-    readSubscription = CubeChatConnection
-        .instance.messagesStatusesManager!.readStream
-        .listen(onReadMessage);
-    typingSubscription = CubeChatConnection
-        .instance.typingStatusesManager!.isTypingStream
-        .listen(onTypingMessage);
-    reactionsSubscription = CubeChatConnection
-        .instance.messagesReactionsManager?.reactionsStream
-        .listen(onReactionReceived);
-  }
-
-  void _initCubeChat() {
-    dev.log("_initCubeChat");
-    if (ref.watch(cubeChatConnectionProvider).isAuthenticated()) {
-      dev.log("[_initCubeChat] isAuthenticated");
-      _initChatListeners();
-    } else {
-      dev.log("[_initCubeChat] not authenticated");
-      ref
-          .watch(cubeChatConnectionProvider)
-          .connectionStateStream
-          .listen((state) {
-        dev.log("[_initCubeChat] state $state");
-        if (CubeChatConnectionState.Ready == state) {
-          _initChatListeners();
-
-          if (_unreadMessages.isNotEmpty) {
-            for (var cubeMessage in _unreadMessages) {
-              widget.cubeDialog.readMessage(cubeMessage);
-            }
-            _unreadMessages.clear();
-          }
-
-          if (_unsentMessages.isNotEmpty) {
-            for (var cubeMessage in _unsentMessages) {
-              widget.cubeDialog.sendMessage(cubeMessage);
-            }
-
-            _unsentMessages.clear();
-          }
-        }
-      });
+      dev.log("Erreur de récupération des messages : $error");
+      return [];
     }
   }
 
-  void sendIsTypingStatus() {
-    var currentTime = DateTime.now().millisecondsSinceEpoch;
-    var isTypingTimeout = currentTime - _sendIsTypingTime;
-    if (isTypingTimeout >= TYPING_TIMEOUT) {
-      _sendIsTypingTime = currentTime;
-      widget.cubeDialog.sendIsTypingStatus();
-      _startStopTypingStatus();
-    }
-  }
-
-  void _startStopTypingStatus() {
-    _sendStopTypingTimer?.cancel();
-    _sendStopTypingTimer =
-        Timer(const Duration(milliseconds: STOP_TYPING_TIMEOUT), () {
-      widget.cubeDialog.sendStopTypingStatus();
-    });
-  }
-
-  Future<List<CubeMessage>> getMessagesByDate(int date, bool isLoadNew) async {
-    var params = GetMessagesParameters();
-    params.sorter = RequestSorter(SORT_DESC, '', 'date_sent');
-    params.limit = messagesPerPage;
-    params.filters = [
-      RequestFilter('', 'date_sent', isLoadNew || date == 0 ? 'gt' : 'lt', date)
-    ];
-
-    return getMessages(
-            widget.cubeDialog.dialogId!, params.getRequestParameters())
-        .then((result) {
-          lastPartSize = result!.items.length;
-
-          return result.items;
-        })
-        .whenComplete(() {})
-        .catchError((onError) {
-          return List<CubeMessage>.empty(growable: true);
-        });
-  }
-
-  Future<List<CubeMessage>> getMessagesBetweenDates(
-      int startDate, int endDate) async {
-    var params = GetMessagesParameters();
-    params.sorter = RequestSorter(SORT_DESC, '', 'date_sent');
-    params.limit = messagesPerPage;
-    params.filters = [
-      RequestFilter('', 'date_sent', 'gt', startDate),
-      RequestFilter('', 'date_sent', 'lt', endDate)
-    ];
-
-    return getMessages(
-            widget.cubeDialog.dialogId!, params.getRequestParameters())
-        .then((result) {
-      return result!.items;
-    });
-  }
-
-  void onConnectivityChanged(List<ConnectivityResult>? connectivityType) {
-    dev.log(
-        "[ChatScreenState] connectivityType changed to '$connectivityType'");
-    setState(() {
-      isLoading = true;
-    });
-    for (var conn in connectivityType!) {
-      switch (connectivityType.single) {
-        case ConnectivityResult.bluetooth:
-          conn = ConnectivityResult.bluetooth;
-        case ConnectivityResult.wifi:
-          conn = ConnectivityResult.wifi;
-          getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
-                  DateTime.now().millisecondsSinceEpoch ~/ 1000)
-              .then((newMessages) {
-            setState(() {
-              if (newMessages.length == messagesPerPage) {
-                oldMessages = List.from(listMessage);
-                listMessage = newMessages;
-              } else {
-                listMessage.insertAll(0, newMessages);
-              }
-            });
-          }).whenComplete(() {
-            setState(() {
-              isLoading = false;
-            });
-          });
-        case ConnectivityResult.ethernet:
-          conn = ConnectivityResult.ethernet;
-        case ConnectivityResult.mobile:
-          conn = ConnectivityResult.mobile;
-          getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
-                  DateTime.now().millisecondsSinceEpoch ~/ 1000)
-              .then((newMessages) {
-            setState(() {
-              if (newMessages.length == messagesPerPage) {
-                oldMessages = List.from(listMessage);
-                listMessage = newMessages;
-              } else {
-                listMessage.insertAll(0, newMessages);
-              }
-            });
-          }).whenComplete(() {
-            setState(() {
-              isLoading = false;
-            });
-          });
-        case ConnectivityResult.none:
-          conn = ConnectivityResult.none;
-        case ConnectivityResult.vpn:
-          conn = ConnectivityResult.vpn;
-          getMessagesBetweenDates(listMessage.first.dateSent ?? 0,
-                  DateTime.now().millisecondsSinceEpoch ~/ 1000)
-              .then((newMessages) {
-            setState(() {
-              if (newMessages.length == messagesPerPage) {
-                oldMessages = List.from(listMessage);
-                listMessage = newMessages;
-              } else {
-                listMessage.insertAll(0, newMessages);
-              }
-            });
-          }).whenComplete(() {
-            setState(() {
-              isLoading = false;
-            });
-          });
-        case ConnectivityResult.other:
-          conn = ConnectivityResult.other;
-      }
-    }
-  }
-
-  getReactionsWidget(CubeMessage message) {
-    if (message.reactions == null) return Container();
-
-    var isOwnMessage = message.senderId == widget.cubeUser.id;
-
-    return LayoutBuilder(builder: (context, constraints) {
-      var widgetWidth =
-          constraints.maxWidth == double.infinity ? 240 : constraints.maxWidth;
-      var maxColumns = (widgetWidth / 60).round();
-      if (message.reactions!.total.length < maxColumns) {
-        maxColumns = message.reactions!.total.length;
-      }
-
-      return SizedBox(
-          width: maxColumns * 56,
-          child: GridView.count(
-            primary: false,
-            crossAxisCount: maxColumns,
-            mainAxisSpacing: 4,
-            childAspectRatio: 2,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            children: <Widget>[
-              ...message.reactions!.total.keys.map((reaction) {
-                return GestureDetector(
-                    onTap: () => _performReaction(Emoji(reaction, ''), message),
-                    child: Padding(
-                        padding: EdgeInsets.only(
-                          left: isOwnMessage ? 4 : 0,
-                          right: isOwnMessage ? 0 : 4,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(16),
-                          ),
-                          child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 6),
-                              color: message.reactions!.own.contains(reaction)
-                                  ? Colors.green
-                                  : Colors.grey,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(reaction,
-                                      style: fd.kIsWeb
-                                          ? const TextStyle(
-                                              color: Colors.green,
-                                              fontFamily: 'NotoColorEmoji')
-                                          : null),
-                                  Text(
-                                      ' ${message.reactions!.total[reaction].toString()}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      )),
-                                ],
-                              )),
-                        )));
-              })
-            ],
-          ));
-    });
-  }
-
-  _reactOnMessage(CubeMessage message) {
-    showDialog<Emoji>(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-              child: Container(
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0)),
-                  width: 400,
-                  height: 400,
-                  child: EmojiPicker(
-                    config: const Config(
-                      height: 256,
-                      checkPlatformCompatibility: true,
-                      swapCategoryAndBottomBar: false,
-                      skinToneConfig: SkinToneConfig(
-                          indicatorColor: Colors.green,
-                          dialogBackgroundColor: Colors.white,
-                          enabled: true),
-                      categoryViewConfig: CategoryViewConfig(
-                          tabBarHeight: 46.0,
-                          tabIndicatorAnimDuration: Duration(milliseconds: 300),
-                          initCategory: Category.RECENT),
-                      bottomActionBarConfig: BottomActionBarConfig(),
-                      searchViewConfig: SearchViewConfig(),
-                      emojiViewConfig: EmojiViewConfig(
-                          columns: 7,
-                          recentsLimit: 28,
-                          emojiSizeMax: 28 * (fd.kIsWeb ? 1.2 : 1.0),
-                          backgroundColor: Colors.white,
-                          loadingIndicator: SizedBox.shrink(),
-                          buttonMode: ButtonMode.MATERIAL),
-                      emojiTextStyle: fd.kIsWeb
-                          ? TextStyle(
-                              color: Colors.green, fontFamily: 'NotoColorEmoji')
-                          : null,
-                    ),
-                    onEmojiSelected: (category, emoji) {
-                      context.pop(emoji);
-                    },
-                  )));
-        }).then((emoji) {
-      dev.log("onEmojiSelected emoji: ${emoji?.emoji}");
-      if (emoji != null) {
-        _performReaction(emoji, message);
-      }
-    });
-  }
-
-  void _performReaction(Emoji emoji, CubeMessage message) {
-    if ((message.reactions?.own.isNotEmpty ?? false) &&
-        (message.reactions?.own.contains(emoji.emoji) ?? false)) {
-      removeMessageReaction(message.messageId!, emoji.emoji);
-      _updateMessageReactions(MessageReaction(
-          widget.cubeUser.id!, widget.cubeDialog.dialogId!, message.messageId!,
-          removeReaction: emoji.emoji));
-    } else {
-      addMessageReaction(message.messageId!, emoji.emoji);
-      _updateMessageReactions(MessageReaction(
-          widget.cubeUser.id!, widget.cubeDialog.dialogId!, message.messageId!,
-          addReaction: emoji.emoji));
-    }
-  }
-
-  void _updateMessageReactions(MessageReaction reaction) {
-    dev.log('[_updateMessageReactions]');
-    setState(() {
-      CubeMessage? msg = listMessage
-          .firstWhereOrNull((msg) => msg.messageId == reaction.messageId);
-      if (msg == null) return;
-
-      if (msg.reactions == null) {
-        msg.reactions = CubeMessageReactions.fromJson({
-          'own': {
-            if (reaction.userId == widget.cubeUser.id) reaction.addReaction
-          },
-          'total': {reaction.addReaction: 1}
-        });
-      } else {
-        if (reaction.addReaction != null) {
-          if (reaction.userId != widget.cubeUser.id ||
-              !(msg.reactions?.own.contains(reaction.addReaction) ?? false)) {
-            if (reaction.userId == widget.cubeUser.id) {
-              msg.reactions!.own.add(reaction.addReaction!);
-            }
-
-            msg.reactions!.total[reaction.addReaction!] =
-                msg.reactions!.total[reaction.addReaction] == null
-                    ? 1
-                    : msg.reactions!.total[reaction.addReaction]! + 1;
-          }
-        }
-
-        if (reaction.removeReaction != null) {
-          if (reaction.userId != widget.cubeUser.id ||
-              (msg.reactions?.own.contains(reaction.removeReaction) ?? false)) {
-            if (reaction.userId == widget.cubeUser.id) {
-              msg.reactions!.own.remove(reaction.removeReaction!);
-            }
-
-            msg.reactions!.total[reaction.removeReaction!] =
-                msg.reactions!.total[reaction.removeReaction] != null &&
-                        msg.reactions!.total[reaction.removeReaction]! > 0
-                    ? msg.reactions!.total[reaction.removeReaction]! - 1
-                    : 0;
-          }
-
-          msg.reactions!.total.removeWhere((key, value) => value == 0);
-        }
-      }
-    });
-  }*/
-
-  FocusNode createEditMessageFocusNode() {
-    return FocusNode(
-      onKeyEvent: (node, event) {
-        if (!event.synthesized &&
-            event.logicalKey == LogicalKeyboardKey.enter) {
-          if (event is KeyDownEvent) {
-            //onSendChatMessage(textEditingController.text);
-          }
-          _editMessageFocusNode.requestFocus();
-          return KeyEventResult.handled;
-        } else if (event.logicalKey == LogicalKeyboardKey.enter) {
-          if (event is KeyDownEvent) {
-            setState(() {
-              textEditingController.text = '${textEditingController.text}\n';
-              textEditingController.selection = TextSelection.collapsed(
-                  offset: textEditingController.text.length);
-            });
-          }
-          _editMessageFocusNode.requestFocus();
-          return KeyEventResult.handled;
-        } else {
-          return KeyEventResult.ignored;
-        }
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
       },
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  buildListMessage(),
+                  buildTyping(),
+                  buildInput(),
+                ],
+              ),
+              if (isLoading)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
@@ -8,7 +9,6 @@ as perso;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
-import '../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
 
 class AuthControllerNotifier extends Notifier<perso.AuthState> {
   late final AuthRepository _repository;
@@ -147,7 +147,7 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
         role: user.role ?? 'authenticated',
         updatedAt: user.updatedAt ?? DateTime.now().toIso8601String(),
       ),
-      cubeUser: const CubeUserMig(),
+      cubeUser: CubeUser(),
     );
   }
 }

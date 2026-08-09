@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,109 +9,25 @@ part of 'mission_id.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
 
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-MissionId _$MissionIdFromJson(Map<String, dynamic> json) {
-  return _MissionId.fromJson(json);
-}
-
 /// @nodoc
-mixin _$MissionId {
-  int get id => throw _privateConstructorUsedError;
+mixin _$MissionId implements DiagnosticableTreeMixin {
+  int get id;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+  /// Create a copy of MissionId
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $MissionIdCopyWith<MissionId> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$MissionIdCopyWithImpl<MissionId>(this as MissionId, _$identity);
 
-/// @nodoc
-abstract class $MissionIdCopyWith<$Res> {
-  factory $MissionIdCopyWith(MissionId value, $Res Function(MissionId) then) =
-      _$MissionIdCopyWithImpl<$Res, MissionId>;
-  @useResult
-  $Res call({int id});
-}
-
-/// @nodoc
-class _$MissionIdCopyWithImpl<$Res, $Val extends MissionId>
-    implements $MissionIdCopyWith<$Res> {
-  _$MissionIdCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$MissionIdImplCopyWith<$Res>
-    implements $MissionIdCopyWith<$Res> {
-  factory _$$MissionIdImplCopyWith(
-          _$MissionIdImpl value, $Res Function(_$MissionIdImpl) then) =
-      __$$MissionIdImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int id});
-}
-
-/// @nodoc
-class __$$MissionIdImplCopyWithImpl<$Res>
-    extends _$MissionIdCopyWithImpl<$Res, _$MissionIdImpl>
-    implements _$$MissionIdImplCopyWith<$Res> {
-  __$$MissionIdImplCopyWithImpl(
-      _$MissionIdImpl _value, $Res Function(_$MissionIdImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-  }) {
-    return _then(_$MissionIdImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$MissionIdImpl with DiagnosticableTreeMixin implements _MissionId {
-  const _$MissionIdImpl({required this.id});
-
-  factory _$MissionIdImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MissionIdImplFromJson(json);
-
-  @override
-  final int id;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MissionId(id: $id)';
-  }
+  /// Serializes this MissionId to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MissionId'))
       ..add(DiagnosticsProperty('id', id));
@@ -121,38 +37,290 @@ class _$MissionIdImpl with DiagnosticableTreeMixin implements _MissionId {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MissionIdImpl &&
+            other is MissionId &&
             (identical(other.id, id) || other.id == id));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$MissionIdImplCopyWith<_$MissionIdImpl> get copyWith =>
-      __$$MissionIdImplCopyWithImpl<_$MissionIdImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MissionIdImplToJson(
-      this,
-    );
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MissionId(id: $id)';
   }
 }
 
-abstract class _MissionId implements MissionId {
-  const factory _MissionId({required final int id}) = _$MissionIdImpl;
-
-  factory _MissionId.fromJson(Map<String, dynamic> json) =
-      _$MissionIdImpl.fromJson;
-
-  @override
-  int get id;
-  @override
-  @JsonKey(ignore: true)
-  _$$MissionIdImplCopyWith<_$MissionIdImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+/// @nodoc
+abstract mixin class $MissionIdCopyWith<$Res> {
+  factory $MissionIdCopyWith(MissionId value, $Res Function(MissionId) _then) =
+      _$MissionIdCopyWithImpl;
+  @useResult
+  $Res call({int id});
 }
+
+/// @nodoc
+class _$MissionIdCopyWithImpl<$Res> implements $MissionIdCopyWith<$Res> {
+  _$MissionIdCopyWithImpl(this._self, this._then);
+
+  final MissionId _self;
+  final $Res Function(MissionId) _then;
+
+  /// Create a copy of MissionId
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_self.copyWith(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// Adds pattern-matching-related methods to [MissionId].
+extension MissionIdPatterns on MissionId {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_MissionId value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _MissionId() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_MissionId value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MissionId():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_MissionId value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MissionId() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int id)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _MissionId() when $default != null:
+        return $default(_that.id);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(int id) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MissionId():
+        return $default(_that.id);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int id)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _MissionId() when $default != null:
+        return $default(_that.id);
+      case _:
+        return null;
+    }
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _MissionId with DiagnosticableTreeMixin implements MissionId {
+  const _MissionId({required this.id});
+  factory _MissionId.fromJson(Map<String, dynamic> json) =>
+      _$MissionIdFromJson(json);
+
+  @override
+  final int id;
+
+  /// Create a copy of MissionId
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$MissionIdCopyWith<_MissionId> get copyWith =>
+      __$MissionIdCopyWithImpl<_MissionId>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$MissionIdToJson(
+      this,
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    properties
+      ..add(DiagnosticsProperty('type', 'MissionId'))
+      ..add(DiagnosticsProperty('id', id));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _MissionId &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MissionId(id: $id)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$MissionIdCopyWith<$Res>
+    implements $MissionIdCopyWith<$Res> {
+  factory _$MissionIdCopyWith(
+          _MissionId value, $Res Function(_MissionId) _then) =
+      __$MissionIdCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int id});
+}
+
+/// @nodoc
+class __$MissionIdCopyWithImpl<$Res> implements _$MissionIdCopyWith<$Res> {
+  __$MissionIdCopyWithImpl(this._self, this._then);
+
+  final _MissionId _self;
+  final $Res Function(_MissionId) _then;
+
+  /// Create a copy of MissionId
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_MissionId(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+// dart format on

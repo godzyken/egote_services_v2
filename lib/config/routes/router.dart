@@ -2,7 +2,6 @@ import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/routes/app_router_observer.dart';
 import 'package:egote_services_v2/config/routes/router_notifier.dart';
 import 'package:egote_services_v2/config/routes/routes.dart';
-import 'package0:egote_services_v2/config/routes/routes.dart';
 import 'package:egote_services_v2/config/routes/sentry_navigator_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as dev;
 
-//import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +11,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../../config/app_shared/extensions/extensions.dart';
 import '../../../../../config/cube_config/cube_config.dart';
-import '../../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import '../../../domain/models/entities/cube_user/cube_user_mig.dart';
-import '../../../domain/models/entities/message_state/message_state.dart';
+
 import 'chat_screens.dart';
 
 class BodySelectedDialogLayout extends ConsumerStatefulWidget {
@@ -23,9 +21,9 @@ class BodySelectedDialogLayout extends ConsumerStatefulWidget {
       this.selectedDialog,
       this.onDialogSelectedCallback});
 
-  final CubeUserMig currentUser;
-  final Function(CubeDialogMig)? onDialogSelectedCallback;
-  final CubeDialogMig? selectedDialog;
+  final CubeUser currentUser;
+  final Function(CubeDialog)? onDialogSelectedCallback;
+  final CubeDialog? selectedDialog;
 
   @override
   ConsumerState createState() => _BodySelectedDialogLayoutState();
@@ -33,7 +31,7 @@ class BodySelectedDialogLayout extends ConsumerStatefulWidget {
 
 class _BodySelectedDialogLayoutState
     extends ConsumerState<BodySelectedDialogLayout> {
-  List<ListItem<CubeDialogMig>> dialogList = [];
+  List<ListItem<CubeDialog>> dialogList = [];
   var _isDialogContinues = true;
 
   //StreamSubscription<CubeMessage>? msgSubscription;
@@ -44,8 +42,8 @@ class _BodySelectedDialogLayoutState
   //StreamSubscription<CubeMessage>? msgSendingSubscription;
   // final ChatMessagesManager? chatMessagesManager =
   //     CubeChatConnection.instance.chatMessagesManager;
-  Function(CubeDialogMig)? onDialogSelectedCallback;
-  CubeDialogMig? selectedDialog;
+  Function(CubeDialog)? onDialogSelectedCallback;
+  CubeDialog? selectedDialog;
 
   Map<String, Set<String>> unreadMessages = {};
 
@@ -94,7 +92,7 @@ class _BodySelectedDialogLayoutState
   }
 
   Widget _getDialogsList(BuildContext context) {
-    /*if (_isDialogContinues) {
+    if (_isDialogContinues) {
       getDialogs().then((dialogs) {
         _isDialogContinues = false;
         dev.log("getDialogs: $dialogs");
@@ -106,7 +104,8 @@ class _BodySelectedDialogLayoutState
       }).catchError((exception) {
         _processGetDialogError(exception);
       });
-    }*/
+    }
+
     if (_isDialogContinues && dialogList.isEmpty) {
       return const SizedBox.shrink();
     } else if (dialogList.isEmpty) {
@@ -134,8 +133,7 @@ class _BodySelectedDialogLayoutState
   Widget _getListItemTile(BuildContext context, int index) {
     Widget getDialogIcon() {
       var dialog = dialogList[index].data;
-      if (dialog.type == 1) {
-        var typeMigPrivate = CubeDialogTypeMig.PRIVATE(dialog.type);
+      if (dialog.type == CubeDialogType.PRIVATE) {
         return const Icon(
           Icons.person,
           size: 40.0,
@@ -220,9 +218,8 @@ class _BodySelectedDialogLayoutState
               children: [
                 Row(
                   children: [
-                    getMessageStateWidget(dialogList[index]
-                        .data
-                        .lastMessageDateSent as MessageState),
+                    if (dialogList[index].data.lastMessage != null)
+                      getMessageStateWidget(MessageState.sent),
                     Text(
                       DateFormat('MMM dd').format(
                           dialogList[index].data.lastMessageDateSent != null
@@ -266,12 +263,12 @@ class _BodySelectedDialogLayoutState
     );
   }
 
-  void _deleteDialog(BuildContext context, CubeDialogMig dialog) async {
+  void _deleteDialog(BuildContext context, CubeDialog dialog) async {
     dev.log("_deleteDialog= $dialog");
     context.showAlert('Coming soon');
   }
 
-  void _selectDialog(BuildContext context, CubeDialogMig dialog) async {
+  void _selectDialog(BuildContext context, CubeDialog dialog) async {
     if (onDialogSelectedCallback != null) {
       onDialogSelectedCallback?.call(dialog);
       setState(() {
@@ -297,7 +294,7 @@ class _BodySelectedDialogLayoutState
 /*  updateDialog(CubeMessage msg) {
     ref.watch(cubeRepositoryProvider).refreshBadgeCount();
 
-    ListItem<CubeDialogMig>? dialogItem =
+    ListItem<CubeDialog>? dialogItem =
         dialogList.firstWhere((dlg) => dlg.data.dialogId == msg.dialogId);
 
     setState(() {

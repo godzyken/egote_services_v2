@@ -1,12 +1,9 @@
-import 'dart:developer';
-
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../config/app_shared/extensions/extensions.dart';
-import '../../../domain/models/entities/cube_dialog/cube_dialog_mig.dart';
-import '../../../domain/models/entities/cube_user/cube_user_mig.dart';
 
 class ChatDialogScreen extends ConsumerWidget {
   const ChatDialogScreen({
@@ -15,8 +12,8 @@ class ChatDialogScreen extends ConsumerWidget {
     required this.cubeDialog,
   });
 
-  final CubeUserMig cubeUser;
-  final CubeDialogMig cubeDialog;
+  final CubeUser cubeUser;
+  final CubeDialog cubeDialog;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,8 +35,8 @@ class ChatDialogScreen extends ConsumerWidget {
   }
 }
 
-void showChatDetails(BuildContext context, CubeUserMig cubeUser,
-    CubeDialogMig cubeDialog) async {
+void showChatDetails(BuildContext context, CubeUser cubeUser,
+    CubeDialog cubeDialog) async {
   log("_chatDetails= $cubeDialog");
 
   showModal(
