@@ -88,11 +88,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final email = ref.watch(signUpProvider).emailFormz;
     final password = ref.watch(signUpProvider).passwordFormz;
 
-    ref.listen<AsyncValue<UserModel?>>(authProvider, (previous, next) {
+    ref.listen<AsyncValue<UserModel?>>(authControllerProvider, (previous, next) {
       next.maybeWhen(
         data: (data) {
           if (data == null) return null;
-          ref.read(userListViewModelStateNotifierProvider.notifier).createUser(
+          ref.read(userListViewModelNotifierProvider.notifier).createUser(
               data.userEntityModel.name,
               data.userEntityModel.role,
               data.userEntityModel.isComplete,

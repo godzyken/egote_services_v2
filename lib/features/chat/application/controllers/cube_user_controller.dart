@@ -6,31 +6,31 @@ import 'package:egote_services_v2/features/auth/presentation/controller/user_not
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class CubeUserController extends StateNotifier<CubeUser?> {
-  CubeUserController(this._ref) : super(null) {
-    _initialize();
+class CubeUserController extends AsyncNotifier<CubeUser?> {
+  @override
+  Future<CubeUser?> build() async {
+    return _initialize();
   }
 
-  final Ref _ref;
-
-  Future<void> _initialize() async {
+  Future<CubeUser?> _initialize() async {
     try {
-      final userModelEntity = _ref.watch(userNotifierProvider.notifier);
-      final authModelEntity = _ref.watch(autoAuthControllerProvider);
+      final userModelEntity = ref.watch(userNotifierProvider.notifier);
+      final authModelEntity = ref.watch(autoAuthControllerProvider);
 
-      do {
-        state = CubeUser(
-          id: authModelEntity?.userEntityModel.id.value,
-          fullName: authModelEntity!.userEntityModel.name,
+      if (userModelEntity.previousUser?.id != null && authModelEntity != null) {
+        return CubeUser(
+          id: authModelEntity.userEntityModel.id.value,
+          fullName: authModelEntity.userEntityModel.name,
           email: authModelEntity.authUser.email!,
           login: authModelEntity.userEntityModel.name,
           externalId: userModelEntity.previousUser!.id.value,
           phone: authModelEntity.authUser.phone,
         );
-      } while (userModelEntity.previousUser!.id == authModelEntity.id);
+      }
+      return null;
     } on AuthException catch (e) {
       developer.log(e.toString());
-      state = CubeUser();
+      return null;
     }
   }
 }

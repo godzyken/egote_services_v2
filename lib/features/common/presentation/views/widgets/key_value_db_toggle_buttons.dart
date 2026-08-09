@@ -11,17 +11,22 @@ class KeyValueDbToggleButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final UsedKeyValueDb keyValueDb = ref.watch(usedKeyValueDbProvider);
+    // Écoute de l'état sélectionné
+    final UsedKeyValueDb keyValueDb = ref.watch(usedKeyValueDbNotifierProvider);
+
     final List<bool> isSelected = <bool>[
       keyValueDb == UsedKeyValueDb.memory,
       keyValueDb == UsedKeyValueDb.sharedPreferences,
       keyValueDb == UsedKeyValueDb.hive,
     ];
+
     return ToggleButtons(
       isSelected: isSelected,
       onPressed: (int newIndex) {
-        ref.read(usedKeyValueDbProvider.notifier).state =
-        UsedKeyValueDb.values[newIndex];
+        // Mise à jour de l'état via la méthode dédiée du Notifier
+        ref
+            .read(usedKeyValueDbNotifierProvider.notifier)
+            .selectDb(UsedKeyValueDb.values[newIndex]);
       },
       children: <Widget>[
         Padding(

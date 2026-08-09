@@ -1,32 +1,33 @@
 // import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class MultiLang extends StateNotifier<Locale> {
-  MultiLang(this.localeName)
-      : super(const Locale.fromSubtags(languageCode: 'fr'));
+// 1. Provider fournissant la Locale de base
+final localeProvider = Provider<Locale>(
+      (_) => const Locale.fromSubtags(languageCode: 'fr'),
+  name: 'LocaleProvider',
+);
 
-  final String localeName;
+// 2. Notifier Riverpod 3
+class MultiLangNotifier extends Notifier<Locale> {
+  @override
+  Locale build() {
+    // Initialise avec la valeur du provider de base
+    return ref.watch(localeProvider);
+  }
+
+  String get localeName => state.languageCode;
 
   String get title {
     return Intl.message(
       'messageText',
       name: 'title',
-      desc: 'Title for this Shiiiit',
+      desc: 'Title for this application',
       locale: localeName,
     );
   }
-
-  static MultiLang of(BuildContext context) {
-    return Localizations.of<MultiLang>(context, MultiLang)!;
-  }
-
-  // static initializeMessages(String localeName) async {
-  //   return await createLocalMediaStream(localeName);
-  // }
 
   static const _localizedValues = <String, Map<String, String>>{
     'en': {
@@ -42,6 +43,9 @@ class MultiLang extends StateNotifier<Locale> {
 
   static List<String> languages() => _localizedValues.keys.toList();
 
+  // Méthodes pour changer la langue courante
+  void setLocale(Locale locale) => state = locale;
+
   void en() => state = const Locale.fromSubtags(languageCode: 'en');
 
   void es() => state = const Locale.fromSubtags(languageCode: 'es');
@@ -49,30 +53,38 @@ class MultiLang extends StateNotifier<Locale> {
   void fr() => state = const Locale.fromSubtags(languageCode: 'fr');
 }
 
-final localizationProvider = StateNotifierProvider<MultiLang, Locale>((ref) {
-  final localeName = ref.refresh(localeProvider).languageCode;
-  return MultiLang(localeName);
-}, name: 'internationalisation provider');
+// 3. Provider unifié Riverpod 3 (Auto-disposed par défaut)
+final localizationNotifierProvider =
+NotifierProvider<MultiLangNotifier, Locale>(
+  MultiLangNotifier.new,
+  name: 'LocalizationNotifierProvider',
+);
 
-final localeProvider =
-    Provider<Locale>((_) => const Locale.fromSubtags(languageCode: 'und'));
+// 4. Classe déléguée Flutter Localizations
+class CustomLocalizationsDelegate
+    extends LocalizationsDelegate<MultiLangNotifier> {
+  const CustomLocalizationsDelegate();
 
-class CustomLocalizationsDelegate extends LocalizationsDelegate<MultiLang> {
   @override
   bool isSupported(Locale locale) =>
-      MultiLang.languages().contains(locale.languageCode);
+      MultiLangNotifier.languages().contains(locale.languageCode);
 
   @override
-  Future<MultiLang> load(Locale locale) {
+  Future<MultiLangNotifier> load(Locale locale) {
     final String name =
-        locale.countryCode == null || locale.countryCode!.isEmpty
-            ? locale.languageCode
-            : locale.toString();
+    locale.countryCode == null || locale.countryCode!.isEmpty
+        ? locale.languageCode
+        : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
 
-    return SynchronousFuture<MultiLang>(MultiLang(localeName));
+    final notifier = MultiLangNotifier();
+    // Configure la locale initiale chargée par le widget MaterialApp
+    notifier.setLocale(Locale(localeName));
+
+    return SynchronousFuture<MultiLangNotifier>(notifier);
   }
 
   @override
-  bool shouldReload(covariant LocalizationsDelegate<MultiLang> old) => false;
+  bool shouldReload(covariant LocalizationsDelegate<MultiLangNotifier> old) =>
+      false;
 }

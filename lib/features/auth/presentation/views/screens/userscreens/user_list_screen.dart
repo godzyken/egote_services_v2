@@ -13,7 +13,7 @@ class UserListScreen extends ConsumerWidget {
   UserListScreen({super.key});
 
   final _filteredUserListProvider = filteredUserListProvider;
-  final _userListProvider = userListViewModelStateNotifierProvider;
+  final _userListProvider = userListViewModelNotifierProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

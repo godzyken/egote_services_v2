@@ -118,6 +118,6 @@ final addFormViewModelProvider = Provider
     .autoDispose
     .family<AddFormViewModel, UserEntityModel?>(
         (ref, user) {
-          final userListViewModel = ref.watch(userListViewModelStateNotifierProvider.notifier);
+          final userListViewModel = ref.watch(userListViewModelNotifierProvider.notifier);
           return AddFormViewModel(user, userListViewModel);
         });

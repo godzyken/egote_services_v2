@@ -10,24 +10,27 @@ class KeyValueDbListTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String usedDb = ref.watch(usedKeyValueDbProvider).describe;
+    // Écoute de l'état actuel de l'implémentation KeyValueDb
+    final UsedKeyValueDb currentDb = ref.watch(usedKeyValueDbNotifierProvider);
+
     return ListTile(
       title: Text('${context.tr?.storage}'),
-      subtitle: Text(usedDb),
+      subtitle: Text(currentDb.describe),
       trailing: const KeyValueDbToggleButtons(),
       onTap: () {
-        switch (ref.read(usedKeyValueDbProvider.notifier).state) {
+        // Obtenir le Notifier pour modifier l'état
+        final notifier = ref.read(usedKeyValueDbNotifierProvider.notifier);
+
+        // Définir la valeur suivante lors d'un appui (cycle à travers les options)
+        switch (currentDb) {
           case UsedKeyValueDb.memory:
-            ref.read(usedKeyValueDbProvider.notifier).state =
-                UsedKeyValueDb.sharedPreferences;
+            notifier.selectDb(UsedKeyValueDb.sharedPreferences);
             break;
           case UsedKeyValueDb.sharedPreferences:
-            ref.read(usedKeyValueDbProvider.notifier).state =
-                UsedKeyValueDb.hive;
+            notifier.selectDb(UsedKeyValueDb.hive);
             break;
           case UsedKeyValueDb.hive:
-            ref.read(usedKeyValueDbProvider.notifier).state =
-                UsedKeyValueDb.memory;
+            notifier.selectDb(UsedKeyValueDb.memory);
             break;
         }
       },

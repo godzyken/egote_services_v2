@@ -3,30 +3,52 @@ import 'package:egote_services_v2/features/auth/presentation/states/user/user_fo
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
-class UserNotifier extends StateNotifier<UserEntityModel> {
-  UserNotifier([UserEntityModel? userEntityModel])
-      : super(userEntityModel ?? UserEntityModel.empty());
+// --- NOTIFIERS ---
 
+class UserNotifier extends Notifier<UserEntityModel> {
   UserEntityModel? previousUser;
+
+  @override
+  UserEntityModel build() {
+    final now = ref.watch(clockProvider);
+    final diff = now.add(const Duration(days: 5));
+    final entityModel = ref.watch(userModelProvider);
+
+    if (diff.isAfter(entityModel.createdAt)) {
+      return previousUser ?? UserEntityModel.empty();
+    } else {
+      return UserEntityModel.create(
+        entityModel.name,
+        entityModel.role,
+        entityModel.isComplete,
+        now,
+        now,
+        now,
+        now,
+        diff,
+      );
+    }
+  }
 
   void updateName(String name) {
     state = state.copyWith(name: name);
-
     previousUser = state;
   }
 
   void updateRole(String name) {
     state = state.copyWith(role: name);
-
     previousUser = state;
   }
 }
 
-class UserFormStateController extends StateNotifier<UserFormState> {
-  UserFormStateController() : super(UserFormState(UserEntityModel.empty()));
+class UserFormStateController extends Notifier<UserFormState> {
+  @override
+  UserFormState build() {
+    return UserFormState(UserEntityModel.empty());
+  }
 
   FormzSubmissionStatus? isUser(UserEntityModel? userEntityModel) {
-    if (userEntityModel!.name.isNotEmpty) {
+    if (userEntityModel != null && userEntityModel.name.isNotEmpty) {
       state = state.copyWith(userEntityModel: userEntityModel);
     }
     return null;
@@ -35,38 +57,46 @@ class UserFormStateController extends StateNotifier<UserFormState> {
   void addUser(UserEntityModel u) async {
     UserEntityModel form = state.userEntityModel.copyWith(name: u.name);
 
-    late UserEntityModel user;
-
     if (form.name.isNotEmpty) {
-      user = form;
-      state = state.copyWith(userEntityModel: user);
+      state = state.copyWith(userEntityModel: form);
     }
   }
 }
 
-final clockProvider = StateProvider((ref) => DateTime.now());
-final currentProvider = StateProvider<UserEntityModel?>((ref) => null);
+// --- PROVIDERS ---
 
-final userNotifierProvider =
-    StateNotifierProvider<UserNotifier, UserEntityModel>((ref) {
-  final now = ref.read(clockProvider);
-  final diff = now.add(const Duration(days: 5));
-  final entityModel = ref.watch(userModelProvider);
-  if (diff.isAfter(entityModel.createdAt)) {
-    final previousUser = UserNotifier().previousUser;
-    return UserNotifier(previousUser);
-  } else {
-    final newUser = UserEntityModel.create(entityModel.name, entityModel.role,
-        entityModel.isComplete, now, now, now, now, diff);
-    return UserNotifier(newUser);
+final clockProvider = NotifierProvider<DateTimeNotifier, DateTime>(DateTimeNotifier.new);
+
+class DateTimeNotifier extends Notifier<DateTime> {
+  @override
+  DateTime build() {
+    return DateTime.now();
   }
-}, dependencies: [clockProvider], name: 'User notifier provider');
+
+  void refresh() {
+    state = DateTime.now();
+  }
+
+  void update(DateTime newDateTime) {
+    state = newDateTime;
+  }
+
+  void reset() {
+    state = DateTime.now();
+  }
+}
+
+final currentProvider = NotifierProvider<UserNotifier, UserEntityModel?>(
+    UserNotifier.new);
 
 final userModelProvider = Provider<UserEntityModel>((ref) {
   Map<String, dynamic> json = UserEntityModel.empty().toJson();
   return UserEntityModel.fromJson(json);
 });
 
+final userNotifierProvider =
+NotifierProvider<UserNotifier, UserEntityModel>(UserNotifier.new);
+
 final userFormStateNotifierProvider =
-    StateNotifierProvider<UserFormStateController, UserFormState>(
-        (ref) => UserFormStateController());
+NotifierProvider<UserFormStateController, UserFormState>(
+    UserFormStateController.new);

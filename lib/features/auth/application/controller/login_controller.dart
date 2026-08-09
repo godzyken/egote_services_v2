@@ -4,8 +4,9 @@ import 'package:formz/formz.dart';
 
 import '../../domain/entities/user_properties/properties_extensions.dart';
 
-class LoginControllerNotifier extends StateNotifier<SignInState> {
-  LoginControllerNotifier() : super(const SignInState());
+class LoginControllerNotifier extends Notifier<SignInState> {
+  @override
+  SignInState build() => const SignInState();
 
   FormzSubmissionStatus? validate(
       {EmailFormz? emailFormz, PasswordFormz? passwordFormz}) {
@@ -53,5 +54,4 @@ class LoginControllerNotifier extends StateNotifier<SignInState> {
       status: validate(passwordFormz: state.passwordFormz),
     );
   }
-
 }

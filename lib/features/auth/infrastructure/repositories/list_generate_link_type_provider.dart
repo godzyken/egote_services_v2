@@ -1,23 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/*
-class GenerateNotifier extends StateNotifier<List<GenerateLinkType>> {
-  GenerateNotifier() : super([]);
+// --- NOTIFIERS (Riverpod 3 Syntax) ---
 
-  void addLinkType(GenerateLinkType type) => state = [...state, type];
-
-  void removeLinkType(GenerateLinkType type) =>
-      state = [...state..remove(type)];
-}
-
-final generateLinkTypeProvider =
-    StateNotifierProvider.autoDispose<GenerateNotifier, List<GenerateLinkType>>(
-        (ref) => GenerateNotifier());
-*/
-
-class GenerateLinkNotifier extends StateNotifier<GenerateLinkType> {
-  GenerateLinkNotifier() : super(GenerateLinkType.invite);
+/// Gestionnaire d'un type de lien individuel
+class GenerateLinkNotifier extends Notifier<GenerateLinkType> {
+  @override
+  GenerateLinkType build() {
+    // État initial
+    return GenerateLinkType.invite;
+  }
 
   Future<void> fetchStatusInvite() async {
     state = GenerateLinkType.unknown;
@@ -36,7 +28,32 @@ class GenerateLinkNotifier extends StateNotifier<GenerateLinkType> {
   }
 }
 
+/// Gestionnaire d'une liste de types de liens (anciennement commenté, migré propre)
+class GenerateListNotifier extends Notifier<List<GenerateLinkType>> {
+  @override
+  List<GenerateLinkType> build() {
+    return const [];
+  }
+
+  void addLinkType(GenerateLinkType type) {
+    state = [...state, type];
+  }
+
+  void removeLinkType(GenerateLinkType type) {
+    state = state.where((element) => element != type).toList();
+  }
+}
+
+// --- PROVIDERS ---
+
 final generateLinkTypeNotifierProvider =
-    StateNotifierProvider.autoDispose<GenerateLinkNotifier, GenerateLinkType>(
-        (ref) => GenerateLinkNotifier(),
-        name: 'generate link notifier provider');
+NotifierProvider<GenerateLinkNotifier, GenerateLinkType>(
+  GenerateLinkNotifier.new,
+  name: 'GenerateLinkNotifierProvider',
+);
+
+final generateLinkListNotifierProvider =
+NotifierProvider<GenerateListNotifier, List<GenerateLinkType>>(
+  GenerateListNotifier.new,
+  name: 'GenerateLinkListNotifierProvider',
+);

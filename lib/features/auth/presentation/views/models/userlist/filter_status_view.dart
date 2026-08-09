@@ -1,15 +1,17 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum FilterKind{ all, available, unavailable, byId }
+enum FilterKind { all, available, unavailable, byId }
 
-class FilterKindView extends StateNotifier<FilterKind> {
-  FilterKindView() : super(FilterKind.all);
-  
-  filterByAll() => state = FilterKind.all;
-  filterByAvailable() => state = FilterKind.available;
-  filterByUnavailable() => state = FilterKind.unavailable;
-  filterById(final int id) => state = FilterKind.byId;
+class FilterKindNotifier extends Notifier<FilterKind> {
+  @override
+  FilterKind build() {
+    return FilterKind.all;
+  }
+
+  void filterByAll() => state = FilterKind.all;
+  void filterByAvailable() => state = FilterKind.available;
+  void filterByUnavailable() => state = FilterKind.unavailable;
+  void filterById(final int id) => state = FilterKind.byId;
 
   bool isFilterByAll() => state == FilterKind.all;
   bool isFilterByAvailable() => state == FilterKind.available;
@@ -17,6 +19,8 @@ class FilterKindView extends StateNotifier<FilterKind> {
   bool isFilterById(final int id) => state == FilterKind.byId;
 }
 
-final filterKindViewModelStateNotifierProvider = StateNotifierProvider
-    .autoDispose<FilterKindView, FilterKind>(
-        (_) => FilterKindView());
+final filterKindNotifierProvider =
+NotifierProvider<FilterKindNotifier, FilterKind>(
+  FilterKindNotifier.new,
+  name: 'FilterKindNotifierProvider',
+);

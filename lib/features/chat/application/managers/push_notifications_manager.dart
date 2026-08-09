@@ -19,7 +19,7 @@ class PushNotificationsManager {
   static const TAG = "PushNotificationsManager";
 
   static final PushNotificationsManager _instance =
-      PushNotificationsManager._internal();
+  PushNotificationsManager._internal();
 
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -35,23 +35,38 @@ class PushNotificationsManager {
 
   Ref? _ref;
 
-  init() async {
-    developer.log('[init], $TAG');
-    final firebaseMessaging = _ref!.watch(firebaseMessagingProvider);
+  /// Permet d'injecter la référence Riverpod
+  void setRef(Ref ref) {
+    _ref = ref;
+  }
 
-    await firebaseMessaging.setAutoInitEnabled(true).whenComplete(
-      () {
-        return _ref?.refresh(firebaseAuthProvider);
-      },
-    );
+  Future<void> init([Ref? ref]) async {
+    if (ref != null) _ref = ref;
+
+    developer.log('[init], $TAG');
+
+    if (_ref == null) {
+      developer.log('[init] ERROR: Ref is null. Call setRef() or pass ref to init()', name: TAG);
+      return;
+    }
+
+    final firebaseMessaging = _ref!.read(firebaseMessagingProvider);
+
+    await firebaseMessaging.setAutoInitEnabled(true).whenComplete(() {
+      return _ref?.refresh(firebaseAuthProvider);
+    });
 
     await firebaseMessaging.requestPermission(
-        alert: true, badge: true, sound: true);
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_launcher_foreground');
+    AndroidInitializationSettings('ic_launcher_foreground');
+
     final DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
+    DarwinInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,
@@ -59,12 +74,14 @@ class PushNotificationsManager {
     );
 
     final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: const DarwinInitializationSettings());
+    InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+      macOS: const DarwinInitializationSettings(),
+    );
+
+    // Correction de la signature initialize()
     await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
       onDidReceiveNotificationResponse:
           (NotificationResponse notificationResponse) {
         developer.log(
@@ -79,21 +96,20 @@ class PushNotificationsManager {
           }
         }
       },
-      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground, settings: initializationSettings,
     );
 
-    String? token;
+    // Obtention du token FCM de manière asynchrone
     if (Platform.isAndroid || kIsWeb || Platform.isIOS || Platform.isMacOS) {
-      firebaseMessaging.getToken().then((token) {
+      try {
+        final token = await firebaseMessaging.getToken();
         developer.log('[getToken] token: $token, $TAG');
-        subscribe(token);
-      }).catchError((onError) {
+        if (token != null && token.isNotEmpty) {
+          await subscribe(token);
+        }
+      } catch (onError) {
         developer.log('[getToken] onError: $onError, $TAG');
-      });
-    }
-
-    if (token!.isNotEmpty) {
-      subscribe(token);
+      }
     }
 
     firebaseMessaging.onTokenRefresh.listen((newToken) {
@@ -105,15 +121,15 @@ class PushNotificationsManager {
       showNotification(remoteMessage);
     });
 
-    // TODO test after fix https://github.com/FirebaseExtended/flutterfire/issues/4898
     FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
       developer.log('[onMessageOpenedApp] remoteMessage: $remoteMessage, $TAG');
       onNotificationClicked?.call(jsonEncode(remoteMessage.data));
     });
   }
 
-  subscribe(String? token) async {
+  Future<void> subscribe(String? token) async {
     developer.log('[subscribe] token: $token, ${PushNotificationsManager.TAG}');
+    if (token == null) return;
 
     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
     if (sharedPrefs.getSubscriptionToken() == token) {
@@ -122,22 +138,7 @@ class PushNotificationsManager {
       return;
     }
 
-/*    CreateSubscriptionParameters parameters = CreateSubscriptionParameters();
-    parameters.pushToken = token;
-
-    bool isProduction =
-        kIsWeb ? true : const bool.fromEnvironment('dart.vm.product');
-    parameters.environment = isProduction
-        ? CubeEnvironmentMig.PRODUCTION
-        : CubeEnvironmentMig.DEVELOPMENT;
-
-    if (Platform.isAndroid || kIsWeb || Platform.isIOS || Platform.isMacOS) {
-      parameters.channel = NotificationsChannels.GCM;
-      parameters.platform = CubePlatform.ANDROID;
-    }*/
-
     var deviceInfoPlugin = DeviceInfoPlugin();
-
     String? deviceId;
 
     if (kIsWeb) {
@@ -154,37 +155,15 @@ class PushNotificationsManager {
       deviceId = macOsInfo.computerName;
     }
 
-    String? newUuid = const Uuid().v4.toString();
-
-    /* parameters.udid = deviceId ?? newUuid;
-
-    var packageInfo = await PackageInfo.fromPlatform();
-    parameters.bundleIdentifier = packageInfo.packageName;
-
-    createSubscription(parameters.getRequestParameters())
-        .then((cubeSubscription) {
-      developer.log(
-          '[subscribe] subscription SUCCESS, ${PushNotificationsManager.TAG}');
-      sharedPrefs.saveSubscriptionToken(token!);
-      for (var subscription in cubeSubscription) {
-        if (subscription.clientIdentificationSequence == token) {
-          sharedPrefs.saveSubscriptionId(subscription.id!);
-        }
-      }
-    }).catchError((error) {
-      developer.log(
-          '[subscribe] subscription ERROR: $error, ${PushNotificationsManager.TAG}');
-    });*/
+    String? newUuid = const Uuid().v4();
+    developer.log('[subscribe] deviceId: ${deviceId ?? newUuid}', name: TAG);
   }
 
   Future<void> unsubscribe() {
     return SharedPrefs.instance.init().then((sharedPrefs) {
       int subscriptionId = sharedPrefs.getSubscriptionId();
       if (subscriptionId != 0) {
-        /*return deleteSubscription(subscriptionId).then((voidResult) {
-          FirebaseMessaging.instance.deleteToken();
-          sharedPrefs.saveSubscriptionId(0);
-        });*/
+        // Logique de désabonnement ConnectyCube
       }
       return Future.value();
     }).catchError((onError) {
@@ -208,17 +187,17 @@ class PushNotificationsManager {
   }
 }
 
-showNotification(RemoteMessage message) {
+void showNotification(RemoteMessage message) {
   developer.log(
       '[showNotification] message: ${message.data}, ${PushNotificationsManager.TAG}');
   Map<String, dynamic> data = message.data;
 
   NotificationDetails buildNotificationDetails(
-    int? badge,
-    String threadIdentifier,
-  ) {
+      int? badge,
+      String threadIdentifier,
+      ) {
     final DarwinNotificationDetails darwinNotificationDetails =
-        DarwinNotificationDetails(
+    DarwinNotificationDetails(
       badgeNumber: badge,
       threadIdentifier: threadIdentifier,
     );
@@ -243,10 +222,10 @@ showNotification(RemoteMessage message) {
   var threadId = data['ios_thread_id'] ?? data['dialog_id'] ?? 'ios_thread_id';
 
   FlutterLocalNotificationsPlugin().show(
-    6543,
-    "Chat sample",
-    data['message'].toString(),
-    buildNotificationDetails(badge, threadId),
+    id: 6543,
+    title: "Chat sample",
+    body: data['message'].toString(),
+    notificationDetails: buildNotificationDetails(badge, threadId),
     payload: jsonEncode(data),
   );
 }
@@ -268,28 +247,15 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
 
   if (context == null) return Future.value();
 
-  developer.log(
-      '[onSelectNotification] context != null, ${PushNotificationsManager.TAG}');
-
   if (payload != null) {
     return SharedPrefs.instance.init().then((sharedPrefs) async {
-      CubeUser? user =
-          await sharedPrefs.getUser().then((savedUser) => savedUser);
+      CubeUser? user = await sharedPrefs.getUser();
 
       Map<String, dynamic> payloadObject = jsonDecode(payload);
       String? dialogId = payloadObject['dialog_id'];
 
       developer.log(
           "[onSelectNotification] dialog_id: $dialogId, ${PushNotificationsManager.TAG}");
-
-      /*getDialogs({'id': dialogId}).then((dialogs) {
-        if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
-          CubeDialogMig dialog = dialogs.items.first;
-
-          context.pushNamed('chat_dialog',
-              extra: {USER_ARG_NAME: user, DIALOG_ARG_NAME: dialog});
-        }
-      });*/
     });
   } else {
     return Future.value();

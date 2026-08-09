@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'dart:developer' as developer;
 
-// import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/repository/auth_repository_interface.dart';
@@ -8,322 +8,275 @@ import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../chat/domain/models/entities/cube_user/cube_user_mig.dart';
-import '../../../common/presentation/extensions/extensions.dart';
 
 class AuthRepository implements AuthRepositoryInterface {
-  AuthRepository(this.authTokenLocalDataSource, this.client, this.type);
+  AuthRepository(
+      this.authTokenLocalDataSource,
+      this.client,
+      this.supabaseClient,
+      this.type,
+      );
 
   final AuthTokenLocalDataSource authTokenLocalDataSource;
   final supabase.GoTrueClient client;
-
-  static const String _table = 'auth_users_table';
-
-  final authClient = supabase.Supabase.instance.client;
-
+  final supabase.SupabaseClient supabaseClient;
   final supabase.GenerateLinkType type;
 
+  static const String _table = 'auth_users_table';
   final cuberUserModel = const CubeUserMig();
 
-  final realTimeChanelConfig =
-      const supabase.RealtimeChannelConfig(key: '', self: true, ack: true);
+  supabase.GoTrueClient get authClient => client;
 
   @override
   void authStateChange(void Function(UserModel? userEntity) callback) {
-    // TODO: implement authStateChange
-    final myChannel = authClient.channel('base_de_test');
-
-    myChannel
-        .onPresenceSync((payload) {})
-        .onPresenceJoin((payload) {})
-        .onPresenceLeave((payload) {})
-        .subscribe(
-      (status, error) async {
-        if (status == supabase.RealtimeSubscribeStatus.subscribed) {
-          await myChannel
-              .track({'online_at': DateTime.now().toIso8601String()});
-        } else {
-          developer.log('authStateChange() error: $error');
-        }
-      },
-    );
+    supabaseClient.auth.onAuthStateChange.listen((data) {
+      final session = data.session;
+      if (session != null) {
+        callback(UserModel.fromJson(session.user.toJson()));
+      } else {
+        callback(null);
+      }
+    });
   }
 
   @override
   Future<Either<Failure, bool>> isOnLine() async {
-    final myChannel = authClient
-        .channel('base_de_test', opts: realTimeChanelConfig)
-        .onPostgresChanges(
-            event: PostgresChangeEvent.all,
-            schema: 'public',
-            table: 'chat',
-            filter: PostgresChangeFilter(
-              type: PostgresChangeFilterType.eq,
-              column: 'room_id',
-              value: 200,
-            ),
-            callback: (payload, [ref]) {
-              final newRecord = payload.newRecord;
-              final oldRecord = payload.oldRecord;
-              developer.log(
-                  'Postgres old record: $oldRecord & Change received: $newRecord');
-            })
-        .subscribe((status, [_]) async {
-      switch (status) {
-        case RealtimeSubscribeStatus.subscribed:
-        // TODO: Handle this case.
-        case RealtimeSubscribeStatus.channelError:
-        // TODO: Handle this case.
-        case RealtimeSubscribeStatus.closed:
-        // TODO: Handle this case.
-        case RealtimeSubscribeStatus.timedOut:
-        // TODO: Handle this case.
+    try {
+      final myChannel = supabaseClient.channel('presence_online_channel');
+
+      final status = myChannel.subscribe();
+      if (status == supabase.RealtimeSubscribeStatus.subscribed) {
+        await myChannel.track({'online_at': DateTime.now().toIso8601String()});
+        return right(true);
+      } else {
+        return left(Failure.unprocessableEntity(
+            message: 'Impossible de rejoindre le canal temps réel.'));
       }
-    });
-
-    if (!myChannel.presence.inPendingSyncState()) {
-      myChannel.onPostgresChanges(
-          event: PostgresChangeEvent.delete,
-          schema: 'public',
-          callback: (payload) {
-            developer.log('channel delete payload: ${payload.toString()}');
-          });
-
-      myChannel.onPostgresChanges(
-          event: PostgresChangeEvent.insert,
-          schema: 'public',
-          callback: (payload) {
-            developer.log('channel insert payload: ${payload.toString()}');
-          });
-
-      developer.log('isOnline(): $myChannel');
-      return await myChannel
-          .track({'online_at': DateTime.now().toIso8601String()}).then(
-              (res) async {
-        switch (res) {
-          case ChannelResponse.ok:
-            return right(true);
-          case ChannelResponse.timedOut:
-            return left(Failure.unprocessableEntity(
-                message: 'Channel connection! Time Out!:$res'));
-          case ChannelResponse.rateLimited:
-            return left(Failure.empty());
-          case ChannelResponse.error:
-            return left(Failure.badRequest());
-        }
-      }, onError: (error) => left(Failure.badRequest()));
+    } catch (e) {
+      developer.log('isOnLine Error: $e');
+      return left(Failure.badRequest());
     }
-
-    return right(true);
   }
 
   @override
   Future<Either<Failure, UserModel>> restoreSession() async {
-    final res = authTokenLocalDataSource.get();
-    if (res.isLeft()) {
-      return left(Failure.empty());
-    }
+    try {
+      final localTokenResult = authTokenLocalDataSource.get();
+      if (localTokenResult.isLeft()) {
+        return left(Failure.empty());
+      }
 
-    final response = await authClient.auth.refreshSession();
-    final data = response.session;
+      final response = await client.refreshSession();
+      final session = response.session;
+      final user = response.user;
 
-    if (data != null || response.user == null) {
-      await authTokenLocalDataSource.remove();
+      if (session == null || user == null) {
+        await authTokenLocalDataSource.remove();
+        return left(Failure.unauthorized());
+      }
 
+      await authTokenLocalDataSource
+          .store(session.providerRefreshToken ?? session.accessToken);
+      return right(UserModel.fromJson(user.toJson()));
+    } catch (e) {
+      developer.log('restoreSession Error: $e');
       return left(Failure.unauthorized());
     }
-    await authTokenLocalDataSource.store(data!.providerRefreshToken ?? '');
-    return right(UserModel.fromJson(data.user.toJson()));
   }
 
   @override
   Future<Either<Failure, UserModel>> setSession(String token) async {
-    final response = await client.setSession(token);
-    await authTokenLocalDataSource
-        .store(response.session?.providerRefreshToken ?? '');
+    try {
+      final response = await client.setSession(token);
+      final session = response.session;
+      final user = response.user;
 
-    final data = response.session;
+      if (session == null || user == null) {
+        await authTokenLocalDataSource.remove();
+        return left(Failure.unauthorized());
+      }
 
-    if (response.session != null || response.user == null) {
-      await authTokenLocalDataSource.remove();
+      await authTokenLocalDataSource
+          .store(session.providerRefreshToken ?? session.accessToken);
+      return right(UserModel.fromJson(user.toJson()));
+    } catch (e) {
+      developer.log('setSession Error: $e');
       return left(Failure.unauthorized());
     }
-
-    return right(UserModel.fromJson(data!.user.toJson()));
   }
 
   @override
   Future<Either<Failure, bool>> signInWithGoogle() async {
-    final res = await client.signInWithOAuth(supabase.OAuthProvider.google,
-        authScreenLaunchMode: LaunchMode.inAppWebView,
-        redirectTo: 'io.supabase.flutter://reset-callback/');
+    try {
+      final res = await client.signInWithOAuth(
+        supabase.OAuthProvider.google,
+        authScreenLaunchMode: supabase.LaunchMode.inAppWebView,
+        redirectTo: kIsWeb ? null : 'io.supabase.flutter://reset-callback/',
+      );
 
-    if (!res) {
-      developer.log('signInWithGoogle() error: $res');
+      if (!res) {
+        return left(Failure.badRequest());
+      }
+      return right(true);
+    } catch (e) {
+      developer.log('signInWithGoogle Error: $e');
       return left(Failure.badRequest());
     }
-    developer.log('signInWithGoogle() success: $res');
-
-    return right(true);
   }
 
   @override
   Future<Either<Failure, supabase.User>> signInWithPassword(
       String? email, String? password) async {
-    developer.log('signInWithPassword()');
+    try {
+      if (email == null || password == null) {
+        return left(Failure.badRequest());
+      }
 
-    final res = await client.signInWithPassword(
-      email: email,
-      password: password!,
-    );
-    developer.log(
-        'signInWithPassword response : ${res.session!.toJson()}\n ${res.user!.toJson()}');
-    await authTokenLocalDataSource
-        .store(res.session?.providerRefreshToken ?? '');
+      final res = await client.signInWithPassword(
+        email: email,
+        password: password,
+      );
 
-    final supabase.Session? session = res.session;
-    final supabase.User? user = res.user;
+      final session = res.session;
+      final user = res.user;
 
-    do {
-      await authTokenLocalDataSource.remove();
-      left(Failure.unauthorized());
-    } while (session != null && user == null);
+      if (session == null || user == null) {
+        await authTokenLocalDataSource.remove();
+        return left(Failure.unauthorized());
+      }
 
-    return right(session!.user);
+      await authTokenLocalDataSource
+          .store(session.providerRefreshToken ?? session.accessToken);
+
+      return right(user);
+    } catch (e) {
+      developer.log('signInWithPassword Error: $e');
+      return left(Failure.unauthorized());
+    }
   }
 
   @override
   Future<Either<Failure, bool>> signOut() async {
-    await authTokenLocalDataSource.remove();
-
-    final res = await client
-        .signOut()
-        .then((value) => true, onError: left(Failure.badRequest()).call);
-    if (!res) {
+    try {
+      await authTokenLocalDataSource.remove();
+      await client.signOut();
+      return right(true);
+    } catch (e) {
+      developer.log('signOut Error: $e');
       return left(Failure.badRequest());
     }
-    return right(true);
   }
 
-  /// Type: Future<AuthResponse> Function({
-  ///   String? [captchaToken],
-  ///   Map<String, dynamic>? [data],
-  ///   String? [email],
-  ///   String? [emailRedirectTo],
-  ///   required String [password],
-  ///   String? [phone],
   @override
   Future<Either<Failure, UserModel>> signUp(
       String? email, String? name, String password) async {
-    final response = await client.signUp(
-      email: email,
-      password: password,
-      data: {'name': name},
-      //emailRedirectTo: kIsWeb ? https://qrco.de/be782E : 'https://www.godzy.egote-services-v2/signup/enroll',
-      emailRedirectTo:
-          kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
-    );
+    try {
+      if (email == null || name == null) {
+        return left(Failure.badRequest());
+      }
 
-    developer.log('reponse api signup: ${response.user}');
+      final response = await client.signUp(
+        email: email,
+        password: password,
+        data: {'name': name},
+        emailRedirectTo: kIsWeb
+            ? null
+            : 'com.godzy.egote-services-v2://callback/enroll',
+      );
 
-    if (response.user != null) {
-      await authTokenLocalDataSource
-          .store(response.session?.providerRefreshToken ?? '');
+      final user = response.user;
+      final session = response.session;
+
+      if (user == null) {
+        return left(Failure.unauthorized());
+      }
+
+      if (session != null) {
+        await authTokenLocalDataSource
+            .store(session.providerRefreshToken ?? session.accessToken);
+      }
+
+      final now = DateTime.now();
+      final userEntityModel = UserEntityModel.create(
+        name,
+        user.role ?? 'authenticated',
+        false,
+        DateTime.tryParse(user.createdAt) ?? now,
+        DateTime.tryParse(user.updatedAt ?? '') ?? now,
+        DateTime.tryParse(user.emailConfirmedAt ?? '') ?? now,
+        DateTime.tryParse(user.phoneConfirmedAt ?? '') ?? now,
+        DateTime.tryParse(user.lastSignInAt ?? '') ?? now,
+      );
+
+      await supabaseClient.from(_table).insert(userEntityModel.toJson());
+
+      return right(UserModel.fromJson(userEntityModel.toJson()));
+    } catch (e) {
+      developer.log('signUp Error: $e');
+      return left(Failure.badRequest());
     }
-
-    final supabase.Session? data = response.session;
-    final supabase.User? user = response.user;
-
-    final createdAt = DateTime.parse(user!.createdAt);
-    final updatedAt = DateTime.parse(user.updatedAt!);
-    final emailConfirmedAt = DateTime.parse(user.emailConfirmedAt!);
-    final phoneConfirmedAt = DateTime.parse(user.phoneConfirmedAt!);
-    final lastSignInAt = DateTime.parse(user.lastSignInAt!);
-
-    final UserEntityModel userEntityModel = UserEntityModel.create(
-      name!,
-      user.role!,
-      false,
-      createdAt,
-      updatedAt,
-      emailConfirmedAt,
-      phoneConfirmedAt,
-      lastSignInAt,
-    );
-
-    await authClient.from('auth_users_table').insert(userEntityModel);
-
-    if (data != null) {
-      await setSession(data.accessToken);
-      await authTokenLocalDataSource.remove();
-      await authClient
-          .from('auth_users_table')
-          .delete()
-          .match({'id': userEntityModel.id});
-    } else {
-      return left(Failure.unauthorized());
-    }
-
-    return right(UserModel.fromJson(userEntityModel.toJson()));
   }
 
   @override
   Future<Either<Failure, supabase.AuthResponse>> verifyCode(
       String email, String code) async {
-    final res = await client.verifyOTP(
-        email: email, token: code, type: supabase.OtpType.signup);
-    developer.log('response api verify code: $res');
+    try {
+      final res = await client.verifyOTP(
+        email: email,
+        token: code,
+        type: supabase.OtpType.signup,
+      );
 
-    if (res.user != null) {
-      await authTokenLocalDataSource.store(res.session?.tokenType ?? '');
-    }
+      final session = res.session;
+      final user = res.user;
 
-    final supabase.Session? session = res.session;
-    final supabase.User? user = res.user;
+      if (session == null || user == null) {
+        return left(Failure.unauthorized());
+      }
 
-    await client.signInWithOtp(email: res.user!.email, shouldCreateUser: true);
+      await authTokenLocalDataSource
+          .store(session.providerRefreshToken ?? session.accessToken);
 
-    if (session != null || user == null) {
-      await authTokenLocalDataSource.remove();
-      await authClient
-          .from('auth_users_table')
-          .delete()
-          .match({'id': user!.id});
-
+      return right(res);
+    } catch (e) {
+      developer.log('verifyCode Error: $e');
       return left(Failure.unauthorized());
     }
-    return right(supabase.AuthResponse(session: session, user: user));
   }
 
   @override
   Future<Either<Failure, UserEntityModel>> createUserEntityModel(
       UserName name) async {
     try {
-      final now = DateTimeX.current.toIso8601String();
-
-      final n = name.value.getOrElse((l) => '');
+      final now = DateTime.now();
+      final n = name.value.getOrElse((_) => '');
 
       final entity = UserEntityModel.create(
-          n,
-          'role',
-          false,
-          DateTime.parse(now),
-          DateTime.parse(now),
-          DateTime.parse(now),
-          DateTime.parse(now),
-          DateTime.parse(now));
+        n,
+        'user',
+        false,
+        now,
+        now,
+        now,
+        now,
+        now,
+      );
 
-      final res =
-          await authClient.from(_table).insert(entity.toJson()).select();
+      final res = await supabaseClient.from(_table).insert(entity.toJson()).select();
 
-      return right(UserEntityModel.fromJson(convertChangeData(res, {})));
+      if (res.isEmpty) {
+        return left(Failure.badRequest());
+      }
+
+      return right(UserEntityModel.fromJson(res.first));
     } on supabase.PostgrestException catch (e) {
-      int? statusCode = int.tryParse(e.code!);
-
-      developer.ServiceExtensionResponse.error(statusCode!, e.message);
+      developer.log('PostgrestException: ${e.message}');
       return left(Failure.unauthorized());
+    } catch (e) {
+      developer.log('createUserEntityModel Error: $e');
+      return left(Failure.badRequest());
     }
   }
 
@@ -332,105 +285,121 @@ class AuthRepository implements AuthRepositoryInterface {
       void Function(CubeUserMig? cubeUser) cubeUserCallBack) async {
     try {
       switch (type) {
-        case GenerateLinkType.signup:
-          final res = await authClient.auth.admin.generateLink(
-              type: type,
-              email: cuberUserModel.email!,
-              password: cuberUserModel.password);
+        case supabase.GenerateLinkType.signup:
+          final res = await supabaseClient.auth.admin.generateLink(
+            type: type,
+            email: cuberUserModel.email ?? '',
+            password: cuberUserModel.password,
+          );
 
           final actionLink = res.properties.actionLink;
+          final updatedCubeUser = CubeUserMig(
+            avatar: cuberUserModel.avatar ?? actionLink,
+            customData: cuberUserModel.customData ?? actionLink,
+            customDataClass: cuberUserModel.customDataClass ?? actionLink,
+            email: cuberUserModel.email ?? actionLink,
+            facebookId: cuberUserModel.facebookId ?? actionLink,
+            id: int.tryParse(supabaseClient.auth.currentUser?.id ?? ''),
+            fullName: cuberUserModel.fullName ?? actionLink,
+            isGuest: cuberUserModel.isGuest,
+            login: cuberUserModel.login ?? actionLink,
+            oldPassword: cuberUserModel.oldPassword ?? actionLink,
+            password: cuberUserModel.password ?? actionLink,
+            phone: cuberUserModel.phone ?? actionLink,
+            tags: cuberUserModel.tags,
+            timeZone: cuberUserModel.timeZone,
+            website: cuberUserModel.website ?? actionLink,
+            twitterId: cuberUserModel.twitterId ?? actionLink,
+            externalId: int.tryParse(supabaseClient.auth.currentUser?.id ?? ''),
+          );
 
-          cubeUserCallBack(CubeUserMig(
-              avatar: cuberUserModel.avatar ?? actionLink,
-              customData: cuberUserModel.customData ?? actionLink,
-              customDataClass: cuberUserModel.customDataClass ?? actionLink,
-              email: cuberUserModel.email ?? actionLink,
-              facebookId: cuberUserModel.facebookId ?? actionLink,
-              id: int.tryParse(authClient.auth.currentUser!.id),
-              fullName: cuberUserModel.fullName ?? actionLink,
-              isGuest: cuberUserModel.isGuest,
-              login: cuberUserModel.login ?? actionLink,
-              oldPassword: cuberUserModel.oldPassword ?? actionLink,
-              password: cuberUserModel.password ?? actionLink,
-              phone: cuberUserModel.phone ?? actionLink,
-              tags: cuberUserModel.tags,
-              timeZone: cuberUserModel.timeZone,
-              website: cuberUserModel.website ?? actionLink,
-              twitterId: cuberUserModel.twitterId ?? actionLink,
-              externalId: int.tryParse(authClient.auth.currentUser!.id)));
-        case GenerateLinkType.invite:
-        // TODO: Handle this case.
-        case GenerateLinkType.magiclink:
-        // TODO: Handle this case.
-        case GenerateLinkType.recovery:
-        // TODO: Handle this case.
-        case GenerateLinkType.emailChangeCurrent:
-          // TODO: Handle this case.
-          final UserResponse res = await authClient.auth.admin.updateUserById(
+          cubeUserCallBack(updatedCubeUser);
+          return right(updatedCubeUser);
+
+        case supabase.GenerateLinkType.emailChangeCurrent:
+          if (cuberUserModel.id != null) {
+            await supabaseClient.auth.admin.updateUserById(
               cuberUserModel.id.toString(),
-              attributes: AdminUserAttributes(
-                  email: cuberUserModel.email, emailConfirm: true));
-
-          final user = authClient
-              .from('auth_users_table')
-              .stream(primaryKey: ['id']).listen((event) {
-            final data = event;
-
-            data.first.difference(Eq.eqString, res.user!.toJson());
-          });
-
-          while (user.isPaused) {
-            await Future.delayed(
-                const Duration(seconds: 30), () => {user.pause()});
+              attributes: supabase.AdminUserAttributes(
+                email: cuberUserModel.email,
+                emailConfirm: true,
+              ),
+            );
           }
 
-          user.resume();
-
-          user.asFuture(res.user);
-
           cubeUserCallBack(cuberUserModel);
-
           return right(cuberUserModel);
-        case GenerateLinkType.emailChangeNew:
-        // TODO: Handle this case.
-        case GenerateLinkType.unknown:
-        // TODO: Handle this case.
-      }
 
-      return right(CubeUserMig(
-        email: cuberUserModel.email,
-      ));
+        default:
+          return right(CubeUserMig(email: cuberUserModel.email));
+      }
     } catch (e) {
-      developer.log(e.toString());
+      developer.log('cubeUserStateChange Error: $e');
       return left(Failure.unprocessableEntity(message: e.toString()));
     }
   }
 
   @override
   Future<Either<Failure, bool>> signInWithApple() async {
-/*    final rawNonce = await authClient.auth.generateRawNonce();
-    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+    try {
+      final rawNonce = client.generateRawNonce();
+      final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
 
-    final credential = await supabase.Supabase.instance.client.auth.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      nonce: hashedNonce,
-    );
-
-    final idToken = credential.identityToken;
-    if (idToken == null) {
-      throw const AuthException(
-        'Could not find ID Token from generated credential.',
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: hashedNonce,
       );
-    }
 
-    return signInWithIdToken(
-      provider: OAuthProvider.apple,
-      idToken: idToken,
-      nonce: rawNonce,
-    );*/
-    return left(Failure.empty());
+      final idToken = credential.identityToken;
+      if (idToken == null) {
+        return left(Failure.badRequest());
+      }
+
+      final res = await client.signInWithIdToken(
+        provider: supabase.OAuthProvider.apple,
+        idToken: idToken,
+        nonce: rawNonce,
+      );
+
+      if (res.session == null) {
+        return left(Failure.unauthorized());
+      }
+
+      await authTokenLocalDataSource
+          .store(res.session?.providerRefreshToken ?? res.session!.accessToken);
+
+      return right(true);
+    } catch (e) {
+      developer.log('signInWithApple Error: $e');
+      return left(Failure.badRequest());
+    }
+  }
+
+  /// Récupère l'utilisateur actuellement connecté via Supabase Auth
+  /// ou bascule sur la base de données locale / cache si la session est présente.
+  Future<UserModel?> getCurrentUser() async {
+    try {
+      final user = client.currentUser;
+      if (user != null) {
+        return UserModel.fromJson(user.toJson());
+      }
+
+      final session = client.currentSession;
+      if (session != null) {
+        return UserModel.fromJson(session.user.toJson());
+      }
+
+      final restoreResult = await restoreSession();
+      return restoreResult.fold(
+            (failure) => null,
+            (userModel) => userModel,
+      );
+    } catch (e) {
+      developer.log('getCurrentUser Error: $e');
+      return null;
+    }
   }
 }

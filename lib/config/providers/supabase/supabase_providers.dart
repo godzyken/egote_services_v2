@@ -14,10 +14,11 @@ import '../../environements/flavors.dart';
 
 // <---------------- Supabase Instances Providers -------------------> //
 
+// 1. Initialisation asynchrone de Supabase
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
   final configFile = await rootBundle.loadString(F.envFileName, cache: false);
   final env =
-      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
 
   final client = supabase.GoTrueClient(
     url: env.supabaseUrl,
@@ -29,63 +30,72 @@ final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
   );
 
   return await supabase.Supabase.initialize(
-      url: env.supabaseUrl,
-      anonKey: env.supabaseAnonKey,
-      headers: client.headers,
-      authOptions: const supabase.FlutterAuthClientOptions(
-          authFlowType: supabase.AuthFlowType.pkce),
-      // authCallbackUrlHostname: env.supabaseAuthCallbackUrlHostname,
-      realtimeClientOptions: const supabase.RealtimeClientOptions(
-        logLevel: RealtimeLogLevel.info,
-        eventsPerSecond: 2,
-      ),
-      storageOptions: const supabase.StorageClientOptions(
-        retryAttempts: 10,
-      ),
-      debug: kDebugMode);
+    url: env.supabaseUrl,
+    anonKey: env.supabaseAnonKey,
+    headers: client.headers,
+    authOptions: const supabase.FlutterAuthClientOptions(
+      authFlowType: supabase.AuthFlowType.pkce,
+    ),
+    realtimeClientOptions: const supabase.RealtimeClientOptions(
+      logLevel: RealtimeLogLevel.info,
+      eventsPerSecond: 2,
+    ),
+    storageOptions: const supabase.StorageClientOptions(
+      retryAttempts: 10,
+    ),
+    debug: kDebugMode,
+  );
 }, name: 'Initialisation de supabase provider');
 
-final supabaseProvider =
-    Provider<supabase.Supabase>((ref) => supabase.Supabase.instance);
+// 2. Accès à l'instance Supabase
+final supabaseProvider = Provider<supabase.Supabase>(
+      (ref) => supabase.Supabase.instance,
+  name: 'SupabaseProvider',
+);
 
+// 3. Client Supabase sécurisé (gestion AsyncValue au lieu de Client!)
 final supabaseClientProvider = Provider<supabase.SupabaseClient>((ref) {
   final supaInit = ref.watch(supabaseInitProvider);
-  final client = supaInit.value?.client;
-  return client!;
-},
-    dependencies: [supabaseProvider, supabaseInitProvider],
-    name: 'Supabase Client Provider');
+  return supaInit.maybeWhen(
+    data: (instance) => instance.client,
+    orElse: () => ref.watch(supabaseProvider).client,
+  );
+}, name: 'Supabase Client Provider');
 
-final supabaseAuthUserProvider =
-    Provider<supabase.AuthUser>((ref) => supabase.AuthUser(
-          id: '',
-          email: '',
-          appMetadata: {},
-          aud: '',
-          createdAt: '',
-          phone: '',
-          role: '',
-          updatedAt: '',
-          userMetadata: {},
-          lastSignInAt: '',
-          emailConfirmedAt: '',
-          phoneConfirmedAt: '',
-          confirmedAt: '',
-        ));
+final supabaseAuthUserProvider = Provider<supabase.AuthUser>(
+      (ref) => supabase.AuthUser(
+    id: '',
+    email: '',
+    appMetadata: {},
+    aud: '',
+    createdAt: '',
+    phone: '',
+    role: '',
+    updatedAt: '',
+    userMetadata: {},
+    lastSignInAt: '',
+    emailConfirmedAt: '',
+    phoneConfirmedAt: '',
+    confirmedAt: '',
+  ),
+  name: 'SupabaseAuthUserProvider',
+);
 
-final supabaseSocketChannelProvider =
-    Provider((ref) => ref.watch(supabaseProvider).client.realtime.transport);
+final supabaseSocketChannelProvider = Provider(
+      (ref) => ref.watch(supabaseProvider).client.realtime.transport,
+  name: 'SupabaseSocketChannelProvider',
+);
 
-final supabaseRealtimeErrorProvider =
-    Provider<supabase.SupabaseRealtimeError>((ref) {
-  return supabase.SupabaseRealtimeError();
-});
+final supabaseRealtimeErrorProvider = Provider<supabase.SupabaseRealtimeError>(
+      (ref) => supabase.SupabaseRealtimeError(),
+  name: 'SupabaseRealtimeErrorProvider',
+);
 
+// 4. Gestion réactive de la socket/canal Realtime
 final supabaseChannelRProvider = Provider((ref) {
-  final client =
-      ref.watch(supabaseClientProvider.select((value) => value.realtime));
+  final client = ref.watch(supabaseClientProvider).realtime;
   supabase.SupabaseRealtimeError realtimeError =
-      ref.watch(supabaseRealtimeErrorProvider);
+  ref.watch(supabaseRealtimeErrorProvider);
 
   ref.onDispose(() {
     client.onOpen(() {
@@ -109,7 +119,6 @@ final supabaseChannelRProvider = Provider((ref) {
                   chan.presenceState();
                 } else {
                   chan.unsubscribe();
-                  socket?.stream;
                 }
               case SocketStates.open:
                 if (chan.canPush) {
@@ -120,20 +129,16 @@ final supabaseChannelRProvider = Provider((ref) {
                 } else {
                   chan.unsubscribe();
                 }
-              case SocketStates.closing:
-                client.conn?.sink
-                    .close(socket?.closeCode, realtimeError.message.toString());
-                client.onConnMessage('Goodb8 3wi Body! ${socket?.closeReason}');
-
-                chan.unsubscribe();
-
+              case SocketStates.disconnecting:
               case SocketStates.closed:
-                client.conn?.sink
-                    .close(socket?.closeCode, realtimeError.message.toString());
-                client.onConnMessage('Goodb8 3wi Body! ${socket?.closeReason}');
-
+                client.conn?.sink.close(
+                  socket?.closeCode,
+                  realtimeError.message.toString(),
+                );
+                client.onConnMessage(
+                  'Goodb8 3wi Body! ${socket?.closeReason}',
+                );
                 chan.unsubscribe();
-                socket?.stream;
               case SocketStates.disconnected:
                 chan.unsubscribe();
             }
@@ -142,8 +147,11 @@ final supabaseChannelRProvider = Provider((ref) {
         }
       } on supabase.SupabaseRealtimeError catch (e) {
         realtimeError = e;
-        developer.log(realtimeError.toString(),
-            error: realtimeError.message, stackTrace: realtimeError.stackTrace);
+        developer.log(
+          realtimeError.toString(),
+          error: realtimeError.message,
+          stackTrace: realtimeError.stackTrace,
+        );
       }
     });
   });
@@ -154,61 +162,68 @@ final supabaseChannelRProvider = Provider((ref) {
     });
   });
 });
-final supabaseChannelResponseProvider =
-    Provider((ref) => supabase.ChannelResponse);
 
-final supabaseChannelFilterProvider =
-    Provider((ref) => supabase.RealtimeChannel);
+// 5. Migration des anciens StateProvider vers des Notifier (ou Provider)
 
-final linksTypeProvider = StateProvider((_) => supabase.GenerateLinkType);
+// Remplacement de StateProvider pour Type/Enum
+class LinksTypeNotifier extends Notifier<Type> {
+  @override
+  Type build() => supabase.GenerateLinkType;
 
-/*final supabaseCreateAuthProvider = Provider<supabase.AuthUser>((ref) {
-  final users = ref.watch(userNotifierProvider);
-  final authInit = ref.watch(supabaseAuthUserProvider);
-  final filter = ref.watch(linksTypeProvider);
-  final change = ref.read(userChangesProvider);
+  void setType(Type newType) => state = newType;
+}
 
-  switch(filter) {
-    case
+final linksTypeNotifierProvider =
+NotifierProvider<LinksTypeNotifier, Type>(LinksTypeNotifier.new);
+
+// Remplacement de StateProvider pour filterConnection
+class FilterConnectionNotifier extends Notifier<List<int>> {
+  @override
+  List<int> build() {
+    final client = ref.watch(supabaseClientProvider);
+    final userState = ref.watch(userNotifierProvider);
+
+    final stateList = <int, String>{
+      1: 'initialized',
+      2: client.auth.currentUser?.id ?? '',
+      3: userState.role,
+    };
+
+    return stateList.keys.toList();
+  }
+}
+
+final filterConnectionNotifierProvider =
+NotifierProvider<FilterConnectionNotifier, List<int>>(
+  FilterConnectionNotifier.new,
+  name: 'FilterConnectionNotifierProvider',
+);
+
+// Remplacement de StateProvider pour le compteur persistant
+class CountNotifier extends Notifier<int> {
+  @override
+  int build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    return prefs.getInt('count') ?? 0;
   }
 
-  return authInit;
-});
+  void increment() {
+    state++;
+    _save();
+  }
 
-final supabaseUsersListProvider = Provider<List<supabase.SupabaseAuth>>((ref) {
-  final users = ref.watch(userNotifierProvider);
+  void setCount(int value) {
+    state = value;
+    _save();
+  }
 
+  void _save() {
+    final prefs = ref.read(sharedPreferencesProvider);
+    prefs.setInt('count', state);
+  }
+}
 
-  final auths = ref.watch(su)
-},);*/
-
-final filterConnection = StateProvider<List<int>>((ref) {
-  final state1 =
-      ref.watch(supabaseInitProvider.future).timeout(const Duration(days: 2));
-  final state2 = ref.watch(supabaseClientProvider);
-  final state3 = ref.watch(userNotifierProvider);
-
-  final stateList = <int, String>{
-    1: state1.toString(),
-    2: state2.auth.currentUser!.id,
-    3: state3.role
-  };
-
-  var list = <int>[];
-
-  stateList.forEach((key, value) {
-    var checkList = list.add(key);
-    return checkList;
-  });
-
-  return list;
-});
-
-final countProvider = StateProvider<int>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  final currentValue = prefs.getInt('count') ?? 0;
-  ref.listenSelf((previous, next) {
-    prefs.setInt('cont', next);
-  });
-  return currentValue;
-});
+final countNotifierProvider = NotifierProvider<CountNotifier, int>(
+  CountNotifier.new,
+  name: 'CountNotifierProvider',
+);

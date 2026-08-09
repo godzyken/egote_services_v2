@@ -11,7 +11,10 @@ class UserList with _$UserList {
 
   const UserList._();
 
-  operator [](final int index) => values[index];
+  // Constructeur/factory pour créer une liste vide
+  factory UserList.empty() => const UserList(values: []);
+
+  UserEntityModel operator [](final int index) => values[index];
 
   int get length => values.length;
 
@@ -20,16 +23,17 @@ class UserList with _$UserList {
 
   UserList updateUser(final UserEntityModel entity) {
     return copyWith(
-        values: values.map((user) => entity.id == user.id ? entity : user).toList());
+      values: values.map((user) => entity.id == user.id ? entity : user).toList(),
+    );
   }
 
+  // Correction : garder les utilisateurs dont l'ID est DIFFÉRENT de celui supprimé
   UserList removeUserById(final UserId id) =>
-      copyWith(values: values.where((user) => user.id == id).toList());
+      copyWith(values: values.where((user) => user.id != id).toList());
 
   UserList filterByComplete() =>
-      copyWith(values: values.where((user) => user.name.isNotEmpty).toList());
+      copyWith(values: values.where((user) => user.isComplete).toList());
 
   UserList filterByIncomplete() =>
-      copyWith(values: values.where((user) => user.name.isEmpty).toList());
-
+      copyWith(values: values.where((user) => !user.isComplete).toList());
 }

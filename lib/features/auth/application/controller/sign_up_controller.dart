@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/sign_up/sign_up_state.dart';
 import '../../domain/entities/user_properties/properties_extensions.dart';
 
-class SignUpController extends StateNotifier<SignUpState> {
-
-  SignUpController() : super(const SignUpState());
+class SignUpController extends Notifier<SignUpState> {
+  @override
+  SignUpState build() => const SignUpState();
 
   void onNameChange(String value) {
     final name = NameFormz.dirty(value);
@@ -23,5 +23,4 @@ class SignUpController extends StateNotifier<SignUpState> {
 
     state = state.copyWith(passwordFormz: password);
   }
-
 }

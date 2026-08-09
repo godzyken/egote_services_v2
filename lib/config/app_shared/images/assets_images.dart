@@ -20,17 +20,20 @@ class Images with _$Images {
     @AssetsImageConverter() required List<LocalImages> images,
   }) = _ImagesLocal;
 
-  const factory Images.error({required String error, required String message}) =
-      _ImagesError;
+  const factory Images.error({
+    required String error,
+    required String message,
+  }) = _ImagesError;
 
   factory Images.fromJson(Map<String, dynamic> json) => _$ImagesFromJson(json);
 }
 
 @Freezed()
 class ImagesAssets with _$ImagesAssets {
-  const factory ImagesAssets.loading(
-      {required List<Images> images,
-      required bool isLoading}) = _ImagesAssetsLoading;
+  const factory ImagesAssets.loading({
+    required List<Images> images,
+    required bool isLoading,
+  }) = _ImagesAssetsLoading;
 
   const factory ImagesAssets.failed({
     required bool isLoading,
@@ -43,41 +46,64 @@ class ImagesAssets with _$ImagesAssets {
       _$ImagesAssetsFromJson(json);
 }
 
-final assetList = StateNotifierProvider<ImageAssetsNotifier, List<ImagesAssets>>(
-    (ref) => ImageAssetsNotifier());
+// --- NOTIFIER (Riverpod 3 Syntax) ---
 
-class ImageAssetsNotifier extends StateNotifier<List<ImagesAssets>> {
-  ImageAssetsNotifier([List<ImagesAssets>? state])
-      : super(state ?? <ImagesAssets>[]) {
+class ImageAssetsNotifier extends Notifier<List<ImagesAssets>> {
+  @override
+  List<ImagesAssets> build() {
+    // Exécution de la charge initiale au montage du provider
     loadImages(true);
+    return const [];
   }
 
-  loadImages(bool isLoading) async {
-    final List<Images> imageList = <Images>[];
+  Future<void> loadImages(bool isLoading, {List<String>? assetPaths}) async {
+    final pathsToLoad = assetPaths ?? [];
 
-    for (var img in imageList) {
-      final assetsData = await rootBundle.loadString(
-          img.when(
-            web: (name) {
-              final Images newImages = Images.web(name: name);
-              return newImages.toString();
-            },
-            local: (images) {
-              final Images newImages = Images.local(images: images);
-              return newImages.toString();
-            },
-            error: (error, message) =>
-                Images.error(error: error, message: message).toString(),
-          ),
-          cache: true);
+    if (pathsToLoad.isEmpty) {
+      state = [
+        const ImagesAssets.failed(
+          isLoading: false,
+          message: 'Aucun chemin d\'asset spécifié.',
+        ),
+      ];
+      return;
+    }
 
-      final assetsList = json.decode(assetsData) as List<dynamic>;
+    final List<Images> loadedImages = [];
 
-      final images = assetsList.map((e) => Images.fromJson(e)).toList();
-      state = isLoading
-          ? <ImagesAssets>[ImagesAssets.loading(images: images, isLoading: true)].toList()
-          : <ImagesAssets>[const ImagesAssets.failed(
-              isLoading: false, message: 'Failed to load images assets')].toList();
+    try {
+      for (final path in pathsToLoad) {
+        final assetsData = await rootBundle.loadString(path, cache: true);
+        final assetsList = json.decode(assetsData) as List<dynamic>;
+
+        final images = assetsList
+            .map((e) => Images.fromJson(e as Map<String, dynamic>))
+            .toList();
+
+        loadedImages.addAll(images);
+      }
+
+      state = [
+        ImagesAssets.loading(
+          images: loadedImages,
+          isLoading: isLoading,
+        ),
+      ];
+    } catch (e) {
+      state = [
+        ImagesAssets.failed(
+          isLoading: false,
+          message: 'Erreur lors du chargement des assets : ${e.toString()}',
+        ),
+      ];
     }
   }
 }
+
+// --- PROVIDER ---
+
+final assetListProvider =
+NotifierProvider<ImageAssetsNotifier, List<ImagesAssets>>(
+  ImageAssetsNotifier.new,
+  name: 'AssetListNotifierProvider',
+);

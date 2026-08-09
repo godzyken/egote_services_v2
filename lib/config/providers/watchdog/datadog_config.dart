@@ -8,27 +8,85 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../environements/flavors.dart';
 
+// --- NOTIFIERS (Riverpod 3 Syntax) ---
+
+class TrackingConsentNotifier extends Notifier<TrackingConsent> {
+  @override
+  TrackingConsent build() {
+    // Statut de suivi initial par défaut
+    return TrackingConsent.pending;
+  }
+
+  void updateConsent(bool granted) {
+    state = granted ? TrackingConsent.granted : TrackingConsent.notGranted;
+  }
+
+  void setConsent(TrackingConsent consent) {
+    state = consent;
+  }
+}
+
+final trackingConsentNotifierProvider =
+NotifierProvider<TrackingConsentNotifier, TrackingConsent>(
+  TrackingConsentNotifier.new,
+  name: 'TrackingConsentNotifierProvider',
+);
+
+// --- PROVIDERS ---
+
+final datadogInstanceProvider = Provider<DatadogSdk>(
+      (ref) => DatadogSdk.instance,
+  name: 'DatadogInstanceProvider',
+);
+
+final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
+  F.appFlavor = Flavor.development;
+
+  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
+  final env =
+  Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+
+  return DatadogConfiguration(
+    clientToken: env.clientToken,
+    env: F.appFlavor.toString(),
+    site: DatadogSite.eu1,
+    nativeCrashReportEnabled: true,
+    loggingConfiguration: DatadogLoggingConfiguration(),
+    rumConfiguration: DatadogRumConfiguration(
+      sessionSamplingRate: 100.0,
+      applicationId: env.applicationId,
+      detectLongTasks: true,
+      reportFlutterPerformance: true,
+    ),
+    firstPartyHosts: env.firstPartyHost,
+  );
+}, name: 'DatadogConfigProvider');
+
 final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
   final configuration = await ref.watch(datadogConfigProvider.future);
-  final trackingConsent = ref.watch(trackingConsentProvider);
-  final dogData = ref.watch(datadogInstanceProvider);
+  final consent = ref.watch(trackingConsentNotifierProvider);
+  final datadogSdk = ref.watch(datadogInstanceProvider);
 
+  // Configuration des gestionnaires d'erreurs globalisés
   final originalOnError = FlutterError.onError;
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
-    dogData.rum?.handleFlutterError(details);
+    datadogSdk.rum?.handleFlutterError(details);
     originalOnError?.call(details);
   };
+
   final platformOriginalOnError = PlatformDispatcher.instance.onError;
   PlatformDispatcher.instance.onError = (e, st) {
-    dogData.rum?.addErrorInfo(
+    datadogSdk.rum?.addErrorInfo(
       e.toString(),
       RumErrorSource.source,
       stackTrace: st,
     );
     return platformOriginalOnError?.call(e, st) ?? false;
   };
-  final logger = dogData.logs?.createLogger(
+
+  // Initialisation du logger de test
+  final logger = datadogSdk.logs?.createLogger(
     DatadogLoggerConfiguration(
       remoteLogThreshold: LogLevel.warning,
     ),
@@ -38,86 +96,17 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
   logger?.warn("An important warning…");
   logger?.error("An error was met!");
 
-  if (dogData case final initDatadog) {
-    if (trackingConsent.mounted) {
-      try {
-        final consent = trackingConsent._trackingConsent.first;
-        await initDatadog.initialize(configuration, consent);
-        return initDatadog;
-      } on FlutterError catch (e) {
-        // TODO
-        if (kDebugMode) {
-          print('Datadog Provider error: $e');
-        }
-      }
-    } else {
-      final nonConsent = trackingConsent._trackingConsent.last;
-      await initDatadog.initialize(configuration, nonConsent);
+  try {
+    await datadogSdk.initialize(configuration, consent);
 
-      initDatadog.clearAllData();
-      return initDatadog;
+    if (consent == TrackingConsent.notGranted) {
+      datadogSdk.clearAllData();
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('Datadog Provider error: $e');
     }
   }
-  return dogData;
-}, dependencies: [
-  datadogConfigProvider,
-  datadogInstanceProvider,
-  trackingConsentProvider
-], name: 'Initialisation de datadog provider');
 
-final datadogInstanceProvider =
-    Provider<DatadogSdk>((ref) => DatadogSdk.instance);
-
-final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
-  F.appFlavor = Flavor.development;
-
-  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  final env =
-      Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
-
-  final config = DatadogConfiguration(
-      clientToken: env.clientToken,
-      env: F.appFlavor.toString(),
-      site: DatadogSite.eu1,
-      nativeCrashReportEnabled: true,
-      loggingConfiguration: DatadogLoggingConfiguration(),
-      rumConfiguration: DatadogRumConfiguration(
-          sessionSamplingRate: 100.0,
-          applicationId: env.applicationId,
-          detectLongTasks: true,
-          reportFlutterPerformance: true),
-      firstPartyHosts: env.firstPartyHost);
-  return config;
-});
-
-final trackingConsentProvider = StateProvider<TrackingContentChangeNotifier>(
-    (_) => TrackingContentChangeNotifier());
-
-class TrackingContentChangeNotifier
-    extends StateNotifier<List<TrackingConsent>> {
-  final _trackingConsent = TrackingConsent.values;
-
-  TrackingContentChangeNotifier() : super(TrackingConsent.values) {
-    _init();
-  }
-
-  changeAccessRight(bool value) {
-    for (var c in state) {
-      switch (value) {
-        case false:
-          c = TrackingConsent.notGranted;
-          return c;
-        case true:
-          c = TrackingConsent.granted;
-          return c;
-        default:
-          return c = state.last;
-      }
-    }
-    return state.last == _trackingConsent.single;
-  }
-
-  _init() {
-    changeAccessRight;
-  }
-}
+  return datadogSdk;
+}, name: 'Initialisation de datadog provider');

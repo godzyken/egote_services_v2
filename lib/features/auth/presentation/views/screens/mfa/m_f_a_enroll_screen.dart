@@ -41,8 +41,8 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
           }
           final response = snapshot.data!;
 
-          final qrCodeUrl = response.totp.qrCode;
-          final secret = response.totp.secret;
+          final qrCodeUrl = response.totp!.qrCode;
+          final secret = response.totp!.secret;
           final factorId = response.id;
 
           return ListView(

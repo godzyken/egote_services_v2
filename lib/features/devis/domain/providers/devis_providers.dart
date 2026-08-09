@@ -12,8 +12,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../presentation/states/entities/mission_states/mission_entity_states.dart';
 
-class DevisStateNotifier extends StateNotifier<DevisEntityStates> {
-  DevisStateNotifier(Ref ref) : super(DevisEntityStates.initial());
+class DevisStateNotifier extends Notifier<DevisEntityStates> {
+  @override
+  DevisEntityStates build() {
+    return DevisEntityStates.initial();
+  }
 
   void addDevis(String item) {
     final devis = DevisModelEntity.initialize(
@@ -35,11 +38,14 @@ class DevisStateNotifier extends StateNotifier<DevisEntityStates> {
 }
 
 final devisStateNotifierProvider =
-    StateNotifierProvider<DevisStateNotifier, DevisEntityStates>(
-        (ref) => DevisStateNotifier(ref));
+    NotifierProvider<DevisStateNotifier, DevisEntityStates>(
+        DevisStateNotifier.new);
 
-class TravauxStateNotifier extends StateNotifier<TravauxEntityStates> {
-  TravauxStateNotifier(Ref ref) : super(TravauxEntityStates.initial());
+class TravauxStateNotifier extends Notifier<TravauxEntityStates> {
+  @override
+  TravauxEntityStates build() {
+    return TravauxEntityStates.initial();
+  }
 
   void addTravaux(String item) {
     final travaux = TravauxEntity.Init(
@@ -59,11 +65,14 @@ class TravauxStateNotifier extends StateNotifier<TravauxEntityStates> {
 }
 
 final travauxStateNotifierProvider =
-    StateNotifierProvider<TravauxStateNotifier, TravauxEntityStates>(
-        (ref) => TravauxStateNotifier(ref));
+    NotifierProvider<TravauxStateNotifier, TravauxEntityStates>(
+        TravauxStateNotifier.new);
 
-class MissionStateNotifier extends StateNotifier<MissionEntityStates> {
-  MissionStateNotifier(Ref ref) : super(MissionEntityStates.init());
+class MissionStateNotifier extends Notifier<MissionEntityStates> {
+  @override
+  MissionEntityStates build() {
+    return MissionEntityStates.init();
+  }
 
   void addMission(String item) {
     final mission = MissionEntity.init(
@@ -85,8 +94,8 @@ class MissionStateNotifier extends StateNotifier<MissionEntityStates> {
 }
 
 final missionStateNotifierProvider =
-    StateNotifierProvider<MissionStateNotifier, MissionEntityStates>(
-        (ref) => MissionStateNotifier(ref));
+    NotifierProvider<MissionStateNotifier, MissionEntityStates>(
+        MissionStateNotifier.new);
 
 final _travaux = Provider<List<TravauxEntity>>(
     (ref) => ref.watch(travauxStateNotifierProvider).travaux);

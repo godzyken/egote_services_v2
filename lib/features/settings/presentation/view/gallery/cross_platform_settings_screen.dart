@@ -133,9 +133,9 @@ class _CrossPlatformSettingsScreenState
               const ThemeSettings(),
               const Divider(),
               PlatformPopupMenu(
-                platform: ref.watch(platformProvider),
+                platform: ref.watch(platformNotifierProvider),
                 onChanged: (TargetPlatform newPlatform) {
-                  ref.read(platformProvider.notifier).state = newPlatform;
+                  ref.read(platformNotifierProvider.notifier).state = newPlatform;
                 },
               ),
               const Divider(),

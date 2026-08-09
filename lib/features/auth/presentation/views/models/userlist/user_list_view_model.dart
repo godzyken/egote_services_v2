@@ -3,61 +3,46 @@ import 'dart:developer' as developer;
 import 'package:egote_services_v2/features/auth/domain/providers/usecases_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../common/domain/entities/states/state.dart';
 import '../../../../domain/entities/entities_extension.dart';
 import '../../../../domain/usecases/usescases_extention.dart';
 import 'filter_status_view.dart';
 
-class UserListViewModel extends StateNotifier<State<UserList>> {
-  final GetUserListCase _getUserListCase;
-  final CreateUserCase _createUserCase;
-  final UpdateUserCase _updateUserCase;
-  final DeleteUserCase _deleteUserCase;
+class UserListViewModel extends AsyncNotifier<UserList> {
+  late final GetUserListCase _getUserListCase;
+  late final CreateUserCase _createUserCase;
+  late final UpdateUserCase _updateUserCase;
+  late final DeleteUserCase _deleteUserCase;
 
-  UserListViewModel(
-      this._getUserListCase,
-      this._createUserCase,
-      this._updateUserCase,
-      this._deleteUserCase
-      ) : super(const State.init()) {
-    _getUserList();
+  @override
+  Future<UserList> build() async {
+    _getUserListCase = ref.watch(getUserListUseCaseProvider);
+    _createUserCase = ref.watch(createUserUseCaseProvider);
+    _updateUserCase = ref.watch(updateUserUseCaseProvider);
+    _deleteUserCase = ref.watch(deleteUserUseCaseProvider);
+
+    return await _getUserListCase.execute();
   }
 
-  _getUserList() async {
-    try {
-      state = const State.loading();
-      final userList = await _getUserListCase.execute();
-      state = State.success(userList);
-    } on Exception catch (e) {
-      state = State.error(e);
-    }
+  /// Méthode utilitaire pour ajouter un utilisateur de test rapide
+  Future<void> testAdd() async {
+    final now = DateTime.now();
+    final testId = DateTime.now().millisecondsSinceEpoch % 10000;
+
+    developer.log('Ajout d\'un utilisateur de test (Test User $testId)', name: 'UserListViewModel');
+
+    await createUser(
+      'Test User $testId',
+      'tester',
+      true,
+      now,
+      now,
+      now,
+      now,
+      now,
+    );
   }
 
-  availableUser(final UserEntityModel userEntityModel) async {
-    final newUser = userEntityModel.copyWith(isComplete: true);
-    updateEntityUser(newUser);
-  }
-
-  unavailableUser(final UserEntityModel userEntityModel) {
-    final newUser = userEntityModel.copyWith(isComplete: false);
-    updateEntityUser(newUser);
-  }
-
-  testAdd() async {
-    var name = 'sasuke';
-    var role = 'renegade';
-    bool isComplete = true;
-    DateTime createdAt = DateTime.now();
-    DateTime updatedAt = DateTime.now();
-    DateTime emailConfirmedAt = DateTime.now();
-    DateTime phoneConfirmedAt = DateTime.now();
-    DateTime lastSignInAt = DateTime.now();
-
-    await _createUserCase.execute(
-        name, role, isComplete, createdAt, updatedAt, emailConfirmedAt, phoneConfirmedAt, lastSignInAt);
-  }
-
-  createUser(
+  Future<void> createUser(
       final String name,
       final String role,
       final bool isComplete,
@@ -67,35 +52,25 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
       final DateTime phoneConfirmedAt,
       final DateTime lastSignInAt,
       ) async {
-    try {
-      developer.log('CreateUser() : start try with name: $name');
-
-      state = const State.loading();
+    state = await AsyncValue.guard(() async {
+      final currentList = state.value ?? UserList.empty();
       final newUser = await _createUserCase.execute(
-          name,
-          role,
-          isComplete,
-          createdAt,
-          updatedAt,
-          emailConfirmedAt,
-          phoneConfirmedAt,
-          lastSignInAt
+        name,
+        role,
+        isComplete,
+        createdAt,
+        updatedAt,
+        emailConfirmedAt,
+        phoneConfirmedAt,
+        lastSignInAt,
       );
-      developer.log('New User from CreateUser() : $newUser');
-
-      state = State.success(state.data!.addUser(newUser));
-    } on Exception catch (e) {
-      developer.log('Error during createUser(): $e');
-      state = State.error(e);
-    }
+      return currentList.addUser(newUser);
+    });
   }
 
-  updateEntityUser(final UserEntityModel newUser) async {
-    try {
-      developer.log('CreateUser() : start try with name: $newUser');
-
-      state = const State.loading();
-
+  Future<void> updateEntityUser(final UserEntityModel newUser) async {
+    state = await AsyncValue.guard(() async {
+      final currentList = state.value ?? UserList.empty();
       await _updateUserCase.execute(
         newUser.id,
         newUser.name,
@@ -107,61 +82,66 @@ class UserListViewModel extends StateNotifier<State<UserList>> {
         newUser.phoneConfirmedAt,
         newUser.lastSignInAt,
       );
-
-      state = State.success(state.data!.updateUser(newUser));
-    } on Exception catch (e) {
-      state = State.error(e);
-    }
+      return currentList.updateUser(newUser);
+    });
   }
 
-  deleteUser(final UserId id) async {
-    try {
+  Future<void> deleteUser(final UserId id) async {
+    state = await AsyncValue.guard(() async {
+      final currentList = state.value ?? UserList.empty();
       await _deleteUserCase.execute(id);
-      state = State.success(state.data!.removeUserById(id));
-    } on Exception catch (e) {
-      state = State.error(e);
-    }
+      return currentList.removeUserById(id);
+    });
+  }
+
+  /// Rend un utilisateur disponible (isComplete = true)
+  Future<void> availableUser(UserEntityModel userEntityModel) async {
+    await _setUserAvailability(userEntityModel, isAvailable: true);
+  }
+
+  /// Rend un utilisateur indisponible (isComplete = false)
+  Future<void> unavailableUser(UserEntityModel userEntityModel) async {
+    await _setUserAvailability(userEntityModel, isAvailable: false);
+  }
+
+  /// Méthode privée générique pour mettre à jour l'état de disponibilité
+  Future<void> _setUserAvailability(
+      UserEntityModel userEntityModel, {
+        required bool isAvailable,
+      }) async {
+    state = await AsyncValue.guard(() async {
+      final currentList = state.value ?? UserList.empty();
+
+      final updatedUser = userEntityModel.copyWith(
+        isComplete: isAvailable,
+        updatedAt: DateTime.now(),
+      );
+
+      developer.log(
+        'Changement de disponibilité pour ${updatedUser.name}: $isAvailable',
+        name: 'UserListViewModel',
+      );
+
+      await _updateUserCase.execute(
+        updatedUser.id,
+        updatedUser.name,
+        updatedUser.role,
+        updatedUser.isComplete,
+        updatedUser.createdAt,
+        updatedUser.updatedAt,
+        updatedUser.emailConfirmedAt,
+        updatedUser.phoneConfirmedAt,
+        updatedUser.lastSignInAt,
+      );
+
+      return currentList.updateUser(updatedUser);
+    });
   }
 }
 
-final filteredUserListProvider = Provider.autoDispose<State<UserList>>(
-  (ref) {
-    final filterKind = ref.watch(filterKindViewModelStateNotifierProvider);
-    final userListState = ref.watch(userListViewModelStateNotifierProvider);
-
-    return userListState.when(
-        init: () => const State.init(),
-        loading: () => const State.loading(),
-        success: (data) {
-          switch (filterKind) {
-            case FilterKind.all:
-              return State.success(data);
-            case FilterKind.available:
-              return State.success(data.filterByComplete());
-            case FilterKind.unavailable:
-              return State.success(data.filterByIncomplete());
-            case FilterKind.byId:
-              return State.success(data.filterByIncomplete());
-          }
-        },
-        error: (exception) => State.error(exception),
-    );
-  },
-);
-
-final userListViewModelStateNotifierProvider = StateNotifierProvider
-    .autoDispose<UserListViewModel, State<UserList>>(
-        (ref) => UserListViewModel(
-            ref.watch(getUserListUseCaseProvider),
-            ref.watch(createUserUseCaseProvider),
-            ref.watch(updateUserUseCaseProvider),
-            ref.watch(deleteUserUseCaseProvider),
-        ),
-    dependencies: [
-      getUserListUseCaseProvider,
-      createUserUseCaseProvider,
-      updateUserUseCaseProvider,
-      deleteUserUseCaseProvider,
-    ],
-    name: 'User List View Model State Notifier Provider'
+// Provider Riverpod 3
+final userListViewModelNotifierProvider =
+AsyncNotifierProvider<UserListViewModel, UserList>(
+  UserListViewModel.new,
+  name: 'User List View Model Notifier Provider',
 );
