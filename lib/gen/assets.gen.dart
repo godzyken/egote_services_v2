@@ -43,8 +43,19 @@ class $AssetsJsonGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  /// Directory path: assets/lottie/archive
+  $AssetsLottieArchiveGen get archive => const $AssetsLottieArchiveGen();
+
   /// Directory path: assets/lottie/image
   $AssetsLottieImageGen get image => const $AssetsLottieImageGen();
+}
+
+class $AssetsLottieArchiveGen {
+  const $AssetsLottieArchiveGen();
+
+  /// Directory path: assets/lottie/archive/amenagement
+  $AssetsLottieArchiveAmenagementGen get amenagement =>
+      const $AssetsLottieArchiveAmenagementGen();
 }
 
 class $AssetsLottieImageGen {
@@ -93,6 +104,33 @@ class $AssetsLottieImageGen {
         maisonIndiv,
         triangle
       ];
+}
+
+class $AssetsLottieArchiveAmenagementGen {
+  const $AssetsLottieArchiveAmenagementGen();
+
+  /// Directory path: assets/lottie/archive/amenagement/exterieur
+  $AssetsLottieArchiveAmenagementExterieurGen get exterieur =>
+      const $AssetsLottieArchiveAmenagementExterieurGen();
+}
+
+class $AssetsLottieArchiveAmenagementExterieurGen {
+  const $AssetsLottieArchiveAmenagementExterieurGen();
+
+  /// Directory path: assets/lottie/archive/amenagement/exterieur/piscines
+  $AssetsLottieArchiveAmenagementExterieurPiscinesGen get piscines =>
+      const $AssetsLottieArchiveAmenagementExterieurPiscinesGen();
+}
+
+class $AssetsLottieArchiveAmenagementExterieurPiscinesGen {
+  const $AssetsLottieArchiveAmenagementExterieurPiscinesGen();
+
+  /// File path: assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg
+  AssetGenImage get piscineSussargue1 => const AssetGenImage(
+      'assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [piscineSussargue1];
 }
 
 abstract final class Assets {

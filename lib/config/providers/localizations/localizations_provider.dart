@@ -20,28 +20,7 @@ class MultiLangNotifier extends Notifier<Locale> {
 
   String get localeName => state.languageCode;
 
-  String get title {
-    return Intl.message(
-      'messageText',
-      name: 'title',
-      desc: 'Title for this application',
-      locale: localeName,
-    );
-  }
-
-  static const _localizedValues = <String, Map<String, String>>{
-    'en': {
-      'title': 'Hello World',
-    },
-    'es': {
-      'title': 'Hola Mundo',
-    },
-    'fr': {
-      'title': 'Bonjour tout le Monde',
-    },
-  };
-
-  static List<String> languages() => _localizedValues.keys.toList();
+  static List<String> languages() => ['en', 'es', 'fr'];
 
   // Méthodes pour changer la langue courante
   void setLocale(Locale locale) => state = locale;
@@ -54,37 +33,8 @@ class MultiLangNotifier extends Notifier<Locale> {
 }
 
 // 3. Provider unifié Riverpod 3 (Auto-disposed par défaut)
-final localizationNotifierProvider =
+final localizationProvider =
 NotifierProvider<MultiLangNotifier, Locale>(
   MultiLangNotifier.new,
-  name: 'LocalizationNotifierProvider',
+  name: 'LocalizationProvider',
 );
-
-// 4. Classe déléguée Flutter Localizations
-class CustomLocalizationsDelegate
-    extends LocalizationsDelegate<MultiLangNotifier> {
-  const CustomLocalizationsDelegate();
-
-  @override
-  bool isSupported(Locale locale) =>
-      MultiLangNotifier.languages().contains(locale.languageCode);
-
-  @override
-  Future<MultiLangNotifier> load(Locale locale) {
-    final String name =
-    locale.countryCode == null || locale.countryCode!.isEmpty
-        ? locale.languageCode
-        : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
-
-    final notifier = MultiLangNotifier();
-    // Configure la locale initiale chargée par le widget MaterialApp
-    notifier.setLocale(Locale(localeName));
-
-    return SynchronousFuture<MultiLangNotifier>(notifier);
-  }
-
-  @override
-  bool shouldReload(covariant LocalizationsDelegate<MultiLangNotifier> old) =>
-      false;
-}

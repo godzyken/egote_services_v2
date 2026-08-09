@@ -10,7 +10,7 @@ import 'list_local.dart';
 part 'assets_images.freezed.dart';
 part 'assets_images.g.dart';
 
-@Freezed()
+@freezed
 class Images with _$Images {
   const factory Images.web({
     required String name,
@@ -28,7 +28,7 @@ class Images with _$Images {
   factory Images.fromJson(Map<String, dynamic> json) => _$ImagesFromJson(json);
 }
 
-@Freezed()
+@freezed
 class ImagesAssets with _$ImagesAssets {
   const factory ImagesAssets.loading({
     required List<Images> images,

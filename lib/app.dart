@@ -35,7 +35,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final router = ref.read(goRouterProvider);
-    final lang = ref.read(localizationProvider);
+    final lang = ref.watch(localizationProvider);
     final datadog = ref.read(datadogInstanceProvider);
     return RumUserActionDetector(
         rum: datadog.rum,

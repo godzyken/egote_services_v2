@@ -92,6 +92,7 @@ flutter:
   assets:
     - assets/lottie/image/
     - assets/lottie/archive/
+    - assets/lottie/archive/amenagement/exterieur/piscines/
     - assets/json/development.config.json
     - assets/json/local.config.json
     - assets/json/production.config.json

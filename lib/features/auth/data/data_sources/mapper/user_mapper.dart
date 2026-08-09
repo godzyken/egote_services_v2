@@ -25,9 +25,9 @@ class UserMapper {
       'is_complete': model.isComplete ? 1 : 0,
       'created_at': model.createdAt.toIso8601String(),
       'updated_at': model.updatedAt.toIso8601String(),
-      'email_confirmed_at': model.emailConfirmedAt.toIso8601String(),
-      'phone_confirmed_at': model.phoneConfirmedAt.toIso8601String(),
-      'last_sign_in_at': model.lastSignInAt.toIso8601String(),
+      'email_confirmed_at': model.emailConfirmedAt?.toIso8601String(),
+      'phone_confirmed_at': model.phoneConfirmedAt?.toIso8601String(),
+      'last_sign_in_at': model.lastSignInAt?.toIso8601String(),
     };
   }
 

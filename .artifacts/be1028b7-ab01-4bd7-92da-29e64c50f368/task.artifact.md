@@ -1,13 +1,8 @@
-# Tasks
+# Tâches - Assets et Génération de Code
 
-- `[x]` Fix `pubspec.yaml` dependency conflict
-- `[x]` Migration to Riverpod 3 (`NotifierProvider`)
-    - `[x]` Update `lib/app.dart` usage of `drawerWidthProvider`
-    - `[x]` Identify and migrate any remaining `StateProvider`/`StateNotifierProvider`
-- `[x]` Reconnect ConnectyCube and remove "Rescue" code
-    - `[x]` Restore `lib/config/providers.dart` initializations
-    - `[x]` Replace `CubeUserMig` with `CubeUser` in all files
-    - `[x]` Replace `CubeDialogMig` with `CubeDialog` in all files
-    - `[x]` Remove mock entity files
-- `[x]` Repair UI and Screens
-- `[x]` Verify with code generation and build
+- [x] Mise à jour de `build.yaml` pour autoriser la génération de code dans `app_shared/images/`
+- [x] Mise à jour de `pubspec.yaml` avec les sous-dossiers d'assets manquants
+- [x] Correction du code dans `assets_images.dart` (compatibilité Freezed/JSON)
+- [x] Création du script Python de compression d'images `scripts/compress_images.py`
+- [x] Lancer la génération de code (`build_runner`)
+- [x] Vérification finale

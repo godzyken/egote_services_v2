@@ -1,36 +1,36 @@
-# Project Repair and Migration Walkthrough
+# Walkthrough - Correction des Assets et Génération de Code
 
-Successfully repaired the project by resolving dependency conflicts, migrating to Riverpod 3, and reconnecting the ConnectyCube SDK.
+J'ai corrigé les erreurs de génération de code pour les modèles d'images et assuré l'accès aux assets situés dans des sous-dossiers. J'ai également fourni un script Python pour optimiser le poids des images.
 
-## Changes Made
+## Changements effectués
 
-### Core Configuration
-- **pubspec.yaml**: Removed the `intl` dependency override that was causing conflicts with `flutter_localizations`. Added an override to `0.20.3` to ensure compatibility across all packages.
+### 1. Configuration du Build (`build.yaml`)
+Le fichier `build.yaml` restreignait la génération de code JSON à certains dossiers spécifiques. J'ai ajouté le chemin `lib/config/app_shared/images/*.dart` à la liste `generate_for` du builder `json_serializable`. Cela a permis la création de `assets_images.g.dart`.
 
-### Riverpod 3 Migration
-- Updated `lib/app.dart` to use the new `NotifierProvider` syntax for `drawerWidthProvider`, replacing `.state` access with the `setWidth()` method.
-- Migrated `editDeviViewModelProvider` from `StateNotifierProvider` to `NotifierProvider`.
-- Verified that other major providers (`authStateProvider`, `localizationNotifierProvider`, etc.) are correctly using the Riverpod 3 syntax.
+### 2. Déclaration des Assets (`pubspec.yaml`)
+Flutter nécessite que chaque sous-dossier contenant des assets soit déclaré explicitement. J'ai ajouté les dossiers manquants :
+- `assets/lottie/archive/amenagement/exterieur/piscines/`
 
-### ConnectyCube SDK Reconnection
-- Removed all references to mock models `CubeUserMig` and `CubeDialogMig`.
-- Re-enabled ConnectyCube SDK imports and restored official SDK types (`CubeUser`, `CubeDialog`).
-- Updated `lib/config/providers.dart` to initialize ConnectyCube services properly and removed hardcoded placeholder values.
-- Cleaned up the file system by removing mock entity files and empty directories.
+> [!NOTE]
+> Les dossiers déclarés avec un `/` final incluent tous les fichiers contenus directement dans ce dossier.
 
-### UI and Code Generation
-- Fixed `fromJson` generation collisions in several entities (`MissionEntity`, `TravauxEntity`, etc.) by renaming private implementation classes.
-- Restored missing `GoRouteData` mixins in `lib/config/routes/routes.dart` to support type-safe routing.
-- Fixed a potential crash in `body_selected_dialog_layout.dart` caused by an invalid cast of `int` to `MessageState`.
-- Successfully ran `flutter pub get` and `build_runner` to regenerate all Freezed and JSON serializable files.
+### 3. Correction du code (`assets_images.dart`)
+J'ai mis à jour la syntaxe de Freezed en utilisant `@freezed` au lieu de `@Freezed()` pour assurer une meilleure compatibilité avec les générateurs de code.
 
-## Verification Results
+### 4. Automatisation (`scripts/compress_images.py`)
+J'ai créé un script Python qui parcourt récursivement le dossier `assets/` et compresse toutes les images PNG et JPG trouvées.
 
-### Build and Dependencies
-- `flutter pub get`: **SUCCESS**
-- `dart run build_runner build`: **SUCCESS** (All generated files are up to date).
+> [!IMPORTANT]
+> Pour utiliser ce script, vous devez installer la bibliothèque Pillow :
+> ```bash
+> pip install Pillow
+> ```
+> Puis lancez le script depuis la racine du projet :
+> ```bash
+> python scripts/compress_images.py
+> ```
 
-### UI and Logic
-- Type-safe routes are correctly generated and mixed into route classes.
-- ConnectyCube SDK types are consistently used throughout the chat module.
-- Riverpod 3 providers are correctly wired and reactive.
+## Résultats de la vérification
+- `flutter pub get` : **RÉUSSI**
+- `dart run build_runner build` : **RÉUSSI** (37 fichiers générés, dont `assets_images.g.dart`).
+- Les erreurs de compilation liées à `toJson` et `fromJson` dans `assets_images.dart` sont résolues.
