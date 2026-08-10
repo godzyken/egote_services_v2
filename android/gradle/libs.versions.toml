@@ -8,7 +8,8 @@ legacySupportV13 = "1.0.0"
 openpgpApi = "v5.7.1"
 orientdbCore = "3.2.30"
 workRuntime = "2.9.0"
-agp = "8.4"
+agp = "9.0.1"
+kotlin = "2.3.20"
 multidex = "2.0.1"
 
 [libraries]
