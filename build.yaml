@@ -1,22 +1,17 @@
 targets:
   $default:
     builders:
-      # Empêche json_serializable d'analyser des fichiers sans modèle
       json_serializable:
+        options:
+          field_rename: snake
         generate_for:
           - lib/**/*.dart
-          - lib/**/states/**/*.dart
 
-      # Restreint go_router_builder aux fichiers de routing
       go_router_builder:
         generate_for:
           - lib/config/routes/*.dart
+          - lib/features/common/domain/failures/error_route.dart
 
-      # Restreint riverpod_generator aux fichiers de providers/controllers
       riverpod_generator:
         generate_for:
-          - lib/config/routes/router.dart
-          - lib/config/routes/router_notifier.dart
-          - lib/**/providers/*.dart
-          - lib/**/*_provider.dart
-          - lib/**/*_notifier.dart
+          - lib/**/*.dart

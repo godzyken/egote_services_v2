@@ -5,8 +5,7 @@ part 'mission_entity.freezed.dart';
 part 'mission_entity.g.dart';
 
 @freezed
-abstract class MissionEntity with _$MissionEntity {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class MissionEntity with _$MissionEntity {
   const factory MissionEntity({
     required MissionId id,
     required String denomination,

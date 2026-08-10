@@ -44,6 +44,26 @@ android {
         testHandleProfiling true
     }
 
+    flavorDimensions "flavor-type"
+
+    productFlavors {
+        local {
+            dimension "flavor-type"
+            applicationId "com.godzy.egote_services_v2.local"
+            versionName "1.0.0-local"
+        }
+        development {
+            dimension "flavor-type"
+            applicationId "com.godzy.egote_services_v2.dev"
+            versionName "1.0.0-dev"
+        }
+        production {
+            dimension "flavor-type"
+            applicationId "com.godzy.egote_services_v2"
+            versionName "1.0.0"
+        }
+    }
+
  /*   signingConfigs {
         debug {
             storeFile file('D:\\gitrepo\\projects\\egote_services_v2\\android\\app\\key.properties')

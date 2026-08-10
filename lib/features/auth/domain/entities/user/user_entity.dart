@@ -14,8 +14,7 @@ part 'user_entity.g.dart';
 var _uuid = const Uuid();
 
 @freezed
-abstract class UserEntityModel with _$UserEntityModel {
-  @JsonSerializable(fieldRename: FieldRename.snake)
+class UserEntityModel with _$UserEntityModel {
   const factory UserEntityModel({
     required UserId id,
     required String name,
@@ -106,7 +105,7 @@ abstract class UserEntityModel with _$UserEntityModel {
 }
 
 @freezed
-abstract class Users with _$Users {
+class Users with _$Users {
   const factory Users.data(
       UserList userList,
       ) = UsersData;
@@ -119,11 +118,11 @@ abstract class Users with _$Users {
 }
 
 @freezed
-abstract class UserModel with _$UserModel {
+class UserModel with _$UserModel {
   const factory UserModel.complete({
     required UserId id,
     required UserEntityModel userEntityModel,
-    @UserConverter() required AuthUser authUser,
+    @UserConverter() required User authUser,
     @JsonKey(includeFromJson: false, includeToJson: false)
     CubeUser? cubeUser,
   }) = _UserModelComplete;
@@ -131,7 +130,7 @@ abstract class UserModel with _$UserModel {
   const factory UserModel.unComplete({
     required UserId id,
     required UserEntityModel userEntityModel,
-    @UserConverter() required AuthUser authUser,
+    @UserConverter() required User authUser,
   }) = _UserModelUnComplete;
 
   const UserModel._();
@@ -154,7 +153,7 @@ abstract class UserModel with _$UserModel {
         null,
         null,
       ),
-      authUser: AuthUser(
+      authUser: User(
         id: id.value.toString(),
         appMetadata: {},
         userMetadata: {'name': name},

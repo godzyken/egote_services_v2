@@ -7,25 +7,14 @@ part 'sign_in_state.freezed.dart';
 part 'sign_in_state.g.dart';
 
 @freezed
-abstract class SignInState with _$SignInState {
+class SignInState with _$SignInState {
+  const SignInState._();
   const factory SignInState({
-    @JsonKey(
-      defaultValue: 'EmailFormz.pure()',
-      includeFromJson: false,
-      includeToJson: false,
-    )
+    @JsonKey(includeFromJson: false, includeToJson: false)
     EmailFormz? emailFormz,
-    @JsonKey(
-      defaultValue: 'PasswordFormz.pure()',
-      includeFromJson: false,
-      includeToJson: false,
-    )
+    @JsonKey(includeFromJson: false, includeToJson: false)
     PasswordFormz? passwordFormz,
-    @JsonKey(
-      defaultValue: FormzSubmissionStatus.initial,
-      includeFromJson: false,
-      includeToJson: false,
-    )
+    @JsonKey(includeFromJson: false, includeToJson: false)
     FormzSubmissionStatus? status,
     String? errorMessage,
   }) = _SignInState;

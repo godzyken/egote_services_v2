@@ -124,7 +124,7 @@ Widget getMessageStateWidget(AppMessageState state) {
   Widget result;
 
   switch (state) {
-    case MessageState.read:
+    case AppMessageState.read:
       result = const Stack(children: <Widget>[
         Icon(
           Icons.check_rounded,
@@ -144,7 +144,7 @@ Widget getMessageStateWidget(AppMessageState state) {
       ]);
 
       break;
-    case MessageState.delivered:
+    case AppMessageState.delivered:
       result = const Stack(children: <Widget>[
         Icon(
           Icons.check_rounded,
@@ -162,7 +162,7 @@ Widget getMessageStateWidget(AppMessageState state) {
       ]);
 
       break;
-    case MessageState.sent:
+    case AppMessageState.sent:
       result = const Icon(
         Icons.check_rounded,
         size: 15.0,

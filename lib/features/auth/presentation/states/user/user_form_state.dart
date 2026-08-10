@@ -7,7 +7,7 @@ part 'user_form_state.freezed.dart';
 part 'user_form_state.g.dart';
 
 @freezed
-abstract class UserFormState with _$UserFormState {
+class UserFormState with _$UserFormState {
   const factory UserFormState({
     required UserEntityModel userEntityModel,
     @JsonKey(includeToJson: false, includeFromJson: false) 
