@@ -5,7 +5,6 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:egote_services_v2/features/auth/domain/repository/auth_repository_interface.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
-import 'package:egote_services_v2/features/auth/domain/entities/user_preferences/user_pref.dart';
 
 import '../../../helpers/test_utils.dart';
 
