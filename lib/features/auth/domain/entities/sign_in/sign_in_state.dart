@@ -7,10 +7,7 @@ part 'sign_in_state.freezed.dart';
 part 'sign_in_state.g.dart';
 
 @freezed
-class SignInState with _$SignInState {
-  @JsonSerializable(
-    fieldRename: FieldRename.snake,
-  )
+abstract class SignInState with _$SignInState {
   const factory SignInState({
     @JsonKey(
       defaultValue: 'EmailFormz.pure()',

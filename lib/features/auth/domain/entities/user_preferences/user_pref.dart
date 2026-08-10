@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user_pref.freezed.dart';
 
 @freezed
-class UserPreferences with _$UserPreferences {
+abstract class UserPreferences with _$UserPreferences {
   const factory UserPreferences({
     required UserEntityModel userEntityModel,
     required ThemeMode themeMode,
@@ -13,4 +13,5 @@ class UserPreferences with _$UserPreferences {
     required bool isDarkMode
   }) = _UserPreferences;
 
+  const UserPreferences._();
 }

@@ -4,6 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'check_out_service_provider.g.dart';
 
 @riverpod
-CheckoutService checkoutService(CheckoutServiceRef ref) {
+CheckoutService checkoutService(Ref ref) {
   throw UnimplementedError();
 }

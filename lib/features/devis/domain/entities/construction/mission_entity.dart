@@ -5,7 +5,7 @@ part 'mission_entity.freezed.dart';
 part 'mission_entity.g.dart';
 
 @freezed
-class MissionEntity with _$MissionEntity {
+abstract class MissionEntity with _$MissionEntity {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory MissionEntity({
     required MissionId id,
@@ -34,6 +34,8 @@ class MissionEntity with _$MissionEntity {
       required String reason,
       required DateTime left,
       required bool isLeft}) = _MissionEntityAbandon;
+
+  const MissionEntity._();
 
   factory MissionEntity.fromJson(Map<String, dynamic> json) =>
       _$MissionEntityFromJson(json);

@@ -7,7 +7,7 @@ import 'check_out_service_provider.dart';
 part 'devis_list_provider.g.dart';
 
 @riverpod
-Future<GetAllEventState> eventList(EventListRef ref) async {
+Future<GetAllEventState> eventList(Ref ref) async {
   final service = ref.watch(checkoutServiceProvider);
 
   return getAllEvent.run(service);

@@ -42,7 +42,7 @@ void main() {
 
       // Assert
       expect(message['attachments'], isNotEmpty);
-      expect(message['attachments'].first, attachmentUrl);
+      expect((message['attachments'] as List?)?.first, attachmentUrl);
     });
 
     test('should handle delivery failures', () {
@@ -155,7 +155,7 @@ void main() {
 
       // Assert
       expect(conversation['name'], conversationName);
-      expect(conversation['participants'].length, 3);
+      expect((conversation['participants'] as List?)?.length, 3);
     });
 
     test('should delete conversation', () {

@@ -116,7 +116,7 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
   }
 
   _createDialogImage() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.image,
     );
 

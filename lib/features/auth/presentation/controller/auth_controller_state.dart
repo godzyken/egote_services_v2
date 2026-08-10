@@ -28,7 +28,7 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
     _repository = ref.watch(authRepositoryProvider);
 
     // Écoute des changements d'état d'authentification
-    _subscription = _repository.authClient.auth.onAuthStateChange.listen((event) {
+    _subscription = _repository.authClient.onAuthStateChange.listen((event) {
       _onUserChanged(event);
     });
 

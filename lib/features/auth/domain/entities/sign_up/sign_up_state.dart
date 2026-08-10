@@ -7,10 +7,7 @@ part 'sign_up_state.freezed.dart';
 part 'sign_up_state.g.dart';
 
 @freezed
-class SignUpState with _$SignUpState {
-  @JsonSerializable(
-    fieldRename: FieldRename.snake,
-  )
+abstract class SignUpState with _$SignUpState {
   const factory SignUpState({
     @JsonKey(
       defaultValue: 'NameFormz',

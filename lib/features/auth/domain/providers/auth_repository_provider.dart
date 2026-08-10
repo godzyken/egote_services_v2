@@ -13,7 +13,8 @@ import '../../infrastructure/repositories/auth_repository.dart';
 // 1. Repository Provider (Sans .autoDispose ni dependencies)
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
-  final client = ref.watch(supabaseClientProvider).auth;
+  final supabaseClient = ref.watch(supabaseClientProvider);
+  final client = supabaseClient.auth;
   final link = ref.watch(generateLinkTypeNotifierProvider);
 
   try {
@@ -30,7 +31,12 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
     // Logic de cleanup si nécessaire lors du démontage du repository
   });
 
-  return AuthRepository(AuthTokenLocalDataSource(prefs), client, link);
+  return AuthRepository(
+    AuthTokenLocalDataSource(prefs),
+    client,
+    supabaseClient,
+    link,
+  );
 }, name: 'AuthRepositoryProvider');
 
 // 2. ValueNotifier global pour l'état d'écouteur d'authentification (ex: GoRouter)

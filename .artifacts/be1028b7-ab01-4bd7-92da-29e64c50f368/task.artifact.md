@@ -1,8 +1,11 @@
-# Tâches - Assets et Génération de Code
+# Tâches de correction globale
 
-- [x] Mise à jour de `build.yaml` pour autoriser la génération de code dans `app_shared/images/`
-- [x] Mise à jour de `pubspec.yaml` avec les sous-dossiers d'assets manquants
-- [x] Correction du code dans `assets_images.dart` (compatibilité Freezed/JSON)
-- [x] Création du script Python de compression d'images `scripts/compress_images.py`
-- [x] Lancer la génération de code (`build_runner`)
-- [x] Vérification finale
+- [ ] Mise à jour des dépendances (`pubspec.yaml`)
+- [ ] Correction de `AuthRepository` (imports et scopes Apple)
+- [ ] Correction de `AuthControllerNotifier` (accès API Supabase)
+- [ ] Réparation des modèles Freezed (`UserFormState`, `AuthState`)
+- [ ] Corrections Null-Safety (`DateTime` dans ViewModels et Screens)
+- [ ] Nettoyage UI et Assets (`LoginOnChat`, `VerificationScreen`)
+- [ ] Correction des Providers Riverpod (`CubeSettingsProvider`, etc.)
+- [ ] Gestion du fichier `firebase_options.dart` manquant
+- [ ] Lancer `build_runner` et vérifier la compilation

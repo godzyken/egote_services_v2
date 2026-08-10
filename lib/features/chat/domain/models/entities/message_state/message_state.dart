@@ -1,9 +1,9 @@
-enum MessageState { sent, delivered, read }
+enum AppMessageState { sent, delivered, read }
 
-class MessageStatus {
+class AppMessageStatus {
   late int userId;
   late String messageId;
   String? dialogId;
 
-  MessageStatus(this.userId, this.messageId, this.dialogId);
+  AppMessageStatus(this.userId, this.messageId, this.dialogId);
 }

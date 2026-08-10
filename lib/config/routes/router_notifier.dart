@@ -14,9 +14,9 @@ class RouterNotifier extends _$RouterNotifier implements Listenable {
   @override
   void build() {
     // Réagit à chaque modification d'état du Notifier
-    ref.listenSelf((previous, next) {
-      _notifyListeners();
-    });
+    // ref.listenSelf((previous, next) {
+    //   _notifyListeners();
+    // });
   }
 
   /// Informe GoRouter qu'un changement d'état d'authentification/navigation a eu lieu

@@ -10,6 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../application/providers/auth_providers.dart';
 import '../../../../domain/providers/auth_repository_provider.dart';
+import '../../../controller/auth_controller_state.dart';
 import '../../models/userlist/user_list_view_model.dart';
 import '../../widgets/widgets_extensions.dart';
 
@@ -98,21 +99,17 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               data.userEntityModel.isComplete,
               data.userEntityModel.createdAt,
               data.userEntityModel.updatedAt,
-              data.userEntityModel.emailConfirmedAt,
-              data.userEntityModel.phoneConfirmedAt,
-              data.userEntityModel.lastSignInAt);
+              data.userEntityModel.emailConfirmedAt ?? data.userEntityModel.createdAt,
+              data.userEntityModel.phoneConfirmedAt ?? data.userEntityModel.createdAt,
+              data.userEntityModel.lastSignInAt ?? data.userEntityModel.createdAt);
           context.pop();
         },
         orElse: () {},
       );
     });
-    final res = ref.watch(authProvider);
+    final res = ref.watch(authControllerProvider);
 
-    final isLoading = res.maybeWhen(
-      data: (_) => res.isRefreshing,
-      loading: () => true,
-      orElse: () => false,
-    );
+    final isLoading = res.isLoading;
 
     return Scaffold(
       appBar: AppBar(
@@ -140,7 +137,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 validator: (value) => name?.error?.getMessage(),
                 onEditingComplete: isLoading
                     ? null
-                    : () => ref.read(authProvider.notifier).handle(_name!),
+                    : () => ref.read(authControllerProvider.notifier).signIn(_usernameCtrl.text, _passwordCtrl.text),
                 errorText: name?.displayError?.getMessage(),
               ),
               const SizedBox(

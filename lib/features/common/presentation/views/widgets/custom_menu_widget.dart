@@ -125,7 +125,7 @@ class CustomMenuWidget extends ConsumerWidget {
                 color: Colors.black26,
                 shape: BoxShape.circle,
               ),
-              child: Assets.lottie.models.earthAugmentedImage.image()),
+              child: Assets.lottie.image.godzyLogo.image()),
           const Divider(),
           ListTile(
             onTap: () => context.go('/user_home/:pid'),

@@ -11,7 +11,7 @@ part 'assets_images.freezed.dart';
 part 'assets_images.g.dart';
 
 @freezed
-class Images with _$Images {
+abstract class Images with _$Images {
   const factory Images.web({
     required String name,
   }) = _ImagesWeb;
@@ -25,11 +25,13 @@ class Images with _$Images {
     required String message,
   }) = _ImagesError;
 
+  const Images._();
+
   factory Images.fromJson(Map<String, dynamic> json) => _$ImagesFromJson(json);
 }
 
 @freezed
-class ImagesAssets with _$ImagesAssets {
+abstract class ImagesAssets with _$ImagesAssets {
   const factory ImagesAssets.loading({
     required List<Images> images,
     required bool isLoading,

@@ -107,7 +107,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         children: [
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 350),
-            child: Assets.lottie.image.logoTchat1022x1024.image(height: 200),
+            child: Assets.lottie.image.godzyLogo.image(height: 200),
           ),
           Container(
             margin: const EdgeInsets.only(left: 8),
@@ -321,7 +321,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
   void _loginPressed() {
     log('login with $_login and $_password');
-    var userToLogin = const CubeUser();
+    var userToLogin = CubeUser();
 /*
     if (isEmailSelected) {
       userToLogin.email = _login;
@@ -337,7 +337,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
   void _createAccountPressed() {
     log('create an user with $_login and $_password');
-    var userToSignUp = const CubeUser();
+    var userToSignUp = CubeUser();
 /*    if (isEmailSelected) {
       userToSignUp.email = _login;
     } else {

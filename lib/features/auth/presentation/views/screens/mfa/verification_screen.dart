@@ -130,7 +130,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                       role: l.error,
                       updatedAt: l.error,
                     ),
-                    cubeUser: const CubeUser()));
+                    cubeUser: CubeUser()));
 
                 final client = code.getOrElse((l) => AuthResponse(
                     user: user.authUser,

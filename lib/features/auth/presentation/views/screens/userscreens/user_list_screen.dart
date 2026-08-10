@@ -31,8 +31,8 @@ class UserListScreen extends ConsumerWidget {
               (context, ref, _) => ref
                   .watch(_filteredUserListProvider)
                   .maybeWhen(
-                success: (data) => _buildUserListContainerWidget(context, ref, data),
-                error: (exception) => Expanded(child: Center(child: ErrorWidget(exception),)),
+                data: (data) => _buildUserListContainerWidget(context, ref, data),
+                error: (exception, stack) => Expanded(child: Center(child: ErrorWidget(exception),)),
                 orElse: () => const Expanded(
                     child: Center(
                       child: CircularProgressIndicator(),)),

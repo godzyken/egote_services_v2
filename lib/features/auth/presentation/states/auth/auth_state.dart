@@ -15,7 +15,7 @@ enum AuthStatus {
 
 @freezed
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class AuthState with _$AuthState {
+abstract class AuthState with _$AuthState {
   const factory AuthState.authenticated({
     @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
         required AuthStatus status,

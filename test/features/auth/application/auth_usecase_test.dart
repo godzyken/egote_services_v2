@@ -112,7 +112,7 @@ void main() {
       const name = 'Test User';
       const password = TestHelpers.testPassword;
       final mockUserModel = UserModel.create(
-        id: TestHelpers.testUserId,
+        id: UserId(value: int.tryParse(TestHelpers.testUserId) ?? 0),
         email: email,
         name: name,
       );
@@ -204,7 +204,7 @@ void main() {
     test('should load user profile', () async {
       // Arrange
       final mockUserModel = UserModel.create(
-        id: TestHelpers.testUserId,
+        id: UserId(value: int.tryParse(TestHelpers.testUserId) ?? 0),
         email: TestHelpers.testEmail,
         name: 'Test User',
       );

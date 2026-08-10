@@ -8,7 +8,7 @@ part 'devis_model_entity.freezed.dart';
 part 'devis_model_entity.g.dart';
 
 @freezed
-class DevisModelEntity with _$DevisModelEntity {
+abstract class DevisModelEntity with _$DevisModelEntity {
   const factory DevisModelEntity.approved({
     required DevisId id,
     required DateTime createdAt,
@@ -30,6 +30,8 @@ class DevisModelEntity with _$DevisModelEntity {
   }) = _DevisModelEntityInitialize;
 
   factory DevisModelEntity.empty() = _DevisModelEntityEmpty;
+
+  const DevisModelEntity._();
 
   factory DevisModelEntity.fromJson(Map<String, dynamic> json) =>
       _$DevisModelEntityFromJson(json);

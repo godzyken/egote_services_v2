@@ -5,10 +5,12 @@ part 'devi_id.freezed.dart';
 part 'devi_id.g.dart';
 
 @freezed
-class DevisId with _$DevisId {
+abstract class DevisId with _$DevisId {
   const factory DevisId({
     required int id,
   }) = _DevisId;
+
+  const DevisId._();
 
 
 

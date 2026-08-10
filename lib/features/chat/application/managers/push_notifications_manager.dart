@@ -70,7 +70,6 @@ class PushNotificationsManager {
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
 
     final InitializationSettings initializationSettings =

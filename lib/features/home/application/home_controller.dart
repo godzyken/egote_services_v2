@@ -6,39 +6,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum NetWorkStatus { notDetermined, on, off }
 
 class HomeControllerNotifier extends Notifier<NetWorkStatus> {
-  late StreamSubscription<ConnectivityResult> _subscription;
+  late StreamSubscription<List<ConnectivityResult>> _subscription;
 
   @override
   NetWorkStatus build() {
     _subscription = Connectivity().onConnectivityChanged.listen((event) {
-      NetWorkStatus? newState;
+      NetWorkStatus newState = NetWorkStatus.off;
 
-      switch (event) {
-        case ConnectivityResult.bluetooth:
-          newState = NetWorkStatus.on;
-          break;
-        case ConnectivityResult.wifi:
-          newState = NetWorkStatus.on;
-          break;
-        case ConnectivityResult.ethernet:
-          newState = NetWorkStatus.on;
-          break;
-        case ConnectivityResult.mobile:
-          newState = NetWorkStatus.on;
-          break;
-        case ConnectivityResult.none:
-          newState = NetWorkStatus.off;
-          break;
-        case ConnectivityResult.vpn:
-          newState = NetWorkStatus.on;
-          break;
-        case ConnectivityResult.other:
-          newState = NetWorkStatus.notDetermined;
-          break;
+      if (event.contains(ConnectivityResult.none)) {
+        newState = NetWorkStatus.off;
+      } else if (event.contains(ConnectivityResult.other)) {
+        newState = NetWorkStatus.notDetermined;
+      } else if (event.isNotEmpty) {
+        newState = NetWorkStatus.on;
       }
 
       if (newState != state) {
-        state = newState!;
+        state = newState;
       }
     });
 

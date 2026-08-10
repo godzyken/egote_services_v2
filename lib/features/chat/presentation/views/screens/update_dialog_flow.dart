@@ -27,7 +27,7 @@ class UpdateDialog extends ConsumerWidget {
         switch (settings.name) {
           case 'dialog_info':
             pageRoute = MaterialPageRoute(
-              builder: (context) => ChatDetailsScreen(
+              builder: (context) => DetailsScreen(
                   cubeUser: currentUser, cubeDialog: currentDialog),
             );
             break;
@@ -41,7 +41,7 @@ class UpdateDialog extends ConsumerWidget {
             break;
           default:
             pageRoute = MaterialPageRoute(
-                builder: (context) => ChatDetailsScreen(
+                builder: (context) => DetailsScreen(
                     cubeUser: args![USER_ARG_NAME],
                     cubeDialog: args[DIALOG_ARG_NAME]));
             break;

@@ -71,7 +71,8 @@ class $AssetsLottieImageGen {
 
   /// File path: assets/lottie/image/digital-transformation-teaser.jpg
   AssetGenImage get digitalTransformationTeaser => const AssetGenImage(
-      'assets/lottie/image/digital-transformation-teaser.jpg');
+    'assets/lottie/image/digital-transformation-teaser.jpg',
+  );
 
   /// File path: assets/lottie/image/digital_transf.jpg
   AssetGenImage get digitalTransf =>
@@ -95,15 +96,15 @@ class $AssetsLottieImageGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        appartement,
-        carrelageBackground,
-        digitalTransformationTeaser,
-        digitalTransf,
-        godzyLogo,
-        logoBatServices,
-        maisonIndiv,
-        triangle
-      ];
+    appartement,
+    carrelageBackground,
+    digitalTransformationTeaser,
+    digitalTransf,
+    godzyLogo,
+    logoBatServices,
+    maisonIndiv,
+    triangle,
+  ];
 }
 
 class $AssetsLottieArchiveAmenagementGen {
@@ -127,7 +128,8 @@ class $AssetsLottieArchiveAmenagementExterieurPiscinesGen {
 
   /// File path: assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg
   AssetGenImage get piscineSussargue1 => const AssetGenImage(
-      'assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg');
+    'assets/lottie/archive/amenagement/exterieur/piscines/piscine_sussargue_1.jpg',
+  );
 
   /// List of all assets
   List<AssetGenImage> get values => [piscineSussargue1];
@@ -206,15 +208,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;

@@ -44,7 +44,7 @@ class UserNotifier extends Notifier<UserEntityModel> {
 class UserFormStateController extends Notifier<UserFormState> {
   @override
   UserFormState build() {
-    return UserFormState(UserEntityModel.empty());
+    return UserFormState(userEntityModel: UserEntityModel.empty());
   }
 
   FormzSubmissionStatus? isUser(UserEntityModel? userEntityModel) {

@@ -4,15 +4,15 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'state.freezed.dart';
 
 @freezed
-class State<T> with _$State<T> {
+abstract class State<T> with _$State<T> {
   const State._();
 
-  const factory State.init() = init<T>;
-  const factory State.loading() = _loading;
-  const factory State.success(final T data) = _success<T>;
-  const factory State.error(final Exception exception) = _error;
+  const factory State.initial() = _Initial<T>;
+  const factory State.loading() = _Loading<T>;
+  const factory State.success(final T data) = _Success<T>;
+  const factory State.error(final Exception exception) = _Error<T>;
 
-  bool get isInit => maybeWhen(init: () => true, orElse: () => false);
+  bool get isInitial => maybeWhen(initial: () => true, orElse: () => false);
 
   bool get isLoading => maybeWhen(loading: () => true, orElse: () => false);
 
@@ -23,9 +23,9 @@ class State<T> with _$State<T> {
   T? get data => maybeWhen(success: (data) => data, orElse: () => null);
 
   List<T>? get dataStream => mapOrNull(
-        success: (_) => []..breakI((t) => isSuccess),
-        loading: (value) => []..lastOption.pure(data),
-        error: (value) => []..all((t) => false),
-        init: (value) => []..init,
+        success: (s) => [s.data],
+        loading: (_) => [],
+        error: (_) => [],
+        initial: (_) => [],
       );
 }

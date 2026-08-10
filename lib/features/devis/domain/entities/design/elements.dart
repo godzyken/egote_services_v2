@@ -4,7 +4,7 @@ part 'elements.freezed.dart';
 part 'elements.g.dart';
 
 @freezed
-class ElementsEntityModel with _$ElementsEntityModel {
+abstract class ElementsEntityModel with _$ElementsEntityModel {
   const factory ElementsEntityModel(
       {required int id,
       required String name,

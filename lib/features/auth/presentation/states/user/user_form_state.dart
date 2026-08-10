@@ -7,19 +7,13 @@ part 'user_form_state.freezed.dart';
 part 'user_form_state.g.dart';
 
 @freezed
-class UserFormState with _$UserFormState {
-  const factory UserFormState(
-  UserEntityModel userEntityModel,{
-        @JsonKey(
-          defaultValue: 'UserName',
-          includeToJson: false,
-          includeFromJson: false,
-        ) NameFormz? nameFormz,
-        @JsonKey(
-          defaultValue: 'UserRole',
-          includeToJson: false,
-          includeFromJson: false,
-        ) RoleFormz? roleFormz
+abstract class UserFormState with _$UserFormState {
+  const factory UserFormState({
+    required UserEntityModel userEntityModel,
+    @JsonKey(includeToJson: false, includeFromJson: false) 
+    NameFormz? nameFormz,
+    @JsonKey(includeToJson: false, includeFromJson: false) 
+    RoleFormz? roleFormz,
   }) = _UserFormState;
 
 

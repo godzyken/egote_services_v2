@@ -10,7 +10,8 @@ class Godzylogo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final count = ref.watch(countProvider);
+    // final count = ref.watch(countProvider);
+    const count = 0;
     return Scaffold(
       body: SizedBox.expand(
         child: Container(

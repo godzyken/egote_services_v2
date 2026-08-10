@@ -47,7 +47,7 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
       if (user != null) {
         return ref.read(cubeRepositoryProvider).restoreSession();
       }
-      return null;
+      throw Exception('Aucune session à restaurer');
     },
   );
 
@@ -55,19 +55,19 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
 }, name: 'Cube settings init provider');
 
 final cubeUserControllerProvider =
-NotifierProvider<CubeUserController, CubeUser?>(
+AsyncNotifierProvider<CubeUserController, CubeUser?>(
   CubeUserController.new,
   name: 'cube user authentication state notifier',
 );
 
 final filterLoginTypeNotifierProvider =
-NotifierProvider.autoDispose<FilterLoginTypeNotifier, LoginType>(
+NotifierProvider<FilterLoginTypeNotifier, LoginType>(
   FilterLoginTypeNotifier.new,
 );
 
 // --- NOTIFIERS (Remplacement de StateNotifier) ---
 
-class FilterLoginTypeNotifier extends AutoDisposeNotifier<LoginType> {
+class FilterLoginTypeNotifier extends Notifier<LoginType> {
   @override
   LoginType build() {
     return LoginType.facebook;

@@ -53,8 +53,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       });
 
       await ref
-          .read(authStateProvider.notifier)
-          .onSignInWithPassword(_emailCtrl.text, _passwordCtrl.text);
+          .read(authControllerProvider.notifier)
+          .signIn(_emailCtrl.text, _passwordCtrl.text);
     } on AuthException catch (e) {
       developer.log(e.statusCode.toString());
       catchAuthException(e);
@@ -90,13 +90,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final email = ref.watch(loginControllerNotifierProvider).emailFormz;
     final password = ref.watch(loginControllerNotifierProvider).passwordFormz;
 
-    final res = ref.watch(authProvider);
+    final res = ref.watch(authControllerProvider);
 
-    final isLoading = res.maybeWhen(
-      data: (_) => res.isRefreshing,
-      loading: () => true,
-      orElse: () => false,
-    );
+    final isLoading = res.isLoading;
 
     return Scaffold(
       appBar: AppBar(

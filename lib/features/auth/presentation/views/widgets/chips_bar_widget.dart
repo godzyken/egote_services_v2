@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ChipsBarWidget extends ConsumerWidget {
   ChipsBarWidget({super.key});
 
-  final _provider = filterKindViewModelStateNotifierProvider;
+  final _provider = filterKindNotifierProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

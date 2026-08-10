@@ -5,7 +5,7 @@ part 'superficie_entity.freezed.dart';
 part 'superficie_entity.g.dart';
 
 @freezed
-class SuperficieEntity with _$SuperficieEntity {
+abstract class SuperficieEntity with _$SuperficieEntity {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const SuperficieEntity._();
 

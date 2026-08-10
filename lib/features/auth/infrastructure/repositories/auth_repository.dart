@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:crypto/crypto.dart';
+
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
@@ -8,6 +10,7 @@ import 'package:egote_services_v2/features/auth/domain/repository/auth_repositor
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 
@@ -124,6 +127,15 @@ class AuthRepository implements AuthRepositoryInterface {
       developer.log('signInWithGoogle Error: $e');
       return left(Failure.badRequest());
     }
+  }
+
+  @override
+  Future<UserModel?> signIn(String email, String password) async {
+    final result = await signInWithPassword(email, password);
+    return result.fold(
+      (failure) => null,
+      (user) => UserModel.fromJson(user.toJson()),
+    );
   }
 
   @override

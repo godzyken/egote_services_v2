@@ -120,7 +120,7 @@ Widget getAvatarWidget(String? imageUrl, String? name, double radius,
 
   return result;
 }*/
-Widget getMessageStateWidget(MessageState state) {
+Widget getMessageStateWidget(AppMessageState state) {
   Widget result;
 
   switch (state) {

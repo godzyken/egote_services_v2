@@ -1,44 +1,64 @@
-# Implementation Plan - Fix Assets and Code Generation
+# Plan d'implémentation - Correction des erreurs de compilation et de logique
 
-Fix the broken code generation for assets models and ensure all asset subdirectories are correctly declared in `pubspec.yaml`. Additionally, provide a Python script for image compression.
+Ce plan vise à résoudre la longue liste d'erreurs de compilation signalées, allant des dépendances manquantes aux erreurs de syntaxe Freezed et aux problèmes de types Null-Safe.
 
-## User Review Required
+## Changements proposés
 
-> [!IMPORTANT]
-> Some images referenced in `LocalImages` (under `assets/lottie/models/`) appear to be missing from the physical file system. This plan fixes the configuration to access existing files but cannot restore files that were not cloned or are missing from the repo.
-
-## Proposed Changes
-
-### [Build Configuration]
-
-#### [MODIFY] [build.yaml](file:///C:/Users/soufi/StudioProjects/egote_services_v2/build.yaml)
-- Add `lib/config/app_shared/images/*.dart` to the `json_serializable` builder `generate_for` list to enable code generation for image models.
-
-### [Asset Configuration]
+### 1. Dépendances et Configuration
 
 #### [MODIFY] [pubspec.yaml](file:///C:/Users/soufi/StudioProjects/egote_services_v2/pubspec.yaml)
-- Add missing subdirectories to the `assets` list:
-    - `assets/lottie/archive/amenagement/exterieur/piscines/`
-    - `assets/lottie/image/` (already there, but ensuring consistency)
-    - Ensure `assets/json/` and `assets/fonts/` are correctly mapped if needed (though they are already in the root assets list).
+- Ajouter `sign_in_with_apple: ^6.1.1` pour résoudre l'absence de `AppleIDAuthorizationScopes`.
 
-### [Code Repair]
+#### [MODIFY] [auth_repository.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/infrastructure/repositories/auth_repository.dart)
+- Ajouter l'import `package:sign_in_with_apple/sign_in_with_apple.dart`.
 
-#### [MODIFY] [assets_images.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/config/app_shared/images/assets_images.dart)
-- Switch from `@Freezed()` to `@freezed` for consistency and better integration with `json_serializable`.
+### 2. Correction Supabase et Riverpod
 
-### [Automation Tools]
+#### [MODIFY] [auth_controller_state.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/controller/auth_controller_state.dart)
+- Corriger l'accès à `onAuthStateChange` : `_repository.authClient.onAuthStateChange` au lieu de `_repository.authClient.auth.onAuthStateChange`.
 
-#### [NEW] [compress_images.py](file:///C:/Users/soufi/StudioProjects/egote_services_v2/scripts/compress_images.py)
-- Create a Python script using the `Pillow` library to recursively compress PNG and JPG images in the `assets/` directory.
+#### [MODIFY] [cube_settings_provider.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/chat/application/providers/cube_settings_provider.dart)
+- Utiliser `AsyncNotifierProvider` pour `CubeUserController` et `NotifierProvider` pour `FilterLoginTypeNotifier`.
+- Corriger le type de retour de la closure `onSessionRestore` pour éviter de retourner `Null` quand un `Future<CubeSession>` est attendu.
 
-## Verification Plan
+### 3. Modèles Freezed et Génération de Code
 
-### Automated Tests
-- Run `flutter pub get`.
-- Run `dart run build_runner build --delete-conflicting-outputs`.
-- Verify that `assets_images.g.dart` is generated without errors.
+#### [MODIFY] [user_form_state.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/states/user/user_form_state.dart)
+- Corriger la syntaxe du constructeur factory (manque de virgule ou mauvais placement des paramètres).
 
-### Manual Verification
-- Check if images in subdirectories (like `piscine_sussargue_1.jpg`) are now accessible in the app.
-- Run the Python script (requires `pip install Pillow`) and verify file size reduction.
+#### [MODIFY] [auth_state.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/states/auth/auth_state.dart)
+- Assurer que les types sont corrects pour la génération.
+
+### 4. Corrections de Types (Null Safety)
+
+#### [MODIFY] [user_list_view_model.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/models/userlist/user_list_view_model.dart)
+- Utiliser des valeurs par défaut ou des assertions non-null pour les paramètres `DateTime` (ex: `lastSignInAt ?? now`).
+
+#### [MODIFY] [sign_up_screen.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/screens/connection/sign_up_screen.dart)
+- Même correction pour les arguments `DateTime`.
+
+### 5. Assets et UI
+
+#### [MODIFY] [login_screen.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/screens/connection/login_screen.dart) et [sign_up_screen.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/screens/connection/sign_up_screen.dart)
+- Remplacer `authProvider` par `authStateProvider`.
+
+#### [MODIFY] [login_on_chat.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/chat/presentation/views/screens/login_on_chat.dart)
+- Supprimer ou corriger la référence à `logoTchat1022x1024` qui n'existe pas dans les assets générés.
+
+#### [MODIFY] [verification_screen.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/screens/mfa/verification_screen.dart)
+- Supprimer `const` lors de l'instanciation de `UserModel` car `CubeUser()` n'est pas const.
+
+### 6. Firebase et ConnectyCube
+
+#### [MODIFY] [cube_repository.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/chat/infrastructure/repositories/cube_repository.dart)
+- Gérer l'absence de `firebase_options.dart`. Si le fichier est manquant physiquement, nous devrons peut-être mocker `DefaultFirebaseOptions` ou le commenter temporairement pour permettre la compilation.
+
+## Plan de vérification
+
+### Tests automatisés
+- `flutter pub get`
+- `dart run build_runner build --delete-conflicting-outputs`
+- `dart analyze`
+
+### Vérification manuelle
+- Vérifier que l'application se lance et que les écrans d'authentification fonctionnent.

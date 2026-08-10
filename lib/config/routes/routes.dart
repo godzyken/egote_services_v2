@@ -30,6 +30,8 @@ part 'routes.g.dart';
         routes: [
           TypedGoRoute<PersonRoute>(
               path: PersonRoute.path, name: 'person', routes: []),
+          TypedGoRoute<DrawingRoute>(
+              path: DrawingRoute.path, name: 'drawingRoute'),
           TypedGoRoute<UserListRoute>(
               path: UserListRoute.path,
               name: 'userList',
@@ -210,11 +212,6 @@ class AuthRoute extends GoRouteData with $AuthRoute {
   const AuthRoute();
 
   @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
   Widget build(BuildContext context, GoRouterState state) {
     return AuthScreen(
       key: state.pageKey,
@@ -226,11 +223,6 @@ class LoginRoute extends GoRouteData with $LoginRoute {
   static const path = 'loginRoute';
 
   const LoginRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -246,11 +238,6 @@ class SignUpRoute extends GoRouteData with $SignUpRoute {
   const SignUpRoute();
 
   @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
   Widget build(BuildContext context, GoRouterState state) {
     return SignUpScreen(
       key: state.pageKey,
@@ -264,11 +251,6 @@ class ListMfaRoute extends GoRouteData with $ListMfaRoute {
   const ListMfaRoute();
 
   @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
   Widget build(BuildContext context, GoRouterState state) {
     return ListMfaScreen(key: state.pageKey);
   }
@@ -278,11 +260,6 @@ class MFAEnrollRoute extends GoRouteData with $MFAEnrollRoute {
   static const path = 'enrollRoute';
 
   const MFAEnrollRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -299,11 +276,6 @@ class VerificationRoute extends GoRouteData with $VerificationRoute {
   static const path = 'verificationRoute';
 
   const VerificationRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -323,11 +295,6 @@ class SettingsUiRoute extends GoRouteData with $SettingsUiRoute {
   const SettingsUiRoute();
 
   @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
   Widget build(BuildContext context, GoRouterState state) {
     return SettingsUiPage(
       key: state.pageKey,
@@ -339,11 +306,6 @@ class CrossPlatformSettingsRoute extends GoRouteData with $CrossPlatformSettings
   static const path = 'crossPlatformRoute';
 
   const CrossPlatformSettingsRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -359,11 +321,6 @@ class WebChromeAddressesRoute extends GoRouteData with $WebChromeAddressesRoute 
   const WebChromeAddressesRoute();
 
   @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
   Widget build(BuildContext context, GoRouterState state) {
     return WebChromeAddressesScreen(
       key: state.pageKey,
@@ -375,11 +332,6 @@ class AndroidNotificationsRoute extends GoRouteData with $AndroidNotificationsRo
   static const path = 'androidNotificationsRoute';
 
   const AndroidNotificationsRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -395,11 +347,6 @@ class WebChromeSettingsRoute extends GoRouteData with $WebChromeSettingsRoute {
   const WebChromeSettingsRoute();
 
   @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
   Widget build(BuildContext context, GoRouterState state) {
     return WebChromeSettings(
       key: state.pageKey,
@@ -410,30 +357,21 @@ class WebChromeSettingsRoute extends GoRouteData with $WebChromeSettingsRoute {
 class DrawingRoute extends GoRouteData with $DrawingRoute {
   static const path = 'drawingRoute';
 
-  const DrawingRoute();
+  const DrawingRoute({required this.pid});
 
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
+  final String pid;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return DrawingPage(
-      key: state.pageKey,
-    );
+    return const DrawingPage();
   }
 }
+
 
 class ThemeShowcaseRoute extends GoRouteData with $ThemeShowcaseRoute {
   static const path = 'themeshowcase';
 
   const ThemeShowcaseRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -541,11 +479,6 @@ class GodzyLogoRoute extends GoRouteData with $GodzyLogoRoute {
   const GodzyLogoRoute();
 
   @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
-
-  @override
   Widget build(BuildContext context, GoRouterState state) {
     return Godzylogo(
       key: state.pageKey,
@@ -557,11 +490,6 @@ class AvisBoxRoute extends GoRouteData with $AvisBoxRoute {
   static const path = 'avisRoute';
 
   const AvisBoxRoute();
-
-  @override
-  Page<Function> buildPage(BuildContext context, GoRouterState state) {
-    return buildPage(context, state);
-  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {

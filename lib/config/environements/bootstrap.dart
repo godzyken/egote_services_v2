@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'package:egote_services_v2/config/providers.dart' as providers;
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,8 +55,6 @@ Future<ProviderContainer> bootstrap() async {
   final container = ProviderContainer(
     overrides: [
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      localizationProvider.overrideWith(
-          (ref) => MultiLang(ref.read(localeProvider).languageCode)),
     ],
     observers: [
       if (F.appFlavor == Flavor.local) _Logger(),
@@ -145,34 +144,18 @@ Future<ProviderContainer> bootstrap() async {
   return container;
 }
 
-class _Logger extends ProviderObserver {
+base class _Logger extends ProviderObserver {
   @override
-  void didUpdateProvider(ProviderBase<Object?> provider, Object? previousValue,
-      Object? newValue, ProviderContainer container) {
-    debugPrint('''{
-      "provider": "${provider.name ?? provider.runtimeType}",
-      "previousValue": "$previousValue",
-      "newValue": "$newValue",
-      }''');
-  }
-
-  @override
-  void didAddProvider(ProviderBase<Object?> provider, Object? value,
-      ProviderContainer container) {
-    debugPrint('''{
-      "provider": "${provider.name ?? provider.runtimeType}",
-      "value": "$value",
-      "container": "$container",
-      }''');
-  }
-
-  @override
-  void didDisposeProvider(
-      ProviderBase<Object?> provider, ProviderContainer container) {
-    debugPrint('''{
-      "provider": "${provider.name ?? provider.runtimeType}",
-      "container": "$container",
-      }''');
+  void didUpdateProvider(
+      ProviderObserverContext context,
+      Object? previousValue,
+      Object? newValue,
+      ) {
+    dev.log('''
+{
+  "provider": "${context.provider.name ?? context.provider.runtimeType}",
+  "newValue": "$newValue"
+}''');
   }
 }
 

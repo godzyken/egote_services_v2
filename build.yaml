@@ -4,10 +4,8 @@ targets:
       # Empêche json_serializable d'analyser des fichiers sans modèle
       json_serializable:
         generate_for:
-          - lib/**/models/*.dart
-          - lib/**/entities/*.dart
-          - lib/**/data/models/*.dart
-          - lib/config/app_shared/images/*.dart
+          - lib/**/*.dart
+          - lib/**/states/**/*.dart
 
       # Restreint go_router_builder aux fichiers de routing
       go_router_builder:

@@ -60,9 +60,9 @@ class UserListViewModel extends AsyncNotifier<UserList> {
         isComplete,
         createdAt,
         updatedAt,
-        emailConfirmedAt,
-        phoneConfirmedAt,
-        lastSignInAt,
+        emailConfirmedAt ?? createdAt,
+        phoneConfirmedAt ?? createdAt,
+        lastSignInAt ?? createdAt,
       );
       return currentList.addUser(newUser);
     });
@@ -78,9 +78,9 @@ class UserListViewModel extends AsyncNotifier<UserList> {
         newUser.isComplete,
         newUser.createdAt,
         newUser.updatedAt,
-        newUser.emailConfirmedAt,
-        newUser.phoneConfirmedAt,
-        newUser.lastSignInAt,
+        newUser.emailConfirmedAt ?? newUser.createdAt,
+        newUser.phoneConfirmedAt ?? newUser.createdAt,
+        newUser.lastSignInAt ?? newUser.createdAt,
       );
       return currentList.updateUser(newUser);
     });
@@ -129,9 +129,9 @@ class UserListViewModel extends AsyncNotifier<UserList> {
         updatedUser.isComplete,
         updatedUser.createdAt,
         updatedUser.updatedAt,
-        updatedUser.emailConfirmedAt,
-        updatedUser.phoneConfirmedAt,
-        updatedUser.lastSignInAt,
+        updatedUser.emailConfirmedAt ?? updatedUser.createdAt,
+        updatedUser.phoneConfirmedAt ?? updatedUser.createdAt,
+        updatedUser.lastSignInAt ?? updatedUser.createdAt,
       );
 
       return currentList.updateUser(updatedUser);
@@ -145,3 +145,21 @@ AsyncNotifierProvider<UserListViewModel, UserList>(
   UserListViewModel.new,
   name: 'User List View Model Notifier Provider',
 );
+
+final filteredUserListProvider = Provider<AsyncValue<UserList>>((ref) {
+  final userListAsync = ref.watch(userListViewModelNotifierProvider);
+  final filter = ref.watch(filterKindNotifierProvider);
+
+  return userListAsync.whenData((userList) {
+    switch (filter) {
+      case FilterKind.all:
+        return userList;
+      case FilterKind.available:
+        return userList.filterByComplete();
+      case FilterKind.unavailable:
+        return userList.filterByIncomplete();
+      case FilterKind.byId:
+        return userList;
+    }
+  });
+});

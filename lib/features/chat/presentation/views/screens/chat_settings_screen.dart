@@ -167,7 +167,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   }
 
   _chooseUserImage() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.image,
     );
 

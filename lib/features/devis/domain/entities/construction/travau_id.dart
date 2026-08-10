@@ -4,10 +4,12 @@ part 'travau_id.freezed.dart';
 part 'travau_id.g.dart';
 
 @freezed
-class TravauId with _$TravauId {
+abstract class TravauId with _$TravauId {
   const factory TravauId({
     required int id,
   }) = _TravauId;
+
+  const TravauId._();
   
   
 

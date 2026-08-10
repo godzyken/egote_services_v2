@@ -33,7 +33,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   await container.read(firebaseInitProvider.future);
   await container.read(supabaseInitProvider.future);
   await container.read(userFutureProvider.future);
-  await container.read(webrtcInitProvider.future);
+  // await container.read(webrtcInitProvider.future);
   await container.read(datadogProvider.future);
   await container.read(datadogConfigProvider.future);
 
@@ -55,7 +55,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
 
   container.read(authStateChangesProvider);
   container.read(authStateProvider);
-  container.read(idTokenChangesProvider);
+  // container.read(idTokenChangesProvider);
   container.read(userChangesProvider);
 
   container.read(fireDatabaseProvider);
@@ -92,8 +92,8 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                     builder: (context, state) {
                       return ProfileScreen(
                           key: state.pageKey,
-                          uid: ref.watch(authStateChangesProvider).value!.uid,
-                          pid: ref.watch(cubeUserControllerProvider)!.id.toString()
+                          uid: ref.watch(authStateChangesProvider).value?.uid ?? '',
+                          pid: ref.watch(cubeUserControllerProvider).value?.id.toString() ?? '1335'
                           );
                     },
                   ),
@@ -126,8 +126,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                       path: SelectDialogRoute.path,
                       name: 'select_dialog',
                       builder: (context, state) => SelectDialogScreen(
-                          currentUser: ref.watch(cubeUserControllerProvider
-                              .select((value) => value!))),
+                          currentUser: ref.watch(cubeUserControllerProvider).value!),
                       routes: [
                         GoRoute(
                             path: ChatDialogRoute.path,
@@ -135,8 +134,7 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
                             builder: (context, state) {
                               CubeDialog? cubeDialog = state.extra as CubeDialog?;
                               return ChatDialogScreen(
-                                  cubeUser: ref.watch(cubeUserControllerProvider
-                                      .select((value) => value!)),
+                                  cubeUser: ref.watch(cubeUserControllerProvider).value!,
                                   cubeDialog: cubeDialog!);
                             })
                       ])

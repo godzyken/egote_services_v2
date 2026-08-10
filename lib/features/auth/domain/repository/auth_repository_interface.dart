@@ -38,6 +38,8 @@ abstract class AuthRepositoryInterface {
     String? password,
   );
 
+  Future<UserModel?> signIn(String email, String password);
+
   Future<Either<Failure, bool>> isOnLine();
 
   Future<Either<Failure, supabase.AuthResponse>> verifyCode(

@@ -19,7 +19,7 @@ class EditDeviViewModelController
     extends Notifier<State<AsyncValue<DevisModelEntity>>> {
   @override
   State<AsyncValue<DevisModelEntity>> build() {
-    return const State.init();
+    return const State<AsyncValue<DevisModelEntity>>.initial();
   }
 
   DevisModelEntity initial = DevisModelEntity.empty();

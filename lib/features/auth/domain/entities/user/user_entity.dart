@@ -14,8 +14,8 @@ part 'user_entity.g.dart';
 var _uuid = const Uuid();
 
 @freezed
-class UserEntityModel with _$UserEntityModel {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+abstract class UserEntityModel with _$UserEntityModel {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory UserEntityModel({
     required UserId id,
     required String name,
@@ -106,7 +106,7 @@ class UserEntityModel with _$UserEntityModel {
 }
 
 @freezed
-class Users with _$Users {
+abstract class Users with _$Users {
   const factory Users.data(
       UserList userList,
       ) = UsersData;
@@ -114,10 +114,12 @@ class Users with _$Users {
   const factory Users.loading() = UsersLoading;
 
   const factory Users.error(Object error, StackTrace stackTrace) = UsersError;
+
+  const Users._();
 }
 
 @freezed
-class UserModel with _$UserModel {
+abstract class UserModel with _$UserModel {
   const factory UserModel.complete({
     required UserId id,
     required UserEntityModel userEntityModel,
@@ -131,6 +133,40 @@ class UserModel with _$UserModel {
     required UserEntityModel userEntityModel,
     @UserConverter() required AuthUser authUser,
   }) = _UserModelUnComplete;
+
+  const UserModel._();
+
+  factory UserModel.create({
+    required UserId id,
+    required String email,
+    required String name,
+  }) {
+    // Mocked for tests
+    return UserModel.unComplete(
+      id: id,
+      userEntityModel: UserEntityModel.create(
+        name,
+        'user',
+        false,
+        DateTime.now(),
+        DateTime.now(),
+        null,
+        null,
+        null,
+      ),
+      authUser: AuthUser(
+        id: id.value.toString(),
+        appMetadata: {},
+        userMetadata: {'name': name},
+        aud: '',
+        createdAt: DateTime.now().toIso8601String(),
+        email: email,
+        phone: '',
+        role: 'authenticated',
+        updatedAt: DateTime.now().toIso8601String(),
+      ),
+    );
+  }
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

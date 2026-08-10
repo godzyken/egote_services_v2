@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import '../../../../../config/app_shared/extensions/extensions.dart';
 import '../../../../../config/cube_config/cube_config.dart';
 
+import 'package:egote_services_v2/features/chat/domain/models/entities/message_state/message_state.dart';
 import 'chat_screens.dart';
 
 class BodySelectedDialogLayout extends ConsumerStatefulWidget {
@@ -219,7 +220,7 @@ class _BodySelectedDialogLayoutState
                 Row(
                   children: [
                     if (dialogList[index].data.lastMessage != null)
-                      getMessageStateWidget(MessageState.sent),
+                      getMessageStateWidget(AppMessageState.sent),
                     Text(
                       DateFormat('MMM dd').format(
                           dialogList[index].data.lastMessageDateSent != null

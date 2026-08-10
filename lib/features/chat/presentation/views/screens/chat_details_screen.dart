@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:io' as io;
 
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
@@ -65,7 +66,7 @@ abstract class BaseDetailsState<T extends ConsumerStatefulWidget>
       occupants.addAll(result);
       occupants.remove(cubeUser.id);
     } catch (e, stack) {
-      log('Error fetching occupants: $e', stackTrace: stack);
+      dev.log('Error fetching occupants: $e', error: e, stackTrace: stack);
     } finally {
       if (mounted) {
         setState(() => isLoading = false);
@@ -194,8 +195,8 @@ class _GroupDetailViewState extends BaseDetailsState<GroupDetailView> {
 
     setState(() => isLoading = true);
     try {
-      final filePath = result.files.firstOrNull;
-      final cubeFile = await uploadFile(filePath, isPublic: true);
+      final filePath = result.files.single.path;
+      final cubeFile = await uploadFile(io.File(filePath!), isPublic: true);
       _newPhotoUrl = cubeFile.getPublicUrl();
     } catch (e) {
       if (mounted) context.showAlert(e.toString());

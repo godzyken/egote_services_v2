@@ -50,8 +50,7 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
             children: [
               Text(context.tr!.openViaQr),
               const SizedBox(height: 16),
-              Assets.lottie.models.frame
-                  .svg(package: qrCodeUrl, height: 150, width: 150),
+              const Center(child: Icon(Icons.qr_code, size: 150)),
               const SizedBox(height: 16),
               Row(
                 children: [

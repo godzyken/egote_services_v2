@@ -6,7 +6,7 @@ import 'user_entity.dart';
 part 'user_list_entity.freezed.dart';
 
 @freezed
-class UserList with _$UserList {
+abstract class UserList with _$UserList {
   const factory UserList({required List<UserEntityModel> values}) = _UserList;
 
   const UserList._();

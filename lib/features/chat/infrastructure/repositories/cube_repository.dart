@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../config/app_shared/extensions/platform_utils.dart';
 import '../../../../firebase_options.dart';
 import '../../../../config/cube_config/cube_config.dart';
 import '../../../auth/domain/providers/auth_repository_provider.dart';

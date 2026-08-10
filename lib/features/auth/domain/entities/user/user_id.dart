@@ -4,10 +4,12 @@ part 'user_id.freezed.dart';
 part 'user_id.g.dart';
 
 @freezed
-class UserId with _$UserId {
+abstract class UserId with _$UserId {
   const factory UserId({
     required int value,
   }) = _UserId;
+
+  const UserId._();
 
   factory UserId.fromJson(Map<String, dynamic> json) => _$UserIdFromJson(json);
 

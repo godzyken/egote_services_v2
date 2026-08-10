@@ -17,21 +17,11 @@ class _DrawingPageState extends ConsumerState<DrawingPage> {
   @override
   void initState() {
     super.initState();
-
-    _composition = AssetLottie(Assets.lottie.models.lottieLogo1).load();
-    //_composition = AssetLottie('assets/lottie/models/LottieLogo1.json').load();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: _composition, builder: (context, snapshot) {
-      var composition = snapshot.data;
-      if (composition != null) {
-        return Lottie(composition: composition);
-      } else {
-        return const Center(child: CircularProgressIndicator(),);
-      }
-    },);
+    return const Center(child: Text('Drawing Page (Lottie asset missing)'));
   }
 }
 

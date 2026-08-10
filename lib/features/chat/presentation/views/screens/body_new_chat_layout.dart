@@ -289,6 +289,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
           CubeDialogType.PRIVATE,
           occupantsIds: users.toList());
       createDialog(newDialog).then((createdDialog) {
+        if (!mounted) return;
         context.pushReplacementNamed('chat_dialog', extra: {
           USER_ARG_NAME: widget.currentUser,
           DIALOG_ARG_NAME: createdDialog
