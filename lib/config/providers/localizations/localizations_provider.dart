@@ -1,8 +1,6 @@
 // import 'package:connectycube_sdk/connectycube_calls.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 // 1. Provider fournissant la Locale de base
 final localeProvider = Provider<Locale>(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common/presentation/views/screens/error_screen.dart';
+import '../../../domain/entities/devis_model/devis_model_entity.dart';
 
 class DevisListScreen extends ConsumerWidget {
   const DevisListScreen({super.key});

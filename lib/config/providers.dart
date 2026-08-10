@@ -14,7 +14,10 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as ui;
 
+
+import '../config/routes/app_router_observer.dart';
 import '../config/routes/routes.dart';
+import '../config/routes/sentry_navigator_observer.dart';
 import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/domain/providers/auth_repository_provider.dart';
 import '../features/auth/presentation/controller/auth_controller_state.dart';
@@ -69,7 +72,30 @@ final sharedPreferencesProvider = Provider<SharedPreferences>(
 );
 
 // <---------------- GoRouter Provider --------------------> //
-final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
+/// Fusionne authStateListenable avec d'autres Listenable Riverpod si besoin
+/// plus tard (reprend le rôle de l'ancien RouterNotifier, sans codegen).
+/// Pour ajouter une nouvelle source de rafraîchissement du routeur :
+/// `_RouterRefreshListenable(Listenable.merge([authStateListenable, autreListenable]))`
+class _RouterRefreshListenable extends ChangeNotifier {
+  _RouterRefreshListenable(Listenable listenable) {
+    listenable.addListener(notifyListeners);
+    _listenable = listenable;
+  }
+
+  late final Listenable _listenable;
+
+  @override
+  void dispose() {
+    _listenable.removeListener(notifyListeners);
+    super.dispose();
+  }
+}
+
+final goRouterProvider = Provider<GoRouter>((ref) {
+  final refreshListenable = _RouterRefreshListenable(authStateListenable);
+  ref.onDispose(refreshListenable.dispose);
+
+  return GoRouter(
     initialLocation: '/',
     routes: [
       GoRoute(
@@ -282,9 +308,11 @@ final goRouterProvider = Provider<GoRouter>((ref) => GoRouter(
 
       return null;
     },
-    refreshListenable: authStateListenable,
+    refreshListenable: refreshListenable,
     debugLogDiagnostics: true,
-    observers: [observer]));
+    observers: [observer, AppRouterObserver(), sentryNavigatorObserver],
+  );
+});
 
 // <---------------- GeoLocation Provider --------------------> //
 final geoFlutterFireProvider =

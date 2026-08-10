@@ -1,6 +1,5 @@
 import 'dart:developer' as dev;
 import 'package:egote_services_v2/config/providers.dart' as providers;
-import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
