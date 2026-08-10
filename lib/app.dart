@@ -9,6 +9,7 @@ import 'package:egote_services_v2/config/providers/localizations/localizations_p
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,6 +18,7 @@ import 'config/cube_config/cube_config.dart';
 import 'config/environements/flavors.dart';
 import 'features/chat/data/data_sources/local/pref_util.dart';
 import 'features/theme/controller/provider/themes/themes_provider.dart';
+import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 
 class MyApp extends ConsumerStatefulWidget {
@@ -111,24 +113,19 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     // This condition is for demo purposes only to explain every connection type.
     // Use conditions which work for your requirements.
     if (connectivityResult.contains(ConnectivityResult.mobile)) {
-      // Mobile network available.
+      log("Connecté via réseau mobile");
     } else if (connectivityResult.contains(ConnectivityResult.wifi)) {
-      // Wi-fi is available.
-      // Note for Android:
-      // When both mobile and Wi-Fi are turned on system will return Wi-Fi only as active network type
+      log("Connecté via Wi-Fi");
     } else if (connectivityResult.contains(ConnectivityResult.ethernet)) {
-      // Ethernet connection available.
+      log("Connecté via Ethernet");
     } else if (connectivityResult.contains(ConnectivityResult.vpn)) {
-      // Vpn connection active.
-      // Note for iOS and macOS:
-      // There is no separate network interface type for [vpn].
-      // It returns [other] on any device (also simulator)
+      log("Connecté via VPN");
     } else if (connectivityResult.contains(ConnectivityResult.bluetooth)) {
-      // Bluetooth connection available.
+      log("Connecté via Bluetooth");
     } else if (connectivityResult.contains(ConnectivityResult.other)) {
-      // Connected to a network which is not in the above mentioned networks.
+      log("Connecté via un autre type de réseau");
     } else if (connectivityResult.contains(ConnectivityResult.none)) {
-      // No available network types
+      log("Aucune connexion réseau");
     }
 
     return connectivityResult;
@@ -149,12 +146,15 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                   user.password =
                       CubeSessionManager.instance.activeSession?.token;
                 } else {
-                  // TODO: replace placeholder projectId/accessToken with real
-                  // Firebase project id + user access token before relying on
-                  // this phone-auth reconnection path.
-                  var phoneAuthSession = await createSessionUsingFirebasePhone(
-                      'projectId', 'accessToken');
-                  user.password = phoneAuthSession.token;
+                  final firebaseUser = FirebaseAuth.instance.currentUser;
+                  if (firebaseUser != null) {
+                    final accessToken = await firebaseUser.getIdToken();
+                    final projectId = DefaultFirebaseOptions.currentPlatform.projectId;
+                    
+                    var phoneAuthSession = await createSessionUsingFirebasePhone(
+                        projectId, accessToken!);
+                    user.password = phoneAuthSession.token;
+                  }
                 }
               }
               CubeChatConnection.instance.login(user);
@@ -164,15 +164,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
           }
         });
       case AppLifecycleState.inactive:
-      // TODO: Handle this case.
       case AppLifecycleState.paused:
         if (CubeChatConnection.instance.isAuthenticated()) {
           CubeChatConnection.instance.markInactive();
         }
       case AppLifecycleState.detached:
-      // TODO: Handle this case.
       case AppLifecycleState.hidden:
-      // TODO: Handle this case.
+        break;
     }
   }
 }

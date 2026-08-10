@@ -1,4 +1,3 @@
-import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers/cube/cube_providers.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
@@ -10,7 +9,6 @@ import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../features/auth/data/data_source_providers.dart';
-import '../features/auth/domain/providers/auth_repository_provider.dart';
 import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
 

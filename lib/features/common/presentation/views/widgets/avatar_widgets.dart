@@ -170,11 +170,7 @@ Widget getMessageStateWidget(AppMessageState state) {
       );
 
       break;
-    default:
-      result = const SizedBox.shrink();
-
-      break;
-  }
+    }
 
   return result;
 }

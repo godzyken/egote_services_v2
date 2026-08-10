@@ -1,7 +1,6 @@
 import 'dart:developer' as dev;
 import 'dart:io' as io;
 
-import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:connectycube_sdk/connectycube_storage.dart';
 import 'package:file_picker/file_picker.dart';
@@ -11,7 +10,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
 import 'package:egote_services_v2/features/chat/infrastructure/repositories/cube_user_repository.dart';
-import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 
 /// Top-level details wrapper that dynamically loads the appropriate view.

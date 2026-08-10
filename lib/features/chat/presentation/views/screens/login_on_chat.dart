@@ -1,21 +1,23 @@
 import 'dart:async';
-import 'dart:developer';
+import 'dart:convert';
 
 import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart'
     as platform_utils;
-import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/application/providers/auth_providers.dart';
 import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_screens.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
-import '../../../../../firebase_options.dart';
+import '../../../../../config/providers/cube/cube_providers.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../auth/presentation/views/widgets/widgets_extensions.dart';
+import '../../../application/managers/push_notifications_manager.dart';
+import '../../../infrastructure/repositories/cube_repository.dart';
 import '../../../data/data_sources/local/pref_util.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 
@@ -322,7 +324,7 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
   void _loginPressed() {
     log('login with $_login and $_password');
     var userToLogin = CubeUser();
-/*
+
     if (isEmailSelected) {
       userToLogin.email = _login;
     } else {
@@ -330,7 +332,6 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     }
 
     userToLogin.password = _password;
-*/
 
     _loginToCC(context, userToLogin, saveUser: true);
   }
@@ -338,14 +339,14 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
   void _createAccountPressed() {
     log('create an user with $_login and $_password');
     var userToSignUp = CubeUser();
-/*    if (isEmailSelected) {
+    if (isEmailSelected) {
       userToSignUp.email = _login;
     } else {
       userToSignUp.login = _login;
     }
 
     userToSignUp.password = _password;
-    userToSignUp.fullName = _login;*/
+    userToSignUp.fullName = _login;
 
     _signInCC(context, userToSignUp);
   }
@@ -356,55 +357,49 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     setState(() {
       _isLoginContinues = true;
     });
-/*    if (!ref.watch(cubeSessionManagerProvider).isActiveSessionValid()) {
-      final state = SharedPrefs.instance;
+
+    final repo = ref.read(cubeRepositoryProvider);
+    final cubeSessionManager = ref.read(cubeSessionManagerProvider);
+
+    if (!cubeSessionManager.isActiveSessionValid()) {
       try {
-        await createSession(user).then((cubeSession) {
-          if (cubeSession.timestamp != null) {
-            state
-              ..startSession(cubeSession, _isLoginContinues)
-              ..getLoginType()
-              ..getSubscriptionToken()
-              ..getSubscriptionId()
-              ..getSelectedDialogId()
-              ..getUser();
-
-            user = cubeSession.user!;
-
-            PushNotificationsManager.instance.init();
-
-            return user.id == cubeSession.userId ? user : null;
-          }
-        }).onError((ExceptionCause error, stackTrace) =>
-            handleError(error, stackTrace));
+        await createSession(user);
       } on Exception catch (error) {
         _processLoginError(error);
-        rethrow;
+        return;
       }
     }
-    await signUp(user).then((newUser) {
-      log("signUp newUser $newUser");
-      user.id = newUser.id;
-      SharedPrefs.instance.saveNewUser(
-          user, isEmailSelected ? LoginType.email : LoginType.login);
-      PushNotificationsManager.instance.init();
-      signIn(user).then((result) {
-        _loginToCubeChat(context, result);
-      });
-    }).catchError((exception) {
-      _processLoginError(exception);
-    });*/
+
+    final signUpResult = await repo.signUp(user);
+    signUpResult.fold(
+      (failure) => _processLoginError(Exception("SignUp failed")),
+      (newUser) async {
+        log("signUp newUser $newUser");
+        user.id = newUser.id;
+        final sharedPrefs = await SharedPrefs.instance.init();
+        sharedPrefs.saveNewUser(
+            user, isEmailSelected ? LoginType.email : LoginType.login);
+
+        await PushNotificationsManager.instance.init(ref);
+
+        final signInResult = await repo.signIn(user);
+        signInResult.fold(
+          (failure) => _processLoginError(Exception("SignIn failed")),
+          (result) => _loginToCubeChat(context, result),
+        );
+      },
+    );
   }
 
   _loginToCC(BuildContext context, CubeUser user,
       {bool saveUser = false}) async {
     log("_loginToCC user: $user");
-    /*   if (_isLoginContinues) return;
+    if (_isLoginContinues) return;
     setState(() {
       _isLoginContinues = true;
-    });*/
+    });
 
-/*    await createSession(user).then((cubeSession) {
+    createSession(user).then((cubeSession) {
       log("createSession cubeSession: $cubeSession");
       var tempUser = user;
       user = cubeSession.user!..password = tempUser.password;
@@ -415,94 +410,107 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         });
       }
 
-      PushNotificationsManager.instance.init();
+      PushNotificationsManager.instance.init(ref);
 
       _loginToCubeChat(context, user);
     }).catchError((error) {
       _processLoginError(error);
-    });*/
+    });
   }
 
   _loginToCCWithSavedUser(LoginType loginType) async {
     log("[_loginToCCWithSavedUser] user: $loginType");
     if (_isLoginContinues) return;
 
-    //Future<CubeUser>? signInFuture;
+    setState(() {
+      _isLoginContinues = true;
+    });
 
-    var accessToken = await ref.watch(firebaseAuthProvider.select((auth) => auth
-        .currentUser
-        ?.getIdToken()
-        .onError((ExceptionCause error, stackTrace) =>
-            handleError(error, stackTrace))));
+    final repo = ref.read(cubeRepositoryProvider);
 
-    if (accessToken!.isEmpty) {
-      _isLoginContinues = false;
-      return ErrorWidget(
-          'Your Phone authentication session was expired, please refresh it by second login using your phone number');
+    if (loginType == LoginType.phone) {
+      repo.createPhoneAuthSession().then((session) {
+        PushNotificationsManager.instance.init(ref);
+        _loginToCubeChat(context, session.user!..password = session.token);
+      }).catchError((error) {
+        _processLoginError(error);
+      });
+      return;
     }
 
-    /* switch (loginType) {
-      case LoginType.login:
-      // TODO: Handle this case.
-      case LoginType.email:
-      */ /*     signInFuture = createSessionUsingFirebaseEmail(projectId, accessToken)
-            .then((cubeSession) {
-          return signInUsingFirebaseEmail(projectId, accessToken)
-              .then((cubeUser) => SharedPrefs.instance
-                      .init()
-                      .then((sharedPrefs) {
-                    return sharedPrefs.getUser().then((savedUser) =>
-                        savedUser!..password = cubeUser.password);
-                  }).onError((ExceptionCause error, stackTrace) =>
-                          handleError(error, stackTrace)))
-              .onError((ExceptionCause error, stackTrace) =>
-                  handleError(error, stackTrace));
-        });*/ /*
-      case LoginType.phone:
-      */ /* signInFuture = createSessionUsingFirebasePhone(projectId, accessToken)
-            .then((cubeSession) {
-          return signInUsingFirebasePhone(projectId, cubeSession.token!)
-              .then((cubeUser) {
-            return SharedPrefs.instance.init().then((sharedPrefs) {
-              sharedPrefs.saveNewUser(cubeUser, LoginType.phone);
-              return cubeUser
-                ..password =
-                    ref.read(cubeSessionManagerProvider).activeSession?.token;
-            }).onError((ExceptionCause error, stackTrace) =>
-                handleError(error, stackTrace));
-          }).onError((ExceptionCause error, stackTrace) =>
-                  handleError(error, stackTrace));
-        });*/ /*
-      case LoginType.facebook:
-      // TODO: Handle this case.
+    final sharedPrefs = await SharedPrefs.instance.init();
+    final savedUser = await sharedPrefs.getUser();
+
+    if (savedUser == null) {
+      setState(() {
+        _isLoginContinues = false;
+      });
+      return;
     }
 
-    signInFuture?.then((cubeUser) {
-      PushNotificationsManager.instance.init();
-
-      _loginToCubeChat(context, cubeUser);
-    }).catchError((error) {
-      _processLoginError(error);
-    });*/
+    _loginToCC(context, savedUser);
   }
 
-  String getToken(String accessToken) => accessToken;
-
-  String get projectId => DefaultFirebaseOptions.currentPlatform.projectId;
-
-/*  _loginToCubeChat(BuildContext context, CubeUser user) {
+  _loginToCubeChat(BuildContext context, CubeUser user) {
     log("_loginToCubeChat user $user");
-    */ /* ref.watch(cubeChatConnectionSettingsProvider)
+    ref.read(cubeChatConnectionSettingsProvider)
       ..totalReconnections = 0
       ..reconnectionTimeout = 5000;
 
-    ref.watch(cubeChatConnectionProvider).login(user).then((cubeUser) {
-      _isLoginContinues = false;
+    ref.read(cubeChatConnectionProvider).login(user).then((cubeUser) {
+      setState(() {
+        _isLoginContinues = false;
+      });
       _goDialogScreen(context, cubeUser);
     }).catchError((error) {
       _processLoginError(error);
-    });*/ /*
-  }*/
+    });
+  }
+
+  void _goDialogScreen(BuildContext context, CubeUser cubeUser) async {
+    log("_goDialogScreen");
+    FlutterLocalNotificationsPlugin()
+        .getNotificationAppLaunchDetails()
+        .then((details) {
+      log("getNotificationAppLaunchDetails");
+      String? payload = details?.notificationResponse?.payload;
+
+      log("getNotificationAppLaunchDetails, payload: $payload");
+
+      String? dialogId;
+      if (payload == null || payload.isEmpty) {
+        dialogId = SharedPrefs.instance.getSelectedDialogId();
+        log("getNotificationAppLaunchDetails, selectedDialogId: $dialogId");
+      } else {
+        try {
+          Map<String, dynamic> payloadObject = jsonDecode(payload);
+          dialogId = payloadObject['dialog_id'];
+        } catch (e) {
+          log("Error decoding payload: $e");
+        }
+      }
+
+      if (dialogId != null && dialogId.isNotEmpty) {
+        getDialogs({'id': dialogId}).then((result) {
+          if (result != null && result.items.isNotEmpty) {
+            CubeDialog dialog = result.items.first;
+            if (mounted) {
+              navigateToNextScreen(cubeUser, dialog);
+            }
+          } else {
+            navigateToNextScreen(cubeUser, null);
+          }
+        }).catchError((onError) {
+          navigateToNextScreen(cubeUser, null);
+        });
+      } else {
+        navigateToNextScreen(cubeUser, null);
+      }
+    }).catchError((onError) {
+      log("getNotificationAppLaunchDetails ERROR: $onError");
+      navigateToNextScreen(cubeUser, null);
+    });
+  }
 
   void _processLoginError(Exception? exception) {
     log("Login error $exception");
@@ -511,48 +519,6 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     });
     context.showAlert(exception!.toString());
   }
-
-  /* void _goDialogScreen(BuildContext context, CubeUser cubeUser) async {
-    log("_goDialogScreen");
-    FlutterLocalNotificationsPlugin()
-        .getNotificationAppLaunchDetails()
-        .then((details) {
-      log("getNotificationAppLaunchDetails");
-      String? payload = details!.notificationResponse?.payload;
-
-      log("getNotificationAppLaunchDetails, payload: $payload");
-
-      var dialogId;
-      if (getToken(payload!).isEmpty) {
-        dialogId = SharedPrefs.instance.getSelectedDialogId();
-        log("getNotificationAppLaunchDetails, selectedDialogId: $dialogId");
-      } else {
-        Map<String, dynamic> payloadObject = jsonDecode(getToken(payload));
-        dialogId = payloadObject['dialog_id'];
-      }
-
-      if (dialogId != null && dialogId.isNotEmpty) {
-        */ /*  getDialogs({'id': dialogId}).then((dialogs) {
-          if (dialogs?.items != null && dialogs!.items.isNotEmpty) {
-            CubeDialog dialog = dialogs.items.first;
-            if (mounted) {
-              setState(() {
-                navigateToNextScreen(cubeUser, dialog);
-              });
-            }
-          } else {
-            navigateToNextScreen(cubeUser, null);
-          }
-        }).catchError((onError) {
-          navigateToNextScreen(cubeUser, null);
-        });*/ /*
-      } else {
-        navigateToNextScreen(cubeUser, null);
-      }
-    }).catchError((onError) {
-      log("getNotificationAppLaunchDetails ERROR: $onError");
-    });
-  }*/
 
   void navigateToNextScreen(CubeUser cubeUser, CubeDialog? dialog) {
     final cid = SharedPrefs.instance.getSelectedDialogId();

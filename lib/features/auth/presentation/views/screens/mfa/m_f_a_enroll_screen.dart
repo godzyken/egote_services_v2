@@ -1,7 +1,6 @@
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/screens/mfa/verification_screen.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
-import 'package:egote_services_v2/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

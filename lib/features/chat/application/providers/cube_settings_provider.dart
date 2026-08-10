@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
-import 'package:egote_services_v2/features/auth/presentation/controller/user_notifier.dart';
 import 'package:egote_services_v2/features/chat/application/controllers/cube_user_controller.dart';
 import 'package:egote_services_v2/features/chat/data/data_sources/local/pref_util.dart';
 import 'package:egote_services_v2/features/chat/infrastructure/repositories/cube_repository.dart';

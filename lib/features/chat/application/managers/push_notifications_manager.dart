@@ -36,27 +36,32 @@ class PushNotificationsManager {
   Ref? _ref;
 
   /// Permet d'injecter la référence Riverpod
-  void setRef(Ref ref) {
-    _ref = ref;
+  void setRef(dynamic ref) {
+    if (ref is Ref) {
+      _ref = ref;
+    }
   }
 
-  Future<void> init([Ref? ref]) async {
-    if (ref != null) _ref = ref;
+  Future<void> init([dynamic ref]) async {
+    final riverpodRef = (ref is Ref) ? ref : (ref is WidgetRef ? null : _ref);
+    final widgetRef = (ref is WidgetRef) ? ref : null;
 
     developer.log('[init], $TAG');
 
-    if (_ref == null) {
-      developer.log('[init] ERROR: Ref is null. Call setRef() or pass ref to init()', name: TAG);
+    final messaging = riverpodRef?.read(firebaseMessagingProvider) ?? 
+                      widgetRef?.read(firebaseMessagingProvider);
+
+    if (messaging == null) {
+      developer.log('[init] ERROR: Messaging is null.', name: TAG);
       return;
     }
 
-    final firebaseMessaging = _ref!.read(firebaseMessagingProvider);
-
-    await firebaseMessaging.setAutoInitEnabled(true).whenComplete(() {
-      return _ref?.refresh(firebaseAuthProvider);
+    await messaging.setAutoInitEnabled(true).whenComplete(() {
+      riverpodRef?.refresh(firebaseAuthProvider);
+      widgetRef?.refresh(firebaseAuthProvider);
     });
 
-    await firebaseMessaging.requestPermission(
+    await messaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
@@ -79,7 +84,6 @@ class PushNotificationsManager {
       macOS: const DarwinInitializationSettings(),
     );
 
-    // Correction de la signature initialize()
     await flutterLocalNotificationsPlugin.initialize(
       onDidReceiveNotificationResponse:
           (NotificationResponse notificationResponse) {
@@ -98,10 +102,9 @@ class PushNotificationsManager {
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground, settings: initializationSettings,
     );
 
-    // Obtention du token FCM de manière asynchrone
     if (Platform.isAndroid || kIsWeb || Platform.isIOS || Platform.isMacOS) {
       try {
-        final token = await firebaseMessaging.getToken();
+        final token = await messaging.getToken();
         developer.log('[getToken] token: $token, $TAG');
         if (token != null && token.isNotEmpty) {
           await subscribe(token);
@@ -111,7 +114,7 @@ class PushNotificationsManager {
       }
     }
 
-    firebaseMessaging.onTokenRefresh.listen((newToken) {
+    messaging.onTokenRefresh.listen((newToken) {
       subscribe(newToken);
     });
 
@@ -162,7 +165,7 @@ class PushNotificationsManager {
     return SharedPrefs.instance.init().then((sharedPrefs) {
       int subscriptionId = sharedPrefs.getSubscriptionId();
       if (subscriptionId != 0) {
-        // Logique de désabonnement ConnectyCube
+        // Unsubscribe logic
       }
       return Future.value();
     }).catchError((onError) {

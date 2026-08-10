@@ -108,7 +108,6 @@ class ThemeSettings extends ConsumerWidget {
           const LightSurfaceModeListTile(),
           ListTile(
             title: Text(context.tr!.lightThemeSurfaceBlend),
-            //TODO: verify
             subtitle: Text('${context.tr!.lightThemeSurfaceBlendSubTitle}$explainM3Surface'),
           ),
           const LightSurfaceBlendLevelSlider(),

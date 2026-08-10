@@ -1,7 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart' hide signOut;
+import 'package:connectycube_sdk/connectycube_sdk.dart' as sdk
+    show signOut, signUp, signIn;
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
@@ -26,9 +27,15 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<Either<Failure, CubeSession>> createGuestUserSession(
-      bool isGuest, String fullName) {
-    // TODO: implement createGuestUserSession
-    throw UnimplementedError();
+      bool isGuest, String fullName) async {
+    try {
+      final session = await createSession();
+      // If we need to assign a full name to the guest user, we might need more logic here
+      // but standard ConnectyCube guest sessions usually start with just createSession.
+      return right(session);
+    } catch (e) {
+      return left(Failure.serverError());
+    }
   }
 
   @override
@@ -59,29 +66,64 @@ class CubeRepository implements CubeRepositoryInterface {
   }
 
   @override
-  Future<CubeSession> restoreSession() {
-    // TODO: implement restoreSession
-    throw UnimplementedError();
+  Future<CubeSession> restoreSession() async {
+    final session = await createSession();
+    return session;
+  }
+
+  @override
+  Future<Either<Failure, CubeUser>> signUp(CubeUser user) async {
+    try {
+      final newUser = await createSession(user).then((_) => sdk.signUp(user));
+      return right(newUser);
+    } catch (e) {
+      return left(Failure.badRequest());
+    }
+  }
+
+  @override
+  Future<Either<Failure, CubeUser>> signIn(CubeUser user) async {
+    try {
+      final cubeUser = await sdk.signIn(user);
+      return right(cubeUser);
+    } catch (e) {
+      return left(Failure.badRequest());
+    }
   }
 
   @override
   Future<Either<Failure, bool>> signInWithSocialProviders(
-      String socialProvider, String accessToken, String accessTokenSecret) {
-    // TODO: implement signInWithSocialProviders
-    throw UnimplementedError();
+      String socialProvider, String accessToken, String accessTokenSecret) async {
+    try {
+      await createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret);
+      return right(true);
+    } catch (e) {
+      return left(Failure.badRequest());
+    }
   }
 
   @override
-  Future<Either<Failure, bool>> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> signOut() async {
+    try {
+      await sdk.signOut();
+      final sharedPrefs = await SharedPrefs.instance.init();
+      await sharedPrefs.deleteUser();
+      return right(true);
+    } catch (e) {
+      return left(Failure.serverError());
+    }
   }
 
   @override
   Future<Either<Failure, CubeSession>> updateUserSession(
-      String something, String password) {
-    // TODO: implement updateUserSession
-    throw UnimplementedError();
+      String something, String password) async {
+    try {
+      final session = await createSession();
+      await signInByLogin(something, password);
+      return right(session);
+    } catch (e) {
+      return left(Failure.badRequest());
+    }
   }
 
   @override

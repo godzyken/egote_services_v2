@@ -414,4 +414,27 @@ class AuthRepository implements AuthRepositoryInterface {
       return null;
     }
   }
+
+  @override
+  Future<Either<Failure, UserModel>> updateUser({String? email, String? password, String? name}) async {
+    try {
+      final response = await client.updateUser(
+        supabase.UserAttributes(
+          email: email,
+          password: password,
+          data: name != null ? {'name': name} : null,
+        ),
+      );
+
+      final user = response.user;
+      if (user == null) {
+        return left(Failure.badRequest());
+      }
+
+      return right(UserModel.fromJson(user.toJson()));
+    } catch (e) {
+      developer.log('updateUser Error: $e');
+      return left(Failure.badRequest());
+    }
+  }
 }

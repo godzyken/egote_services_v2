@@ -1,4 +1,4 @@
-// import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:connectycube_sdk/connectycube_sdk.dart';
 import '../../../../domain/providers/auth_repository_provider.dart';
 
 class VerificationScreenParams {
@@ -42,36 +41,62 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
       await ref.read(authRepositoryProvider).signUp(
           widget.params.email, widget.params.name, widget.params.password);
       if (mounted) {
-        setState(() {
-          _isSubmitting = true;
-        });
+        context.showAlert(context.tr!.codeResent);
       }
     } catch (e) {
       if (mounted) {
         context.showAlert(e.toString());
       }
     }
-    setState(() {
-      _isSubmitting = false;
-    });
   }
 
-  @override
-  void initState() {
-    _isSubmitting = false;
+  Future<void> _verify(String code) async {
+    if (code.length < 6) return; // Wait for full code if it's 6 digits
 
-    super.initState();
+    try {
+      setState(() {
+        _isSubmitting = true;
+      });
+
+      final result = await ref
+          .read(authRepositoryProvider)
+          .verifyCode(widget.params.email, code);
+
+      result.fold(
+        (failure) {
+          if (mounted) {
+            context.showAlert(failure.message);
+          }
+        },
+        (authResponse) {
+          if (mounted) {
+            context.showAlert(context.tr!.successSignedUp);
+            // Navigate to home
+            context.go('/user_home/${authResponse.user!.id}');
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        context.showAlert(e.toString());
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
+    }
   }
 
   @override
   void dispose() {
-    super.dispose();
-    _isSubmitting = false;
     _codeCtrl.dispose();
+    super.dispose();
   }
 
   @override
-  Widget build(BuildContext _) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.tr!.verification),
@@ -87,13 +112,14 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
           const SizedBox(
             height: 30,
           ),
-          TextInputField(
+          TextFormField(
             controller: _codeCtrl,
-            obscureText: _isSubmitting,
-            hintText: context.tr!.initCode,
+            enabled: !_isSubmitting,
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: context.tr!.verificationCode,
               border: const OutlineInputBorder(),
+              hintText: context.tr!.initCode,
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -101,76 +127,24 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
               }
               return null;
             },
-            onChanged: (p0) async {
-              try {
-                setState(() {
-                  _isSubmitting = true;
-                });
-
-                final code = await ref
-                    .read(authRepositoryProvider)
-                    .verifyCode(widget.params.email, p0);
-
-                final auth = await ref.read(authRepositoryProvider).signUp(
-                    widget.params.email,
-                    widget.params.name,
-                    widget.params.password);
-
-                final user = auth.getOrElse((l) => UserModel.complete(
-                    id: UserId(value: l.error.length),
-                    userEntityModel: UserEntityModel.empty(),
-                    authUser: AuthUser(
-                      id: l.error,
-                      appMetadata: {},
-                      userMetadata: {},
-                      aud: l.error,
-                      email: l.error,
-                      phone: l.error,
-                      createdAt: l.error,
-                      role: l.error,
-                      updatedAt: l.error,
-                    ),
-                    cubeUser: CubeUser()));
-
-                final client = code.getOrElse((l) => AuthResponse(
-                    user: user.authUser,
-                    session: Session.fromJson(user.authUser.toJson())));
-
-                if (mounted) {
-                  //TODO: Go User_home on Validate don't work
-                  context.showAlert(context.tr!.successSignedUp);
-
-                  final String location = context.namedLocation('user_home',
-                      pathParameters: {'pid': client.user!.id});
-                  setState(() {
-                    context.go(location);
-                  });
-                }
-              } catch (e) {
-                if (mounted) {
-                  context.showAlert(e.toString());
-                }
+            onChanged: (value) {
+              if (value.length == 6) {
+                _verify(value);
               }
-              setState(() {
-                _isSubmitting = false;
-              });
             },
-            label: context.tr!.verificationCode,
           ),
           const SizedBox(
             height: 20,
           ),
-          SubmitButton(
-            context.tr!.codeResent,
-            fontSize: 16,
-            height: 42,
-            key: _formKey,
-            onPressed: () async {
-              await _resendCode();
-              if (mounted) {
-                context.showAlert(context.tr!.codeResent);
-              }
-            },
+          ElevatedButton(
+            onPressed: _isSubmitting ? null : () => _verify(_codeCtrl.text),
+            child: _isSubmitting 
+              ? const CircularProgressIndicator() 
+              : Text(context.tr!.verify),
+          ),
+          TextButton(
+            onPressed: _isSubmitting ? null : _resendCode,
+            child: Text(context.tr!.codeResent),
           ),
         ],
       ),

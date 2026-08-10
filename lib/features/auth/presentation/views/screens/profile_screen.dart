@@ -1,4 +1,8 @@
+import 'dart:io' as io;
+
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
+import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/widgets/widgets_extensions.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
@@ -143,6 +147,34 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     });
   }
 
+  Future<void> _updatePhoto(User user) async {
+    try {
+      final result = await FilePicker.pickFiles(type: FileType.image);
+      if (result != null && result.files.single.path != null) {
+        setState(() => _isLoading = true);
+        
+        final io.File file = io.File(result.files.single.path!);
+        final cubeFile = await uploadFile(file, isPublic: true);
+        final url = cubeFile.getPublicUrl();
+        
+        await user.updatePhotoURL(url);
+        await user.reload();
+        
+        if (mounted) {
+          context.showAlert('Photo de profil mise à jour !');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        context.showAlert('Erreur lors de la mise à jour de la photo: $e');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext _) {
     return ref.watch(authStateChangesProvider).when(
@@ -161,8 +193,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         title: _userEntityModel!.isComplete
             ? ProfileWidget(
                 imagePath: user!.photoURL!,
-                onClicked: () {
-                  // Todo: user!.updatePhotoUrl()
+                onClicked: () async {
+                  await _updatePhoto(user);
                 },
               )
             : Text(context.tr!.noData),
@@ -269,8 +301,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         title: _userEntityModel!.isComplete
             ? ProfileWidget(
                 imagePath: user!.photoURL!,
-                onClicked: () {
-                  // Todo: user!.updatePhotoUrl()
+                onClicked: () async {
+                  await _updatePhoto(user);
                 },
               )
             : Text(context.tr!.noData),

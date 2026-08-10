@@ -1,5 +1,4 @@
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
-import 'package:egote_services_v2/config/routes/routes.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

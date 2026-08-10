@@ -8,7 +8,7 @@ abstract class ValueAbstract<T> {
   Either<Failure, T> get value;
 
   @override
-  String toString() => value.fold((l) => l.error, (r) => r.toString());
+  String toString() => value.fold((l) => l.message, (r) => r.toString());
 
-  String? get validate => value.fold((l) => l.error, (r) => null);
+  String? get validate => value.fold((l) => l.message, (r) => null);
 }

@@ -18,8 +18,7 @@ abstract class AuthRepositoryInterface {
     void Function(UserModel? userEntity) callback,
   );
 
-  // TODO: Migration, en attendant la maj de connectycube
-  // Mon model 'CubeUser' est une classes Mocks 'CubeUser'
+  /// Mocks 'CubeUser' classes until ConnectyCube major update
   Future<Either<Failure, CubeUser>> cubeUserStateChange(
       void Function(CubeUser? cubeUser) cubeUser);
 
@@ -48,4 +47,6 @@ abstract class AuthRepositoryInterface {
   );
 
   Future<Either<Failure, UserEntityModel>> createUserEntityModel(UserName name);
+
+  Future<Either<Failure, UserModel>> updateUser({String? email, String? password, String? name});
 }

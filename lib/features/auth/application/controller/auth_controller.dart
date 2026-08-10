@@ -86,7 +86,7 @@ class AuthController extends AsyncNotifier<UserModel?> {
     state = const AsyncValue.loading();
     final res = await _repository.createUserEntityModel(name);
     state = res.fold(
-      (l) => AsyncValue.error(l.error, StackTrace.fromString(l.toString())),
+      (l) => AsyncValue.error(l.message, StackTrace.fromString(l.toString())),
       (r) => AsyncValue.data(UserModel.fromJson(r.toJson())),
     );
   }

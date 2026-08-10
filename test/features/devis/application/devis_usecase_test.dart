@@ -1,126 +1,44 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devis_model_entity.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devi_id.dart';
 
 void main() {
-  group('Devis Feature - Create Use Case', () {
-    test('should create devis with valid data', () {
-      // Arrange
-      final baseAmount = 5000.0;
-      final label = 'Devis Renovation';
-
-      // Act
-      final totalAmount = baseAmount;
-
-      // Assert
-      expect(totalAmount, 5000.0);
-      expect(label, 'Devis Renovation');
+  group('Devis Feature - Models', () {
+    test('should create an empty DevisModelEntity', () {
+      final devis = DevisModelEntity.empty();
+      expect(devis, isNotNull);
     });
 
+    test('should initialize DevisModelEntity', () {
+      final id = const DevisId(id: 1);
+      final now = DateTime.now();
+      final devis = DevisModelEntity.initialize(id: id, createdAt: now);
+      
+      devis.when(
+        initialize: (idResult, date) {
+          expect(idResult, id);
+          expect(date, now);
+        },
+        approved: (_, __, ___, ____, _____, ______, _______, ________, _________, __________, ___________, ____________) => fail('Should be initialize'),
+        empty: () => fail('Should be initialize'),
+      );
+    });
+  });
+
+  group('Devis Feature - Calculations', () {
     test('should calculate totals correctly', () {
       // Arrange
-      final items = [
-        {'label': 'Item 1', 'price': 1000.0},
-        {'label': 'Item 2', 'price': 1500.0},
-      ];
+      const unitPrice = 100;
+      const quantity = 5;
+      const vatRate = 0.20; // 20%
 
       // Act
-      final total = items.fold<double>(0, (sum, item) => sum + (item['price'] as double));
+      final amountHt = unitPrice * quantity;
+      final amountTtc = amountHt * (1 + vatRate);
 
       // Assert
-      expect(total, 2500.0);
-    });
-
-    test('should apply discounts correctly', () {
-      // Arrange
-      final baseAmount = 1000.0;
-      final discountPercentage = 0.1; // 10%
-
-      // Act
-      final discountedAmount = baseAmount * (1 - discountPercentage);
-
-      // Assert
-      expect(discountedAmount, 900.0);
-    });
-  });
-
-  group('Devis Feature - List Use Case', () {
-    test('should fetch all devis', () {
-      // Arrange
-      final devisList = [
-        {'id': 'devis_001', 'label': 'Devis 1', 'amount': 1000.0},
-        {'id': 'devis_002', 'label': 'Devis 2', 'amount': 2000.0},
-      ];
-
-      // Assert
-      expect(devisList.length, 2);
-      expect(devisList.first['id'], 'devis_001');
-    });
-
-    test('should filter devis by status', () {
-      // Arrange
-      final devisList = [
-        {'id': 'devis_001', 'status': 'pending'},
-        {'id': 'devis_002', 'status': 'accepted'},
-      ];
-
-      // Act
-      final filtered = devisList.where((d) => d['status'] == 'accepted').toList();
-
-      // Assert
-      expect(filtered.length, 1);
-      expect(filtered.first['id'], 'devis_002');
-    });
-
-    test('should sort devis by date', () {
-      // Arrange
-      final now = DateTime.now();
-      final devisList = [
-        {'id': 'devis_001', 'date': now.subtract(const Duration(days: 2))},
-        {'id': 'devis_002', 'date': now},
-      ];
-
-      // Act
-      final sorted = List.from(devisList)
-          ..sort((a, b) => (b['date'] as DateTime).compareTo(a['date'] as DateTime));
-
-      // Assert
-      expect(sorted.first['id'], 'devis_002');
-      expect(sorted.last['id'], 'devis_001');
-    });
-  });
-
-  group('Devis Feature - Update Use Case', () {
-    test('should update devis status', () {
-      // Arrange
-      var devis = {'id': 'devis_001', 'status': 'pending'};
-
-      // Act
-      devis['status'] = 'accepted';
-
-      // Assert
-      expect(devis['status'], 'accepted');
-    });
-
-    test('should restrict update after acceptance', () {
-      // Arrange
-      final devis = {'id': 'devis_001', 'status': 'accepted'};
-
-      // Act & Assert
-      if (devis['status'] == 'accepted') {
-        expect(devis['status'], 'accepted');
-      }
-    });
-
-    test('should send notification on update', () {
-      // Arrange
-      var devis = {'id': 'devis_001', 'status': 'pending'};
-      final notificationSent = true;
-
-      // Act
-      devis['status'] = 'accepted';
-
-      // Assert
-      expect(notificationSent, true);
-      expect(devis['status'], 'accepted');
+      expect(amountHt, 500);
+      expect(amountTtc, 600);
     });
   });
 }

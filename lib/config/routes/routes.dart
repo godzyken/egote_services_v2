@@ -12,7 +12,6 @@ import 'package:egote_services_v2/features/settings/presentation/view/gallery/ga
 import 'package:egote_services_v2/features/settings/presentation/view/settings_ui_page.dart';
 import 'package:egote_services_v2/features/sketch/presentation/view/drawing_page.dart';
 import 'package:egote_services_v2/features/theme/views/screen/theme_showcase_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 /// Core module for the main egote_services app

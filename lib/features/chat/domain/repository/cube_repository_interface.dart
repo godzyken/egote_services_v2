@@ -22,6 +22,10 @@ abstract class CubeRepositoryInterface {
 
   Future<CubeSession> restoreSession();
 
+  Future<Either<Failure, CubeUser>> signUp(CubeUser user);
+
+  Future<Either<Failure, CubeUser>> signIn(CubeUser user);
+
   Future<CubeFile> getUploadingImageFuture(FilePickerResult result);
 
   Future<CubeSession> createPhoneAuthSession();

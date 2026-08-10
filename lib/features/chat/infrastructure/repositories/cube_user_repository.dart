@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:developer';
 
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:connectycube_sdk/connectycube_core.dart';
@@ -11,33 +10,46 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CubeUserRepository implements CubeUserRepositoryInterface {
   @override
-  Future<CubeUser> createCubeUser(UserModel userModel) {
-    // TODO: implement createCubeUser
-    throw UnimplementedError();
+  Future<CubeUser> createCubeUser(UserModel userModel) async {
+    final cubeUser = CubeUser(
+      login: userModel.authUser.email ?? userModel.userEntityModel.name,
+      fullName: userModel.userEntityModel.name,
+      email: userModel.authUser.email,
+      phone: userModel.authUser.phone,
+      password: userModel.authUser.id,
+    );
+    return await signUp(cubeUser);
   }
 
   @override
-  Future<int> deleteCubeUser(UserId userId) {
-    // TODO: implement deleteCubeUser
-    throw UnimplementedError();
+  Future<int> deleteCubeUser(UserId userId) async {
+    await deleteUser(userId.value);
+    return userId.value;
   }
 
   @override
-  Future<int> excludeCubeUser(UserId userId, UserModel userModel) {
-    // TODO: implement excludeCubeUser
-    throw UnimplementedError();
+  Future<int> excludeCubeUser(UserId userId, UserModel userModel) async {
+    // Business logic for exclusion could be complex, for now we just delete
+    await deleteUser(userId.value);
+    return userId.value;
   }
 
   @override
-  Future<List<CubeUser>> getAllCubeUsers() {
-    // TODO: implement getAllCubeUsers
-    throw UnimplementedError();
+  Future<List<CubeUser>> getAllCubeUsers() async {
+    final result = await getUsers({});
+    return result?.items ?? [];
   }
 
   @override
-  Future<CubeUser> getCubeUserById() {
-    // TODO: implement getCubeUserById
-    throw UnimplementedError();
+  Future<CubeUser> getCubeUserById() async {
+    // If no ID is provided, we might be getting the current user or this is a bug in the interface
+    // For now, let's assume it fetches the current user if possible or throw
+    final currentSession = CubeSessionManager.instance.activeSession;
+    if (currentSession != null && currentSession.userId != null) {
+      final result = await getUserById(currentSession.userId!);
+      return result!;
+    }
+    throw Exception("No active session to get current user by ID");
   }
 
   @override
@@ -56,9 +68,14 @@ class CubeUserRepository implements CubeUserRepositoryInterface {
   }
 
   @override
-  Future<void> updateCubeUser(UserId id, UserModel userModel) {
-    // TODO: implement updateCubeUser
-    throw UnimplementedError();
+  Future<void> updateCubeUser(UserId id, UserModel userModel) async {
+    final cubeUser = CubeUser(
+      id: id.value,
+      fullName: userModel.userEntityModel.name,
+      email: userModel.authUser.email,
+      phone: userModel.authUser.phone,
+    );
+    await updateUser(cubeUser);
   }
 }
 
