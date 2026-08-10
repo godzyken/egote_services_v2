@@ -21,7 +21,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get absent => 'Ausente';
 
   @override
-  String get abstractSettingsDescription => 'UI create para mostrar las posibilidades de plugin';
+  String get abstractSettingsDescription =>
+      'UI create para mostrar las posibilidades de plugin';
 
   @override
   String get abstractSettingsTitle => 'Pantalla de configuración abstracta';
@@ -45,7 +46,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get addressCity => 'Nombre de la ciudad';
 
   @override
-  String get addressDescription => 'Incluya información como números de teléfono, correo electrónico y direcciones de envío';
+  String get addressDescription =>
+      'Incluya información como números de teléfono, correo electrónico y direcciones de envío';
+
+  @override
+  String get addressDocking => 'Dirección Docking';
 
   @override
   String get addressId => 'Id de dirección';
@@ -72,7 +77,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get alertDialog => 'Diálogo de alerta';
 
   @override
-  String get alertDialogContent => 'La configuración de los temas existentes también se actualizará a sus valores predeterminados.';
+  String get alertDialogContent =>
+      'La configuración de los temas existentes también se actualizará a sus valores predeterminados.';
 
   @override
   String get all => 'Todos';
@@ -84,7 +90,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get allowLocServ => 'Permitir servicios de localización';
 
   @override
-  String get allowLocServText => 'Permítanos ayudarle a determinar su ubicación. Esto significa enviarnos datos de localización anónimos.';
+  String get allowLocServText =>
+      'Permítanos ayudarle a determinar su ubicación. Esto significa enviarnos datos de localización anónimos.';
 
   @override
   String get alreadyHave => 'Ya tengo una cuenta';
@@ -108,7 +115,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get appearanceTitleDark => 'Aspecto oscuro';
 
   @override
-  String get appsDescription => 'Asistente, aplicaciones recientes, aplicaciones por defecto';
+  String get appsDescription =>
+      'Asistente, aplicaciones recientes, aplicaciones por defecto';
 
   @override
   String get appsTitle => 'Aplicaciones';
@@ -144,7 +152,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get behindNavBar => 'Detrás de NavBar';
 
   @override
-  String get blendLevelLongText => 'Mezclas de niveles 1x Fondo 1x Andamio 1x\\n';
+  String get blendLevelLongText =>
+      'Mezclas de niveles 1x Fondo 1x Andamio 1x\\n';
 
   @override
   String get blendLevelShortText => 'Plano todo al mismo nivel';
@@ -165,7 +174,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bubbles => 'Burbujas';
 
   @override
-  String get bubblesActive => 'On / Las conservaciones pueden aparecer como iconos flotantes';
+  String get bubblesActive =>
+      'On / Las conservaciones pueden aparecer como iconos flotantes';
 
   @override
   String get byEmail => 'Por correo electrónico';
@@ -186,37 +196,48 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
-  String get cardShowcaseElevate10Text1 => 'Tarjeta, cota 10, superficie por defecto Tinte y sombra';
+  String get cardShowcaseElevate10Text1 =>
+      'Tarjeta, cota 10, superficie por defecto Tinte y sombra';
 
   @override
-  String get cardShowcaseElevate10Text2 => 'Tarjeta, cota 10, surfaceTint por defecto y sombra por defecto';
+  String get cardShowcaseElevate10Text2 =>
+      'Tarjeta, cota 10, surfaceTint por defecto y sombra por defecto';
 
   @override
-  String get cardShowcaseElevate10Text3 => 'Tarjeta, cota 10, superficie por defecto Tinte y sombra transparente';
+  String get cardShowcaseElevate10Text3 =>
+      'Tarjeta, cota 10, superficie por defecto Tinte y sombra transparente';
 
   @override
-  String get cardShowcaseElevate1Text1 => 'Tarjeta, cota 1, superficie por defecto Tinte y sombra';
+  String get cardShowcaseElevate1Text1 =>
+      'Tarjeta, cota 1, superficie por defecto Tinte y sombra';
 
   @override
-  String get cardShowcaseElevate1Text2 => 'Tarjeta, cota 1, superficie asignada Tinte y sombra por defecto';
+  String get cardShowcaseElevate1Text2 =>
+      'Tarjeta, cota 1, superficie asignada Tinte y sombra por defecto';
 
   @override
-  String get cardShowcaseElevate1Text3 => 'Tarjeta, cota 1, superficie asignada Tinte y sombra no transparente';
+  String get cardShowcaseElevate1Text3 =>
+      'Tarjeta, cota 1, superficie asignada Tinte y sombra no transparente';
 
   @override
-  String get cardShowcaseElevate4Text1 => 'Tarjeta, cota 4, superficie por defecto Tinte y sombra';
+  String get cardShowcaseElevate4Text1 =>
+      'Tarjeta, cota 4, superficie por defecto Tinte y sombra';
 
   @override
-  String get cardShowcaseElevate4Text2 => 'Tarjeta, elevación 4, superficie por defecto Tinte y sombra por defecto';
+  String get cardShowcaseElevate4Text2 =>
+      'Tarjeta, elevación 4, superficie por defecto Tinte y sombra por defecto';
 
   @override
-  String get cardShowcaseElevate4Text3 => 'Tarjeta, cota 4, superficie por defecto Tinte y sombra transparente';
+  String get cardShowcaseElevate4Text3 =>
+      'Tarjeta, cota 4, superficie por defecto Tinte y sombra transparente';
 
   @override
-  String get cardShowcaseText => 'El color de fondo por defecto proviene del Material de tipo tarjeta, que por defecto se establece en el tema colorScheme surface.Cuando useMaterial3 es true, la tarjeta obtiene la elevación basada en surfaceTint. Cuando es falso, surfaceTint no tiene ningún efecto, incluso si se especifica.';
+  String get cardShowcaseText =>
+      'El color de fondo por defecto proviene del Material de tipo tarjeta, que por defecto se establece en el tema colorScheme surface.Cuando useMaterial3 es true, la tarjeta obtiene la elevación basada en surfaceTint. Cuando es falso, surfaceTint no tiene ningún efecto, incluso si se especifica.';
 
   @override
-  String get cardShowcaseText1 => 'Tarjeta, cota 0, superficie asignada Tinte y sombra por defecto';
+  String get cardShowcaseText1 =>
+      'Tarjeta, cota 0, superficie asignada Tinte y sombra por defecto';
 
   @override
   String get changeEmail => 'Cambiar correo electrónico';
@@ -243,25 +264,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get checkInbox => 'Compruebe su bandeja de entrada';
 
   @override
-  String get checkboxListTileChecked => 'La lista de casillas de verificación está marcada';
+  String get checkboxListTileChecked =>
+      'La lista de casillas de verificación está marcada';
 
   @override
   String get checkboxListTileTitle => 'Mosaico CheckboxList';
 
   @override
-  String get checkboxListTileTitleDisabled => 'Mosaico CheckboxList desactivado';
+  String get checkboxListTileTitleDisabled =>
+      'Mosaico CheckboxList desactivado';
 
   @override
-  String get checkboxListTileTristate => 'Mosaico CheckboxList puede tener un valor verdadero';
+  String get checkboxListTileTristate =>
+      'Mosaico CheckboxList puede tener un valor verdadero';
 
   @override
-  String get checkboxListTileUnchecked => 'El mosaico de la lista de casillas de verificación está desmarcado';
+  String get checkboxListTileUnchecked =>
+      'El mosaico de la lista de casillas de verificación está desmarcado';
 
   @override
   String get circleAvatarAbrev => 'AV';
 
   @override
-  String get clearBrowsingDescription => 'Borrar historial, cookies, caché y más';
+  String get clearBrowsingDescription =>
+      'Borrar historial, cookies, caché y más';
 
   @override
   String get clearBrowsingTitle => 'Borrar datos de navegación';
@@ -315,16 +341,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get componentTheme => 'Componente Tema';
 
   @override
-  String get computeDarkSchemeColors => 'Calcular los colores del esquema oscuro';
+  String get computeDarkSchemeColors =>
+      'Calcular los colores del esquema oscuro';
 
   @override
-  String get confirmDeleteUser => '¿Está seguro de que desea eliminar el usuario actual?';
+  String get confirmDeleteUser =>
+      '¿Está seguro de que desea eliminar el usuario actual?';
 
   @override
   String get confirmLeaveDial => '¿Seguro que quieres dejar este diálogo?';
 
   @override
-  String get confirmLogout => '¿Está seguro de que desea cerrar la sesión del usuario actual?';
+  String get confirmLogout =>
+      '¿Está seguro de que desea cerrar la sesión del usuario actual?';
 
   @override
   String get connectedDevices => 'Dispositivos conectados';
@@ -348,10 +377,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get contacts => 'contactos';
 
   @override
-  String get controlNotifications => 'Controla las notificaciones de cada aplicación';
+  String get controlNotifications =>
+      'Controla las notificaciones de cada aplicación';
 
   @override
-  String get cookiesOtherDescription => 'Las cookies de terceros se bloquean en el modo Incógnito';
+  String get cookiesOtherDescription =>
+      'Las cookies de terceros se bloquean en el modo Incógnito';
 
   @override
   String get cookiesOtherTitle => 'Cookies y otros datos del sitio';
@@ -396,13 +427,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get darkAppBarStyle => 'Estilo AppBar oscuro';
 
   @override
-  String get darkSchemeText => 'Los colores del esquema oscuro se calculan a partir del esquema claro, en lugar de ';
+  String get darkSchemeText =>
+      'Los colores del esquema oscuro se calculan a partir del esquema claro, en lugar de ';
 
   @override
-  String get darkSchemeTextSuit => 'utilizando colores de esquema oscuro definidos.';
+  String get darkSchemeTextSuit =>
+      'utilizando colores de esquema oscuro definidos.';
 
   @override
-  String get darkSurfaceBlendSubTitle => 'Ajusta las mezclas de superficie, fondo y andamio';
+  String get darkSurfaceBlendSubTitle =>
+      'Ajusta las mezclas de superficie, fondo y andamio';
 
   @override
   String get darkSurfaceBlendTitle => 'Mezcla de superficies oscuras';
@@ -417,13 +451,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get day => 'Día';
 
   @override
-  String get defaultBackgroundColorSurface => 'El color de fondo por defecto es superficie con una superposición onSurface en M2, y primario en M3, con elevación 3. El tema por defecto del componente FlexColorScheme es el esquema de color background, con mezcla de superficie usada y elevación 0.';
+  String get defaultBackgroundColorSurface =>
+      'El color de fondo por defecto es superficie con una superposición onSurface en M2, y primario en M3, con elevación 3. El tema por defecto del componente FlexColorScheme es el esquema de color background, con mezcla de superficie usada y elevación 0.';
 
   @override
   String get defaultLabel => 'Predeterminado';
 
   @override
-  String get defaultSdkBackgroundColor => 'Por defecto SDK color de fondo es el tema canvasColor a través de Material. El canvasColor es típicamente colorScheme.background, elevación es 8. FCS sub-tema por defecto es colorScheme.background y elevación 0.';
+  String get defaultSdkBackgroundColor =>
+      'Por defecto SDK color de fondo es el tema canvasColor a través de Material. El canvasColor es típicamente colorScheme.background, elevación es 8. FCS sub-tema por defecto es colorScheme.background y elevación 0.';
 
   @override
   String get delete => 'suprima';
@@ -432,7 +468,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deleteContact => 'Borrar el contacto';
 
   @override
-  String get deleteFactor => 'Estás seguro de que quieres eliminar este factor? Al eliminar el factor, se cerrará tu sesión en la aplicación.';
+  String get deleteFactor =>
+      'Estás seguro de que quieres eliminar este factor? Al eliminar el factor, se cerrará tu sesión en la aplicación.';
 
   @override
   String get deleteUser => 'eliminar usuario';
@@ -474,7 +511,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get doNotDisturb => 'No molestar';
 
   @override
-  String get doNotDisturbDescription => 'Apagado / 1 horario puede encenderse automáticamente';
+  String get doNotDisturbDescription =>
+      'Apagado / 1 horario puede encenderse automáticamente';
 
   @override
   String get done => 'Realizado';
@@ -495,7 +533,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dropdownMenu => 'Menú desplegable';
 
   @override
-  String get dropdownMenuText => 'El nuevo M3 DropdownMenu comparte bloques de construcción con Menu Bar y Menu Anchor, también utiliza Input Decorator para la entrada de texto.';
+  String get dropdownMenuText =>
+      'El nuevo M3 DropdownMenu comparte bloques de construcción con Menu Bar y Menu Anchor, también utiliza Input Decorator para la entrada de texto.';
 
   @override
   String get dueDate => 'Fecha de vencimiento';
@@ -537,7 +576,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get enterCode => 'Introducir código';
 
   @override
-  String get enterCodeSent => 'Introduce el código que aparece en tu aplicación de autenticación.';
+  String get enterCodeSent =>
+      'Introduce el código que aparece en tu aplicación de autenticación.';
 
   @override
   String get enterDuration => 'introducir duración';
@@ -558,16 +598,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get enterUsername => 'Introducir nombre de usuario';
 
   @override
-  String get expandCollapseSubTitle => 'ON para expandir OFF para contraer\\nSólo se utiliza para el control local de la presentación ferroviaria.';
+  String get expandCollapseSubTitle =>
+      'ON para expandir OFF para contraer\\nSólo se utiliza para el control local de la presentación ferroviaria.';
 
   @override
   String get expandCollapseTitle => 'Expandir y colapsar';
 
   @override
-  String get expansionPanelDelete => 'Para eliminar este panel, pulse el icono de la papelera';
+  String get expansionPanelDelete =>
+      'Para eliminar este panel, pulse el icono de la papelera';
 
   @override
-  String get expansionPanelFixed => 'Este panel está fijado aquí y no se puede quitar. A partir del número 3 sí se puede quitar.';
+  String get expansionPanelFixed =>
+      'Este panel está fijado aquí y no se puede quitar. A partir del número 3 sí se puede quitar.';
 
   @override
   String get expansionTileListTitle => 'Este es el azulejo número';
@@ -576,7 +619,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get expansionTileSubTitle1 => 'Icono de flecha de expansión';
 
   @override
-  String get expansionTileSubTitle2 => 'Icono de flecha de expansión personalizado';
+  String get expansionTileSubTitle2 =>
+      'Icono de flecha de expansión personalizado';
 
   @override
   String get expansionTileSubTitle3 => 'Icono de flecha de expansión';
@@ -585,28 +629,35 @@ class AppLocalizationsEs extends AppLocalizations {
   String get expansionTileTitle => 'Azulejo de expansión';
 
   @override
-  String get explainFlutterM2Color => 'El color predeterminado de Flutter M2 era ThemeData.bottomAppBarColor. Fue obsoleto en Flutter 3.7. El nuevo valor predeterminado es colorScheme.surface y elevación 8. En M3 por defecto es colorScheme.surface color, elevación 3, sin sombra, pero con tinte de elevación de la superficie.';
+  String get explainFlutterM2Color =>
+      'El color predeterminado de Flutter M2 era ThemeData.bottomAppBarColor. Fue obsoleto en Flutter 3.7. El nuevo valor predeterminado es colorScheme.surface y elevación 8. En M3 por defecto es colorScheme.surface color, elevación 3, sin sombra, pero con tinte de elevación de la superficie.';
 
   @override
-  String get explainUsedColors1 => 'Material 3 La combinación de colores a partir de los colores clave está desactivada y no se utiliza. La combinación de colores se basa directamente en el tema seleccionado.';
+  String get explainUsedColors1 =>
+      'Material 3 La combinación de colores a partir de los colores clave está desactivada y no se utiliza. La combinación de colores se basa directamente en el tema seleccionado.';
 
   @override
-  String get explainUsedColors2 => 'El color primario del tema de la luz se utiliza para generar el esquema de color. Esto es como usar Flutter Color Scheme.fromSeed con el color primario como color semilla.';
+  String get explainUsedColors2 =>
+      'El color primario del tema de la luz se utiliza para generar el esquema de color. Esto es como usar Flutter Color Scheme.fromSeed con el color primario como color semilla.';
 
   @override
-  String get explainUsedColors3 => 'Las paletas tonales para el Esquema de Color, se hacen con los colores Primarios y Secundarios del tema de la luz como claves semilla. La clave terciaria se calcula a partir del color primario.';
+  String get explainUsedColors3 =>
+      'Las paletas tonales para el Esquema de Color, se hacen con los colores Primarios y Secundarios del tema de la luz como claves semilla. La clave terciaria se calcula a partir del color primario.';
 
   @override
-  String get explainUsedColors4 => 'Las paletas tonales para el Esquema de Color, se hacen con colores primarios y terciarios como claves semilla, la clave secundaria se calcula a partir del color primario.';
+  String get explainUsedColors4 =>
+      'Las paletas tonales para el Esquema de Color, se hacen con colores primarios y terciarios como claves semilla, la clave secundaria se calcula a partir del color primario.';
 
   @override
-  String get explainUsedColors5 => 'Tema de luz Los colores primario, secundario y terciario se utilizan como claves para generar paletas tonales que definen el la Combinación de colores';
+  String get explainUsedColors5 =>
+      'Tema de luz Los colores primario, secundario y terciario se utilizan como claves para generar paletas tonales que definen el la Combinación de colores';
 
   @override
   String get extended => 'Ampliado';
 
   @override
-  String get fastAppTerminationDescription => 'Terminar en lugar de suspender las aplicaciones cuando están en segundo plano para obligar a que las aplicaciones se vuelvan a iniciar cuando la bandeja esté en primer plano.';
+  String get fastAppTerminationDescription =>
+      'Terminar en lugar de suspender las aplicaciones cuando están en segundo plano para obligar a que las aplicaciones se vuelvan a iniciar cuando la bandeja esté en primer plano.';
 
   @override
   String get fastAppTerminationTitle => 'Terminación rápida de aplicaciones';
@@ -660,13 +711,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get flexTonesTitle2 => 'Configuración de FlexTones con croma CAM16';
 
   @override
-  String get flutterBackgroundColor => 'El color de fondo por defecto de Flutter es el color de superficie Scheme. El subtema FlexColor Scheme por defecto es el color Scheme background.';
+  String get flutterBackgroundColor =>
+      'El color de fondo por defecto de Flutter es el color de superficie Scheme. El subtema FlexColor Scheme por defecto es el color Scheme background.';
 
   @override
-  String get flutterBackgroundColorM3 => 'El color de fondo predeterminado de Flutter en M3 es el color Scheme surface, con tinte de elevación y sin sombra. En M2 tiene sombra y utiliza el tema de color canvas Color, que normalmente se establece en colorScheme.background.';
+  String get flutterBackgroundColorM3 =>
+      'El color de fondo predeterminado de Flutter en M3 es el color Scheme surface, con tinte de elevación y sin sombra. En M2 tiene sombra y utiliza el tema de color canvas Color, que normalmente se establece en colorScheme.background.';
 
   @override
-  String get flutterBackgroundColorSurface => 'El color de fondo predeterminado de Flutter es el color de la superficie Scheme, con la adición de un matiz de elevación en el modo Material 3.';
+  String get flutterBackgroundColorSurface =>
+      'El color de fondo predeterminado de Flutter es el color de la superficie Scheme, con la adición de un matiz de elevación en el modo Material 3.';
 
   @override
   String get font => 'Fuente';
@@ -693,13 +747,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get groupName => 'Nombre del grupo...';
 
   @override
-  String get groupProvide => 'Indique un nombre de grupo y un icono de grupo opcional';
+  String get groupProvide =>
+      'Indique un nombre de grupo y un icono de grupo opcional';
 
   @override
-  String get haveAccount => '¿Tiene una cuenta? Haga clic aquí para iniciar sesión.';
+  String get haveAccount =>
+      '¿Tiene una cuenta? Haga clic aquí para iniciar sesión.';
 
   @override
-  String get haventAccount => '¿No tiene una cuenta? Pulse aquí para registrarse.';
+  String get haventAccount =>
+      '¿No tiene una cuenta? Pulse aquí para registrarse.';
 
   @override
   String get headline => 'Titular';
@@ -711,40 +768,51 @@ class AppLocalizationsEs extends AppLocalizations {
   String get hideMessage => 'Ocultar mensaje';
 
   @override
-  String get hideSilentTile => 'Ocultar las notificaciones silenciosas en la barra de estado';
+  String get hideSilentTile =>
+      'Ocultar las notificaciones silenciosas en la barra de estado';
 
   @override
-  String get highBackgroundLowScaffoldLongText => 'Fondo alto, andamio bajo Superficie 1x Fondo 3/2x Andamio 1/2x\\n';
+  String get highBackgroundLowScaffoldLongText =>
+      'Fondo alto, andamio bajo Superficie 1x Fondo 3/2x Andamio 1/2x\\n';
 
   @override
   String get highBackgroundLowScaffoldShortText => 'Alto fondo bajo andamio';
 
   @override
-  String get highScaffoldLevelSurfaceLongText => 'Andamio muy alto, fondo alto, superficie nivelada Superficie 1x Fondo 2x Andamio 3x\\n';
+  String get highScaffoldLevelSurfaceLongText =>
+      'Andamio muy alto, fondo alto, superficie nivelada Superficie 1x Fondo 2x Andamio 3x\\n';
 
   @override
-  String get highScaffoldLevelSurfaceShortText => 'Superficie alta a nivel de andamio';
+  String get highScaffoldLevelSurfaceShortText =>
+      'Superficie alta a nivel de andamio';
 
   @override
-  String get highScaffoldLowSurfaceLongText => 'Andamio muy alto, superficie baja Superficie 1/2x Fondo 1x Andamio 3x\\n';
+  String get highScaffoldLowSurfaceLongText =>
+      'Andamio muy alto, superficie baja Superficie 1/2x Fondo 1x Andamio 3x\\n';
 
   @override
-  String get highScaffoldLowSurfaceShortText => 'Andamio muy alto superficie baja';
+  String get highScaffoldLowSurfaceShortText =>
+      'Andamio muy alto superficie baja';
 
   @override
-  String get highScaffoldLowSurfacesLongText => 'Andamio muy alto, superficie y fondo bajos Superficie 1/2x Fondo 1/2x Andamio 3x\\n';
+  String get highScaffoldLowSurfacesLongText =>
+      'Andamio muy alto, superficie y fondo bajos Superficie 1/2x Fondo 1/2x Andamio 3x\\n';
 
   @override
-  String get highScaffoldLowSurfacesShortText => 'Andamio alto superficies bajas';
+  String get highScaffoldLowSurfacesShortText =>
+      'Andamio alto superficies bajas';
 
   @override
-  String get highScaffoldLowSurfacesVariantDialogLongText => 'Diálogo de contenedor terciario, andamio muy alto Superficie 1/2x Fondo 1/2x Andamio 3x Diálogo 1/2x mezcla de color de contenedor terciario';
+  String get highScaffoldLowSurfacesVariantDialogLongText =>
+      'Diálogo de contenedor terciario, andamio muy alto Superficie 1/2x Fondo 1/2x Andamio 3x Diálogo 1/2x mezcla de color de contenedor terciario';
 
   @override
-  String get highScaffoldLowSurfacesVariantDialogShortText => 'Diálogo de contenedores terciarios de alto andamiaje';
+  String get highScaffoldLowSurfacesVariantDialogShortText =>
+      'Diálogo de contenedores terciarios de alto andamiaje';
 
   @override
-  String get highSurfaceLowScaffoldLongText => 'Superficie alta, andamio bajo Superficie 3/2x Fondo 1x Andamio 1/2x\\n';
+  String get highSurfaceLowScaffoldLongText =>
+      'Superficie alta, andamio bajo Superficie 3/2x Fondo 1x Andamio 1/2x\\n';
 
   @override
   String get highSurfaceLowScaffoldShortText => 'Andamio de alta superficie';
@@ -759,19 +827,23 @@ class AppLocalizationsEs extends AppLocalizations {
   String get httpThree => 'HTTP/3';
 
   @override
-  String get iadDevTitle => 'Pruebas de aplicaciones para desarrolladores de DAI';
+  String get iadDevTitle =>
+      'Pruebas de aplicaciones para desarrolladores de DAI';
 
   @override
-  String get iconButtonCLoseM3 => 'Este es un IconButton En M3 toque para cerrar la cerradura';
+  String get iconButtonCLoseM3 =>
+      'Este es un IconButton En M3 toque para cerrar la cerradura';
 
   @override
-  String get iconButtonOpenM3 => 'Este es un IconButton En M3 toque para abrir la cerradura';
+  String get iconButtonOpenM3 =>
+      'Este es un IconButton En M3 toque para abrir la cerradura';
 
   @override
   String get info => 'Información';
 
   @override
-  String get infoThemeSettings => 'Demostración del tema persistente FlexColor Scheme. Los widgets de configuración de temas que utilizan controladores Riverpod pueden utilizarse en cualquier parte de la aplicación. En esta página, en el cajón y en una hoja inferior para controlar la configuración del tema persistente.';
+  String get infoThemeSettings =>
+      'Demostración del tema persistente FlexColor Scheme. Los widgets de configuración de temas que utilizan controladores Riverpod pueden utilizarse en cualquier parte de la aplicación. En esta página, en el cajón y en una hoja inferior para controlar la configuración del tema persistente.';
 
   @override
   String get initCode => '000000';
@@ -804,10 +876,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get labelBackground => 'Fondo';
 
   @override
-  String get labelBottomNaviBarBackground => 'Fondo inferior de la barra de navegación';
+  String get labelBottomNaviBarBackground =>
+      'Fondo inferior de la barra de navegación';
 
   @override
-  String get labelBottomNaviBarSelected => 'Barra de navegación inferior seleccionada';
+  String get labelBottomNaviBarSelected =>
+      'Barra de navegación inferior seleccionada';
 
   @override
   String get labelCabinOverview => 'Vista general de la cabina';
@@ -906,7 +980,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get labelNavigationBarBackground => 'Fondo de la barra de navegación';
 
   @override
-  String get labelNavigationBarIndicator => 'Indicador de la barra de navegación';
+  String get labelNavigationBarIndicator =>
+      'Indicador de la barra de navegación';
 
   @override
   String get labelNavigationBarSelected => 'Barra de navegación seleccionada';
@@ -915,7 +990,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get labelNavigationRailBackground => 'Carril de navegación Fondo';
 
   @override
-  String get labelNavigationRailIndicator => 'Indicador de carril de navegación';
+  String get labelNavigationRailIndicator =>
+      'Indicador de carril de navegación';
 
   @override
   String get labelNavigationRailSelected => 'Carril de navegación seleccionado';
@@ -1080,13 +1156,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get level => 'Nivel';
 
   @override
-  String get levelSurfacesLowScaffoldLongText => 'Superficie y fondo nivelados, andamio bajo Superficie 1x Fondo 1x Andamio 1/2x\\n';
+  String get levelSurfacesLowScaffoldLongText =>
+      'Superficie y fondo nivelados, andamio bajo Superficie 1x Fondo 1x Andamio 1/2x\\n';
 
   @override
-  String get levelSurfacesLowScaffoldVariantDialogLongText => 'Diálogo de contenedor terciario, andamio bajo Superficie 1x Fondo 1x Andamio 1/2x Diálogo 1x mezcla de color de contenedor terciario';
+  String get levelSurfacesLowScaffoldVariantDialogLongText =>
+      'Diálogo de contenedor terciario, andamio bajo Superficie 1x Fondo 1x Andamio 1/2x Diálogo 1x mezcla de color de contenedor terciario';
 
   @override
-  String get levelSurfacesLowScaffoldVariantDialogShortText => 'Diálogo de contenedores terciarios de bajo andamiaje';
+  String get levelSurfacesLowScaffoldVariantDialogShortText =>
+      'Diálogo de contenedores terciarios de bajo andamiaje';
 
   @override
   String get lightAppBarOpacity => 'Luz AppBar opacidad';
@@ -1098,7 +1177,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get lightThemeSurfaceBlend => 'Mezcla de superficies de temas claros';
 
   @override
-  String get lightThemeSurfaceBlendSubTitle => 'Ajusta las mezclas de superficie, fondo y andamio';
+  String get lightThemeSurfaceBlendSubTitle =>
+      'Ajusta las mezclas de superficie, fondo y andamio';
 
   @override
   String get lightThemeSurfaceMode => 'Modo superficie del tema de la luz';
@@ -1122,7 +1202,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get location => 'ubicación';
 
   @override
-  String get locationDescription => 'Activado: 3 aplicaciones tienen acceso a la ubicación';
+  String get locationDescription =>
+      'Activado: 3 aplicaciones tienen acceso a la ubicación';
 
   @override
   String get login => 'Inicio de sesión';
@@ -1137,7 +1218,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get materialBottomSheet => 'Material Lámina inferior';
 
   @override
-  String get materialBottomSheetText => 'Utiliza Material de tipo canvas como fondo por defecto. Fondo ColorScheme en M2, pero superficie en M3.';
+  String get materialBottomSheetText =>
+      'Utiliza Material de tipo canvas como fondo por defecto. Fondo ColorScheme en M2, pero superficie en M3.';
 
   @override
   String get materialModalBottomSheet => 'Material: Lámina inferior Modal';
@@ -1146,64 +1228,81 @@ class AppLocalizationsEs extends AppLocalizations {
   String get materialPopupMenuText => 'El clásico menú desplegable Material.';
 
   @override
-  String get materialShowcaseShadowText1 => 'Material: tipo lienzo, elevación 0, default\\ntint y sombra';
+  String get materialShowcaseShadowText1 =>
+      'Material: tipo lienzo, elevación 0, default\\ntint y sombra';
 
   @override
-  String get materialShowcaseShadowText2 => 'Material: tipo lienzo, altura 1, tinte por defecto y sombra';
+  String get materialShowcaseShadowText2 =>
+      'Material: tipo lienzo, altura 1, tinte por defecto y sombra';
 
   @override
-  String get materialShowcaseShadowText3 => 'Material: tipo lienzo, altura 6, color por defecto y sombra';
+  String get materialShowcaseShadowText3 =>
+      'Material: tipo lienzo, altura 6, color por defecto y sombra';
 
   @override
-  String get materialShowcaseSurface => 'Material: tipo lienzo, elevación 1, superficie asignada Tinte y sin sombra';
+  String get materialShowcaseSurface =>
+      'Material: tipo lienzo, elevación 1, superficie asignada Tinte y sin sombra';
 
   @override
-  String get materialShowcaseSurface2 => 'Material: tipo lienzo, elevación 6, superficie asignada Tinte y sin sombra';
+  String get materialShowcaseSurface2 =>
+      'Material: tipo lienzo, elevación 6, superficie asignada Tinte y sin sombra';
 
   @override
-  String get materialShowcaseSurfaceShadow => 'Material: tipo lienzo, elevación 1, matiz y sombra por defecto';
+  String get materialShowcaseSurfaceShadow =>
+      'Material: tipo lienzo, elevación 1, matiz y sombra por defecto';
 
   @override
-  String get materialShowcaseSurfaceShadow2 => 'Material: tipo lienzo, elevación 6, superficie asignada Tinte y sombra';
+  String get materialShowcaseSurfaceShadow2 =>
+      'Material: tipo lienzo, elevación 6, superficie asignada Tinte y sombra';
 
   @override
   String get materialShowcaseText1 => 'Material: elevación y tinte';
 
   @override
-  String get materialShowcaseText2 => 'MMaterial: también puede especificar el color surfaceTint, que se aplica cuando Material es elevado, pero sólo en el modo Material 3.';
+  String get materialShowcaseText2 =>
+      'MMaterial: también puede especificar el color surfaceTint, que se aplica cuando Material es elevado, pero sólo en el modo Material 3.';
 
   @override
   String get materialShowcaseText3 => 'Material: tipo lienzo';
 
   @override
-  String get materialShowcaseText4 => 'El color de fondo predeterminado es el color del lienzo temático, y el color del lienzo temático se establece en el fondo del esquema del color temático. El color canvas Color va a ser obsoleto en Flutter.';
+  String get materialShowcaseText4 =>
+      'El color de fondo predeterminado es el color del lienzo temático, y el color del lienzo temático se establece en el fondo del esquema del color temático. El color canvas Color va a ser obsoleto en Flutter.';
 
   @override
   String get materialShowcaseTypeCard1 => 'Material: tipo tarjeta';
 
   @override
-  String get materialShowcaseTypeCard2 => 'El color de fondo predeterminado es el color de la tarjeta temática, y el color de la tarjeta temática se establece en el color de la superficie Scheme. La tarjeta de color Color va a ser obsoleto en Flutter.';
+  String get materialShowcaseTypeCard2 =>
+      'El color de fondo predeterminado es el color de la tarjeta temática, y el color de la tarjeta temática se establece en el color de la superficie Scheme. La tarjeta de color Color va a ser obsoleto en Flutter.';
 
   @override
-  String get materialShowcaseTypeCardShadow1 => 'Material: tipo tarjeta, elevación 0, matiz y sombra por defecto';
+  String get materialShowcaseTypeCardShadow1 =>
+      'Material: tipo tarjeta, elevación 0, matiz y sombra por defecto';
 
   @override
-  String get materialShowcaseTypeCardShadow2 => 'Material: tipo tarjeta, elevación 1, matiz y sombra por defecto';
+  String get materialShowcaseTypeCardShadow2 =>
+      'Material: tipo tarjeta, elevación 1, matiz y sombra por defecto';
 
   @override
-  String get materialShowcaseTypeCardShadow3 => 'Material: tipo tarjeta, elevación 6, matiz y sombra por defecto';
+  String get materialShowcaseTypeCardShadow3 =>
+      'Material: tipo tarjeta, elevación 6, matiz y sombra por defecto';
 
   @override
-  String get materialShowcaseTypeCardSurface => 'Material: tipo tarjeta, elevación 1, superficie asignada Tinte y sin sombra';
+  String get materialShowcaseTypeCardSurface =>
+      'Material: tipo tarjeta, elevación 1, superficie asignada Tinte y sin sombra';
 
   @override
-  String get materialShowcaseTypeCardSurface2 => 'Material: tipo tarjeta, elevación 6, superficie asignada Tinte y sin sombra';
+  String get materialShowcaseTypeCardSurface2 =>
+      'Material: tipo tarjeta, elevación 6, superficie asignada Tinte y sin sombra';
 
   @override
-  String get materialShowcaseTypeCardSurfaceShadow => 'Material: tipo tarjeta, elevación 1, superficie asignada Tinte y sombra';
+  String get materialShowcaseTypeCardSurfaceShadow =>
+      'Material: tipo tarjeta, elevación 1, superficie asignada Tinte y sombra';
 
   @override
-  String get materialShowcaseTypeCardSurfaceShadow2 => 'Material: tipo tarjeta, elevación 6, superficie asignada Tinte y sombra';
+  String get materialShowcaseTypeCardSurfaceShadow2 =>
+      'Material: tipo tarjeta, elevación 6, superficie asignada Tinte y sombra';
 
   @override
   String get medium => 'Medio';
@@ -1221,13 +1320,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get menuAnchorDemo => 'Menu Ancre Demo';
 
   @override
-  String get menuAnchorM3Text => 'El nuevo Anclaje de Menú M3 utilizado en un Contenedor como menú contextual.';
+  String get menuAnchorM3Text =>
+      'El nuevo Anclaje de Menú M3 utilizado en un Contenedor como menú contextual.';
 
   @override
   String get menuAnchorM3ctx => '¡El nuevo M3 Menu Anchor es genial!';
 
   @override
-  String get menuAnchorM3ctxClick => 'Haga clic en cualquier lugar de este contenedor para mostrar el menú contextual de Anclaje al menú.';
+  String get menuAnchorM3ctxClick =>
+      'Haga clic en cualquier lugar de este contenedor para mostrar el menú contextual de Anclaje al menú.';
 
   @override
   String get menuBar => 'Barra de menú';
@@ -1236,10 +1337,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get menuBarDemo => 'Barra de menú Demo';
 
   @override
-  String get menuBarM3 => 'Los nuevos menús M3 se pueden utilizar en una Barra de Menús a través del Botón de Submenú y su Botón de Elemento de Menú, pero también se pueden utilizar en un Anclaje de Menú en cualquier lugar.';
+  String get menuBarM3 =>
+      'Los nuevos menús M3 se pueden utilizar en una Barra de Menús a través del Botón de Submenú y su Botón de Elemento de Menú, pero también se pueden utilizar en un Anclaje de Menú en cualquier lugar.';
 
   @override
-  String get menuKeyboardShortcuts => 'Los atajos de teclado de los menús también funcionan.';
+  String get menuKeyboardShortcuts =>
+      'Los atajos de teclado de los menús también funcionan.';
 
   @override
   String get mfaConnect => 'Conexión de autenticación multifactor';
@@ -1311,13 +1414,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get notifications => 'Notificaciones';
 
   @override
-  String get notificationsDescription => 'Histórico de notificaciones, conversaciones';
+  String get notificationsDescription =>
+      'Histórico de notificaciones, conversaciones';
 
   @override
-  String get notificationsDeviceApp => 'Notificaciones de dispositivos y aplicaciones';
+  String get notificationsDeviceApp =>
+      'Notificaciones de dispositivos y aplicaciones';
 
   @override
-  String get notificationsDeviceAppDescription => 'Controla qué aplicaciones y dispositivos pueden leer las notificaciones';
+  String get notificationsDeviceAppDescription =>
+      'Controla qué aplicaciones y dispositivos pueden leer las notificaciones';
 
   @override
   String get notificationsDot => 'Punto de notificación en el icono de la app';
@@ -1326,22 +1432,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get notificationsEnable => 'Activar las notificaciones';
 
   @override
-  String get notificationsEnableDescription => 'Obtenga sugerencias de acciones, respuestas y mucho más';
+  String get notificationsEnableDescription =>
+      'Obtenga sugerencias de acciones, respuestas y mucho más';
 
   @override
   String get notificationsHistory => 'Historial de notificaciones';
 
   @override
-  String get notificationsHistoryText => 'Mostrar notificaciones recientes y repetidas';
+  String get notificationsHistoryText =>
+      'Mostrar notificaciones recientes y repetidas';
 
   @override
-  String get notificationsLockScreen => 'Notificaciones en la pantalla de bloqueo';
+  String get notificationsLockScreen =>
+      'Notificaciones en la pantalla de bloqueo';
 
   @override
-  String get notificationsLockScreenDescription => 'Mostrar conversaciones, por defecto y en silencio';
+  String get notificationsLockScreenDescription =>
+      'Mostrar conversaciones, por defecto y en silencio';
 
   @override
-  String get notificationsSnoozing => 'Permitir que las notificaciones se silencien';
+  String get notificationsSnoozing =>
+      'Permitir que las notificaciones se silencien';
 
   @override
   String get nowSetTo => 'Ahora configurado en';
@@ -1362,7 +1473,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get openDialog => 'Diálogo abierto';
 
   @override
-  String get openViaQr => 'Abre tu aplicación de autenticación y añade esta aplicación mediante un código QR o pegando el código que aparece a continuación.';
+  String get openViaQr =>
+      'Abre tu aplicación de autenticación y añade esta aplicación mediante un código QR o pegando el código que aparece a continuación.';
 
   @override
   String get optionText => 'Opción';
@@ -1374,7 +1486,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get organizationName => 'Nombre de la organización';
 
   @override
-  String get organizationNameNotEmpty => 'El nombre de la organización no debe estar vacío';
+  String get organizationNameNotEmpty =>
+      'El nombre de la organización no debe estar vacío';
 
   @override
   String get outlined => 'Contorno';
@@ -1419,7 +1532,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get persistence => 'Persistencia';
 
   @override
-  String get persistenceMemoryDescription => 'Puede utilizar memoria volátil o Preferencias Compartidas y Hive para mantener la configuración. Puede alternar la implementación utilizada dinámicamente en la aplicación.';
+  String get persistenceMemoryDescription =>
+      'Puede utilizar memoria volátil o Preferencias Compartidas y Hive para mantener la configuración. Puede alternar la implementación utilizada dinámicamente en la aplicación.';
 
   @override
   String get phoneNumber => 'Número de teléfono';
@@ -1464,7 +1578,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get radioListTileDisabled => 'RadioListTile desactivado';
 
   @override
-  String get radioOptionListSelected => 'Se selecciona la opción de radio y el mosaico de la lista';
+  String get radioOptionListSelected =>
+      'Se selecciona la opción de radio y el mosaico de la lista';
 
   @override
   String get radioOptionSelected => 'La opción de radio está seleccionada';
@@ -1476,13 +1591,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get rangeSliderContinuous => 'Deslizador de rango continuo';
 
   @override
-  String get rangeSliderContinuousDisabled => 'Deslizador de rango continuo desactivado';
+  String get rangeSliderContinuousDisabled =>
+      'Deslizador de rango continuo desactivado';
 
   @override
   String get rangeSliderStepped => 'Deslizador de rango pisado';
 
   @override
-  String get rangeSliderSteppedDisabled => 'Deslizador de rango pisado desactivado';
+  String get rangeSliderSteppedDisabled =>
+      'Deslizador de rango pisado desactivado';
 
   @override
   String get refresh => 'Actualizar';
@@ -1536,10 +1653,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get secret => 'Secreto';
 
   @override
-  String get securityDescription => 'Bloqueo de pantalla, Buscar mi dispositivo, seguridad de aplicaciones';
+  String get securityDescription =>
+      'Bloqueo de pantalla, Buscar mi dispositivo, seguridad de aplicaciones';
 
   @override
-  String get securitySafeBrowsingDescription => 'Navegación segura (protección frente a sitios peligrosos) y otros ajustes de seguridad';
+  String get securitySafeBrowsingDescription =>
+      'Navegación segura (protección frente a sitios peligrosos) y otros ajustes de seguridad';
 
   @override
   String get securityTitle => 'Securidad';
@@ -1563,7 +1682,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get showcase => 'Escaparate';
 
   @override
-  String get showcaseErrorText => 'Cualquier entrada sin \"a\" provocará este error';
+  String get showcaseErrorText =>
+      'Cualquier entrada sin \"a\" provocará este error';
 
   @override
   String get showcaseHintCollapseText => 'Sugerencia: TextField colapsado...';
@@ -1572,13 +1692,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get showcaseHintText => 'Sugerencia: Escribe algo...';
 
   @override
-  String get showcaseLabelTextOutline => 'Label: Borde del contorno por defecto si no está definido';
+  String get showcaseLabelTextOutline =>
+      'Label: Borde del contorno por defecto si no está definido';
 
   @override
-  String get showcaseLabelTextUnder => 'Label: Subrayar el borde por defecto si no está definido';
+  String get showcaseLabelTextUnder =>
+      'Label: Subrayar el borde por defecto si no está definido';
 
   @override
-  String get showcaseListTileSelectedSubTitle => 'Subtítulo del mosaico de la lista seleccionada';
+  String get showcaseListTileSelectedSubTitle =>
+      'Subtítulo del mosaico de la lista seleccionada';
 
   @override
   String get showcaseListTileSelectedTitle => 'Mosaico de lista seleccionado';
@@ -1593,7 +1716,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get showcaseListTileTrailing => 'Trasero';
 
   @override
-  String get signInWithEmailPassword => 'Iniciar sesión con correo electrónico y contraseña';
+  String get signInWithEmailPassword =>
+      'Iniciar sesión con correo electrónico y contraseña';
 
   @override
   String get signInWithGoogle => 'Iniciar sesión con Google';
@@ -1602,7 +1726,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get signOut => 'cerrar sesión';
 
   @override
-  String get siteSettingsDescription => 'Controla qué información pueden utilizar y mostrar los sitios web (ubicación, cámara, ventanas emergentes, etc.).';
+  String get siteSettingsDescription =>
+      'Controla qué información pueden utilizar y mostrar los sitios web (ubicación, cámara, ventanas emergentes, etc.).';
 
   @override
   String get siteSettingsTitle => 'Configuración del sitio';
@@ -1674,10 +1799,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get swapColors => 'Intercambiar colores';
 
   @override
-  String get swapPrimarySecondaryDarkColors => 'Intercambiar colores oscuros primarios y secundarios';
+  String get swapPrimarySecondaryDarkColors =>
+      'Intercambiar colores oscuros primarios y secundarios';
 
   @override
-  String get swapPrimarySecondaryLightColors => 'Intercambiar los colores primario y secundario de la luz';
+  String get swapPrimarySecondaryLightColors =>
+      'Intercambiar los colores primario y secundario de la luz';
 
   @override
   String get switchHave => '¿Ya tiene uno? Iniciar sesión';
@@ -1686,19 +1813,23 @@ class AppLocalizationsEs extends AppLocalizations {
   String get switchHavent => '¿No tiene cuenta? Regístrese';
 
   @override
-  String get switchListTileSubTitleOff => 'El azulejo de la lista de interruptores está apagado';
+  String get switchListTileSubTitleOff =>
+      'El azulejo de la lista de interruptores está apagado';
 
   @override
-  String get switchListTileSubTitleOn => 'La ficha de la lista de interruptores está activada';
+  String get switchListTileSubTitleOn =>
+      'La ficha de la lista de interruptores está activada';
 
   @override
   String get switchListTileTitle => 'La lista de interruptores';
 
   @override
-  String get switchListTileTitleDisabled => 'la lista de interruptores desactivado';
+  String get switchListTileTitleDisabled =>
+      'la lista de interruptores desactivado';
 
   @override
-  String get switchNoStatusBar => 'Sólo afecta a la barra de estado superior de Android';
+  String get switchNoStatusBar =>
+      'Sólo afecta a la barra de estado superior de Android';
 
   @override
   String get tabBadgeLabel18 => '18';
@@ -1713,10 +1844,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tabBarAppBar => 'TabBar en una AppBar';
 
   @override
-  String get tabBarIfAppBar => 'Si la barra de pestañas se utilizará siempre en una barra de aplicaciones, utilice el estilo FlexTabBar para la barra de aplicaciones (por defecto), que se ajustará al contraste aquí';
+  String get tabBarIfAppBar =>
+      'Si la barra de pestañas se utilizará siempre en una barra de aplicaciones, utilice el estilo FlexTabBar para la barra de aplicaciones (por defecto), que se ajustará al contraste aquí';
 
   @override
-  String get tabBarIfSurface => 'Si el TabBar siempre se utilizará en el fondo y los colores de la superficie, a continuación, utilizar el estilo FlexTabBarStyle de fondo, que se ajuste el contraste sabio aquí';
+  String get tabBarIfSurface =>
+      'Si el TabBar siempre se utilizará en el fondo y los colores de la superficie, a continuación, utilizar el estilo FlexTabBarStyle de fondo, que se ajuste el contraste sabio aquí';
 
   @override
   String get tabBarSurface => 'TabBar en una superficie';
@@ -1728,7 +1861,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tenantId => 'Tenant ID';
 
   @override
-  String get termsOfService => 'Condiciones del servicio | Política de privacidad';
+  String get termsOfService =>
+      'Condiciones del servicio | Política de privacidad';
 
   @override
   String get textIcon => 'Icono texto';
@@ -1752,7 +1886,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get themeShowcase => 'Exposición de temas';
 
   @override
-  String get themeShowcaseText => 'Muestra los colores del tema y el tema basado en FlexColorScheme aplicado en widgets comunes. También tiene una NavigationBar y TabBar en la AppBar, para mostrar su aspecto, pero no hacen nada.';
+  String get themeShowcaseText =>
+      'Muestra los colores del tema y el tema basado en FlexColorScheme aplicado en widgets comunes. También tiene una NavigationBar y TabBar en la AppBar, para mostrar su aspecto, pero no hacen nada.';
 
   @override
   String get timePickerDialog => 'Diálogo de selección de hora';
@@ -1791,7 +1926,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tooltipIconSettings => 'Icono de configuración';
 
   @override
-  String get tooltipMessageLevelSurfaces => 'Superficies niveladas andamio bajo';
+  String get tooltipMessageLevelSurfaces =>
+      'Superficies niveladas andamio bajo';
 
   @override
   String get tooltipMessageScaffold => 'Andamio alto superficie baja';
@@ -1800,28 +1936,34 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tooltipMessageSurface => 'Andamio bajo de alta superficie';
 
   @override
-  String get tooltipMessageTertiaryContainerDialog => 'Diálogo del contenedor terciario andamio bajo';
+  String get tooltipMessageTertiaryContainerDialog =>
+      'Diálogo del contenedor terciario andamio bajo';
 
   @override
   String get tooltipOpenNavigationMenu => 'Abrir el menú de navegación';
 
   @override
-  String get tooltipShowcaseMessage1 => 'Tema actual de la información sobre herramientas';
+  String get tooltipShowcaseMessage1 =>
+      'Tema actual de la información sobre herramientas';
 
   @override
-  String get tooltipShowcaseMessage2 => 'Tema actual de la información sobre herramientas. Se trata de un tooltip de dos filas.';
+  String get tooltipShowcaseMessage2 =>
+      'Tema actual de la información sobre herramientas. Se trata de un tooltip de dos filas.';
 
   @override
-  String get tooltipShowcaseMessage3 => 'Tema actual de la información sobre herramientas. Este tooltip es demasiado largo. Intente hacerlas más cortas.';
+  String get tooltipShowcaseMessage3 =>
+      'Tema actual de la información sobre herramientas. Este tooltip es demasiado largo. Intente hacerlas más cortas.';
 
   @override
   String get tooltipShowcaseText1 => 'Texto con información sobre herramientas';
 
   @override
-  String get tooltipShowcaseText2 => 'Texto con información sobre herramientas en dos filas';
+  String get tooltipShowcaseText2 =>
+      'Texto con información sobre herramientas en dos filas';
 
   @override
-  String get tooltipShowcaseText3 => 'Texto con información sobre herramientas en tres filas';
+  String get tooltipShowcaseText3 =>
+      'Texto con información sobre herramientas en tres filas';
 
   @override
   String get tooltipStandard => 'Estándar';
@@ -1830,19 +1972,23 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tooltipStandardDisabled => 'Estándar (desactivado)';
 
   @override
-  String get uiAutomationEnable => 'Activar la automatización de la interfaz de usuario';
+  String get uiAutomationEnable =>
+      'Activar la automatización de la interfaz de usuario';
 
   @override
   String get uiAutomationTitle => 'Automatización de la interfaz de usuario';
 
   @override
-  String get ukctbTooltipMessP => 'Utilice el color primario del tema claro como color clave para sembrar su esquema de color.';
+  String get ukctbTooltipMessP =>
+      'Utilice el color primario del tema claro como color clave para sembrar su esquema de color.';
 
   @override
-  String get ukctbTooltipMessS => 'Utilice el color secundario del tema de la luz para sembrar tu esquema de color.';
+  String get ukctbTooltipMessS =>
+      'Utilice el color secundario del tema de la luz para sembrar tu esquema de color.';
 
   @override
-  String get ukctbTooltipMessT => 'Utilice el color terciario del tema de la luz nas color clave para sembrar su ColorScheme';
+  String get ukctbTooltipMessT =>
+      'Utilice el color terciario del tema de la luz nas color clave para sembrar su ColorScheme';
 
   @override
   String get unAvailable => 'No está disponible';
@@ -1875,25 +2021,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get updateProfile => 'Actualizar perfil';
 
   @override
-  String get useLevelZero => '. Con ColorScheme sembrado, para un diseño de superficie M3 puro, utilice el nivel 0';
+  String get useLevelZero =>
+      '. Con ColorScheme sembrado, para un diseño de superficie M3 puro, utilice el nivel 0';
 
   @override
-  String get useLightThemeColors => 'Utilizar los colores del tema de la luz para sembrar el ColorScheme';
+  String get useLightThemeColors =>
+      'Utilizar los colores del tema de la luz para sembrar el ColorScheme';
 
   @override
   String get useMaterial3Title => 'Utilizar Material 3';
 
   @override
-  String get useSeedSubTitle => 'Utilice FlexTones para configurar qué tono de las paletas generadas utiliza cada color del Esquema de Color. Establezca límites en los valores de croma CAM16 utilizados para los tres colores utilizados como claves para las paletas tonales primarias, secundarias y terciarias. En esta aplicación puede elegir entre el mapeo de tonos Material 3 predeterminado y seis configuraciones FlexTones personalizadas predefinidas.';
+  String get useSeedSubTitle =>
+      'Utilice FlexTones para configurar qué tono de las paletas generadas utiliza cada color del Esquema de Color. Establezca límites en los valores de croma CAM16 utilizados para los tres colores utilizados como claves para las paletas tonales primarias, secundarias y terciarias. En esta aplicación puede elegir entre el mapeo de tonos Material 3 predeterminado y seis configuraciones FlexTones personalizadas predefinidas.';
 
   @override
-  String get useSubThemesSubTitle => 'Activar los subtemas de FlexColor Scheme opinionated';
+  String get useSubThemesSubTitle =>
+      'Activar los subtemas de FlexColor Scheme opinionated';
 
   @override
   String get useSubThemesTitle => 'Utilizar temas de componentes';
 
   @override
-  String get useThemesSubTitle => 'La configuración por defecto utiliza principalmente valores de diseño Material 3, donde la especificación del radio varía por componente. El diseño Material 2 utiliza 4 en todos los componentes.';
+  String get useThemesSubTitle =>
+      'La configuración por defecto utiliza principalmente valores de diseño Material 3, donde la especificación del radio varía por componente. El diseño Material 2 utiliza 4 en todos los componentes.';
 
   @override
   String get useThemesTitle => 'Radio global de los bordes de los componentes';
@@ -1944,7 +2095,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get verificationCode => 'Código de verificación';
 
   @override
-  String get verificationCodeSent => 'Introduzca el código de verificación enviado';
+  String get verificationCodeSent =>
+      'Introduzca el código de verificación enviado';
 
   @override
   String get verified => 'verificado';
@@ -1953,7 +2105,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get verify => 'Verificar';
 
   @override
-  String get viewDescription => 'Elige una vista para iPhone. Zoom sombras controles más grandes. Estándar muestra más contenido.';
+  String get viewDescription =>
+      'Elige una vista para iPhone. Zoom sombras controles más grandes. Estándar muestra más contenido.';
 
   @override
   String get viewTitle => 'Ver';
@@ -1962,7 +2115,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get volume => 'Volumen';
 
   @override
-  String get wallpaperStyleDescription => 'Colores, iconos temáticos, cuadrícula de aplicaciones';
+  String get wallpaperStyleDescription =>
+      'Colores, iconos temáticos, cuadrícula de aplicaciones';
 
   @override
   String get wallpaperStyleTitle => 'Papel pintado y estilo';

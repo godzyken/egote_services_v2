@@ -7,7 +7,7 @@ part 'sign_up_state.freezed.dart';
 part 'sign_up_state.g.dart';
 
 @freezed
-class SignUpState with _$SignUpState {
+abstract class SignUpState with _$SignUpState {
   const SignUpState._();
   const factory SignUpState({
     @JsonKey(includeToJson: false, includeFromJson: false)

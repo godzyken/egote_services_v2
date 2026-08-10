@@ -4,41 +4,30 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'auth_state.freezed.dart';
 part 'auth_state.g.dart';
 
-@FreezedUnionValue('status')
-@JsonEnum(fieldRename: FieldRename.snake, valueField: 'status')
 enum AuthStatus {
-  @JsonValue("authenticated")
   authenticated,
-  @JsonValue("unauthenticated")
   unauthenticated,
+  initial,
 }
 
-@freezed
-class AuthState with _$AuthState {
+@Freezed(unionKey: 'status', unionValueCase: FreezedUnionCase.snake)
+abstract class AuthState with _$AuthState {
   const AuthState._();
 
   const factory AuthState.authenticated({
-    @JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)
-        required AuthStatus status,
-    @JsonKey(
-      defaultValue: 'UserEntity',
-      includeToJson: true,
-      includeFromJson: true,
-    )
-        required UserModel userEntity,
-  }) = _$AuthStateTrue;
+    required UserModel userEntity,
+  }) = _AuthStateAuthenticated;
 
-  const factory AuthState.unauthenticated({
-    @JsonKey(
-      defaultValue: 'AuthStatus',
-      includeFromJson: true,
-      includeToJson: true,
-    )
-        required AuthStatus status,
-  }) = _$AuthStateFalse;
+  const factory AuthState.unauthenticated() = _AuthStateUnauthenticated;
 
   const factory AuthState.initial() = _AuthStateInitial;
 
   factory AuthState.fromJson(Map<String, dynamic> json) =>
       _$AuthStateFromJson(json);
+
+  AuthStatus get status => when(
+    authenticated: (_) => AuthStatus.authenticated,
+    unauthenticated: () => AuthStatus.unauthenticated,
+    initial: () => AuthStatus.initial,
+  );
 }

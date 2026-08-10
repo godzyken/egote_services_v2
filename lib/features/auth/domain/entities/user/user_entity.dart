@@ -14,7 +14,7 @@ part 'user_entity.g.dart';
 var _uuid = const Uuid();
 
 @freezed
-class UserEntityModel with _$UserEntityModel {
+abstract class UserEntityModel with _$UserEntityModel {
   const factory UserEntityModel({
     required UserId id,
     required String name,
@@ -105,7 +105,7 @@ class UserEntityModel with _$UserEntityModel {
 }
 
 @freezed
-class Users with _$Users {
+abstract class Users with _$Users {
   const factory Users.data(
       UserList userList,
       ) = UsersData;
@@ -118,7 +118,7 @@ class Users with _$Users {
 }
 
 @freezed
-class UserModel with _$UserModel {
+abstract class UserModel with _$UserModel {
   const factory UserModel.complete({
     required UserId id,
     required UserEntityModel userEntityModel,

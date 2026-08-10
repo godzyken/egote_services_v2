@@ -6,19 +6,48 @@ import 'package:egote_services_v2/config/routes/sentry_navigator_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'router.g.dart';
 
 final _rootRouterKey = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
-
 final _shellRouterKey = GlobalKey<NavigatorState>(debugLabel: 'shellRouterKey');
 
-// <---------------- RumViewInfo Provider / Configuration --------------------> //
-final observer = DatadogNavigationObserver(
-  datadogSdk: DatadogSdk.instance,
-  viewInfoExtractor: infoExtractor,
-);
+/// Provider for the [GoRouter] instance
+final goRouterProvider = Provider<GoRouter>((ref) {
+  final notifier = ref.watch(appRouterNotifierProvider.notifier);
+
+  // Here we assemble routes from different modules
+  final allRoutes = [
+    ...CoreModule().routes,
+    // Add other modules here:
+    // ...BatTrackModule().routes,
+    // ...Compta4meModule().routes,
+  ];
+
+  return GoRouter(
+    navigatorKey: _rootRouterKey,
+    initialLocation: '/',
+    debugLogDiagnostics: true,
+    refreshListenable: notifier,
+    observers: [
+      DatadogNavigationObserver(
+        datadogSdk: DatadogSdk.instance,
+        viewInfoExtractor: infoExtractor,
+      ),
+    ],
+    routes: [
+      ShellRoute(
+        navigatorKey: _shellRouterKey,
+        builder: (context, state, child) {
+          return SharedAppData(child: child);
+        },
+        observers: [
+          AppRouterObserver(),
+          sentryNavigatorObserver,
+        ],
+        routes: allRoutes,
+      ),
+    ],
+  );
+});
 
 RumViewInfo? infoExtractor(Route<dynamic> route) {
   final name = route.settings.name;
@@ -28,30 +57,5 @@ RumViewInfo? infoExtractor(Route<dynamic> route) {
       attributes: {'extra_attribue': 'attribute_value'},
     );
   }
-
   return defaultViewInfoExtractor(route);
-}
-
-@riverpod
-GoRouter router(Ref ref) {
-  // Récupération de l'instance du notifier servant de Listenable pour GoRouter
-  final notifier = ref.watch(appRouterProvider.notifier);
-
-  return GoRouter(
-    routes: [
-      ShellRoute(
-        builder: (BuildContext context, GoRouterState state, Widget child) {
-          return SharedAppData(child: child);
-        },
-        observers: [AppRouterObserver(), sentryNavigatorObserver, observer],
-        routes: notifier.routes,
-        navigatorKey: _shellRouterKey,
-      ),
-    ],
-    refreshListenable: notifier,
-    initialLocation: HomeRoute.path,
-    debugLogDiagnostics: true,
-    navigatorKey: _rootRouterKey,
-    observers: [observer],
-  );
 }

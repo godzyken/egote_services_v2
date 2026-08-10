@@ -63,7 +63,8 @@ import 'app_localizations_fr.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,7 +72,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -83,3988 +85,3996 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('es'),
-    Locale('fr')
+    Locale('fr'),
   ];
 
   /// No description provided for @aFixedSnackBar.
   ///
-  /// In en, this message translates to:
-  /// **'A fixed SnackBar'**
+  /// In fr, this message translates to:
+  /// **'Un SnackBar fixe'**
   String get aFixedSnackBar;
 
   /// No description provided for @aFloatingSnackBar.
   ///
-  /// In en, this message translates to:
-  /// **'A floating SnackBar'**
+  /// In fr, this message translates to:
+  /// **'Un snack-bar flottant'**
   String get aFloatingSnackBar;
 
   /// No description provided for @about.
   ///
-  /// In en, this message translates to:
-  /// **'About'**
+  /// In fr, this message translates to:
+  /// **'À propos'**
   String get about;
 
   /// No description provided for @absent.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Absent'**
   String get absent;
 
   /// No description provided for @abstractSettingsDescription.
   ///
-  /// In en, this message translates to:
-  /// **'UI create to show plugin\\\'s possibilities'**
+  /// In fr, this message translates to:
+  /// **'Création d\'une interface utilisateur pour montrer les possibilités du plugin'**
   String get abstractSettingsDescription;
 
   /// No description provided for @abstractSettingsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Abstract Settings Screen'**
+  /// In fr, this message translates to:
+  /// **'Écran des paramètres abstraits'**
   String get abstractSettingsTitle;
 
   /// No description provided for @accessibilityDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Display, interaction, audio'**
+  /// In fr, this message translates to:
+  /// **'Affichage, interaction, audio'**
   String get accessibilityDescription;
 
   /// No description provided for @accessibilityTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Accessibility'**
+  /// In fr, this message translates to:
+  /// **'Accessibilité'**
   String get accessibilityTitle;
 
   /// No description provided for @addDevis.
   ///
-  /// In en, this message translates to:
-  /// **'Add a Quotation'**
+  /// In fr, this message translates to:
+  /// **'Ajouter un devis'**
   String get addDevis;
 
   /// No description provided for @addRefreshTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Add Refresh Rate'**
+  /// In fr, this message translates to:
+  /// **'Ajouter le taux de rafraîchissement'**
   String get addRefreshTitle;
 
   /// No description provided for @address.
   ///
-  /// In en, this message translates to:
-  /// **'Address'**
+  /// In fr, this message translates to:
+  /// **'Adresse'**
   String get address;
 
   /// No description provided for @addressCity.
   ///
-  /// In en, this message translates to:
-  /// **'City Name'**
+  /// In fr, this message translates to:
+  /// **'Nom de la ville'**
   String get addressCity;
 
   /// No description provided for @addressDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Include information like phone numbers, email, and shipping addresses'**
+  /// In fr, this message translates to:
+  /// **'Inclure des informations telles que les numéros de téléphone, les adresses électroniques et les adresses de livraison.'**
   String get addressDescription;
+
+  /// No description provided for @addressDocking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Adresser a\'amarrage'**
+  String get addressDocking;
 
   /// No description provided for @addressId.
   ///
-  /// In en, this message translates to:
-  /// **'Address id'**
+  /// In fr, this message translates to:
+  /// **'Identité de l\'adresse'**
   String get addressId;
 
   /// No description provided for @addressMore.
   ///
-  /// In en, this message translates to:
-  /// **'Addresses and more'**
+  /// In fr, this message translates to:
+  /// **'Adresses et autres'**
   String get addressMore;
 
   /// No description provided for @addressTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Save and fill addresses'**
+  /// In fr, this message translates to:
+  /// **'Enregistrer et remplir les adresses'**
   String get addressTitle;
 
   /// No description provided for @addressZipCode.
   ///
-  /// In en, this message translates to:
-  /// **'Address Zip Code'**
+  /// In fr, this message translates to:
+  /// **'Code postal'**
   String get addressZipCode;
 
   /// No description provided for @addressesNameTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Name, addresses'**
+  /// In fr, this message translates to:
+  /// **'Nom, adresses'**
   String get addressesNameTitle;
 
   /// No description provided for @addressesTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Addresses'**
+  /// In fr, this message translates to:
+  /// **'Adresses'**
   String get addressesTitle;
 
   /// No description provided for @alarm.
   ///
-  /// In en, this message translates to:
-  /// **'Alarm'**
+  /// In fr, this message translates to:
+  /// **'Alarme'**
   String get alarm;
 
   /// No description provided for @alertDialog.
   ///
-  /// In en, this message translates to:
-  /// **'AlertDialog'**
+  /// In fr, this message translates to:
+  /// **'Dialogue d\'alerte'**
   String get alertDialog;
 
   /// No description provided for @alertDialogContent.
   ///
-  /// In en, this message translates to:
-  /// **'theme settings back to their\\ndefault values?\\nPersisted theme settings will also be updated to default\\nvalues.'**
+  /// In fr, this message translates to:
+  /// **'Les paramètres du thème reviennent à leurs valeurs par défaut ? Les paramètres du thème persistants seront également mis à jour aux valeurs par défaut.'**
   String get alertDialogContent;
 
   /// No description provided for @all.
   ///
-  /// In en, this message translates to:
-  /// **'All'**
+  /// In fr, this message translates to:
+  /// **'Tous'**
   String get all;
 
   /// No description provided for @allow.
   ///
-  /// In en, this message translates to:
-  /// **'Allow'**
+  /// In fr, this message translates to:
+  /// **'Autoriser'**
   String get allow;
 
   /// No description provided for @allowLocServ.
   ///
-  /// In en, this message translates to:
-  /// **'Allow location services'**
+  /// In fr, this message translates to:
+  /// **'Autoriser les services de localisation'**
   String get allowLocServ;
 
   /// No description provided for @allowLocServText.
   ///
-  /// In en, this message translates to:
-  /// **'Let us help determine location. This means\\nsending anonymous location data to us'**
+  /// In fr, this message translates to:
+  /// **'Laissez-nous vous aider à déterminer votre position. Cela signifie que vous nous envoyez des données de localisation anonymes.'**
   String get allowLocServText;
 
   /// No description provided for @alreadyHave.
   ///
-  /// In en, this message translates to:
-  /// **'I already have an account'**
+  /// In fr, this message translates to:
+  /// **'J\'ai déjà un compte'**
   String get alreadyHave;
 
   /// No description provided for @androidSettingsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Android Settings Screen'**
+  /// In fr, this message translates to:
+  /// **'Écran des paramètres Android'**
   String get androidSettingsTitle;
 
   /// No description provided for @appBar.
   ///
-  /// In en, this message translates to:
-  /// **'AppBar'**
+  /// In fr, this message translates to:
+  /// **'Barre d\'application'**
   String get appBar;
 
   /// No description provided for @appBarElevation.
   ///
-  /// In en, this message translates to:
-  /// **'AppBar elevation'**
+  /// In fr, this message translates to:
+  /// **'élévation de la barre d\'application'**
   String get appBarElevation;
 
   /// No description provided for @appSettings.
   ///
-  /// In en, this message translates to:
-  /// **'App settings'**
+  /// In fr, this message translates to:
+  /// **'Paramètres de l\'application'**
   String get appSettings;
 
   /// No description provided for @appearanceTitle.
   ///
-  /// In en, this message translates to:
-  /// **'APPEARANCE'**
+  /// In fr, this message translates to:
+  /// **'APPARENCE'**
   String get appearanceTitle;
 
   /// No description provided for @appearanceTitleDark.
   ///
-  /// In en, this message translates to:
-  /// **'Dark Appearance'**
+  /// In fr, this message translates to:
+  /// **'Apparence sombre'**
   String get appearanceTitleDark;
 
   /// No description provided for @appsDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Assistant, recent apps, default apps'**
+  /// In fr, this message translates to:
+  /// **'Assistant, applications récentes, applications par défaut'**
   String get appsDescription;
 
   /// No description provided for @appsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Apps'**
+  /// In fr, this message translates to:
+  /// **'Applications'**
   String get appsTitle;
 
   /// No description provided for @attachment.
   ///
-  /// In en, this message translates to:
-  /// **'Attachment'**
+  /// In fr, this message translates to:
+  /// **'Pièce jointe'**
   String get attachment;
 
   /// No description provided for @auth.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Auth'**
   String get auth;
 
   /// No description provided for @autoFillTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Auto-fill'**
+  /// In fr, this message translates to:
+  /// **'Remplissage automatique'**
   String get autoFillTitle;
 
   /// No description provided for @available.
   ///
-  /// In en, this message translates to:
-  /// **'Available'**
+  /// In fr, this message translates to:
+  /// **'Disponible'**
   String get available;
 
   /// No description provided for @avisPage.
   ///
-  /// In en, this message translates to:
-  /// **'Opinion Page'**
+  /// In fr, this message translates to:
+  /// **'Page d\'Avis'**
   String get avisPage;
 
   /// No description provided for @batteryDescription.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'100%'**
   String get batteryDescription;
 
   /// No description provided for @batteryTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Battery'**
+  /// In fr, this message translates to:
+  /// **'Batterie'**
   String get batteryTitle;
 
   /// No description provided for @behindAppBar.
   ///
-  /// In en, this message translates to:
-  /// **'Behind AppBar'**
+  /// In fr, this message translates to:
+  /// **'Derrière l\'AppBar'**
   String get behindAppBar;
 
   /// No description provided for @behindBottom.
   ///
-  /// In en, this message translates to:
-  /// **'Behind Bottom'**
+  /// In fr, this message translates to:
+  /// **'Derrière le fond'**
   String get behindBottom;
 
   /// No description provided for @behindNavBar.
   ///
-  /// In en, this message translates to:
-  /// **'Behind NavBar'**
+  /// In fr, this message translates to:
+  /// **'Derrière la NavBar'**
   String get behindNavBar;
 
   /// No description provided for @blendLevelLongText.
   ///
-  /// In en, this message translates to:
-  /// **'Level blends\\nSurface 1x  Background 1x  Scaffold 1x\\n'**
+  /// In fr, this message translates to:
+  /// **'Niveau de mélange Surface 1x Arrière-plan 1x Échafaudage 1x Échafaudage'**
   String get blendLevelLongText;
 
   /// No description provided for @blendLevelShortText.
   ///
-  /// In en, this message translates to:
-  /// **'Flat\\nall at same level'**
+  /// In fr, this message translates to:
+  /// **'Tous les plats sont au même niveau'**
   String get blendLevelShortText;
 
   /// No description provided for @body.
   ///
-  /// In en, this message translates to:
-  /// **'Body'**
+  /// In fr, this message translates to:
+  /// **'Corps'**
   String get body;
 
   /// No description provided for @bold.
   ///
-  /// In en, this message translates to:
-  /// **'Bold'**
+  /// In fr, this message translates to:
+  /// **'Gras'**
   String get bold;
 
   /// No description provided for @bottomAppBar.
   ///
-  /// In en, this message translates to:
-  /// **'BottomAppBar'**
+  /// In fr, this message translates to:
+  /// **'Barre d\'application inférieure'**
   String get bottomAppBar;
 
   /// No description provided for @bottomNavigationBar.
   ///
-  /// In en, this message translates to:
-  /// **'BottomNavigationBar (Material 2)'**
+  /// In fr, this message translates to:
+  /// **'Barre de navigation inférieure (Material 2)'**
   String get bottomNavigationBar;
 
   /// No description provided for @bubbles.
   ///
-  /// In en, this message translates to:
-  /// **'Bubbles'**
+  /// In fr, this message translates to:
+  /// **'Bulles'**
   String get bubbles;
 
   /// No description provided for @bubblesActive.
   ///
-  /// In en, this message translates to:
-  /// **'On / Conservations can appear as floating icons'**
+  /// In fr, this message translates to:
+  /// **'On / Les conservations peuvent apparaître sous forme d\'icônes flottantes'**
   String get bubblesActive;
 
   /// No description provided for @byEmail.
   ///
-  /// In en, this message translates to:
-  /// **'By Email'**
+  /// In fr, this message translates to:
+  /// **'Par courrier électronique'**
   String get byEmail;
 
   /// No description provided for @byFacebook.
   ///
-  /// In en, this message translates to:
-  /// **'By Facebook'**
+  /// In fr, this message translates to:
+  /// **'Par Facebook'**
   String get byFacebook;
 
   /// No description provided for @byLogin.
   ///
-  /// In en, this message translates to:
-  /// **'By Login'**
+  /// In fr, this message translates to:
+  /// **'Par Login'**
   String get byLogin;
 
   /// No description provided for @byPhone.
   ///
-  /// In en, this message translates to:
-  /// **'By Phone number'**
+  /// In fr, this message translates to:
+  /// **'Par numéro de téléphone'**
   String get byPhone;
 
   /// No description provided for @canBeBlank.
   ///
-  /// In en, this message translates to:
-  /// **'Comment cannot be blank'**
+  /// In fr, this message translates to:
+  /// **'Le commentaire ne peut pas être vide'**
   String get canBeBlank;
 
   /// No description provided for @cancel.
   ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
+  /// In fr, this message translates to:
+  /// **'Annuler'**
   String get cancel;
 
   /// No description provided for @cardShowcaseElevate10Text1.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 10, default surfaceTint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 10, surface par défaut Teinte et ombre'**
   String get cardShowcaseElevate10Text1;
 
   /// No description provided for @cardShowcaseElevate10Text2.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 10, default surfaceTint and default shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 10, surface par défaut Teinte et ombre par défaut'**
   String get cardShowcaseElevate10Text2;
 
   /// No description provided for @cardShowcaseElevate10Text3.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 10, default surfaceTint and transparent shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 10, surface par défaut Teinte et ombre transparente'**
   String get cardShowcaseElevate10Text3;
 
   /// No description provided for @cardShowcaseElevate1Text1.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 1, default surfaceTint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 1, surface par défaut Teinte et ombre'**
   String get cardShowcaseElevate1Text1;
 
   /// No description provided for @cardShowcaseElevate1Text2.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 1, assigned surfaceTint and\\ndefault shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 1, surface attribuée Teinte et ombre par défaut'**
   String get cardShowcaseElevate1Text2;
 
   /// No description provided for @cardShowcaseElevate1Text3.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 1, assigned surfaceTint and\\ntransparent shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 1, surface attribuée Teinte et ombre transparente'**
   String get cardShowcaseElevate1Text3;
 
   /// No description provided for @cardShowcaseElevate4Text1.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 4, default surfaceTint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 4, surface par défaut Teinte et ombre'**
   String get cardShowcaseElevate4Text1;
 
   /// No description provided for @cardShowcaseElevate4Text2.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 4, default surfaceTint and default shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 4, surface par défaut Teinte et ombre par défaut'**
   String get cardShowcaseElevate4Text2;
 
   /// No description provided for @cardShowcaseElevate4Text3.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 4, default surfaceTint and transparent shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 4, surface par défaut Teinte et ombre transparente'**
   String get cardShowcaseElevate4Text3;
 
   /// No description provided for @cardShowcaseText.
   ///
-  /// In en, this message translates to:
-  /// **'Default background color comes from Material of type card,\\nwhich by default is set to theme colorScheme surface.\\nWhen useMaterial3 is true, Card gets elevation based\\nsurfaceTint. When it is false, surfaceTint has no\\neffect even if specified.'**
+  /// In fr, this message translates to:
+  /// **'La couleur d\'arrière-plan par défaut provient du matériau de type card qui, par défaut, est défini sur le thème colorScheme surface. Lorsque useMaterial3 est vrai, Card obtient une teinte de surface basée sur l\'élévation. Lorsqu\'elle est fausse, la teinte de surface n\'a aucun effet, même si elle est spécifiée.'**
   String get cardShowcaseText;
 
   /// No description provided for @cardShowcaseText1.
   ///
-  /// In en, this message translates to:
-  /// **'Card, elevation 0, assigned surfaceTint and\\ndefault shadow'**
+  /// In fr, this message translates to:
+  /// **'Carte, élévation 0, surface attribuée Teinte et ombre par défaut'**
   String get cardShowcaseText1;
 
   /// No description provided for @changeEmail.
   ///
-  /// In en, this message translates to:
-  /// **'Change email'**
+  /// In fr, this message translates to:
+  /// **'Modifier l\'adresse électronique'**
   String get changeEmail;
 
   /// No description provided for @changeGroupName.
   ///
-  /// In en, this message translates to:
-  /// **'Change group name'**
+  /// In fr, this message translates to:
+  /// **'Modifier le nom du groupe'**
   String get changeGroupName;
 
   /// No description provided for @changeLogin.
   ///
-  /// In en, this message translates to:
-  /// **'Change login'**
+  /// In fr, this message translates to:
+  /// **'Modifier le login'**
   String get changeLogin;
 
   /// No description provided for @changeName.
   ///
-  /// In en, this message translates to:
-  /// **'Change name'**
+  /// In fr, this message translates to:
+  /// **'Modifier le nom'**
   String get changeName;
 
   /// No description provided for @changePassword.
   ///
-  /// In en, this message translates to:
-  /// **'change your password'**
+  /// In fr, this message translates to:
+  /// **'Modifier le votre mot de pass'**
   String get changePassword;
 
   /// No description provided for @charSet4.
   ///
-  /// In en, this message translates to:
-  /// **'Enter more than 4 character'**
+  /// In fr, this message translates to:
+  /// **'Saisir plus de 4 caractères'**
   String get charSet4;
 
   /// No description provided for @chatSettings.
   ///
-  /// In en, this message translates to:
-  /// **'Chat Settings'**
+  /// In fr, this message translates to:
+  /// **'Paramètres du chat'**
   String get chatSettings;
 
   /// No description provided for @checkInbox.
   ///
-  /// In en, this message translates to:
-  /// **'Check your inbox'**
+  /// In fr, this message translates to:
+  /// **'Vérifiez votre boîte de réception'**
   String get checkInbox;
 
   /// No description provided for @checkboxListTileChecked.
   ///
-  /// In en, this message translates to:
-  /// **'The checkbox list tile is checked'**
+  /// In fr, this message translates to:
+  /// **'La Liste des cases à cocher est cochée'**
   String get checkboxListTileChecked;
 
   /// No description provided for @checkboxListTileTitle.
   ///
-  /// In en, this message translates to:
-  /// **'CheckboxListTile'**
+  /// In fr, this message translates to:
+  /// **'Liste de cases à cocher'**
   String get checkboxListTileTitle;
 
   /// No description provided for @checkboxListTileTitleDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'CheckboxListTile disabled'**
+  /// In fr, this message translates to:
+  /// **'Liste de cases à cocher désactivé'**
   String get checkboxListTileTitleDisabled;
 
   /// No description provided for @checkboxListTileTristate.
   ///
-  /// In en, this message translates to:
-  /// **'The checkbox list tile is tristate'**
+  /// In fr, this message translates to:
+  /// **'Liste de cases à cocher peut avoir une valeur vrai'**
   String get checkboxListTileTristate;
 
   /// No description provided for @checkboxListTileUnchecked.
   ///
-  /// In en, this message translates to:
-  /// **'The checkbox list tile is unchecked'**
+  /// In fr, this message translates to:
+  /// **'La liste des cases à cocher n\'est pas cochée'**
   String get checkboxListTileUnchecked;
 
   /// No description provided for @circleAvatarAbrev.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'AV'**
   String get circleAvatarAbrev;
 
   /// No description provided for @clearBrowsingDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Clear history, cookies, cache and more'**
+  /// In fr, this message translates to:
+  /// **'Effacer l\'historique, les cookies, le cache et plus encore'**
   String get clearBrowsingDescription;
 
   /// No description provided for @clearBrowsingTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Clear browsing data'**
+  /// In fr, this message translates to:
+  /// **'Effacer les données de navigation'**
   String get clearBrowsingTitle;
 
   /// No description provided for @close.
   ///
-  /// In en, this message translates to:
-  /// **'Close'**
+  /// In fr, this message translates to:
+  /// **'Fermer'**
   String get close;
 
   /// No description provided for @codeResent.
   ///
-  /// In en, this message translates to:
-  /// **'Code resent'**
+  /// In fr, this message translates to:
+  /// **'Renvoi du code'**
   String get codeResent;
 
   /// No description provided for @color.
   ///
-  /// In en, this message translates to:
-  /// **'Color'**
+  /// In fr, this message translates to:
+  /// **'Couleur'**
   String get color;
 
   /// No description provided for @colorBlue.
   ///
-  /// In en, this message translates to:
-  /// **'Blue'**
+  /// In fr, this message translates to:
+  /// **'Bleu'**
   String get colorBlue;
 
   /// No description provided for @colorDark.
   ///
-  /// In en, this message translates to:
-  /// **'Dark'**
+  /// In fr, this message translates to:
+  /// **'Sombre'**
   String get colorDark;
 
   /// No description provided for @colorGreen.
   ///
-  /// In en, this message translates to:
-  /// **'Green'**
+  /// In fr, this message translates to:
+  /// **'Vert'**
   String get colorGreen;
 
   /// No description provided for @colorGrey.
   ///
-  /// In en, this message translates to:
-  /// **'Grey'**
+  /// In fr, this message translates to:
+  /// **'Gris'**
   String get colorGrey;
 
   /// No description provided for @colorOrange.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Orange'**
   String get colorOrange;
 
   /// No description provided for @colorPurple.
   ///
-  /// In en, this message translates to:
-  /// **'Purple'**
+  /// In fr, this message translates to:
+  /// **'Violet'**
   String get colorPurple;
 
   /// No description provided for @colorRed.
   ///
-  /// In en, this message translates to:
-  /// **'Red'**
+  /// In fr, this message translates to:
+  /// **'Rouge'**
   String get colorRed;
 
   /// No description provided for @colorScheme.
   ///
-  /// In en, this message translates to:
-  /// **'ColorScheme Colors'**
+  /// In fr, this message translates to:
+  /// **'Schéma de couleurs'**
   String get colorScheme;
 
   /// No description provided for @colorYellow.
   ///
-  /// In en, this message translates to:
-  /// **'Yellow'**
+  /// In fr, this message translates to:
+  /// **'Jaune'**
   String get colorYellow;
 
   /// No description provided for @colors.
   ///
-  /// In en, this message translates to:
-  /// **'Colors'**
+  /// In fr, this message translates to:
+  /// **'Couleurs'**
   String get colors;
 
   /// No description provided for @comment.
   ///
-  /// In en, this message translates to:
-  /// **'Write a comment...'**
+  /// In fr, this message translates to:
+  /// **'Ecrire un commentaire...'**
   String get comment;
 
   /// No description provided for @componentColors.
   ///
-  /// In en, this message translates to:
-  /// **'Component colors'**
+  /// In fr, this message translates to:
+  /// **'Couleurs des composants'**
   String get componentColors;
 
   /// No description provided for @componentTheme.
   ///
-  /// In en, this message translates to:
-  /// **'Component Theme'**
+  /// In fr, this message translates to:
+  /// **'Thème des composants'**
   String get componentTheme;
 
   /// No description provided for @computeDarkSchemeColors.
   ///
-  /// In en, this message translates to:
-  /// **'Compute dark scheme colors'**
+  /// In fr, this message translates to:
+  /// **'Calculer les couleurs du schéma sombre'**
   String get computeDarkSchemeColors;
 
   /// No description provided for @confirmDeleteUser.
   ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete current user?'**
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir supprimer l\'utilisateur actuel ?'**
   String get confirmDeleteUser;
 
   /// No description provided for @confirmLeaveDial.
   ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to leave this dialog?'**
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir quitter ce dialogue ?'**
   String get confirmLeaveDial;
 
   /// No description provided for @confirmLogout.
   ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want logout current user'**
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir déconnecter l\'utilisateur actuel ?'**
   String get confirmLogout;
 
   /// No description provided for @connectedDevices.
   ///
-  /// In en, this message translates to:
-  /// **'Connected devices'**
+  /// In fr, this message translates to:
+  /// **'Dispositifs connectés'**
   String get connectedDevices;
 
   /// No description provided for @connectedDevicesDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Bluetooth, pairing'**
+  /// In fr, this message translates to:
+  /// **'Bluetooth, jumelage'**
   String get connectedDevicesDescription;
 
   /// No description provided for @conservation.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Conservation'**
   String get conservation;
 
   /// No description provided for @conservations.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Conservations'**
   String get conservations;
 
   /// No description provided for @conservationsNoP.
   ///
-  /// In en, this message translates to:
-  /// **'No priority conservations'**
+  /// In fr, this message translates to:
+  /// **'Aucune conservation prioritaire'**
   String get conservationsNoP;
 
   /// No description provided for @contactDetails.
   ///
-  /// In en, this message translates to:
-  /// **'Contact details'**
+  /// In fr, this message translates to:
+  /// **'Coordonnées de contact'**
   String get contactDetails;
 
   /// No description provided for @contacts.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Contacts'**
   String get contacts;
 
   /// No description provided for @controlNotifications.
   ///
-  /// In en, this message translates to:
-  /// **'Control notifications from individual apps'**
+  /// In fr, this message translates to:
+  /// **'Contrôler les notifications des différentes applications'**
   String get controlNotifications;
 
   /// No description provided for @cookiesOtherDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Third-party cookies are blocked in Incognito mode'**
+  /// In fr, this message translates to:
+  /// **'Les cookies tiers sont bloqués en mode Incognito'**
   String get cookiesOtherDescription;
 
   /// No description provided for @cookiesOtherTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Cookies and other site data'**
+  /// In fr, this message translates to:
+  /// **'Cookies et autres données du site'**
   String get cookiesOtherTitle;
 
   /// No description provided for @copiedClipBoard.
   ///
-  /// In en, this message translates to:
-  /// **'Copied your clip board'**
+  /// In fr, this message translates to:
+  /// **'Copie du presse-papiers'**
   String get copiedClipBoard;
 
   /// No description provided for @create.
   ///
-  /// In en, this message translates to:
-  /// **'Create'**
+  /// In fr, this message translates to:
+  /// **'Créer'**
   String get create;
 
   /// No description provided for @createAccount.
   ///
-  /// In en, this message translates to:
-  /// **'Create an Account'**
+  /// In fr, this message translates to:
+  /// **'Créer un compte'**
   String get createAccount;
 
   /// No description provided for @createContact.
   ///
-  /// In en, this message translates to:
-  /// **'Create Contact'**
+  /// In fr, this message translates to:
+  /// **'Créer un contact'**
   String get createContact;
 
   /// No description provided for @createDialog.
   ///
-  /// In en, this message translates to:
-  /// **'Create Dialog'**
+  /// In fr, this message translates to:
+  /// **'Créer un dialogue'**
   String get createDialog;
 
   /// No description provided for @createGroupChat.
   ///
-  /// In en, this message translates to:
-  /// **'Create group chat'**
+  /// In fr, this message translates to:
+  /// **'Créer un group de chat'**
   String get createGroupChat;
 
   /// No description provided for @createPrivateChat.
   ///
-  /// In en, this message translates to:
-  /// **'Create private chat'**
+  /// In fr, this message translates to:
+  /// **'Créer un chat privé'**
   String get createPrivateChat;
 
   /// No description provided for @createPublicChat.
   ///
-  /// In en, this message translates to:
-  /// **'Create public chat'**
+  /// In fr, this message translates to:
+  /// **'Créer un chat public'**
   String get createPublicChat;
 
   /// No description provided for @created.
   ///
-  /// In en, this message translates to:
-  /// **'Created'**
+  /// In fr, this message translates to:
+  /// **'Créé'**
   String get created;
 
   /// No description provided for @cubeUserId.
   ///
-  /// In en, this message translates to:
-  /// **'Cube User Id'**
+  /// In fr, this message translates to:
+  /// **'ID utilisateur du cube'**
   String get cubeUserId;
 
   /// No description provided for @cubeUserName.
   ///
-  /// In en, this message translates to:
-  /// **'enter CubeUser Name'**
+  /// In fr, this message translates to:
+  /// **'saisir le nom de l\'utilisateur du cube'**
   String get cubeUserName;
 
   /// No description provided for @darkAppBarOpacity.
   ///
-  /// In en, this message translates to:
-  /// **'Dark AppBar opacity'**
+  /// In fr, this message translates to:
+  /// **'Opacité de l\'AppBar sombre'**
   String get darkAppBarOpacity;
 
   /// No description provided for @darkAppBarStyle.
   ///
-  /// In en, this message translates to:
-  /// **'Dark AppBar style'**
+  /// In fr, this message translates to:
+  /// **'Style sombre de l\'AppBar'**
   String get darkAppBarStyle;
 
   /// No description provided for @darkSchemeText.
   ///
-  /// In en, this message translates to:
-  /// **'Dark scheme colors are computed from the light scheme, instead of '**
+  /// In fr, this message translates to:
+  /// **'Les couleurs du schéma sombre sont calculées à partir du schéma clair, au lieu de '**
   String get darkSchemeText;
 
   /// No description provided for @darkSchemeTextSuit.
   ///
-  /// In en, this message translates to:
-  /// **'using defined dark scheme colors.'**
+  /// In fr, this message translates to:
+  /// **'en utilisant des couleurs sombres définies.'**
   String get darkSchemeTextSuit;
 
   /// No description provided for @darkSurfaceBlendSubTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Adjust the surface, background and \\nscaffold blends'**
+  /// In fr, this message translates to:
+  /// **'Ajuster les mélanges de surface, de fond et d\'échafaudage'**
   String get darkSurfaceBlendSubTitle;
 
   /// No description provided for @darkSurfaceBlendTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Dark surface blend'**
+  /// In fr, this message translates to:
+  /// **'Mélange de surfaces foncées'**
   String get darkSurfaceBlendTitle;
 
   /// No description provided for @darkThemeSurfaceMode.
   ///
-  /// In en, this message translates to:
-  /// **'Dark theme surface mode'**
+  /// In fr, this message translates to:
+  /// **'Thème sombre du mode surface'**
   String get darkThemeSurfaceMode;
 
   /// No description provided for @datePickerDialog.
   ///
-  /// In en, this message translates to:
-  /// **'Date Picker Dialog'**
+  /// In fr, this message translates to:
+  /// **'Sélecteur de Date'**
   String get datePickerDialog;
 
   /// No description provided for @day.
   ///
-  /// In en, this message translates to:
-  /// **'Day'**
+  /// In fr, this message translates to:
+  /// **'Jour'**
   String get day;
 
   /// No description provided for @defaultBackgroundColorSurface.
   ///
-  /// In en, this message translates to:
-  /// **'Default background color is surface with an onSurface overlay\\ncolor in M2, and primary in M3, with elevation 3.\\nFlexColorScheme component theme default is color scheme\\nbackground, with used surface blend and elevation 0.'**
+  /// In fr, this message translates to:
+  /// **'La couleur d\'arrière-plan par défaut est une couleur de surface avec une couleur de recouvrement onSurface en M2, et une couleur primaire en M3, avec une élévation de 3. Le thème par défaut du composant FlexColorScheme est le schéma de couleurs d\'arrière-plan, avec un mélange de surface utilisé et une élévation de 0.'**
   String get defaultBackgroundColorSurface;
 
   /// No description provided for @defaultLabel.
   ///
-  /// In en, this message translates to:
-  /// **'Default'**
+  /// In fr, this message translates to:
+  /// **'Défaut'**
   String get defaultLabel;
 
   /// No description provided for @defaultSdkBackgroundColor.
   ///
-  /// In en, this message translates to:
-  /// **'Default SDK background color is theme canvasColor via\\nMaterial. The canvasColor is typically\\ncolorScheme.background, elevation is 8. FCS sub-theme default\\nis colorScheme.background and elevation 0.'**
+  /// In fr, this message translates to:
+  /// **'La couleur d\'arrière-plan par défaut du SDK est la couleur du canevas du thème via Material. La couleur du canevas est généralement colorScheme.background, l\'élévation est de 8. Le sous-thème FCS est par défaut colorScheme.background et l\'élévation est de 0.'**
   String get defaultSdkBackgroundColor;
 
   /// No description provided for @delete.
   ///
-  /// In en, this message translates to:
-  /// **'delete'**
+  /// In fr, this message translates to:
+  /// **'Supprimer'**
   String get delete;
 
   /// No description provided for @deleteContact.
   ///
-  /// In en, this message translates to:
-  /// **'Delete contact'**
+  /// In fr, this message translates to:
+  /// **'Supprimer un contact'**
   String get deleteContact;
 
   /// No description provided for @deleteFactor.
   ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete this factor? You will be signed out of the app upon removing the factor.'**
+  /// In fr, this message translates to:
+  /// **'Êtes-vous sûr de vouloir supprimer ce facteur ? Vous serez déconnecté de l\'application après avoir supprimé le facteur.'**
   String get deleteFactor;
 
   /// No description provided for @deleteUser.
   ///
-  /// In en, this message translates to:
-  /// **'delete user'**
+  /// In fr, this message translates to:
+  /// **'supprimer l\'utilisateur'**
   String get deleteUser;
 
   /// No description provided for @description.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Description'**
   String get description;
 
   /// No description provided for @developerNavBar.
   ///
-  /// In en, this message translates to:
-  /// **'Developer'**
+  /// In fr, this message translates to:
+  /// **'Développeur'**
   String get developerNavBar;
 
   /// No description provided for @dialog.
   ///
-  /// In en, this message translates to:
-  /// **'Dialog'**
+  /// In fr, this message translates to:
+  /// **'Dialoguer'**
   String get dialog;
 
   /// No description provided for @dialogUnknown.
   ///
-  /// In en, this message translates to:
-  /// **'Unknown dialog'**
+  /// In fr, this message translates to:
+  /// **'Dialogue inconnu'**
   String get dialogUnknown;
 
   /// No description provided for @disabledItem.
   ///
-  /// In en, this message translates to:
-  /// **'Disabled item'**
+  /// In fr, this message translates to:
+  /// **'Article désactivé'**
   String get disabledItem;
 
   /// No description provided for @disabledMin.
   ///
-  /// In en, this message translates to:
-  /// **'disabled'**
+  /// In fr, this message translates to:
+  /// **'désactivé'**
   String get disabledMin;
 
   /// No description provided for @disabledTextEntry.
   ///
-  /// In en, this message translates to:
-  /// **'Disabled with text entry'**
+  /// In fr, this message translates to:
+  /// **'Désactivé avec saisie de texte'**
   String get disabledTextEntry;
 
   /// No description provided for @dismiss.
   ///
-  /// In en, this message translates to:
-  /// **'Dismiss'**
+  /// In fr, this message translates to:
+  /// **'Rejeter'**
   String get dismiss;
 
   /// No description provided for @display.
   ///
-  /// In en, this message translates to:
-  /// **'Display'**
+  /// In fr, this message translates to:
+  /// **'Afficher'**
   String get display;
 
   /// No description provided for @displayDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Dark theme, font size, brightness'**
+  /// In fr, this message translates to:
+  /// **'Thème sombre, taille des caractères, luminosité'**
   String get displayDescription;
 
   /// No description provided for @displayTitleZoom.
   ///
-  /// In en, this message translates to:
-  /// **'Display zoom'**
+  /// In fr, this message translates to:
+  /// **'zoom de l\'affichage'**
   String get displayTitleZoom;
 
   /// No description provided for @doNotDisturb.
   ///
-  /// In en, this message translates to:
-  /// **'Do Not Disturb'**
+  /// In fr, this message translates to:
+  /// **'Ne pas déranger'**
   String get doNotDisturb;
 
   /// No description provided for @doNotDisturbDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Off / 1 schedule can turn on automatically'**
+  /// In fr, this message translates to:
+  /// **'Désactivé / 1 horaire peut être activé automatiquement'**
   String get doNotDisturbDescription;
 
   /// No description provided for @done.
   ///
-  /// In en, this message translates to:
-  /// **'Done'**
+  /// In fr, this message translates to:
+  /// **'Terminé'**
   String get done;
 
   /// No description provided for @drawer.
   ///
-  /// In en, this message translates to:
-  /// **'Drawer'**
+  /// In fr, this message translates to:
+  /// **'Tiroir'**
   String get drawer;
 
   /// No description provided for @drawerTheme.
   ///
-  /// In en, this message translates to:
-  /// **'Drawer theme'**
+  /// In fr, this message translates to:
+  /// **'Thème du tiroir'**
   String get drawerTheme;
 
   /// No description provided for @dropdownButton.
   ///
-  /// In en, this message translates to:
-  /// **'Dropdown button'**
+  /// In fr, this message translates to:
+  /// **'Bouton de la liste déroulante'**
   String get dropdownButton;
 
   /// No description provided for @dropdownFormFieldOption.
   ///
-  /// In en, this message translates to:
-  /// **'Dropdown FormField - Option'**
+  /// In fr, this message translates to:
+  /// **'Champ de formulaire déroulant - Option'**
   String get dropdownFormFieldOption;
 
   /// No description provided for @dropdownMenu.
   ///
-  /// In en, this message translates to:
-  /// **'DropdownMenu'**
+  /// In fr, this message translates to:
+  /// **'Menu déroulant'**
   String get dropdownMenu;
 
   /// No description provided for @dropdownMenuText.
   ///
-  /// In en, this message translates to:
-  /// **'The new M3 DropdownMenu shares building blocks with MenuBar\\nand MenuAnchor, also uses InputDecorator for text entry.'**
+  /// In fr, this message translates to:
+  /// **'Le nouveau M3 DropdownMenu partage des blocs de construction avec la barre de menu et l\'ancre de menu, et utilise également le décorateur d\'entrée pour la saisie de texte.'**
   String get dropdownMenuText;
 
   /// No description provided for @dueDate.
   ///
-  /// In en, this message translates to:
-  /// **'Due Date'**
+  /// In fr, this message translates to:
+  /// **'Date d\'échéance'**
   String get dueDate;
 
   /// No description provided for @duration.
   ///
-  /// In en, this message translates to:
-  /// **'duration'**
+  /// In fr, this message translates to:
+  /// **'durée'**
   String get duration;
 
   /// No description provided for @egoteServicesTitle.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Egote services'**
   String get egoteServicesTitle;
 
   /// No description provided for @elevatedButton.
   ///
-  /// In en, this message translates to:
-  /// **'Elevated button'**
+  /// In fr, this message translates to:
+  /// **'Bouton surélevé'**
   String get elevatedButton;
 
   /// No description provided for @elevatedIcon.
   ///
-  /// In en, this message translates to:
-  /// **'Elevated Icon'**
+  /// In fr, this message translates to:
+  /// **'Icône élevée'**
   String get elevatedIcon;
 
   /// No description provided for @elevation.
   ///
-  /// In en, this message translates to:
-  /// **'Elevation'**
+  /// In fr, this message translates to:
+  /// **'Élévation'**
   String get elevation;
 
   /// No description provided for @email.
   ///
-  /// In en, this message translates to:
-  /// **'Email'**
+  /// In fr, this message translates to:
+  /// **'Courriel'**
   String get email;
 
   /// No description provided for @emailInvalid.
   ///
-  /// In en, this message translates to:
-  /// **'Invalid email'**
+  /// In fr, this message translates to:
+  /// **'Courriel non valide'**
   String get emailInvalid;
 
   /// No description provided for @empty.
   ///
-  /// In en, this message translates to:
-  /// **'Empty'**
+  /// In fr, this message translates to:
+  /// **'Vide'**
   String get empty;
 
   /// No description provided for @english.
   ///
-  /// In en, this message translates to:
-  /// **'English'**
+  /// In fr, this message translates to:
+  /// **'Anglais'**
   String get english;
 
   /// No description provided for @enterAddressCity.
   ///
-  /// In en, this message translates to:
-  /// **'enter a City Name'**
+  /// In fr, this message translates to:
+  /// **'saisir un nom de ville'**
   String get enterAddressCity;
 
   /// No description provided for @enterAddressZipCode.
   ///
-  /// In en, this message translates to:
-  /// **'enter a Zip Code'**
+  /// In fr, this message translates to:
+  /// **'saisir un code postal'**
   String get enterAddressZipCode;
 
   /// No description provided for @enterCode.
   ///
-  /// In en, this message translates to:
-  /// **'Enter Code'**
+  /// In fr, this message translates to:
+  /// **'Entrer le code'**
   String get enterCode;
 
   /// No description provided for @enterCodeSent.
   ///
-  /// In en, this message translates to:
-  /// **'Enter the code shown in your authentication app.'**
+  /// In fr, this message translates to:
+  /// **'Saisissez le code indiqué dans votre application d\'authentification.'**
   String get enterCodeSent;
 
   /// No description provided for @enterDuration.
   ///
-  /// In en, this message translates to:
-  /// **'enter duration'**
+  /// In fr, this message translates to:
+  /// **'saisir la durée'**
   String get enterDuration;
 
   /// No description provided for @enterLogin.
   ///
-  /// In en, this message translates to:
-  /// **'Enter your login'**
+  /// In fr, this message translates to:
+  /// **'Entrez votre login'**
   String get enterLogin;
 
   /// No description provided for @enterPassword.
   ///
-  /// In en, this message translates to:
-  /// **'Enter your password'**
+  /// In fr, this message translates to:
+  /// **'Entrez votre mot de passe'**
   String get enterPassword;
 
   /// No description provided for @enterUserEmail.
   ///
-  /// In en, this message translates to:
-  /// **'Enter User Email'**
+  /// In fr, this message translates to:
+  /// **'Saisir l\'e-mail de l\'utilisateur'**
   String get enterUserEmail;
 
   /// No description provided for @enterUserPassword.
   ///
-  /// In en, this message translates to:
-  /// **'Enter User Password'**
+  /// In fr, this message translates to:
+  /// **'Saisir le mot de passe de l\'utilisateur'**
   String get enterUserPassword;
 
   /// No description provided for @enterUsername.
   ///
-  /// In en, this message translates to:
-  /// **'Enter Username'**
+  /// In fr, this message translates to:
+  /// **'Entrer le nom d\'utilisateur'**
   String get enterUsername;
 
   /// No description provided for @expandCollapseSubTitle.
   ///
-  /// In en, this message translates to:
-  /// **'ON to expand  OFF to collapse\\n\\nOnly used for local control of Rail\\npresentation.'**
+  /// In fr, this message translates to:
+  /// **'ON pour Agrandir OFF pour réduire la taille de l\'appareil Seulement utilisé pour le contrôle local de la présentation des chemins de fer.'**
   String get expandCollapseSubTitle;
 
   /// No description provided for @expandCollapseTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Expand and collapse'**
+  /// In fr, this message translates to:
+  /// **'Agrandir et réduire'**
   String get expandCollapseTitle;
 
   /// No description provided for @expansionPanelDelete.
   ///
-  /// In en, this message translates to:
-  /// **'To delete this panel, tap the trash can icon'**
+  /// In fr, this message translates to:
+  /// **'Pour supprimer ce panneau, appuyez sur l\'icône de la corbeille'**
   String get expansionPanelDelete;
 
   /// No description provided for @expansionPanelFixed.
   ///
-  /// In en, this message translates to:
-  /// **'This panel is fixed here and cannot be removed. Items\\nnumbered 3 and higher can be removed.'**
+  /// In fr, this message translates to:
+  /// **'Ce panneau est fixé ici et ne peut pas être enlevé. Les éléments numérotés 3 et plus peuvent être retirés.'**
   String get expansionPanelFixed;
 
   /// No description provided for @expansionTileListTitle.
   ///
-  /// In en, this message translates to:
-  /// **'This is tile number'**
+  /// In fr, this message translates to:
+  /// **'Il s\'agit du numéro de tuile'**
   String get expansionTileListTitle;
 
   /// No description provided for @expansionTileSubTitle1.
   ///
-  /// In en, this message translates to:
-  /// **'Trailing expansion arrow icon'**
+  /// In fr, this message translates to:
+  /// **'Icône de la flèche d\'expansion arrière'**
   String get expansionTileSubTitle1;
 
   /// No description provided for @expansionTileSubTitle2.
   ///
-  /// In en, this message translates to:
-  /// **'Custom expansion arrow icon'**
+  /// In fr, this message translates to:
+  /// **'Icône de flèche d\'expansion personnalisée'**
   String get expansionTileSubTitle2;
 
   /// No description provided for @expansionTileSubTitle3.
   ///
-  /// In en, this message translates to:
-  /// **'Leading expansion arrow icon'**
+  /// In fr, this message translates to:
+  /// **'Icône de la flèche d\'expansion'**
   String get expansionTileSubTitle3;
 
   /// No description provided for @expansionTileTitle.
   ///
-  /// In en, this message translates to:
-  /// **'ExpansionTile'**
+  /// In fr, this message translates to:
+  /// **'Tuile d\'expansion'**
   String get expansionTileTitle;
 
   /// No description provided for @explainFlutterM2Color.
   ///
-  /// In en, this message translates to:
-  /// **'Flutter M2 past default color was\\nThemeData.bottomAppBarColor. It was deprecated in\\nFlutter 3.7. New default is colorScheme.surface and\\nelevation 8. In M3 it defaults to colorScheme.surface\\ncolor, elevation 3, no shadow, but with surface elevation\\ntint.'**
+  /// In fr, this message translates to:
+  /// **'L\'ancienne couleur par défaut de Flutter M2 était ThemeData.bottomAppBarColor. Elle a été supprimée dans Flutter 3.7. La nouvelle couleur par défaut est colorScheme.surface et l\'élévation 8. Dans M3, la couleur par défaut est colorScheme.surface, élévation 3, sans ombre, mais avec une teinte d\'élévation de la surface.'**
   String get explainFlutterM2Color;
 
   /// No description provided for @explainUsedColors1.
   ///
-  /// In en, this message translates to:
-  /// **'Material 3 ColorScheme seeding from key colors is OFF and not\\nused. The ColorScheme is based directly on the selected theme'**
+  /// In fr, this message translates to:
+  /// **'Matériau 3 L\'ensemencement de la palette de couleurs à partir des couleurs clés est désactivé et n\'est pas utilisé. La palette de couleurs est basée directement sur le thème sélectionné.'**
   String get explainUsedColors1;
 
   /// No description provided for @explainUsedColors2.
   ///
-  /// In en, this message translates to:
-  /// **'Light theme Primary color is used to generate the Colorscheme.\\nThis is like using Flutter ColorScheme.fromSeed with the Primary\\ncolor as seed color'**
+  /// In fr, this message translates to:
+  /// **'La couleur primaire du thème de la lumière est utilisée pour générer le modèle de couleurs. Cela revient à utiliser Flutter Color Scheme.fromSeed avec la couleur primaire comme couleur de départ.'**
   String get explainUsedColors2;
 
   /// No description provided for @explainUsedColors3.
   ///
-  /// In en, this message translates to:
-  /// **'Tonal palettes for the ColorScheme, are made with light theme\\nPrimary and Secondary colors as seed keys. Tertiary key is computed\\nfrom Primary color'**
+  /// In fr, this message translates to:
+  /// **'Les palettes tonales du ColorScheme sont créées à partir des couleurs primaires et secondaires du thème de la lumière. La clé tertiaire est calculée à partir de la couleur primaire.'**
   String get explainUsedColors3;
 
   /// No description provided for @explainUsedColors4.
   ///
-  /// In en, this message translates to:
-  /// **'Tonal palettes for the ColorScheme, are made with light theme\\nPrimary and Tertiary colors as seed keys, Secondary key is computed\\nfrom Primary color'**
+  /// In fr, this message translates to:
+  /// **'Les palettes de tons pour le ColorScheme sont créées avec des thèmes clairs. Les couleurs primaires et tertiaires servent de clés de départ, la clé secondaire est calculée à partir de la couleur primaire.'**
   String get explainUsedColors4;
 
   /// No description provided for @explainUsedColors5.
   ///
-  /// In en, this message translates to:
-  /// **'Light theme Primary, Secondary and Tertiary colors are used as\\nkeys to generate tonal palettes that define the ColorScheme'**
+  /// In fr, this message translates to:
+  /// **'Les couleurs primaires, secondaires et tertiaires du thème de la lumière sont utilisées comme clés pour générer des palettes de tons qui définissent le schéma de couleurs.'**
   String get explainUsedColors5;
 
   /// No description provided for @extended.
   ///
-  /// In en, this message translates to:
-  /// **'Extended'**
+  /// In fr, this message translates to:
+  /// **'Prolongé'**
   String get extended;
 
   /// No description provided for @fastAppTerminationDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Terminate instead of suspending apps when backgrounded to\\nforce apps to be relaunched when tray \\nare foregrounded.'**
+  /// In fr, this message translates to:
+  /// **'Terminer au lieu de suspendre les applications lorsqu\'elles sont en arrière-plan pour forcer les applications à être relancées lorsque les plateaux sont en avant-plan.'**
   String get fastAppTerminationDescription;
 
   /// No description provided for @fastAppTerminationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Fast App Termination'**
+  /// In fr, this message translates to:
+  /// **'Fin rapide de l\'application'**
   String get fastAppTerminationTitle;
 
   /// No description provided for @faultyUrl.
   ///
-  /// In en, this message translates to:
-  /// **'Faulty URL!'**
+  /// In fr, this message translates to:
+  /// **'URL erroné !'**
   String get faultyUrl;
 
   /// No description provided for @favorite.
   ///
-  /// In en, this message translates to:
-  /// **'Favorite'**
+  /// In fr, this message translates to:
+  /// **'Favoris'**
   String get favorite;
 
   /// No description provided for @favourites.
   ///
-  /// In en, this message translates to:
-  /// **'Favourites'**
+  /// In fr, this message translates to:
+  /// **'Favoris'**
   String get favourites;
 
   /// No description provided for @file.
   ///
-  /// In en, this message translates to:
-  /// **'File'**
+  /// In fr, this message translates to:
+  /// **'Fichier'**
   String get file;
 
   /// No description provided for @fillRate.
   ///
-  /// In en, this message translates to:
-  /// **'Fill Rate'**
+  /// In fr, this message translates to:
+  /// **'Taux de remplissage'**
   String get fillRate;
 
   /// No description provided for @filled.
   ///
-  /// In en, this message translates to:
-  /// **'Filled'**
+  /// In fr, this message translates to:
+  /// **'Remplis'**
   String get filled;
 
   /// No description provided for @filledButton.
   ///
-  /// In en, this message translates to:
-  /// **'Filled button'**
+  /// In fr, this message translates to:
+  /// **'Bouton de remplissage'**
   String get filledButton;
 
   /// No description provided for @filledDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'Filled (disabled)'**
+  /// In fr, this message translates to:
+  /// **'Rempli (désactivé)'**
   String get filledDisabled;
 
   /// No description provided for @filledIcon.
   ///
-  /// In en, this message translates to:
-  /// **'Filled Icon'**
+  /// In fr, this message translates to:
+  /// **'Icône de remplissage'**
   String get filledIcon;
 
   /// No description provided for @filledSetTrue.
   ///
-  /// In en, this message translates to:
-  /// **'filled set true by Widget'**
+  /// In fr, this message translates to:
+  /// **'rempli par le Widget (true)'**
   String get filledSetTrue;
 
   /// No description provided for @filledTonal.
   ///
-  /// In en, this message translates to:
-  /// **'Filled tonal'**
+  /// In fr, this message translates to:
+  /// **'Tonalité de remplissage'**
   String get filledTonal;
 
   /// No description provided for @filledTonalButton.
   ///
-  /// In en, this message translates to:
-  /// **'Filled tonal button'**
+  /// In fr, this message translates to:
+  /// **'Bouton de couleur rempli'**
   String get filledTonalButton;
 
   /// No description provided for @filledTonalDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'Filled tonal (disabled)'**
+  /// In fr, this message translates to:
+  /// **'Tonalité remplie (désactivée)'**
   String get filledTonalDisabled;
 
   /// No description provided for @filledTonalIcon.
   ///
-  /// In en, this message translates to:
-  /// **'Filled tonal icon'**
+  /// In fr, this message translates to:
+  /// **'Icône de tonalité remplie'**
   String get filledTonalIcon;
 
   /// No description provided for @flexTonesTitle1.
   ///
-  /// In en, this message translates to:
-  /// **'FlexTones setup'**
+  /// In fr, this message translates to:
+  /// **'Configuration des FlexTones'**
   String get flexTonesTitle1;
 
   /// No description provided for @flexTonesTitle2.
   ///
-  /// In en, this message translates to:
-  /// **'FlexTones setup with CAM16 chroma'**
+  /// In fr, this message translates to:
+  /// **'Configuration des FlexTones avec CAM16 chroma'**
   String get flexTonesTitle2;
 
   /// No description provided for @flutterBackgroundColor.
   ///
-  /// In en, this message translates to:
-  /// **'Flutter default background color is colorScheme.surface.\\nFlexColorScheme sub-theme default is colorScheme.background.'**
+  /// In fr, this message translates to:
+  /// **'La couleur d\'arrière-plan par défaut de Flutter est la couleur Scheme surface. La couleur d\'arrière-plan par défaut du sous-thème FlexColor Scheme est la couleur Scheme.'**
   String get flutterBackgroundColor;
 
   /// No description provided for @flutterBackgroundColorM3.
   ///
-  /// In en, this message translates to:
-  /// **'Default Flutter background color in M3 is colorScheme.surface,\\nwith elevation tint and no shadow. In M2 it has shadow and\\nuses color theme.canvasColor, that is typically set\\nto colorScheme.background.'**
+  /// In fr, this message translates to:
+  /// **'La couleur d\'arrière-plan par défaut de Flutter dans M3 est la couleur Scheme surface, avec une teinte d\'élévation et sans ombre. En M2, elle a une ombre et utilise le thème de couleur canvas Color, qui est généralement défini sur colorScheme.background.'**
   String get flutterBackgroundColorM3;
 
   /// No description provided for @flutterBackgroundColorSurface.
   ///
-  /// In en, this message translates to:
-  /// **'Default Flutter background color is colorScheme.surface,\\nwith addition of elevation tint in Material 3 mode.'**
+  /// In fr, this message translates to:
+  /// **'La couleur d\'arrière-plan par défaut de Flutter est la couleur de la surface du schéma, avec l\'ajout d\'une teinte d\'élévation en mode Material 3.'**
   String get flutterBackgroundColorSurface;
 
   /// No description provided for @font.
   ///
-  /// In en, this message translates to:
-  /// **'Font'**
+  /// In fr, this message translates to:
+  /// **'Police'**
   String get font;
 
   /// No description provided for @forTesting.
   ///
-  /// In en, this message translates to:
-  /// **'For testing, not persisted.'**
+  /// In fr, this message translates to:
+  /// **'Pour les tests, non persistants.'**
   String get forTesting;
 
   /// No description provided for @fullPhoto.
   ///
-  /// In en, this message translates to:
-  /// **'Full photo'**
+  /// In fr, this message translates to:
+  /// **'Photo intégrale'**
   String get fullPhoto;
 
   /// No description provided for @general.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'General'**
   String get general;
 
   /// No description provided for @geo.
   ///
-  /// In en, this message translates to:
-  /// **'Geolocation'**
+  /// In fr, this message translates to:
+  /// **'Géolocalisation'**
   String get geo;
 
   /// No description provided for @groupConf.
   ///
-  /// In en, this message translates to:
-  /// **'Group configuration...'**
+  /// In fr, this message translates to:
+  /// **'Configuration du groupe...'**
   String get groupConf;
 
   /// No description provided for @groupDetails.
   ///
-  /// In en, this message translates to:
-  /// **'Group details'**
+  /// In fr, this message translates to:
+  /// **'Informations sur le groupe'**
   String get groupDetails;
 
   /// No description provided for @groupName.
   ///
-  /// In en, this message translates to:
-  /// **'Group Name...'**
+  /// In fr, this message translates to:
+  /// **'Nom du groupe...'**
   String get groupName;
 
   /// No description provided for @groupProvide.
   ///
-  /// In en, this message translates to:
-  /// **'Please provide a group name and an optional group icon'**
+  /// In fr, this message translates to:
+  /// **'Veuillez fournir un nom de groupe et une icône de groupe facultative.'**
   String get groupProvide;
 
   /// No description provided for @haveAccount.
   ///
-  /// In en, this message translates to:
-  /// **'Have an account? Click here to login.'**
+  /// In fr, this message translates to:
+  /// **'Vous avez un compte ? Cliquez ici pour vous connecter.'**
   String get haveAccount;
 
   /// No description provided for @haventAccount.
   ///
-  /// In en, this message translates to:
-  /// **'Don\\\'t have an account? Tap here to register.'**
+  /// In fr, this message translates to:
+  /// **'Vous n\'avez pas de compte ? Cliquez ici pour vous inscrire.'**
   String get haventAccount;
 
   /// No description provided for @headline.
   ///
-  /// In en, this message translates to:
-  /// **'Headline'**
+  /// In fr, this message translates to:
+  /// **'À la une'**
   String get headline;
 
   /// No description provided for @helloMaterialBanner.
   ///
-  /// In en, this message translates to:
-  /// **'Hello, I am a MaterialBanner'**
+  /// In fr, this message translates to:
+  /// **'Bonjour, je suis une Bannière Matérielle'**
   String get helloMaterialBanner;
 
   /// No description provided for @hideMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Hide Message'**
+  /// In fr, this message translates to:
+  /// **'Masquer le message'**
   String get hideMessage;
 
   /// No description provided for @hideSilentTile.
   ///
-  /// In en, this message translates to:
-  /// **'Hide silent notifications in status bar'**
+  /// In fr, this message translates to:
+  /// **'Masquer les notifications silencieuses dans la barre d\'état'**
   String get hideSilentTile;
 
   /// No description provided for @highBackgroundLowScaffoldLongText.
   ///
-  /// In en, this message translates to:
-  /// **'High background, low scaffold\\nSurface 1x  Background 3/2x  Scaffold 1/2x\\n'**
+  /// In fr, this message translates to:
+  /// **'Fond élevé, échafaudage faible Surface 1x Fond 3/2x Echafaudage 1/2x\\n'**
   String get highBackgroundLowScaffoldLongText;
 
   /// No description provided for @highBackgroundLowScaffoldShortText.
   ///
-  /// In en, this message translates to:
-  /// **'High background\\nlow scaffold'**
+  /// In fr, this message translates to:
+  /// **'Fond élevé faible échafaudage'**
   String get highBackgroundLowScaffoldShortText;
 
   /// No description provided for @highScaffoldLevelSurfaceLongText.
   ///
-  /// In en, this message translates to:
-  /// **'Very high scaffold, high background, level surface\\nSurface 1x  Background 2x  Scaffold 3x\\n'**
+  /// In fr, this message translates to:
+  /// **'Échafaudage très haut, arrière-plan haut, surface plane Surface 1x arrière-plan 2x échafaudage 3x\\n'**
   String get highScaffoldLevelSurfaceLongText;
 
   /// No description provided for @highScaffoldLevelSurfaceShortText.
   ///
-  /// In en, this message translates to:
-  /// **'High scaffold\\nlevel surface'**
+  /// In fr, this message translates to:
+  /// **'Échafaudage en hauteur\\nsurface plane'**
   String get highScaffoldLevelSurfaceShortText;
 
   /// No description provided for @highScaffoldLowSurfaceLongText.
   ///
-  /// In en, this message translates to:
-  /// **'Very high scaffold, low surface\\nSurface 1/2x  Background 1x  Scaffold 3x\\n'**
+  /// In fr, this message translates to:
+  /// **'Échafaudage très haut, surface basse Surface 1/2x Fond 1x Échafaudage 3x\\n'**
   String get highScaffoldLowSurfaceLongText;
 
   /// No description provided for @highScaffoldLowSurfaceShortText.
   ///
-  /// In en, this message translates to:
-  /// **'VHigh scaffold\\nlow surface'**
+  /// In fr, this message translates to:
+  /// **'Très haut échafaudage et faible surface'**
   String get highScaffoldLowSurfaceShortText;
 
   /// No description provided for @highScaffoldLowSurfacesLongText.
   ///
-  /// In en, this message translates to:
-  /// **'Very high scaffold, low surface and background\\nSurface 1/2x  Background 1/2x  Scaffold 3x\\n'**
+  /// In fr, this message translates to:
+  /// **'Échafaudage très haut, surface et arrière-plan bas Surface 1/2x Arrière-plan 1/2x Échafaudage 3x\\n'**
   String get highScaffoldLowSurfacesLongText;
 
   /// No description provided for @highScaffoldLowSurfacesShortText.
   ///
-  /// In en, this message translates to:
-  /// **'High scaffold\\nlow surfaces'**
+  /// In fr, this message translates to:
+  /// **'Echafaudage haut Surfaces basses'**
   String get highScaffoldLowSurfacesShortText;
 
   /// No description provided for @highScaffoldLowSurfacesVariantDialogLongText.
   ///
-  /// In en, this message translates to:
-  /// **'Tertiary container dialog, very high scaffold\\nSurface 1/2x  Background 1/2x  Scaffold 3x\\nDialog 1/2x blend of tertiary container color'**
+  /// In fr, this message translates to:
+  /// **'Dialogue sur les conteneurs tertiaires, échafaudage très élevé Surface 1/2x Fond 1/2x Echafaudage 3x Dialogue 1/2x mélange de couleurs des conteneurs tertiaires'**
   String get highScaffoldLowSurfacesVariantDialogLongText;
 
   /// No description provided for @highScaffoldLowSurfacesVariantDialogShortText.
   ///
-  /// In en, this message translates to:
-  /// **'High scaffold\\ntertiaryContainer dialog'**
+  /// In fr, this message translates to:
+  /// **'Dialogue sur les conteneurs tertiaires à haut échafaudage'**
   String get highScaffoldLowSurfacesVariantDialogShortText;
 
   /// No description provided for @highSurfaceLowScaffoldLongText.
   ///
-  /// In en, this message translates to:
-  /// **'High surface, low scaffold\\nSurface 3/2x  Background 1x  Scaffold 1/2x\\n'**
+  /// In fr, this message translates to:
+  /// **'Surface élevée, faible échafaudage Surface 3/2x Arrière-plan 1x Echafaudage 1/2x\\n'**
   String get highSurfaceLowScaffoldLongText;
 
   /// No description provided for @highSurfaceLowScaffoldShortText.
   ///
-  /// In en, this message translates to:
-  /// **'High surface\\nlow scaffold'**
+  /// In fr, this message translates to:
+  /// **'Échafaudage à grande surface et à faible hauteur'**
   String get highSurfaceLowScaffoldShortText;
 
   /// No description provided for @hive.
   ///
-  /// In en, this message translates to:
-  /// **'Hive'**
+  /// In fr, this message translates to:
+  /// **'Ruche'**
   String get hive;
 
   /// No description provided for @home.
   ///
-  /// In en, this message translates to:
-  /// **'Home'**
+  /// In fr, this message translates to:
+  /// **'Accueil'**
   String get home;
 
   /// No description provided for @httpThree.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'HTTP/3'**
   String get httpThree;
 
   /// No description provided for @iadDevTitle.
   ///
-  /// In en, this message translates to:
-  /// **'IAD developer app testing'**
+  /// In fr, this message translates to:
+  /// **'Développeur IAD testant l\'application'**
   String get iadDevTitle;
 
   /// No description provided for @iconButtonCLoseM3.
   ///
-  /// In en, this message translates to:
-  /// **'This is an IconButton\\nIn M3 tap to close lock'**
+  /// In fr, this message translates to:
+  /// **'Il s\'agit d\'un bouton IconButton In M3 qui permet de fermer le verrou.'**
   String get iconButtonCLoseM3;
 
   /// No description provided for @iconButtonOpenM3.
   ///
-  /// In en, this message translates to:
-  /// **'This is an IconButton\\nIn M3 tap to open lock'**
+  /// In fr, this message translates to:
+  /// **'Il s\'agit d\'un bouton IconButton In M3 à utiliser pour ouvrir la serrure.'**
   String get iconButtonOpenM3;
 
   /// No description provided for @info.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Info'**
   String get info;
 
   /// No description provided for @infoThemeSettings.
   ///
-  /// In en, this message translates to:
-  /// **'FlexColorScheme persisted theme demo. Theme settings \'\n\'widgets using Riverpod controllers can be used anywhere in \'\n\'the app. On this page, in the Drawer and in a BottomSheet \'\n\'to control persisted theme settings.'**
+  /// In fr, this message translates to:
+  /// **'Démonstration du thème persistant FlexColor Scheme. Les widgets de configuration du thème utilisant les contrôleurs Riverpod peuvent être utilisés n\'importe où dans l\'application. Sur cette page, dans le tiroir et dans une feuille inférieure pour contrôler les paramètres persistants du thème.'**
   String get infoThemeSettings;
 
   /// No description provided for @initCode.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'000000'**
   String get initCode;
 
   /// No description provided for @iosDevTitle.
   ///
-  /// In en, this message translates to:
-  /// **'iOS Developer Screen'**
+  /// In fr, this message translates to:
+  /// **'Écran pour développeur iOS'**
   String get iosDevTitle;
 
   /// No description provided for @italic.
   ///
-  /// In en, this message translates to:
-  /// **'Italic'**
+  /// In fr, this message translates to:
+  /// **'Italique'**
   String get italic;
 
   /// No description provided for @label.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Label'**
   String get label;
 
   /// No description provided for @labelActionChip.
   ///
-  /// In en, this message translates to:
-  /// **'ActionChip'**
+  /// In fr, this message translates to:
+  /// **'Jeton d\'action'**
   String get labelActionChip;
 
   /// No description provided for @labelAlarmSettings.
   ///
-  /// In en, this message translates to:
-  /// **'Alarm settings'**
+  /// In fr, this message translates to:
+  /// **'Réglages de l\'alarme'**
   String get labelAlarmSettings;
 
   /// No description provided for @labelAndroid.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Google Android'**
   String get labelAndroid;
 
   /// No description provided for @labelApple.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Apple iOS'**
   String get labelApple;
 
   /// No description provided for @labelArchive.
   ///
-  /// In en, this message translates to:
-  /// **'Archive'**
+  /// In fr, this message translates to:
+  /// **'Archives'**
   String get labelArchive;
 
   /// No description provided for @labelBackground.
   ///
-  /// In en, this message translates to:
-  /// **'Background'**
+  /// In fr, this message translates to:
+  /// **'Fond d\'écran'**
   String get labelBackground;
 
   /// No description provided for @labelBottomNaviBarBackground.
   ///
-  /// In en, this message translates to:
-  /// **'Bottom\\nNaviBar\\nBackground'**
+  /// In fr, this message translates to:
+  /// **'Arrière-plan de la barre de navigation inférieure'**
   String get labelBottomNaviBarBackground;
 
   /// No description provided for @labelBottomNaviBarSelected.
   ///
-  /// In en, this message translates to:
-  /// **'Bottom\\nNaviBar\\nSelected'**
+  /// In fr, this message translates to:
+  /// **'Barre de navigation inférieure sélectionnée'**
   String get labelBottomNaviBarSelected;
 
   /// No description provided for @labelCabinOverview.
   ///
-  /// In en, this message translates to:
-  /// **'Cabin overview'**
+  /// In fr, this message translates to:
+  /// **'Vue d\'ensemble de la cabine'**
   String get labelCabinOverview;
 
   /// No description provided for @labelCanvas.
   ///
-  /// In en, this message translates to:
-  /// **'Canvas'**
+  /// In fr, this message translates to:
+  /// **'Toiles'**
   String get labelCanvas;
 
   /// No description provided for @labelCard.
   ///
-  /// In en, this message translates to:
-  /// **'Card'**
+  /// In fr, this message translates to:
+  /// **'Carte'**
   String get labelCard;
 
   /// No description provided for @labelChat.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Chat'**
   String get labelChat;
 
   /// No description provided for @labelCheckbox.
   ///
-  /// In en, this message translates to:
-  /// **'Checkbox'**
+  /// In fr, this message translates to:
+  /// **'Case à cocher'**
   String get labelCheckbox;
 
   /// No description provided for @labelChip.
   ///
-  /// In en, this message translates to:
-  /// **'Chip'**
+  /// In fr, this message translates to:
+  /// **'Puce'**
   String get labelChip;
 
   /// No description provided for @labelChipCheck.
   ///
-  /// In en, this message translates to:
-  /// **'Chip check'**
+  /// In fr, this message translates to:
+  /// **'Contrôle des puces'**
   String get labelChipCheck;
 
   /// No description provided for @labelChips.
   ///
-  /// In en, this message translates to:
-  /// **'Chips'**
+  /// In fr, this message translates to:
+  /// **'Puces'**
   String get labelChips;
 
   /// No description provided for @labelChoiceChip.
   ///
-  /// In en, this message translates to:
-  /// **'ChoiceChip'**
+  /// In fr, this message translates to:
+  /// **'Choix de la puce'**
   String get labelChoiceChip;
 
   /// No description provided for @labelCircleAvatar.
   ///
-  /// In en, this message translates to:
-  /// **'Circle\\nAvatar'**
+  /// In fr, this message translates to:
+  /// **'Cercle Avatar'**
   String get labelCircleAvatar;
 
   /// No description provided for @labelDialogBackground.
   ///
-  /// In en, this message translates to:
-  /// **'Dialog\\nBackground'**
+  /// In fr, this message translates to:
+  /// **'Arrière-plan du dialogue'**
   String get labelDialogBackground;
 
   /// No description provided for @labelDisabledColor.
   ///
-  /// In en, this message translates to:
-  /// **'Disabled\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur désactivée'**
   String get labelDisabledColor;
 
   /// No description provided for @labelDisabledSettings.
   ///
-  /// In en, this message translates to:
-  /// **'Disabled settings'**
+  /// In fr, this message translates to:
+  /// **'Paramètres désactivés'**
   String get labelDisabledSettings;
 
   /// No description provided for @labelDividerColor.
   ///
-  /// In en, this message translates to:
-  /// **'Divider\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur du séparateur'**
   String get labelDividerColor;
 
   /// No description provided for @labelElevatedButton.
   ///
-  /// In en, this message translates to:
-  /// **'Elevated\\nButton'**
+  /// In fr, this message translates to:
+  /// **'Bouton surélevé'**
   String get labelElevatedButton;
 
   /// No description provided for @labelError.
   ///
-  /// In en, this message translates to:
-  /// **'Error'**
+  /// In fr, this message translates to:
+  /// **'Erreur'**
   String get labelError;
 
   /// No description provided for @labelErrorContainer.
   ///
-  /// In en, this message translates to:
-  /// **'Error\\nContainer'**
+  /// In fr, this message translates to:
+  /// **'Conteneur d\'erreurs'**
   String get labelErrorContainer;
 
   /// No description provided for @labelFilterChip.
   ///
-  /// In en, this message translates to:
-  /// **'FilterChip'**
+  /// In fr, this message translates to:
+  /// **'Filtre à puce'**
   String get labelFilterChip;
 
   /// No description provided for @labelFloatingActionButton.
   ///
-  /// In en, this message translates to:
-  /// **'Floating\\nAction\\nButton'**
+  /// In fr, this message translates to:
+  /// **'Bouton d\'action flottant'**
   String get labelFloatingActionButton;
 
   /// No description provided for @labelFocusColor.
   ///
-  /// In en, this message translates to:
-  /// **'Focus\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur de la mise au point'**
   String get labelFocusColor;
 
   /// No description provided for @labelFuchsia.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Google Fuchsia'**
   String get labelFuchsia;
 
   /// No description provided for @labelHighlightColor.
   ///
-  /// In en, this message translates to:
-  /// **'Highlight\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur de mise en évidence'**
   String get labelHighlightColor;
 
   /// No description provided for @labelHintColor.
   ///
-  /// In en, this message translates to:
-  /// **'Hint\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur de l\'indice'**
   String get labelHintColor;
 
   /// No description provided for @labelHoverColor.
   ///
-  /// In en, this message translates to:
-  /// **'Hover\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur au survol'**
   String get labelHoverColor;
 
   /// No description provided for @labelIndicatorColor.
   ///
-  /// In en, this message translates to:
-  /// **'Indicator\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur de l\'indicateur'**
   String get labelIndicatorColor;
 
   /// No description provided for @labelInputChip.
   ///
-  /// In en, this message translates to:
-  /// **'InputChip'**
+  /// In fr, this message translates to:
+  /// **'Champ de saisie'**
   String get labelInputChip;
 
   /// No description provided for @labelInputDecorator.
   ///
-  /// In en, this message translates to:
-  /// **'Input\\nDecorator'**
+  /// In fr, this message translates to:
+  /// **'Décorateur de saisie'**
   String get labelInputDecorator;
 
   /// No description provided for @labelInversePrimary.
   ///
-  /// In en, this message translates to:
-  /// **'Inverse\\nPrimary'**
+  /// In fr, this message translates to:
+  /// **'Primaire inversé'**
   String get labelInversePrimary;
 
   /// No description provided for @labelInverseSurface.
   ///
-  /// In en, this message translates to:
-  /// **'Inverse\\nSurface'**
+  /// In fr, this message translates to:
+  /// **'Surface inversée'**
   String get labelInverseSurface;
 
   /// No description provided for @labelLinux.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Linux'**
   String get labelLinux;
 
   /// No description provided for @labelMacOs.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Apple MacOS'**
   String get labelMacOs;
 
   /// No description provided for @labelNavigationBarBackground.
   ///
-  /// In en, this message translates to:
-  /// **'Navigation\\nBar\\nBackground'**
+  /// In fr, this message translates to:
+  /// **'Arrière-plan de la barre de navigation'**
   String get labelNavigationBarBackground;
 
   /// No description provided for @labelNavigationBarIndicator.
   ///
-  /// In en, this message translates to:
-  /// **'Navigation\\nBar\\nIndicator'**
+  /// In fr, this message translates to:
+  /// **'Indicateur de la barre de navigation'**
   String get labelNavigationBarIndicator;
 
   /// No description provided for @labelNavigationBarSelected.
   ///
-  /// In en, this message translates to:
-  /// **'Navigation\\nBar\\nSelected'**
+  /// In fr, this message translates to:
+  /// **'Barre de navigation sélectionnée'**
   String get labelNavigationBarSelected;
 
   /// No description provided for @labelNavigationRailBackground.
   ///
-  /// In en, this message translates to:
-  /// **'Navigation\\nRail\\nBackground'**
+  /// In fr, this message translates to:
+  /// **'Rail de navigation Fond d\'écran'**
   String get labelNavigationRailBackground;
 
   /// No description provided for @labelNavigationRailIndicator.
   ///
-  /// In en, this message translates to:
-  /// **'Navigation\\nRail\\nIndicator'**
+  /// In fr, this message translates to:
+  /// **'Indicateur de rail de navigation'**
   String get labelNavigationRailIndicator;
 
   /// No description provided for @labelNavigationRailSelected.
   ///
-  /// In en, this message translates to:
-  /// **'Navigation\\nRail\\nSelected'**
+  /// In fr, this message translates to:
+  /// **'Rail de navigation sélectionné'**
   String get labelNavigationRailSelected;
 
   /// No description provided for @labelOnBackground.
   ///
-  /// In en, this message translates to:
-  /// **'on\\nBackground'**
+  /// In fr, this message translates to:
+  /// **'sur l\'arrière-plan'**
   String get labelOnBackground;
 
   /// No description provided for @labelOnError.
   ///
-  /// In en, this message translates to:
-  /// **'on\\nError'**
+  /// In fr, this message translates to:
+  /// **'en cas d\'erreur'**
   String get labelOnError;
 
   /// No description provided for @labelOnErrorContainer.
   ///
-  /// In en, this message translates to:
-  /// **'onError\\nContainer'**
+  /// In fr, this message translates to:
+  /// **'sur le conteneur d\'erreurs'**
   String get labelOnErrorContainer;
 
   /// No description provided for @labelOnInverseSurface.
   ///
-  /// In en, this message translates to:
-  /// **'onInverse\\nSurface'**
+  /// In fr, this message translates to:
+  /// **'sur la surface inverse'**
   String get labelOnInverseSurface;
 
   /// No description provided for @labelOnPrimary.
   ///
-  /// In en, this message translates to:
-  /// **'on\\nPrimary'**
+  /// In fr, this message translates to:
+  /// **'sur le primaire'**
   String get labelOnPrimary;
 
   /// No description provided for @labelOnPrimaryContainer.
   ///
-  /// In en, this message translates to:
-  /// **'onPrimary\\nContainer'**
+  /// In fr, this message translates to:
+  /// **'sur le conteneur primaire'**
   String get labelOnPrimaryContainer;
 
   /// No description provided for @labelOnSecondary.
   ///
-  /// In en, this message translates to:
-  /// **'on\\nSecondary'**
+  /// In fr, this message translates to:
+  /// **'sur le secondaire'**
   String get labelOnSecondary;
 
   /// No description provided for @labelOnSecondaryContainer.
   ///
-  /// In en, this message translates to:
-  /// **'on\\nSecondary\\nContainer'**
+  /// In fr, this message translates to:
+  /// **'sur le conteneur secondaire'**
   String get labelOnSecondaryContainer;
 
   /// No description provided for @labelOnSurface.
   ///
-  /// In en, this message translates to:
-  /// **'on\\nSurface'**
+  /// In fr, this message translates to:
+  /// **'sur la surface'**
   String get labelOnSurface;
 
   /// No description provided for @labelOnSurfaceVariant.
   ///
-  /// In en, this message translates to:
-  /// **'onSurface\\nVariant'**
+  /// In fr, this message translates to:
+  /// **'sur la variante de surface'**
   String get labelOnSurfaceVariant;
 
   /// No description provided for @labelOnTertiary.
   ///
-  /// In en, this message translates to:
-  /// **'on\\nTertiary'**
+  /// In fr, this message translates to:
+  /// **'sur le tertiaire'**
   String get labelOnTertiary;
 
   /// No description provided for @labelOnTertiaryContainer.
   ///
-  /// In en, this message translates to:
-  /// **'on\\nTertiary\\nContainer'**
+  /// In fr, this message translates to:
+  /// **'sur le conteneur tertiaire'**
   String get labelOnTertiaryContainer;
 
   /// No description provided for @labelOutline.
   ///
-  /// In en, this message translates to:
-  /// **'Outline'**
+  /// In fr, this message translates to:
+  /// **'Contour'**
   String get labelOutline;
 
   /// No description provided for @labelOutlineButton.
   ///
-  /// In en, this message translates to:
-  /// **'Outlined\\nButton'**
+  /// In fr, this message translates to:
+  /// **'Bouton souligné'**
   String get labelOutlineButton;
 
   /// No description provided for @labelPrimary.
   ///
-  /// In en, this message translates to:
-  /// **'Primary'**
+  /// In fr, this message translates to:
+  /// **'Primaire'**
   String get labelPrimary;
 
   /// No description provided for @labelPrimaryColor.
   ///
-  /// In en, this message translates to:
-  /// **'Primary\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur primaire'**
   String get labelPrimaryColor;
 
   /// No description provided for @labelPrimaryContainer.
   ///
-  /// In en, this message translates to:
-  /// **'Primary\\nContainer'**
+  /// In fr, this message translates to:
+  /// **'Conteneur primaire'**
   String get labelPrimaryContainer;
 
   /// No description provided for @labelPrimaryDark.
   ///
-  /// In en, this message translates to:
-  /// **'Primary\\nDark'**
+  /// In fr, this message translates to:
+  /// **'Primaire foncé'**
   String get labelPrimaryDark;
 
   /// No description provided for @labelPrimaryLight.
   ///
-  /// In en, this message translates to:
-  /// **'Primary\\nLight'**
+  /// In fr, this message translates to:
+  /// **'Lumière primaire'**
   String get labelPrimaryLight;
 
   /// No description provided for @labelPrimaryTextTheme.
   ///
-  /// In en, this message translates to:
-  /// **'PrimaryText\\nTheme'**
+  /// In fr, this message translates to:
+  /// **'Thème du texte primaire'**
   String get labelPrimaryTextTheme;
 
   /// No description provided for @labelRadio.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Radio'**
   String get labelRadio;
 
   /// No description provided for @labelScaffoldBackground.
   ///
-  /// In en, this message translates to:
-  /// **'Scaffold\\nBackground'**
+  /// In fr, this message translates to:
+  /// **'Contexte de l\'échafaudage'**
   String get labelScaffoldBackground;
 
   /// No description provided for @labelSecondary.
   ///
-  /// In en, this message translates to:
-  /// **'Secondary'**
+  /// In fr, this message translates to:
+  /// **'Secondaire'**
   String get labelSecondary;
 
   /// No description provided for @labelSecondaryContainer.
   ///
-  /// In en, this message translates to:
-  /// **'Secondary\\nContainer'**
+  /// In fr, this message translates to:
+  /// **'Conteneur secondaire'**
   String get labelSecondaryContainer;
 
   /// No description provided for @labelSecondaryHeader.
   ///
-  /// In en, this message translates to:
-  /// **'Secondary\\nHeader'**
+  /// In fr, this message translates to:
+  /// **'En-tête secondaire'**
   String get labelSecondaryHeader;
 
   /// No description provided for @labelShadow.
   ///
-  /// In en, this message translates to:
-  /// **'Shadow'**
+  /// In fr, this message translates to:
+  /// **'Ombre'**
   String get labelShadow;
 
   /// No description provided for @labelShadowColor.
   ///
-  /// In en, this message translates to:
-  /// **'Shadow\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Couleur de l\'ombre'**
   String get labelShadowColor;
 
   /// No description provided for @labelSnackBarBackground.
   ///
-  /// In en, this message translates to:
-  /// **'SnackBar\\nBackground'**
+  /// In fr, this message translates to:
+  /// **'Fond du SnackBar'**
   String get labelSnackBarBackground;
 
   /// No description provided for @labelSplashColor.
   ///
-  /// In en, this message translates to:
-  /// **'Splash\\nColor'**
+  /// In fr, this message translates to:
+  /// **'Splash Color'**
   String get labelSplashColor;
 
   /// No description provided for @labelSurface.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Surface'**
   String get labelSurface;
 
   /// No description provided for @labelSurfaceVariant.
   ///
-  /// In en, this message translates to:
-  /// **'Surface\\nVariant'**
+  /// In fr, this message translates to:
+  /// **'Surface Variante'**
   String get labelSurfaceVariant;
 
   /// No description provided for @labelSurveillanceView.
   ///
-  /// In en, this message translates to:
-  /// **'Sight monitoring'**
+  /// In fr, this message translates to:
+  /// **'Surveillance visuelle'**
   String get labelSurveillanceView;
 
   /// No description provided for @labelSwitch.
   ///
-  /// In en, this message translates to:
-  /// **'Switch'**
+  /// In fr, this message translates to:
+  /// **'Commutateur'**
   String get labelSwitch;
 
   /// No description provided for @labelTabBarIndicator.
   ///
-  /// In en, this message translates to:
-  /// **'TabBar\\nIndicator'**
+  /// In fr, this message translates to:
+  /// **'Indicateur de barre d\'outils'**
   String get labelTabBarIndicator;
 
   /// No description provided for @labelTabBarItem.
   ///
-  /// In en, this message translates to:
-  /// **'TabBar\\nItem'**
+  /// In fr, this message translates to:
+  /// **'Élément de la barre d\'outils'**
   String get labelTabBarItem;
 
   /// No description provided for @labelTasks.
   ///
-  /// In en, this message translates to:
-  /// **'Tasks'**
+  /// In fr, this message translates to:
+  /// **'Tâches'**
   String get labelTasks;
 
   /// No description provided for @labelTertiary.
   ///
-  /// In en, this message translates to:
-  /// **'Tertiary'**
+  /// In fr, this message translates to:
+  /// **'Tertiaire'**
   String get labelTertiary;
 
   /// No description provided for @labelTertiaryContainer.
   ///
-  /// In en, this message translates to:
-  /// **'Tertiary\\nContainer'**
+  /// In fr, this message translates to:
+  /// **'Conteneur tertiaire'**
   String get labelTertiaryContainer;
 
   /// No description provided for @labelTextButton.
   ///
-  /// In en, this message translates to:
-  /// **'Text\\nButton'**
+  /// In fr, this message translates to:
+  /// **'Bouton de texte'**
   String get labelTextButton;
 
   /// No description provided for @labelTextDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'TextField - Disabled label'**
+  /// In fr, this message translates to:
+  /// **'TextField - Label désactivé'**
   String get labelTextDisabled;
 
   /// No description provided for @labelTextTheme.
   ///
-  /// In en, this message translates to:
-  /// **'Text\\nTheme'**
+  /// In fr, this message translates to:
+  /// **'Thème de texte'**
   String get labelTextTheme;
 
   /// No description provided for @labelToggleButtons.
   ///
-  /// In en, this message translates to:
-  /// **'Toggle\\nButtons'**
+  /// In fr, this message translates to:
+  /// **'Boutons de basculement'**
   String get labelToggleButtons;
 
   /// No description provided for @labelTonalButton.
   ///
-  /// In en, this message translates to:
-  /// **'Tonal\\nButton'**
+  /// In fr, this message translates to:
+  /// **'Bouton tonal'**
   String get labelTonalButton;
 
   /// No description provided for @labelTooltip.
   ///
-  /// In en, this message translates to:
-  /// **'Tooltip'**
+  /// In fr, this message translates to:
+  /// **'Info-bulle'**
   String get labelTooltip;
 
   /// No description provided for @labelUnselectedWidget.
   ///
-  /// In en, this message translates to:
-  /// **'Unselected\\nWidget'**
+  /// In fr, this message translates to:
+  /// **'Widget non sélectionné'**
   String get labelUnselectedWidget;
 
   /// No description provided for @labelWaterAlert.
   ///
-  /// In en, this message translates to:
-  /// **'Water alert'**
+  /// In fr, this message translates to:
+  /// **'Alerte à la pollution de l\'eau'**
   String get labelWaterAlert;
 
   /// No description provided for @labelWindows.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Microsoft Windows'**
   String get labelWindows;
 
   /// No description provided for @languageSettingsScreen.
   ///
-  /// In en, this message translates to:
-  /// **'Language Settings Screen'**
+  /// In fr, this message translates to:
+  /// **'Écran des paramètres linguistiques'**
   String get languageSettingsScreen;
 
   /// No description provided for @large.
   ///
-  /// In en, this message translates to:
-  /// **'Large'**
+  /// In fr, this message translates to:
+  /// **'Grande'**
   String get large;
 
   /// No description provided for @lastLogin.
   ///
-  /// In en, this message translates to:
-  /// **'Last login'**
+  /// In fr, this message translates to:
+  /// **'Dernière connexion'**
   String get lastLogin;
 
   /// No description provided for @lastSelected.
   ///
-  /// In en, this message translates to:
-  /// **'Last Selected'**
+  /// In fr, this message translates to:
+  /// **'Dernier sélectionné'**
   String get lastSelected;
 
   /// No description provided for @leaveDialog.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Leave Dialog'**
   String get leaveDialog;
 
   /// No description provided for @level.
   ///
-  /// In en, this message translates to:
-  /// **'Level'**
+  /// In fr, this message translates to:
+  /// **'Niveau'**
   String get level;
 
   /// No description provided for @levelSurfacesLowScaffoldLongText.
   ///
-  /// In en, this message translates to:
-  /// **'Level surface and background, low scaffold\\nSurface 1x  Background 1x  Scaffold 1/2x\\n'**
+  /// In fr, this message translates to:
+  /// **'Surface et arrière-plan de niveau, échafaudage bas Surface 1x arrière-plan 1x échafaudage 1/2x\\n'**
   String get levelSurfacesLowScaffoldLongText;
 
   /// No description provided for @levelSurfacesLowScaffoldVariantDialogLongText.
   ///
-  /// In en, this message translates to:
-  /// **'Tertiary container dialog, low scaffold\\nSurface 1x  Background 1x  Scaffold 1/2x\\nDialog 1x blend of tertiary container color'**
+  /// In fr, this message translates to:
+  /// **'Dialogue sur les conteneurs tertiaires, faible échafaudage Surface 1x arrière-plan 1x échafaudage 1/2x dialogue 1x mélange de couleurs pour les conteneurs tertiaires'**
   String get levelSurfacesLowScaffoldVariantDialogLongText;
 
   /// No description provided for @levelSurfacesLowScaffoldVariantDialogShortText.
   ///
-  /// In en, this message translates to:
-  /// **'Low scaffold\\nTertiaryContainer dialog'**
+  /// In fr, this message translates to:
+  /// **'Échafaudage bas Dialogue sur les conteneurs tertiaires'**
   String get levelSurfacesLowScaffoldVariantDialogShortText;
 
   /// No description provided for @lightAppBarOpacity.
   ///
-  /// In en, this message translates to:
-  /// **'Light AppBar opacity'**
+  /// In fr, this message translates to:
+  /// **'Opacité de l\'AppBar légère'**
   String get lightAppBarOpacity;
 
   /// No description provided for @lightAppBarStyle.
   ///
-  /// In en, this message translates to:
-  /// **'Light AppBar style'**
+  /// In fr, this message translates to:
+  /// **'Style AppBar léger'**
   String get lightAppBarStyle;
 
   /// No description provided for @lightThemeSurfaceBlend.
   ///
-  /// In en, this message translates to:
-  /// **'Light theme surface blend'**
+  /// In fr, this message translates to:
+  /// **'Mélange de surfaces sur le thème de la lumière'**
   String get lightThemeSurfaceBlend;
 
   /// No description provided for @lightThemeSurfaceBlendSubTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Adjust the surface, background and\\nscaffold blends'**
+  /// In fr, this message translates to:
+  /// **'Ajuster les mélanges de surface, d\'arrière-plan et d\'échafaudage'**
   String get lightThemeSurfaceBlendSubTitle;
 
   /// No description provided for @lightThemeSurfaceMode.
   ///
-  /// In en, this message translates to:
-  /// **'Light theme surface mode'**
+  /// In fr, this message translates to:
+  /// **'Thème lumineux mode surface'**
   String get lightThemeSurfaceMode;
 
   /// No description provided for @listContacts.
   ///
-  /// In en, this message translates to:
-  /// **'List of Contacts'**
+  /// In fr, this message translates to:
+  /// **'Liste de contacts'**
   String get listContacts;
 
   /// No description provided for @listMfa.
   ///
-  /// In en, this message translates to:
-  /// **'List of Multi Factor Authentication'**
+  /// In fr, this message translates to:
+  /// **'Liste des authentifications multi-facteurs'**
   String get listMfa;
 
   /// No description provided for @load.
   ///
-  /// In en, this message translates to:
-  /// **'Load'**
+  /// In fr, this message translates to:
+  /// **'Chargement'**
   String get load;
 
   /// No description provided for @loadNow.
   ///
-  /// In en, this message translates to:
-  /// **'Load now'**
+  /// In fr, this message translates to:
+  /// **'Télécharger maintenant'**
   String get loadNow;
 
   /// No description provided for @loading.
   ///
-  /// In en, this message translates to:
-  /// **'Loading...'**
+  /// In fr, this message translates to:
+  /// **'Chargement...'**
   String get loading;
 
   /// No description provided for @location.
   ///
-  /// In en, this message translates to:
-  /// **'location'**
+  /// In fr, this message translates to:
+  /// **'emplacement'**
   String get location;
 
   /// No description provided for @locationDescription.
   ///
-  /// In en, this message translates to:
-  /// **'On - 3 apps have access to location'**
+  /// In fr, this message translates to:
+  /// **'Activé - 3 applications ont accès à la localisation'**
   String get locationDescription;
 
   /// No description provided for @login.
   ///
-  /// In en, this message translates to:
-  /// **'Login'**
+  /// In fr, this message translates to:
+  /// **'Se connecter'**
   String get login;
 
   /// No description provided for @logout.
   ///
-  /// In en, this message translates to:
-  /// **'Logout'**
+  /// In fr, this message translates to:
+  /// **'Se déconnecter'**
   String get logout;
 
   /// No description provided for @manage.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Manage'**
   String get manage;
 
   /// No description provided for @materialBottomSheet.
   ///
-  /// In en, this message translates to:
-  /// **'Material BottomSheet'**
+  /// In fr, this message translates to:
+  /// **'Feuille de fond Material'**
   String get materialBottomSheet;
 
   /// No description provided for @materialBottomSheetText.
   ///
-  /// In en, this message translates to:
-  /// **'Uses Material of type canvas as default background.\\nColorScheme background in M2, but surface in M3.'**
+  /// In fr, this message translates to:
+  /// **'Utilise un matériau de type toile comme arrière-plan par défaut. Fond ColorScheme en M2, mais surface en M3.'**
   String get materialBottomSheetText;
 
   /// No description provided for @materialModalBottomSheet.
   ///
-  /// In en, this message translates to:
-  /// **'Material Modal BottomSheet'**
+  /// In fr, this message translates to:
+  /// **'Alèse modale Material'**
   String get materialModalBottomSheet;
 
   /// No description provided for @materialPopupMenuText.
   ///
-  /// In en, this message translates to:
-  /// **'The classic Material popup menu.'**
+  /// In fr, this message translates to:
+  /// **'Le menu contextuel classique de Material.'**
   String get materialPopupMenuText;
 
   /// No description provided for @materialShowcaseShadowText1.
   ///
-  /// In en, this message translates to:
-  /// **'Material type canvas, elevation 0, default\\ntint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de toile, élévation 0, teinte par défaut et ombre'**
   String get materialShowcaseShadowText1;
 
   /// No description provided for @materialShowcaseShadowText2.
   ///
-  /// In en, this message translates to:
-  /// **'Material type canvas, elevation 1, default tint\\nand shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de toile, élévation 1, teinte par défaut et ombre'**
   String get materialShowcaseShadowText2;
 
   /// No description provided for @materialShowcaseShadowText3.
   ///
-  /// In en, this message translates to:
-  /// **'Material type canvas, elevation 6, default tint\\nand shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de toile, élévation 6, teinte par défaut et ombre'**
   String get materialShowcaseShadowText3;
 
   /// No description provided for @materialShowcaseSurface.
   ///
-  /// In en, this message translates to:
-  /// **'Material type canvas, elevation 1,\\nassigned surfaceTint and no shadow\''**
+  /// In fr, this message translates to:
+  /// **'Material: type toile, élévation 1, surface attribuée Teinte et pas d\'ombre'**
   String get materialShowcaseSurface;
 
   /// No description provided for @materialShowcaseSurface2.
   ///
-  /// In en, this message translates to:
-  /// **'Material type canvas, elevation 6,\\nassigned surfaceTint and no shadow\''**
+  /// In fr, this message translates to:
+  /// **'Material: type toile, élévation 6, surface attribuée Teinte et pas d\'ombre'**
   String get materialShowcaseSurface2;
 
   /// No description provided for @materialShowcaseSurfaceShadow.
   ///
-  /// In en, this message translates to:
-  /// **'Material type canvas, elevation 1, default tint\\nand shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de toile, élévation 1, teinte et ombre par défaut'**
   String get materialShowcaseSurfaceShadow;
 
   /// No description provided for @materialShowcaseSurfaceShadow2.
   ///
-  /// In en, this message translates to:
-  /// **'Material type canvas, elevation 6,\\nassigned surfaceTint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type toile, élévation 6, surface attribuée Teinte et ombre'**
   String get materialShowcaseSurfaceShadow2;
 
   /// No description provided for @materialShowcaseText1.
   ///
-  /// In en, this message translates to:
-  /// **'Material elevation and tint'**
+  /// In fr, this message translates to:
+  /// **'Material: élévation et teinte'**
   String get materialShowcaseText1;
 
   /// No description provided for @materialShowcaseText2.
   ///
-  /// In en, this message translates to:
-  /// **'MMaterial can also specify surfaceTint color,\\nwhich is applied when Material is elevated, but only in\\nMaterial 3 mode.'**
+  /// In fr, this message translates to:
+  /// **'MMaterial: peut également spécifier la couleur surfaceTint, qui est appliquée lorsque le matériau est élevé, mais uniquement en mode matériau 3.'**
   String get materialShowcaseText2;
 
   /// No description provided for @materialShowcaseText3.
   ///
-  /// In en, this message translates to:
-  /// **'Material type canvas'**
+  /// In fr, this message translates to:
+  /// **'Material: type toile'**
   String get materialShowcaseText3;
 
   /// No description provided for @materialShowcaseText4.
   ///
-  /// In en, this message translates to:
-  /// **'Default background color is theme canvasColor, and\\ntheme canvasColor is set to theme colorScheme background. The\\ncolor canvasColor is going to be deprecated in Flutter.'**
+  /// In fr, this message translates to:
+  /// **'La couleur d\'arrière-plan par défaut est la couleur du canevas du thème, et la couleur du canevas du thème est définie sur l\'arrière-plan du thème colorScheme. La couleur du canevas du thème sera obsolète dans Flutter.'**
   String get materialShowcaseText4;
 
   /// No description provided for @materialShowcaseTypeCard1.
   ///
-  /// In en, this message translates to:
-  /// **'Material type card'**
+  /// In fr, this message translates to:
+  /// **'Material: type carte'**
   String get materialShowcaseTypeCard1;
 
   /// No description provided for @materialShowcaseTypeCard2.
   ///
-  /// In en, this message translates to:
-  /// **'Default background color is theme cardColor, and\\ntheme cardColor is set to theme colorScheme surface. The\\ncolor cardColor is going to be deprecated in Flutter.'**
+  /// In fr, this message translates to:
+  /// **'La couleur d\'arrière-plan par défaut est la couleur de la carte de thème, et la couleur de la carte de thème est définie sur la surface du schéma de couleur du thème. La carte de couleur Color sera obsolète dans Flutter.'**
   String get materialShowcaseTypeCard2;
 
   /// No description provided for @materialShowcaseTypeCardShadow1.
   ///
-  /// In en, this message translates to:
-  /// **'Material type card, elevation 0, default tint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de carte, élévation 0, teinte et ombre par défaut'**
   String get materialShowcaseTypeCardShadow1;
 
   /// No description provided for @materialShowcaseTypeCardShadow2.
   ///
-  /// In en, this message translates to:
-  /// **'Material type card, elevation 1, default tint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de carte, élévation 1, teinte et ombre par défaut'**
   String get materialShowcaseTypeCardShadow2;
 
   /// No description provided for @materialShowcaseTypeCardShadow3.
   ///
-  /// In en, this message translates to:
-  /// **'Material type card, elevation 6, default tint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de carte, élévation 6, teinte et ombre par défaut'**
   String get materialShowcaseTypeCardShadow3;
 
   /// No description provided for @materialShowcaseTypeCardSurface.
   ///
-  /// In en, this message translates to:
-  /// **'Material type card, elevation 1,\\nassigned surfaceTint and no shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de carte, élévation 1, surface attribuée Tint et pas d\'ombre'**
   String get materialShowcaseTypeCardSurface;
 
   /// No description provided for @materialShowcaseTypeCardSurface2.
   ///
-  /// In en, this message translates to:
-  /// **'Material type card, elevation 6,\\nassigned surfaceTint and no shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de carte, élévation 6, surface attribuée Tint et pas d\'ombre'**
   String get materialShowcaseTypeCardSurface2;
 
   /// No description provided for @materialShowcaseTypeCardSurfaceShadow.
   ///
-  /// In en, this message translates to:
-  /// **'Material type card, elevation 1,\\nassigned surfaceTint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de carte, élévation 1, surface attribuée Teinte et ombre'**
   String get materialShowcaseTypeCardSurfaceShadow;
 
   /// No description provided for @materialShowcaseTypeCardSurfaceShadow2.
   ///
-  /// In en, this message translates to:
-  /// **'Material type card, elevation 6,\\nassigned surfaceTint and shadow'**
+  /// In fr, this message translates to:
+  /// **'Material: type de carte, élévation 6, surface attribuée Teinte et ombre'**
   String get materialShowcaseTypeCardSurfaceShadow2;
 
   /// No description provided for @medium.
   ///
-  /// In en, this message translates to:
-  /// **'Medium'**
+  /// In fr, this message translates to:
+  /// **'Moyen'**
   String get medium;
 
   /// No description provided for @mem.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Mem'**
   String get mem;
 
   /// No description provided for @members.
   ///
-  /// In en, this message translates to:
-  /// **'Members'**
+  /// In fr, this message translates to:
+  /// **'Membres'**
   String get members;
 
   /// No description provided for @menuAnchor.
   ///
-  /// In en, this message translates to:
-  /// **'MenuAnchor'**
+  /// In fr, this message translates to:
+  /// **'Menu Ancre'**
   String get menuAnchor;
 
   /// No description provided for @menuAnchorDemo.
   ///
-  /// In en, this message translates to:
-  /// **'MenuAnchor Demo'**
+  /// In fr, this message translates to:
+  /// **'Menu Ancre Démo'**
   String get menuAnchorDemo;
 
   /// No description provided for @menuAnchorM3Text.
   ///
-  /// In en, this message translates to:
-  /// **'The new M3 MenuAnchor used on a Container as a context menu.'**
+  /// In fr, this message translates to:
+  /// **'Le nouvel ancrage du menu M3 est utilisé sur un conteneur en tant que menu contextuel.'**
   String get menuAnchorM3Text;
 
   /// No description provided for @menuAnchorM3ctx.
   ///
-  /// In en, this message translates to:
-  /// **'The new M3 MenuAnchor is cool!'**
+  /// In fr, this message translates to:
+  /// **'Le nouvel ancrage du menu M3 est cool !'**
   String get menuAnchorM3ctx;
 
   /// No description provided for @menuAnchorM3ctxClick.
   ///
-  /// In en, this message translates to:
-  /// **'Click anywhere on this container to show the\\nMenuAnchor context menu.'**
+  /// In fr, this message translates to:
+  /// **'Cliquez n\'importe où dans ce conteneur pour afficher le menu contextuel de l\'ancre de menu.'**
   String get menuAnchorM3ctxClick;
 
   /// No description provided for @menuBar.
   ///
-  /// In en, this message translates to:
-  /// **'MenuBar'**
+  /// In fr, this message translates to:
+  /// **'Barre de menu'**
   String get menuBar;
 
   /// No description provided for @menuBarDemo.
   ///
-  /// In en, this message translates to:
-  /// **'MenuBar Demo'**
+  /// In fr, this message translates to:
+  /// **'Barre de menu Démo'**
   String get menuBarDemo;
 
   /// No description provided for @menuBarM3.
   ///
-  /// In en, this message translates to:
-  /// **'The new M3 menus can be used in a MenuBar via SubMenuButton\\nand its MenuItemButton, but they can also be used in a\\nMenuAnchor anywhere.'**
+  /// In fr, this message translates to:
+  /// **'Les nouveaux menus M3 peuvent être utilisés dans une barre de menu via le bouton de sous-menu et son bouton d\'élément de menu, mais ils peuvent également être utilisés dans une ancre de menu n\'importe où.'**
   String get menuBarM3;
 
   /// No description provided for @menuKeyboardShortcuts.
   ///
-  /// In en, this message translates to:
-  /// **'Menu keyboard shortcuts also work.'**
+  /// In fr, this message translates to:
+  /// **'Les raccourcis clavier du menu fonctionnent également.'**
   String get menuKeyboardShortcuts;
 
   /// No description provided for @mfaConnect.
   ///
-  /// In en, this message translates to:
-  /// **'Multi Factor Authentication Connection'**
+  /// In fr, this message translates to:
+  /// **'Connexion par authentification multi-facteurs'**
   String get mfaConnect;
 
   /// No description provided for @minify.
   ///
-  /// In en, this message translates to:
-  /// **'Minify'**
+  /// In fr, this message translates to:
+  /// **'Minifier'**
   String get minify;
 
   /// No description provided for @missVerification.
   ///
-  /// In en, this message translates to:
-  /// **'Missing the verification code'**
+  /// In fr, this message translates to:
+  /// **'Code de vérification manquant'**
   String get missVerification;
 
   /// No description provided for @month.
   ///
-  /// In en, this message translates to:
-  /// **'Month'**
+  /// In fr, this message translates to:
+  /// **'Mois'**
   String get month;
 
   /// No description provided for @multiPathNetworking.
   ///
-  /// In en, this message translates to:
-  /// **'MultiPath Networking'**
+  /// In fr, this message translates to:
+  /// **'Réseaux à chemins multiples'**
   String get multiPathNetworking;
 
   /// No description provided for @name.
   ///
-  /// In en, this message translates to:
-  /// **'Name'**
+  /// In fr, this message translates to:
+  /// **'Nom'**
   String get name;
 
   /// No description provided for @navBadgeText12.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'12'**
   String get navBadgeText12;
 
   /// No description provided for @navBadgeText26.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'26'**
   String get navBadgeText26;
 
   /// No description provided for @navBadgeText5.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'5'**
   String get navBadgeText5;
 
   /// No description provided for @navigationBarM3.
   ///
-  /// In en, this message translates to:
-  /// **'NavigationBar (Material 3)'**
+  /// In fr, this message translates to:
+  /// **'Barre de navigation (Material 3)'**
   String get navigationBarM3;
 
   /// No description provided for @navigationDrawer.
   ///
-  /// In en, this message translates to:
-  /// **'NavigationDrawer'**
+  /// In fr, this message translates to:
+  /// **'Tiroir de navigation'**
   String get navigationDrawer;
 
   /// No description provided for @navigationRail.
   ///
-  /// In en, this message translates to:
-  /// **'NavigationRail'**
+  /// In fr, this message translates to:
+  /// **'Rail de navigation'**
   String get navigationRail;
 
   /// No description provided for @networkInternet.
   ///
-  /// In en, this message translates to:
-  /// **'Network & internet'**
+  /// In fr, this message translates to:
+  /// **'Réseau et internet'**
   String get networkInternet;
 
   /// No description provided for @networkInternetDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Mobile, Wi-Fi, hotspot'**
+  /// In fr, this message translates to:
+  /// **'Mobile, Wi-Fi, point d\'accès'**
   String get networkInternetDescription;
 
   /// No description provided for @newDialog.
   ///
-  /// In en, this message translates to:
-  /// **'New dialog'**
+  /// In fr, this message translates to:
+  /// **'Nouveau dialogue'**
   String get newDialog;
 
   /// No description provided for @noData.
   ///
-  /// In en, this message translates to:
-  /// **'No data !'**
+  /// In fr, this message translates to:
+  /// **'Aucune donnée !'**
   String get noData;
 
   /// No description provided for @noDialogYet.
   ///
-  /// In en, this message translates to:
-  /// **'No dialogs yet'**
+  /// In fr, this message translates to:
+  /// **'Aucun dialogue pour l\'instant'**
   String get noDialogYet;
 
   /// No description provided for @noNetwork.
   ///
-  /// In en, this message translates to:
-  /// **'No network'**
+  /// In fr, this message translates to:
+  /// **'Pas de réseau'**
   String get noNetwork;
 
   /// No description provided for @normalTextTheme.
   ///
-  /// In en, this message translates to:
-  /// **'Normal TextTheme'**
+  /// In fr, this message translates to:
+  /// **'Thème de texte normal'**
   String get normalTextTheme;
 
   /// No description provided for @notImage.
   ///
-  /// In en, this message translates to:
-  /// **'This file is not an image'**
+  /// In fr, this message translates to:
+  /// **'Ce fichier n\'est pas une image'**
   String get notImage;
 
   /// No description provided for @nothingSend.
   ///
-  /// In en, this message translates to:
-  /// **'Nothing to send'**
+  /// In fr, this message translates to:
+  /// **'Rien à transmettre'**
   String get nothingSend;
 
   /// No description provided for @nothingToSave.
   ///
-  /// In en, this message translates to:
-  /// **'Nothing to save'**
+  /// In fr, this message translates to:
+  /// **'Il n\'y a rien à sauver'**
   String get nothingToSave;
 
   /// No description provided for @notifications.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Notifications'**
   String get notifications;
 
   /// No description provided for @notificationsDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Notification history, conversations'**
+  /// In fr, this message translates to:
+  /// **'Historique des notifications, conversations'**
   String get notificationsDescription;
 
   /// No description provided for @notificationsDeviceApp.
   ///
-  /// In en, this message translates to:
-  /// **'Device & app notifications'**
+  /// In fr, this message translates to:
+  /// **'Notifications d\'appareils et d\'applications'**
   String get notificationsDeviceApp;
 
   /// No description provided for @notificationsDeviceAppDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Control which apps and devices can read notifications'**
+  /// In fr, this message translates to:
+  /// **'Contrôler les applications et les appareils qui peuvent lire les notifications'**
   String get notificationsDeviceAppDescription;
 
   /// No description provided for @notificationsDot.
   ///
-  /// In en, this message translates to:
-  /// **'Notification dot on app icon'**
+  /// In fr, this message translates to:
+  /// **'Point de notification sur l\'icône de l\'application'**
   String get notificationsDot;
 
   /// No description provided for @notificationsEnable.
   ///
-  /// In en, this message translates to:
-  /// **'Enable notifications'**
+  /// In fr, this message translates to:
+  /// **'Activer les notifications'**
   String get notificationsEnable;
 
   /// No description provided for @notificationsEnableDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Get suggested actions, replies and more'**
+  /// In fr, this message translates to:
+  /// **'Obtenir des suggestions d\'actions, de réponses et plus encore'**
   String get notificationsEnableDescription;
 
   /// No description provided for @notificationsHistory.
   ///
-  /// In en, this message translates to:
-  /// **'Notification history'**
+  /// In fr, this message translates to:
+  /// **'Historique des notifications'**
   String get notificationsHistory;
 
   /// No description provided for @notificationsHistoryText.
   ///
-  /// In en, this message translates to:
-  /// **'Show recent and snoozed notifications'**
+  /// In fr, this message translates to:
+  /// **'Afficher les notifications récentes et les notifications en attente'**
   String get notificationsHistoryText;
 
   /// No description provided for @notificationsLockScreen.
   ///
-  /// In en, this message translates to:
-  /// **'Notifications on lock screen'**
+  /// In fr, this message translates to:
+  /// **'Notifications sur l\'écran de verrouillage'**
   String get notificationsLockScreen;
 
   /// No description provided for @notificationsLockScreenDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Show conversations, default, and silent'**
+  /// In fr, this message translates to:
+  /// **'Afficher les conversations, les messages par défaut et les messages silencieux'**
   String get notificationsLockScreenDescription;
 
   /// No description provided for @notificationsSnoozing.
   ///
-  /// In en, this message translates to:
-  /// **'Allow notification snoozing'**
+  /// In fr, this message translates to:
+  /// **'Autoriser la mise en veille des notifications'**
   String get notificationsSnoozing;
 
   /// No description provided for @nowSetTo.
   ///
-  /// In en, this message translates to:
-  /// **'Now set to '**
+  /// In fr, this message translates to:
+  /// **'Réglé maintenant sur '**
   String get nowSetTo;
 
   /// No description provided for @occupants.
   ///
-  /// In en, this message translates to:
-  /// **'tenants'**
+  /// In fr, this message translates to:
+  /// **'occupants'**
   String get occupants;
 
   /// No description provided for @occupantsIds.
   ///
-  /// In en, this message translates to:
-  /// **'tenants_ids'**
+  /// In fr, this message translates to:
+  /// **'occupants_ids'**
   String get occupantsIds;
 
   /// No description provided for @ok.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Ok'**
   String get ok;
 
   /// No description provided for @open.
   ///
-  /// In en, this message translates to:
-  /// **'Open'**
+  /// In fr, this message translates to:
+  /// **'Ouvrir'**
   String get open;
 
   /// No description provided for @openDialog.
   ///
-  /// In en, this message translates to:
-  /// **'Open Dialog'**
+  /// In fr, this message translates to:
+  /// **'Ouvrir la boîte de dialogue'**
   String get openDialog;
 
   /// No description provided for @openViaQr.
   ///
-  /// In en, this message translates to:
-  /// **'Open your authentication app and add this app via QR code or by pasting the code below.'**
+  /// In fr, this message translates to:
+  /// **'Ouvrez votre application d\'authentification et ajoutez cette application via le code QR ou en collant le code ci-dessous.'**
   String get openViaQr;
 
   /// No description provided for @optionText.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Option'**
   String get optionText;
 
   /// No description provided for @or.
   ///
-  /// In en, this message translates to:
-  /// **'or'**
+  /// In fr, this message translates to:
+  /// **'ou'**
   String get or;
 
   /// No description provided for @organizationName.
   ///
-  /// In en, this message translates to:
-  /// **'Organization name'**
+  /// In fr, this message translates to:
+  /// **'Nom de l\'organisation'**
   String get organizationName;
 
   /// No description provided for @organizationNameNotEmpty.
   ///
-  /// In en, this message translates to:
-  /// **'Organization name must not be empty'**
+  /// In fr, this message translates to:
+  /// **'Le nom de l\'organisation ne doit pas être vide'**
   String get organizationNameNotEmpty;
 
   /// No description provided for @outlined.
   ///
-  /// In en, this message translates to:
-  /// **'Outlined'**
+  /// In fr, this message translates to:
+  /// **'Contour'**
   String get outlined;
 
   /// No description provided for @outlinedButton.
   ///
-  /// In en, this message translates to:
-  /// **'Outlined button'**
+  /// In fr, this message translates to:
+  /// **'contour du bouton'**
   String get outlinedButton;
 
   /// No description provided for @outlinedDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'Outlined (disabled)'**
+  /// In fr, this message translates to:
+  /// **'contour (désactivé)'**
   String get outlinedDisabled;
 
   /// No description provided for @outlinedIcon.
   ///
-  /// In en, this message translates to:
-  /// **'Outlined icon'**
+  /// In fr, this message translates to:
+  /// **'contour d\'icône'**
   String get outlinedIcon;
 
   /// No description provided for @owner.
   ///
-  /// In en, this message translates to:
-  /// **'Owner'**
+  /// In fr, this message translates to:
+  /// **'Propriétaire'**
   String get owner;
 
   /// No description provided for @ownerContact.
   ///
-  /// In en, this message translates to:
-  /// **'owner contact'**
+  /// In fr, this message translates to:
+  /// **'contact du Propriétaire'**
   String get ownerContact;
 
   /// No description provided for @ownerId.
   ///
-  /// In en, this message translates to:
-  /// **'Owner Id'**
+  /// In fr, this message translates to:
+  /// **'Id du Propriétaire'**
   String get ownerId;
 
   /// No description provided for @ownerName.
   ///
-  /// In en, this message translates to:
-  /// **'Owner Name'**
+  /// In fr, this message translates to:
+  /// **'Nom  du Propriétaire'**
   String get ownerName;
 
   /// No description provided for @ownerPhone.
   ///
-  /// In en, this message translates to:
-  /// **'Owner Phone'**
+  /// In fr, this message translates to:
+  /// **'Numéro de téléphone du Propriétaire'**
   String get ownerPhone;
 
   /// No description provided for @password.
   ///
-  /// In en, this message translates to:
-  /// **'Password'**
+  /// In fr, this message translates to:
+  /// **'Mot de passe'**
   String get password;
 
   /// No description provided for @passwords.
   ///
-  /// In en, this message translates to:
-  /// **'Passwords'**
+  /// In fr, this message translates to:
+  /// **'Mots de passe'**
   String get passwords;
 
   /// No description provided for @paymentMethods.
   ///
-  /// In en, this message translates to:
-  /// **'Payment methods'**
+  /// In fr, this message translates to:
+  /// **'Modes de paiement'**
   String get paymentMethods;
 
   /// No description provided for @percent.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'%'**
   String get percent;
 
   /// No description provided for @persistence.
   ///
-  /// In en, this message translates to:
-  /// **'Persistence'**
+  /// In fr, this message translates to:
+  /// **'Persistance'**
   String get persistence;
 
   /// No description provided for @persistenceMemoryDescription.
   ///
-  /// In en, this message translates to:
-  /// **'You can use volatile memory or Shared\\nPreferences and Hive to persist the settings. You can\\ntoggle the used implementation dynamically in the app.'**
+  /// In fr, this message translates to:
+  /// **'Vous pouvez utiliser la mémoire volatile ou les préférences partagées et Hive pour conserver les paramètres. Vous pouvez basculer l\'implémentation utilisée dynamiquement dans l\'application.'**
   String get persistenceMemoryDescription;
 
   /// No description provided for @phoneNumber.
   ///
-  /// In en, this message translates to:
-  /// **'Phone number'**
+  /// In fr, this message translates to:
+  /// **'N° de téléphone'**
   String get phoneNumber;
 
   /// No description provided for @photo.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Photo'**
   String get photo;
 
   /// No description provided for @pickImage.
   ///
-  /// In en, this message translates to:
-  /// **'Pick Image'**
+  /// In fr, this message translates to:
+  /// **'Sélectionner une image'**
   String get pickImage;
 
   /// No description provided for @popupMenuButton.
   ///
-  /// In en, this message translates to:
-  /// **'PopupMenuButton'**
+  /// In fr, this message translates to:
+  /// **'Bouton du menu popup'**
   String get popupMenuButton;
 
   /// No description provided for @prefs.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Prefs'**
   String get prefs;
 
   /// No description provided for @primaryTextTheme.
   ///
-  /// In en, this message translates to:
-  /// **'Primary TextTheme'**
+  /// In fr, this message translates to:
+  /// **'Thème de texte primaire'**
   String get primaryTextTheme;
 
   /// No description provided for @privacy.
   ///
-  /// In en, this message translates to:
-  /// **'Privacy'**
+  /// In fr, this message translates to:
+  /// **'Privé'**
   String get privacy;
 
   /// No description provided for @privacyDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Trial features are on'**
+  /// In fr, this message translates to:
+  /// **'Les fonctions d\'essai sont en place'**
   String get privacyDescription;
 
   /// No description provided for @privacySandBoxTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Privacy Sandbox'**
+  /// In fr, this message translates to:
+  /// **'Sandbox Privé'**
   String get privacySandBoxTitle;
 
   /// No description provided for @privacySecTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Privacy and security'**
+  /// In fr, this message translates to:
+  /// **'Protection de la vie privée et sécurité'**
   String get privacySecTitle;
 
   /// No description provided for @profile.
   ///
-  /// In en, this message translates to:
-  /// **'Profile'**
+  /// In fr, this message translates to:
+  /// **'Profil'**
   String get profile;
 
   /// No description provided for @quit.
   ///
-  /// In en, this message translates to:
-  /// **'Quit'**
+  /// In fr, this message translates to:
+  /// **'Quitter'**
   String get quit;
 
   /// No description provided for @radioListTile.
   ///
-  /// In en, this message translates to:
-  /// **'RadioListTile'**
+  /// In fr, this message translates to:
+  /// **'RadioListe'**
   String get radioListTile;
 
   /// No description provided for @radioListTileDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'RadioListTile disabled'**
+  /// In fr, this message translates to:
+  /// **'RadioListe désactivé'**
   String get radioListTileDisabled;
 
   /// No description provided for @radioOptionListSelected.
   ///
-  /// In en, this message translates to:
-  /// **'The radio option and list tile is selected'**
+  /// In fr, this message translates to:
+  /// **'La liste de bouton radio et la tuile de liste sont sélectionnées'**
   String get radioOptionListSelected;
 
   /// No description provided for @radioOptionSelected.
   ///
-  /// In en, this message translates to:
-  /// **'The radio option is selected'**
+  /// In fr, this message translates to:
+  /// **'L\'option radio est sélectionnée'**
   String get radioOptionSelected;
 
   /// No description provided for @radioOptionUnselected.
   ///
-  /// In en, this message translates to:
-  /// **'The radio option is unselected'**
+  /// In fr, this message translates to:
+  /// **'L\'option radio est désélectionnée'**
   String get radioOptionUnselected;
 
   /// No description provided for @rangeSliderContinuous.
   ///
-  /// In en, this message translates to:
-  /// **'RangeSlider continuous'**
+  /// In fr, this message translates to:
+  /// **'Curseur de gamme continu'**
   String get rangeSliderContinuous;
 
   /// No description provided for @rangeSliderContinuousDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'RangeSlider continuous disabled'**
+  /// In fr, this message translates to:
+  /// **'Curseur de gamme continu désactivé'**
   String get rangeSliderContinuousDisabled;
 
   /// No description provided for @rangeSliderStepped.
   ///
-  /// In en, this message translates to:
-  /// **'RangeSlider stepped'**
+  /// In fr, this message translates to:
+  /// **'RangeSlider en escalier'**
   String get rangeSliderStepped;
 
   /// No description provided for @rangeSliderSteppedDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'RangeSlider stepped disabled'**
+  /// In fr, this message translates to:
+  /// **'RangeSlider en escalier désactivé'**
   String get rangeSliderSteppedDisabled;
 
   /// No description provided for @refresh.
   ///
-  /// In en, this message translates to:
-  /// **'Refresh'**
+  /// In fr, this message translates to:
+  /// **'Rafraîchir'**
   String get refresh;
 
   /// No description provided for @register.
   ///
-  /// In en, this message translates to:
-  /// **'Register'**
+  /// In fr, this message translates to:
+  /// **'Enregistrer'**
   String get register;
 
   /// No description provided for @rentalDate.
   ///
-  /// In en, this message translates to:
-  /// **'rental date'**
+  /// In fr, this message translates to:
+  /// **'date de location'**
   String get rentalDate;
 
   /// No description provided for @rentalDateStart.
   ///
-  /// In en, this message translates to:
-  /// **'rent start'**
+  /// In fr, this message translates to:
+  /// **'Début de la location'**
   String get rentalDateStart;
 
   /// No description provided for @rentalDateStop.
   ///
-  /// In en, this message translates to:
-  /// **'return date'**
+  /// In fr, this message translates to:
+  /// **'date de retour'**
   String get rentalDateStop;
 
   /// No description provided for @replications.
   ///
-  /// In en, this message translates to:
-  /// **'Replications'**
+  /// In fr, this message translates to:
+  /// **'Reproductions'**
   String get replications;
 
   /// No description provided for @required.
   ///
-  /// In en, this message translates to:
-  /// **'required'**
+  /// In fr, this message translates to:
+  /// **'requis'**
   String get required;
 
   /// No description provided for @reset.
   ///
-  /// In en, this message translates to:
-  /// **'Reset'**
+  /// In fr, this message translates to:
+  /// **'Réinitialiser'**
   String get reset;
 
   /// No description provided for @resetAll.
   ///
-  /// In en, this message translates to:
-  /// **'Reset all'**
+  /// In fr, this message translates to:
+  /// **'Tout réinitialiser'**
   String get resetAll;
 
   /// No description provided for @resetSettingsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Reset settings'**
+  /// In fr, this message translates to:
+  /// **'Réinitialiser les paramètres'**
   String get resetSettingsTitle;
 
   /// No description provided for @role.
   ///
-  /// In en, this message translates to:
-  /// **'Role'**
+  /// In fr, this message translates to:
+  /// **'Rôle'**
   String get role;
 
   /// No description provided for @save.
   ///
-  /// In en, this message translates to:
-  /// **'Save'**
+  /// In fr, this message translates to:
+  /// **'Sauvegarder'**
   String get save;
 
   /// No description provided for @saveNow.
   ///
-  /// In en, this message translates to:
-  /// **'Save now'**
+  /// In fr, this message translates to:
+  /// **'Sauvegarder maintenant'**
   String get saveNow;
 
   /// No description provided for @screenWidth.
   ///
-  /// In en, this message translates to:
-  /// **'Screen width'**
+  /// In fr, this message translates to:
+  /// **'Largeur d\'écran'**
   String get screenWidth;
 
   /// No description provided for @search.
   ///
-  /// In en, this message translates to:
-  /// **'Search'**
+  /// In fr, this message translates to:
+  /// **'Recherche'**
   String get search;
 
   /// No description provided for @searchUsers.
   ///
-  /// In en, this message translates to:
-  /// **'Search Users'**
+  /// In fr, this message translates to:
+  /// **'Recherche d\'utilisateurs'**
   String get searchUsers;
 
   /// No description provided for @secret.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Secret'**
   String get secret;
 
   /// No description provided for @securityDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Screen lock, Find My Device, app security'**
+  /// In fr, this message translates to:
+  /// **'Verrouillage d\'écran, Find My Device, sécurité des applications'**
   String get securityDescription;
 
   /// No description provided for @securitySafeBrowsingDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Safe Browsing (protection from dangerous sites) and other security settings'**
+  /// In fr, this message translates to:
+  /// **'Safe Browsing (protection contre les sites dangereux) et autres paramètres de sécurité'**
   String get securitySafeBrowsingDescription;
 
   /// No description provided for @securityTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Security'**
+  /// In fr, this message translates to:
+  /// **'Sécurité'**
   String get securityTitle;
 
   /// No description provided for @selectDialog.
   ///
-  /// In en, this message translates to:
-  /// **'Select dialog'**
+  /// In fr, this message translates to:
+  /// **'Sélectionner le dialogue'**
   String get selectDialog;
 
   /// No description provided for @selectUserGuess.
   ///
-  /// In en, this message translates to:
-  /// **'select a guess User'**
+  /// In fr, this message translates to:
+  /// **'sélectionner un utilisateur fictif'**
   String get selectUserGuess;
 
   /// No description provided for @settings.
   ///
-  /// In en, this message translates to:
-  /// **'Settings'**
+  /// In fr, this message translates to:
+  /// **'Paramètres'**
   String get settings;
 
   /// No description provided for @show.
   ///
-  /// In en, this message translates to:
-  /// **'Show'**
+  /// In fr, this message translates to:
+  /// **'Afficher'**
   String get show;
 
   /// No description provided for @showMessage.
   ///
-  /// In en, this message translates to:
-  /// **'Show Message'**
+  /// In fr, this message translates to:
+  /// **'Afficher le message'**
   String get showMessage;
 
   /// No description provided for @showcase.
   ///
-  /// In en, this message translates to:
-  /// **'Showcase'**
+  /// In fr, this message translates to:
+  /// **'Présentation'**
   String get showcase;
 
   /// No description provided for @showcaseErrorText.
   ///
-  /// In en, this message translates to:
-  /// **'Any entry without an \'a\' will trigger this error'**
+  /// In fr, this message translates to:
+  /// **'Toute entrée sans \"a\" déclenchera cette erreur.'**
   String get showcaseErrorText;
 
   /// No description provided for @showcaseHintCollapseText.
   ///
-  /// In en, this message translates to:
-  /// **'Hint: Collapsed TextField...'**
+  /// In fr, this message translates to:
+  /// **'Indice : champ de texte réduit...'**
   String get showcaseHintCollapseText;
 
   /// No description provided for @showcaseHintText.
   ///
-  /// In en, this message translates to:
-  /// **'Hint: Write something...'**
+  /// In fr, this message translates to:
+  /// **'Conseil : Écrivez quelque chose...'**
   String get showcaseHintText;
 
   /// No description provided for @showcaseLabelTextOutline.
   ///
-  /// In en, this message translates to:
-  /// **'Label: Outline border by default if not defined'**
+  /// In fr, this message translates to:
+  /// **'Label: Bordure de contour par défaut si elle n\'est pas définie'**
   String get showcaseLabelTextOutline;
 
   /// No description provided for @showcaseLabelTextUnder.
   ///
-  /// In en, this message translates to:
-  /// **'Label: Underline border by default if not defined'**
+  /// In fr, this message translates to:
+  /// **'Label: Bordure soulignée par défaut si elle n\'est pas définie'**
   String get showcaseLabelTextUnder;
 
   /// No description provided for @showcaseListTileSelectedSubTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Selected list tile sub title'**
+  /// In fr, this message translates to:
+  /// **'Sous-titre de la Liste sélectionnée'**
   String get showcaseListTileSelectedSubTitle;
 
   /// No description provided for @showcaseListTileSelectedTitle.
   ///
-  /// In en, this message translates to:
-  /// **'ListTile selected'**
+  /// In fr, this message translates to:
+  /// **'Liste sélectionné'**
   String get showcaseListTileSelectedTitle;
 
   /// No description provided for @showcaseListTileSubTitle.
   ///
-  /// In en, this message translates to:
-  /// **'List tile sub title'**
+  /// In fr, this message translates to:
+  /// **'Sous-titre de la Liste'**
   String get showcaseListTileSubTitle;
 
   /// No description provided for @showcaseListTileTitle.
   ///
-  /// In en, this message translates to:
-  /// **'ListTile'**
+  /// In fr, this message translates to:
+  /// **'Liste'**
   String get showcaseListTileTitle;
 
   /// No description provided for @showcaseListTileTrailing.
   ///
-  /// In en, this message translates to:
-  /// **'Trailing'**
+  /// In fr, this message translates to:
+  /// **'Arrière'**
   String get showcaseListTileTrailing;
 
   /// No description provided for @signInWithEmailPassword.
   ///
-  /// In en, this message translates to:
-  /// **'Sign In With Email and Password'**
+  /// In fr, this message translates to:
+  /// **'Se connecter avec email et mot de passe'**
   String get signInWithEmailPassword;
 
   /// No description provided for @signInWithGoogle.
   ///
-  /// In en, this message translates to:
-  /// **'Sign In With Google'**
+  /// In fr, this message translates to:
+  /// **'Se connecter avec Google'**
   String get signInWithGoogle;
 
   /// No description provided for @signOut.
   ///
-  /// In en, this message translates to:
-  /// **'sign out'**
+  /// In fr, this message translates to:
+  /// **'Se déconnecter'**
   String get signOut;
 
   /// No description provided for @siteSettingsDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Controls what information sites can use and show (location, camera, pop-ups and more)'**
+  /// In fr, this message translates to:
+  /// **'Contrôle les informations que les sites peuvent utiliser et afficher (emplacement, appareil photo, fenêtres pop-up, etc.)'**
   String get siteSettingsDescription;
 
   /// No description provided for @siteSettingsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Site settings'**
+  /// In fr, this message translates to:
+  /// **'Paramètres du site'**
   String get siteSettingsTitle;
 
   /// No description provided for @sliderContinuous.
   ///
-  /// In en, this message translates to:
-  /// **'Slider continuous'**
+  /// In fr, this message translates to:
+  /// **'Curseur continu'**
   String get sliderContinuous;
 
   /// No description provided for @sliderContinuousDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'Slider continuous disabled'**
+  /// In fr, this message translates to:
+  /// **'Curseur continu désactivé'**
   String get sliderContinuousDisabled;
 
   /// No description provided for @sliderStepped.
   ///
-  /// In en, this message translates to:
-  /// **'Slider stepped'**
+  /// In fr, this message translates to:
+  /// **'Curseur continu en escalier'**
   String get sliderStepped;
 
   /// No description provided for @sliderSteppedDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'Slider stepped disabled'**
+  /// In fr, this message translates to:
+  /// **'Curseur continu en escalier désactivé'**
   String get sliderSteppedDisabled;
 
   /// No description provided for @sliverAppBar.
   ///
-  /// In en, this message translates to:
-  /// **'SliverAppBar'**
+  /// In fr, this message translates to:
+  /// **'Barre d\'applications argentée'**
   String get sliverAppBar;
 
   /// No description provided for @sliverAppBarLarge.
   ///
-  /// In en, this message translates to:
-  /// **'SliverAppBar.large'**
+  /// In fr, this message translates to:
+  /// **'AppBar de couleur argentée grand format'**
   String get sliverAppBarLarge;
 
   /// No description provided for @sliverAppBarMedium.
   ///
-  /// In en, this message translates to:
-  /// **'SliverAppBar.medium'**
+  /// In fr, this message translates to:
+  /// **'AppBar de couleur argentée moyen format'**
   String get sliverAppBarMedium;
 
   /// No description provided for @small.
   ///
-  /// In en, this message translates to:
-  /// **'Small'**
+  /// In fr, this message translates to:
+  /// **'Petit'**
   String get small;
 
   /// No description provided for @somethingWentWrong.
   ///
-  /// In en, this message translates to:
-  /// **'Something went wrong'**
+  /// In fr, this message translates to:
+  /// **'Quelque chose n\'a pas fonctionné'**
   String get somethingWentWrong;
 
   /// No description provided for @soundVibrationDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Volume, haptics, Do Not Disturb'**
+  /// In fr, this message translates to:
+  /// **'Volume, haptique, ne pas déranger'**
   String get soundVibrationDescription;
 
   /// No description provided for @soundVibrationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Sound & vibration'**
+  /// In fr, this message translates to:
+  /// **'Son & vibrations'**
   String get soundVibrationTitle;
 
   /// No description provided for @startDialog.
   ///
-  /// In en, this message translates to:
-  /// **'Start dialog'**
+  /// In fr, this message translates to:
+  /// **'Commencer le dialogue'**
   String get startDialog;
 
   /// No description provided for @stateResSettings.
   ///
-  /// In en, this message translates to:
-  /// **'State restoration testing'**
+  /// In fr, this message translates to:
+  /// **'Test de restauration de l\'État'**
   String get stateResSettings;
 
   /// No description provided for @storage.
   ///
-  /// In en, this message translates to:
-  /// **'Storage'**
+  /// In fr, this message translates to:
+  /// **'Stockage'**
   String get storage;
 
   /// No description provided for @storageDescription.
   ///
-  /// In en, this message translates to:
-  /// **'30% used - 5.60 GB free'**
+  /// In fr, this message translates to:
+  /// **'30% utilisé - 5.60 GB libre'**
   String get storageDescription;
 
   /// No description provided for @style.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Style'**
   String get style;
 
   /// No description provided for @submit.
   ///
-  /// In en, this message translates to:
-  /// **'Submit'**
+  /// In fr, this message translates to:
+  /// **'Soumettre'**
   String get submit;
 
   /// No description provided for @success.
   ///
-  /// In en, this message translates to:
-  /// **'Success'**
+  /// In fr, this message translates to:
+  /// **'Réussite'**
   String get success;
 
   /// No description provided for @successSignedUp.
   ///
-  /// In en, this message translates to:
-  /// **'Successfully signed up'**
+  /// In fr, this message translates to:
+  /// **'L\'inscription a été effectuée avec succès'**
   String get successSignedUp;
 
   /// No description provided for @surfaceArea.
   ///
-  /// In en, this message translates to:
-  /// **'enter surface area'**
+  /// In fr, this message translates to:
+  /// **'saisir la surface'**
   String get surfaceArea;
 
   /// No description provided for @surveillance.
   ///
-  /// In en, this message translates to:
-  /// **'Monitoring'**
+  /// In fr, this message translates to:
+  /// **'Surveillance'**
   String get surveillance;
 
   /// No description provided for @swapColors.
   ///
-  /// In en, this message translates to:
-  /// **'Swap colors'**
+  /// In fr, this message translates to:
+  /// **'Échange de couleurs'**
   String get swapColors;
 
   /// No description provided for @swapPrimarySecondaryDarkColors.
   ///
-  /// In en, this message translates to:
-  /// **'Swap primary and secondary dark colors'**
+  /// In fr, this message translates to:
+  /// **'Échanger les couleurs primaires et secondaires foncées'**
   String get swapPrimarySecondaryDarkColors;
 
   /// No description provided for @swapPrimarySecondaryLightColors.
   ///
-  /// In en, this message translates to:
-  /// **'Swap primary and secondary light colors'**
+  /// In fr, this message translates to:
+  /// **'Échanger les couleurs primaires et secondaires'**
   String get swapPrimarySecondaryLightColors;
 
   /// No description provided for @switchHave.
   ///
-  /// In en, this message translates to:
-  /// **'Already Have one? Sign In'**
+  /// In fr, this message translates to:
+  /// **'Vous en avez déjà un ? S\'identifier'**
   String get switchHave;
 
   /// No description provided for @switchHavent.
   ///
-  /// In en, this message translates to:
-  /// **'Don\'t have account? Sign Up'**
+  /// In fr, this message translates to:
+  /// **'Vous n\'avez pas de compte ? S\'inscrire'**
   String get switchHavent;
 
   /// No description provided for @switchListTileSubTitleOff.
   ///
-  /// In en, this message translates to:
-  /// **'The switch list tile is OFF'**
+  /// In fr, this message translates to:
+  /// **'La liste d\'interrupteurs est inactif'**
   String get switchListTileSubTitleOff;
 
   /// No description provided for @switchListTileSubTitleOn.
   ///
-  /// In en, this message translates to:
-  /// **'The switch list tile is ON'**
+  /// In fr, this message translates to:
+  /// **'La liste d\'interrupteurs est activée'**
   String get switchListTileSubTitleOn;
 
   /// No description provided for @switchListTileTitle.
   ///
-  /// In en, this message translates to:
-  /// **'SwitchListTile'**
+  /// In fr, this message translates to:
+  /// **'La liste d\'interrupteurs'**
   String get switchListTileTitle;
 
   /// No description provided for @switchListTileTitleDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'SwitchListTile disabled'**
+  /// In fr, this message translates to:
+  /// **'La liste d\'interrupteurs désactivé'**
   String get switchListTileTitleDisabled;
 
   /// No description provided for @switchNoStatusBar.
   ///
-  /// In en, this message translates to:
-  /// **'Only affects Android top status bar'**
+  /// In fr, this message translates to:
+  /// **'Ne concerne que la barre d\'état supérieure d\'Android'**
   String get switchNoStatusBar;
 
   /// No description provided for @tabBadgeLabel18.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'18'**
   String get tabBadgeLabel18;
 
   /// No description provided for @tabBadgeLabel3.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'3'**
   String get tabBadgeLabel3;
 
   /// No description provided for @tabBadgeLabel99.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'99'**
   String get tabBadgeLabel99;
 
   /// No description provided for @tabBarAppBar.
   ///
-  /// In en, this message translates to:
-  /// **'TabBar in an AppBar'**
+  /// In fr, this message translates to:
+  /// **'TabBar dans une AppBar'**
   String get tabBarAppBar;
 
   /// No description provided for @tabBarIfAppBar.
   ///
-  /// In en, this message translates to:
-  /// **'If the TabBar will always be used in an AppBar, then use\\nstyle FlexTabBarStyle forAppBar (default),\\nit will fit contrast wise here'**
+  /// In fr, this message translates to:
+  /// **'Si la barre d\'onglets est toujours utilisée dans une barre d\'application, utilisez le style FlexTabBar Style pour AppBar (par défaut), il s\'adaptera ici en fonction du contraste.'**
   String get tabBarIfAppBar;
 
   /// No description provided for @tabBarIfSurface.
   ///
-  /// In en, this message translates to:
-  /// **'If the TabBar will always be used on background and surface\\ncolors, then use style FlexTabBarStyle forBackground,\\nit will fit contrast wise here'**
+  /// In fr, this message translates to:
+  /// **'Si la barre d\'onglets est toujours utilisée avec des couleurs d\'arrière-plan et de surface, utilisez le style FlexTabBarStyle pour l\'arrière-plan.'**
   String get tabBarIfSurface;
 
   /// No description provided for @tabBarSurface.
   ///
-  /// In en, this message translates to:
-  /// **'TabBar in an Surface'**
+  /// In fr, this message translates to:
+  /// **'TabBar dans une Surface'**
   String get tabBarSurface;
 
   /// No description provided for @tabFolder.
   ///
-  /// In en, this message translates to:
-  /// **'Folder'**
+  /// In fr, this message translates to:
+  /// **'Dossier'**
   String get tabFolder;
 
   /// No description provided for @tenantId.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Tenant ID'**
   String get tenantId;
 
   /// No description provided for @termsOfService.
   ///
-  /// In en, this message translates to:
-  /// **'Terms of Service | Privacy Policy'**
+  /// In fr, this message translates to:
+  /// **'Conditions d\'utilisation | Politique de confidentialité'**
   String get termsOfService;
 
   /// No description provided for @textIcon.
   ///
-  /// In en, this message translates to:
-  /// **'Text icon'**
+  /// In fr, this message translates to:
+  /// **'Icône texte'**
   String get textIcon;
 
   /// No description provided for @theme.
   ///
-  /// In en, this message translates to:
-  /// **'Theme'**
+  /// In fr, this message translates to:
+  /// **'Thème'**
   String get theme;
 
   /// No description provided for @themeColors.
   ///
-  /// In en, this message translates to:
-  /// **'Theme Colors'**
+  /// In fr, this message translates to:
+  /// **'Thème Couleurs'**
   String get themeColors;
 
   /// No description provided for @themeDataColors.
   ///
-  /// In en, this message translates to:
-  /// **'ThemeData Colors'**
+  /// In fr, this message translates to:
+  /// **'Couleurs des données du thème'**
   String get themeDataColors;
 
   /// No description provided for @themeModeTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Theme mode'**
+  /// In fr, this message translates to:
+  /// **'Mode thématique'**
   String get themeModeTitle;
 
   /// No description provided for @themeSettings.
   ///
-  /// In en, this message translates to:
-  /// **'Theme Settings'**
+  /// In fr, this message translates to:
+  /// **'Paramètres du thème'**
   String get themeSettings;
 
   /// No description provided for @themeShowcase.
   ///
-  /// In en, this message translates to:
-  /// **'Theme Showcase'**
+  /// In fr, this message translates to:
+  /// **'Présentation du thème'**
   String get themeShowcase;
 
   /// No description provided for @themeShowcaseText.
   ///
-  /// In en, this message translates to:
-  /// **'Shows theme colors and the FlexColorScheme based theme\\napplied on common widgets.\\nIt also has a NavigationBar and TabBar in the AppBar,\\nto show what they look like, but they don\'t do anything.'**
+  /// In fr, this message translates to:
+  /// **'Montre les couleurs du thème et le thème basé sur FlexColorScheme appliqué aux widgets communs. Il y a aussi une NavigationBar et une TabBar dans l\'AppBar, pour montrer à quoi elles ressemblent, mais elles ne font rien.'**
   String get themeShowcaseText;
 
   /// No description provided for @timePickerDialog.
   ///
-  /// In en, this message translates to:
-  /// **'TimePickerDialog'**
+  /// In fr, this message translates to:
+  /// **'Boîte de dialogue de sélection de l\'heure'**
   String get timePickerDialog;
 
   /// No description provided for @title.
   ///
-  /// In en, this message translates to:
-  /// **'Title'**
+  /// In fr, this message translates to:
+  /// **'Titre'**
   String get title;
 
   /// No description provided for @toYourEmailAddress.
   ///
-  /// In en, this message translates to:
-  /// **'to your email address'**
+  /// In fr, this message translates to:
+  /// **'à votre adresse électronique'**
   String get toYourEmailAddress;
 
   /// No description provided for @token.
   ///
-  /// In en, this message translates to:
-  /// **'token'**
+  /// In fr, this message translates to:
+  /// **'jeton'**
   String get token;
 
   /// No description provided for @tooHigh.
   ///
-  /// In en, this message translates to:
-  /// **'\\nTOO HIGH'**
+  /// In fr, this message translates to:
+  /// **'\\nTrop élevé'**
   String get tooHigh;
 
   /// No description provided for @tooltipCA.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'CA'**
   String get tooltipCA;
 
   /// No description provided for @tooltipCircleAvatar.
   ///
-  /// In en, this message translates to:
-  /// **'This is a\\nCircleAvatar'**
+  /// In fr, this message translates to:
+  /// **'Il s\'agit d\'un avatar circulaire'**
   String get tooltipCircleAvatar;
 
   /// No description provided for @tooltipIcon.
   ///
-  /// In en, this message translates to:
-  /// **'This is\\nan Icon'**
+  /// In fr, this message translates to:
+  /// **'C\'est une icône'**
   String get tooltipIcon;
 
   /// No description provided for @tooltipIconButton.
   ///
-  /// In en, this message translates to:
-  /// **'This is an\\nIconButton'**
+  /// In fr, this message translates to:
+  /// **'Il s\'agit d\'un bouton icône'**
   String get tooltipIconButton;
 
   /// No description provided for @tooltipIconComment.
   ///
-  /// In en, this message translates to:
-  /// **'Comment Icon'**
+  /// In fr, this message translates to:
+  /// **'Icône de commentaire'**
   String get tooltipIconComment;
 
   /// No description provided for @tooltipIconMenu.
   ///
-  /// In en, this message translates to:
-  /// **'Menu Icon'**
+  /// In fr, this message translates to:
+  /// **'Icône de menu'**
   String get tooltipIconMenu;
 
   /// No description provided for @tooltipIconSettings.
   ///
-  /// In en, this message translates to:
-  /// **'Settings Icon'**
+  /// In fr, this message translates to:
+  /// **'Icône des paramètres'**
   String get tooltipIconSettings;
 
   /// No description provided for @tooltipMessageLevelSurfaces.
   ///
-  /// In en, this message translates to:
-  /// **'Level surfaces\\nlow scaffold'**
+  /// In fr, this message translates to:
+  /// **'Surfaces planes échafaudage bas'**
   String get tooltipMessageLevelSurfaces;
 
   /// No description provided for @tooltipMessageScaffold.
   ///
-  /// In en, this message translates to:
-  /// **'High scaffold\\nlow surface'**
+  /// In fr, this message translates to:
+  /// **'Échafaudage élevé surface basse'**
   String get tooltipMessageScaffold;
 
   /// No description provided for @tooltipMessageSurface.
   ///
-  /// In en, this message translates to:
-  /// **'High surface\\nlow scaffold'**
+  /// In fr, this message translates to:
+  /// **'Surface élevée, échafaudage bas'**
   String get tooltipMessageSurface;
 
   /// No description provided for @tooltipMessageTertiaryContainerDialog.
   ///
-  /// In en, this message translates to:
-  /// **'Tertiary container dialog\\nlow scaffold'**
+  /// In fr, this message translates to:
+  /// **'Dialogue sur le contenant tertiaire échafaudage bas'**
   String get tooltipMessageTertiaryContainerDialog;
 
   /// No description provided for @tooltipOpenNavigationMenu.
   ///
-  /// In en, this message translates to:
-  /// **'Open navigation menu'**
+  /// In fr, this message translates to:
+  /// **'Ouvrir le menu de navigation'**
   String get tooltipOpenNavigationMenu;
 
   /// No description provided for @tooltipShowcaseMessage1.
   ///
-  /// In en, this message translates to:
-  /// **'Current tooltip theme'**
+  /// In fr, this message translates to:
+  /// **'Thème actuel de l\'info-bulle'**
   String get tooltipShowcaseMessage1;
 
   /// No description provided for @tooltipShowcaseMessage2.
   ///
-  /// In en, this message translates to:
-  /// **'Current tooltip theme.\\nThis a two row tooltip.'**
+  /// In fr, this message translates to:
+  /// **'Thème actuel de l\'info-bulle. Il s\'agit d\'une info-bulle à deux lignes.'**
   String get tooltipShowcaseMessage2;
 
   /// No description provided for @tooltipShowcaseMessage3.
   ///
-  /// In en, this message translates to:
-  /// **'Current tooltip theme.\\nThis tooltip is too long.\\nTry to keep them short.'**
+  /// In fr, this message translates to:
+  /// **'Thème actuel de l\'info-bulle. Cette info-bulle est trop longue. Essayez de les raccourcir.'**
   String get tooltipShowcaseMessage3;
 
   /// No description provided for @tooltipShowcaseText1.
   ///
-  /// In en, this message translates to:
-  /// **'Text with tooltip'**
+  /// In fr, this message translates to:
+  /// **'Texte avec info-bulle'**
   String get tooltipShowcaseText1;
 
   /// No description provided for @tooltipShowcaseText2.
   ///
-  /// In en, this message translates to:
-  /// **'Text with two row tooltip'**
+  /// In fr, this message translates to:
+  /// **'Texte avec info-bulle sur deux rangs'**
   String get tooltipShowcaseText2;
 
   /// No description provided for @tooltipShowcaseText3.
   ///
-  /// In en, this message translates to:
-  /// **'Text with three row tooltip'**
+  /// In fr, this message translates to:
+  /// **'Texte avec info-bulle à trois rangs'**
   String get tooltipShowcaseText3;
 
   /// No description provided for @tooltipStandard.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Standard'**
   String get tooltipStandard;
 
   /// No description provided for @tooltipStandardDisabled.
   ///
-  /// In en, this message translates to:
-  /// **'Standard (disabled)'**
+  /// In fr, this message translates to:
+  /// **'Standard (désactivé)'**
   String get tooltipStandardDisabled;
 
   /// No description provided for @uiAutomationEnable.
   ///
-  /// In en, this message translates to:
-  /// **'Enable UI Automation'**
+  /// In fr, this message translates to:
+  /// **'Activer l\'automatisation de l\'IU'**
   String get uiAutomationEnable;
 
   /// No description provided for @uiAutomationTitle.
   ///
-  /// In en, this message translates to:
-  /// **'UI Automation'**
+  /// In fr, this message translates to:
+  /// **'Automatisation de l\'interface utilisateur'**
   String get uiAutomationTitle;
 
   /// No description provided for @ukctbTooltipMessP.
   ///
-  /// In en, this message translates to:
-  /// **'Use light theme Primary color\\nas key color to seed your ColorScheme'**
+  /// In fr, this message translates to:
+  /// **'Utilisez la couleur primaire du thème de la lumière comme couleur clé pour initier votre ColorScheme.'**
   String get ukctbTooltipMessP;
 
   /// No description provided for @ukctbTooltipMessS.
   ///
-  /// In en, this message translates to:
-  /// **'Use light theme Secondary color\\nas key color to seed your ColorScheme'**
+  /// In fr, this message translates to:
+  /// **'Utiliser le thème de lumière Couleur secondaire Couleur clé pour ensemencer votre ColorScheme'**
   String get ukctbTooltipMessS;
 
   /// No description provided for @ukctbTooltipMessT.
   ///
-  /// In en, this message translates to:
-  /// **'Use light theme Tertiary color\\nas key color to seed your ColorScheme'**
+  /// In fr, this message translates to:
+  /// **'Utiliser le thème de la lumière Couleur tertiaire Couleur clé pour ensemencer votre ColorScheme'**
   String get ukctbTooltipMessT;
 
   /// No description provided for @unAvailable.
   ///
-  /// In en, this message translates to:
-  /// **'Unavailable'**
+  /// In fr, this message translates to:
+  /// **'Indisponible'**
   String get unAvailable;
 
   /// No description provided for @unEnroll.
   ///
-  /// In en, this message translates to:
-  /// **'Unenroll MFA'**
+  /// In fr, this message translates to:
+  /// **'Désinscription de l\'AMF'**
   String get unEnroll;
 
   /// No description provided for @underline.
   ///
-  /// In en, this message translates to:
-  /// **'Underline'**
+  /// In fr, this message translates to:
+  /// **'Souligner'**
   String get underline;
 
   /// No description provided for @unlimitedAdPresentation.
   ///
-  /// In en, this message translates to:
-  /// **'Unlimited Ad Presentation\''**
+  /// In fr, this message translates to:
+  /// **'Présentation illimitée des annonces'**
   String get unlimitedAdPresentation;
 
   /// No description provided for @update.
   ///
-  /// In en, this message translates to:
-  /// **'Update'**
+  /// In fr, this message translates to:
+  /// **'Mise à jour'**
   String get update;
 
   /// No description provided for @updateAddress.
   ///
-  /// In en, this message translates to:
-  /// **'update address'**
+  /// In fr, this message translates to:
+  /// **'actualiser l\'adresse'**
   String get updateAddress;
 
   /// No description provided for @updateContact.
   ///
-  /// In en, this message translates to:
-  /// **'Update Contact'**
+  /// In fr, this message translates to:
+  /// **'Actualiser le contact'**
   String get updateContact;
 
   /// No description provided for @updateDialog.
   ///
-  /// In en, this message translates to:
-  /// **'Update Dialog'**
+  /// In fr, this message translates to:
+  /// **'Actualiser la boîte de dialogue'**
   String get updateDialog;
 
   /// No description provided for @updateOwner.
   ///
-  /// In en, this message translates to:
-  /// **'update owner'**
+  /// In fr, this message translates to:
+  /// **'mettre à jour du propriétaire'**
   String get updateOwner;
 
   /// No description provided for @updateProfile.
   ///
-  /// In en, this message translates to:
-  /// **'Update Profile'**
+  /// In fr, this message translates to:
+  /// **'Actualiser le profil'**
   String get updateProfile;
 
   /// No description provided for @useLevelZero.
   ///
-  /// In en, this message translates to:
-  /// **'. With seeded ColorScheme, for a pure M3 surface design, use level 0'**
+  /// In fr, this message translates to:
+  /// **'. Avec le ColorScheme semé, pour un design de surface M3 pur, utilisez le niveau 0.'**
   String get useLevelZero;
 
   /// No description provided for @useLightThemeColors.
   ///
-  /// In en, this message translates to:
-  /// **'Use light theme colors to seed the ColorScheme'**
+  /// In fr, this message translates to:
+  /// **'Utiliser les couleurs claires du thème pour ensemencer le ColorScheme'**
   String get useLightThemeColors;
 
   /// No description provided for @useMaterial3Title.
   ///
-  /// In en, this message translates to:
-  /// **'Use Material 3'**
+  /// In fr, this message translates to:
+  /// **'Utiliser Material 3'**
   String get useMaterial3Title;
 
   /// No description provided for @useSeedSubTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Use FlexTones to configure which tone from\\ngenerated palettes each color in the ColorScheme use.\\nSet limits on used CAM16 chroma values\\nfor the three colors used as keys for primary,\\nsecondary and tertiary TonalPalettes.\\nIn this app you can choose between the default Material 3\\ntone mapping plus six pre-defined custom FlexTones setups.'**
+  /// In fr, this message translates to:
+  /// **'Utilisez les FlexTones pour configurer le ton des palettes générées que chaque couleur du ColorScheme utilise. Définissez les limites des valeurs chromatiques CAM16 utilisées pour les trois couleurs utilisées comme clés pour les palettes tonales primaires, secondaires et tertiaires. Dans cette application, vous pouvez choisir entre le mappage de tons par défaut de Material 3 et six configurations FlexTones personnalisées prédéfinies.'**
   String get useSeedSubTitle;
 
   /// No description provided for @useSubThemesSubTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Enable FlexColorScheme opinionated sub themes'**
+  /// In fr, this message translates to:
+  /// **'Activer le schéma FlexColor pour les sous-thèmes d\'opinion'**
   String get useSubThemesSubTitle;
 
   /// No description provided for @useSubThemesTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Use component themes'**
+  /// In fr, this message translates to:
+  /// **'Utiliser les thèmes des composants'**
   String get useSubThemesTitle;
 
   /// No description provided for @useThemesSubTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Default setting uses mostly Material 3 design\\nvalues, where radius spec varies per component.\\nMaterial 2 design uses 4 on all components.'**
+  /// In fr, this message translates to:
+  /// **'Le réglage par défaut utilise principalement les valeurs de conception du matériau 3, où les spécifications de rayon varient selon les composants. La conception du matériau 2 utilise la valeur 4 pour tous les composants.'**
   String get useThemesSubTitle;
 
   /// No description provided for @useThemesTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Global border radius on components'**
+  /// In fr, this message translates to:
+  /// **'Rayon de la bordure globale sur les composants'**
   String get useThemesTitle;
 
   /// No description provided for @useTrueBlack.
   ///
-  /// In en, this message translates to:
-  /// **'Use true black'**
+  /// In fr, this message translates to:
+  /// **'Utiliser le noir véritable'**
   String get useTrueBlack;
 
   /// No description provided for @usedPlatformMechanics.
   ///
-  /// In en, this message translates to:
-  /// **'Used platform mechanics'**
+  /// In fr, this message translates to:
+  /// **'utilisée la platform mechanics'**
   String get usedPlatformMechanics;
 
   /// No description provided for @userAnonymous.
   ///
-  /// In en, this message translates to:
-  /// **'User is anonymous'**
+  /// In fr, this message translates to:
+  /// **'L\'utilisateur est anonyme'**
   String get userAnonymous;
 
   /// No description provided for @userFirstName.
   ///
-  /// In en, this message translates to:
-  /// **'User First Name'**
+  /// In fr, this message translates to:
+  /// **'Prénom de l\'utilisateur'**
   String get userFirstName;
 
   /// No description provided for @userId.
   ///
-  /// In en, this message translates to:
-  /// **'UserId'**
+  /// In fr, this message translates to:
+  /// **'Identifiant de l\'utilisateur'**
   String get userId;
 
   /// No description provided for @userInfo.
   ///
-  /// In en, this message translates to:
-  /// **'User info'**
+  /// In fr, this message translates to:
+  /// **'Info utilisateur'**
   String get userInfo;
 
   /// No description provided for @userName.
   ///
-  /// In en, this message translates to:
-  /// **'Name'**
+  /// In fr, this message translates to:
+  /// **'Nom'**
   String get userName;
 
   /// No description provided for @userNotFound.
   ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t find user'**
+  /// In fr, this message translates to:
+  /// **'Impossible de trouver l\'utilisateur'**
   String get userNotFound;
 
   /// No description provided for @valueFive.
   ///
-  /// In en, this message translates to:
-  /// **'five'**
+  /// In fr, this message translates to:
+  /// **'cinq'**
   String get valueFive;
 
   /// No description provided for @valueFour.
   ///
-  /// In en, this message translates to:
-  /// **'four'**
+  /// In fr, this message translates to:
+  /// **'quatre'**
   String get valueFour;
 
   /// No description provided for @valueOne.
   ///
-  /// In en, this message translates to:
-  /// **'one'**
+  /// In fr, this message translates to:
+  /// **'un'**
   String get valueOne;
 
   /// No description provided for @valueThree.
   ///
-  /// In en, this message translates to:
-  /// **'three'**
+  /// In fr, this message translates to:
+  /// **'trois'**
   String get valueThree;
 
   /// No description provided for @valueTwo.
   ///
-  /// In en, this message translates to:
-  /// **'two'**
+  /// In fr, this message translates to:
+  /// **'deux'**
   String get valueTwo;
 
   /// No description provided for @verification.
   ///
-  /// In en, this message translates to:
-  /// **'Verification'**
+  /// In fr, this message translates to:
+  /// **'Vérification'**
   String get verification;
 
   /// No description provided for @verificationCode.
   ///
-  /// In en, this message translates to:
-  /// **'Verification code'**
+  /// In fr, this message translates to:
+  /// **'Code de vérification'**
   String get verificationCode;
 
   /// No description provided for @verificationCodeSent.
   ///
-  /// In en, this message translates to:
-  /// **'Enter the verification code sent'**
+  /// In fr, this message translates to:
+  /// **'Saisir le code de vérification envoyé'**
   String get verificationCodeSent;
 
   /// No description provided for @verified.
   ///
-  /// In en, this message translates to:
-  /// **'verified'**
+  /// In fr, this message translates to:
+  /// **'vérifié'**
   String get verified;
 
   /// No description provided for @verify.
   ///
-  /// In en, this message translates to:
-  /// **'Verify'**
+  /// In fr, this message translates to:
+  /// **'Vérification'**
   String get verify;
 
   /// No description provided for @viewDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Choose a view for iPhone.\\nZoomed shadows larger controls.\\nStandard shows more content.'**
+  /// In fr, this message translates to:
+  /// **'Choisissez une vue pour l\'iPhone. L\'agrandissement permet d\'afficher des commandes plus grandes. La version standard affiche plus de contenu.'**
   String get viewDescription;
 
   /// No description provided for @viewTitle.
   ///
-  /// In en, this message translates to:
-  /// **'View'**
+  /// In fr, this message translates to:
+  /// **'Vue'**
   String get viewTitle;
 
   /// No description provided for @volume.
   ///
-  /// In en, this message translates to:
+  /// In fr, this message translates to:
   /// **'Volume'**
   String get volume;
 
   /// No description provided for @wallpaperStyleDescription.
   ///
-  /// In en, this message translates to:
-  /// **'Colors, themed icons, app grid'**
+  /// In fr, this message translates to:
+  /// **'Couleurs, icônes thématiques, grille d\'application'**
   String get wallpaperStyleDescription;
 
   /// No description provided for @wallpaperStyleTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Wallpaper & style'**
+  /// In fr, this message translates to:
+  /// **'Papier peint et style'**
   String get wallpaperStyleTitle;
 
   /// No description provided for @waterDamage.
   ///
-  /// In en, this message translates to:
-  /// **'Water damage'**
+  /// In fr, this message translates to:
+  /// **'Dégâts des eaux'**
   String get waterDamage;
 
   /// No description provided for @webSettingsTitle.
   ///
-  /// In en, this message translates to:
-  /// **'Web Settings'**
+  /// In fr, this message translates to:
+  /// **'Paramètres Web'**
   String get webSettingsTitle;
 
   /// No description provided for @week.
   ///
-  /// In en, this message translates to:
-  /// **'Week'**
+  /// In fr, this message translates to:
+  /// **'Semaine'**
   String get week;
 
   /// No description provided for @welcome.
   ///
-  /// In en, this message translates to:
-  /// **'WelCome'**
+  /// In fr, this message translates to:
+  /// **'Bienvenue'**
   String get welcome;
 
   /// No description provided for @welcomeBack.
   ///
-  /// In en, this message translates to:
-  /// **'WelCome Back'**
+  /// In fr, this message translates to:
+  /// **'Bon retour'**
   String get welcomeBack;
 
   /// No description provided for @wirelessAlert.
   ///
-  /// In en, this message translates to:
-  /// **'Wireless emergency alerts'**
+  /// In fr, this message translates to:
+  /// **'Alertes d\'urgence sans fil'**
   String get wirelessAlert;
 
   /// No description provided for @woodCabin.
   ///
-  /// In en, this message translates to:
-  /// **'Wood cabin'**
+  /// In fr, this message translates to:
+  /// **'Cabine en bois'**
   String get woodCabin;
 
   /// No description provided for @year.
   ///
-  /// In en, this message translates to:
-  /// **'Year'**
+  /// In fr, this message translates to:
+  /// **'Année'**
   String get year;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -4073,26 +4083,28 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'es', 'fr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'es', 'fr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return AppLocalizationsEn();
-    case 'es': return AppLocalizationsEs();
-    case 'fr': return AppLocalizationsFr();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

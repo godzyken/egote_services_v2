@@ -17,9 +17,7 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
   final StreamController<supabase.AuthResponse> controller =
   StreamController<supabase.AuthResponse>();
 
-  perso.AuthState lastState = const perso.AuthState.unauthenticated(
-    status: perso.AuthStatus.unauthenticated,
-  );
+  perso.AuthState lastState = const perso.AuthState.unauthenticated();
 
   supabase.User? _user;
 
@@ -38,9 +36,7 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
       controller.close();
     });
 
-    return const perso.AuthState.unauthenticated(
-      status: perso.AuthStatus.unauthenticated,
-    );
+    return const perso.AuthState.unauthenticated();
   }
 
   perso.AuthStatus validator(supabase.User? value) {
@@ -61,9 +57,7 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
       case supabase.AuthChangeEvent.userUpdated:
         _user = session?.user;
         if (_user != null) {
-          final computedStatus = validator(_user);
           final newState = perso.AuthState.authenticated(
-            status: computedStatus,
             userEntity: _buildUserModel(_user!),
           );
           lastState = newState;
@@ -103,7 +97,6 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
 
         if (computedStatus == perso.AuthStatus.authenticated) {
           final newState = perso.AuthState.authenticated(
-            status: computedStatus,
             userEntity: _buildUserModel(_user!),
           );
           lastState = newState;
@@ -122,9 +115,7 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
   }
 
   void _setUnauthenticated() {
-    const unauth = perso.AuthState.unauthenticated(
-      status: perso.AuthStatus.unauthenticated,
-    );
+    const unauth = perso.AuthState.unauthenticated();
     lastState = unauth;
     state = unauth;
   }
@@ -136,17 +127,7 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
     return UserModel.complete(
       id: UserId(value: parsedId),
       userEntityModel: UserEntityModel.fromJson(user.toJson()),
-      authUser: supabase.AuthUser(
-        id: user.id,
-        appMetadata: user.appMetadata,
-        userMetadata: user.userMetadata ?? {},
-        aud: user.aud,
-        email: user.email,
-        phone: user.phone,
-        createdAt: user.createdAt,
-        role: user.role ?? 'authenticated',
-        updatedAt: user.updatedAt ?? DateTime.now().toIso8601String(),
-      ),
+      authUser: user,
       cubeUser: CubeUser(),
     );
   }

@@ -1,64 +1,65 @@
-# Plan d'implémentation - Correction des erreurs de compilation et de logique
+# Plan de Migration Routing Manuel et Modulaire (Version Finale)
 
-Ce plan vise à résoudre la longue liste d'erreurs de compilation signalées, allant des dépendances manquantes aux erreurs de syntaxe Freezed et aux problèmes de types Null-Safe.
+Ce plan détaille la suppression de `riverpod_generator` et `go_router_builder` pour passer à une architecture manuelle et extensible, permettant d'injecter dynamiquement des modules comme `bat_track_v1` et `Compta4me`.
 
-## Changements proposés
+## Changements Majeurs
 
-### 1. Dépendances et Configuration
+1.  **Suppression de la génération de code** : Retrait des annotations `@riverpod`, `@TypedGoRoute`, et des fichiers `.g.dart` associés.
+2.  **Architecture Modulaire** : Introduction d'une interface `AppModule` pour centraliser les routes de chaque sous-application.
+3.  **Providers Manuels** : Déclaration explicite des Providers Riverpod.
 
-#### [MODIFY] [pubspec.yaml](file:///C:/Users/soufi/StudioProjects/egote_services_v2/pubspec.yaml)
-- Ajouter `sign_in_with_apple: ^6.1.1` pour résoudre l'absence de `AppleIDAuthorizationScopes`.
+## Proposed Changes
 
-#### [MODIFY] [auth_repository.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/infrastructure/repositories/auth_repository.dart)
-- Ajouter l'import `package:sign_in_with_apple/sign_in_with_apple.dart`.
+### 1. Fondations Modulaires
+#### [NEW] `lib/config/routes/app_module.dart`
+- Définition de l'interface `AppModule` :
+  ```dart
+  abstract class AppModule {
+    List<RouteBase> get routes;
+    // On pourra ajouter ici des listeners ou des middleware spécifiques au module plus tard
+  }
+  ```
 
-### 2. Correction Supabase et Riverpod
+### 2. Router Notifier (Riverpod Manuel)
+#### [MODIFY] `lib/config/routes/router_notifier.dart`
+- Retrait de `@riverpod` et `part 'router_notifier.g.dart'`.
+- Déclaration manuelle : `final appRouterNotifierProvider = NotifierProvider<AppRouterNotifier, void>(AppRouterNotifier.new);`.
+- La classe héritera de `Notifier<void>`.
 
-#### [MODIFY] [auth_controller_state.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/controller/auth_controller_state.dart)
-- Corriger l'accès à `onAuthStateChange` : `_repository.authClient.onAuthStateChange` au lieu de `_repository.authClient.auth.onAuthStateChange`.
+### 3. Routes (GoRouter Manuel)
+#### [MODIFY] `lib/config/routes/routes.dart`
+- Retrait de `part 'routes.g.dart'`.
+- Conversion de toutes les classes `GoRouteData` en fonctions ou constantes retournant des `GoRoute` / `ShellRoute`.
+- Organisation des routes par domaine (Auth, Home, Devis, Settings, Chat).
 
-#### [MODIFY] [cube_settings_provider.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/chat/application/providers/cube_settings_provider.dart)
-- Utiliser `AsyncNotifierProvider` pour `CubeUserController` et `NotifierProvider` pour `FilterLoginTypeNotifier`.
-- Corriger le type de retour de la closure `onSessionRestore` pour éviter de retourner `Null` quand un `Future<CubeSession>` est attendu.
+### 4. Configuration du Router Central
+#### [MODIFY] `lib/config/routes/router.dart`
+- Déclaration manuelle : `final goRouterProvider = Provider<GoRouter>((ref) => ...);`.
+- Assemblage des routes :
+  ```dart
+  final allRoutes = [
+    ...AuthRoutes.routes,
+    ...HomeRoutes.routes,
+    ...DevisRoutes.routes,
+    // Futurs branchements :
+    // ...BatTrackModule().routes,
+    // ...Compta4meModule().routes,
+  ];
+  ```
 
-### 3. Modèles Freezed et Génération de Code
+### 5. Nettoyage
+- Suppression physique des fichiers :
+    - `lib/config/routes/router.g.dart`
+    - `lib/config/routes/router_notifier.g.dart`
+    - `lib/config/routes/routes.g.dart`
+- Mise à jour de `pubspec.yaml` pour retirer les générateurs du `dev_dependencies` si plus utilisés ailleurs.
 
-#### [MODIFY] [user_form_state.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/states/user/user_form_state.dart)
-- Corriger la syntaxe du constructeur factory (manque de virgule ou mauvais placement des paramètres).
+## Verification Plan
 
-#### [MODIFY] [auth_state.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/states/auth/auth_state.dart)
-- Assurer que les types sont corrects pour la génération.
+### Automated Tests
+- Lancer `dart analyze` pour valider la structure des types et des providers.
+- Vérifier que les redirections (Guard d'authentification) fonctionnent toujours manuellement.
 
-### 4. Corrections de Types (Null Safety)
-
-#### [MODIFY] [user_list_view_model.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/models/userlist/user_list_view_model.dart)
-- Utiliser des valeurs par défaut ou des assertions non-null pour les paramètres `DateTime` (ex: `lastSignInAt ?? now`).
-
-#### [MODIFY] [sign_up_screen.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/screens/connection/sign_up_screen.dart)
-- Même correction pour les arguments `DateTime`.
-
-### 5. Assets et UI
-
-#### [MODIFY] [login_screen.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/screens/connection/login_screen.dart) et [sign_up_screen.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/screens/connection/sign_up_screen.dart)
-- Remplacer `authProvider` par `authStateProvider`.
-
-#### [MODIFY] [login_on_chat.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/chat/presentation/views/screens/login_on_chat.dart)
-- Supprimer ou corriger la référence à `logoTchat1022x1024` qui n'existe pas dans les assets générés.
-
-#### [MODIFY] [verification_screen.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/auth/presentation/views/screens/mfa/verification_screen.dart)
-- Supprimer `const` lors de l'instanciation de `UserModel` car `CubeUser()` n'est pas const.
-
-### 6. Firebase et ConnectyCube
-
-#### [MODIFY] [cube_repository.dart](file:///C:/Users/soufi/StudioProjects/egote_services_v2/lib/features/chat/infrastructure/repositories/cube_repository.dart)
-- Gérer l'absence de `firebase_options.dart`. Si le fichier est manquant physiquement, nous devrons peut-être mocker `DefaultFirebaseOptions` ou le commenter temporairement pour permettre la compilation.
-
-## Plan de vérification
-
-### Tests automatisés
-- `flutter pub get`
-- `dart run build_runner build --delete-conflicting-outputs`
-- `dart analyze`
-
-### Vérification manuelle
-- Vérifier que l'application se lance et que les écrans d'authentification fonctionnent.
+### Manual Verification
+- Navigation complète dans l'application : Login -> Home -> Devis -> Chat.
+- Test du changement de thème et de langue pour vérifier que le `refreshListenable` du router réagit bien au `appRouterNotifierProvider`.

@@ -2,7 +2,6 @@ import 'dart:developer' as developer;
 
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/features/auth/application/providers/auth_providers.dart';
-import 'package:egote_services_v2/features/auth/presentation/controller/auth_controller_state.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/screens/auth_screens.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';

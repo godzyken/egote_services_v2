@@ -54,7 +54,7 @@ class ListMfaScreen extends ConsumerWidget {
                                   await ref.watch(supabaseClientProvider).auth.mfa.unenroll(factor.id);
                                   await ref.watch(supabaseClientProvider).auth.signOut();
                                   if (context.mounted) {
-                                    context.go(SignUpRoute.path);
+                                    context.go('/authRoute/signUpRoute');
                                   }
                                 },
                                 child: Text(context.tr!.delete),

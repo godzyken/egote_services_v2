@@ -1,11 +1,8 @@
-# Tâches de correction globale
+# Tasks: Manuel & Modular Routing Migration
 
-- [ ] Mise à jour des dépendances (`pubspec.yaml`)
-- [ ] Correction de `AuthRepository` (imports et scopes Apple)
-- [ ] Correction de `AuthControllerNotifier` (accès API Supabase)
-- [ ] Réparation des modèles Freezed (`UserFormState`, `AuthState`)
-- [ ] Corrections Null-Safety (`DateTime` dans ViewModels et Screens)
-- [ ] Nettoyage UI et Assets (`LoginOnChat`, `VerificationScreen`)
-- [ ] Correction des Providers Riverpod (`CubeSettingsProvider`, etc.)
-- [ ] Gestion du fichier `firebase_options.dart` manquant
-- [ ] Lancer `build_runner` et vérifier la compilation
+- `[x]` Define `AppModule` interface
+- `[x]` Convert `AppRouterNotifier` to manual Riverpod
+- `[x]` Convert `routes.dart` to manual GoRouter
+- `[x]` Update `router.dart` to manual Riverpod and assembly
+- `[x]` Remove obsolete generated files
+- `[x]` Final verification and cleanup

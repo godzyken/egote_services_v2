@@ -6,12 +6,12 @@ targets:
           field_rename: snake
         generate_for:
           - lib/**/*.dart
+          - "!lib/config/routes/*.dart"
 
       go_router_builder:
-        generate_for:
-          - lib/config/routes/*.dart
-          - lib/features/common/domain/failures/error_route.dart
+        enabled: false
 
       riverpod_generator:
         generate_for:
           - lib/**/*.dart
+          - "!lib/config/routes/*.dart"

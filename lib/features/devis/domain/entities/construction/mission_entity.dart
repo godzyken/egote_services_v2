@@ -5,7 +5,7 @@ part 'mission_entity.freezed.dart';
 part 'mission_entity.g.dart';
 
 @freezed
-class MissionEntity with _$MissionEntity {
+abstract class MissionEntity with _$MissionEntity {
   const factory MissionEntity({
     required MissionId id,
     required String denomination,
