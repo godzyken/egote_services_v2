@@ -31,8 +31,7 @@ Future<ProviderContainer> bootstrap() async {
       ..environment = 'dev'
       ..dsn =
           'https://0ee7fbe213ed4eeb9d8e2225896c1601@o573314.ingest.sentry.io/4505427558400000'
-      ..autoAppStart = true
-      ..maxCacheItems
+      ..maxCacheItems = 100
       ..enableAutoPerformanceTracing = true
       ..debug = true
       ..reportSilentFlutterErrors = true
@@ -43,7 +42,6 @@ Future<ProviderContainer> bootstrap() async {
       ..attachScreenshot = true
       ..screenshotQuality = SentryScreenshotQuality.low
       ..maxRequestBodySize = MaxRequestBodySize.always
-      ..maxResponseBodySize = MaxResponseBodySize.always
       ..tracesSampleRate = 1.0
       ..tracesSampler = (samplingContext) =>
           samplingContext.transactionContext.parentSamplingDecision?.sampleRate;
