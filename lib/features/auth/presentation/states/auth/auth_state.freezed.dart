@@ -11,11 +11,41 @@ part of 'auth_state.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+AuthState _$AuthStateFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['status']) {
+                  case 'authenticated':
+          return _AuthStateAuthenticated.fromJson(
+            json
+          );
+                case 'unauthenticated':
+          return _AuthStateUnauthenticated.fromJson(
+            json
+          );
+                case 'initial':
+          return _AuthStateInitial.fromJson(
+            json
+          );
+        
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'status',
+  'AuthState',
+  'Invalid union type "${json['status']}"!'
+);
+        }
+      
+}
+
 /// @nodoc
 mixin _$AuthState {
 
 
 
+  /// Serializes this AuthState to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -23,7 +53,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState);
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => runtimeType.hashCode;
 
@@ -55,13 +85,13 @@ extension AuthStatePatterns on AuthState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AuthState value)?  $default,{TResult Function( _$AuthStateTrue value)?  authenticated,TResult Function( _$AuthStateFalse value)?  unauthenticated,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthStateAuthenticated value)?  authenticated,TResult Function( _AuthStateUnauthenticated value)?  unauthenticated,TResult Function( _AuthStateInitial value)?  initial,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _$AuthStateTrue() when authenticated != null:
-return authenticated(_that);case _$AuthStateFalse() when unauthenticated != null:
-return unauthenticated(_that);case _AuthState() when $default != null:
-return $default(_that);case _:
+case _AuthStateAuthenticated() when authenticated != null:
+return authenticated(_that);case _AuthStateUnauthenticated() when unauthenticated != null:
+return unauthenticated(_that);case _AuthStateInitial() when initial != null:
+return initial(_that);case _:
   return orElse();
 
 }
@@ -79,13 +109,13 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AuthState value)  $default,{required TResult Function( _$AuthStateTrue value)  authenticated,required TResult Function( _$AuthStateFalse value)  unauthenticated,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthStateAuthenticated value)  authenticated,required TResult Function( _AuthStateUnauthenticated value)  unauthenticated,required TResult Function( _AuthStateInitial value)  initial,}){
 final _that = this;
 switch (_that) {
-case _$AuthStateTrue():
-return authenticated(_that);case _$AuthStateFalse():
-return unauthenticated(_that);case _AuthState():
-return $default(_that);case _:
+case _AuthStateAuthenticated():
+return authenticated(_that);case _AuthStateUnauthenticated():
+return unauthenticated(_that);case _AuthStateInitial():
+return initial(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -102,13 +132,13 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AuthState value)?  $default,{TResult? Function( _$AuthStateTrue value)?  authenticated,TResult? Function( _$AuthStateFalse value)?  unauthenticated,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthStateAuthenticated value)?  authenticated,TResult? Function( _AuthStateUnauthenticated value)?  unauthenticated,TResult? Function( _AuthStateInitial value)?  initial,}){
 final _that = this;
 switch (_that) {
-case _$AuthStateTrue() when authenticated != null:
-return authenticated(_that);case _$AuthStateFalse() when unauthenticated != null:
-return unauthenticated(_that);case _AuthState() when $default != null:
-return $default(_that);case _:
+case _AuthStateAuthenticated() when authenticated != null:
+return authenticated(_that);case _AuthStateUnauthenticated() when unauthenticated != null:
+return unauthenticated(_that);case _AuthStateInitial() when initial != null:
+return initial(_that);case _:
   return null;
 
 }
@@ -125,12 +155,12 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function()?  $default,{TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)  AuthStatus status, @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)  UserModel userEntity)?  authenticated,TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true)  AuthStatus status)?  unauthenticated,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( UserModel userEntity)?  authenticated,TResult Function()?  unauthenticated,TResult Function()?  initial,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _$AuthStateTrue() when authenticated != null:
-return authenticated(_that.status,_that.userEntity);case _$AuthStateFalse() when unauthenticated != null:
-return unauthenticated(_that.status);case _AuthState() when $default != null:
-return $default();case _:
+case _AuthStateAuthenticated() when authenticated != null:
+return authenticated(_that.userEntity);case _AuthStateUnauthenticated() when unauthenticated != null:
+return unauthenticated();case _AuthStateInitial() when initial != null:
+return initial();case _:
   return orElse();
 
 }
@@ -148,12 +178,12 @@ return $default();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function()  $default,{required TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)  AuthStatus status, @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)  UserModel userEntity)  authenticated,required TResult Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true)  AuthStatus status)  unauthenticated,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( UserModel userEntity)  authenticated,required TResult Function()  unauthenticated,required TResult Function()  initial,}) {final _that = this;
 switch (_that) {
-case _$AuthStateTrue():
-return authenticated(_that.status,_that.userEntity);case _$AuthStateFalse():
-return unauthenticated(_that.status);case _AuthState():
-return $default();case _:
+case _AuthStateAuthenticated():
+return authenticated(_that.userEntity);case _AuthStateUnauthenticated():
+return unauthenticated();case _AuthStateInitial():
+return initial();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -170,12 +200,12 @@ return $default();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function()?  $default,{TResult? Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated)  AuthStatus status, @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true)  UserModel userEntity)?  authenticated,TResult? Function(@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true)  AuthStatus status)?  unauthenticated,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( UserModel userEntity)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function()?  initial,}) {final _that = this;
 switch (_that) {
-case _$AuthStateTrue() when authenticated != null:
-return authenticated(_that.status,_that.userEntity);case _$AuthStateFalse() when unauthenticated != null:
-return unauthenticated(_that.status);case _AuthState() when $default != null:
-return $default();case _:
+case _AuthStateAuthenticated() when authenticated != null:
+return authenticated(_that.userEntity);case _AuthStateUnauthenticated() when unauthenticated != null:
+return unauthenticated();case _AuthStateInitial() when initial != null:
+return initial();case _:
   return null;
 
 }
@@ -184,46 +214,52 @@ return $default();case _:
 }
 
 /// @nodoc
+@JsonSerializable()
 
+class _AuthStateAuthenticated extends AuthState {
+  const _AuthStateAuthenticated({required this.userEntity, final  String? $type}): $type = $type ?? 'authenticated',super._();
+  factory _AuthStateAuthenticated.fromJson(Map<String, dynamic> json) => _$AuthStateAuthenticatedFromJson(json);
 
-class _$AuthStateTrue implements AuthState {
-  const _$AuthStateTrue({@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated) required this.status, @JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true) required this.userEntity});
-  
+ final  UserModel userEntity;
 
-@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated) final  AuthStatus status;
-@JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true) final  UserModel userEntity;
+@JsonKey(name: 'status')
+final String $type;
+
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$$AuthStateTrueCopyWith<_$AuthStateTrue> get copyWith => __$$AuthStateTrueCopyWithImpl<_$AuthStateTrue>(this, _$identity);
+_$AuthStateAuthenticatedCopyWith<_AuthStateAuthenticated> get copyWith => __$AuthStateAuthenticatedCopyWithImpl<_AuthStateAuthenticated>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$AuthStateAuthenticatedToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _$AuthStateTrue&&(identical(other.status, status) || other.status == status)&&(identical(other.userEntity, userEntity) || other.userEntity == userEntity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthStateAuthenticated&&(identical(other.userEntity, userEntity) || other.userEntity == userEntity));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,status,userEntity);
+int get hashCode => Object.hash(runtimeType,userEntity);
 
 @override
 String toString() {
-  return 'AuthState.authenticated(status: $status, userEntity: $userEntity)';
+  return 'AuthState.authenticated(userEntity: $userEntity)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$$AuthStateTrueCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
-  factory _$$AuthStateTrueCopyWith(_$AuthStateTrue value, $Res Function(_$AuthStateTrue) _then) = __$$AuthStateTrueCopyWithImpl;
+abstract mixin class _$AuthStateAuthenticatedCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
+  factory _$AuthStateAuthenticatedCopyWith(_AuthStateAuthenticated value, $Res Function(_AuthStateAuthenticated) _then) = __$AuthStateAuthenticatedCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true, unknownEnumValue: AuthStatus.unauthenticated) AuthStatus status,@JsonKey(defaultValue: 'UserEntity', includeToJson: true, includeFromJson: true) UserModel userEntity
+ UserModel userEntity
 });
 
 
@@ -231,19 +267,18 @@ $UserModelCopyWith<$Res> get userEntity;
 
 }
 /// @nodoc
-class __$$AuthStateTrueCopyWithImpl<$Res>
-    implements _$$AuthStateTrueCopyWith<$Res> {
-  __$$AuthStateTrueCopyWithImpl(this._self, this._then);
+class __$AuthStateAuthenticatedCopyWithImpl<$Res>
+    implements _$AuthStateAuthenticatedCopyWith<$Res> {
+  __$AuthStateAuthenticatedCopyWithImpl(this._self, this._then);
 
-  final _$AuthStateTrue _self;
-  final $Res Function(_$AuthStateTrue) _then;
+  final _AuthStateAuthenticated _self;
+  final $Res Function(_AuthStateAuthenticated) _then;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? status = null,Object? userEntity = null,}) {
-  return _then(_$AuthStateTrue(
-status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as AuthStatus,userEntity: null == userEntity ? _self.userEntity : userEntity // ignore: cast_nullable_to_non_nullable
+@pragma('vm:prefer-inline') $Res call({Object? userEntity = null,}) {
+  return _then(_AuthStateAuthenticated(
+userEntity: null == userEntity ? _self.userEntity : userEntity // ignore: cast_nullable_to_non_nullable
 as UserModel,
   ));
 }
@@ -261,95 +296,75 @@ $UserModelCopyWith<$Res> get userEntity {
 }
 
 /// @nodoc
+@JsonSerializable()
+
+class _AuthStateUnauthenticated extends AuthState {
+  const _AuthStateUnauthenticated({final  String? $type}): $type = $type ?? 'unauthenticated',super._();
+  factory _AuthStateUnauthenticated.fromJson(Map<String, dynamic> json) => _$AuthStateUnauthenticatedFromJson(json);
 
 
-class _$AuthStateFalse implements AuthState {
-  const _$AuthStateFalse({@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) required this.status});
-  
 
-@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) final  AuthStatus status;
+@JsonKey(name: 'status')
+final String $type;
 
-/// Create a copy of AuthState
-/// with the given fields replaced by the non-null parameter values.
+
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AuthStateUnauthenticatedToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthStateUnauthenticated);
+}
+
 @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$$AuthStateFalseCopyWith<_$AuthStateFalse> get copyWith => __$$AuthStateFalseCopyWithImpl<_$AuthStateFalse>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _$AuthStateFalse&&(identical(other.status, status) || other.status == status));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,status);
-
-@override
-String toString() {
-  return 'AuthState.unauthenticated(status: $status)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$$AuthStateFalseCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
-  factory _$$AuthStateFalseCopyWith(_$AuthStateFalse value, $Res Function(_$AuthStateFalse) _then) = __$$AuthStateFalseCopyWithImpl;
-@useResult
-$Res call({
-@JsonKey(defaultValue: 'AuthStatus', includeFromJson: true, includeToJson: true) AuthStatus status
-});
-
-
-
-
-}
-/// @nodoc
-class __$$AuthStateFalseCopyWithImpl<$Res>
-    implements _$$AuthStateFalseCopyWith<$Res> {
-  __$$AuthStateFalseCopyWithImpl(this._self, this._then);
-
-  final _$AuthStateFalse _self;
-  final $Res Function(_$AuthStateFalse) _then;
-
-/// Create a copy of AuthState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? status = null,}) {
-  return _then(_$AuthStateFalse(
-status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as AuthStatus,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class _AuthState implements AuthState {
-  const _AuthState();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState);
-}
-
-
 @override
 int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AuthState()';
+  return 'AuthState.unauthenticated()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+@JsonSerializable()
+
+class _AuthStateInitial extends AuthState {
+  const _AuthStateInitial({final  String? $type}): $type = $type ?? 'initial',super._();
+  factory _AuthStateInitial.fromJson(Map<String, dynamic> json) => _$AuthStateInitialFromJson(json);
+
+
+
+@JsonKey(name: 'status')
+final String $type;
+
+
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AuthStateInitialToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthStateInitial);
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.initial()';
 }
 
 
