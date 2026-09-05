@@ -39,7 +39,7 @@ app.*.symbols
 app.*.map.json
 *.json
 *.g.dart
-*.frezzed.dart
+*.freezed.dart
 firebase_options.dart
 *.lockfile
 
