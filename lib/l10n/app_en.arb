@@ -12,6 +12,7 @@
   "address": "Address",
   "addressCity": "City Name",
   "addressDescription": "Include information like phone numbers, email, and shipping addresses",
+  "addressDocking": "Docking Address",
   "addressId": "Address id",
   "addressMore": "Addresses and more",
   "addressTitle": "Save and fill addresses",

@@ -50,7 +50,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Include information like phone numbers, email, and shipping addresses';
 
   @override
-  String get addressDocking => 'Adresser a\'amarrage';
+  String get addressDocking => 'Docking Address';
 
   @override
   String get addressId => 'Address id';

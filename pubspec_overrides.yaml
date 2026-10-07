@@ -1,0 +1,8 @@
+# melos_managed_dependency_overrides: shared_models,intl,meta,web,rxdart
+dependency_overrides:
+  shared_models:
+    path: ..\\shared_models
+  intl: ^0.20.0
+  meta: any
+  web: ^1.0.0
+  rxdart: ^0.28.0

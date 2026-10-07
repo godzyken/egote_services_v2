@@ -27,7 +27,9 @@ class AuthUserDatabaseImpl implements SourceBase {
 
   Future<Database> get database async {
     Sqflite.setLockWarningInfo(
-        duration: const Duration(seconds: 5), callback: close);
+      duration: const Duration(seconds: 5),
+      callback: close,
+    );
 
     _database ??= await _initDatabase();
     return _database!;
@@ -38,11 +40,13 @@ class AuthUserDatabaseImpl implements SourceBase {
     try {
       var databasePath = await getDatabasesPath();
       String p = firebasePath.join(databasePath, _databaseName);
-      return openDatabase(p,
-          onConfigure: (db) => _onConfigure(db),
-          onOpen: (db) => _onOpen(db),
-          onCreate: (db, version) => _onCreate(db, version),
-          version: _databaseVersion);
+      return await openDatabase(
+        p,
+        onConfigure: (db) => _onConfigure(db),
+        onOpen: (db) => _onOpen(db),
+        onCreate: (db, version) => _onCreate(db, version),
+        version: _databaseVersion,
+      );
     } on Exception catch (e) {
       developer.log('database initialisation error : $e');
       return database;
@@ -118,8 +122,11 @@ class AuthUserDatabaseImpl implements SourceBase {
     final db = await _ensureInitialized();
     late final UserEntity userEntity;
     await db.transaction((txn) async {
-      final id = await txn.insert(_tableName, user,
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      final id = await txn.insert(
+        _tableName,
+        user,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
       final results = await txn.query(
         _tableName,
         where: '$_columnUserId = ?',

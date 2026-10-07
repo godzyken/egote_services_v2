@@ -5,7 +5,6 @@ import '../../../config/app_shared/fonts/app_fonts.dart';
 import 'flex_tone.dart';
 
 class CustomThemes {
-
   CustomThemes._();
 
   static ThemeData light({
@@ -32,7 +31,6 @@ class CustomThemes {
     //
     required TargetPlatform platform,
   }) {
-
     // In case we need to use the ColorScheme defined by defined FlexColorScheme
     // as input to a custom sub-theme, we can make the FCS object and get the
     // ColorS
@@ -57,21 +55,21 @@ class CustomThemes {
       //
       subThemesData: useSubTheme
           ? FlexSubThemesData(
-        defaultRadius: defaultRadius,
-        thinBorderWidth: 1,
-        thickBorderWidth: 2,
-        drawerWidth: drawerWidth,
-      )
+              defaultRadius: defaultRadius,
+              thinBorderWidth: 1,
+              thickBorderWidth: 2,
+              drawerWidth: drawerWidth,
+            )
           : null,
       //
       visualDensity: FlexColorScheme.comfortablePlatformDensity,
       fontFamily: AppFonts.mainFont,
-      typography: Typography.material2021(platform: platform),
+      typography: Typography.material2021(platform: platform) as dynamic,
       platform: platform,
     );
 
     // Convert above FlexColorScheme to ThemeData and return it.
-    return flexScheme.toTheme;
+    return flexScheme.toTheme as dynamic;
   }
 
   /// Returns dark theme based on required parameters passed to it.
@@ -112,52 +110,53 @@ class CustomThemes {
     // purposes the step using the `FlexColorScheme.light` API with the
     // `toTheme` method was demonstrated.
     return FlexThemeData.dark(
-      useMaterial3: useMaterial3,
-      colors: computeDark
-      // Option to compute the dark theme from the light theme colors.
-      // This is handy if we have only defined light theme colors and
-      // want to compute a dark scheme from them. It is a bit like `seed`
-      // generated M3 scheme, but it is only based on white color alpha
-      // blend to de-saturate the light theme colors an adjustable amount.
-      // In this demo we have dark theme color definitions for all themes,
-      // this is only included to demonstrate the feature.
-          ? schemes[usedTheme]
-          .light
-          .defaultError
-          .toDark(darkLevel, useMaterial3)
-          : schemes[usedTheme].dark,
-      swapColors: swapColors,
-      surfaceMode: surfaceMode,
-      blendLevel: blendLevel,
-      //
-      keyColors: FlexKeyColors(
-        useKeyColors: usePrimaryKeyColor,
-        useSecondary: useSecondaryKeyColor,
-        useTertiary: useTertiaryKeyColor,
-      ),
-      tones: FlexTone.values[usedFlexTone].tones(Brightness.dark),
-      //
-      appBarElevation: appBarElevation,
-      appBarStyle: appBarStyle,
-      appBarOpacity: appBarOpacity,
-      transparentStatusBar: transparentStatusBar,
-      //
-      darkIsTrueBlack: darkIsTrueBlack,
-      //
-      subThemesData: useSubTheme
-          ? FlexSubThemesData(
-        defaultRadius: defaultRadius,
-        thinBorderWidth: 1,
-        thickBorderWidth: 2,
-        drawerWidth: drawerWidth,
-      )
-          : null,
-      //
-      visualDensity: FlexColorScheme.comfortablePlatformDensity,
-      fontFamily: AppFonts.mainFont,
-      typography: Typography.material2021(platform: platform),
-      platform: platform,
-    );
+          useMaterial3: useMaterial3,
+          colors: computeDark
+              // Option to compute the dark theme from the light theme colors.
+              // This is handy if we have only defined light theme colors and
+              // want to compute a dark scheme from them. It is a bit like `seed`
+              // generated M3 scheme, but it is only based on white color alpha
+              // blend to de-saturate the light theme colors an adjustable amount.
+              // In this demo we have dark theme color definitions for all themes,
+              // this is only included to demonstrate the feature.
+              ? schemes[usedTheme].light.defaultError.toDark(
+                  darkLevel,
+                  useMaterial3,
+                )
+              : schemes[usedTheme].dark,
+          swapColors: swapColors,
+          surfaceMode: surfaceMode,
+          blendLevel: blendLevel,
+          //
+          keyColors: FlexKeyColors(
+            useKeyColors: usePrimaryKeyColor,
+            useSecondary: useSecondaryKeyColor,
+            useTertiary: useTertiaryKeyColor,
+          ),
+          tones: FlexTone.values[usedFlexTone].tones(Brightness.dark),
+          //
+          appBarElevation: appBarElevation,
+          appBarStyle: appBarStyle,
+          appBarOpacity: appBarOpacity,
+          transparentStatusBar: transparentStatusBar,
+          //
+          darkIsTrueBlack: darkIsTrueBlack,
+          //
+          subThemesData: useSubTheme
+              ? FlexSubThemesData(
+                  defaultRadius: defaultRadius,
+                  thinBorderWidth: 1,
+                  thickBorderWidth: 2,
+                  drawerWidth: drawerWidth,
+                )
+              : null,
+          //
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          fontFamily: AppFonts.mainFont,
+          typography: Typography.material2021(platform: platform) as dynamic,
+          platform: platform,
+        )
+        as dynamic;
   }
 
   // We could also use the FlexSchemeColor.from() constructor and define less
