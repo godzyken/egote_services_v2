@@ -23,11 +23,9 @@ class ChatDialogScreen extends ConsumerWidget {
         centerTitle: false,
         actions: [
           IconButton(
-              onPressed: () => showChatDetails(context, cubeUser, cubeDialog),
-              icon: const Icon(
-                Icons.info_outline,
-                color: Colors.white,
-              )),
+            onPressed: () => showChatDetails(context, cubeUser, cubeDialog),
+            icon: const Icon(Icons.info_outline, color: Colors.white),
+          ),
         ],
       ),
       body: ChatScreen(cubeUser: cubeUser, cubeDialog: cubeDialog),
@@ -35,11 +33,15 @@ class ChatDialogScreen extends ConsumerWidget {
   }
 }
 
-void showChatDetails(BuildContext context, CubeUser cubeUser,
-    CubeDialog cubeDialog) async {
+void showChatDetails(
+  BuildContext context,
+  CubeUser cubeUser,
+  CubeDialog cubeDialog,
+) async {
   log("_chatDetails= $cubeDialog");
 
   showModal(
-      context: context,
-      child: UpdateDialog(currentUser: cubeUser, currentDialog: cubeDialog));
+    context: context,
+    child: UpdateDialog(currentUser: cubeUser, currentDialog: cubeDialog),
+  );
 }

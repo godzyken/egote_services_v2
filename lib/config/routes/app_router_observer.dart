@@ -3,7 +3,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 
 class AppRouterObserver extends NavigatorObserver {
-/*  @override
+  /*  @override
   NavigatorState get navigator {
 
   }

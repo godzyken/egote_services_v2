@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-enum NavigationRouteStyle {
-  cupertino,
-  material,
-}
+enum NavigationRouteStyle { cupertino, material }
 
 class Navigation {
   static Future<T?> navigateTo<T>({

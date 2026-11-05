@@ -29,11 +29,7 @@ class MockUser {
     this.displayName = 'Test User',
   });
 
-  factory MockUser.create({
-    String? id,
-    String? email,
-    String? displayName,
-  }) {
+  factory MockUser.create({String? id, String? email, String? displayName}) {
     return MockUser(
       id: id ?? 'test_user_123',
       email: email ?? 'test@example.com',

@@ -12,12 +12,13 @@ class LightSurfaceModePopupMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SurfaceModePopupMenu(
-        title: Text(context.tr!.lightThemeSurfaceMode),
-        index: ref.watch(Settings.lightSurfaceModeProvider).index,
-        onChanged: (int index) {
-          ref
-              .read(Settings.lightSurfaceModeProvider.notifier)
-              .set(FlexSurfaceMode.values[index]);
-        });
+      title: Text(context.tr!.lightThemeSurfaceMode),
+      index: ref.watch(Settings.lightSurfaceModeProvider).index,
+      onChanged: (int index) {
+        ref
+            .read(Settings.lightSurfaceModeProvider.notifier)
+            .set(FlexSurfaceMode.values[index]);
+      },
+    );
   }
 }

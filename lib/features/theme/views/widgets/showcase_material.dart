@@ -131,8 +131,10 @@ class ShowcaseMaterial extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text(context.tr!.normalTextTheme,
-                      style: theme.textTheme.titleMedium),
+                  child: Text(
+                    context.tr!.normalTextTheme,
+                    style: theme.textTheme.titleMedium,
+                  ),
                 ),
                 const TextThemeShowcase(),
               ],
@@ -149,8 +151,10 @@ class ShowcaseMaterial extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text(context.tr!.primaryTextTheme,
-                      style: theme.primaryTextTheme.titleMedium),
+                  child: Text(
+                    context.tr!.primaryTextTheme,
+                    style: theme.primaryTextTheme.titleMedium,
+                  ),
                 ),
                 const PrimaryTextThemeShowcase(),
               ],
@@ -203,19 +207,13 @@ class FilledButtonShowcase extends StatelessWidget {
         spacing: 8,
         runSpacing: 8,
         children: <Widget>[
-          FilledButton(
-            onPressed: () {},
-            child: Text(context.tr!.filledButton),
-          ),
+          FilledButton(onPressed: () {}, child: Text(context.tr!.filledButton)),
           FilledButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.add),
             label: Text(context.tr!.filledIcon),
           ),
-          FilledButton(
-            onPressed: null,
-            child: Text(context.tr!.filledButton),
-          ),
+          FilledButton(onPressed: null, child: Text(context.tr!.filledButton)),
         ],
       ),
     );
@@ -302,10 +300,7 @@ class TextButtonShowcase extends StatelessWidget {
             icon: const Icon(Icons.add),
             label: Text(context.tr!.textIcon),
           ),
-          TextButton(
-            onPressed: null,
-            child: Text(context.tr!.labelTextButton),
-          ),
+          TextButton(onPressed: null, child: Text(context.tr!.labelTextButton)),
         ],
       ),
     );
@@ -345,15 +340,9 @@ class _ToggleButtonsShowcaseState extends State<ToggleButtonsShowcase> {
             ],
           ),
           if (widget.compareButtons ?? false)
-            OutlinedButton(
-              onPressed: () {},
-              child: Text(context.tr!.outlined),
-            ),
+            OutlinedButton(onPressed: () {}, child: Text(context.tr!.outlined)),
           if (widget.compareButtons ?? false)
-            FilledButton(
-              onPressed: () {},
-              child: Text(context.tr!.filled),
-            ),
+            FilledButton(onPressed: () {}, child: Text(context.tr!.filled)),
           ToggleButtons(
             isSelected: const <bool>[true, false, false],
             onPressed: null,
@@ -364,10 +353,7 @@ class _ToggleButtonsShowcaseState extends State<ToggleButtonsShowcase> {
             ],
           ),
           if (widget.compareButtons ?? false)
-            OutlinedButton(
-              onPressed: null,
-              child: Text(context.tr!.outlined),
-            ),
+            OutlinedButton(onPressed: null, child: Text(context.tr!.outlined)),
         ],
       ),
     );
@@ -567,8 +553,9 @@ class _SwitchShowcaseState extends State<SwitchShowcase> {
             },
           ),
           Switch(
-            thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
-                (Set<WidgetState> states) {
+            thumbIcon: WidgetStateProperty.resolveWith<Icon?>((
+              Set<WidgetState> states,
+            ) {
               if (states.contains(WidgetState.selected)) {
                 return const Icon(Icons.check);
               }
@@ -590,14 +577,8 @@ class _SwitchShowcaseState extends State<SwitchShowcase> {
               });
             },
           ),
-          const Switch(
-            value: true,
-            onChanged: null,
-          ),
-          const Switch(
-            value: false,
-            onChanged: null,
-          ),
+          const Switch(value: true, onChanged: null),
+          const Switch(value: false, onChanged: null),
         ],
       ),
     );
@@ -640,23 +621,10 @@ class _CheckboxShowcaseState extends State<CheckboxShowcase> {
               });
             },
           ),
-          Checkbox(
-            value: false,
-            onChanged: (bool? value) {},
-          ),
-          const Checkbox(
-            value: true,
-            onChanged: null,
-          ),
-          const Checkbox(
-            value: null,
-            tristate: true,
-            onChanged: null,
-          ),
-          const Checkbox(
-            value: false,
-            onChanged: null,
-          ),
+          Checkbox(value: false, onChanged: (bool? value) {}),
+          const Checkbox(value: true, onChanged: null),
+          const Checkbox(value: null, tristate: true, onChanged: null),
+          const Checkbox(value: false, onChanged: null),
         ],
       ),
     );
@@ -676,40 +644,24 @@ class _RadioShowcaseState extends State<RadioShowcase> {
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 8,
-        runSpacing: 8,
-        children: <Widget>[
-          Radio<bool>(
-            value: true,
-            groupValue: groupValue,
-            onChanged: (bool? value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-          ),
-          Radio<bool>(
-            value: false,
-            groupValue: groupValue,
-            onChanged: (bool? value) {
-              setState(() {
-                groupValue = value;
-              });
-            },
-          ),
-          Radio<bool>(
-            value: true,
-            groupValue: groupValue,
-            onChanged: null,
-          ),
-          Radio<bool>(
-            value: false,
-            groupValue: groupValue,
-            onChanged: null,
-          ),
-        ],
+      child: RadioGroup<bool>(
+        groupValue: groupValue,
+        onChanged: (bool? value) {
+          setState(() {
+            groupValue = value;
+          });
+        },
+        child: const Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 8,
+          runSpacing: 8,
+          children: <Widget>[
+            Radio<bool>(value: true),
+            Radio<bool>(value: false),
+            Radio<bool>(value: true, toggleable: false),
+            Radio<bool>(value: false, toggleable: false),
+          ],
+        ),
       ),
     );
   }
@@ -733,7 +685,8 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ListTile(
             dense: true,
             title: Text(
-                '${context.tr!.sliderStepped} (${value.toStringAsFixed(0)})'),
+              '${context.tr!.sliderStepped} (${value.toStringAsFixed(0)})',
+            ),
             subtitle: Slider(
               max: 30,
               divisions: 31,
@@ -749,7 +702,8 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ListTile(
             dense: true,
             title: Text(
-                '${context.tr!.sliderContinuous} (${value.toStringAsFixed(2)})'),
+              '${context.tr!.sliderContinuous} (${value.toStringAsFixed(2)})',
+            ),
             subtitle: Slider(
               max: 30,
               label: value.toStringAsFixed(0),
@@ -764,7 +718,8 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ListTile(
             dense: true,
             title: Text(
-                '${context.tr!.sliderSteppedDisabled} (${value.toStringAsFixed(0)})'),
+              '${context.tr!.sliderSteppedDisabled} (${value.toStringAsFixed(0)})',
+            ),
             subtitle: Slider(
               max: 30,
               divisions: 31,
@@ -776,7 +731,8 @@ class _SliderShowcaseState extends State<SliderShowcase> {
           ListTile(
             dense: true,
             title: Text(
-                '${context.tr!.sliderContinuousDisabled} (${value.toStringAsFixed(2)})'),
+              '${context.tr!.sliderContinuousDisabled} (${value.toStringAsFixed(2)})',
+            ),
             subtitle: Slider(
               max: 30,
               label: value.toStringAsFixed(0),
@@ -807,10 +763,9 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
         children: <Widget>[
           ListTile(
             dense: true,
-            title: Text('${context.tr!.rangeSliderStepped} (${RangeLabels(
-              values.start.toStringAsFixed(0),
-              values.end.toStringAsFixed(0),
-            )})'),
+            title: Text(
+              '${context.tr!.rangeSliderStepped} (${RangeLabels(values.start.toStringAsFixed(0), values.end.toStringAsFixed(0))})',
+            ),
             subtitle: RangeSlider(
               max: 30,
               divisions: 31,
@@ -831,10 +786,9 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title: Text('${context.tr!.rangeSliderContinuous} (${RangeLabels(
-              values.start.toStringAsFixed(2),
-              values.end.toStringAsFixed(2),
-            )})'),
+            title: Text(
+              '${context.tr!.rangeSliderContinuous} (${RangeLabels(values.start.toStringAsFixed(2), values.end.toStringAsFixed(2))})',
+            ),
             subtitle: RangeSlider(
               max: 30,
               labels: RangeLabels(
@@ -851,11 +805,9 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
           ),
           ListTile(
             dense: true,
-            title:
-                Text('${context.tr!.rangeSliderSteppedDisabled} (${RangeLabels(
-              values.start.toStringAsFixed(0),
-              values.end.toStringAsFixed(0),
-            )})'),
+            title: Text(
+              '${context.tr!.rangeSliderSteppedDisabled} (${RangeLabels(values.start.toStringAsFixed(0), values.end.toStringAsFixed(0))})',
+            ),
             subtitle: RangeSlider(
               max: 30,
               divisions: 31,
@@ -870,10 +822,8 @@ class _RangeSliderShowcaseState extends State<RangeSliderShowcase> {
           ListTile(
             dense: true,
             title: Text(
-                '${context.tr!.rangeSliderContinuousDisabled} (${RangeLabels(
-              values.start.toStringAsFixed(2),
-              values.end.toStringAsFixed(2),
-            )})'),
+              '${context.tr!.rangeSliderContinuousDisabled} (${RangeLabels(values.start.toStringAsFixed(2), values.end.toStringAsFixed(2))})',
+            ),
             subtitle: RangeSlider(
               max: 30,
               divisions: 31,
@@ -901,36 +851,33 @@ class PopupMenuButtonsShowcase extends StatelessWidget {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
 
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (explainUsage)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-              child: Text(
-                context.tr!.popupMenuButton,
-                style: denseHeader,
-              ),
-            ),
-          if (explainUsage)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: Text(
-                context.tr!.materialPopupMenuText,
-                style: denseBody,
-              ),
-            ),
-          const Row(
-            children: <Widget>[
-              PopupMenuButtonShowcase(),
-              SizedBox(width: 16),
-              PopupMenuButtonTilesShowcase(),
-            ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (explainUsage)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+            child: Text(context.tr!.popupMenuButton, style: denseHeader),
           ),
-        ]);
+        if (explainUsage)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: Text(context.tr!.materialPopupMenuText, style: denseBody),
+          ),
+        const Row(
+          children: <Widget>[
+            PopupMenuButtonShowcase(),
+            SizedBox(width: 16),
+            PopupMenuButtonTilesShowcase(),
+          ],
+        ),
+      ],
+    );
   }
 }
 
@@ -945,15 +892,25 @@ class PopupMenuButtonShowcase extends StatelessWidget {
         position: PopupMenuPosition.under,
         itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
           PopupMenuItem<int>(
-              value: 1, child: Text('${context.tr!.optionText} 1')),
+            value: 1,
+            child: Text('${context.tr!.optionText} 1'),
+          ),
           PopupMenuItem<int>(
-              value: 2, child: Text('${context.tr!.optionText} 2')),
+            value: 2,
+            child: Text('${context.tr!.optionText} 2'),
+          ),
           PopupMenuItem<int>(
-              value: 3, child: Text('${context.tr!.optionText} 3')),
+            value: 3,
+            child: Text('${context.tr!.optionText} 3'),
+          ),
           PopupMenuItem<int>(
-              value: 4, child: Text('${context.tr!.optionText} 4')),
+            value: 4,
+            child: Text('${context.tr!.optionText} 4'),
+          ),
           PopupMenuItem<int>(
-              value: 5, child: Text('${context.tr!.optionText} 5')),
+            value: 5,
+            child: Text('${context.tr!.optionText} 5'),
+          ),
         ],
         icon: const Icon(Icons.more_vert),
       ),
@@ -972,25 +929,33 @@ class PopupMenuButtonTilesShowcase extends StatelessWidget {
         position: PopupMenuPosition.under,
         itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
           PopupMenuItem<int>(
-              value: 1,
-              child: ListTile(
-                  leading: const Icon(Icons.alarm),
-                  title: Text(context.tr!.alarm))),
+            value: 1,
+            child: ListTile(
+              leading: const Icon(Icons.alarm),
+              title: Text(context.tr!.alarm),
+            ),
+          ),
           PopupMenuItem<int>(
-              value: 2,
-              child: ListTile(
-                  leading: const Icon(Icons.cabin),
-                  title: Text(context.tr!.woodCabin))),
+            value: 2,
+            child: ListTile(
+              leading: const Icon(Icons.cabin),
+              title: Text(context.tr!.woodCabin),
+            ),
+          ),
           PopupMenuItem<int>(
-              value: 3,
-              child: ListTile(
-                  leading: const Icon(Icons.camera_outdoor_rounded),
-                  title: Text(context.tr!.surveillance))),
+            value: 3,
+            child: ListTile(
+              leading: const Icon(Icons.camera_outdoor_rounded),
+              title: Text(context.tr!.surveillance),
+            ),
+          ),
           PopupMenuItem<int>(
-              value: 4,
-              child: ListTile(
-                  leading: const Icon(Icons.water_damage),
-                  title: Text(context.tr!.waterDamage))),
+            value: 4,
+            child: ListTile(
+              leading: const Icon(Icons.water_damage),
+              title: Text(context.tr!.waterDamage),
+            ),
+          ),
         ],
         icon: const Icon(Icons.more_horiz),
       ),
@@ -1017,21 +982,22 @@ class _DropDownButtonState extends State<_DropDownButton> {
             selectedItem = value ?? '${context.tr!.dropdownButton} 1';
           });
         },
-        items: <String>[
-          '${context.tr!.dropdownButton} 1',
-          '${context.tr!.dropdownButton} 2',
-          '${context.tr!.dropdownButton} 3',
-          '${context.tr!.dropdownButton} 4',
-          '${context.tr!.dropdownButton} 5'
-        ].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(value),
-            ),
-          );
-        }).toList(),
+        items:
+            <String>[
+              '${context.tr!.dropdownButton} 1',
+              '${context.tr!.dropdownButton} 2',
+              '${context.tr!.dropdownButton} 3',
+              '${context.tr!.dropdownButton} 4',
+              '${context.tr!.dropdownButton} 5',
+            ].map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(value),
+                ),
+              );
+            }).toList(),
       ),
     );
   }
@@ -1050,24 +1016,22 @@ class _DropDownButtonFormFieldState extends State<DropDownButtonFormField> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: selectedItem,
+      initialValue: selectedItem,
       onChanged: (String? value) {
         setState(() {
           selectedItem = value ?? '${context.tr!.dropdownFormFieldOption} 1';
         });
       },
-      items: <String>[
-        '${context.tr!.dropdownFormFieldOption} 1',
-        '${context.tr!.dropdownFormFieldOption} 2',
-        '${context.tr!.dropdownFormFieldOption} 3',
-        '${context.tr!.dropdownFormFieldOption} 4',
-        '${context.tr!.dropdownFormFieldOption} 5',
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+      items:
+          <String>[
+            '${context.tr!.dropdownFormFieldOption} 1',
+            '${context.tr!.dropdownFormFieldOption} 2',
+            '${context.tr!.dropdownFormFieldOption} 3',
+            '${context.tr!.dropdownFormFieldOption} 4',
+            '${context.tr!.dropdownFormFieldOption} 5',
+          ].map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(value: value, child: Text(value));
+          }).toList(),
     );
   }
 }
@@ -1088,8 +1052,10 @@ class _DropDownMenuShowcaseState extends State<DropDownMenuShowcase> {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
 
     return RepaintBoundary(
       child: Column(
@@ -1098,18 +1064,12 @@ class _DropDownMenuShowcaseState extends State<DropDownMenuShowcase> {
           if (widget.explainUsage)
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-              child: Text(
-                context.tr!.dropdownMenu,
-                style: denseHeader,
-              ),
+              child: Text(context.tr!.dropdownMenu, style: denseHeader),
             ),
           if (widget.explainUsage)
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              child: Text(
-                context.tr!.dropdownMenuText,
-                style: denseBody,
-              ),
+              child: Text(context.tr!.dropdownMenuText, style: denseBody),
             ),
           DropdownMenu<String>(
             initialSelection: selectedItem,
@@ -1236,9 +1196,7 @@ class _IconButtonCircleAvatarDropdownShowcaseState
           ),
           Tooltip(
             message: context.tr!.tooltipCircleAvatar,
-            child: const CircleAvatar(
-              child: Text('CA'),
-            ),
+            child: const CircleAvatar(child: Text('CA')),
           ),
           const _DropDownButton(),
         ],
@@ -1532,49 +1490,51 @@ ButtonStyle enabledFilledButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
     foregroundColor: selected ? colors.onPrimary : colors.primary,
     backgroundColor: selected ? colors.primary : colors.surfaceContainerHighest,
-    disabledForegroundColor: colors.onSurface.withOpacity(0.38),
-    disabledBackgroundColor: colors.onSurface.withOpacity(0.12),
+    disabledForegroundColor: colors.onSurface.withValues(alpha: 0.38),
+    disabledBackgroundColor: colors.onSurface.withValues(alpha: 0.12),
     hoverColor: selected
-        ? colors.onPrimary.withOpacity(0.08)
-        : colors.primary.withOpacity(0.08),
+        ? colors.onPrimary.withValues(alpha: 0.08)
+        : colors.primary.withValues(alpha: 0.08),
     focusColor: selected
-        ? colors.onPrimary.withOpacity(0.12)
-        : colors.primary.withOpacity(0.12),
+        ? colors.onPrimary.withValues(alpha: 0.12)
+        : colors.primary.withValues(alpha: 0.12),
     highlightColor: selected
-        ? colors.onPrimary.withOpacity(0.12)
-        : colors.primary.withOpacity(0.12),
+        ? colors.onPrimary.withValues(alpha: 0.12)
+        : colors.primary.withValues(alpha: 0.12),
   );
 }
 
 ButtonStyle disabledFilledButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
-    disabledForegroundColor: colors.onSurface.withOpacity(0.38),
-    disabledBackgroundColor: colors.onSurface.withOpacity(0.12),
+    disabledForegroundColor: colors.onSurface.withValues(alpha: 0.38),
+    disabledBackgroundColor: colors.onSurface.withValues(alpha: 0.12),
   );
 }
 
 ButtonStyle enabledFilledTonalButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
-    foregroundColor:
-        selected ? colors.onSecondaryContainer : colors.onSurfaceVariant,
-    backgroundColor:
-        selected ? colors.secondaryContainer : colors.surfaceContainerHighest,
+    foregroundColor: selected
+        ? colors.onSecondaryContainer
+        : colors.onSurfaceVariant,
+    backgroundColor: selected
+        ? colors.secondaryContainer
+        : colors.surfaceContainerHighest,
     hoverColor: selected
-        ? colors.onSecondaryContainer.withOpacity(0.08)
-        : colors.onSurfaceVariant.withOpacity(0.08),
+        ? colors.onSecondaryContainer.withValues(alpha: 0.08)
+        : colors.onSurfaceVariant.withValues(alpha: 0.08),
     focusColor: selected
-        ? colors.onSecondaryContainer.withOpacity(0.12)
-        : colors.onSurfaceVariant.withOpacity(0.12),
+        ? colors.onSecondaryContainer.withValues(alpha: 0.12)
+        : colors.onSurfaceVariant.withValues(alpha: 0.12),
     highlightColor: selected
-        ? colors.onSecondaryContainer.withOpacity(0.12)
-        : colors.onSurfaceVariant.withOpacity(0.12),
+        ? colors.onSecondaryContainer.withValues(alpha: 0.12)
+        : colors.onSurfaceVariant.withValues(alpha: 0.12),
   );
 }
 
 ButtonStyle disabledFilledTonalButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
-    disabledForegroundColor: colors.onSurface.withOpacity(0.38),
-    disabledBackgroundColor: colors.onSurface.withOpacity(0.12),
+    disabledForegroundColor: colors.onSurface.withValues(alpha: 0.38),
+    disabledBackgroundColor: colors.onSurface.withValues(alpha: 0.12),
   );
 }
 
@@ -1582,14 +1542,14 @@ ButtonStyle enabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
     backgroundColor: selected ? colors.inverseSurface : null,
     hoverColor: selected
-        ? colors.onInverseSurface.withOpacity(0.08)
-        : colors.onSurfaceVariant.withOpacity(0.08),
+        ? colors.onInverseSurface.withValues(alpha: 0.08)
+        : colors.onSurfaceVariant.withValues(alpha: 0.08),
     focusColor: selected
-        ? colors.onInverseSurface.withOpacity(0.12)
-        : colors.onSurfaceVariant.withOpacity(0.12),
+        ? colors.onInverseSurface.withValues(alpha: 0.12)
+        : colors.onSurfaceVariant.withValues(alpha: 0.12),
     highlightColor: selected
-        ? colors.onInverseSurface.withOpacity(0.12)
-        : colors.onSurface.withOpacity(0.12),
+        ? colors.onInverseSurface.withValues(alpha: 0.12)
+        : colors.onSurface.withValues(alpha: 0.12),
     side: BorderSide(color: colors.outline),
   ).copyWith(
     foregroundColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
@@ -1606,10 +1566,13 @@ ButtonStyle enabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
 
 ButtonStyle disabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
-    disabledForegroundColor: colors.onSurface.withOpacity(0.38),
-    disabledBackgroundColor:
-        selected ? colors.onSurface.withOpacity(0.12) : null,
-    side: selected ? null : BorderSide(color: colors.outline.withOpacity(0.12)),
+    disabledForegroundColor: colors.onSurface.withValues(alpha: 0.38),
+    disabledBackgroundColor: selected
+        ? colors.onSurface.withValues(alpha: 0.12)
+        : null,
+    side: selected
+        ? null
+        : BorderSide(color: colors.outline.withValues(alpha: 0.12)),
   );
 }
 
@@ -1646,15 +1609,12 @@ class _ProgressIndicatorShowcaseState extends State<ProgressIndicatorShowcase> {
           SizedBox(
             width: 50,
             height: 50,
-            child: CircularProgressIndicator(
-              value: progressValue,
-            ),
+            child: CircularProgressIndicator(value: progressValue),
           ),
           SizedBox(
-              width: 200,
-              child: LinearProgressIndicator(
-                value: progressValue,
-              )),
+            width: 200,
+            child: LinearProgressIndicator(value: progressValue),
+          ),
         ],
       ),
     );
@@ -1672,14 +1632,8 @@ class ChipShowcase extends StatelessWidget {
         spacing: 8,
         runSpacing: 8,
         children: <Widget>[
-          Chip(
-            label: Text(context.tr!.labelChip),
-            onDeleted: () {},
-          ),
-          Chip(
-            label: Text(context.tr!.labelChip),
-            avatar: const FlutterLogo(),
-          ),
+          Chip(label: Text(context.tr!.labelChip), onDeleted: () {}),
+          Chip(label: Text(context.tr!.labelChip), avatar: const FlutterLogo()),
           ActionChip(
             label: Text(context.tr!.labelActionChip),
             avatar: const Icon(Icons.settings),
@@ -1715,10 +1669,7 @@ class ChipShowcase extends StatelessWidget {
             selected: true,
             onSelected: (bool value) {},
           ),
-          ChoiceChip(
-            label: Text(context.tr!.labelChoiceChip),
-            selected: true,
-          ),
+          ChoiceChip(label: Text(context.tr!.labelChoiceChip), selected: true),
           ChoiceChip(
             label: Text(context.tr!.labelChoiceChip),
             selected: false,
@@ -1833,7 +1784,8 @@ class _TextInputFieldState extends State<TextInputField> {
             decoration: InputDecoration(
               filled: true,
               hintText: context.tr!.showcaseHintText,
-              labelText: '${context.tr!.showcaseLabelTextOutline}, '
+              labelText:
+                  '${context.tr!.showcaseLabelTextOutline}, '
                   '${context.tr!.filledSetTrue}',
               errorText: _errorState2 ? context.tr!.showcaseErrorText : null,
             ),
@@ -1914,7 +1866,8 @@ class AppBarShowcase extends StatelessWidget {
                     onPressed: () {},
                   ),
                   title: Text(
-                      '${context.tr!.tooltipStandard} ${context.tr!.appBar}'),
+                    '${context.tr!.tooltipStandard} ${context.tr!.appBar}',
+                  ),
                   actions: <Widget>[
                     IconButton(
                       icon: const Icon(Icons.search),
@@ -1948,7 +1901,7 @@ class AppBarShowcase extends StatelessWidget {
                           onPressed: () {},
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -1973,7 +1926,7 @@ class AppBarShowcase extends StatelessWidget {
                           onPressed: () {},
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -1998,7 +1951,7 @@ class AppBarShowcase extends StatelessWidget {
                           onPressed: () {},
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -2036,10 +1989,7 @@ class _BehindAppBar extends StatelessWidget {
 }
 
 class BottomAppBarShowcase extends StatelessWidget {
-  const BottomAppBarShowcase({
-    super.key,
-    this.explain = true,
-  });
+  const BottomAppBarShowcase({super.key, this.explain = true});
 
   final bool explain;
 
@@ -2049,8 +1999,10 @@ class BottomAppBarShowcase extends StatelessWidget {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
     return RepaintBoundary(
       child: MediaQuery.removePadding(
         context: context,
@@ -2084,10 +2036,7 @@ class BottomAppBarShowcase extends StatelessWidget {
             if (explain)
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                child: Text(
-                  context.tr!.bottomAppBar,
-                  style: denseHeader,
-                ),
+                child: Text(context.tr!.bottomAppBar, style: denseHeader),
               ),
             if (explain)
               Padding(
@@ -2114,17 +2063,20 @@ class TabBarForAppBarShowcase extends StatelessWidget {
     final bool useM3 = theme.useMaterial3;
     final ColorScheme colorScheme = theme.colorScheme;
 
-    final Color effectiveTabBackground = theme.appBarTheme.backgroundColor ??
+    final Color effectiveTabBackground =
+        theme.appBarTheme.backgroundColor ??
         (isDark
             ? colorScheme.surface
             : useM3
-                ? colorScheme.surface
-                : colorScheme.primary);
+            ? colorScheme.surface
+            : colorScheme.primary);
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
 
     return RepaintBoundary(
       child: DefaultTabController(
@@ -2159,17 +2111,11 @@ class TabBarForAppBarShowcase extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Text(
-                context.tr!.tabBarAppBar,
-                style: denseHeader,
-              ),
+              child: Text(context.tr!.tabBarAppBar, style: denseHeader),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Text(
-                context.tr!.tabBarIfAppBar,
-                style: denseBody,
-              ),
+              child: Text(context.tr!.tabBarIfAppBar, style: denseBody),
             ),
           ],
         ),
@@ -2187,8 +2133,10 @@ class TabBarForBackgroundShowcase extends StatelessWidget {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
     return RepaintBoundary(
       child: DefaultTabController(
         length: 3,
@@ -2222,17 +2170,11 @@ class TabBarForBackgroundShowcase extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Text(
-                context.tr!.tabBarSurface,
-                style: denseHeader,
-              ),
+              child: Text(context.tr!.tabBarSurface, style: denseHeader),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Text(
-                context.tr!.tabBarIfSurface,
-                style: denseBody,
-              ),
+              child: Text(context.tr!.tabBarIfSurface, style: denseBody),
             ),
           ],
         ),
@@ -2261,8 +2203,10 @@ class _BottomNavigationBarShowcaseState
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
     return RepaintBoundary(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2329,10 +2273,7 @@ class _BottomNavigationBarShowcaseState
           if (widget.explain)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Text(
-                context.tr!.bottomNavigationBar,
-                style: denseHeader,
-              ),
+              child: Text(context.tr!.bottomNavigationBar, style: denseHeader),
             ),
           if (widget.explain)
             Padding(
@@ -2365,8 +2306,10 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
     return RepaintBoundary(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2430,10 +2373,7 @@ class _NavigationBarShowcaseState extends State<NavigationBarShowcase> {
           if (widget.explain)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Text(
-                context.tr!.navigationBarM3,
-                style: denseHeader,
-              ),
+              child: Text(context.tr!.navigationBarM3, style: denseHeader),
             ),
           if (widget.explain)
             Padding(
@@ -2480,8 +2420,10 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
 
     return RepaintBoundary(
       child: Column(
@@ -2490,18 +2432,12 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
           if (widget.explain)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: Text(
-                context.tr!.navigationRail,
-                style: denseHeader,
-              ),
+              child: Text(context.tr!.navigationRail, style: denseHeader),
             ),
           if (widget.explain)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Text(
-                context.tr!.flutterBackgroundColor,
-                style: denseBody,
-              ),
+              child: Text(context.tr!.flutterBackgroundColor, style: denseBody),
             ),
           const Divider(height: 1),
           SizedBox(
@@ -2524,8 +2460,9 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
                       child: NavigationRail(
                         extended: isExtended,
                         minExtendedWidth: 150,
-                        labelType:
-                            isExtended ? NavigationRailLabelType.none : null,
+                        labelType: isExtended
+                            ? NavigationRailLabelType.none
+                            : null,
                         selectedIndex: buttonIndex,
                         onDestinationSelected: (int value) {
                           setState(() {
@@ -2601,8 +2538,10 @@ class MenuBarShowcase extends StatelessWidget {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
     return Shortcuts(
       shortcuts: const <ShortcutActivator, Intent>{
         SingleActivator(LogicalKeyboardKey.keyT, control: true):
@@ -2615,18 +2554,12 @@ class MenuBarShowcase extends StatelessWidget {
           if (explainUsage)
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(explainIndent, 16, 0, 0),
-              child: Text(
-                context.tr!.menuBar,
-                style: denseHeader,
-              ),
+              child: Text(context.tr!.menuBar, style: denseHeader),
             ),
           if (explainUsage)
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(explainIndent, 0, 0, 8),
-              child: Text(
-                context.tr!.menuBarM3,
-                style: denseBody,
-              ),
+              child: Text(context.tr!.menuBarM3, style: denseBody),
             ),
           Row(
             children: <Widget>[
@@ -2657,7 +2590,8 @@ class MenuBarShowcase extends StatelessWidget {
                                 );
                               },
                               child: MenuAcceleratorLabel(
-                                  '&${context.tr!.saveNow}'),
+                                '&${context.tr!.saveNow}',
+                              ),
                             ),
                             MenuItemButton(
                               onPressed: () {
@@ -2668,7 +2602,8 @@ class MenuBarShowcase extends StatelessWidget {
                                 );
                               },
                               child: MenuAcceleratorLabel(
-                                  '&${context.tr!.loadNow}'),
+                                '&${context.tr!.loadNow}',
+                              ),
                             ),
                           ],
                           child: Text(context.tr!.file),
@@ -2676,9 +2611,7 @@ class MenuBarShowcase extends StatelessWidget {
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${context.tr!.quit}!'),
-                              ),
+                              SnackBar(content: Text('${context.tr!.quit}!')),
                             );
                           },
                           child: MenuAcceleratorLabel('&${context.tr!.quit}'),
@@ -2691,9 +2624,7 @@ class MenuBarShowcase extends StatelessWidget {
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${context.tr!.bold}!'),
-                              ),
+                              SnackBar(content: Text('${context.tr!.bold}!')),
                             );
                           },
                           child: MenuAcceleratorLabel('&${context.tr!.bold}'),
@@ -2701,9 +2632,7 @@ class MenuBarShowcase extends StatelessWidget {
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${context.tr!.italic}!'),
-                              ),
+                              SnackBar(content: Text('${context.tr!.italic}!')),
                             );
                           },
                           child: MenuAcceleratorLabel('&${context.tr!.italic}'),
@@ -2716,8 +2645,9 @@ class MenuBarShowcase extends StatelessWidget {
                               ),
                             );
                           },
-                          child:
-                              MenuAcceleratorLabel('&${context.tr!.underline}'),
+                          child: MenuAcceleratorLabel(
+                            '&${context.tr!.underline}',
+                          ),
                         ),
                       ],
                       child: MenuAcceleratorLabel('&${context.tr!.style}'),
@@ -2727,14 +2657,13 @@ class MenuBarShowcase extends StatelessWidget {
                         MenuItemButton(
                           onPressed: null,
                           child: MenuAcceleratorLabel(
-                              '&${context.tr!.disabledItem}'),
+                            '&${context.tr!.disabledItem}',
+                          ),
                         ),
                         MenuItemButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${context.tr!.minify}!'),
-                              ),
+                              SnackBar(content: Text('${context.tr!.minify}!')),
                             );
                           },
                           child: MenuAcceleratorLabel('&${context.tr!.minify}'),
@@ -2763,8 +2692,10 @@ class MenuAnchorShowcase extends StatelessWidget {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2773,18 +2704,12 @@ class MenuAnchorShowcase extends StatelessWidget {
         if (explainUsage)
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-            child: Text(
-              context.tr!.menuAnchor,
-              style: denseHeader,
-            ),
+            child: Text(context.tr!.menuAnchor, style: denseHeader),
           ),
         if (explainUsage)
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: Text(
-              context.tr!.menuAnchorM3Text,
-              style: denseBody,
-            ),
+            child: Text(context.tr!.menuAnchorM3Text, style: denseBody),
           ),
         Row(
           children: <Widget>[
@@ -2807,9 +2732,13 @@ class MenuAnchorShowcase extends StatelessWidget {
 enum MenuEntry {
   about('About'),
   showMessage(
-      'Show Message', SingleActivator(LogicalKeyboardKey.keyS, control: true)),
+    'Show Message',
+    SingleActivator(LogicalKeyboardKey.keyS, control: true),
+  ),
   hideMessage(
-      'Hide Message', SingleActivator(LogicalKeyboardKey.keyH, control: true)),
+    'Hide Message',
+    SingleActivator(LogicalKeyboardKey.keyH, control: true),
+  ),
   colorMenu('Color Menu'),
   colorRed('Red', SingleActivator(LogicalKeyboardKey.keyR, control: true)),
   colorGreen('Green', SingleActivator(LogicalKeyboardKey.keyG, control: true)),
@@ -2855,14 +2784,15 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
     // shortcuts, they only display the shortcut hint text.
     final Map<ShortcutActivator, Intent> shortcuts =
         <ShortcutActivator, Intent>{
-      for (final MenuEntry item in MenuEntry.values)
-        if (item.shortcut != null)
-          item.shortcut!: VoidCallbackIntent(() => _activate(item)),
-    };
+          for (final MenuEntry item in MenuEntry.values)
+            if (item.shortcut != null)
+              item.shortcut!: VoidCallbackIntent(() => _activate(item)),
+        };
     // Register the shortcuts with the ShortcutRegistry so that they are
     // available to the entire application.
-    final Map<ShortcutActivator, Intent>? entries =
-        ShortcutRegistry.maybeOf(context)?.shortcuts;
+    final Map<ShortcutActivator, Intent>? entries = ShortcutRegistry.maybeOf(
+      context,
+    )?.shortcuts;
     // TODO(rydmike): Potential issue with ShortcutRegistry? Investigate.
     // Workaround to avoid issue of entries being added multiple times, the
     // dispose of them does not seem to work all the time. This widget is in
@@ -2899,9 +2829,7 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
             child: Text(MenuEntry.about.label),
             onPressed: () => _activate(MenuEntry.about),
           ),
-          MenuItemButton(
-            child: Text(context.tr!.disabledItem),
-          ),
+          MenuItemButton(child: Text(context.tr!.disabledItem)),
           if (_showingMessage)
             MenuItemButton(
               onPressed: () => _activate(MenuEntry.hideMessage),
@@ -3023,8 +2951,10 @@ class DrawerShowcase extends StatelessWidget {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -3032,18 +2962,12 @@ class DrawerShowcase extends StatelessWidget {
         if (explain)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Text(
-              context.tr!.drawer,
-              style: denseHeader,
-            ),
+            child: Text(context.tr!.drawer, style: denseHeader),
           ),
         if (explain)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: Text(
-              context.tr!.flutterBackgroundColorM3,
-              style: denseBody,
-            ),
+            child: Text(context.tr!.flutterBackgroundColorM3, style: denseBody),
           ),
         SizedBox(
           height: 280,
@@ -3051,11 +2975,7 @@ class DrawerShowcase extends StatelessWidget {
             context: context,
             removeBottom: true,
             removeTop: true,
-            child: Drawer(
-              child: Center(
-                child: Text(context.tr!.drawer),
-              ),
-            ),
+            child: Drawer(child: Center(child: Text(context.tr!.drawer))),
           ),
         ),
       ],
@@ -3082,8 +3002,10 @@ class _NavigationDrawerShowcaseState extends State<NavigationDrawerShowcase> {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
 
     return RepaintBoundary(
       child: Column(
@@ -3093,18 +3015,12 @@ class _NavigationDrawerShowcaseState extends State<NavigationDrawerShowcase> {
           if (widget.explain)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: Text(
-                context.tr!.navigationDrawer,
-                style: denseHeader,
-              ),
+              child: Text(context.tr!.navigationDrawer, style: denseHeader),
             ),
           if (widget.explain)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Text(
-                context.tr!.flutterBackgroundColor,
-                style: denseBody,
-              ),
+              child: Text(context.tr!.flutterBackgroundColor, style: denseBody),
             ),
           MediaQuery.removePadding(
             context: context,
@@ -3199,7 +3115,8 @@ class ListTileShowcase extends StatelessWidget {
             enabled: false,
             leading: const Icon(Icons.info),
             title: Text(
-                '${context.tr!.showcaseListTileTitle} ${context.tr!.disabledMin}'),
+              '${context.tr!.showcaseListTileTitle} ${context.tr!.disabledMin}',
+            ),
             subtitle: Text(context.tr!.showcaseListTileSelectedSubTitle),
             trailing: Text(context.tr!.showcaseListTileTrailing),
             onTap: () {},
@@ -3295,42 +3212,38 @@ class RadioTileShowcase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      child: Column(
-        children: <Widget>[
-          RadioListTile<int>(
-            secondary: const Icon(Icons.info),
-            title: Text(context.tr!.radioListTile),
-            subtitle: Text(context.tr!.radioOptionUnselected),
-            value: 0,
-            onChanged: (_) {},
-            groupValue: 1,
-          ),
-          RadioListTile<int>(
-            secondary: const Icon(Icons.info),
-            title: Text(context.tr!.radioListTile),
-            subtitle: Text(context.tr!.radioOptionSelected),
-            value: 1,
-            onChanged: (_) {},
-            groupValue: 1,
-          ),
-          RadioListTile<int>(
-            secondary: const Icon(Icons.info),
-            title: Text(context.tr!.radioListTile),
-            subtitle: Text(context.tr!.radioOptionListSelected),
-            value: 1,
-            selected: true,
-            onChanged: (_) {},
-            groupValue: 1,
-          ),
-          RadioListTile<int>(
-            secondary: const Icon(Icons.info),
-            title: Text(context.tr!.radioListTileDisabled),
-            subtitle: Text(context.tr!.radioOptionSelected),
-            value: 1,
-            onChanged: null,
-            groupValue: 1,
-          ),
-        ],
+      child: RadioGroup<int>(
+        groupValue: 1,
+        onChanged: (_) {},
+        child: Column(
+          children: <Widget>[
+            RadioListTile<int>(
+              secondary: const Icon(Icons.info),
+              title: Text(context.tr!.radioListTile),
+              subtitle: Text(context.tr!.radioOptionUnselected),
+              value: 0,
+            ),
+            RadioListTile<int>(
+              secondary: const Icon(Icons.info),
+              title: Text(context.tr!.radioListTile),
+              subtitle: Text(context.tr!.radioOptionSelected),
+              value: 1,
+            ),
+            RadioListTile<int>(
+              secondary: const Icon(Icons.info),
+              title: Text(context.tr!.radioListTile),
+              subtitle: Text(context.tr!.radioOptionListSelected),
+              value: 1,
+              selected: true,
+            ),
+            RadioListTile<int>(
+              secondary: const Icon(Icons.info),
+              title: Text(context.tr!.radioListTileDisabled),
+              subtitle: Text(context.tr!.radioOptionSelected),
+              value: 1,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -3409,13 +3322,12 @@ class _ExpansionPanelListShowcaseState
             _items[index].isExpanded = !isExpanded;
           });
         },
-        children:
-            _items.map<ExpansionPanel>((ExpansionPanelShowcaseItems item) {
+        children: _items.map<ExpansionPanel>((
+          ExpansionPanelShowcaseItems item,
+        ) {
           return ExpansionPanel(
             headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(
-                title: Text(item.headerValue),
-              );
+              return ListTile(title: Text(item.headerValue));
             },
             body: ListTile(
               title: Text(item.expandedValue),
@@ -3428,8 +3340,9 @@ class _ExpansionPanelListShowcaseState
                       onPressed: () {
                         setState(() {
                           _items.removeWhere(
-                              (ExpansionPanelShowcaseItems currentItem) =>
-                                  item == currentItem);
+                            (ExpansionPanelShowcaseItems currentItem) =>
+                                item == currentItem,
+                          );
                         });
                       },
                     )
@@ -3458,8 +3371,9 @@ class ExpansionPanelShowcaseItems {
   bool isExpanded;
 
   static List<ExpansionPanelShowcaseItems> generateItems(int numberOfItems) {
-    return List<ExpansionPanelShowcaseItems>.generate(numberOfItems,
-        (int index) {
+    return List<ExpansionPanelShowcaseItems>.generate(numberOfItems, (
+      int index,
+    ) {
       return ExpansionPanelShowcaseItems(
         id: index,
         headerValue: 'ExpansionPanelList tile $index',
@@ -3474,9 +3388,10 @@ class AlertDialogShowcase extends StatelessWidget {
 
   Future<void> _openDialog(BuildContext context) async {
     await showDialog<void>(
-        context: context,
-        useRootNavigator: false,
-        builder: (BuildContext context) => const _AlertDialogExample());
+      context: context,
+      useRootNavigator: false,
+      builder: (BuildContext context) => const _AlertDialogExample(),
+    );
   }
 
   @override
@@ -3502,10 +3417,12 @@ class _AlertDialogExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool useMaterial3 = Theme.of(context).useMaterial3;
-    final String cancel =
-        useMaterial3 ? context.tr!.cancel : context.tr!.cancel.toUpperCase();
-    final String allow =
-        useMaterial3 ? context.tr!.allow : context.tr!.allow.toUpperCase();
+    final String cancel = useMaterial3
+        ? context.tr!.cancel
+        : context.tr!.cancel.toUpperCase();
+    final String allow = useMaterial3
+        ? context.tr!.allow
+        : context.tr!.allow.toUpperCase();
 
     return AlertDialog(
       title: Text(context.tr!.allowLocServ),
@@ -3525,9 +3442,8 @@ class TimePickerDialogShowcase extends StatelessWidget {
     await showDialog<void>(
       context: context,
       useRootNavigator: false,
-      builder: (BuildContext context) => TimePickerDialog(
-        initialTime: TimeOfDay.now(),
-      ),
+      builder: (BuildContext context) =>
+          TimePickerDialog(initialTime: TimeOfDay.now()),
     );
   }
 
@@ -3535,11 +3451,7 @@ class TimePickerDialogShowcase extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        AbsorbPointer(
-          child: TimePickerDialog(
-            initialTime: TimeOfDay.now(),
-          ),
-        ),
+        AbsorbPointer(child: TimePickerDialog(initialTime: TimeOfDay.now())),
         TextButton(
           child: Text(
             '${context.tr!.show} ${context.tr!.timePickerDialog}',
@@ -3693,35 +3605,39 @@ class SnackBarShowcase extends StatelessWidget {
 
     final Color defaultBackgroundColor = isLight
         ? useMaterial3
-            ? colorScheme.inverseSurface
-            : Color.alphaBlend(
-                colorScheme.onSurface.withOpacity(0.80), colorScheme.surface)
+              ? colorScheme.inverseSurface
+              : Color.alphaBlend(
+                  colorScheme.onSurface.withValues(alpha: 0.80),
+                  colorScheme.surface,
+                )
         : colorScheme.onSurface;
     final Color snackBackground =
         theme.snackBarTheme.backgroundColor ?? defaultBackgroundColor;
 
     final Color snackForeground =
         ThemeData.estimateBrightnessForColor(snackBackground) ==
-                Brightness.light
-            ? Colors.black
-            : Colors.white;
+            Brightness.light
+        ? Colors.black
+        : Colors.white;
 
-    final Color defaultActionColor =
-        useMaterial3 ? colorScheme.inversePrimary : colorScheme.secondary;
+    final Color defaultActionColor = useMaterial3
+        ? colorScheme.inversePrimary
+        : colorScheme.secondary;
     final Color snackActionColor =
         theme.snackBarTheme.actionTextColor ?? defaultActionColor;
 
-    final TextStyle snackStyle = theme.snackBarTheme.contentTextStyle ??
-        ThemeData(brightness: Brightness.light)
-            .textTheme
-            .titleMedium!
-            .copyWith(color: snackForeground);
-    final TextStyle snackActionStyle = theme.snackBarTheme.contentTextStyle
-            ?.copyWith(color: snackActionColor) ??
-        ThemeData(brightness: Brightness.light)
-            .textTheme
-            .titleMedium!
-            .copyWith(color: snackActionColor);
+    final TextStyle snackStyle =
+        theme.snackBarTheme.contentTextStyle ??
+        ThemeData(
+          brightness: Brightness.light,
+        ).textTheme.titleMedium!.copyWith(color: snackForeground);
+    final TextStyle snackActionStyle =
+        theme.snackBarTheme.contentTextStyle?.copyWith(
+          color: snackActionColor,
+        ) ??
+        ThemeData(
+          brightness: Brightness.light,
+        ).textTheme.titleMedium!.copyWith(color: snackActionColor);
     final double snackElevation = theme.snackBarTheme.elevation ?? 6;
 
     final ShapeBorder? shape = theme.snackBarTheme.shape;
@@ -3736,11 +3652,10 @@ class SnackBarShowcase extends StatelessWidget {
               color: snackBackground,
               elevation: snackElevation,
               shadowColor: colorScheme.shadow,
-              shape: shape ??
+              shape:
+                  shape ??
                   const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
                   ),
               child: SizedBox(
                 height: 46,
@@ -3832,8 +3747,10 @@ class MaterialShowcase extends StatelessWidget {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
 
     return RepaintBoundary(
       child: Column(
@@ -3841,17 +3758,11 @@ class MaterialShowcase extends StatelessWidget {
         children: <Widget>[
           if (explain) ...<Widget>[
             Text(context.tr!.materialShowcaseText1, style: denseHeader),
-            Text(
-              context.tr!.materialShowcaseText2,
-              style: denseBody,
-            ),
+            Text(context.tr!.materialShowcaseText2, style: denseBody),
             const SizedBox(height: 12),
           ],
           Text(context.tr!.materialShowcaseText3, style: denseHeader),
-          Text(
-            context.tr!.materialShowcaseText4,
-            style: denseBody,
-          ),
+          Text(context.tr!.materialShowcaseText4, style: denseBody),
           const SizedBox(height: 8),
           Material(
             type: MaterialType.canvas,
@@ -3987,10 +3898,7 @@ class MaterialShowcase extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           Text(context.tr!.materialShowcaseTypeCard1, style: denseHeader),
-          Text(
-            context.tr!.materialShowcaseTypeCard2,
-            style: denseBody,
-          ),
+          Text(context.tr!.materialShowcaseTypeCard2, style: denseBody),
           const SizedBox(height: 8),
           Material(
             type: MaterialType.card,
@@ -4143,8 +4051,10 @@ class CardShowcase extends StatelessWidget {
     final TextStyle denseHeader = theme.textTheme.titleMedium!.copyWith(
       fontSize: 13,
     );
-    final TextStyle denseBody = theme.textTheme.bodyMedium!
-        .copyWith(fontSize: 12, color: theme.textTheme.bodySmall!.color);
+    final TextStyle denseBody = theme.textTheme.bodyMedium!.copyWith(
+      fontSize: 12,
+      color: theme.textTheme.bodySmall!.color,
+    );
     return RepaintBoundary(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -4157,10 +4067,7 @@ class CardShowcase extends StatelessWidget {
           if (explain)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                context.tr!.cardShowcaseText,
-                style: denseBody,
-              ),
+              child: Text(context.tr!.cardShowcaseText, style: denseBody),
             ),
           Card(
             elevation: 0,
@@ -4187,11 +4094,12 @@ class CardShowcase extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                    child: Text(
-                  context.tr!.cardShowcaseElevate1Text1,
-                  textAlign: TextAlign.center,
-                  style: denseHeader,
-                )),
+                  child: Text(
+                    context.tr!.cardShowcaseElevate1Text1,
+                    textAlign: TextAlign.center,
+                    style: denseHeader,
+                  ),
+                ),
               ),
             ),
           ),
@@ -4328,11 +4236,12 @@ class CardShowcase extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                    child: Text(
-                  context.tr!.cardShowcaseElevate10Text3,
-                  textAlign: TextAlign.center,
-                  style: denseHeader,
-                )),
+                  child: Text(
+                    context.tr!.cardShowcaseElevate10Text3,
+                    textAlign: TextAlign.center,
+                    style: denseHeader,
+                  ),
+                ),
               ),
             ),
           ),
@@ -4357,7 +4266,8 @@ class PrimaryTextThemeShowcase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextThemeColumnShowcase(
-        textTheme: Theme.of(context).primaryTextTheme);
+      textTheme: Theme.of(context).primaryTextTheme,
+    );
   }
 }
 
@@ -4370,9 +4280,10 @@ class TextThemeColumnShowcase extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('${context.tr!.font}: ${textTheme.titleSmall!.fontFamily}',
-            style:
-                textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600)),
+        Text(
+          '${context.tr!.font}: ${textTheme.titleSmall!.fontFamily}',
+          style: textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+        ),
         Text(
           '${context.tr!.display} ${context.tr!.large} '
           '(${textTheme.displayLarge!.fontSize!.toStringAsFixed(0)})',

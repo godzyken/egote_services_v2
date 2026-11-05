@@ -1,10 +1,8 @@
 import 'package:connectycube_sdk/connectycube_sdk.dart';
-import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../domain/providers/auth_repository_provider.dart';
 
@@ -30,16 +28,22 @@ class VerificationScreen extends ConsumerStatefulWidget {
 }
 
 class _VerificationScreenState extends ConsumerState<VerificationScreen> {
-  final GlobalKey<FormState> _formKey =
-      GlobalKey<FormState>(debugLabel: 'verify');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(
+    debugLabel: 'verify',
+  );
   bool _isSubmitting = false;
 
   final _codeCtrl = TextEditingController();
 
   Future<void> _resendCode() async {
     try {
-      await ref.read(authRepositoryProvider).signUp(
-          widget.params.email, widget.params.name, widget.params.password);
+      await ref
+          .read(authRepositoryProvider)
+          .signUp(
+            widget.params.email,
+            widget.params.name,
+            widget.params.password,
+          );
       if (mounted) {
         context.showAlert(context.tr!.codeResent);
       }
@@ -70,6 +74,15 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
         },
         (authResponse) {
           if (mounted) {
+            // Initialize ConnectyCube session for real-time chat
+            final cubeUser = CubeUser(
+              email: widget.params.email,
+              fullName: widget.params.name,
+            );
+            if (CubeSessionManager.instance.activeSession == null) {
+              createSession(cubeUser);
+            }
+
             context.showAlert(context.tr!.successSignedUp);
             // Navigate to home
             context.go('/user_home/${authResponse.user!.id}');
@@ -98,20 +111,14 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr!.verification),
-      ),
+      appBar: AppBar(title: Text(context.tr!.verification)),
       body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 24,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         children: [
           Text(
-              '${context.tr!.verificationCodeSent} ${context.tr!.toYourEmailAddress} ${widget.params.email}'),
-          const SizedBox(
-            height: 30,
+            '${context.tr!.verificationCodeSent} ${context.tr!.toYourEmailAddress} ${widget.params.email}',
           ),
+          const SizedBox(height: 30),
           TextFormField(
             controller: _codeCtrl,
             enabled: !_isSubmitting,
@@ -133,14 +140,12 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
               }
             },
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmitting ? null : () => _verify(_codeCtrl.text),
-            child: _isSubmitting 
-              ? const CircularProgressIndicator() 
-              : Text(context.tr!.verify),
+            child: _isSubmitting
+                ? const CircularProgressIndicator()
+                : Text(context.tr!.verify),
           ),
           TextButton(
             onPressed: _isSubmitting ? null : _resendCode,

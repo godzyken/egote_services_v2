@@ -10,22 +10,25 @@ class ResetSettingsDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String usedDb =
-        ref.watch(usedKeyValueDbNotifierProvider).describe;
+    final String usedDb = ref.watch(usedKeyValueDbNotifierProvider).describe;
     return AlertDialog(
       title: Text('${context.tr!.reset} ${context.tr!.themeSettings}'),
-      content: Text('${context.tr!.resetAll} $usedDb ${context.tr!.alertDialogContent}'),
+      content: Text(
+        '${context.tr!.resetAll} $usedDb ${context.tr!.alertDialogContent}',
+      ),
       actions: <Widget>[
         TextButton(
-            onPressed: () {
-              context.pop(false);
-            },
-            child: Text(context.tr!.cancel)),
+          onPressed: () {
+            context.pop(false);
+          },
+          child: Text(context.tr!.cancel),
+        ),
         TextButton(
-            onPressed: () {
-              context.pop(true);
-            },
-            child: Text(context.tr!.reset)),
+          onPressed: () {
+            context.pop(true);
+          },
+          child: Text(context.tr!.reset),
+        ),
       ],
     );
   }

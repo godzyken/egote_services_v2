@@ -9,9 +9,8 @@ part 'travaux_entity_states.g.dart';
 @freezed
 abstract class TravauxEntityStates with _$TravauxEntityStates {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-  const factory TravauxEntityStates({
-    required List<TravauxEntity> travaux,
-  }) = _TravauxEntityStates;
+  const factory TravauxEntityStates({required List<TravauxEntity> travaux}) =
+      _TravauxEntityStates;
 
   factory TravauxEntityStates.initial() =>
       const TravauxEntityStates(travaux: <TravauxEntity>[]);

@@ -4,7 +4,7 @@ import 'package:fpdart/src/either.dart';
 
 class UserName extends ValueAbstract<String> {
   factory UserName(String input) {
-    return UserName._(_validate(input),);
+    return UserName._(_validate(input));
   }
 
   const UserName._(this._value);
@@ -21,6 +21,8 @@ Either<Failure, String> _validate(String input) {
   }
 
   return left(
-    Failure.unprocessableEntity(message: 'The name must be at least 2 characters in length'),
+    Failure.unprocessableEntity(
+      message: 'The name must be at least 2 characters in length',
+    ),
   );
 }

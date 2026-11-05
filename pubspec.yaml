@@ -13,6 +13,8 @@ dependencies:
   flutter_riverpod: ^3.1.0
   riverpod_annotation: ^4.0.0
   sentry_flutter: ^9.26.0
+  talker: ^5.2.0
+  talker_flutter: ^5.1.16
   flutter_plugin_android_lifecycle: ^2.0.20
   shared_preferences: ^2.2.3
   firebase_auth: ^4.20.0
@@ -64,21 +66,16 @@ dependencies:
   badges: ^4.0.1
   multi_link_text: ^0.0.5
   google_generative_ai: ^0.4.1
+  talker_riverpod_logger: ^5.2.0
   #  url_launcher_android: ^6.3.1
 
 dev_dependencies:
   flutter_lints: ^6.0.0
-  riverpod_generator: ^4.0.0+1
-  go_router_builder: ^4.4.0
-  build_runner: ^2.4.10
-  freezed: ^3.2.3
-  json_serializable: ^6.11.2
   riverpod_lint: ^3.1.0
   custom_lint: ^0.8.1
   flutter_flavorizr: ^2.2.3
   flutter_test:
     sdk: flutter
-  flutter_gen_runner: ^5.5.0+1
   icons_launcher: ^3.1.0
 
 dependency_overrides:

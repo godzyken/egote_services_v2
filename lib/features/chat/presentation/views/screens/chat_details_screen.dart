@@ -3,14 +3,14 @@ import 'dart:io' as io;
 
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:connectycube_sdk/connectycube_storage.dart';
+import 'package:egote_services_v2/features/chat/infrastructure/repositories/cube_user_repository.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
-import 'package:egote_services_v2/features/chat/infrastructure/repositories/cube_user_repository.dart';
-import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 
 /// Top-level details wrapper that dynamically loads the appropriate view.
 class DetailsScreen extends ConsumerWidget {
@@ -103,46 +103,44 @@ class _ContactDetailViewState extends BaseDetailsState<ContactDetailView> {
     final user = contactUser ?? CubeUser(fullName: context.tr!.absent);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr!.contactDetails),
-      ),
+      appBar: AppBar(title: Text(context.tr!.contactDetails)),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            getUserAvatarWidget(user, 50),
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                    width: 1.5,
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  getUserAvatarWidget(user, 50),
+                  const SizedBox(height: 24),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      user.fullName ?? user.login ?? user.email ?? '',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ),
-                ),
-              ),
-              child: Text(
-                user.fullName ?? user.login ?? user.email ?? '',
-                style: Theme.of(context).textTheme.titleLarge,
+                  const SizedBox(height: 32),
+                  ElevatedButton.icon(
+                    onPressed: () => context.pop(),
+                    icon: const Icon(Icons.chat),
+                    label: Text(context.tr!.startDialog),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 32),
-            ElevatedButton.icon(
-              onPressed: () => context.pop(),
-              icon: const Icon(Icons.chat),
-              label: Text(context.tr!.startDialog),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -217,7 +215,8 @@ class _GroupDetailViewState extends BaseDetailsState<GroupDetailView> {
 
   Future<void> _updateDialog() async {
     final newName = _nameController.text.trim();
-    final hasNameChange = newName.isNotEmpty && newName != widget.cubeDialog.name;
+    final hasNameChange =
+        newName.isNotEmpty && newName != widget.cubeDialog.name;
     final hasPhotoChange = _newPhotoUrl != null && _newPhotoUrl!.isNotEmpty;
     final hasAdditions = _usersToAdd != null && _usersToAdd!.isNotEmpty;
     final hasRemovals = _usersToRemove.isNotEmpty;
@@ -231,12 +230,17 @@ class _GroupDetailViewState extends BaseDetailsState<GroupDetailView> {
     if (hasNameChange) params['name'] = newName;
     if (hasPhotoChange) params['photo'] = _newPhotoUrl;
     if (hasAdditions) params['push_all'] = {'occupants_ids': _usersToAdd};
-    if (hasRemovals) params['pull_all'] = {'occupants_ids': _usersToRemove.toList()};
+    if (hasRemovals) {
+      params['pull_all'] = {'occupants_ids': _usersToRemove.toList()};
+    }
 
     setState(() => isLoading = true);
 
     try {
-      final updatedDialog = await updateDialog(widget.cubeDialog.dialogId!, params);
+      final updatedDialog = await updateDialog(
+        widget.cubeDialog.dialogId!,
+        params,
+      );
       widget.cubeDialog.name = updatedDialog.name;
       widget.cubeDialog.photo = updatedDialog.photo;
       widget.cubeDialog.occupantsIds = updatedDialog.occupantsIds;
@@ -306,36 +310,36 @@ class _GroupDetailViewState extends BaseDetailsState<GroupDetailView> {
           IconButton(
             onPressed: _confirmLeaveDialog,
             icon: const Icon(Icons.exit_to_app),
-          )
+          ),
         ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 500),
-            child: Column(
-              children: [
-                _buildAvatarPicker(),
-                const SizedBox(height: 24),
-                TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: context.tr!.changeGroupName,
-                    border: const OutlineInputBorder(),
+              padding: const EdgeInsets.all(24.0),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  child: Column(
+                    children: [
+                      _buildAvatarPicker(),
+                      const SizedBox(height: 24),
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: context.tr!.changeGroupName,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      _buildMembersHeader(),
+                      const Divider(thickness: 1.5),
+                      _buildOccupantsList(),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                _buildMembersHeader(),
-                const Divider(thickness: 1.5),
-                _buildOccupantsList(),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'update_group_btn',
         onPressed: _updateDialog,
@@ -397,7 +401,7 @@ class _GroupDetailViewState extends BaseDetailsState<GroupDetailView> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: list.length,
-      separatorBuilder: (_, __) => const Divider(),
+      separatorBuilder: (_, _) => const Divider(),
       itemBuilder: (context, index) {
         final user = list[index];
         final isSelected = _usersToRemove.contains(user.id);

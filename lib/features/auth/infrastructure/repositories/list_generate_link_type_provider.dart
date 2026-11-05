@@ -47,13 +47,13 @@ class GenerateListNotifier extends Notifier<List<GenerateLinkType>> {
 // --- PROVIDERS ---
 
 final generateLinkTypeNotifierProvider =
-NotifierProvider<GenerateLinkNotifier, GenerateLinkType>(
-  GenerateLinkNotifier.new,
-  name: 'GenerateLinkNotifierProvider',
-);
+    NotifierProvider<GenerateLinkNotifier, GenerateLinkType>(
+      GenerateLinkNotifier.new,
+      name: 'GenerateLinkNotifierProvider',
+    );
 
 final generateLinkListNotifierProvider =
-NotifierProvider<GenerateListNotifier, List<GenerateLinkType>>(
-  GenerateListNotifier.new,
-  name: 'GenerateLinkListNotifierProvider',
-);
+    NotifierProvider<GenerateListNotifier, List<GenerateLinkType>>(
+      GenerateListNotifier.new,
+      name: 'GenerateLinkListNotifierProvider',
+    );

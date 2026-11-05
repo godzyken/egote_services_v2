@@ -8,17 +8,12 @@ part 'devis_entity_states.g.dart';
 @freezed
 abstract class DevisEntityStates with _$DevisEntityStates {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-  const factory DevisEntityStates({
-    required List<DevisModelEntity> devis,
-  }) = _DevisEntityStates;
+  const factory DevisEntityStates({required List<DevisModelEntity> devis}) =
+      _DevisEntityStates;
 
   factory DevisEntityStates.initial() =>
-      const DevisEntityStates(
-        devis: <DevisModelEntity>[],
-      );
+      const DevisEntityStates(devis: <DevisModelEntity>[]);
 
   factory DevisEntityStates.fromJson(Map<String, dynamic> json) =>
       _$DevisEntityStatesFromJson(json);
 }
-
-

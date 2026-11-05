@@ -29,8 +29,9 @@ class FlexToneConfigPopupMenu extends StatelessWidget {
       tooltip: '',
       padding: EdgeInsets.zero,
       onSelected: (int index) {
-        onChanged
-            ?.call(index >= FlexTone.values.length || index < 1 ? 0 : index);
+        onChanged?.call(
+          index >= FlexTone.values.length || index < 1 ? 0 : index,
+        );
       },
       enabled: !disabled,
       itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
@@ -48,17 +49,18 @@ class FlexToneConfigPopupMenu extends StatelessWidget {
               ),
               title: Text(FlexTone.values[i].tone, style: txtStyle),
             ),
-          )
+          ),
       ],
       child: ListTile(
         enabled: !disabled,
         contentPadding:
-        contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
+            contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
         title: Text('$title ${FlexTone.values[index].tone}'),
         subtitle: Text(FlexTone.values[index].describe),
         trailing: ColorSchemeBox(
-          backgroundColor:
-          !disabled ? colorScheme.primary : colorScheme.primaryContainer,
+          backgroundColor: !disabled
+              ? colorScheme.primary
+              : colorScheme.primaryContainer,
           defaultOption: disabled,
           optionIcon: FlexTone.values[index].icon,
         ),

@@ -8,11 +8,9 @@ mixin AfterLayoutMixin<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.endOfFrame.then(
-          (_) {
-        if (mounted) afterLayout(context);
-      },
-    );
+    WidgetsBinding.instance.endOfFrame.then((_) {
+      if (mounted) afterLayout(context);
+    });
   }
 
   FutureOr<void> afterLayout(BuildContext context);

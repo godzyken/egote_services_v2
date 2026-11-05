@@ -19,7 +19,7 @@ class PushNotificationsManager {
   static const TAG = "PushNotificationsManager";
 
   static final PushNotificationsManager _instance =
-  PushNotificationsManager._internal();
+      PushNotificationsManager._internal();
 
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -48,8 +48,9 @@ class PushNotificationsManager {
 
     developer.log('[init], $TAG');
 
-    final messaging = riverpodRef?.read(firebaseMessagingProvider) ?? 
-                      widgetRef?.read(firebaseMessagingProvider);
+    final messaging =
+        riverpodRef?.read(firebaseMessagingProvider) ??
+        widgetRef?.read(firebaseMessagingProvider);
 
     if (messaging == null) {
       developer.log('[init] ERROR: Messaging is null.', name: TAG);
@@ -57,49 +58,49 @@ class PushNotificationsManager {
     }
 
     await messaging.setAutoInitEnabled(true).whenComplete(() {
-      riverpodRef?.refresh(firebaseAuthProvider);
-      widgetRef?.refresh(firebaseAuthProvider);
+      final _ref1 = riverpodRef?.refresh(firebaseAuthProvider);
+      final _ref2 = widgetRef?.refresh(firebaseAuthProvider);
+      _ref1;
+      _ref2;
     });
 
-    await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    await messaging.requestPermission(alert: true, badge: true, sound: true);
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('ic_launcher_foreground');
+        AndroidInitializationSettings('ic_launcher_foreground');
 
     final DarwinInitializationSettings initializationSettingsIOS =
-    DarwinInitializationSettings(
-      requestSoundPermission: true,
-      requestBadgePermission: true,
-      requestAlertPermission: true,
-    );
+        DarwinInitializationSettings(
+          requestSoundPermission: true,
+          requestBadgePermission: true,
+          requestAlertPermission: true,
+        );
 
     final InitializationSettings initializationSettings =
-    InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-      macOS: const DarwinInitializationSettings(),
-    );
+        InitializationSettings(
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsIOS,
+          macOS: const DarwinInitializationSettings(),
+        );
 
     await flutterLocalNotificationsPlugin.initialize(
       onDidReceiveNotificationResponse:
           (NotificationResponse notificationResponse) {
-        developer.log(
-            '[onDidReceiveNotificationResponse] payload: ${notificationResponse.payload}, $TAG');
-        var data = notificationResponse.payload;
-        if (data != null) {
-          if (onNotificationClicked != null) {
-            onNotificationClicked?.call(data);
-          } else {
-            String? dialogId = jsonDecode(data)['dialog_id'];
-            SharedPrefs.instance.saveSelectedDialogId(dialogId ?? '');
-          }
-        }
-      },
-      onDidReceiveBackgroundNotificationResponse: notificationTapBackground, settings: initializationSettings,
+            developer.log(
+              '[onDidReceiveNotificationResponse] payload: ${notificationResponse.payload}, $TAG',
+            );
+            var data = notificationResponse.payload;
+            if (data != null) {
+              if (onNotificationClicked != null) {
+                onNotificationClicked?.call(data);
+              } else {
+                String? dialogId = jsonDecode(data)['dialog_id'];
+                SharedPrefs.instance.saveSelectedDialogId(dialogId ?? '');
+              }
+            }
+          },
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+      settings: initializationSettings,
     );
 
     if (Platform.isAndroid || kIsWeb || Platform.isIOS || Platform.isMacOS) {
@@ -136,7 +137,8 @@ class PushNotificationsManager {
     SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
     if (sharedPrefs.getSubscriptionToken() == token) {
       developer.log(
-          '[subscribe] skip subscription for same token, ${PushNotificationsManager.TAG}');
+        '[subscribe] skip subscription for same token, ${PushNotificationsManager.TAG}',
+      );
       return;
     }
 
@@ -162,28 +164,38 @@ class PushNotificationsManager {
   }
 
   Future<void> unsubscribe() {
-    return SharedPrefs.instance.init().then((sharedPrefs) {
-      int subscriptionId = sharedPrefs.getSubscriptionId();
-      if (subscriptionId != 0) {
-        // Unsubscribe logic
-      }
-      return Future.value();
-    }).catchError((onError) {
-      developer.log(
-          '[unsubscribe] ERROR: $onError, ${PushNotificationsManager.TAG}');
-    });
+    return SharedPrefs.instance
+        .init()
+        .then((sharedPrefs) {
+          int subscriptionId = sharedPrefs.getSubscriptionId();
+          if (subscriptionId != 0) {
+            // Unsubscribe logic
+          }
+          return Future.value();
+        })
+        .catchError((onError) {
+          developer.log(
+            '[unsubscribe] ERROR: $onError, ${PushNotificationsManager.TAG}',
+          );
+        });
   }
 
   Future<dynamic> onDidReceiveLocalNotification(
-      int id, String? title, String? body, String? payload) {
+    int id,
+    String? title,
+    String? body,
+    String? payload,
+  ) {
     developer.log(
-        '[onDidReceiveLocalNotification] id: $id , title: $title, body: $body, payload: $payload, ${PushNotificationsManager.TAG}');
+      '[onDidReceiveLocalNotification] id: $id , title: $title, body: $body, payload: $payload, ${PushNotificationsManager.TAG}',
+    );
     return Future.value();
   }
 
   Future<dynamic> onSelectNotification(String? payload) {
     developer.log(
-        '[onSelectNotification] payload: $payload, ${PushNotificationsManager.TAG}');
+      '[onSelectNotification] payload: $payload, ${PushNotificationsManager.TAG}',
+    );
     onNotificationClicked?.call(payload);
     return Future.value();
   }
@@ -191,18 +203,19 @@ class PushNotificationsManager {
 
 void showNotification(RemoteMessage message) {
   developer.log(
-      '[showNotification] message: ${message.data}, ${PushNotificationsManager.TAG}');
+    '[showNotification] message: ${message.data}, ${PushNotificationsManager.TAG}',
+  );
   Map<String, dynamic> data = message.data;
 
   NotificationDetails buildNotificationDetails(
-      int? badge,
-      String threadIdentifier,
-      ) {
+    int? badge,
+    String threadIdentifier,
+  ) {
     final DarwinNotificationDetails darwinNotificationDetails =
-    DarwinNotificationDetails(
-      badgeNumber: badge,
-      threadIdentifier: threadIdentifier,
-    );
+        DarwinNotificationDetails(
+          badgeNumber: badge,
+          threadIdentifier: threadIdentifier,
+        );
 
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'messages_channel_id',
@@ -215,9 +228,10 @@ void showNotification(RemoteMessage message) {
     );
 
     return NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: darwinNotificationDetails,
-        macOS: darwinNotificationDetails);
+      android: androidPlatformChannelSpecifics,
+      iOS: darwinNotificationDetails,
+      macOS: darwinNotificationDetails,
+    );
   }
 
   var badge = int.tryParse(data['badge'].toString());
@@ -235,7 +249,8 @@ void showNotification(RemoteMessage message) {
 @pragma('vm:entry-point')
 Future<void> onBackgroundMessage(RemoteMessage message) async {
   developer.log(
-      '[onBackgroundMessage] message: ${message.data}, ${PushNotificationsManager.TAG}');
+    '[onBackgroundMessage] message: ${message.data}, ${PushNotificationsManager.TAG}',
+  );
   showNotification(message);
   if (!Platform.isIOS) {
     updateBadgeCount(int.tryParse(message.data['badge'].toString()));
@@ -245,7 +260,8 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
 
 Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
   developer.log(
-      '[onSelectNotification] payload: $payload, ${PushNotificationsManager.TAG}');
+    '[onSelectNotification] payload: $payload, ${PushNotificationsManager.TAG}',
+  );
 
   if (context == null) return Future.value();
 
@@ -257,7 +273,8 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
       String? dialogId = payloadObject['dialog_id'];
 
       developer.log(
-          "[onSelectNotification] dialog_id: $dialogId, ${PushNotificationsManager.TAG}");
+        "[onSelectNotification] dialog_id: $dialogId, ${PushNotificationsManager.TAG}",
+      );
     });
   } else {
     return Future.value();
@@ -267,5 +284,6 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
   developer.log(
-      '[notificationTapBackground] payload: ${notificationResponse.payload}');
+    '[notificationTapBackground] payload: ${notificationResponse.payload}',
+  );
 }

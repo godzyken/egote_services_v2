@@ -152,14 +152,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       final result = await FilePicker.pickFiles(type: FileType.image);
       if (result != null && result.files.single.path != null) {
         setState(() => _isLoading = true);
-        
+
         final io.File file = io.File(result.files.single.path!);
         final cubeFile = await uploadFile(file, isPublic: true);
         final url = cubeFile.getPublicUrl();
-        
+
         await user.updatePhotoURL(url);
         await user.reload();
-        
+
         if (mounted) {
           context.showAlert('Photo de profil mise à jour !');
         }
@@ -177,14 +177,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext _) {
-    return ref.watch(authStateChangesProvider).when(
-        data: (user) => _isLoading
-            ? userModelComplete(user, context)
-            : authUserComplete(user, context),
-        error: (error, stackTrace) => ErrorScreen(error: stackTrace.toString()),
-        loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ));
+    return ref
+        .watch(authStateChangesProvider)
+        .when(
+          data: (user) => _isLoading
+              ? userModelComplete(user, context)
+              : authUserComplete(user, context),
+          error: (error, stackTrace) =>
+              ErrorScreen(error: stackTrace.toString()),
+          loading: () => const Center(child: CircularProgressIndicator()),
+        );
   }
 
   Scaffold authUserComplete(User? user, BuildContext _) {
@@ -220,15 +222,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 child: Image.network(user!.photoURL!),
               ),
               Text(
-                  '${user.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
-                  '${context.tr!.email}: ${user.email} (${context.tr!.verified}: ${user.emailVerified})\n\n'
-                  '${context.tr!.phoneNumber}: ${user.phoneNumber}\n\n'
-                  '${context.tr!.name}: ${user.displayName}\n\n\n'
-                  'ID: ${user.uid}\n\n'
-                  '${context.tr!.tenantId}: ${user.tenantId}\n\n'
-                  '${context.tr!.refresh} ${context.tr!.token}: ${user.refreshToken}\n\n\n'
-                  '${context.tr!.created}: ${user.metadata.creationTime.toString()}\n\n'
-                  '${context.tr!.lastLogin}: ${user.metadata.lastSignInTime}\n\n'),
+                '${user.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
+                '${context.tr!.email}: ${user.email} (${context.tr!.verified}: ${user.emailVerified})\n\n'
+                '${context.tr!.phoneNumber}: ${user.phoneNumber}\n\n'
+                '${context.tr!.name}: ${user.displayName}\n\n\n'
+                'ID: ${user.uid}\n\n'
+                '${context.tr!.tenantId}: ${user.tenantId}\n\n'
+                '${context.tr!.refresh} ${context.tr!.token}: ${user.refreshToken}\n\n\n'
+                '${context.tr!.created}: ${user.metadata.creationTime.toString()}\n\n'
+                '${context.tr!.lastLogin}: ${user.metadata.lastSignInTime}\n\n',
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -248,46 +251,48 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ? IconButton(
                                   icon: const Icon(Icons.remove),
                                   onPressed: () =>
-                                      user.unlink(provider.providerId))
+                                      user.unlink(provider.providerId),
+                                )
                               : Image.network(provider.photoURL!),
                           title: Text(provider.providerId),
                           subtitle: Text(
-                              "${provider.uid == null ? "" : "ID: ${provider.uid}\n"}"
-                              "${provider.email == null ? "" : "${context.tr!.email}: ${provider.email}\n"}"
-                              "${provider.phoneNumber == null ? "" : "${context.tr!.phoneNumber}: ${provider.phoneNumber}\n"}"
-                              "${provider.displayName == null ? "" : "${context.tr!.name}: ${provider.displayName}\n"}"),
+                            "${provider.uid == null ? "" : "ID: ${provider.uid}\n"}"
+                            "${provider.email == null ? "" : "${context.tr!.email}: ${provider.email}\n"}"
+                            "${provider.phoneNumber == null ? "" : "${context.tr!.phoneNumber}: ${provider.phoneNumber}\n"}"
+                            "${provider.displayName == null ? "" : "${context.tr!.name}: ${provider.displayName}\n"}",
+                          ),
                         ),
                       ),
                     ),
                 ],
               ),
               Visibility(
-                  visible: !user.isAnonymous,
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 8),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        IconButton(
-                          onPressed: () => user.reload(),
-                          icon: const Icon(Icons.refresh),
+                visible: !user.isAnonymous,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () => user.reload(),
+                        icon: const Icon(Icons.refresh),
+                      ),
+                      IconButton(
+                        onPressed: () => showAdaptiveDialog(
+                          context: context,
+                          builder: (context) => const UpdateUserDialogScreen(),
                         ),
-                        IconButton(
-                          onPressed: () => showAdaptiveDialog(
-                            context: context,
-                            builder: (context) =>
-                                const UpdateUserDialogScreen(),
-                          ),
-                          icon: const Icon(Icons.text_snippet),
-                        ),
-                        IconButton(
-                          onPressed: () => user.delete(),
-                          icon: const Icon(Icons.delete_forever),
-                        ),
-                      ],
-                    ),
-                  )),
+                        icon: const Icon(Icons.text_snippet),
+                      ),
+                      IconButton(
+                        onPressed: () => user.delete(),
+                        icon: const Icon(Icons.delete_forever),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -328,15 +333,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 child: Image.network(user!.photoURL!),
               ),
               Text(
-                  '${user.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
-                  '${context.tr!.email}: ${user.email} (${context.tr!.verified}: ${user.emailVerified})\n\n'
-                  '${context.tr!.phoneNumber}: ${user.phoneNumber}\n\n'
-                  '${context.tr!.name}: ${_userEntityModel!.name}\n\n\n'
-                  'ID: ${_userEntityModel!.id}\n\n'
-                  '${context.tr!.tenantId}: ${user.tenantId}\n\n'
-                  '${context.tr!.refresh} ${context.tr!.token}: ${user.refreshToken}\n\n\n'
-                  '${context.tr!.created}: ${_userEntityModel!.createdAt}\n\n'
-                  '${context.tr!.lastLogin}: ${_userEntityModel!.lastSignInAt}\n\n'),
+                '${user.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
+                '${context.tr!.email}: ${user.email} (${context.tr!.verified}: ${user.emailVerified})\n\n'
+                '${context.tr!.phoneNumber}: ${user.phoneNumber}\n\n'
+                '${context.tr!.name}: ${_userEntityModel!.name}\n\n\n'
+                'ID: ${_userEntityModel!.id}\n\n'
+                '${context.tr!.tenantId}: ${user.tenantId}\n\n'
+                '${context.tr!.refresh} ${context.tr!.token}: ${user.refreshToken}\n\n\n'
+                '${context.tr!.created}: ${_userEntityModel!.createdAt}\n\n'
+                '${context.tr!.lastLogin}: ${_userEntityModel!.lastSignInAt}\n\n',
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -356,46 +362,48 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ? IconButton(
                                   icon: const Icon(Icons.remove),
                                   onPressed: () =>
-                                      user.unlink(provider.providerId))
+                                      user.unlink(provider.providerId),
+                                )
                               : Image.network(provider.photoURL!),
                           title: Text(provider.providerId),
                           subtitle: Text(
-                              "${provider.uid == null ? "" : "ID: ${provider.uid}\n"}"
-                              "${provider.email == null ? "" : "${context.tr!.email}: ${provider.email}\n"}"
-                              "${provider.phoneNumber == null ? "" : "${context.tr!.phoneNumber}: ${provider.phoneNumber}\n"}"
-                              "${provider.displayName == null ? "" : "${context.tr!.name}: ${provider.displayName}\n"}"),
+                            "${provider.uid == null ? "" : "ID: ${provider.uid}\n"}"
+                            "${provider.email == null ? "" : "${context.tr!.email}: ${provider.email}\n"}"
+                            "${provider.phoneNumber == null ? "" : "${context.tr!.phoneNumber}: ${provider.phoneNumber}\n"}"
+                            "${provider.displayName == null ? "" : "${context.tr!.name}: ${provider.displayName}\n"}",
+                          ),
                         ),
                       ),
                     ),
                 ],
               ),
               Visibility(
-                  visible: !user.isAnonymous,
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 8),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        IconButton(
-                          onPressed: () => user.reload(),
-                          icon: const Icon(Icons.refresh),
+                visible: !user.isAnonymous,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () => user.reload(),
+                        icon: const Icon(Icons.refresh),
+                      ),
+                      IconButton(
+                        onPressed: () => showAdaptiveDialog(
+                          context: context,
+                          builder: (context) => const UpdateUserDialogScreen(),
                         ),
-                        IconButton(
-                          onPressed: () => showAdaptiveDialog(
-                            context: context,
-                            builder: (context) =>
-                                const UpdateUserDialogScreen(),
-                          ),
-                          icon: const Icon(Icons.text_snippet),
-                        ),
-                        IconButton(
-                          onPressed: () => user.delete(),
-                          icon: const Icon(Icons.delete_forever),
-                        ),
-                      ],
-                    ),
-                  )),
+                        icon: const Icon(Icons.text_snippet),
+                      ),
+                      IconButton(
+                        onPressed: () => user.delete(),
+                        icon: const Icon(Icons.delete_forever),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

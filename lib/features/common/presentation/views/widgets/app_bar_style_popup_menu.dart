@@ -139,11 +139,13 @@ class AppBarStylePopupMenu extends StatelessWidget {
                         isLight,
                         useM3,
                       ),
-                borderColor: index == i ||
+                borderColor:
+                    index == i ||
                         (i >= FlexAppBarStyle.values.length && useDefault)
                     ? scheme.primary
                     : scheme.outline,
-                selected: index == i ||
+                selected:
+                    index == i ||
                     (i >= FlexAppBarStyle.values.length && useDefault),
                 defaultOption: i >= FlexAppBarStyle.values.length,
               ),
@@ -155,7 +157,7 @@ class AppBarStylePopupMenu extends StatelessWidget {
                       style: txtStyle,
                     ),
             ),
-          )
+          ),
       ],
       child: ListTile(
         enabled: enabled,
@@ -164,10 +166,7 @@ class AppBarStylePopupMenu extends StatelessWidget {
         title: title,
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (subtitle != null) subtitle!,
-            Text(styleName),
-          ],
+          children: <Widget>[?subtitle, Text(styleName)],
         ),
         trailing: ColorSchemeBox(
           backgroundColor: enabled && !useDefault

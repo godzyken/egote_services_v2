@@ -23,7 +23,7 @@ abstract class SuperficieEntity with _$SuperficieEntity {
     return 2 * (longueur + largeur!);
   }
 
-  int? quantity(air, int hauteur) {
+  int? quantity(int air, int hauteur) {
     return air * hauteur;
   }
 

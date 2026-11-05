@@ -35,7 +35,7 @@ class _WebChromeAddressesScreenState
                 trailing: const Icon(Icons.info),
                 title: Text(context.tr!.addressTitle),
                 description: Text(context.tr!.addressDescription),
-              )
+              ),
             ],
           ),
           SettingsSection(

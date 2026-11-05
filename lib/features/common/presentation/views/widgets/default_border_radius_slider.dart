@@ -18,16 +18,16 @@ class DefaultBorderRadiusSlider extends ConsumerWidget {
         divisions: 61,
         label: useSubThemes
             ? defaultRadius == null || defaultRadius < 0
-            ? 'default'
-            : defaultRadius.toStringAsFixed(0)
+                  ? 'default'
+                  : defaultRadius.toStringAsFixed(0)
             : 'default 4',
         value: useSubThemes ? defaultRadius ?? -1 : -1,
         onChanged: useSubThemes
             ? (double value) {
-          ref
-              .read(Settings.defaultRadiusProvider.notifier)
-              .set(value < 0 ? null : value.roundToDouble());
-        }
+                ref
+                    .read(Settings.defaultRadiusProvider.notifier)
+                    .set(value < 0 ? null : value.roundToDouble());
+              }
             : null,
       ),
       trailing: Padding(
@@ -35,15 +35,12 @@ class DefaultBorderRadiusSlider extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'RADIUS',
-              style: style,
-            ),
+            Text('RADIUS', style: style),
             Text(
               useSubThemes
                   ? defaultRadius == null || defaultRadius < 0
-                  ? 'default'
-                  : defaultRadius.toStringAsFixed(0)
+                        ? 'default'
+                        : defaultRadius.toStringAsFixed(0)
                   : 'default 4',
               style: style.copyWith(fontWeight: FontWeight.bold),
             ),

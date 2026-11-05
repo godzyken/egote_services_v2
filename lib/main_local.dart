@@ -8,8 +8,10 @@ import 'app.dart';
 void main() async {
   F.appFlavor = Flavor.local;
 
-  runApp(UncontrolledProviderScope(
-    container: await bootstrap(),
-    child: const MyApp(),
-  ));
+  runApp(
+    UncontrolledProviderScope(
+      container: await bootstrap(),
+      child: const MyApp(),
+    ),
+  );
 }

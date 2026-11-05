@@ -52,10 +52,7 @@ class TextInputField extends ConsumerWidget {
         TextFormField(
           onChanged: onChanged,
           obscureText: obscureText,
-          decoration: InputDecoration(
-            errorText: errorText,
-            hintText: hintText,
-          ),
+          decoration: InputDecoration(errorText: errorText, hintText: hintText),
           controller: controller,
           focusNode: focusNode,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -66,7 +63,7 @@ class TextInputField extends ConsumerWidget {
           onEditingComplete: onEditingComplete,
           onFieldSubmitted: onFieldSubmitted,
           maxLength: maxLength,
-        )
+        ),
       ],
     );
   }

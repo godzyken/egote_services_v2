@@ -6,13 +6,9 @@ part 'devi_id.g.dart';
 
 @freezed
 abstract class DevisId with _$DevisId {
-  const factory DevisId({
-    required int id,
-  }) = _DevisId;
+  const factory DevisId({required int id}) = _DevisId;
 
   const DevisId._();
-
-
 
   factory DevisId.fromJson(Map<String, dynamic> json) =>
       _$DevisIdFromJson(json);

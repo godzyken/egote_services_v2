@@ -44,7 +44,7 @@ class SharedPrefs {
     return completer.future;
   }
 
-  saveNewUser(CubeUser cubeUser, LoginType loginType) {
+  void saveNewUser(CubeUser cubeUser, LoginType loginType) {
     prefs.clear();
 
     prefs.setString(prefLoginType, loginType.name);
@@ -76,7 +76,7 @@ class SharedPrefs {
     }
   }*/
 
-  updateUser(CubeUser cubeUser) {
+  void updateUser(CubeUser cubeUser) {
     if (cubeUser.password != null) {
       prefs.setString(prefUserPsw, cubeUser.password!);
     }
@@ -93,7 +93,9 @@ class SharedPrefs {
 
   Future<CubeUser?> getUser() {
     if (prefs.getString(prefUserLogin) == null &&
-        prefs.getString(prefUserEmail) == null) return Future.value();
+        prefs.getString(prefUserEmail) == null) {
+      return Future.value();
+    }
     var user = CubeUser()
       ..login = prefs.getString(prefUserLogin)
       ..email = prefs.getString(prefUserEmail)
@@ -109,13 +111,14 @@ class SharedPrefs {
     var savedLoginType = prefs.getString(prefLoginType);
     if (savedLoginType == null) return null;
 
-    var loginType = LoginType.values
-        .firstWhere((element) => element.name == savedLoginType);
+    var loginType = LoginType.values.firstWhere(
+      (element) => element.name == savedLoginType,
+    );
 
     return loginType;
   }
 
-  saveLoginType(LoginType loginType) {
+  void saveLoginType(LoginType loginType) {
     prefs.setString(prefLoginType, loginType.name);
   }
 
@@ -123,7 +126,7 @@ class SharedPrefs {
     return prefs.clear();
   }
 
-  saveSubscriptionToken(String token) {
+  void saveSubscriptionToken(String token) {
     prefs.setString(prefSubscriptionToken, token);
   }
 
@@ -131,7 +134,7 @@ class SharedPrefs {
     return prefs.getString(prefSubscriptionToken) ?? "";
   }
 
-  saveSubscriptionId(int id) {
+  void saveSubscriptionId(int id) {
     prefs.setInt(prefSubscriptionId, id);
   }
 
@@ -139,7 +142,7 @@ class SharedPrefs {
     return prefs.getInt(prefSubscriptionId) ?? 0;
   }
 
-  saveSelectedDialogId(String dialogId) {
+  void saveSelectedDialogId(String dialogId) {
     prefs.setString(prefSelectedDialogId, dialogId);
   }
 

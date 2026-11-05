@@ -6,11 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'new_chat_screen.dart';
 
 class NewGroupDialogScreen extends ConsumerWidget {
-  const NewGroupDialogScreen(
-      {super.key,
-      required this.currentUser,
-      required this.cubeDialog,
-      required this.users});
+  const NewGroupDialogScreen({
+    super.key,
+    required this.currentUser,
+    required this.cubeDialog,
+    required this.users,
+  });
 
   final CubeUser currentUser;
   final CubeDialog cubeDialog;
@@ -19,12 +20,12 @@ class NewGroupDialogScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr!.groupConf),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(context.tr!.groupConf), centerTitle: true),
       body: NewChatScreen(
-          currentUser: currentUser, cubeDialog: cubeDialog, users: users),
+        currentUser: currentUser,
+        cubeDialog: cubeDialog,
+        users: users,
+      ),
       resizeToAvoidBottomInset: false,
     );
   }

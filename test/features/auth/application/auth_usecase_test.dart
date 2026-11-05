@@ -9,7 +9,9 @@ import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
 import '../../../helpers/test_utils.dart';
 
 class MockAuthRepository extends Mock implements AuthRepositoryInterface {}
+
 class MockSupabaseUser extends Mock implements supabase.User {}
+
 class MockSupabaseSession extends Mock implements supabase.Session {}
 
 void main() {
@@ -27,10 +29,9 @@ void main() {
       const password = TestHelpers.testPassword;
       final mockSupabaseUser = MockSupabaseUser();
 
-      when(() => mockAuthRepository.signInWithPassword(
-            email,
-            password,
-          )).thenAnswer((_) async => right(mockSupabaseUser));
+      when(
+        () => mockAuthRepository.signInWithPassword(email, password),
+      ).thenAnswer((_) async => right(mockSupabaseUser));
 
       // Act
       final result = await mockAuthRepository.signInWithPassword(
@@ -40,10 +41,9 @@ void main() {
 
       // Assert
       expect(result.isRight(), true);
-      verify(() => mockAuthRepository.signInWithPassword(
-            email,
-            password,
-          )).called(1);
+      verify(
+        () => mockAuthRepository.signInWithPassword(email, password),
+      ).called(1);
     });
 
     test('should return error with invalid email', () async {
@@ -52,10 +52,9 @@ void main() {
       const password = TestHelpers.testPassword;
       final failure = Failure.badRequest();
 
-      when(() => mockAuthRepository.signInWithPassword(
-            invalidEmail,
-            password,
-          )).thenAnswer((_) async => left(failure));
+      when(
+        () => mockAuthRepository.signInWithPassword(invalidEmail, password),
+      ).thenAnswer((_) async => left(failure));
 
       // Act
       final result = await mockAuthRepository.signInWithPassword(
@@ -65,10 +64,9 @@ void main() {
 
       // Assert
       expect(result.isLeft(), true);
-      verify(() => mockAuthRepository.signInWithPassword(
-            invalidEmail,
-            password,
-          )).called(1);
+      verify(
+        () => mockAuthRepository.signInWithPassword(invalidEmail, password),
+      ).called(1);
     });
 
     test('should return error with wrong password', () async {
@@ -77,10 +75,9 @@ void main() {
       const wrongPassword = 'wrongpassword123';
       final failure = Failure.unauthorized();
 
-      when(() => mockAuthRepository.signInWithPassword(
-            email,
-            wrongPassword,
-          )).thenAnswer((_) async => left(failure));
+      when(
+        () => mockAuthRepository.signInWithPassword(email, wrongPassword),
+      ).thenAnswer((_) async => left(failure));
 
       // Act
       final result = await mockAuthRepository.signInWithPassword(
@@ -90,10 +87,9 @@ void main() {
 
       // Assert
       expect(result.isLeft(), true);
-      verify(() => mockAuthRepository.signInWithPassword(
-            email,
-            wrongPassword,
-          )).called(1);
+      verify(
+        () => mockAuthRepository.signInWithPassword(email, wrongPassword),
+      ).called(1);
     });
   });
 
@@ -116,26 +112,16 @@ void main() {
         name: name,
       );
 
-      when(() => mockAuthRepository.signUp(
-            email,
-            name,
-            password,
-          )).thenAnswer((_) async => right(mockUserModel));
+      when(
+        () => mockAuthRepository.signUp(email, name, password),
+      ).thenAnswer((_) async => right(mockUserModel));
 
       // Act
-      final result = await mockAuthRepository.signUp(
-        email,
-        name,
-        password,
-      );
+      final result = await mockAuthRepository.signUp(email, name, password);
 
       // Assert
       expect(result.isRight(), true);
-      verify(() => mockAuthRepository.signUp(
-            email,
-            name,
-            password,
-          )).called(1);
+      verify(() => mockAuthRepository.signUp(email, name, password)).called(1);
     });
 
     test('should return error with weak password', () async {
@@ -145,26 +131,18 @@ void main() {
       const weakPassword = '123'; // too short
       final failure = Failure.badRequest();
 
-      when(() => mockAuthRepository.signUp(
-            email,
-            name,
-            weakPassword,
-          )).thenAnswer((_) async => left(failure));
+      when(
+        () => mockAuthRepository.signUp(email, name, weakPassword),
+      ).thenAnswer((_) async => left(failure));
 
       // Act
-      final result = await mockAuthRepository.signUp(
-        email,
-        name,
-        weakPassword,
-      );
+      final result = await mockAuthRepository.signUp(email, name, weakPassword);
 
       // Assert
       expect(result.isLeft(), true);
-      verify(() => mockAuthRepository.signUp(
-            email,
-            name,
-            weakPassword,
-          )).called(1);
+      verify(
+        () => mockAuthRepository.signUp(email, name, weakPassword),
+      ).called(1);
     });
 
     test('should return error with duplicate email', () async {
@@ -174,18 +152,12 @@ void main() {
       const password = TestHelpers.testPassword;
       final failure = Failure.badRequest();
 
-      when(() => mockAuthRepository.signUp(
-            email,
-            name,
-            password,
-          )).thenAnswer((_) async => left(failure));
+      when(
+        () => mockAuthRepository.signUp(email, name, password),
+      ).thenAnswer((_) async => left(failure));
 
       // Act
-      final result = await mockAuthRepository.signUp(
-        email,
-        name,
-        password,
-      );
+      final result = await mockAuthRepository.signUp(email, name, password);
 
       // Assert
       expect(result.isLeft(), true);
@@ -208,8 +180,9 @@ void main() {
         name: 'Test User',
       );
 
-      when(() => mockAuthRepository.restoreSession())
-          .thenAnswer((_) async => right(mockUserModel));
+      when(
+        () => mockAuthRepository.restoreSession(),
+      ).thenAnswer((_) async => right(mockUserModel));
 
       // Act
       final result = await mockAuthRepository.restoreSession();
@@ -223,8 +196,9 @@ void main() {
       // Arrange
       final failure = Failure.notFound();
 
-      when(() => mockAuthRepository.restoreSession())
-          .thenAnswer((_) async => left(failure));
+      when(
+        () => mockAuthRepository.restoreSession(),
+      ).thenAnswer((_) async => left(failure));
 
       // Act
       final result = await mockAuthRepository.restoreSession();
@@ -236,8 +210,9 @@ void main() {
 
     test('should sign out successfully', () async {
       // Arrange
-      when(() => mockAuthRepository.signOut())
-          .thenAnswer((_) async => right(true));
+      when(
+        () => mockAuthRepository.signOut(),
+      ).thenAnswer((_) async => right(true));
 
       // Act
       final result = await mockAuthRepository.signOut();

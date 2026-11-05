@@ -60,10 +60,10 @@ class AutoAuthController extends Notifier<UserModel?> {
 }
 
 final autoAuthControllerProvider =
-NotifierProvider<AutoAuthController, UserModel?>(
-  AutoAuthController.new,
-  name: 'AutoAuthControllerProvider',
-);
+    NotifierProvider<AutoAuthController, UserModel?>(
+      AutoAuthController.new,
+      name: 'AutoAuthControllerProvider',
+    );
 
 // 4. AsyncNotifier pour la gestion réactive et asynchrone de la connexion utilisateur
 class AuthController extends AsyncNotifier<UserModel?> {
@@ -93,7 +93,7 @@ class AuthController extends AsyncNotifier<UserModel?> {
 }
 
 final authControllerProvider =
-AsyncNotifierProvider<AuthController, UserModel?>(
-  AuthController.new,
-  name: 'AuthControllerProvider',
-);
+    AsyncNotifierProvider<AuthController, UserModel?>(
+      AuthController.new,
+      name: 'AuthControllerProvider',
+    );

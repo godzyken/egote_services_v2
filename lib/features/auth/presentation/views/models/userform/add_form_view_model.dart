@@ -1,4 +1,3 @@
-
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/models/userlist/user_list_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,14 +15,14 @@ class AddFormViewModel {
   var _lastSignInAt = DateTime.now();
   var _isNewUser = false;
 
-
   AddFormViewModel(
-      final UserEntityModel? userEntityModel,
-      this._userListViewModel) {
+    final UserEntityModel? userEntityModel,
+    this._userListViewModel,
+  ) {
     _initUser(userEntityModel);
   }
 
-  _initUser(final UserEntityModel? userEntityModel) {
+  void _initUser(final UserEntityModel? userEntityModel) {
     if (userEntityModel == null) {
       _isNewUser = true;
     } else {
@@ -35,34 +34,34 @@ class AddFormViewModel {
     }
   }
 
-  createOrUpdate() {
+  void createOrUpdate() {
     if (_isNewUser) {
       _userListViewModel.createUser(
-          _name,
-          _role,
-          _isComplete,
-          _createdAt,
-          _updatedAt,
-          _emailConfirmedAt,
-          _phoneConfirmedAt,
-          _lastSignInAt
+        _name,
+        _role,
+        _isComplete,
+        _createdAt,
+        _updatedAt,
+        _emailConfirmedAt,
+        _phoneConfirmedAt,
+        _lastSignInAt,
       );
     } else {
       final newUser = UserEntityModel.create(
-          _name,
-          _role,
-          _isComplete,
-          _createdAt,
-          _updatedAt,
-          _emailConfirmedAt,
-          _phoneConfirmedAt,
-          _lastSignInAt
+        _name,
+        _role,
+        _isComplete,
+        _createdAt,
+        _updatedAt,
+        _emailConfirmedAt,
+        _phoneConfirmedAt,
+        _lastSignInAt,
       );
       _userListViewModel.updateEntityUser(newUser);
     }
   }
 
-  deleteUser() {
+  void deleteUser() {
     if (!_isNewUser) _userListViewModel.deleteUser(_id);
   }
 
@@ -78,14 +77,16 @@ class AddFormViewModel {
   DateTime initialPhoneConfirmedAtValue() => _phoneConfirmedAt;
   DateTime initialLastSignInAtValue() => _lastSignInAt;
 
-  setTitle(final String value) => _name = value;
-  setRole(final String value) => _role = value;
-  setUserStatus(final bool status) => _isComplete = status;
-  setCreate(final DateTime value) => _createdAt = value;
-  setUpdate(final DateTime value) => _updatedAt = value;
-  setEmailConfirmedAt(final DateTime value) => _emailConfirmedAt = value;
-  setPhoneConfirmedAt(final DateTime value) => _phoneConfirmedAt = value;
-  setLastSignInAT(final DateTime value) => _lastSignInAt = value;
+  String setTitle(final String value) => _name = value;
+  String setRole(final String value) => _role = value;
+  bool setUserStatus(final bool status) => _isComplete = status;
+  DateTime setCreate(final DateTime value) => _createdAt = value;
+  DateTime setUpdate(final DateTime value) => _updatedAt = value;
+  DateTime setEmailConfirmedAt(final DateTime value) =>
+      _emailConfirmedAt = value;
+  DateTime setPhoneConfirmedAt(final DateTime value) =>
+      _phoneConfirmedAt = value;
+  DateTime setLastSignInAT(final DateTime value) => _lastSignInAt = value;
 
   String? validateName() {
     if (_name.isEmpty) {
@@ -114,10 +115,10 @@ class AddFormViewModel {
   }
 }
 
-final addFormViewModelProvider = Provider
-    .autoDispose
-    .family<AddFormViewModel, UserEntityModel?>(
-        (ref, user) {
-          final userListViewModel = ref.watch(userListViewModelNotifierProvider.notifier);
-          return AddFormViewModel(user, userListViewModel);
-        });
+final addFormViewModelProvider = Provider.autoDispose
+    .family<AddFormViewModel, UserEntityModel?>((ref, user) {
+      final userListViewModel = ref.watch(
+        userListViewModelNotifierProvider.notifier,
+      );
+      return AddFormViewModel(user, userListViewModel);
+    });

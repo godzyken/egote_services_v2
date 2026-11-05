@@ -65,7 +65,9 @@ class UserFormStateController extends Notifier<UserFormState> {
 
 // --- PROVIDERS ---
 
-final clockProvider = NotifierProvider<DateTimeNotifier, DateTime>(DateTimeNotifier.new);
+final clockProvider = NotifierProvider<DateTimeNotifier, DateTime>(
+  DateTimeNotifier.new,
+);
 
 class DateTimeNotifier extends Notifier<DateTime> {
   @override
@@ -87,16 +89,19 @@ class DateTimeNotifier extends Notifier<DateTime> {
 }
 
 final currentProvider = NotifierProvider<UserNotifier, UserEntityModel?>(
-    UserNotifier.new);
+  UserNotifier.new,
+);
 
 final userModelProvider = Provider<UserEntityModel>((ref) {
   Map<String, dynamic> json = UserEntityModel.empty().toJson();
   return UserEntityModel.fromJson(json);
 });
 
-final userNotifierProvider =
-NotifierProvider<UserNotifier, UserEntityModel>(UserNotifier.new);
+final userNotifierProvider = NotifierProvider<UserNotifier, UserEntityModel>(
+  UserNotifier.new,
+);
 
 final userFormStateNotifierProvider =
-NotifierProvider<UserFormStateController, UserFormState>(
-    UserFormStateController.new);
+    NotifierProvider<UserFormStateController, UserFormState>(
+      UserFormStateController.new,
+    );

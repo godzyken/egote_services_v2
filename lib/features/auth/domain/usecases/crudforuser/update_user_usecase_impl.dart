@@ -9,16 +9,16 @@ class UpdateUserCaseImpl implements UpdateUserCase {
 
   @override
   Future<void> execute(
-      final UserId id,
-      final String name,
-      final String role,
-      final bool isComplete,
-      final DateTime createdAt,
-      final DateTime updateAt,
-      final DateTime emailConfirmedAt,
-      final DateTime phoneConfirmedAt,
-      final DateTime lastSignInAt,
-      ) {
+    final UserId id,
+    final String name,
+    final String role,
+    final bool isComplete,
+    final DateTime createdAt,
+    final DateTime updateAt,
+    final DateTime emailConfirmedAt,
+    final DateTime phoneConfirmedAt,
+    final DateTime lastSignInAt,
+  ) {
     return _repositoryInterface.updateUser(
       id,
       name,

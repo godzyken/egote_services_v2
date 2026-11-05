@@ -1,12 +1,18 @@
-import 'dart:developer';
+import 'dart:developer' as developer;
 
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../config/providers/cube/cube_providers.dart';
+import '../../../../../config/providers/firebase/firebase_providers.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
+import '../../../application/managers/push_notifications_manager.dart';
+import '../../../data/data_sources/local/pref_util.dart';
+import '../../../infrastructure/repositories/cube_repository.dart';
 
 class ChatSettingsScreen extends ConsumerWidget {
   const ChatSettingsScreen({super.key, required this.currentUser});
@@ -21,10 +27,7 @@ class ChatSettingsScreen extends ConsumerWidget {
           onPressed: () {
             context.pop();
           },
-          icon: const Icon(
-            Icons.close,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.close, color: Colors.white),
         ),
         automaticallyImplyLeading: false,
         title: Text(
@@ -44,12 +47,12 @@ class BodySettingsLayout extends ConsumerStatefulWidget {
   const BodySettingsLayout(this.currentUser, {super.key});
 
   @override
-  ConsumerState createState() => _BodyLayoutState();
+  ConsumerState<BodySettingsLayout> createState() => _BodySettingsLayoutState();
 }
 
-class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
-  var _isUsersContinues = false;
-  String? _avatarUrl;
+class _BodySettingsLayoutState extends ConsumerState<BodySettingsLayout> {
+  bool _isUsersContinues = false;
+  String? _avatarUrl = "";
   final TextEditingController _loginFilter = TextEditingController();
   final TextEditingController _nameFilter = TextEditingController();
   final TextEditingController _emailFilter = TextEditingController();
@@ -57,24 +60,34 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   String _name = "";
   String _email = "";
 
-  _BodyLayoutState() {
+  _BodySettingsLayoutState() {
     _loginFilter.addListener(_loginListen);
     _nameFilter.addListener(_nameListen);
     _emailFilter.addListener(_emailListen);
-    setState(() {
-      _nameFilter.text = widget.currentUser.fullName ?? '';
-      _loginFilter.text = widget.currentUser.login ?? '';
-      _emailFilter.text = widget.currentUser.email ?? '';
-    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _nameFilter.text = widget.currentUser.fullName ?? '';
+    _loginFilter.text = widget.currentUser.login ?? '';
+    _emailFilter.text = widget.currentUser.email ?? '';
+    _avatarUrl = widget.currentUser.avatar ?? '';
+  }
+
+  @override
+  void dispose() {
+    _loginFilter.dispose();
+    _nameFilter.dispose();
+    _emailFilter.dispose();
+    super.dispose();
   }
 
   void _loginListen() {
     if (_loginFilter.text.isEmpty) {
       _login = "";
     } else {
-      setState(() {
-        _login = _loginFilter.text.trim();
-      });
+      _login = _loginFilter.text.trim();
     }
   }
 
@@ -82,9 +95,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     if (_nameFilter.text.isEmpty) {
       _name = "";
     } else {
-      setState(() {
-        _name = _nameFilter.text.trim();
-      });
+      _name = _nameFilter.text.trim();
     }
   }
 
@@ -92,9 +103,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     if (_emailFilter.text.isEmpty) {
       _email = "";
     } else {
-      setState(() {
-        _email = _emailFilter.text.trim();
-      });
+      _email = _emailFilter.text.trim();
     }
   }
 
@@ -120,11 +129,9 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
                       maintainAnimation: false,
                       maintainState: false,
                       visible: _isUsersContinues,
-                      child: const CircularProgressIndicator(
-                        strokeWidth: 2,
-                      ),
+                      child: const CircularProgressIndicator(strokeWidth: 2),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -156,36 +163,32 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
             fillColor: Colors.white,
             padding: const EdgeInsets.all(5.0),
             shape: const CircleBorder(),
-            child: const Icon(
-              Icons.mode_edit,
-              size: 20.0,
-            ),
+            child: const Icon(Icons.mode_edit, size: 20.0),
           ),
         ),
       ],
     );
   }
 
-  _chooseUserImage() async {
-    FilePickerResult? result = await FilePicker.pickFiles(
-      type: FileType.image,
-    );
+  Future<void> _chooseUserImage() async {
+    FilePickerResult? result = await FilePicker.pickFiles(type: FileType.image);
 
     if (result == null) return;
 
-    /*var uploadImageFuture = ref.watch(cubeRepositoryProvider)
+    final uploadImageFuture = ref
+        .watch(cubeRepositoryProvider)
         .getUploadingImageFuture(result);
 
-    uploadImageFuture.then((cubeFile) {
-      _avatarUrl = cubeFile.getPublicUrl();
-      setState(() {
-        var lastUser = widget.currentUser;
-        var lastUserAvatarUrl = lastUser.avatar;
-        lastUserAvatarUrl = _avatarUrl;
-      });
-    }).catchError((exception) {
-      _processUpdateUserError(exception);
-    });*/
+    uploadImageFuture
+        .then((cubeFile) {
+          _avatarUrl = cubeFile.getPublicUrl();
+          setState(() {
+            widget.currentUser.avatar = _avatarUrl;
+          });
+        })
+        .catchError((exception) {
+          _processUpdateUserError(exception);
+        });
   }
 
   Widget _buildTextFields() {
@@ -210,41 +213,26 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   Widget _buildButtons() {
     return Column(
       children: <Widget>[
-        const SizedBox(
-          height: 6,
-        ),
+        const SizedBox(height: 6),
         ElevatedButton(
-          style: OutlinedButton.styleFrom(
-            minimumSize: const Size(120, 36),
-          ),
+          style: OutlinedButton.styleFrom(minimumSize: const Size(120, 36)),
           onPressed: _updateUser,
           child: Text(context.tr!.save),
         ),
-        const SizedBox(
-          height: 6,
-        ),
+        const SizedBox(height: 6),
         OutlinedButton.icon(
-          style: OutlinedButton.styleFrom(
-            minimumSize: const Size(160, 36),
-          ),
-          icon: const Icon(
-            Icons.logout,
-          ),
+          style: OutlinedButton.styleFrom(minimumSize: const Size(160, 36)),
+          icon: const Icon(Icons.logout),
           label: Text(context.tr!.signOut),
           onPressed: _logout,
         ),
-        const SizedBox(
-          height: 6,
-        ),
+        const SizedBox(height: 6),
         OutlinedButton.icon(
           style: OutlinedButton.styleFrom(
             foregroundColor: Colors.red.shade300,
             minimumSize: const Size(160, 36),
           ),
-          icon: const Icon(
-            Icons.delete,
-            color: Colors.red,
-          ),
+          icon: const Icon(Icons.delete, color: Colors.red),
           label: Text(
             context.tr!.deleteUser,
             style: const TextStyle(color: Colors.red),
@@ -256,36 +244,46 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   }
 
   void _updateUser() {
-    log('_updateUser user with login: $_login, name: $_name, e-mail: $_email');
+    developer.log(
+      '_updateUser user with login: $_login, name: $_name, e-mail: $_email',
+    );
     if (_login.isEmpty &&
         _name.isEmpty &&
-        _avatarUrl!.isEmpty &&
+        (_avatarUrl == null || _avatarUrl!.isEmpty) &&
         _email.isEmpty) {
       context.showAlert(context.tr!.nothingToSave);
       return;
     }
-/*    var userToUpdate = const CubeUser()..id = widget.currentUser.id;
+    var userToUpdate = CubeUser()..id = widget.currentUser.id;
 
     if (_name.isNotEmpty) userToUpdate.fullName = _name;
     if (_login.isNotEmpty) userToUpdate.login = _login;
     if (_email.isNotEmpty) userToUpdate.email = _email;
-    if (_avatarUrl!.isNotEmpty) userToUpdate.avatar = _avatarUrl;*/
+    if (_avatarUrl != null && _avatarUrl!.isNotEmpty) {
+      userToUpdate.avatar = _avatarUrl;
+    }
+
     setState(() {
       _isUsersContinues = true;
     });
-/*    updateUser(userToUpdate).then((user) {
-      SharedPrefs.instance.updateUser(user);
-      context.showAlert(context.tr!.success);
-      setState(() {
-        _isUsersContinues = false;
-      });
-    }).catchError((exception) {
-      _processUpdateUserError(exception);
-    });*/
+
+    updateUser(userToUpdate)
+        .then((user) {
+          if (!mounted) return;
+          SharedPrefs.instance.updateUser(user);
+          context.showAlert(context.tr!.success);
+          setState(() {
+            _isUsersContinues = false;
+          });
+        })
+        .catchError((exception) {
+          if (!mounted) return;
+          _processUpdateUserError(exception);
+        });
   }
 
   void _logout() {
-    log('_logout $_login and $_name');
+    developer.log('_logout $_login and $_name');
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -302,23 +300,30 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
             TextButton(
               child: Text(context.tr!.ok),
               onPressed: () {
-                /*           signOut().then(
-                      (voidValue) {
-                    context.pop(context); // cancel current Dialog
-                  },
-                ).catchError(
-                      (onError) {
-                    context.pop(context); // cancel current Dialog
-                  },
-                ).whenComplete(() {
-                  ref.watch(cubeChatConnectionProvider).destroy();
-                  PushNotificationsManager.instance.unsubscribe();
-                  ref.watch(firebaseAuthProvider).currentUser
-                      ?.unlink(PhoneAuthProvider.PROVIDER_ID);
-                  SharedPrefs.instance.deleteUser();
-                  context.pop(context); // cancel current screen
-                  _navigateToLoginScreen();
-                });*/
+                ref
+                    .read(cubeRepositoryProvider)
+                    .signOut()
+                    .then((result) {
+                      if (!mounted) return;
+                      context.pop(context); // cancel current Dialog
+                    })
+                    .catchError((onError) {
+                      if (!mounted) return;
+                      context.pop(context); // cancel current Dialog
+                    })
+                    .whenComplete(() {
+                      if (!mounted) return;
+                      ref.watch(cubeChatConnectionProvider).destroy();
+                      PushNotificationsManager.instance.unsubscribe();
+                      ref
+                          .watch(firebaseAuthProvider)
+                          .currentUser
+                          ?.unlink(PhoneAuthProvider.PROVIDER_ID);
+                      SharedPrefs.instance.deleteUser();
+                      if (!mounted) return;
+                      context.pop(context); // cancel current screen
+                      _navigateToLoginScreen();
+                    });
               },
             ),
           ],
@@ -328,7 +333,7 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
   }
 
   void _deleteUserPressed() {
-    log('_deleteUserPressed ${_login.isNotEmpty ? _login : _email}');
+    developer.log('_deleteUserPressed ${_login.isNotEmpty ? _login : _email}');
     _userDelete();
   }
 
@@ -349,24 +354,28 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
             TextButton(
               child: Text(context.tr!.ok),
               onPressed: () async {
-                /*  CubeChatConnection.instance.destroy();
+                CubeChatConnection.instance.destroy();
                 await SharedPrefs.instance.deleteUser();
+                if (!mounted) return;
 
-                deleteUser(widget.currentUser.id!).then(
-                      (voidValue) {
-                    context.pop(context);
-                  },
-                ).catchError(
-                      (onError) {
-                    context.pop(context);
-                  },
-                ).whenComplete(() async {
-                  await PushNotificationsManager.instance.unsubscribe();
-                   setState(() {
-                     context.pop();
-                   });
-                  _navigateToLoginScreen();
-                });*/
+                deleteUser(widget.currentUser.id!)
+                    .then((voidValue) {
+                      if (!mounted) return;
+                      context.pop(context);
+                    })
+                    .catchError((onError) {
+                      if (!mounted) return;
+                      context.pop(context);
+                    })
+                    .whenComplete(() async {
+                      await PushNotificationsManager.instance.unsubscribe();
+                      if (!mounted) return;
+                      setState(() {
+                        if (!mounted) return;
+                        context.pop();
+                      });
+                      _navigateToLoginScreen();
+                    });
               },
             ),
           ],
@@ -375,15 +384,14 @@ class _BodyLayoutState extends ConsumerState<BodySettingsLayout> {
     );
   }
 
-/*  _navigateToLoginScreen() {
+  void _navigateToLoginScreen() {
     context.pushReplacementNamed('login');
   }
 
-  void _processUpdateUserError(exception) {
-    log("_processUpdateUserError error $exception");
+  void _processUpdateUserError(dynamic exception) {
+    developer.log("_processUpdateUserError error $exception");
     setState(() {
       _isUsersContinues = false;
     });
-    ErrorScreen(error: exception, key: context.widget.key);
-  }*/
+  }
 }

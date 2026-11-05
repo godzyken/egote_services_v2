@@ -18,7 +18,7 @@ class UsedKeyValueDbNotifier extends Notifier<UsedKeyValueDb> {
 
 /// Controller utilisé par les widgets pour lire et modifier l'implémentation [KeyValueDb].
 final usedKeyValueDbNotifierProvider =
-NotifierProvider<UsedKeyValueDbNotifier, UsedKeyValueDb>(
-  UsedKeyValueDbNotifier.new,
-  name: 'usedKeyValueDbNotifierProvider',
-);
+    NotifierProvider<UsedKeyValueDbNotifier, UsedKeyValueDb>(
+      UsedKeyValueDbNotifier.new,
+      name: 'usedKeyValueDbNotifierProvider',
+    );

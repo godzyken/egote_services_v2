@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../settings/controllers/settings.dart';
 
-
 class DarkComputeThemeSwitch extends ConsumerWidget {
   const DarkComputeThemeSwitch({super.key});
 
@@ -13,7 +12,7 @@ class DarkComputeThemeSwitch extends ConsumerWidget {
     return SwitchListTile(
       title: Text(context.tr!.computeDarkSchemeColors),
       subtitle: Text(
-        context.tr!.darkSchemeText + context.tr!.darkSchemeTextSuit
+        context.tr!.darkSchemeText + context.tr!.darkSchemeTextSuit,
       ),
       value: ref.watch(Settings.darkComputeThemeProvider),
       onChanged: ref.read(Settings.darkComputeThemeProvider.notifier).set,

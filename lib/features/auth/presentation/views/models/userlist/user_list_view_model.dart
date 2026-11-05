@@ -28,7 +28,10 @@ class UserListViewModel extends AsyncNotifier<UserList> {
     final now = DateTime.now();
     final testId = DateTime.now().millisecondsSinceEpoch % 10000;
 
-    developer.log('Ajout d\'un utilisateur de test (Test User $testId)', name: 'UserListViewModel');
+    developer.log(
+      'Ajout d\'un utilisateur de test (Test User $testId)',
+      name: 'UserListViewModel',
+    );
 
     await createUser(
       'Test User $testId',
@@ -43,15 +46,15 @@ class UserListViewModel extends AsyncNotifier<UserList> {
   }
 
   Future<void> createUser(
-      final String name,
-      final String role,
-      final bool isComplete,
-      final DateTime createdAt,
-      final DateTime updatedAt,
-      final DateTime emailConfirmedAt,
-      final DateTime phoneConfirmedAt,
-      final DateTime lastSignInAt,
-      ) async {
+    final String name,
+    final String role,
+    final bool isComplete,
+    final DateTime createdAt,
+    final DateTime updatedAt,
+    final DateTime emailConfirmedAt,
+    final DateTime phoneConfirmedAt,
+    final DateTime lastSignInAt,
+  ) async {
     state = await AsyncValue.guard(() async {
       final currentList = state.value ?? UserList.empty();
       final newUser = await _createUserCase.execute(
@@ -106,9 +109,9 @@ class UserListViewModel extends AsyncNotifier<UserList> {
 
   /// Méthode privée générique pour mettre à jour l'état de disponibilité
   Future<void> _setUserAvailability(
-      UserEntityModel userEntityModel, {
-        required bool isAvailable,
-      }) async {
+    UserEntityModel userEntityModel, {
+    required bool isAvailable,
+  }) async {
     state = await AsyncValue.guard(() async {
       final currentList = state.value ?? UserList.empty();
 
@@ -141,10 +144,10 @@ class UserListViewModel extends AsyncNotifier<UserList> {
 
 // Provider Riverpod 3
 final userListViewModelNotifierProvider =
-AsyncNotifierProvider<UserListViewModel, UserList>(
-  UserListViewModel.new,
-  name: 'User List View Model Notifier Provider',
-);
+    AsyncNotifierProvider<UserListViewModel, UserList>(
+      UserListViewModel.new,
+      name: 'User List View Model Notifier Provider',
+    );
 
 final filteredUserListProvider = Provider<AsyncValue<UserList>>((ref) {
   final userListAsync = ref.watch(userListViewModelNotifierProvider);

@@ -54,11 +54,13 @@ void main() {
       final deliveryResult = {
         'success': false,
         'error': errorMessage,
+        'senderId': senderId,
       };
 
       // Assert
       expect(deliveryResult['success'], false);
       expect(deliveryResult['error'], errorMessage);
+      expect(deliveryResult['senderId'], senderId);
     });
   });
 
@@ -103,11 +105,7 @@ void main() {
 
     test('should mark message as read', () {
       // Arrange
-      var message = {
-        'id': 'msg_1',
-        'text': 'Hello',
-        'isRead': false,
-      };
+      var message = {'id': 'msg_1', 'text': 'Hello', 'isRead': false};
 
       // Act
       message['isRead'] = true;

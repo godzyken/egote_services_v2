@@ -5,9 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../settings/controllers/settings.dart';
 
 class UseKeyColorsToggleButtons extends ConsumerWidget {
-  const UseKeyColorsToggleButtons({
-    super.key,
-  });
+  const UseKeyColorsToggleButtons({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,7 +41,10 @@ class UseKeyColorsToggleButtons extends ConsumerWidget {
           message: context.tr!.ukctbTooltipMessP,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(context.tr!.labelPrimary, style: const TextStyle(fontSize: 12)),
+            child: Text(
+              context.tr!.labelPrimary,
+              style: const TextStyle(fontSize: 12),
+            ),
           ),
         ),
         Visibility(
@@ -55,7 +56,10 @@ class UseKeyColorsToggleButtons extends ConsumerWidget {
             message: context.tr!.ukctbTooltipMessS,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(context.tr!.labelSecondary, style: const TextStyle(fontSize: 12)),
+              child: Text(
+                context.tr!.labelSecondary,
+                style: const TextStyle(fontSize: 12),
+              ),
             ),
           ),
         ),
@@ -68,7 +72,10 @@ class UseKeyColorsToggleButtons extends ConsumerWidget {
             message: context.tr!.ukctbTooltipMessT,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(context.tr!.labelTertiary, style: const TextStyle(fontSize: 12)),
+              child: Text(
+                context.tr!.labelTertiary,
+                style: const TextStyle(fontSize: 12),
+              ),
             ),
           ),
         ),
@@ -79,9 +86,7 @@ class UseKeyColorsToggleButtons extends ConsumerWidget {
 
 /// A list tile to explain the currently used M3 seeded ColorScheme mode.
 class ListTileExplainUsedSeed extends ConsumerWidget {
-  const ListTileExplainUsedSeed({
-    super.key,
-  });
+  const ListTileExplainUsedSeed({super.key});
 
   /// Explain the current selection of key colors used to
   /// generate the ColorScheme, when it is activated.

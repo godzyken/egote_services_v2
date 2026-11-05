@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/providers/auth_repository_provider.dart';
 
-
 class SignInWithGoogleController extends Notifier<bool> {
   @override
   bool build() {
@@ -21,6 +20,6 @@ class SignInWithGoogleController extends Notifier<bool> {
 
 // Provider associé
 final signInWithGoogleControllerProvider =
-NotifierProvider<SignInWithGoogleController, bool>(
-  SignInWithGoogleController.new,
-);
+    NotifierProvider<SignInWithGoogleController, bool>(
+      SignInWithGoogleController.new,
+    );

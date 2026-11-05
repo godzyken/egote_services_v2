@@ -4,14 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // <---------------- Cube Instances Providers -------------------> //
 
-final cubeSettingsProvider =
-    Provider<CubeSettings>((ref) => CubeSettings.instance);
+final cubeSettingsProvider = Provider<CubeSettings>(
+  (ref) => CubeSettings.instance,
+);
 
-final cubeChatConnectionProvider =
-    Provider<CubeChatConnection>((ref) => CubeChatConnection.instance);
+final cubeChatConnectionProvider = Provider<CubeChatConnection>(
+  (ref) => CubeChatConnection.instance,
+);
 
-final cubeSessionManagerProvider =
-    Provider<CubeSessionManager>((ref) => CubeSessionManager.instance);
+final cubeSessionManagerProvider = Provider<CubeSessionManager>(
+  (ref) => CubeSessionManager.instance,
+);
 
 final cubeChatConnectionSettingsProvider = Provider<CubeChatConnectionSettings>(
-    (ref) => CubeChatConnectionSettings.instance);
+  (ref) => CubeChatConnectionSettings.instance,
+);

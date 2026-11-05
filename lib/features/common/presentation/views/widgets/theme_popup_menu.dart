@@ -7,10 +7,7 @@ import '../../../../settings/controllers/settings.dart';
 import '../../../../theme/models/custom_themes.dart';
 
 class ThemePopupMenu extends ConsumerWidget {
-  const ThemePopupMenu({
-    super.key,
-    this.contentPadding,
-  });
+  const ThemePopupMenu({super.key, this.contentPadding});
 
   /// The ListTiles tile's internal padding.
   ///
@@ -33,14 +30,14 @@ class ThemePopupMenu extends ConsumerWidget {
     // sub theme defined global border radius, if it is defined.
     final double optionButtonBorderRadius =
         ref.watch(Settings.useSubThemesProvider)
-            // M3 default for Card is 12.
-            ? ref.watch(Settings.defaultRadiusProvider) ??
-                // M3 or M2 default for Card, if global radius not defined.
-                (useMaterial3 ? 12 : 4)
-            // Use M3 or M2 default for Card, if not using sub-themes.
-            : useMaterial3
-                ? 12
-                : 4;
+        // M3 default for Card is 12.
+        ? ref.watch(Settings.defaultRadiusProvider) ??
+              // M3 or M2 default for Card, if global radius not defined.
+              (useMaterial3 ? 12 : 4)
+        // Use M3 or M2 default for Card, if not using sub-themes.
+        : useMaterial3
+        ? 12
+        : 4;
 
     return PopupMenuButton<int>(
       padding: EdgeInsets.zero,
@@ -75,12 +72,13 @@ class ThemePopupMenu extends ConsumerWidget {
                 ),
               ),
             ),
-          )
+          ),
       ],
       child: ListTile(
         contentPadding: contentPadding,
-        title:
-            Text('${CustomThemes.schemes[selected].name} ${context.tr!.theme}'),
+        title: Text(
+          '${CustomThemes.schemes[selected].name} ${context.tr!.theme}',
+        ),
         subtitle: Text(CustomThemes.schemes[selected].description),
         trailing: SizedBox(
           width: width * 2,

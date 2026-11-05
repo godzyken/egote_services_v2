@@ -18,9 +18,7 @@ class _AndroidNotificationsScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr!.notifications),
-      ),
+      appBar: AppBar(title: Text(context.tr!.notifications)),
       body: SettingsList(
         platform: DevicePlatform.android,
         sections: [
@@ -55,11 +53,15 @@ class _AndroidNotificationsScreenState
             tiles: [
               SettingsTile(
                 title: Text(context.tr!.notificationsDeviceApp),
-                description: Text(context.tr!.notificationsDeviceAppDescription),
+                description: Text(
+                  context.tr!.notificationsDeviceAppDescription,
+                ),
               ),
               SettingsTile(
                 title: Text(context.tr!.notificationsLockScreen),
-                description: Text(context.tr!.notificationsDeviceAppDescription),
+                description: Text(
+                  context.tr!.notificationsDeviceAppDescription,
+                ),
               ),
             ],
           ),
@@ -70,9 +72,7 @@ class _AndroidNotificationsScreenState
                 title: Text(context.tr!.doNotDisturb),
                 description: Text(context.tr!.doNotDisturbDescription),
               ),
-              SettingsTile(
-                title: Text(context.tr!.wirelessAlert),
-              ),
+              SettingsTile(title: Text(context.tr!.wirelessAlert)),
               SettingsTile.switchTile(
                 initialValue: false,
                 onToggle: (_) {},

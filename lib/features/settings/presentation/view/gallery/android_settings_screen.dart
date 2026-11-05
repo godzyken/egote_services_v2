@@ -96,5 +96,4 @@ class AndroidSettingsScreen extends ConsumerWidget {
   }
 
   void toNotificationsScreen(BuildContext context) {}
-
 }

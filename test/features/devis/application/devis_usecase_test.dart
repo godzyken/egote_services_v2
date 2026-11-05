@@ -1,6 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devis_model_entity.dart';
 import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devi_id.dart';
+import 'package:egote_services_v2/features/devis/domain/entities/devis_model/devis_model_entity.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Devis Feature - Models', () {
@@ -13,13 +13,14 @@ void main() {
       final id = const DevisId(id: 1);
       final now = DateTime.now();
       final devis = DevisModelEntity.initialize(id: id, createdAt: now);
-      
+
       devis.when(
         initialize: (idResult, date) {
           expect(idResult, id);
           expect(date, now);
         },
-        approved: (_, __, ___, ____, _____, ______, _______, ________, _________, __________, ___________, ____________) => fail('Should be initialize'),
+        approved: (_, _, _, _, _, _, _, _, _, _, _, _) =>
+            fail('Should be initialize'),
         empty: () => fail('Should be initialize'),
       );
     });

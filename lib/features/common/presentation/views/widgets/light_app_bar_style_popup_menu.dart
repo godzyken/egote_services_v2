@@ -38,7 +38,9 @@ class LightAppBarStylePopupMenu extends ConsumerWidget {
       // colors in the three custom color examples, and we want to
       // show them as well on the PopupMenu button.
       customAppBarColor: CustomThemes
-          .schemes[ref.watch(Settings.schemeIndexProvider)].light.appBarColor,
+          .schemes[ref.watch(Settings.schemeIndexProvider)]
+          .light
+          .appBarColor,
       customScaffoldColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }

@@ -6,8 +6,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
-
-
 part 'user_entity.freezed.dart';
 part 'user_entity.g.dart';
 
@@ -63,15 +61,15 @@ abstract class UserEntityModel with _$UserEntityModel {
   }
 
   factory UserEntityModel.create(
-      String name,
-      String role,
-      bool isComplete,
-      DateTime createdAt,
-      DateTime updatedAt,
-      DateTime? emailConfirmedAt,
-      DateTime? phoneConfirmedAt,
-      DateTime? lastSignInAt,
-      ) {
+    String name,
+    String role,
+    bool isComplete,
+    DateTime createdAt,
+    DateTime updatedAt,
+    DateTime? emailConfirmedAt,
+    DateTime? phoneConfirmedAt,
+    DateTime? lastSignInAt,
+  ) {
     // Génération d'un entier unique à partir des millisecondes ou du hash UUID
     final intId = DateTime.now().millisecondsSinceEpoch;
 
@@ -106,9 +104,7 @@ abstract class UserEntityModel with _$UserEntityModel {
 
 @freezed
 abstract class Users with _$Users {
-  const factory Users.data(
-      UserList userList,
-      ) = UsersData;
+  const factory Users.data(UserList userList) = UsersData;
 
   const factory Users.loading() = UsersLoading;
 
@@ -123,8 +119,7 @@ abstract class UserModel with _$UserModel {
     required UserId id,
     required UserEntityModel userEntityModel,
     @UserConverter() required User authUser,
-    @JsonKey(includeFromJson: false, includeToJson: false)
-    CubeUser? cubeUser,
+    @JsonKey(includeFromJson: false, includeToJson: false) CubeUser? cubeUser,
   }) = _UserModelComplete;
 
   const factory UserModel.unComplete({

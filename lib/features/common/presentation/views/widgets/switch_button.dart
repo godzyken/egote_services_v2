@@ -8,7 +8,11 @@ const _kTextStyle = TextStyle(
 );
 
 class SwitchButton extends ConsumerWidget {
-  const SwitchButton({super.key, required this.showSignIn, required this.onTap});
+  const SwitchButton({
+    super.key,
+    required this.showSignIn,
+    required this.onTap,
+  });
 
   final bool showSignIn;
   final VoidCallback onTap;
@@ -16,20 +20,15 @@ class SwitchButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Positioned(
-        left: 0,
-        right: 0,
-        bottom: 30,
-        child: TextButton(
-          onPressed: onTap,
-          child: showSignIn
-              ? Text(
-            context.tr!.switchHavent,
-            style: _kTextStyle,
-          )
-              : Text(
-            context.tr!.switchHave,
-            style: _kTextStyle,
-          ),
-        ));
+      left: 0,
+      right: 0,
+      bottom: 30,
+      child: TextButton(
+        onPressed: onTap,
+        child: showSignIn
+            ? Text(context.tr!.switchHavent, style: _kTextStyle)
+            : Text(context.tr!.switchHave, style: _kTextStyle),
+      ),
+    );
   }
 }

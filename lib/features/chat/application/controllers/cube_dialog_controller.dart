@@ -9,14 +9,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // --- PROVIDERS ---
 
 final cubeDialogControllerProvider =
-NotifierProvider<CubeDialogController, CubeDialog?>(
-  CubeDialogController.new,
-);
+    NotifierProvider<CubeDialogController, CubeDialog?>(
+      CubeDialogController.new,
+    );
 
 final cubeDialogStateControllerProvider =
-NotifierProvider<CubeDialogStateController, RTCDataChannelState>(
-  CubeDialogStateController.new,
-);
+    NotifierProvider<CubeDialogStateController, RTCDataChannelState>(
+      CubeDialogStateController.new,
+    );
 
 // --- CONTROLLERS ---
 
@@ -105,18 +105,19 @@ class CubeDialogStateController extends Notifier<RTCDataChannelState> {
       ..reconnectionTimeout = 5000
       ..totalReconnections = 5;
 
-    _connectivitySubscription =
-        Connectivity().onConnectivityChanged.listen((results) {
-          if (!results.contains(ConnectivityResult.none)) {
-            bool isChatDisconnected =
-                CubeChatConnection.instance.chatConnectionState ==
-                    CubeChatConnectionState.Closed;
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((
+      results,
+    ) {
+      if (!results.contains(ConnectivityResult.none)) {
+        bool isChatDisconnected =
+            CubeChatConnection.instance.chatConnectionState ==
+            CubeChatConnectionState.Closed;
 
-            if (isChatDisconnected &&
-                CubeChatConnection.instance.currentUser != null) {
-              CubeChatConnection.instance.relogin();
-            }
-          }
-        });
+        if (isChatDisconnected &&
+            CubeChatConnection.instance.currentUser != null) {
+          CubeChatConnection.instance.relogin();
+        }
+      }
+    });
   }
 }

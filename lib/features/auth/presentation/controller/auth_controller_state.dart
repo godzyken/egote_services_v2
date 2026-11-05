@@ -5,17 +5,16 @@ import 'package:egote_services_v2/features/auth/domain/entities/entities_extensi
 import 'package:egote_services_v2/features/auth/domain/providers/auth_repository_provider.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
 import 'package:egote_services_v2/features/auth/presentation/states/auth/auth_state.dart'
-as perso;
+    as perso;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
-
 
 class AuthControllerNotifier extends Notifier<perso.AuthState> {
   late final AuthRepository _repository;
   StreamSubscription<supabase.AuthState>? _subscription;
 
   final StreamController<supabase.AuthResponse> controller =
-  StreamController<supabase.AuthResponse>();
+      StreamController<supabase.AuthResponse>();
 
   perso.AuthState lastState = const perso.AuthState.unauthenticated();
 
@@ -68,7 +67,6 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
         break;
 
       case supabase.AuthChangeEvent.signedOut:
-      case supabase.AuthChangeEvent.userDeleted:
         _user = null;
         onSignOut();
         _setUnauthenticated();
@@ -77,21 +75,25 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
       case supabase.AuthChangeEvent.passwordRecovery:
       case supabase.AuthChangeEvent.mfaChallengeVerified:
       case supabase.AuthChangeEvent.initialSession:
-      // Traitements spécifiques optionnels selon vos besoins
+        // Traitements spécifiques optionnels selon vos besoins
+        break;
+      default:
         break;
     }
   }
 
   Future<perso.AuthState> onSignInWithPassword(
-      String email, String password) async {
+    String email,
+    String password,
+  ) async {
     final result = await _repository.signInWithPassword(email, password);
 
     return result.fold(
-          (failure) {
+      (failure) {
         _setUnauthenticated();
         return state;
       },
-          (supabaseUser) {
+      (supabaseUser) {
         _user = supabaseUser;
         final computedStatus = validator(_user);
 
@@ -136,7 +138,7 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
 // --- PROVIDER ---
 
 final authStateProvider =
-NotifierProvider<AuthControllerNotifier, perso.AuthState>(
-  AuthControllerNotifier.new,
-  name: 'AuthControllerNotifierProvider',
-);
+    NotifierProvider<AuthControllerNotifier, perso.AuthState>(
+      AuthControllerNotifier.new,
+      name: 'AuthControllerNotifierProvider',
+    );

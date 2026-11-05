@@ -4,29 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:photo_view/photo_view.dart';
 
 class FullPhoto extends ConsumerWidget {
-  const FullPhoto({
-    super.key,
-    required this.url
-  });
+  const FullPhoto({super.key, required this.url});
 
   final String url;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr!.fullPhoto),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(context.tr!.fullPhoto), centerTitle: true),
       body: FullPhotoScreen(url: url),
     );
   }
 }
 
 class FullPhotoScreen extends ConsumerStatefulWidget {
-  const FullPhotoScreen({
-    super.key, required this.url
-  });
+  const FullPhotoScreen({super.key, required this.url});
 
   final String url;
 
@@ -35,7 +27,6 @@ class FullPhotoScreen extends ConsumerStatefulWidget {
 }
 
 class _FullPhotoScreenState extends ConsumerState<FullPhotoScreen> {
-
   @override
   Widget build(BuildContext context) {
     return PhotoView(imageProvider: NetworkImage(widget.url));

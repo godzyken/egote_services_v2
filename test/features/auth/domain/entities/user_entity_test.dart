@@ -23,7 +23,7 @@ void main() {
         null,
         null,
       );
-      
+
       expect(user.name, 'Test User');
       expect(user.role, 'admin');
       expect(user.isComplete, true);
@@ -50,10 +50,13 @@ void main() {
       );
 
       expect(userModel.id, id);
-      expect(userModel.maybeWhen(
-        unComplete: (id, model, auth) => true,
-        orElse: () => false,
-      ), true);
+      expect(
+        userModel.maybeWhen(
+          unComplete: (id, model, auth) => true,
+          orElse: () => false,
+        ),
+        true,
+      );
     });
   });
 }

@@ -5,20 +5,29 @@ import 'package:fpdart/fpdart.dart';
 
 abstract class CubeRepositoryInterface {
   Future<Either<Failure, bool>> signInWithSocialProviders(
-      String socialProvider, String accessToken, String accessTokenSecret);
+    String socialProvider,
+    String accessToken,
+    String accessTokenSecret,
+  );
 
   Future<Either<Failure, bool>> signOut();
 
   Future<CubeUser>? setSession(String token);
 
   Future<Either<Failure, CubeSession>> createUserSession(
-      String login, String password);
+    String login,
+    String password,
+  );
 
   Future<Either<Failure, CubeSession>> updateUserSession(
-      String something, String password);
+    String something,
+    String password,
+  );
 
   Future<Either<Failure, CubeSession>> createGuestUserSession(
-      bool isGuest, String fullName);
+    bool isGuest,
+    String fullName,
+  );
 
   Future<CubeSession> restoreSession();
 
