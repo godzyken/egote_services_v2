@@ -66,7 +66,7 @@ dependencies:
   badges: ^4.0.1
   multi_link_text: ^0.0.5
   google_generative_ai: ^0.4.1
-  talker_riverpod_logger: ^5.2.0
+  talker_riverpod_logger: ^5.1.0
   #  url_launcher_android: ^6.3.1
 
 dev_dependencies:
