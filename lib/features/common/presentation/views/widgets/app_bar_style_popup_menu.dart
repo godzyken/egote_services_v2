@@ -109,9 +109,10 @@ class AppBarStylePopupMenu extends StatelessWidget {
     final bool enabled = onChanged != null;
     // Negative value, or index over range are used as null and default value.
     final bool useDefault = index < 0 || index >= FlexAppBarStyle.values.length;
-    final String styleName = !useDefault
-        ? _explainAppBarStyle(FlexAppBarStyle.values[index], isLight, useM3)
-        : _explainAppBarStyle(null, isLight, useM3);
+    final String styleName =
+        !useDefault
+            ? _explainAppBarStyle(FlexAppBarStyle.values[index], isLight, useM3)
+            : _explainAppBarStyle(null, isLight, useM3);
 
     return PopupMenuButton<int>(
       tooltip: '',
@@ -124,41 +125,48 @@ class AppBarStylePopupMenu extends StatelessWidget {
         onChanged?.call(index >= FlexAppBarStyle.values.length ? -1 : index);
       },
       enabled: enabled,
-      itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-        for (int i = 0; i <= FlexAppBarStyle.values.length; i++)
-          PopupMenuItem<int>(
-            value: i,
-            child: ListTile(
-              dense: true,
-              leading: ColorSchemeBox(
-                backgroundColor: i >= FlexAppBarStyle.values.length
-                    ? _appBarStyleColor(null, scheme, isLight, useM3)
-                    : _appBarStyleColor(
-                        FlexAppBarStyle.values[i],
-                        scheme,
-                        isLight,
-                        useM3,
-                      ),
-                borderColor:
-                    index == i ||
-                        (i >= FlexAppBarStyle.values.length && useDefault)
-                    ? scheme.primary
-                    : scheme.outline,
-                selected:
-                    index == i ||
-                    (i >= FlexAppBarStyle.values.length && useDefault),
-                defaultOption: i >= FlexAppBarStyle.values.length,
+      itemBuilder:
+          (BuildContext context) => <PopupMenuItem<int>>[
+            for (int i = 0; i <= FlexAppBarStyle.values.length; i++)
+              PopupMenuItem<int>(
+                value: i,
+                child: ListTile(
+                  dense: true,
+                  leading: ColorSchemeBox(
+                    backgroundColor:
+                        i >= FlexAppBarStyle.values.length
+                            ? _appBarStyleColor(null, scheme, isLight, useM3)
+                            : _appBarStyleColor(
+                              FlexAppBarStyle.values[i],
+                              scheme,
+                              isLight,
+                              useM3,
+                            ),
+                    borderColor:
+                        index == i ||
+                                (i >= FlexAppBarStyle.values.length &&
+                                    useDefault)
+                            ? scheme.primary
+                            : scheme.outline,
+                    selected:
+                        index == i ||
+                        (i >= FlexAppBarStyle.values.length && useDefault),
+                    defaultOption: i >= FlexAppBarStyle.values.length,
+                  ),
+                  title:
+                      i >= FlexAppBarStyle.values.length
+                          // If we reached max length make default label.
+                          ? Text(
+                            popupLabelDefault ?? labelForDefault,
+                            style: txtStyle,
+                          )
+                          : Text(
+                            FlexAppBarStyle.values[i].name.sentenceCase(),
+                            style: txtStyle,
+                          ),
+                ),
               ),
-              title: i >= FlexAppBarStyle.values.length
-                  // If we reached max length make default label.
-                  ? Text(popupLabelDefault ?? labelForDefault, style: txtStyle)
-                  : Text(
-                      FlexAppBarStyle.values[i].name.sentenceCase(),
-                      style: txtStyle,
-                    ),
-            ),
-          ),
-      ],
+          ],
       child: ListTile(
         enabled: enabled,
         contentPadding:
@@ -166,20 +174,22 @@ class AppBarStylePopupMenu extends StatelessWidget {
         title: title,
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[?subtitle, Text(styleName)],
+          children: <Widget>[if (subtitle != null) subtitle!, Text(styleName)],
         ),
         trailing: ColorSchemeBox(
-          backgroundColor: enabled && !useDefault
-              ? _appBarStyleColor(
-                  FlexAppBarStyle.values[index],
-                  scheme,
-                  isLight,
-                  useM3,
-                )
-              : _appBarStyleColor(null, scheme, isLight, useM3),
-          borderColor: index == FlexAppBarStyle.custom.index
-              ? Colors.transparent
-              : scheme.primary,
+          backgroundColor:
+              enabled && !useDefault
+                  ? _appBarStyleColor(
+                    FlexAppBarStyle.values[index],
+                    scheme,
+                    isLight,
+                    useM3,
+                  )
+                  : _appBarStyleColor(null, scheme, isLight, useM3),
+          borderColor:
+              index == FlexAppBarStyle.custom.index
+                  ? Colors.transparent
+                  : scheme.primary,
           defaultOption: useDefault,
         ),
       ),
