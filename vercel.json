@@ -1,0 +1,7 @@
+{
+  "buildCommand": "flutter pub get && flutter build web --release --web-renderer canvaskit",
+  "outputDirectory": "build/web",
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
