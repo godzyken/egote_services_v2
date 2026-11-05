@@ -14,6 +14,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install shared_models
+        env:
+          KEY: ${{ secrets.SHARED_MODELS_DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -n "${KEY:-}" ]; then
+            mkdir -p ~/.ssh
+            printf '%s\n' "$KEY" > ~/.ssh/shared_models_ci
+            chmod 600 ~/.ssh/shared_models_ci
+            ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+            GIT_SSH_COMMAND="ssh -i $HOME/.ssh/shared_models_ci -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+              git clone --depth 1 --branch master \
+                git@github.com:godzyken/shared_models.git \
+                "../shared_models"
+            rm -f ~/.ssh/shared_models_ci
+          else
+            git clone --depth 1 https://github.com/godzyken/shared_models.git "../shared_models" || true
+          fi
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
