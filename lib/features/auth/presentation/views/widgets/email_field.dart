@@ -41,10 +41,7 @@ class EmailField extends ConsumerWidget {
       controller: controller,
       focusNode: focusNode,
       onEditingComplete: onEditingComplete,
-      decoration: InputDecoration(
-        hintText: hintText,
-        suffixIcon: suffixIcon,
-      ),
+      decoration: InputDecoration(hintText: hintText, suffixIcon: suffixIcon),
       onChanged: onChanged,
       hintText: hintText!,
       suffixIcon: suffixIcon,

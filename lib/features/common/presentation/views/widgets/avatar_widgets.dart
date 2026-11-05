@@ -16,20 +16,43 @@ Widget getAvatarTextWidget(bool condition, String? text, {double? fontSize}) {
   }
 }
 
-Widget getUserAvatarWidget(CubeUser? cubeUser, double radius,
-    {Widget? placeholder, Widget? errorWidget}) {
-  return getAvatarWidget(cubeUser?.avatar, cubeUser?.fullName, radius,
-      placeholder: placeholder, errorWidget: errorWidget);
+Widget getUserAvatarWidget(
+  CubeUser? cubeUser,
+  double radius, {
+  Widget? placeholder,
+  Widget? errorWidget,
+}) {
+  return getAvatarWidget(
+    cubeUser?.avatar,
+    cubeUser?.fullName,
+    radius,
+    placeholder: placeholder,
+    errorWidget: errorWidget,
+  );
 }
 
-Widget getDialogAvatarWidget(CubeDialog? cubeDialog, double radius,
-    {Widget? placeholder, Widget? errorWidget}) {
-  return getAvatarWidget(cubeDialog?.photo, cubeDialog?.name, radius,
-      placeholder: placeholder, errorWidget: errorWidget);
+Widget getDialogAvatarWidget(
+  CubeDialog? cubeDialog,
+  double radius, {
+  Widget? placeholder,
+  Widget? errorWidget,
+}) {
+  return getAvatarWidget(
+    cubeDialog?.photo,
+    cubeDialog?.name,
+    radius,
+    placeholder: placeholder,
+    errorWidget: errorWidget,
+  );
 }
 
-Widget getAvatarWidget(String? imageUrl, String? name, double radius,
-    {Widget? placeholder, Widget? errorWidget}) {
+Widget getAvatarWidget(
+  String? imageUrl,
+  String? name,
+  double radius, {
+  Widget? placeholder,
+  Widget? errorWidget,
+}) {
   return CircleAvatar(
     backgroundColor: const Color.fromARGB(20, 100, 100, 100),
     radius: radius,
@@ -41,18 +64,26 @@ Widget getAvatarWidget(String? imageUrl, String? name, double radius,
           return errorWidget ??
               placeholder ??
               Center(
-                  child: Container(
-                      child: getAvatarTextWidget(
-                          false, name?.substring(0, 2).toUpperCase() ?? '?',
-                          fontSize: radius)));
+                child: Container(
+                  child: getAvatarTextWidget(
+                    false,
+                    name?.substring(0, 2).toUpperCase() ?? '?',
+                    fontSize: radius,
+                  ),
+                ),
+              );
         },
         placeholder: (context, url) {
           return placeholder ??
               Center(
-                  child: Container(
-                      child: getAvatarTextWidget(
-                          false, name?.substring(0, 2).toUpperCase() ?? '?',
-                          fontSize: radius)));
+                child: Container(
+                  child: getAvatarTextWidget(
+                    false,
+                    name?.substring(0, 2).toUpperCase() ?? '?',
+                    fontSize: radius,
+                  ),
+                ),
+              );
         },
         fit: BoxFit.cover,
         width: radius * 2,
@@ -125,52 +156,34 @@ Widget getMessageStateWidget(AppMessageState state) {
 
   switch (state) {
     case AppMessageState.read:
-      result = const Stack(children: <Widget>[
-        Icon(
-          Icons.check_rounded,
-          size: 15.0,
-          color: Colors.green,
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 4,
+      result = const Stack(
+        children: <Widget>[
+          Icon(Icons.check_rounded, size: 15.0, color: Colors.green),
+          Padding(
+            padding: EdgeInsets.only(left: 4),
+            child: Icon(Icons.check_rounded, size: 15.0, color: Colors.green),
           ),
-          child: Icon(
-            Icons.check_rounded,
-            size: 15.0,
-            color: Colors.green,
-          ),
-        )
-      ]);
-
-      break;
-    case AppMessageState.delivered:
-      result = const Stack(children: <Widget>[
-        Icon(
-          Icons.check_rounded,
-          size: 15.0,
-          color: Colors.grey,
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 4),
-          child: Icon(
-            Icons.check_rounded,
-            size: 15.0,
-            color: Colors.grey,
-          ),
-        )
-      ]);
-
-      break;
-    case AppMessageState.sent:
-      result = const Icon(
-        Icons.check_rounded,
-        size: 15.0,
-        color: Colors.grey,
+        ],
       );
 
       break;
-    }
+    case AppMessageState.delivered:
+      result = const Stack(
+        children: <Widget>[
+          Icon(Icons.check_rounded, size: 15.0, color: Colors.grey),
+          Padding(
+            padding: EdgeInsets.only(left: 4),
+            child: Icon(Icons.check_rounded, size: 15.0, color: Colors.grey),
+          ),
+        ],
+      );
+
+      break;
+    case AppMessageState.sent:
+      result = const Icon(Icons.check_rounded, size: 15.0, color: Colors.grey);
+
+      break;
+  }
 
   return result;
 }

@@ -15,16 +15,17 @@ class LightSurfaceBlendLevelSlider extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Slider.adaptive(
-              min: 0,
-              max: 40,
-              divisions: 40,
-              label: level.toString(),
-              value: level.toDouble(),
-              onChanged: (double value) {
-                ref.read(Settings.lightBlendLevelProvider.notifier).set(
-                  value.toInt(),
-                );
-              }),
+            min: 0,
+            max: 40,
+            divisions: 40,
+            label: level.toString(),
+            value: level.toDouble(),
+            onChanged: (double value) {
+              ref
+                  .read(Settings.lightBlendLevelProvider.notifier)
+                  .set(value.toInt());
+            },
+          ),
         ],
       ),
       trailing: Padding(
@@ -32,10 +33,7 @@ class LightSurfaceBlendLevelSlider extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Text(
-              context.tr!.level,
-              style: style,
-            ),
+            Text(context.tr!.level, style: style),
             Text(
               level.toString(),
               style: style.copyWith(fontWeight: FontWeight.bold),

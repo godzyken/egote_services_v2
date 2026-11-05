@@ -5,10 +5,16 @@ import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 
 class MockGoTrueClient extends Mock implements supabase.GoTrueClient {}
+
 class MockSupabaseClient extends Mock implements supabase.SupabaseClient {}
-class MockAuthTokenLocalDataSource extends Mock implements AuthTokenLocalDataSource {}
+
+class MockAuthTokenLocalDataSource extends Mock
+    implements AuthTokenLocalDataSource {}
+
 class MockAuthResponse extends Mock implements supabase.AuthResponse {}
+
 class MockUser extends Mock implements supabase.User {}
+
 class MockSession extends Mock implements supabase.Session {}
 
 void main() {
@@ -21,7 +27,7 @@ void main() {
     mockGoTrueClient = MockGoTrueClient();
     mockSupabaseClient = MockSupabaseClient();
     mockLocalDataSource = MockAuthTokenLocalDataSource();
-    
+
     repository = AuthRepository(
       mockLocalDataSource,
       mockGoTrueClient,
@@ -45,12 +51,16 @@ void main() {
       when(() => mockResponse.user).thenReturn(mockUser);
       when(() => mockResponse.session).thenReturn(mockSession);
 
-      when(() => mockGoTrueClient.signInWithPassword(
-        email: email,
-        password: password,
-      )).thenAnswer((_) async => mockResponse);
-      
-      when(() => mockLocalDataSource.store(any())).thenAnswer((_) async => true);
+      when(
+        () => mockGoTrueClient.signInWithPassword(
+          email: email,
+          password: password,
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      when(
+        () => mockLocalDataSource.store(any()),
+      ).thenAnswer((_) async => true);
 
       final result = await repository.signInWithPassword(email, password);
 
@@ -63,11 +73,13 @@ void main() {
       when(() => mockResponse.user).thenReturn(null);
       when(() => mockResponse.session).thenReturn(null);
 
-      when(() => mockGoTrueClient.signInWithPassword(
-        email: email,
-        password: password,
-      )).thenAnswer((_) async => mockResponse);
-      
+      when(
+        () => mockGoTrueClient.signInWithPassword(
+          email: email,
+          password: password,
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
       when(() => mockLocalDataSource.remove()).thenAnswer((_) async => true);
 
       final result = await repository.signInWithPassword(email, password);

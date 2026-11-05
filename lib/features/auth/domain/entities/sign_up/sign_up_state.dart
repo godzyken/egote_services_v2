@@ -10,14 +10,12 @@ part 'sign_up_state.g.dart';
 abstract class SignUpState with _$SignUpState {
   const SignUpState._();
   const factory SignUpState({
-    @JsonKey(includeToJson: false, includeFromJson: false)
-    NameFormz? nameFormz,
+    @JsonKey(includeToJson: false, includeFromJson: false) NameFormz? nameFormz,
     @JsonKey(includeFromJson: false, includeToJson: false)
     EmailFormz? emailFormz,
     @JsonKey(includeFromJson: false, includeToJson: false)
     PasswordFormz? passwordFormz,
-    @Default(FormzSubmissionStatus.initial)
-    FormzSubmissionStatus? status,
+    @Default(FormzSubmissionStatus.initial) FormzSubmissionStatus? status,
     String? errorMessage,
   }) = _SignUpState;
 

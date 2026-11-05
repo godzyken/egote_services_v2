@@ -13,17 +13,19 @@ class DevisTableBuilder extends ConsumerStatefulWidget {
 }
 
 class _DevisTableBuilderState extends ConsumerState<DevisTableBuilder> {
-
   @override
   Widget build(BuildContext context) {
-
     return Table(
       border: TableBorder.all(color: Colors.white54),
       children: List<TableRow>.generate(
-          ref.watch(travauxListProvider).length,
-          (index) => TableRow(
-              children: List<TableCell>.generate(ref.watch(missionsListProvider).length,
-                  (index) => const TableCell(child: Text('yo'))))),
+        ref.watch(travauxListProvider).length,
+        (index) => TableRow(
+          children: List<TableCell>.generate(
+            ref.watch(missionsListProvider).length,
+            (index) => const TableCell(child: Text('yo')),
+          ),
+        ),
+      ),
     );
   }
 }

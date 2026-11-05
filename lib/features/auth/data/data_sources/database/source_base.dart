@@ -1,4 +1,3 @@
-
 import '../../entities/users_entity.dart';
 
 abstract class SourceBase {

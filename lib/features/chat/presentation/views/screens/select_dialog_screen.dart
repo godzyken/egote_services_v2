@@ -28,19 +28,18 @@ class SelectDialogScreen extends ConsumerWidget {
           ),
           actions: [
             IconButton(
-                onPressed: () => _openSettings(context),
-                icon: const Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                )),
+              onPressed: () => _openSettings(context),
+              icon: const Icon(Icons.settings, color: Colors.white),
+            ),
           ],
         ),
         body: BodySelectedDialogLayout(
-            currentUser: currentUser,
-            selectedDialog: selectedDialog,
-            onDialogSelectedCallback: onDialogSelectedCallback),
+          currentUser: currentUser,
+          selectedDialog: selectedDialog,
+          onDialogSelectedCallback: onDialogSelectedCallback,
+        ),
       ),
-      onPopInvoked: (isPop) => _onBackPressed(isPop),
+      onPopInvokedWithResult: (didPop, result) => _onBackPressed(didPop),
     );
   }
 
@@ -48,8 +47,10 @@ class SelectDialogScreen extends ConsumerWidget {
     return Future.value(true);
   }
 
-  _openSettings(BuildContext context) {
+  void _openSettings(BuildContext context) {
     showModal(
-        context: context, child: ChatSettingsScreen(currentUser: currentUser));
+      context: context,
+      child: ChatSettingsScreen(currentUser: currentUser),
+    );
   }
 }

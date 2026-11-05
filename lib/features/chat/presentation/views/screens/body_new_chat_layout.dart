@@ -7,8 +7,14 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
 
-typedef DlgProc = Dialog Function(Dialog, int, BodyNewChatLayout,
-    {CubeUser x, AsyncValueGetter<CubeUser> guest});
+typedef DlgProc =
+    Dialog Function(
+      Dialog,
+      int,
+      BodyNewChatLayout, {
+      CubeUser x,
+      AsyncValueGetter<CubeUser> guest,
+    });
 
 class BodyNewChatLayout extends ConsumerStatefulWidget {
   const BodyNewChatLayout({super.key, required this.currentUser});
@@ -27,7 +33,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
   String? userToSearch;
   String userMsg = " ";
 
-  _searchUser(value) {
+  void _searchUser(dynamic value) {
     log("searchUser _user= $value");
     if (value != null) {
       setState(() {
@@ -41,38 +47,32 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-          child: Column(
-            children: [
-              _buildTextFields(),
-              _buildDialogButton(),
-              Container(
-                margin: const EdgeInsets.only(left: 8),
-                child: Visibility(
-                  maintainSize: false,
-                  maintainAnimation: false,
-                  maintainState: false,
-                  visible: _isUsersContinues,
-                  child: const CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                ),
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        child: Column(
+          children: [
+            _buildTextFields(),
+            _buildDialogButton(),
+            Container(
+              margin: const EdgeInsets.only(left: 8),
+              child: Visibility(
+                maintainSize: false,
+                maintainAnimation: false,
+                maintainState: false,
+                visible: _isUsersContinues,
+                child: const CircularProgressIndicator(strokeWidth: 2),
               ),
-              Expanded(
-                child: _getUsersList(context),
-              ),
-            ],
-          )),
+            ),
+            Expanded(child: _getUsersList(context)),
+          ],
+        ),
+      ),
       floatingActionButton: Visibility(
         visible: !_isPrivateDialog,
         child: FloatingActionButton(
           heroTag: context.tr!.newDialog,
           backgroundColor: Colors.blue,
           onPressed: () => _createDialog(context, _selectedUsers, true),
-          child: const Icon(
-            Icons.check,
-            color: Colors.white,
-          ),
+          child: const Icon(Icons.check, color: Colors.white),
         ),
       ),
     );
@@ -82,12 +82,13 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
     return Column(
       children: <Widget>[
         TextField(
-            autofocus: true,
-            textInputAction: TextInputAction.search,
-            decoration: InputDecoration(labelText: context.tr!.searchUsers),
-            onSubmitted: (value) {
-              _searchUser(value.trim());
-            }),
+          autofocus: true,
+          textInputAction: TextInputAction.search,
+          decoration: InputDecoration(labelText: context.tr!.searchUsers),
+          onSubmitted: (value) {
+            _searchUser(value.trim());
+          },
+        ),
       ],
     );
   }
@@ -112,11 +113,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
     return Container(
       alignment: Alignment.centerLeft,
       child: TextButton.icon(
-        icon: Icon(
-          getIcon(),
-          size: 25.0,
-          color: Colors.blue,
-        ),
+        icon: Icon(getIcon(), size: 25.0, color: Colors.blue),
         onPressed: () {
           setState(() {
             _isPrivateDialog = !_isPrivateDialog;
@@ -156,10 +153,7 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
       }
     }
     if (userList.isEmpty) {
-      return FittedBox(
-        fit: BoxFit.contain,
-        child: Text(userMsg),
-      );
+      return FittedBox(fit: BoxFit.contain, child: Text(userMsg));
     } else {
       return ListView.builder(
         itemCount: userList.length,
@@ -273,34 +267,44 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
     log("_createDialog with users= $users");
     if (isGroup) {
       CubeDialog newDialog = CubeDialog(
-          CubeDialogType.GROUP,
-          occupantsIds: users.toList());
+        CubeDialogType.GROUP,
+        occupantsIds: users.toList(),
+      );
       List<CubeUser> usersToAdd = users
           .map((id) => userList.firstWhere((user) => user.id == id))
           .toList();
 
-      context.pushNamed('configure_group_dialog', extra: {
-        USER_ARG_NAME: widget.currentUser,
-        DIALOG_ARG_NAME: newDialog,
-        SELECTED_USERS_ARG_NAME: usersToAdd,
-      });
-    } else {
-       CubeDialog newDialog = CubeDialog(
-          CubeDialogType.PRIVATE,
-          occupantsIds: users.toList());
-      createDialog(newDialog).then((createdDialog) {
-        if (!mounted) return;
-        context.pushReplacementNamed('chat_dialog', extra: {
+      context.pushNamed(
+        'configure_group_dialog',
+        extra: {
           USER_ARG_NAME: widget.currentUser,
-          DIALOG_ARG_NAME: createdDialog
-        });
-      }).catchError((error) {
-        _processCreateDialogError(error);
-      });
+          DIALOG_ARG_NAME: newDialog,
+          SELECTED_USERS_ARG_NAME: usersToAdd,
+        },
+      );
+    } else {
+      CubeDialog newDialog = CubeDialog(
+        CubeDialogType.PRIVATE,
+        occupantsIds: users.toList(),
+      );
+      createDialog(newDialog)
+          .then((createdDialog) {
+            if (!mounted) return;
+            context.pushReplacementNamed(
+              'chat_dialog',
+              extra: {
+                USER_ARG_NAME: widget.currentUser,
+                DIALOG_ARG_NAME: createdDialog,
+              },
+            );
+          })
+          .catchError((error) {
+            _processCreateDialogError(error);
+          });
     }
   }
 
-  void _processCreateDialogError(exception) {
+  void _processCreateDialogError(dynamic exception) {
     log("Login error $exception");
     context.showAlert(exception);
   }

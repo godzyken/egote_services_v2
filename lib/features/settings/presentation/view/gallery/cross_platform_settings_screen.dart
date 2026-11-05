@@ -14,7 +14,6 @@ import '../../../controllers/settings.dart';
 import '../../dialogs/reset_settings_dialogs.dart';
 import '../../widgets/platform_popup_menu.dart';
 
-
 class CrossPlatformSettingsScreen extends ConsumerStatefulWidget {
   const CrossPlatformSettingsScreen({super.key});
 
@@ -41,13 +40,12 @@ class _CrossPlatformSettingsScreenState
   };
   DevicePlatform selectedPlatform = DevicePlatform.device;
 
-
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController(
       keepScrollOffset: true,
-      debugLabel: 'pageBodyScroll'
+      debugLabel: 'pageBodyScroll',
     );
   }
 
@@ -74,9 +72,7 @@ class _CrossPlatformSettingsScreenState
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      appBar: AppBar(
-        title: Text('${context.tr?.egoteServicesTitle}'),
-      ),
+      appBar: AppBar(title: Text('${context.tr?.egoteServicesTitle}')),
       drawer: const CustomMenuWidget(),
       // This annotated region will change the Android system navigation bar to
       // a theme color, matching active theme mode and FlexColorScheme theme.
@@ -135,7 +131,9 @@ class _CrossPlatformSettingsScreenState
               PlatformPopupMenu(
                 platform: ref.watch(platformNotifierProvider),
                 onChanged: (TargetPlatform newPlatform) {
-                  ref.read(platformNotifierProvider.notifier).state = newPlatform;
+                  ref
+                      .read(platformNotifierProvider.notifier)
+                      .setPlatform(newPlatform);
                 },
               ),
               const Divider(),
@@ -162,5 +160,3 @@ class _CrossPlatformSettingsScreenState
     );
   }
 }
-
-

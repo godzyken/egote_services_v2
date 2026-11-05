@@ -33,18 +33,20 @@ class _UpdateUserDialogScreenState
       final repo = ref.read(authRepositoryProvider);
       final result = await repo.updateUser(
         email: _emailController.text.isNotEmpty ? _emailController.text : null,
-        password: _passwordController.text.isNotEmpty ? _passwordController.text : null,
+        password: _passwordController.text.isNotEmpty
+            ? _passwordController.text
+            : null,
         name: _nameController.text.isNotEmpty ? _nameController.text : null,
       );
 
-      result.fold(
-        (failure) => context.showAlert(failure.message),
-        (user) {
-          context.showAlert('Profil mis à jour !');
-          context.pop();
-        },
-      );
+      if (!mounted) return;
+
+      result.fold((failure) => context.showAlert(failure.message), (user) {
+        context.showAlert('Profil mis à jour !');
+        context.pop();
+      });
     } catch (e) {
+      if (!mounted) return;
       context.showAlert(e.toString());
     } finally {
       if (mounted) {
@@ -84,9 +86,13 @@ class _UpdateUserDialogScreenState
         ),
         TextButton(
           onPressed: _isLoading ? null : _update,
-          child: _isLoading 
-            ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-            : Text(context.tr!.update),
+          child: _isLoading
+              ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(context.tr!.update),
         ),
       ],
     );

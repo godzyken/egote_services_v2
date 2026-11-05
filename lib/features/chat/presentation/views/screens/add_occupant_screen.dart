@@ -1,7 +1,4 @@
-// import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'dart:developer';
-
-import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,8 +7,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../common/presentation/extensions/extensions.dart';
 
 class AddOccupantScreen extends ConsumerStatefulWidget {
-  const AddOccupantScreen(
-      {super.key, required this.cubeUser, required this.id});
+  const AddOccupantScreen({
+    super.key,
+    required this.cubeUser,
+    required this.id,
+  });
 
   final int id;
   final CubeUser cubeUser;
@@ -35,7 +35,11 @@ class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked: (context) => _onBackPressed(context),
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _onBackPressed(context);
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
@@ -46,7 +50,7 @@ class _AddOccupantScreenState extends ConsumerState<AddOccupantScreen> {
     );
   }
 
-  _onBackPressed(bool isPop) {
+  Future<bool> _onBackPressed(BuildContext context) {
     context.pop(context);
     return Future.value(false);
   }
@@ -76,15 +80,16 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
     currentUser = CubeUser();
   }
 
-  _searchUser(value) {
+  void _searchUser(String? value) {
     log("searchUser _user= $value");
     if (value != null) {
       setState(() {
         userToSearch = value;
         _isUsersContinues = true;
       });
+    } else {
+      _isUsersContinues = false;
     }
-    _isUsersContinues = false;
   }
 
   @override
@@ -102,28 +107,22 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
                 maintainAnimation: false,
                 maintainState: false,
                 visible: _isUsersContinues,
-                child: const CircularProgressIndicator(
-                  strokeWidth: 2,
-                ),
+                child: const CircularProgressIndicator(strokeWidth: 2),
               ),
             ),
-            Expanded(
-              child: _getUsersList(context),
-            ),
+            Expanded(child: _getUsersList(context)),
           ],
         ),
       ),
       floatingActionButton: Visibility(
-          visible: _selectedUsers.isNotEmpty,
-          child: FloatingActionButton(
-            heroTag: context.tr!.updateDialog,
-            backgroundColor: Colors.blue,
-            onPressed: () => _updateDialog(context, _selectedUsers.toList()),
-            child: const Icon(
-              Icons.check,
-              color: Colors.white,
-            ),
-          )),
+        visible: _selectedUsers.isNotEmpty,
+        child: FloatingActionButton(
+          heroTag: context.tr!.updateDialog,
+          backgroundColor: Colors.blue,
+          onPressed: () => _updateDialog(context, _selectedUsers.toList()),
+          child: const Icon(Icons.check, color: Colors.white),
+        ),
+      ),
     );
   }
 
@@ -137,7 +136,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
           onSubmitted: (value) {
             _searchUser(value.trim());
           },
-        )
+        ),
       ],
     );
   }
@@ -152,35 +151,29 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
 
     if (_isUsersContinues) {
       if (userToSearch != null && userToSearch!.isNotEmpty) {
-        setState(() {
-          clearValues();
-        });
-        /* getUsersByFullName(userToSearch!).then((users) {
-          log("getUsers: $users");
-          setState(() {
-            clearValues();
-            userList.addAll(users!.items);
+        getUsersByFullName(userToSearch!)
+            .then((users) {
+              log("getUsers: $users");
+              setState(() {
+                clearValues();
+                userList.addAll(users!.items);
 
-            if (users.items.isEmpty) {
-              userMsg = context.tr!.userNotFound;
-            }
-          });
-        }).catchError((onError) {
-          log("getUsers catchError: $onError");
-          setState(() {
-            clearValues();
-            userMsg = context.tr!.userNotFound;
-          });
-        });*/
+                if (users.items.isEmpty) {
+                  userMsg = context.tr!.userNotFound;
+                }
+              });
+            })
+            .catchError((onError) {
+              log("getUsers catchError: $onError");
+              setState(() {
+                clearValues();
+                userMsg = context.tr!.userNotFound;
+              });
+            });
       }
     }
     if (userList.isEmpty) {
-      return Center(
-        child: Text(
-          userMsg,
-          style: const TextStyle(fontSize: 20),
-        ),
-      );
+      return Center(child: Text(userMsg, style: const TextStyle(fontSize: 20)));
     } else {
       return ListView.builder(
         itemCount: userList.length,
@@ -206,7 +199,7 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
                       margin: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
                       child: Text(
                         '${context.tr!.userName}: ${userList[index].fullName}',
-                        style: TextStyle(color: Colors.primaries.single),
+                        style: TextStyle(color: Colors.primaries.first),
                       ),
                     ),
                   ],
@@ -236,10 +229,6 @@ class _BodyLayoutState extends ConsumerState<BodyLayout> {
             }
           });
         },
-        // color: greyColor2,
-        // padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
-        // shape:
-        //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       ),
     );
   }

@@ -27,37 +27,41 @@ void main() {
       expect(result, isA<QueryGetAllEventError>());
     });
 
-    test('should return SuccessGetAllEventState when the request is successful',
-        () async {
-      final service = CheckoutServiceMock();
-      when(
-        () => service.getAll,
-      ).thenAnswer((invocation) async => []);
+    test(
+      'should return SuccessGetAllEventState when the request is successful',
+      () async {
+        final service = CheckoutServiceMock();
+        when(() => service.getAll).thenAnswer((invocation) async => []);
 
-      final result = await getAllEvent.run(service);
+        final result = await getAllEvent.run(service);
 
-      expect(result, isA<SuccessGetAllEventState>());
-    });
+        expect(result, isA<SuccessGetAllEventState>());
+      },
+    );
 
     test(
-        'should return the list returned by getAll when the request is successful',
-        () async {
-      final service = CheckoutServiceMock();
+      'should return the list returned by getAll when the request is successful',
+      () async {
+        final service = CheckoutServiceMock();
 
-      final devisEntity = DevisModelEntity.initialize(
-          id: const DevisId(id: 0), createdAt: DateTime(2023));
-      when(
-        () => service.getAll,
-      ).thenAnswer((invocation) async => [devisEntity]);
+        final devisEntity = DevisModelEntity.initialize(
+          id: const DevisId(id: 0),
+          createdAt: DateTime(2023),
+        );
+        when(
+          () => service.getAll,
+        ).thenAnswer((invocation) async => [devisEntity]);
 
-      final result = await getAllEvent.run(service);
+        final result = await getAllEvent.run(service);
 
-      if (result
-          case SuccessGetAllEventState(devisModelEntity: final devisList)) {
-        expect(devisList, [devisEntity]);
-      } else {
-        fail("Not an instance of SuccessGetAllEventState");
-      }
-    });
+        if (result case SuccessGetAllEventState(
+          devisModelEntity: final devisList,
+        )) {
+          expect(devisList, [devisEntity]);
+        } else {
+          fail("Not an instance of SuccessGetAllEventState");
+        }
+      },
+    );
   });
 }

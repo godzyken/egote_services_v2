@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:egote_services_v2/features/auth/presentation/states/auth/auth_state.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockGoTrueClient extends Mock implements supabase.GoTrueClient {}
 
 void main() {
@@ -17,16 +18,16 @@ void main() {
   setUp(() {
     mockAuthRepository = MockAuthRepository();
     mockGoTrueClient = MockGoTrueClient();
-    
+
     when(() => mockAuthRepository.authClient).thenReturn(mockGoTrueClient);
-    when(() => mockGoTrueClient.onAuthStateChange).thenAnswer((_) => const Stream.empty());
+    when(
+      () => mockGoTrueClient.onAuthStateChange,
+    ).thenAnswer((_) => const Stream.empty());
   });
 
   ProviderContainer makeContainer() {
     return ProviderContainer(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(mockAuthRepository),
-      ],
+      overrides: [authRepositoryProvider.overrideWithValue(mockAuthRepository)],
     );
   }
 
@@ -34,13 +35,13 @@ void main() {
     test('initial state should be unauthenticated', () {
       final container = makeContainer();
       final state = container.read(authStateProvider);
-      
+
       final isUnauthenticated = state.map(
         authenticated: (_) => false,
         unauthenticated: (_) => true,
         initial: (_) => false,
       );
-      
+
       expect(isUnauthenticated, true);
     });
   });

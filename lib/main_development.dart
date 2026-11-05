@@ -11,32 +11,37 @@ import 'config/providers/watchdog/datadog_config.dart';
 void main() async {
   F.appFlavor = Flavor.development;
   final configuration = DatadogConfiguration(
-      clientToken: datadogConfigProvider
-          .selectAsync((data) => AsyncValue.data(data.clientToken))
+    clientToken: datadogConfigProvider
+        .selectAsync((data) => AsyncValue.data(data.clientToken))
+        .toString(),
+    env: datadogConfigProvider
+        .selectAsync((data) => AsyncValue.data(data.env))
+        .toString(),
+    site: DatadogSite.eu1,
+    nativeCrashReportEnabled: true,
+    loggingConfiguration: DatadogLoggingConfiguration(),
+    rumConfiguration: DatadogRumConfiguration(
+      applicationId: '99911285-5746-429f-8168-b7b05c9db5fb',
+      sessionSamplingRate: 100.0,
+      detectLongTasks: true,
+      reportFlutterPerformance: true,
+    ),
+    firstPartyHosts: [
+      datadogConfigProvider
+          .selectAsync((data) => AsyncValue.data(data.firstPartyHosts.toList()))
           .toString(),
-      env: datadogConfigProvider
-          .selectAsync((data) => AsyncValue.data(data.env))
-          .toString(),
-      site: DatadogSite.eu1,
-      nativeCrashReportEnabled: true,
-      loggingConfiguration: DatadogLoggingConfiguration(),
-      rumConfiguration: DatadogRumConfiguration(
-          applicationId: '99911285-5746-429f-8168-b7b05c9db5fb',
-          sessionSamplingRate: 100.0,
-          detectLongTasks: true,
-          reportFlutterPerformance: true),
-      firstPartyHosts: [
-        datadogConfigProvider
-            .selectAsync(
-                (data) => AsyncValue.data(data.firstPartyHosts.toList()))
-            .toString()
-      ]);
+    ],
+  );
   await DatadogSdk.runApp(
-      configuration,
-      TrackingConsent.granted,
-      () async => runApp(UncontrolledProviderScope(
-          container: await bootstrap(),
-          child: SentryScreenshotWidget(child: const MyApp()))));
+    configuration,
+    TrackingConsent.granted,
+    () async => runApp(
+      UncontrolledProviderScope(
+        container: await bootstrap(),
+        child: SentryScreenshotWidget(child: const MyApp()),
+      ),
+    ),
+  );
 }
 
 // @pragma(

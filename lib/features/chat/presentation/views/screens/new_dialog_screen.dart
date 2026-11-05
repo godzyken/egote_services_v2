@@ -16,11 +16,9 @@ class CreateChatScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () => context.pop,
-            icon: const Icon(
-              Icons.close,
-              color: Colors.white,
-            )),
+          onPressed: () => context.pop,
+          icon: const Icon(Icons.close, color: Colors.white),
+        ),
         automaticallyImplyLeading: false,
         title: Text(context.tr!.searchUsers),
       ),

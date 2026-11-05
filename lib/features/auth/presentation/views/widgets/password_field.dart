@@ -42,10 +42,7 @@ class PasswordField extends ConsumerWidget {
       focusNode: focusNode,
       onEditingComplete: onEditingComplete,
       onChanged: onChanged,
-      decoration: InputDecoration(
-        hintText: hintText,
-        suffixIcon: suffixIcon,
-      ),
+      decoration: InputDecoration(hintText: hintText, suffixIcon: suffixIcon),
       hintText: context.tr!.enterUserPassword,
       suffixIcon: suffixIcon,
       errorText: errorText,

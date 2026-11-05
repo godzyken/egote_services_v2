@@ -10,7 +10,7 @@ abstract class UserPreferences with _$UserPreferences {
     required UserEntityModel userEntityModel,
     required ThemeMode themeMode,
     required String about,
-    required bool isDarkMode
+    required bool isDarkMode,
   }) = _UserPreferences;
 
   const UserPreferences._();

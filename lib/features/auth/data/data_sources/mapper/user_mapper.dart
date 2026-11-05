@@ -32,15 +32,15 @@ class UserMapper {
   }
 
   static UserEntity transformToNewEntityMap(
-      final String name,
-      final String role,
-      final bool isComplete,
-      final DateTime createdAt,
-      final DateTime updateAt,
-      final DateTime emailConfirmedAt,
-      final DateTime phoneConfirmedAt,
-      final DateTime lastSignInAt,
-      ) {
+    final String name,
+    final String role,
+    final bool isComplete,
+    final DateTime createdAt,
+    final DateTime updateAt,
+    final DateTime emailConfirmedAt,
+    final DateTime phoneConfirmedAt,
+    final DateTime lastSignInAt,
+  ) {
     return {
       'id': null,
       'name': name,

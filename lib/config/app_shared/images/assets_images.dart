@@ -12,18 +12,14 @@ part 'assets_images.g.dart';
 
 @freezed
 abstract class Images with _$Images {
-  const factory Images.web({
-    required String name,
-  }) = _ImagesWeb;
+  const factory Images.web({required String name}) = _ImagesWeb;
 
   const factory Images.local({
     @AssetsImageConverter() required List<LocalImages> images,
   }) = _ImagesLocal;
 
-  const factory Images.error({
-    required String error,
-    required String message,
-  }) = _ImagesError;
+  const factory Images.error({required String error, required String message}) =
+      _ImagesError;
 
   const Images._();
 
@@ -86,10 +82,7 @@ class ImageAssetsNotifier extends Notifier<List<ImagesAssets>> {
       }
 
       state = [
-        ImagesAssets.loading(
-          images: loadedImages,
-          isLoading: isLoading,
-        ),
+        ImagesAssets.loading(images: loadedImages, isLoading: isLoading),
       ];
     } catch (e) {
       state = [
@@ -105,7 +98,7 @@ class ImageAssetsNotifier extends Notifier<List<ImagesAssets>> {
 // --- PROVIDER ---
 
 final assetListProvider =
-NotifierProvider<ImageAssetsNotifier, List<ImagesAssets>>(
-  ImageAssetsNotifier.new,
-  name: 'AssetListNotifierProvider',
-);
+    NotifierProvider<ImageAssetsNotifier, List<ImagesAssets>>(
+      ImageAssetsNotifier.new,
+      name: 'AssetListNotifierProvider',
+    );

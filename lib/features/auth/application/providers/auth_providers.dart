@@ -6,18 +6,18 @@ import '../controller/controller_extensions.dart';
 
 final signInWithGoogleProvider =
     NotifierProvider.autoDispose<SignInWithGoogleController, bool>(
-  () => SignInWithGoogleController(),
-  dependencies: [authRepositoryProvider],
-);
+      () => SignInWithGoogleController(),
+      dependencies: [authRepositoryProvider],
+    );
 
-final loginControllerNotifierProvider = NotifierProvider.autoDispose<
-    LoginControllerNotifier,
-    SignInState>(
-  () => LoginControllerNotifier(),
-  dependencies: [authRepositoryProvider],
-);
+final loginControllerNotifierProvider =
+    NotifierProvider.autoDispose<LoginControllerNotifier, SignInState>(
+      () => LoginControllerNotifier(),
+      dependencies: [authRepositoryProvider],
+    );
 
-final signUpProvider = NotifierProvider.autoDispose<SignUpController, SignUpState>(
-  () => SignUpController(),
-  dependencies: [authRepositoryProvider],
-);
+final signUpProvider =
+    NotifierProvider.autoDispose<SignUpController, SignUpState>(
+      () => SignUpController(),
+      dependencies: [authRepositoryProvider],
+    );

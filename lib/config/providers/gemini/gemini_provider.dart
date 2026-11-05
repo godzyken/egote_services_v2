@@ -24,5 +24,6 @@ final gmiaProvider = FutureProvider<GenerativeModel>((ref) async {
 });
 
 Future<GenerateContentResponse> generateContentResponse(
-        GenerativeModel model, List<Content> content) async =>
-    await model.generateContent(content);
+  GenerativeModel model,
+  List<Content> content,
+) async => await model.generateContent(content);

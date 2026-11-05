@@ -39,10 +39,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state, child) {
           return SharedAppData(child: child);
         },
-        observers: [
-          AppRouterObserver(),
-          sentryNavigatorObserver,
-        ],
+        observers: [AppRouterObserver(), sentryNavigatorObserver],
         routes: allRoutes,
       ),
     ],

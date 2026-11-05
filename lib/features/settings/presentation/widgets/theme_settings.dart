@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,13 +25,11 @@ class ThemeSettings extends ConsumerWidget {
     final bool useSeed = ref.watch(Settings.usePrimaryKeyColorProvider);
     final int flexTone = ref.watch(Settings.usedFlexToneProvider);
     final int usedFlexTone =
-    flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
+        flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
         ? 0
         : flexTone;
 
-    final String explainM3Surface = useSeed
-        ? context.tr!.useLevelZero
-        : '';
+    final String explainM3Surface = useSeed ? context.tr!.useLevelZero : '';
 
     return Column(
       children: <Widget>[
@@ -48,8 +45,7 @@ class ThemeSettings extends ConsumerWidget {
             children: <Widget>[
               ListTile(
                 title: Text(context.tr!.useThemesTitle),
-                subtitle: Text(
-                    context.tr!.useThemesSubTitle),
+                subtitle: Text(context.tr!.useThemesSubTitle),
               ),
               const DefaultBorderRadiusSlider(),
             ],
@@ -69,10 +65,7 @@ class ThemeSettings extends ConsumerWidget {
           hide: !useSeed,
           child: Column(
             children: <Widget>[
-              ListTile(
-                subtitle: Text(
-                    context.tr!.useSeedSubTitle),
-              ),
+              ListTile(subtitle: Text(context.tr!.useSeedSubTitle)),
               FlexToneConfigPopupMenu(
                 title: context.tr!.flexTonesTitle1,
                 index: useSeed ? usedFlexTone : 0,
@@ -81,8 +74,10 @@ class ThemeSettings extends ConsumerWidget {
                     : null,
               ),
               ListTile(
-                title: Text('${FlexTone.values[usedFlexTone].tone}'
-                    ' ${context.tr!.flexTonesTitle2}'),
+                title: Text(
+                  '${FlexTone.values[usedFlexTone].tone}'
+                  ' ${context.tr!.flexTonesTitle2}',
+                ),
                 subtitle: Text(FlexTone.values[usedFlexTone].setup),
               ),
             ],
@@ -108,7 +103,9 @@ class ThemeSettings extends ConsumerWidget {
           const LightSurfaceModeListTile(),
           ListTile(
             title: Text(context.tr!.lightThemeSurfaceBlend),
-            subtitle: Text('${context.tr!.lightThemeSurfaceBlendSubTitle}$explainM3Surface'),
+            subtitle: Text(
+              '${context.tr!.lightThemeSurfaceBlendSubTitle}$explainM3Surface',
+            ),
           ),
           const LightSurfaceBlendLevelSlider(),
         ] else ...<Widget>[
@@ -116,7 +113,9 @@ class ThemeSettings extends ConsumerWidget {
           const DarkSurfaceModeListTile(),
           ListTile(
             title: Text(context.tr!.darkSurfaceBlendTitle),
-            subtitle: Text('${context.tr!.darkSurfaceBlendSubTitle}$explainM3Surface'),
+            subtitle: Text(
+              '${context.tr!.darkSurfaceBlendSubTitle}$explainM3Surface',
+            ),
           ),
           const DarkSurfaceBlendLevelSlider(),
         ],

@@ -20,7 +20,7 @@ class FilterKindNotifier extends Notifier<FilterKind> {
 }
 
 final filterKindNotifierProvider =
-NotifierProvider<FilterKindNotifier, FilterKind>(
-  FilterKindNotifier.new,
-  name: 'FilterKindNotifierProvider',
-);
+    NotifierProvider<FilterKindNotifier, FilterKind>(
+      FilterKindNotifier.new,
+      name: 'FilterKindNotifierProvider',
+    );

@@ -5,9 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class AppBarConnection extends ConsumerWidget {
-  const AppBarConnection({
-    super.key,
-  });
+  const AppBarConnection({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,20 +13,24 @@ class AppBarConnection extends ConsumerWidget {
       title: Text(context.tr!.mfaConnect),
       actions: [
         PopupMenuButton(
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem(child: Text(context.tr!.unEnroll),
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                child: Text(context.tr!.unEnroll),
                 onTap: () {
                   context.push('mfaList');
-                },),
-                PopupMenuItem(child: Text(context.tr!.signOut),
+                },
+              ),
+              PopupMenuItem(
+                child: Text(context.tr!.signOut),
                 onTap: () {
                   ref.watch(supabaseClientProvider).auth.signOut();
                   context.push('auth');
-                },),
-              ];
-            },
-        )
+                },
+              ),
+            ];
+          },
+        ),
       ],
     );
   }

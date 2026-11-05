@@ -49,7 +49,8 @@ class ShowColorSchemeColors extends StatelessWidget {
     final bool useMaterial3 = theme.useMaterial3;
 
     final MediaQueryData media = MediaQuery.of(context);
-    final bool isPhone = media.size.width < AppInsets.phoneWidthBreakpoint ||
+    final bool isPhone =
+        media.size.width < AppInsets.phoneWidthBreakpoint ||
         media.size.height < AppInsets.phoneHeightBreakpoint;
     final double spacing = isPhone ? 3 : 6;
 
@@ -58,10 +59,7 @@ class ShowColorSchemeColors extends StatelessWidget {
     // If we had one, copy in a border side to it.
     if (border is RoundedRectangleBorder) {
       border = border.copyWith(
-        side: BorderSide(
-          color: theme.dividerColor,
-          width: 1,
-        ),
+        side: BorderSide(color: theme.dividerColor, width: 1),
       );
       // If
     } else {
@@ -69,10 +67,7 @@ class ShowColorSchemeColors extends StatelessWidget {
       // side, if it was not null, we leave it as it was.
       border ??= RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(useMaterial3 ? 12 : 4)),
-        side: BorderSide(
-          color: theme.dividerColor,
-          width: 1,
-        ),
+        side: BorderSide(color: theme.dividerColor, width: 1),
       );
     }
 
@@ -83,29 +78,26 @@ class ShowColorSchemeColors extends StatelessWidget {
     // Warning label for scaffold background when it uses to much blend.
     final String surfaceTooHigh = isDark
         ? _isLight(theme.colorScheme.surface)
-            ? context.tr!.tooHigh
-            : ''
+              ? context.tr!.tooHigh
+              : ''
         : _isDark(theme.colorScheme.surface)
-            ? context.tr!.tooHigh
-            : '';
+        ? context.tr!.tooHigh
+        : '';
 
     // Warning label for scaffold background when it uses to much blend.
     final String backTooHigh = isDark
         ? _isLight(theme.colorScheme.surface)
-            ? context.tr!.tooHigh
-            : ''
+              ? context.tr!.tooHigh
+              : ''
         : _isDark(theme.colorScheme.surface)
-            ? context.tr!.tooHigh
-            : '';
+        ? context.tr!.tooHigh
+        : '';
 
     // Wrap this widget branch in a custom theme where card has a border outline
     // if it did not have one, but retains in ambient themed border radius.
     return Theme(
       data: Theme.of(context).copyWith(
-        cardTheme: CardTheme.of(context).copyWith(
-          elevation: 0,
-          shape: border,
-        ),
+        cardTheme: CardTheme.of(context).copyWith(elevation: 0, shape: border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

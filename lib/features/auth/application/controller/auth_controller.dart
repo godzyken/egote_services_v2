@@ -35,8 +35,11 @@ class AuthController extends AsyncNotifier<UserModel?> {
 
       return user;
     } on AuthException catch (e) {
-      developer.log('AuthException: ${e.message}',
-          error: e.statusCode, name: e.message);
+      developer.log(
+        'AuthException: ${e.message}',
+        error: e.statusCode,
+        name: e.message,
+      );
       state = AsyncValue.error(e, StackTrace.fromString(e.message));
       return null;
     } catch (e) {
@@ -53,8 +56,7 @@ class AuthController extends AsyncNotifier<UserModel?> {
   Future<void> _handleInitialDeepLink(UserModel user) async {
     try {
       state = const AsyncValue.loading();
-      final initialLink =
-          await getInitialLink(user.authUser.actionLink);
+      final initialLink = await getInitialLink(user.authUser.actionLink);
       if (!(initialLink?.contains('refresh_token') ?? false)) {
         return;
       }
@@ -62,8 +64,9 @@ class AuthController extends AsyncNotifier<UserModel?> {
           ?.split('&')
           .firstWhere((element) => element.contains('refresh_token'));
 
-      final refreshToken = refreshTokenQueryParams
-          ?.substring(refreshTokenQueryParams.indexOf('=') + 1);
+      final refreshToken = refreshTokenQueryParams?.substring(
+        refreshTokenQueryParams.indexOf('=') + 1,
+      );
 
       if (refreshToken == null) return;
 
@@ -71,10 +74,15 @@ class AuthController extends AsyncNotifier<UserModel?> {
       state = AsyncValue.data(UserModel.fromJson(res.user!.toJson()));
       _updateAuthState();
     } on PlatformException catch (e) {
-      developer.log('PlatformException: ${e.code}',
-          error: e.code, name: e.details);
-      state = AsyncValue.error(UserModel.fromJson(e.details),
-          StackTrace.fromString(e.message.toString()));
+      developer.log(
+        'PlatformException: ${e.code}',
+        error: e.code,
+        name: e.details,
+      );
+      state = AsyncValue.error(
+        UserModel.fromJson(e.details),
+        StackTrace.fromString(e.message.toString()),
+      );
     }
   }
 
@@ -121,12 +129,11 @@ class AutoAuthController extends AsyncNotifier<UserModel?> {
   Future<UserModel?> _initialize() async {
     final res = await _repository.restoreSession();
     final db = _firestore.doc('auth_users_table');
-    
+
     state = res.fold((l) => const AsyncValue.data(null), (r) {
       try {
         db.set(r.toJson(), SetOptions(merge: true));
-        developer
-            .log("User Data register successfully: ${r.id} in ${db.path}");
+        developer.log("User Data register successfully: ${r.id} in ${db.path}");
       } on FirebaseException catch (e) {
         developer.log("Initialize autoAuthController() error: ${e.message}");
       }
@@ -147,10 +154,11 @@ class AutoAuthController extends AsyncNotifier<UserModel?> {
 
     _repository.cubeUserStateChange((cubeUser) {
       final user = UserModel.complete(
-          id: UserId(value: cubeUser!.id!),
-          userEntityModel: ref.read(userNotifierProvider),
-          authUser: state.asData?.value?.authUser ?? _createEmptyAuthUser(),
-          cubeUser: cubeUser);
+        id: UserId(value: cubeUser!.id!),
+        userEntityModel: ref.read(userNotifierProvider),
+        authUser: state.asData?.value?.authUser ?? _createEmptyAuthUser(),
+        cubeUser: cubeUser,
+      );
       state = AsyncValue.data(user);
       _updateAuthState();
     });
@@ -176,8 +184,9 @@ class AutoAuthController extends AsyncNotifier<UserModel?> {
           ?.split('&')
           .firstWhere((element) => element.contains('refresh_token'));
 
-      final refreshToken = refreshTokenQueryParams
-          ?.substring(refreshTokenQueryParams.indexOf('=') + 1);
+      final refreshToken = refreshTokenQueryParams?.substring(
+        refreshTokenQueryParams.indexOf('=') + 1,
+      );
 
       if (refreshToken == null) return;
 
@@ -185,8 +194,11 @@ class AutoAuthController extends AsyncNotifier<UserModel?> {
       state = AsyncValue.data(UserModel.fromJson(res.user!.toJson()));
       _updateAuthState();
     } on PlatformException catch (e) {
-      developer.log('PlatformException: ${e.code}',
-          error: e.code, name: e.details);
+      developer.log(
+        'PlatformException: ${e.code}',
+        error: e.code,
+        name: e.details,
+      );
     }
   }
 
@@ -199,16 +211,13 @@ class AutoAuthController extends AsyncNotifier<UserModel?> {
     return res.session?.refreshToken;
   }
 
-  AuthUser _createEmptyAuthUser() {
-    return AuthUser(
-        id: 'id',
-        appMetadata: {},
-        userMetadata: {},
-        aud: 'aud',
-        email: 'email',
-        phone: 'phone',
-        createdAt: 'createdAt',
-        role: 'role',
-        updatedAt: 'updatedAt');
+  User _createEmptyAuthUser() {
+    return User(
+      id: 'id',
+      appMetadata: {},
+      userMetadata: {},
+      aud: 'aud',
+      createdAt: '',
+    );
   }
 }

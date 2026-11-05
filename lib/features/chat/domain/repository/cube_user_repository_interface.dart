@@ -1,7 +1,6 @@
 import 'package:connectycube_sdk/connectycube_calls.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 
-
 abstract class CubeUserRepositoryInterface {
   /// Get Cube users list
   Future<List<CubeUser>> getAllCubeUsers();

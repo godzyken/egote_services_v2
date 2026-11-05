@@ -46,5 +46,6 @@ final sharedPreferencesProvider = Provider<SharedPreferences>(
 );
 
 // <---------------- GeoLocation Provider --------------------> //
-final geoFlutterFireProvider =
-    Provider<GeoFlutterFire>((ref) => GeoFlutterFire());
+final geoFlutterFireProvider = Provider<GeoFlutterFire>(
+  (ref) => GeoFlutterFire(),
+);

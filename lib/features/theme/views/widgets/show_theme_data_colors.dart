@@ -50,8 +50,8 @@ class ShowThemeDataColors extends StatelessWidget {
   // On color used when a theme color property does not have a theme onColor.
   static Color _onColor(final Color color, final Color background) =>
       _isLight(Color.alphaBlend(color, background))
-          ? Colors.black
-          : Colors.white;
+      ? Colors.black
+      : Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,8 @@ class ShowThemeDataColors extends StatelessWidget {
     final bool useMaterial3 = theme.useMaterial3;
 
     final MediaQueryData media = MediaQuery.of(context);
-    final bool isPhone = media.size.width < AppInsets.phoneWidthBreakpoint ||
+    final bool isPhone =
+        media.size.width < AppInsets.phoneWidthBreakpoint ||
         media.size.height < AppInsets.phoneHeightBreakpoint;
     final double spacing = isPhone ? 3 : 6;
 
@@ -70,20 +71,14 @@ class ShowThemeDataColors extends StatelessWidget {
     // If we had one, copy in a border side to it.
     if (border is RoundedRectangleBorder) {
       border = border.copyWith(
-        side: BorderSide(
-          color: theme.dividerColor,
-          width: 1,
-        ),
+        side: BorderSide(color: theme.dividerColor, width: 1),
       );
     } else {
       // If border was null, make one matching Card default, but with border
       // side, if it was not null, we leave it as it was.
       border ??= RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(useMaterial3 ? 12 : 4)),
-        side: BorderSide(
-          color: theme.dividerColor,
-          width: 1,
-        ),
+        side: BorderSide(color: theme.dividerColor, width: 1),
       );
     }
 
@@ -94,37 +89,34 @@ class ShowThemeDataColors extends StatelessWidget {
     // Warning label for scaffold background when it uses to much blend.
     final String scaffoldTooHigh = isDark
         ? _isLight(theme.scaffoldBackgroundColor)
-            ? context.tr!.tooHigh
-            : ''
+              ? context.tr!.tooHigh
+              : ''
         : _isDark(theme.scaffoldBackgroundColor)
-            ? context.tr!.tooHigh
-            : '';
+        ? context.tr!.tooHigh
+        : '';
     // Warning label for scaffold background when it uses to much blend.
     final String surfaceTooHigh = isDark
         ? _isLight(theme.colorScheme.surface)
-            ? context.tr!.tooHigh
-            : ''
+              ? context.tr!.tooHigh
+              : ''
         : _isDark(theme.colorScheme.surface)
-            ? context.tr!.tooHigh
-            : '';
+        ? context.tr!.tooHigh
+        : '';
 
     // Warning label for scaffold background when it uses to much blend.
     final String backTooHigh = isDark
         ? _isLight(theme.colorScheme.surface)
-            ? context.tr!.tooHigh
-            : ''
+              ? context.tr!.tooHigh
+              : ''
         : _isDark(theme.colorScheme.surface)
-            ? context.tr!.tooHigh
-            : '';
+        ? context.tr!.tooHigh
+        : '';
 
     // Wrap this widget branch in a custom theme where card has a border outline
     // if it did not have one, but retains in ambient themed border radius.
     return Theme(
       data: theme.copyWith(
-        cardTheme: CardTheme.of(context).copyWith(
-          elevation: 0,
-          shape: border,
-        ),
+        cardTheme: CardTheme.of(context).copyWith(elevation: 0, shape: border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,13 +171,25 @@ class ShowThemeDataColors extends StatelessWidget {
               ),
               ColorCard(
                 label: context.tr!.dialog,
-                color: theme.dialogBackgroundColor,
-                textColor: _onColor(theme.dialogBackgroundColor, background),
+                color:
+                    theme.dialogTheme.backgroundColor ??
+                    theme.colorScheme.surface,
+                textColor: _onColor(
+                  theme.dialogTheme.backgroundColor ??
+                      theme.colorScheme.surface,
+                  background,
+                ),
               ),
               ColorCard(
                 label: context.tr!.labelIndicatorColor,
-                color: theme.indicatorColor,
-                textColor: _onColor(theme.indicatorColor, background),
+                color:
+                    theme.tabBarTheme.indicatorColor ??
+                    theme.colorScheme.secondary,
+                textColor: _onColor(
+                  theme.tabBarTheme.indicatorColor ??
+                      theme.colorScheme.secondary,
+                  background,
+                ),
               ),
               ColorCard(
                 label: context.tr!.labelDividerColor,

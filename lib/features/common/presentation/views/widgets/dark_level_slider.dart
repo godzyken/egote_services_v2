@@ -12,7 +12,8 @@ class DarkLevelSlider extends ConsumerWidget {
     final TextStyle style = Theme.of(context).textTheme.bodySmall!;
     final int level = ref.watch(Settings.darkComputeLevelProvider);
     return AnimatedHide(
-      hide: !ref.watch(Settings.darkComputeThemeProvider) ||
+      hide:
+          !ref.watch(Settings.darkComputeThemeProvider) ||
           ref.watch(Settings.usePrimaryKeyColorProvider),
       child: ListTile(
         title: Slider.adaptive(
@@ -31,10 +32,7 @@ class DarkLevelSlider extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(
-                context.tr!.level,
-                style: style,
-              ),
+              Text(context.tr!.level, style: style),
               Text(
                 '$level ${context.tr!.percent}',
                 style: style.copyWith(fontWeight: FontWeight.bold),

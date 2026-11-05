@@ -11,15 +11,16 @@ abstract class MissionEntity with _$MissionEntity {
     required String denomination,
   }) = _MissionEntityDefault;
 
-  const factory MissionEntity.init(
-      {required MissionId id}) = _MissionEntityInit;
+  const factory MissionEntity.init({required MissionId id}) =
+      _MissionEntityInit;
 
-  const factory MissionEntity.done(
-      {required MissionId id,
-      required String denomination,
-      required DateTime startedAt,
-      required DateTime finishedAt,
-      required bool doneOk}) = _MissionEntityDone;
+  const factory MissionEntity.done({
+    required MissionId id,
+    required String denomination,
+    required DateTime startedAt,
+    required DateTime finishedAt,
+    required bool doneOk,
+  }) = _MissionEntityDone;
 
   const factory MissionEntity.progress({
     required MissionId id,
@@ -27,12 +28,13 @@ abstract class MissionEntity with _$MissionEntity {
     required DateTime startedAt,
   }) = _MissionEntityProgress;
 
-  const factory MissionEntity.abandon(
-      {required MissionId id,
-      required String denomination,
-      required String reason,
-      required DateTime left,
-      required bool isLeft}) = _MissionEntityAbandon;
+  const factory MissionEntity.abandon({
+    required MissionId id,
+    required String denomination,
+    required String reason,
+    required DateTime left,
+    required bool isLeft,
+  }) = _MissionEntityAbandon;
 
   const MissionEntity._();
 

@@ -5,39 +5,37 @@ part 'elements.g.dart';
 
 @freezed
 abstract class ElementsEntityModel with _$ElementsEntityModel {
-  const factory ElementsEntityModel(
-      {required int id,
-      required String name,
-      Figures? figures,
-      Polygones? polygones,
-      Volumes? volumes}) = _ElementsEntityModelDefault;
+  const factory ElementsEntityModel({
+    required int id,
+    required String name,
+    Figures? figures,
+    Polygones? polygones,
+    Volumes? volumes,
+  }) = _ElementsEntityModelDefault;
 
-  const factory ElementsEntityModel.figures(
-      {required int id,
-      required String name,
-      @Default(Figures.cercle) Figures figures}) = _ElementsEntityModelFigures;
+  const factory ElementsEntityModel.figures({
+    required int id,
+    required String name,
+    @Default(Figures.cercle) Figures figures,
+  }) = _ElementsEntityModelFigures;
 
-  const factory ElementsEntityModel.polygones(
-          {required int id,
-          required String name,
-          @Default(Polygones.quadrilatere) Polygones polygones}) =
-      _ElementsEntityModelPolygones;
+  const factory ElementsEntityModel.polygones({
+    required int id,
+    required String name,
+    @Default(Polygones.quadrilatere) Polygones polygones,
+  }) = _ElementsEntityModelPolygones;
 
-  const factory ElementsEntityModel.volumes(
-      {required int id,
-      required String name,
-      @Default(Volumes.cube) Volumes volumes}) = _ElementsEntityModelVolumes;
+  const factory ElementsEntityModel.volumes({
+    required int id,
+    required String name,
+    @Default(Volumes.cube) Volumes volumes,
+  }) = _ElementsEntityModelVolumes;
 
   factory ElementsEntityModel.fromJson(Map<String, dynamic> json) =>
       _$ElementsEntityModelFromJson(json);
 }
 
-enum Figures {
-  cercle,
-  disque,
-  ovale,
-  ellipse,
-}
+enum Figures { cercle, disque, ovale, ellipse }
 
 enum Polygones {
   triangle,
@@ -49,11 +47,4 @@ enum Polygones {
   trapeze,
 }
 
-enum Volumes {
-  cube,
-  boule,
-  sphere,
-  cylindre,
-  pyramide,
-  cone,
-}
+enum Volumes { cube, boule, sphere, cylindre, pyramide, cone }

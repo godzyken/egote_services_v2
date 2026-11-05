@@ -13,9 +13,6 @@ class UserConverter implements JsonConverter<User, Map<String, dynamic>> {
 
   User fromFirestore(DocumentSnapshot doc) {
     final map = doc.data() as Map<String, dynamic>;
-    return User.fromJson({
-      ...map,
-      'id': doc.id,
-    })!;
+    return User.fromJson({...map, 'id': doc.id})!;
   }
 }

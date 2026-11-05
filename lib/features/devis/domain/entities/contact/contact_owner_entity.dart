@@ -24,12 +24,13 @@ abstract class ContactOwnerEntity with _$ContactOwnerEntity {
     required String email,
   }) = _ContactOwnerEntityClient;
 
-  const factory ContactOwnerEntity.pro(
-      {required int id,
-      required String companyName,
-      required String phone,
-      required String email,
-      required List<Professions> professions}) = _ContactOwnerEntityPro;
+  const factory ContactOwnerEntity.pro({
+    required int id,
+    required String companyName,
+    required String phone,
+    required String email,
+    required List<Professions> professions,
+  }) = _ContactOwnerEntityPro;
 
   factory ContactOwnerEntity.fromJson(Map<String, dynamic> json) =>
       _$ContactOwnerEntityFromJson(json);
@@ -71,5 +72,5 @@ enum Professions {
   profPestControl,
   waterproofingInsulationCompany,
   dIYers,
-  locksmiths
+  locksmiths,
 }
