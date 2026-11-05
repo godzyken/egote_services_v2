@@ -12,24 +12,38 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install shared_models
+      - name: Install shared_models (path packages/shared_models)
         env:
           KEY: ${{ secrets.SHARED_MODELS_DEPLOY_KEY }}
         run: |
           set -euo pipefail
-          if [ -n "${KEY:-}" ]; then
-            mkdir -p ~/.ssh
-            printf '%s\n' "$KEY" > ~/.ssh/shared_models_ci
-            chmod 600 ~/.ssh/shared_models_ci
-            ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
-            GIT_SSH_COMMAND="ssh -i $HOME/.ssh/shared_models_ci -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
-              git clone --depth 1 --branch master \
-                git@github.com:godzyken/shared_models.git \
-                "../shared_models"
-            rm -f ~/.ssh/shared_models_ci
-          else
-            git clone --depth 1 https://github.com/godzyken/shared_models.git "../shared_models" || true
+          if [ -z "${KEY:-}" ]; then
+            echo "❌ SHARED_MODELS_DEPLOY_KEY est manquant dans les secrets GitHub du dépôt egote_services_v2."
+            echo "Veuillez ajouter la clé SSH privée dans GitHub > Settings > Secrets and variables > Actions > SHARED_MODELS_DEPLOY_KEY"
+            exit 1
           fi
+          mkdir -p ~/.ssh packages
+          KEY_FILE="$HOME/.ssh/shared_models_ci"
+
+          if [[ "$KEY" != *"BEGIN"* ]] && echo "$KEY" | grep -qE '^[A-Za-z0-9+/=]+$'; then
+            echo "$KEY" | base64 -d | tr -d '\r' > "$KEY_FILE"
+          elif [[ "$KEY" == *"\\n"* ]] && [[ "$KEY" != *$'\n'* ]]; then
+            echo -e "$KEY" | tr -d '\r' > "$KEY_FILE"
+          else
+            printf '%s\n' "$KEY" | tr -d '\r' > "$KEY_FILE"
+          fi
+
+          sed -i -e '$a\' "$KEY_FILE"
+          chmod 600 "$KEY_FILE"
+          ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+
+          GIT_SSH_COMMAND="ssh -i $KEY_FILE -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+            git clone --depth 1 --branch master \
+              git@github.com:godzyken/shared_models.git \
+              "packages/shared_models"
+
+          echo "→ packages/shared_models OK"
+          rm -f "$KEY_FILE"
 
       - name: Set up Java
         uses: actions/setup-java@v4
