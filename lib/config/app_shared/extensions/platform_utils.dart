@@ -17,13 +17,15 @@ void showModal({
 }) {
   if (isDesktop()) {
     showDialog(
-        context: context,
-        builder: (BuildContext cxt) {
-          return Dialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            child: KeyboardListener(
-              focusNode: FocusNode(onKeyEvent: (FocusNode node, KeyEvent evt) {
+      context: context,
+      builder: (BuildContext cxt) {
+        return Dialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
+          child: KeyboardListener(
+            focusNode: FocusNode(
+              onKeyEvent: (FocusNode node, KeyEvent evt) {
                 if (evt.logicalKey == LogicalKeyboardKey.escape) {
                   if (evt is KeyDownEvent) {
                     context.pop(context);
@@ -32,32 +34,37 @@ void showModal({
                 }
 
                 return KeyEventResult.ignored;
-              }),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: maxWidth),
-                    child: child),
+              },
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: child,
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   } else if (Platform.isAndroid) {
     showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        enableDrag: true,
-        builder: (context) {
-          return child;
-        });
+      context: context,
+      backgroundColor: Colors.transparent,
+      enableDrag: true,
+      builder: (context) {
+        return child;
+      },
+    );
   } else if (Platform.isIOS) {
     showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        enableDrag: true,
-        builder: (context) {
-          return child;
-        });
+      context: context,
+      backgroundColor: Colors.transparent,
+      enableDrag: true,
+      builder: (context) {
+        return child;
+      },
+    );
   }
 }
 
@@ -75,9 +82,7 @@ void updateBadgeCount(int? count) {
   badges.BadgeState().createTicker((elapsed) {
     if (elapsed.isNegative) {
       if (count == null || count == 0) {
-        const badges.Badge(
-          showBadge: false,
-        );
+        const badges.Badge(showBadge: false);
       } else {
         badges.Badge(
           badgeStyle: badges.BadgeStyle(
@@ -87,7 +92,8 @@ void updateBadgeCount(int? count) {
             borderRadius: BorderRadius.circular(4),
             borderSide: const BorderSide(color: Colors.white, width: 2),
             borderGradient: const badges.BadgeGradient.linear(
-                colors: [Colors.red, Colors.black]),
+              colors: [Colors.red, Colors.black],
+            ),
             badgeGradient: const badges.BadgeGradient.linear(
               colors: [Colors.blue, Colors.yellow],
               begin: Alignment.topCenter,
@@ -97,7 +103,8 @@ void updateBadgeCount(int? count) {
           ),
           showBadge: true,
           badgeAnimation: const badges.BadgeAnimation.scale(
-              appearanceDisappearanceFadeAnimationEnabled: true),
+            appearanceDisappearanceFadeAnimationEnabled: true,
+          ),
           child: Text('$count : Badge'),
         );
       }

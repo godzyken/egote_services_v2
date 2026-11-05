@@ -12,12 +12,13 @@ class DarkSurfaceModePopupMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SurfaceModePopupMenu(
-        title: Text(context.tr!.darkThemeSurfaceMode),
-        index: ref.watch(Settings.darkSurfaceModeProvider).index,
-        onChanged: (int index) {
-          ref
-              .read(Settings.darkSurfaceModeProvider.notifier)
-              .set(FlexSurfaceMode.values[index]);
-        });
+      title: Text(context.tr!.darkThemeSurfaceMode),
+      index: ref.watch(Settings.darkSurfaceModeProvider).index,
+      onChanged: (int index) {
+        ref
+            .read(Settings.darkSurfaceModeProvider.notifier)
+            .set(FlexSurfaceMode.values[index]);
+      },
+    );
   }
 }

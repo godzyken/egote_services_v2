@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
@@ -30,7 +29,7 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   late StreamSubscription<List<ConnectivityResult>>
-      connectivityStateSubscription;
+  connectivityStateSubscription;
   AppLifecycleState? appState;
 
   @override
@@ -39,21 +38,22 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     final lang = ref.watch(localizationProvider);
     final datadog = ref.read(datadogInstanceProvider);
     return RumUserActionDetector(
-        rum: datadog.rum,
-        child: MaterialApp.router(
-          title: F.title,
-          // routerDelegate: router.routerDelegate,
-          // routeInformationParser: router.routeInformationParser,
-          // routeInformationProvider: router.routeInformationProvider,
-          routerConfig: router,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          theme: ref.watch(lightThemeProvider),
-          darkTheme: ref.watch(darkThemeProvider),
-          themeMode: ref.watch(Settings.themeModeProvider),
-          scrollBehavior: const AppScrollBehavior(),
-          locale: lang,
-        ));
+      rum: datadog.rum,
+      child: MaterialApp.router(
+        title: F.title,
+        // routerDelegate: router.routerDelegate,
+        // routeInformationParser: router.routeInformationParser,
+        // routeInformationProvider: router.routeInformationProvider,
+        routerConfig: router,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: ref.watch(lightThemeProvider),
+        darkTheme: ref.watch(darkThemeProvider),
+        themeMode: ref.watch(Settings.themeModeProvider),
+        scrollBehavior: const AppScrollBehavior(),
+        locale: lang,
+      ),
+    );
   }
 
   @override
@@ -75,21 +75,26 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    connectivityStateSubscription =
-        Connectivity().onConnectivityChanged.listen((connectivityTypeList) {
+    connectivityStateSubscription = Connectivity().onConnectivityChanged.listen((
+      connectivityTypeList,
+    ) {
       if (AppLifecycleState.resumed != appState) return;
 
-      final isOnline = connectivityTypeList.any((element) =>
-          element != ConnectivityResult.none &&
-          element != ConnectivityResult.other);
+      final isOnline = connectivityTypeList.any(
+        (element) =>
+            element != ConnectivityResult.none &&
+            element != ConnectivityResult.other,
+      );
 
       if (isOnline) {
-        log("chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}");
+        log(
+          "chatConnectionState = ${CubeChatConnection.instance.chatConnectionState}",
+        );
         bool isChatDisconnected =
             CubeChatConnection.instance.chatConnectionState ==
-                    CubeChatConnectionState.Closed ||
-                CubeChatConnection.instance.chatConnectionState ==
-                    CubeChatConnectionState.ForceClosed;
+                CubeChatConnectionState.Closed ||
+            CubeChatConnection.instance.chatConnectionState ==
+                CubeChatConnectionState.ForceClosed;
 
         if (isChatDisconnected &&
             CubeChatConnection.instance.currentUser != null) {
@@ -136,8 +141,9 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         SharedPrefs.instance.init().then((sharedPrefs) async {
-          CubeUser? user =
-              await sharedPrefs.getUser().then((savedUser) => savedUser!);
+          CubeUser? user = await sharedPrefs.getUser().then(
+            (savedUser) => savedUser!,
+          );
 
           if (user != null) {
             if (!CubeChatConnection.instance.isAuthenticated()) {
@@ -149,10 +155,14 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                   final firebaseUser = FirebaseAuth.instance.currentUser;
                   if (firebaseUser != null) {
                     final accessToken = await firebaseUser.getIdToken();
-                    final projectId = DefaultFirebaseOptions.currentPlatform.projectId;
-                    
-                    var phoneAuthSession = await createSessionUsingFirebasePhone(
-                        projectId, accessToken!);
+                    final projectId =
+                        DefaultFirebaseOptions.currentPlatform.projectId;
+
+                    var phoneAuthSession =
+                        await createSessionUsingFirebasePhone(
+                          projectId,
+                          accessToken!,
+                        );
                     user.password = phoneAuthSession.token;
                   }
                 }

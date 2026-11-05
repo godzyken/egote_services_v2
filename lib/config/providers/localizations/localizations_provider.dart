@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 1. Provider fournissant la Locale de base
 final localeProvider = Provider<Locale>(
-      (_) => const Locale.fromSubtags(languageCode: 'fr'),
+  (_) => const Locale.fromSubtags(languageCode: 'fr'),
   name: 'LocaleProvider',
 );
 
@@ -31,8 +31,7 @@ class MultiLangNotifier extends Notifier<Locale> {
 }
 
 // 3. Provider unifié Riverpod 3 (Auto-disposed par défaut)
-final localizationProvider =
-NotifierProvider<MultiLangNotifier, Locale>(
+final localizationProvider = NotifierProvider<MultiLangNotifier, Locale>(
   MultiLangNotifier.new,
   name: 'LocalizationProvider',
 );

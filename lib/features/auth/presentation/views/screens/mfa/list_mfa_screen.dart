@@ -5,13 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class ListMfaScreen extends ConsumerWidget {
-  const ListMfaScreen({
-    super.key,
-  });
+  const ListMfaScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final factorListFuture = ref.watch(supabaseClientProvider).auth.mfa.listFactors();
+    final factorListFuture = ref
+        .watch(supabaseClientProvider)
+        .auth
+        .mfa
+        .listFactors();
 
     return Scaffold(
       appBar: AppBar(title: Text(context.tr!.listMfa)),
@@ -37,30 +39,38 @@ class ListMfaScreen extends ConsumerWidget {
                 trailing: IconButton(
                   onPressed: () {
                     showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text(context.tr!.deleteFactor),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: Text(context.tr!.cancel),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  await ref.watch(supabaseClientProvider).auth.mfa.unenroll(factor.id);
-                                  await ref.watch(supabaseClientProvider).auth.signOut();
-                                  if (context.mounted) {
-                                    context.go('/authRoute/signUpRoute');
-                                  }
-                                },
-                                child: Text(context.tr!.delete),
-                              ),
-                            ],
-                          );
-                        });
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(context.tr!.deleteFactor),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              child: Text(context.tr!.cancel),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await ref
+                                    .watch(supabaseClientProvider)
+                                    .auth
+                                    .mfa
+                                    .unenroll(factor.id);
+                                await ref
+                                    .watch(supabaseClientProvider)
+                                    .auth
+                                    .signOut();
+                                if (context.mounted) {
+                                  context.go('/authRoute/signUpRoute');
+                                }
+                              },
+                              child: Text(context.tr!.delete),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(Icons.delete_outline),
                 ),

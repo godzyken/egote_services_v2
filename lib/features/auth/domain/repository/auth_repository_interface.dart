@@ -14,13 +14,12 @@ abstract class AuthRepositoryInterface {
 
   Future<Either<Failure, bool>> signOut();
 
-  void authStateChange(
-    void Function(UserModel? userEntity) callback,
-  );
+  void authStateChange(void Function(UserModel? userEntity) callback);
 
   /// Mocks 'CubeUser' classes until ConnectyCube major update
   Future<Either<Failure, CubeUser>> cubeUserStateChange(
-      void Function(CubeUser? cubeUser) cubeUser);
+    void Function(CubeUser? cubeUser) cubeUser,
+  );
 
   Future<void> setSession(String token);
 
@@ -48,5 +47,9 @@ abstract class AuthRepositoryInterface {
 
   Future<Either<Failure, UserEntityModel>> createUserEntityModel(UserName name);
 
-  Future<Either<Failure, UserModel>> updateUser({String? email, String? password, String? name});
+  Future<Either<Failure, UserModel>> updateUser({
+    String? email,
+    String? password,
+    String? name,
+  });
 }

@@ -1,4 +1,3 @@
-
 import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

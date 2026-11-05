@@ -6,19 +6,18 @@ import '../../../../domain/entities/entities_extension.dart';
 import '../../../controller/auth_controller_state.dart';
 import '../../../states/auth/auth_state.dart';
 
-
 class AuthScreen extends ConsumerWidget {
   const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-      final authState = ref.watch(authStateProvider);
+    final authState = ref.watch(authStateProvider);
 
-      return authState.when(
-          initial: () => const LoginScreen(),
-          authenticated: (UserModel userEntity) =>
-              UserHomeScreen(pid: userEntity.id.value.toString()),
-          unauthenticated: () => const SignUpScreen()
-      );
+    return authState.when(
+      initial: () => const LoginScreen(),
+      authenticated: (UserModel userEntity) =>
+          UserHomeScreen(pid: userEntity.id.value.toString()),
+      unauthenticated: () => const SignUpScreen(),
+    );
   }
 }

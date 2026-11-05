@@ -12,13 +12,14 @@ class SignInWithGoogleButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
-        onPressed: () {
-          try {
-            ref.read(signInWithGoogleProvider.notifier).signInWithGoogle();
-          } catch (e) {
-            developer.log(e.toString());
-          }
-        },
-        child: Text(context.tr!.signInWithGoogle));
+      onPressed: () {
+        try {
+          ref.read(signInWithGoogleProvider.notifier).signInWithGoogle();
+        } catch (e) {
+          developer.log(e.toString());
+        }
+      },
+      child: Text(context.tr!.signInWithGoogle),
+    );
   }
 }

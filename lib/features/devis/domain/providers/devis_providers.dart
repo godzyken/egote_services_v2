@@ -20,26 +20,27 @@ class DevisStateNotifier extends Notifier<DevisEntityStates> {
 
   void addDevis(String item) {
     final devis = DevisModelEntity.initialize(
-        id: DevisId(id: int.parse(item)), createdAt: DateTime.parse(item));
-    state = state.copyWith(
-      devis: state.devis..add(devis),
+      id: DevisId(id: int.parse(item)),
+      createdAt: DateTime.parse(item),
     );
+    state = state.copyWith(devis: state.devis..add(devis));
     developer.log('[${state.devis}]');
   }
 
   void removeDevis(DevisId id) {
-    final devis =
-        DevisModelEntity.initialize(id: id, createdAt: DateTime.timestamp());
-    state = state.copyWith(
-      devis: state.devis..remove(devis),
+    final devis = DevisModelEntity.initialize(
+      id: id,
+      createdAt: DateTime.timestamp(),
     );
+    state = state.copyWith(devis: state.devis..remove(devis));
     developer.log('[${state.devis}]');
   }
 }
 
 final devisStateNotifierProvider =
     NotifierProvider<DevisStateNotifier, DevisEntityStates>(
-        DevisStateNotifier.new);
+      DevisStateNotifier.new,
+    );
 
 class TravauxStateNotifier extends Notifier<TravauxEntityStates> {
   @override
@@ -48,9 +49,7 @@ class TravauxStateNotifier extends Notifier<TravauxEntityStates> {
   }
 
   void addTravaux(String item) {
-    final travaux = TravauxEntity.Init(
-      id: TravauId(id: int.parse(item)),
-    );
+    final travaux = TravauxEntity.Init(id: TravauId(id: int.parse(item)));
     state = state.copyWith(travaux: state.travaux..add(travaux));
 
     developer.log('[${state.travaux}]');
@@ -66,7 +65,8 @@ class TravauxStateNotifier extends Notifier<TravauxEntityStates> {
 
 final travauxStateNotifierProvider =
     NotifierProvider<TravauxStateNotifier, TravauxEntityStates>(
-        TravauxStateNotifier.new);
+      TravauxStateNotifier.new,
+    );
 
 class MissionStateNotifier extends Notifier<MissionEntityStates> {
   @override
@@ -75,19 +75,19 @@ class MissionStateNotifier extends Notifier<MissionEntityStates> {
   }
 
   void addMission(String item) {
-    final mission = MissionEntity.init(
-      id: MissionId(id: int.parse(item)),
+    final mission = MissionEntity.init(id: MissionId(id: int.parse(item)));
+    state = state.copyWith(
+      missionEntities: state.missionEntities..add(mission),
     );
-    state =
-        state.copyWith(missionEntities: state.missionEntities..add(mission));
 
     developer.log('[${state.missionEntities}]');
   }
 
   void removedMission(MissionId id) {
     final mission = MissionEntity.init(id: id);
-    state =
-        state.copyWith(missionEntities: state.missionEntities..remove(mission));
+    state = state.copyWith(
+      missionEntities: state.missionEntities..remove(mission),
+    );
 
     developer.log('[${state.missionEntities}]');
   }
@@ -95,16 +95,21 @@ class MissionStateNotifier extends Notifier<MissionEntityStates> {
 
 final missionStateNotifierProvider =
     NotifierProvider<MissionStateNotifier, MissionEntityStates>(
-        MissionStateNotifier.new);
+      MissionStateNotifier.new,
+    );
 
 final _travaux = Provider<List<TravauxEntity>>(
-    (ref) => ref.watch(travauxStateNotifierProvider).travaux);
+  (ref) => ref.watch(travauxStateNotifierProvider).travaux,
+);
 
-final travauxListProvider =
-    Provider<List<TravauxEntity>>((ref) => ref.watch(_travaux));
+final travauxListProvider = Provider<List<TravauxEntity>>(
+  (ref) => ref.watch(_travaux),
+);
 
 final _missions = Provider<List<MissionEntity>>(
-    (ref) => ref.watch(missionStateNotifierProvider).missionEntities);
+  (ref) => ref.watch(missionStateNotifierProvider).missionEntities,
+);
 
-final missionsListProvider =
-    Provider<List<MissionEntity>>((ref) => ref.watch(_missions));
+final missionsListProvider = Provider<List<MissionEntity>>(
+  (ref) => ref.watch(_missions),
+);

@@ -23,15 +23,18 @@ class VerifyPhoneNumber extends ConsumerWidget {
       key: Navigation.verifyPhoneNavigation,
       onGenerateRoute: (RouteSettings settings) {
         return PageRouteBuilder(
-          reverseTransitionDuration:
-              Duration(milliseconds: Platform.isIOS ? 1000 : 300),
+          reverseTransitionDuration: Duration(
+            milliseconds: Platform.isIOS ? 1000 : 300,
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(0.0, 1.0);
             const end = Offset.zero;
             const curve = Curves.ease;
 
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var tween = Tween(
+              begin: begin,
+              end: end,
+            ).chain(CurveTween(curve: curve));
 
             return SlideTransition(
               position: animation.drive(tween),
@@ -39,14 +42,14 @@ class VerifyPhoneNumber extends ConsumerWidget {
             );
           },
           settings: const RouteSettings(name: PHONE_INPUT_ROUTE_NAME),
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              PhoneInputScreen(
+          pageBuilder: (context, animation, secondaryAnimation) => PhoneInputScreen(
             actions: [
               SMSCodeRequestedAction((ctx1, action, flowKey, phoneNumber) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    settings:
-                        const RouteSettings(name: SMS_CODE_INPUT_ROUTE_NAME),
+                    settings: const RouteSettings(
+                      name: SMS_CODE_INPUT_ROUTE_NAME,
+                    ),
                     builder: (ctx2) => SMSCodeInputScreen(
                       flowKey: flowKey,
                       actions: [
@@ -61,16 +64,22 @@ class VerifyPhoneNumber extends ConsumerWidget {
                           log('[AuthStateChangeAction] CredentialLinked');
                           state.user.getIdToken().then((idToken) {
                             SharedPrefs.instance.saveLoginType(LoginType.phone);
-                            Navigator.of(ctx3, rootNavigator: true)
-                                .pushNamedAndRemoveUntil(
-                                    'loginToChat', (route) => false);
+                            Navigator.of(
+                              ctx3,
+                              rootNavigator: true,
+                            ).pushNamedAndRemoveUntil(
+                              'loginToChat',
+                              (route) => false,
+                            );
                           });
                         }),
                         AuthStateChangeAction<Uninitialized>((ctx3, state) {
                           log('[AuthStateChangeAction] Uninitialized');
                         }),
-                        AuthStateChangeAction<CredentialReceived>(
-                            (ctx3, state) {
+                        AuthStateChangeAction<CredentialReceived>((
+                          ctx3,
+                          state,
+                        ) {
                           log('[AuthStateChangeAction] CredentialReceived');
                         }),
                         AuthStateChangeAction<AuthFailed>((ctx3, state) {
@@ -80,9 +89,13 @@ class VerifyPhoneNumber extends ConsumerWidget {
                           log('[AuthStateChangeAction] UserCreated');
                           state.credential.user?.getIdToken().then((idToken) {
                             SharedPrefs.instance.saveLoginType(LoginType.phone);
-                            Navigator.of(ctx3, rootNavigator: true)
-                                .pushNamedAndRemoveUntil(
-                                    'loginToChat', (route) => false);
+                            Navigator.of(
+                              ctx3,
+                              rootNavigator: true,
+                            ).pushNamedAndRemoveUntil(
+                              'loginToChat',
+                              (route) => false,
+                            );
                           });
                         }),
                       ],

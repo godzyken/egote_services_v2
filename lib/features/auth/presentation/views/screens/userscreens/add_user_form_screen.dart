@@ -1,4 +1,3 @@
-
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/models/userform/add_form_view_model.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
@@ -9,12 +8,12 @@ import 'package:intl/intl.dart';
 
 class AddUserFormScreen extends ConsumerStatefulWidget {
   final UserEntityModel? userEntityModel;
-  
-  const AddUserFormScreen({super.key, required this.userEntityModel,});
+
+  const AddUserFormScreen({super.key, required this.userEntityModel});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AddUserFormScreenState();
-  
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AddUserFormScreenState();
 }
 
 class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
@@ -22,20 +21,18 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _createDateFormFocusNode = _DisabledFocusNode();
   late TextEditingController _createDateTextFieldController;
-  
-  _AddUserFormScreenState();
 
+  _AddUserFormScreenState();
 
   @override
   void initState() {
     super.initState();
-    
+
     _viewModel = ref.read(addFormViewModelProvider(widget.userEntityModel));
     _createDateTextFieldController = TextEditingController(
       text: DateFormat('yyyy/MM/dd').format(_viewModel.initialCreateValue()),
     );
   }
-
 
   @override
   void dispose() {
@@ -50,7 +47,8 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
       appBar: AppBar(
         title: Text(_viewModel.appBarTitle()),
         actions: [
-          if(_viewModel.shouldShowDeleteUserIcon()) _buildDeleteUserIconWidget()
+          if (_viewModel.shouldShowDeleteUserIcon())
+            _buildDeleteUserIconWidget(),
         ],
       ),
       body: _buildBodyWidget(),
@@ -62,10 +60,7 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
       padding: const EdgeInsets.only(left: 16, top: 24, right: 16, bottom: 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildFormWidget(),
-          _buildSavedButtonWidget(),
-        ],
+        children: [_buildFormWidget(), _buildSavedButtonWidget()],
       ),
     );
   }
@@ -76,7 +71,7 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
       child: ElevatedButton(
         onPressed: () {
           final currentState = _formKey.currentState;
-          if(currentState != null && currentState.validate()) {
+          if (currentState != null && currentState.validate()) {
             _viewModel.createOrUpdate();
             context.pop(context);
           }
@@ -87,17 +82,17 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
   }
 
   Widget _buildFormWidget() => Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          _buildTitleFormWidget(),
-          const SizedBox(height: 16),
-          _buildRoleFormWidget(),
-          const SizedBox(height: 16),
-          _buildDueDateFormWidget(),
-        ],
-      ));
-
+    key: _formKey,
+    child: Column(
+      children: [
+        _buildTitleFormWidget(),
+        const SizedBox(height: 16),
+        _buildRoleFormWidget(),
+        const SizedBox(height: 16),
+        _buildDueDateFormWidget(),
+      ],
+    ),
+  );
 
   Widget _buildTitleFormWidget() {
     return TextFormField(
@@ -159,27 +154,31 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
       lastDate: _viewModel.datePickerLastDate(),
     );
     if (selectedDate != null) {
-      _createDateTextFieldController.text = DateFormat('yyyy/MM/dd').format(selectedDate);
+      _createDateTextFieldController.text = DateFormat(
+        'yyyy/MM/dd',
+      ).format(selectedDate);
       _viewModel.setCreate(selectedDate);
     }
 
     return null;
   }
 
-  _showConfirmDeleteUserDialog() async {
+  Future<void> _showConfirmDeleteUserDialog() async {
     final bool res = await showAdaptiveDialog(
-        context: context,
-        builder: (context) => AlertDialog.adaptive(
-          content: Text(context.tr!.deleteUser),
-          actions: [
-            TextButton(
-                onPressed: () => context.pop([context, false]),
-                child: Text(context.tr!.cancel)),
-            TextButton(
-                onPressed: () =>  context.pop([context, true]),
-                child: Text(context.tr!.delete)),
-          ],
-        ),
+      context: context,
+      builder: (context) => AlertDialog.adaptive(
+        content: Text(context.tr!.deleteUser),
+        actions: [
+          TextButton(
+            onPressed: () => context.pop([context, false]),
+            child: Text(context.tr!.cancel),
+          ),
+          TextButton(
+            onPressed: () => context.pop([context, true]),
+            child: Text(context.tr!.delete),
+          ),
+        ],
+      ),
     );
     if (res) {
       _viewModel.deleteUser();
@@ -191,9 +190,7 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
   }
 }
 
-
 class _DisabledFocusNode extends FocusNode {
-
   @override
   bool get hasFocus => false;
 }

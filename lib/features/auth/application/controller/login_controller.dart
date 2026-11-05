@@ -8,29 +8,46 @@ class LoginControllerNotifier extends Notifier<SignInState> {
   @override
   SignInState build() => const SignInState();
 
-  FormzSubmissionStatus? validate(
-      {EmailFormz? emailFormz, PasswordFormz? passwordFormz}) {
+  FormzSubmissionStatus? validate({
+    EmailFormz? emailFormz,
+    PasswordFormz? passwordFormz,
+  }) {
     for (var f in FormzSubmissionStatus.values) {
       switch (f) {
         case FormzSubmissionStatus.initial:
           state = state.copyWith(
-              emailFormz: emailFormz, passwordFormz: passwordFormz, status: f);
+            emailFormz: emailFormz,
+            passwordFormz: passwordFormz,
+            status: f,
+          );
           return FormzSubmissionStatus.initial;
         case FormzSubmissionStatus.inProgress:
           state = state.copyWith(
-              emailFormz: emailFormz, passwordFormz: passwordFormz, status: f);
+            emailFormz: emailFormz,
+            passwordFormz: passwordFormz,
+            status: f,
+          );
           return FormzSubmissionStatus.inProgress;
         case FormzSubmissionStatus.success:
           state = state.copyWith(
-              emailFormz: emailFormz, passwordFormz: passwordFormz, status: f);
+            emailFormz: emailFormz,
+            passwordFormz: passwordFormz,
+            status: f,
+          );
           return FormzSubmissionStatus.success;
         case FormzSubmissionStatus.failure:
           state = state.copyWith(
-              emailFormz: emailFormz, passwordFormz: passwordFormz, status: f);
+            emailFormz: emailFormz,
+            passwordFormz: passwordFormz,
+            status: f,
+          );
           return FormzSubmissionStatus.failure;
         case FormzSubmissionStatus.canceled:
           state = state.copyWith(
-              emailFormz: emailFormz, passwordFormz: passwordFormz, status: f);
+            emailFormz: emailFormz,
+            passwordFormz: passwordFormz,
+            status: f,
+          );
           return FormzSubmissionStatus.canceled;
       }
     }

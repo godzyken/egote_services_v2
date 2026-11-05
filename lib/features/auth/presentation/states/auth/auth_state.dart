@@ -4,19 +4,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'auth_state.freezed.dart';
 part 'auth_state.g.dart';
 
-enum AuthStatus {
-  authenticated,
-  unauthenticated,
-  initial,
-}
+enum AuthStatus { authenticated, unauthenticated, initial }
 
 @Freezed(unionKey: 'status', unionValueCase: FreezedUnionCase.snake)
 abstract class AuthState with _$AuthState {
   const AuthState._();
 
-  const factory AuthState.authenticated({
-    required UserModel userEntity,
-  }) = _AuthStateAuthenticated;
+  const factory AuthState.authenticated({required UserModel userEntity}) =
+      _AuthStateAuthenticated;
 
   const factory AuthState.unauthenticated() = _AuthStateUnauthenticated;
 

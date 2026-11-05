@@ -9,10 +9,7 @@ import '../../common/domain/values/key_value_db_provider.dart';
 ///
 /// Can be of any value type that the used key-value DB implementation supports.
 class SettingsEntry<T> extends Notifier<T> {
-  SettingsEntry({
-    required this.key,
-    required this.defaultValue,
-  });
+  SettingsEntry({required this.key, required this.defaultValue});
 
   /// The default value of the Settings entry, used if no value in ke-value DB
   /// exists.

@@ -55,22 +55,19 @@ class WebChromeSettings extends ConsumerWidget {
                 onPressed: (_) {},
                 leading: const Icon(Icons.web),
                 title: Text(context.tr!.cookiesOtherTitle),
-                description:
-                Text(context.tr!.cookiesOtherDescription),
+                description: Text(context.tr!.cookiesOtherDescription),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.security),
                 title: Text(context.tr!.securityTitle),
-                description: Text(
-                    context.tr!.securitySafeBrowsingDescription),
+                description: Text(context.tr!.securitySafeBrowsingDescription),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {},
                 leading: const Icon(Icons.settings),
                 title: Text(context.tr!.siteSettingsTitle),
-                description: Text(
-                context.tr!.siteSettingsDescription),
+                description: Text(context.tr!.siteSettingsDescription),
               ),
               SettingsTile.navigation(
                 onPressed: (_) {},
@@ -84,5 +81,4 @@ class WebChromeSettings extends ConsumerWidget {
       ),
     );
   }
-
 }

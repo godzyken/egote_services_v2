@@ -27,15 +27,15 @@ class TrackingConsentNotifier extends Notifier<TrackingConsent> {
 }
 
 final trackingConsentNotifierProvider =
-NotifierProvider<TrackingConsentNotifier, TrackingConsent>(
-  TrackingConsentNotifier.new,
-  name: 'TrackingConsentNotifierProvider',
-);
+    NotifierProvider<TrackingConsentNotifier, TrackingConsent>(
+      TrackingConsentNotifier.new,
+      name: 'TrackingConsentNotifierProvider',
+    );
 
 // --- PROVIDERS ---
 
 final datadogInstanceProvider = Provider<DatadogSdk>(
-      (ref) => DatadogSdk.instance,
+  (ref) => DatadogSdk.instance,
   name: 'DatadogInstanceProvider',
 );
 
@@ -43,8 +43,9 @@ final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
   F.appFlavor = Flavor.development;
 
   final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  final env =
-  Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  final env = Environment.fromJson(
+    json.decode(configFile) as Map<String, dynamic>,
+  );
 
   return DatadogConfiguration(
     clientToken: env.clientToken,
@@ -87,9 +88,7 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
 
   // Initialisation du logger de test
   final logger = datadogSdk.logs?.createLogger(
-    DatadogLoggerConfiguration(
-      remoteLogThreshold: LogLevel.warning,
-    ),
+    DatadogLoggerConfiguration(remoteLogThreshold: LogLevel.warning),
   );
   logger?.debug("A debug message.");
   logger?.info("Some relevant information?");

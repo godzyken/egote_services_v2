@@ -25,7 +25,7 @@ class PlatformNotifier extends Notifier<TargetPlatform> {
 }
 
 final platformNotifierProvider =
-NotifierProvider<PlatformNotifier, TargetPlatform>(
-  PlatformNotifier.new,
-  name: 'platformNotifierProvider',
-);
+    NotifierProvider<PlatformNotifier, TargetPlatform>(
+      PlatformNotifier.new,
+      name: 'platformNotifierProvider',
+    );

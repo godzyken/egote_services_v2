@@ -5,6 +5,7 @@ import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth
 import 'package:egote_services_v2/features/chat/infrastructure/repositories/cube_repository.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockFirebaseAuth extends Mock implements firebase.FirebaseAuth {}
 
 void main() {
@@ -22,9 +23,9 @@ void main() {
     test('initialization', () {
       expect(repository, isNotNull);
     });
-    
-    // Note: Testing actual SDK calls like createSession() requires 
-    // a wrapper around the SDK to be fully unit testable without 
+
+    // Note: Testing actual SDK calls like createSession() requires
+    // a wrapper around the SDK to be fully unit testable without
     // real network calls.
   });
 }

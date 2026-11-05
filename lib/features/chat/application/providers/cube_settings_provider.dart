@@ -17,14 +17,12 @@ import '../../../../config/providers/cube/cube_providers.dart';
 
 final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
   final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  final env =
-  Environment.fromJson(json.decode(configFile) as Map<String, dynamic>);
+  final env = Environment.fromJson(
+    json.decode(configFile) as Map<String, dynamic>,
+  );
 
   final settings = ref.watch(cubeSettingsProvider);
 
-  settings.applicationId = env.appId;
-  settings.authorizationKey = env.authKey;
-  settings.authorizationSecret = env.authSecret;
   settings.isDebugEnabled = true;
   settings.isJoinEnabled = true;
 
@@ -53,15 +51,15 @@ final cubeSettingsInitProvider = FutureProvider<CubeSettings>((ref) async {
 }, name: 'Cube settings init provider');
 
 final cubeUserControllerProvider =
-AsyncNotifierProvider<CubeUserController, CubeUser?>(
-  CubeUserController.new,
-  name: 'cube user authentication state notifier',
-);
+    AsyncNotifierProvider<CubeUserController, CubeUser?>(
+      CubeUserController.new,
+      name: 'cube user authentication state notifier',
+    );
 
 final filterLoginTypeNotifierProvider =
-NotifierProvider<FilterLoginTypeNotifier, LoginType>(
-  FilterLoginTypeNotifier.new,
-);
+    NotifierProvider<FilterLoginTypeNotifier, LoginType>(
+      FilterLoginTypeNotifier.new,
+    );
 
 // --- NOTIFIERS (Remplacement de StateNotifier) ---
 

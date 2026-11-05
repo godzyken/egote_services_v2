@@ -63,12 +63,15 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
               ),
               children: <Widget>[
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppInsets.edge,
+                  ),
                   child: Text(context.tr!.themeShowcase, style: medium),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppInsets.edge,
+                  ),
                   child: Text(context.tr!.themeShowcaseText),
                 ),
                 const Divider(),
@@ -91,8 +94,9 @@ class _ThemeShowcasePageState extends State<ThemeShowcasePage> {
                 ),
                 const Divider(),
                 Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: AppInsets.edge),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppInsets.edge,
+                  ),
                   child: Text(context.tr!.showcase, style: medium),
                 ),
                 const Padding(

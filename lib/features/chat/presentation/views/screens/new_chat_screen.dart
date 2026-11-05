@@ -1,23 +1,29 @@
+import 'dart:developer' as developer;
 
 import 'package:connectycube_sdk/connectycube_sdk.dart';
+import 'package:egote_services_v2/features/chat/infrastructure/repositories/cube_repository.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../../config/cube_config/cube_config.dart';
 
 class NewChatScreen extends ConsumerStatefulWidget {
-  const NewChatScreen(
-      {super.key,
-      required this.currentUser,
-      required this.cubeDialog,
-      required this.users});
+  const NewChatScreen({
+    super.key,
+    required this.currentUser,
+    required this.cubeDialog,
+    required this.users,
+  });
 
   final CubeUser currentUser;
   final CubeDialog cubeDialog;
   final List<CubeUser?> users;
 
   @override
-  ConsumerState createState() => _NewChatScreenState();
+  ConsumerState<NewChatScreen> createState() => _NewChatScreenState();
 }
 
 class _NewChatScreenState extends ConsumerState<NewChatScreen> {
@@ -29,16 +35,22 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
     _nameFilter.addListener(_nameListener);
   }
 
+  @override
+  void dispose() {
+    _nameFilter.dispose();
+    super.dispose();
+  }
+
   String? _nameListener() {
     if (_nameFilter.text.length > 4) {
-      log("_createDialogImage text= ${_nameFilter.text.trim()}");
+      developer.log("_createDialogImage text= ${_nameFilter.text.trim()}");
+      widget.cubeDialog.name = _nameFilter.text.trim();
       var nextDial = widget.cubeDialog;
-      if (nextDial.dialogId!.isNotEmpty) {
-        var lastName = widget.currentUser.fullName;
+      if (nextDial.dialogId != null && nextDial.dialogId!.isNotEmpty) {
+        var lastName = widget.currentUser.fullName ?? '';
         lastName = _nameFilter.text.trim();
-
         return lastName;
-      } else if (nextDial.name!.isEmpty) {
+      } else if (nextDial.name == null || nextDial.name!.isEmpty) {
         return widget.currentUser.fullName;
       }
     }
@@ -48,34 +60,31 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                _buildGroupFields(),
-                _buildDialogOccupants(),
-              ],
-            )),
-        floatingActionButton: FloatingActionButton(
-          heroTag: context.tr!.newDialog,
-          backgroundColor: Colors.blue,
-          onPressed: () => _createDialog(),
-          child: const Icon(
-            Icons.check,
-            color: Colors.white,
-          ),
-        ),
-        resizeToAvoidBottomInset: false);
+      body: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(children: [_buildGroupFields(), _buildDialogOccupants()]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: context.tr!.newDialog,
+        backgroundColor: Colors.blue,
+        onPressed: () => _createDialog(),
+        child: const Icon(Icons.check, color: Colors.white),
+      ),
+      resizeToAvoidBottomInset: false,
+    );
   }
 
-  _buildGroupFields() {
-    getIcon() {
-      return getDialogAvatarWidget(widget.cubeDialog, 45,
-          placeholder: const Icon(
-            Icons.add_a_photo,
-            size: 45.0,
-            color: Colors.blue,
-          ));
+  Widget _buildGroupFields() {
+    Widget getIcon() {
+      return getDialogAvatarWidget(
+        widget.cubeDialog,
+        45,
+        placeholder: const Icon(
+          Icons.add_a_photo,
+          size: 45.0,
+          color: Colors.blue,
+        ),
+      );
     }
 
     return Column(
@@ -90,16 +99,14 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
               shape: const CircleBorder(),
               child: getIcon(),
             ),
-            const SizedBox(
-              width: 16,
-            ),
+            const SizedBox(width: 16),
             Flexible(
               child: TextField(
                 autofocus: true,
                 controller: _nameFilter,
                 decoration: InputDecoration(labelText: context.tr!.groupName),
               ),
-            )
+            ),
           ],
         ),
         Container(
@@ -107,43 +114,42 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
           margin: const EdgeInsets.all(16.0),
           child: Text(
             context.tr!.groupProvide,
-            style: TextStyle(color: Colors.primaries.single),
+            style: TextStyle(color: Colors.primaries.first),
           ),
         ),
       ],
     );
   }
 
-  _createDialogImage() async {
-    FilePickerResult? result = await FilePicker.pickFiles(
-      type: FileType.image,
-    );
+  Future<void> _createDialogImage() async {
+    FilePickerResult? result = await FilePicker.pickFiles(type: FileType.image);
 
     if (result == null) return;
 
-    /*var uploadImageFuture =
-        ref.watch(cubeRepositoryProvider).getUploadingImageFuture(result);*/
+    final uploadImageFuture = ref
+        .watch(cubeRepositoryProvider)
+        .getUploadingImageFuture(result);
 
-    /*   uploadImageFuture.then((cubeFile) {
-      var url = cubeFile.getPublicUrl();
-      log("_createDialogImage url= $url");
-      setState(() {
-        var newDial = widget.cubeDialog;
-        if (newDial.photo!.isNotEmpty) {
-          var newPhotoUrl = newDial.photo;
-          newPhotoUrl = url;
-        }
-      });
-    }).catchError((exception) {
-      _processDialogError(exception);
-    });*/
+    uploadImageFuture
+        .then((cubeFile) {
+          final url = cubeFile.getPublicUrl();
+          developer.log("_createDialogImage url= $url");
+          setState(() {
+            widget.cubeDialog.photo = url;
+          });
+        })
+        .catchError((exception) {
+          _processDialogError(exception);
+        });
   }
 
-  _buildDialogOccupants() {
-    getListItemTile(BuildContext context, int index) {
+  Widget _buildDialogOccupants() {
+    Widget getListItemTile(BuildContext context, int index) {
+      final user = widget.users[index];
+      if (user == null) return const SizedBox.shrink();
       return Column(
         children: <Widget>[
-          getUserAvatarWidget(widget.users[index]!, 25),
+          getUserAvatarWidget(user, 25),
           Container(
             margin: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
             child: Column(
@@ -153,11 +159,8 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
                   alignment: Alignment.center,
                   margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 5.0),
                   child: Text(
-                    widget.users[index]!.fullName ??
-                        widget.users[index]!.login ??
-                        widget.users[index]!.email ??
-                        '???',
-                    style: TextStyle(color: Colors.primaries.single),
+                    user.fullName ?? user.login ?? user.email ?? '???',
+                    style: TextStyle(color: Colors.primaries.first),
                   ),
                 ),
               ],
@@ -167,39 +170,44 @@ class _NewChatScreenState extends ConsumerState<NewChatScreen> {
       );
     }
 
-    getOccupants() {
+    Widget getOccupants() {
       return ListView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         scrollDirection: Axis.horizontal,
-        itemCount: widget.cubeDialog.occupantsIds!.length,
+        itemCount: widget.cubeDialog.occupantsIds?.length ?? 0,
         itemBuilder: getListItemTile,
       );
     }
 
-    return Expanded(
-      child: getOccupants(),
-    );
+    return Expanded(child: getOccupants());
   }
 
-/*  void _processDialogError(exception) {
-    log("error $exception");
-    context.showAlert(exception);
-  }*/
+  void _processDialogError(dynamic exception) {
+    developer.log("error $exception");
+    context.showAlert(exception.toString());
+  }
 
-  _createDialog() {
-    log("_createDialog cubeDialog= ${widget.cubeDialog}");
+  void _createDialog() {
+    developer.log("_createDialog cubeDialog= ${widget.cubeDialog}");
     if (widget.cubeDialog.name == null || widget.cubeDialog.name!.length < 5) {
       context.showAlert(context.tr!.charSet4);
     } else {
-      /* createDialog(widget.cubeDialog).then((createdDialog) {
-        context.pushReplacementNamed('chat_dialog', extra: {
-          USER_ARG_NAME: widget.currentUser,
-          DIALOG_ARG_NAME: createdDialog
-        });
-      }).catchError((exception) {
-        _processDialogError(exception);
-      });*/
+      createDialog(widget.cubeDialog)
+          .then((createdDialog) {
+            if (!mounted) return;
+            context.pushReplacementNamed(
+              'chat_dialog',
+              extra: {
+                USER_ARG_NAME: widget.currentUser,
+                DIALOG_ARG_NAME: createdDialog,
+              },
+            );
+          })
+          .catchError((exception) {
+            if (!mounted) return;
+            _processDialogError(exception);
+          });
     }
   }
 }

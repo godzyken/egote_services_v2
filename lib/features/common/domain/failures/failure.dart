@@ -5,7 +5,7 @@ part 'failure.freezed.dart';
 @freezed
 class Failure with _$Failure implements Exception {
   const Failure._();
-  
+
   const factory Failure.empty() = _EmptyFailure;
 
   const factory Failure.unprocessableEntity({required String message}) =
@@ -16,17 +16,17 @@ class Failure with _$Failure implements Exception {
   const factory Failure.badRequest() = _BadRequestFailure;
 
   const factory Failure.notFound() = _NotFoundFailure;
-  
+
   const factory Failure.serverError() = _ServerErrorFailure;
-  
+
   const factory Failure.networkError() = _NetworkErrorFailure;
-  
+
   const factory Failure.cacheError() = _CacheErrorFailure;
-  
+
   const factory Failure.tooManyRequests() = _TooManyRequestsFailure;
-  
+
   const factory Failure.permissionDenied() = _PermissionDeniedFailure;
-  
+
   const factory Failure.invalidCredentials() = _InvalidCredentialsFailure;
 
   String get error => when(

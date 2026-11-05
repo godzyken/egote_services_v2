@@ -13,17 +13,16 @@ import '../../../../domain/providers/auth_repository_provider.dart';
 import '../../widgets/widgets_extensions.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({
-    super.key,
-  });
+  const LoginScreen({super.key});
 
   @override
   ConsumerState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final GlobalKey<FormState> _formKey =
-      GlobalKey<FormState>(debugLabel: 'login');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(
+    debugLabel: 'login',
+  );
   final _emailCtrl = TextEditingController();
   final _nameCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
@@ -33,16 +32,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   _LoginScreenState() {
     _emailCtrl.addListener(
-        () => ref.watch(loginControllerNotifierProvider).emailFormz);
+      () => ref.watch(loginControllerNotifierProvider).emailFormz,
+    );
     _passwordCtrl.addListener(
-        () => ref.watch(loginControllerNotifierProvider).passwordFormz);
-    _nameCtrl.addListener(() =>
-        ref
-            .watch(autoAuthControllerProvider)
-            ?.userEntityModel
-            .name
-            .toString() ==
-        _nameCtrl.text.toString());
+      () => ref.watch(loginControllerNotifierProvider).passwordFormz,
+    );
+    _nameCtrl.addListener(
+      () =>
+          ref
+              .watch(autoAuthControllerProvider)
+              ?.userEntityModel
+              .name
+              .toString() ==
+          _nameCtrl.text.toString(),
+    );
   }
 
   Future<void> _login() async {
@@ -68,8 +71,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> catchException(
-          Object e) =>
-      context.showAlert(e.toString());
+    Object e,
+  ) => context.showAlert(e.toString());
 
   void catchAuthException(AuthException e) {
     context.showAlert(e.message);
@@ -94,9 +97,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isLoading = res.isLoading;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr!.signInWithEmailPassword),
-      ),
+      appBar: AppBar(title: Text(context.tr!.signInWithEmailPassword)),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -128,9 +129,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   validator: (value) => password?.error?.getMessage(),
                   errorText: password?.displayError?.getMessage(),
                 ),
-                const SizedBox(
-                  height: 24,
-                ),
+                const SizedBox(height: 24),
                 SubmitButton(
                   context.tr!.submit,
                   enabled: _isSubmitting,
@@ -145,7 +144,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Future<void> Function()? onPressedSubmitButton(
-      bool isLoading, BuildContext _) {
+    bool isLoading,
+    BuildContext _,
+  ) {
     DatadogSdk.instance.rum?.addAction(RumActionType.tap, 'Submit to login');
     return isLoading
         ? null
@@ -154,11 +155,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               await _login();
               if (mounted) {
                 context.showAlert(context.tr!.checkInbox);
-                context.goNamed('verify',
-                    extra: VerificationScreenParams(
-                        email: _emailCtrl.text,
-                        password: _passwordCtrl.text,
-                        name: _nameCtrl.text));
+                context.goNamed(
+                  'verify',
+                  extra: VerificationScreenParams(
+                    email: _emailCtrl.text,
+                    password: _passwordCtrl.text,
+                    name: _nameCtrl.text,
+                  ),
+                );
               }
             } else {
               setState(() {

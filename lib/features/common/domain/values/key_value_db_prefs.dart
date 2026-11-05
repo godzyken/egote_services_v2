@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../config/app_shared/extensions/same_types.dart';
 import 'key_value_db.dart';
+
 // ignore_for_file: comment_references
 
 // Set the bool flag to true to show debug prints. Even if you forgot
@@ -439,8 +440,10 @@ class KeyValueDbPrefs implements KeyValueDb {
       if (sameTypes<T, NavigationDestinationLabelBehavior?>()) {
         final int? value = _prefs.getInt(key);
         if (_debug) {
-          debugPrint('Prefs type  : NavigationDestinationLabelBehavior? '
-              ': $key as $value');
+          debugPrint(
+            'Prefs type  : NavigationDestinationLabelBehavior? '
+            ': $key as $value',
+          );
           debugPrint('Prefs get   : ["$key"] = $value (${value.runtimeType})');
         }
         if (value == null) return defaultValue;
@@ -454,8 +457,10 @@ class KeyValueDbPrefs implements KeyValueDb {
       if (sameTypes<T, NavigationDestinationLabelBehavior>()) {
         final int? value = _prefs.getInt(key);
         if (_debug) {
-          debugPrint('Prefs type  : NavigationDestinationLabelBehavior '
-              ': $key as $value');
+          debugPrint(
+            'Prefs type  : NavigationDestinationLabelBehavior '
+            ': $key as $value',
+          );
           debugPrint('Prefs get   : ["$key"] = $value (${value.runtimeType})');
         }
         if (value == null) return defaultValue;
@@ -531,7 +536,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setBool(key, false);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type bool? $key NULL as $value');
           }
           return;
@@ -539,7 +545,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setBool(key, value as bool);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type bool? $key as $value');
           }
           return;
@@ -560,7 +567,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setInt(key, -1);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type int? $key NULL as -1');
           }
           return;
@@ -568,7 +576,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setInt(key, value as int);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type int? $key as $value');
           }
           return;
@@ -589,7 +598,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setDouble(key, -1.0);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type double? $key NULL as -1.0');
           }
           return;
@@ -597,7 +607,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setDouble(key, value as double);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type double? $key as $value');
           }
           return;
@@ -618,7 +629,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setString(key, '<NULL>');
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type String? $key NULL as <NULL>');
           }
           return;
@@ -626,7 +638,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setString(key, value as String);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type String? $key as $value');
           }
           return;
@@ -647,26 +660,28 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setInt(key, -1);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type Color? $key NULL as -1');
           }
           return;
         } else {
-          await _prefs.setInt(key, (value as Color).value);
+          await _prefs.setInt(key, (value as Color).toARGB32());
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
-            debugPrint('Prefs saved : type Color? $key as ${value.value}');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
+            debugPrint('Prefs saved : type Color? $key as ${value.toARGB32()}');
           }
           return;
         }
       }
       // Save a none nullable Color value.
       if (sameTypes<T, Color>()) {
-        await _prefs.setInt(key, (value as Color).value);
+        await _prefs.setInt(key, (value as Color).toARGB32());
         if (_debug) {
           debugPrint('Prefs put   : ["$key"] = $value (${value.runtimeType})');
-          debugPrint('Prefs saved : type Color $key as ${value.value}');
+          debugPrint('Prefs saved : type Color $key as ${value.toARGB32()}');
         }
         return;
       }
@@ -697,7 +712,8 @@ class KeyValueDbPrefs implements KeyValueDb {
           await _prefs.setInt(key, -1);
           if (_debug) {
             debugPrint(
-                'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+              'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+            );
             debugPrint('Prefs saved : type Enum? $key NULL as -1');
           }
           return;
@@ -708,7 +724,8 @@ class KeyValueDbPrefs implements KeyValueDb {
             await _prefs.setInt(key, value.index);
             if (_debug) {
               debugPrint(
-                  'Prefs put   : ["$key"] = $value (${value.runtimeType})');
+                'Prefs put   : ["$key"] = $value (${value.runtimeType})',
+              );
               debugPrint('Prefs saved : type Enum? $key as ${value.index}');
             }
             return;

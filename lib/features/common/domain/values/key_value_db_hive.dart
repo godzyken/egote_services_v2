@@ -45,7 +45,8 @@ class KeyValueDbHive implements KeyValueDb {
   Future<void> init() async {
     if (_debug) {
       debugPrint(
-          'KeyValueDbHive: init called, _isInitialized = $_isInitialized');
+        'KeyValueDbHive: init called, _isInitialized = $_isInitialized',
+      );
     }
 
     // If init has already been called exit with no-op.
@@ -65,7 +66,8 @@ class KeyValueDbHive implements KeyValueDb {
     // cannot set the name on that file, but we can do it with Hive.
     if (_debug) {
       debugPrint(
-          'KeyValueDbHive storage path: $appDataDir and file name: $boxName');
+        'KeyValueDbHive storage path: $appDataDir and file name: $boxName',
+      );
     }
     // Init the Hive box box giving it the platform usable folder.
     Hive.init(appDataDir);
@@ -115,10 +117,7 @@ class KeyValueDbHive implements KeyValueDb {
   /// If it is, we skip registration. We could also use
   /// Hive.registerAdapter(adapter, override: true), but it also screams
   /// an ugly long warning in the console. This gets around both cases.
-  void _safeRegisterAdapter<T>(
-      int typeId,
-      TypeAdapter<T> adapter,
-      ) {
+  void _safeRegisterAdapter<T>(int typeId, TypeAdapter<T> adapter) {
     if (Hive.isAdapterRegistered(typeId)) return;
     Hive.registerAdapter(adapter);
   }
@@ -201,7 +200,7 @@ class _ColorAdapter extends TypeAdapter<Color> {
 
   @override
   void write(BinaryWriter writer, Color obj) {
-    writer.writeInt(obj.value);
+    writer.writeInt(obj.toARGB32());
   }
 
   @override

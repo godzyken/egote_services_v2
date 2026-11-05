@@ -22,9 +22,9 @@ abstract class State<T> with _$State<T> {
   T? get data => maybeWhen(success: (data) => data, orElse: () => null);
 
   List<T>? get dataStream => mapOrNull(
-        success: (s) => [s.data],
-        loading: (_) => [],
-        error: (_) => [],
-        initial: (_) => [],
-      );
+    success: (s) => [s.data],
+    loading: (_) => [],
+    error: (_) => [],
+    initial: (_) => [],
+  );
 }

@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileWidget extends ConsumerWidget {
-  const ProfileWidget({super.key, required this.imagePath, required this.onClicked,});
+  const ProfileWidget({
+    super.key,
+    required this.imagePath,
+    required this.onClicked,
+  });
 
   final String imagePath;
   final VoidCallback onClicked;
@@ -15,10 +19,7 @@ class ProfileWidget extends ConsumerWidget {
       child: Stack(
         children: [
           buildImage(),
-          Positioned(
-              bottom: 0,
-              right: 4,
-              child: buildEditIcon(color))
+          Positioned(bottom: 0, right: 4, child: buildEditIcon(color)),
         ],
       ),
     );
@@ -29,43 +30,31 @@ class ProfileWidget extends ConsumerWidget {
     return ClipOval(
       child: Material(
         child: Ink.image(
-            image: image.image,
+          image: image.image,
           fit: BoxFit.cover,
           width: 128,
           height: 128,
-          child: InkWell(
-            onTap: onClicked,
-          ),
+          child: InkWell(onTap: onClicked),
         ),
       ),
     );
   }
 
   Widget buildEditIcon(Color color) => buildCircle(
-      all: 3,
-      color: Colors.white70,
-      child: buildCircle(
-        all: 8,
-        color: color,
-        child: const Icon(
-        Icons.edit,
-        color: Colors.black87,
-        size: 20,
-      ),
-    )
+    all: 3,
+    color: Colors.white70,
+    child: buildCircle(
+      all: 8,
+      color: color,
+      child: const Icon(Icons.edit, color: Colors.black87, size: 20),
+    ),
   );
 
   Widget buildCircle({
     required Widget child,
     required double all,
     required Color color,
-  }) =>
-      ClipOval(
-        child: Container(
-          padding: EdgeInsets.all(all),
-          color: color,
-          child: child,
-        ),
-      );
-
+  }) => ClipOval(
+    child: Container(padding: EdgeInsets.all(all), color: color, child: child),
+  );
 }

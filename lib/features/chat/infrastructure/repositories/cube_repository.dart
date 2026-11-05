@@ -1,8 +1,7 @@
+import 'dart:developer' as developer;
 import 'dart:io';
 
-import 'package:connectycube_sdk/connectycube_sdk.dart' hide signOut;
-import 'package:connectycube_sdk/connectycube_sdk.dart' as sdk
-    show signOut, signUp, signIn;
+import 'package:connectycube_sdk/connectycube_sdk.dart' as cc;
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:egote_services_v2/features/auth/infrastructure/repositories/auth_repository.dart';
 import 'package:egote_services_v2/features/common/domain/failures/failure.dart';
@@ -12,9 +11,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
-import '../../../../config/app_shared/extensions/platform_utils.dart';
-import '../../../../firebase_options.dart';
 import '../../../../config/cube_config/cube_config.dart';
+import '../../../../firebase_options.dart';
 import '../../../auth/domain/providers/auth_repository_provider.dart';
 import '../../data/data_sources/local/pref_util.dart';
 import '../../domain/repository/cube_repository_interface.dart';
@@ -26,12 +24,12 @@ class CubeRepository implements CubeRepositoryInterface {
   final FirebaseAuth auth;
 
   @override
-  Future<Either<Failure, CubeSession>> createGuestUserSession(
-      bool isGuest, String fullName) async {
+  Future<Either<Failure, cc.CubeSession>> createGuestUserSession(
+    bool isGuest,
+    String fullName,
+  ) async {
     try {
-      final session = await createSession();
-      // If we need to assign a full name to the guest user, we might need more logic here
-      // but standard ConnectyCube guest sessions usually start with just createSession.
+      final session = await cc.createSession();
       return right(session);
     } catch (e) {
       return left(Failure.serverError());
@@ -39,42 +37,47 @@ class CubeRepository implements CubeRepositoryInterface {
   }
 
   @override
-  Future<CubeUser>? setSession(String token) async {
+  Future<cc.CubeUser>? setSession(String token) async {
     var idToken = await authRepository.setSession(token);
-    return createSession().then((cubeSession) {
-      return signInUsingFirebaseEmail(
-              DefaultFirebaseOptions.currentPlatform.projectId,
-              idToken.toString())
-          .then((cubeUser) {
-        return SharedPrefs.instance.init().then((sharedPrefs) {
-          sharedPrefs.saveNewUser(cubeUser, LoginType.login);
-          return cubeUser
-            ..password = CubeSessionManager.instance.activeSession?.token;
-        });
-      });
-    });
+    await cc.createSession();
+    final session = await cc.createSessionUsingFirebaseEmail(
+      DefaultFirebaseOptions.currentPlatform.projectId,
+      idToken.toString(),
+    );
+    final cubeUser = session.user ?? cc.CubeUser();
+    final sharedPrefs = await SharedPrefs.instance.init();
+    sharedPrefs.saveNewUser(cubeUser, LoginType.login);
+    return cubeUser;
   }
 
   @override
-  Future<Either<Failure, CubeSession>> createUserSession(
-      String login, String password) async {
-    return createSession().then((value) {
-      return signInByLogin(login, password).then((value) {
-        return right(CubeSessionManager.instance.activeSession!);
-      });
-    }, onError: left(Failure.badRequest()).call);
+  Future<Either<Failure, cc.CubeSession>> createUserSession(
+    String login,
+    String password,
+  ) async {
+    try {
+      final session = await cc.createSession(
+        cc.CubeUser(login: login, password: password),
+      );
+      final activeSession =
+          cc.CubeSessionManager.instance.activeSession ?? session;
+      return right(activeSession);
+    } catch (e) {
+      return left(Failure.badRequest());
+    }
   }
 
   @override
-  Future<CubeSession> restoreSession() async {
-    final session = await createSession();
+  Future<cc.CubeSession> restoreSession() async {
+    final session = await cc.createSession();
     return session;
   }
 
   @override
-  Future<Either<Failure, CubeUser>> signUp(CubeUser user) async {
+  Future<Either<Failure, cc.CubeUser>> signUp(cc.CubeUser user) async {
     try {
-      final newUser = await createSession(user).then((_) => sdk.signUp(user));
+      await cc.createSession(user);
+      final newUser = await cc.signUp(user);
       return right(newUser);
     } catch (e) {
       return left(Failure.badRequest());
@@ -82,10 +85,10 @@ class CubeRepository implements CubeRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, CubeUser>> signIn(CubeUser user) async {
+  Future<Either<Failure, cc.CubeUser>> signIn(cc.CubeUser user) async {
     try {
-      final cubeUser = await sdk.signIn(user);
-      return right(cubeUser);
+      final session = await cc.createSession(user);
+      return right(session.user ?? user);
     } catch (e) {
       return left(Failure.badRequest());
     }
@@ -93,9 +96,16 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<Either<Failure, bool>> signInWithSocialProviders(
-      String socialProvider, String accessToken, String accessTokenSecret) async {
+    String socialProvider,
+    String accessToken,
+    String accessTokenSecret,
+  ) async {
     try {
-      await createSessionUsingSocialProvider(socialProvider, accessToken, accessTokenSecret);
+      await cc.createSessionUsingSocialProvider(
+        socialProvider,
+        accessToken,
+        accessTokenSecret,
+      );
       return right(true);
     } catch (e) {
       return left(Failure.badRequest());
@@ -105,7 +115,7 @@ class CubeRepository implements CubeRepositoryInterface {
   @override
   Future<Either<Failure, bool>> signOut() async {
     try {
-      await sdk.signOut();
+      await cc.deleteSession();
       final sharedPrefs = await SharedPrefs.instance.init();
       await sharedPrefs.deleteUser();
       return right(true);
@@ -115,11 +125,14 @@ class CubeRepository implements CubeRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, CubeSession>> updateUserSession(
-      String something, String password) async {
+  Future<Either<Failure, cc.CubeSession>> updateUserSession(
+    String something,
+    String password,
+  ) async {
     try {
-      final session = await createSession();
-      await signInByLogin(something, password);
+      final session = await cc.createSession(
+        cc.CubeUser(login: something, password: password),
+      );
       return right(session);
     } catch (e) {
       return left(Failure.badRequest());
@@ -127,50 +140,57 @@ class CubeRepository implements CubeRepositoryInterface {
   }
 
   @override
-  Future<CubeFile> getUploadingImageFuture(FilePickerResult result) async {
-    // there possible to upload the file as an array of bytes,
-    // but here showed two ways just as an godzy
+  Future<cc.CubeFile> getUploadingImageFuture(FilePickerResult result) async {
     if (kIsWeb) {
-      return uploadRawFile(result.files.single.bytes!, result.files.single.name,
-          isPublic: true, onProgress: (progress) {
-        log("uploadImageFile progress= $progress");
-      });
+      return cc.uploadRawFile(
+        result.files.single.bytes!,
+        result.files.single.name,
+        isPublic: true,
+        onProgress: (progress) {
+          developer.log("uploadImageFile progress= $progress");
+        },
+      );
     } else {
-      return uploadFile(File(result.files.single.path!), isPublic: true,
-          onProgress: (progress) {
-        log("uploadImageFile progress= $progress");
-      });
+      return cc.uploadFile(
+        File(result.files.single.path!),
+        isPublic: true,
+        onProgress: (progress) {
+          developer.log("uploadImageFile progress= $progress");
+        },
+      );
     }
   }
 
-  refreshBadgeCount() {
-    getUnreadMessagesCount().then((value) => updateBadgeCount(value['total']));
+  void refreshBadgeCount() {
+    cc.getUnreadMessagesCount().then((value) {
+      developer.log("Unread messages count: ${value['total']}");
+    });
   }
 
   @override
-  Future<CubeSession> createPhoneAuthSession() async {
+  Future<cc.CubeSession> createPhoneAuthSession() async {
     var phoneAuthIdToken = await auth.currentUser?.getIdToken();
 
     if (phoneAuthIdToken == null) {
       var accessToken = auth.currentUser!.refreshToken;
-      return createSessionUsingFirebaseEmail(
-              DefaultFirebaseOptions.currentPlatform.projectId, accessToken!)
-          .then((cubeSession) {
-        return CubeSessionManager.instance.activeSession!;
-      });
+      await cc.createSessionUsingFirebaseEmail(
+        DefaultFirebaseOptions.currentPlatform.projectId,
+        accessToken!,
+      );
+      return cc.CubeSessionManager.instance.activeSession!;
     }
 
-    return createSessionUsingFirebasePhone(
-            DefaultFirebaseOptions.currentPlatform.projectId, phoneAuthIdToken)
-        .then((cubeSession) => CubeSessionManager.instance.activeSession!);
+    await cc.createSessionUsingFirebasePhone(
+      DefaultFirebaseOptions.currentPlatform.projectId,
+      phoneAuthIdToken,
+    );
+    return cc.CubeSessionManager.instance.activeSession!;
   }
 }
 
-final cubeRepositoryProvider = Provider.autoDispose<CubeRepository>(
-  (ref) {
-    final authRepository = ref.read(authRepositoryProvider);
-    final auth = ref.read(firebaseAuthProvider);
+final cubeRepositoryProvider = Provider.autoDispose<CubeRepository>((ref) {
+  final authRepository = ref.read(authRepositoryProvider);
+  final auth = ref.read(firebaseAuthProvider);
 
-    return CubeRepository(authRepository, auth);
-  },
-);
+  return CubeRepository(authRepository, auth);
+});

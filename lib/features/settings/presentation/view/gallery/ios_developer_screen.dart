@@ -7,7 +7,8 @@ class IosDeveloperScreen extends ConsumerStatefulWidget {
   const IosDeveloperScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _IosDeveloperScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _IosDeveloperScreenState();
 }
 
 class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
@@ -15,8 +16,10 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(middle: Text(context.tr!.developerNavBar)),
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(context.tr!.developerNavBar),
+      ),
       child: SafeArea(
         bottom: false,
         child: SettingsList(
@@ -72,9 +75,7 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
                 SettingsTile.switchTile(
                   onToggle: (_) {},
                   initialValue: false,
-                  title: Text(
-                      context.tr!.fastAppTerminationTitle
-                  ),
+                  title: Text(context.tr!.fastAppTerminationTitle),
                   description: Text(context.tr!.fastAppTerminationDescription),
                 ),
               ],
@@ -82,9 +83,7 @@ class _IosDeveloperScreenState extends ConsumerState<IosDeveloperScreen> {
             SettingsSection(
               title: Text(context.tr!.iadDevTitle.toUpperCase()),
               tiles: [
-                SettingsTile.navigation(
-                  title: Text(context.tr!.fillRate),
-                ),
+                SettingsTile.navigation(title: Text(context.tr!.fillRate)),
                 SettingsTile.navigation(
                   title: Text(context.tr!.addRefreshTitle),
                 ),

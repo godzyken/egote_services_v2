@@ -23,29 +23,29 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
       'name': 'Chuks Okwuenu',
       'pic': 'https://picsum.photos/300/30',
       'message': 'I love to code',
-      'date': '2021-01-01 12:00:00'
+      'date': '2021-01-01 12:00:00',
     },
     {
       'name': 'Biggi Man',
       'pic': 'https://www.adeleyeayodeji.com/img/IMG_20200522_121756_834_2.jpg',
       'message': 'Very cool',
-      'date': '2021-01-01 12:00:00'
+      'date': '2021-01-01 12:00:00',
     },
     {
       'name': 'Tunde Martins',
       'pic': LocalImages.venomJpg,
       'message': 'Very cool',
-      'date': '2021-01-01 12:00:00'
+      'date': '2021-01-01 12:00:00',
     },
     {
       'name': 'Biggi Man',
       'pic': 'https://picsum.photos/300/30',
       'message': 'Very cool',
-      'date': '2021-01-01 12:00:00'
+      'date': '2021-01-01 12:00:00',
     },
   ];
 
-  Widget avisChild(data) {
+  Widget avisChild(dynamic data) {
     return ListView(
       children: [
         for (var i = 0; i < data.length; i++)
@@ -66,7 +66,8 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: CommentBox.commentImageParser(
-                        imageURLorPath: data[i]['pic']),
+                      imageURLorPath: data[i]['pic'],
+                    ),
                   ),
                 ),
               ),
@@ -80,14 +81,16 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
                 style: const TextStyle(fontSize: 10),
               ),
             ),
-          )
+          ),
       ],
     );
   }
 
   Widget avisPosted() {
-    final privatePostsFuture =
-        ref.watch(supabaseClientProvider).from('avis_posts').select('*');
+    final privatePostsFuture = ref
+        .watch(supabaseClientProvider)
+        .from('avis_posts')
+        .select('*');
     return FutureBuilder(
       future: privatePostsFuture,
       builder: (context, snapshot) {
@@ -114,12 +117,15 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: CommentBox.commentImageParser(
-                      imageURLorPath: data[index]['pic']),
+                    imageURLorPath: data[index]['pic'],
+                  ),
                 ),
               ),
             ),
-            title: Text(data[index]['name'],
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(
+              data[index]['name'],
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
             subtitle: Text(data[index]['message']),
             trailing: Text(
               data[index]['created_at'],
@@ -139,8 +145,9 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
         backgroundColor: Colors.pink,
       ),
       body: CommentBox(
-        userImage:
-            CommentBox.commentImageParser(imageURLorPath: LocalImages.venomJpg),
+        userImage: CommentBox.commentImageParser(
+          imageURLorPath: LocalImages.venomJpg,
+        ),
         labelText: context.tr?.comment,
         errorText: context.tr?.canBeBlank,
         withBorder: false,
@@ -153,7 +160,7 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
                 'pic':
                     'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
                 'message': controller.text,
-                'date': '2021-01-01 12:00:00'
+                'date': '2021-01-01 12:00:00',
               };
               filedata.insert(0, value);
             });

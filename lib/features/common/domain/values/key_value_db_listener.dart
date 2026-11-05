@@ -17,10 +17,7 @@ class KeyValueDbListener {
   final Ref ref;
 
   /// Méthode réactive appelée à chaque changement de [KeyValueDb].
-  Future<void> onDbChanged(
-      KeyValueDb? previous,
-      KeyValueDb current,
-      ) async {
+  Future<void> onDbChanged(KeyValueDb? previous, KeyValueDb current) async {
     if (_debug) {
       debugPrint('KeyValueDbListener: listen called - - - - -');
       debugPrint('  DB switch : $current');
@@ -41,13 +38,9 @@ final keyValueDbListenerProvider = Provider<KeyValueDbListener>((ref) {
   final listener = KeyValueDbListener(ref);
 
   // En Riverpod 3, ref.listen écoute directement la valeur envoyée par le provider (KeyValueDb)
-  ref.listen<KeyValueDb>(
-    keyValueDbProvider,
-        (previous, current) {
-      listener.onDbChanged(previous, current);
-    },
-    fireImmediately: false,
-  );
+  ref.listen<KeyValueDb>(keyValueDbProvider, (previous, current) {
+    listener.onDbChanged(previous, current);
+  }, fireImmediately: false);
 
   return listener;
 }, name: 'keyValueDbListenerProvider');

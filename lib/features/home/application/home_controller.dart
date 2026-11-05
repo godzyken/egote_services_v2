@@ -34,6 +34,7 @@ class HomeControllerNotifier extends Notifier<NetWorkStatus> {
   }
 }
 
-final networkAwareProvider = NotifierProvider<HomeControllerNotifier, NetWorkStatus>(
-  () => HomeControllerNotifier(),
-);
+final networkAwareProvider =
+    NotifierProvider<HomeControllerNotifier, NetWorkStatus>(
+      () => HomeControllerNotifier(),
+    );

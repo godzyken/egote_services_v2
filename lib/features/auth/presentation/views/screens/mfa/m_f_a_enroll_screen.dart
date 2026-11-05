@@ -8,10 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MFAEnrollScreen extends ConsumerStatefulWidget {
-  const MFAEnrollScreen({
-    super.key,
-    required this.params,
-  });
+  const MFAEnrollScreen({super.key, required this.params});
 
   final VerificationScreenParams params;
 
@@ -30,13 +27,9 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
         future: enrollFuture,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+            return Center(child: Text(snapshot.error.toString()));
           } else if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
           final response = snapshot.data!;
 
@@ -49,78 +42,84 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
             children: [
               Text(context.tr!.openViaQr),
               const SizedBox(height: 16),
-              const Center(child: Icon(Icons.qr_code, size: 150)),
+              Center(
+                child: qrCodeUrl.isNotEmpty
+                    ? Image.network(qrCodeUrl, height: 150, width: 150)
+                    : const Icon(Icons.qr_code, size: 150),
+              ),
               const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
-                      child: Text(
-                    context.tr!.secret,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  )),
+                    child: Text(
+                      context.tr!.secret,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                   IconButton(
-                      onPressed: () {
-                        Clipboard.setData(ClipboardData(text: secret));
-                        context.showAlert(context.tr!.copiedClipBoard);
-                      },
-                      icon: const Icon(Icons.copy)),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: secret));
+                      context.showAlert(context.tr!.copiedClipBoard);
+                    },
+                    icon: const Icon(Icons.copy),
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
               Text(context.tr!.enterCodeSent),
               const SizedBox(height: 16),
               TextInputField(
-                  hintText: context.tr!.initCode,
-                  onChanged: (code) async {
-                    if (code.length != 6) return;
+                hintText: context.tr!.initCode,
+                onChanged: (code) async {
+                  if (code.length != 6) return;
 
-                    try {
-                      final challenge = await ref
-                          .read(supabaseClientProvider)
-                          .auth
-                          .mfa
-                          .challenge(factorId: factorId);
+                  try {
+                    final challenge = await ref
+                        .read(supabaseClientProvider)
+                        .auth
+                        .mfa
+                        .challenge(factorId: factorId);
 
-                      final client = await ref
-                          .read(supabaseClientProvider)
-                          .auth
-                          .mfa
-                          .verify(
-                              factorId: factorId,
-                              challengeId: challenge.id,
-                              code: code);
+                    final client = await ref
+                        .read(supabaseClientProvider)
+                        .auth
+                        .mfa
+                        .verify(
+                          factorId: factorId,
+                          challengeId: challenge.id,
+                          code: code,
+                        );
 
-                      await ref
-                          .read(supabaseClientProvider)
-                          .auth
-                          .refreshSession();
+                    await ref
+                        .read(supabaseClientProvider)
+                        .auth
+                        .refreshSession();
 
-                      if (mounted) {
-                        final String location = context.namedLocation(
-                            'user_home',
-                            pathParameters: {'pid': client.user.id});
+                    if (!mounted) return;
+                    final String location = context.namedLocation(
+                      'user_home',
+                      pathParameters: {'pid': client.user.id},
+                    );
 
-                        setState(() {
-                          context.go(location);
-                        });
-                      }
-                    } on AuthException catch (error) {
-                      if (mounted) {
-                        setState(() {
-                          context.showAlert(error.message);
-                        });
-                      }
-                    } catch (error) {
-                      if (mounted) {
-                        setState(() {
-                          context.showAlert(error.toString());
-                        });
-                      }
-                    }
-                  },
-                  inputType: TextInputType.number,
-                  label: context.tr!.enterCode),
+                    if (!mounted) return;
+                    setState(() {});
+                    context.go(location);
+                  } on AuthException catch (error) {
+                    if (!mounted) return;
+                    setState(() {});
+                    context.showAlert(error.message);
+                  } catch (error) {
+                    if (!mounted) return;
+                    setState(() {});
+                    context.showAlert(error.toString());
+                  }
+                },
+                inputType: TextInputType.number,
+                label: context.tr!.enterCode,
+              ),
             ],
           );
         },

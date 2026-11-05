@@ -11,9 +11,7 @@ class LanguageSettingsScreen extends ConsumerWidget {
     final lang = ref.watch(localizationProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${context.tr?.languageSettingsScreen}'),
-      ),
+      appBar: AppBar(title: Text('${context.tr?.languageSettingsScreen}')),
       body: Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -23,13 +21,11 @@ class LanguageSettingsScreen extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: lang.languageCode == 'en' 
-                          ? Theme.of(context).colorScheme.primaryContainer 
+                      backgroundColor: lang.languageCode == 'en'
+                          ? Theme.of(context).colorScheme.primaryContainer
                           : null,
                     ),
-                    child: Text(
-                      context.tr?.english ?? 'English',
-                    ),
+                    child: Text(context.tr?.english ?? 'English'),
                     onPressed: () {
                       ref.read(localizationProvider.notifier).en();
                     },
@@ -39,8 +35,8 @@ class LanguageSettingsScreen extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: lang.languageCode == 'es' 
-                          ? Theme.of(context).colorScheme.primaryContainer 
+                      backgroundColor: lang.languageCode == 'es'
+                          ? Theme.of(context).colorScheme.primaryContainer
                           : null,
                     ),
                     child: const Text('Español'),
@@ -53,8 +49,8 @@ class LanguageSettingsScreen extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: lang.languageCode == 'fr' 
-                          ? Theme.of(context).colorScheme.primaryContainer 
+                      backgroundColor: lang.languageCode == 'fr'
+                          ? Theme.of(context).colorScheme.primaryContainer
                           : null,
                     ),
                     child: const Text('Français'),
@@ -70,10 +66,7 @@ class LanguageSettingsScreen extends ConsumerWidget {
               title: context.tr?.labelBackground ?? 'Current Language',
               content: lang.languageCode.toUpperCase(),
             ),
-            ItemWidget(
-              title: 'Locale Identifier',
-              content: lang.toString(),
-            ),
+            ItemWidget(title: 'Locale Identifier', content: lang.toString()),
           ],
         ),
       ),
@@ -82,11 +75,7 @@ class LanguageSettingsScreen extends ConsumerWidget {
 }
 
 class ItemWidget extends StatelessWidget {
-  const ItemWidget({
-    super.key,
-    required this.title,
-    required this.content,
-  });
+  const ItemWidget({super.key, required this.title, required this.content});
 
   final String? title;
   final String? content;

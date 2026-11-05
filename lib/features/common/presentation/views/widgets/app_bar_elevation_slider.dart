@@ -29,10 +29,7 @@ class AppBarElevationSlider extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Text(
-              context.tr!.elevation,
-              style: style,
-            ),
+            Text(context.tr!.elevation, style: style),
             Text(
               elevation.toStringAsFixed(1),
               style: style.copyWith(fontWeight: FontWeight.bold),

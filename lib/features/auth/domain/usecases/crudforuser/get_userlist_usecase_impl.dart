@@ -10,5 +10,4 @@ class GetUserListCaseImpl implements GetUserListCase {
 
   @override
   Future<UserList> execute() => _repositoryInterface.getAllUsers();
-
 }

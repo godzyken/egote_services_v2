@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Provider for [AppRouterNotifier]
-final appRouterNotifierProvider = NotifierProvider<AppRouterNotifier, void>(AppRouterNotifier.new);
+final appRouterNotifierProvider = NotifierProvider<AppRouterNotifier, void>(
+  AppRouterNotifier.new,
+);
 
 class AppRouterNotifier extends Notifier<void> implements Listenable {
   final List<VoidCallback> _listeners = [];

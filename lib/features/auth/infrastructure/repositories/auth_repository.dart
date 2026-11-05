@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-import 'package:crypto/crypto.dart';
-
 import 'package:connectycube_sdk/connectycube_calls.dart';
+import 'package:crypto/crypto.dart';
 import 'package:egote_services_v2/features/auth/data/data_sources/local/auth_token_local_data_source.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/domain/repository/auth_repository_interface.dart';
@@ -13,14 +12,13 @@ import 'package:fpdart/fpdart.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
-
 class AuthRepository implements AuthRepositoryInterface {
   AuthRepository(
-      this.authTokenLocalDataSource,
-      this.client,
-      this.supabaseClient,
-      this.type,
-      );
+    this.authTokenLocalDataSource,
+    this.client,
+    this.supabaseClient,
+    this.type,
+  );
 
   final AuthTokenLocalDataSource authTokenLocalDataSource;
   final supabase.GoTrueClient client;
@@ -54,8 +52,11 @@ class AuthRepository implements AuthRepositoryInterface {
         await myChannel.track({'online_at': DateTime.now().toIso8601String()});
         return right(true);
       } else {
-        return left(Failure.unprocessableEntity(
-            message: 'Impossible de rejoindre le canal temps réel.'));
+        return left(
+          Failure.unprocessableEntity(
+            message: 'Impossible de rejoindre le canal temps réel.',
+          ),
+        );
       }
     } catch (e) {
       developer.log('isOnLine Error: $e');
@@ -80,8 +81,9 @@ class AuthRepository implements AuthRepositoryInterface {
         return left(Failure.unauthorized());
       }
 
-      await authTokenLocalDataSource
-          .store(session.providerRefreshToken ?? session.accessToken);
+      await authTokenLocalDataSource.store(
+        session.providerRefreshToken ?? session.accessToken,
+      );
       return right(UserModel.fromJson(user.toJson()));
     } catch (e) {
       developer.log('restoreSession Error: $e');
@@ -101,8 +103,9 @@ class AuthRepository implements AuthRepositoryInterface {
         return left(Failure.unauthorized());
       }
 
-      await authTokenLocalDataSource
-          .store(session.providerRefreshToken ?? session.accessToken);
+      await authTokenLocalDataSource.store(
+        session.providerRefreshToken ?? session.accessToken,
+      );
       return right(UserModel.fromJson(user.toJson()));
     } catch (e) {
       developer.log('setSession Error: $e');
@@ -140,7 +143,9 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, supabase.User>> signInWithPassword(
-      String? email, String? password) async {
+    String? email,
+    String? password,
+  ) async {
     try {
       if (email == null || password == null) {
         return left(Failure.badRequest());
@@ -159,8 +164,9 @@ class AuthRepository implements AuthRepositoryInterface {
         return left(Failure.unauthorized());
       }
 
-      await authTokenLocalDataSource
-          .store(session.providerRefreshToken ?? session.accessToken);
+      await authTokenLocalDataSource.store(
+        session.providerRefreshToken ?? session.accessToken,
+      );
 
       return right(user);
     } catch (e) {
@@ -183,7 +189,10 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, UserModel>> signUp(
-      String? email, String? name, String password) async {
+    String? email,
+    String? name,
+    String password,
+  ) async {
     try {
       if (email == null || name == null) {
         return left(Failure.badRequest());
@@ -206,8 +215,9 @@ class AuthRepository implements AuthRepositoryInterface {
       }
 
       if (session != null) {
-        await authTokenLocalDataSource
-            .store(session.providerRefreshToken ?? session.accessToken);
+        await authTokenLocalDataSource.store(
+          session.providerRefreshToken ?? session.accessToken,
+        );
       }
 
       final now = DateTime.now();
@@ -233,7 +243,9 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, supabase.AuthResponse>> verifyCode(
-      String email, String code) async {
+    String email,
+    String code,
+  ) async {
     try {
       final res = await client.verifyOTP(
         email: email,
@@ -248,8 +260,9 @@ class AuthRepository implements AuthRepositoryInterface {
         return left(Failure.unauthorized());
       }
 
-      await authTokenLocalDataSource
-          .store(session.providerRefreshToken ?? session.accessToken);
+      await authTokenLocalDataSource.store(
+        session.providerRefreshToken ?? session.accessToken,
+      );
 
       return right(res);
     } catch (e) {
@@ -260,7 +273,8 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, UserEntityModel>> createUserEntityModel(
-      UserName name) async {
+    UserName name,
+  ) async {
     try {
       final now = DateTime.now();
       final n = name.value.getOrElse((_) => '');
@@ -276,7 +290,10 @@ class AuthRepository implements AuthRepositoryInterface {
         now,
       );
 
-      final res = await supabaseClient.from(_table).insert(entity.toJson()).select();
+      final res = await supabaseClient
+          .from(_table)
+          .insert(entity.toJson())
+          .select();
 
       if (res.isEmpty) {
         return left(Failure.badRequest());
@@ -294,7 +311,8 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<Either<Failure, CubeUser>> cubeUserStateChange(
-      void Function(CubeUser? cubeUser) cubeUserCallBack) async {
+    void Function(CubeUser? cubeUser) cubeUserCallBack,
+  ) async {
     try {
       switch (type) {
         case supabase.GenerateLinkType.signup:
@@ -380,8 +398,9 @@ class AuthRepository implements AuthRepositoryInterface {
         return left(Failure.unauthorized());
       }
 
-      await authTokenLocalDataSource
-          .store(res.session?.providerRefreshToken ?? res.session!.accessToken);
+      await authTokenLocalDataSource.store(
+        res.session?.providerRefreshToken ?? res.session!.accessToken,
+      );
 
       return right(true);
     } catch (e) {
@@ -405,9 +424,9 @@ class AuthRepository implements AuthRepositoryInterface {
       }
 
       final restoreResult = await restoreSession();
-      return restoreResult.fold(
-            (failure) => null,
-            (userModel) => userModel,
+      return await restoreResult.fold(
+        (failure) => null,
+        (userModel) => userModel,
       );
     } catch (e) {
       developer.log('getCurrentUser Error: $e');
@@ -416,7 +435,11 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<Either<Failure, UserModel>> updateUser({String? email, String? password, String? name}) async {
+  Future<Either<Failure, UserModel>> updateUser({
+    String? email,
+    String? password,
+    String? name,
+  }) async {
     try {
       final response = await client.updateUser(
         supabase.UserAttributes(

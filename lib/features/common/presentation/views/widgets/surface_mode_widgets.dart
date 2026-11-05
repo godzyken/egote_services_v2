@@ -123,13 +123,18 @@ class SurfaceModePopupMenu extends StatelessWidget {
     final ColorScheme scheme = theme.colorScheme;
     final TextStyle txtStyle = theme.textTheme.labelLarge!;
     final bool enabled = onChanged != null;
-    final String styleName = explainMode(context, FlexSurfaceMode.values[index]);
+    final String styleName = explainMode(
+      context,
+      FlexSurfaceMode.values[index],
+    );
     final List<Widget> modeWidgets = _getModeWidget(context, scheme);
 
-    final IconThemeData selectedIconTheme =
-    theme.iconTheme.copyWith(color: scheme.onPrimary.withAlpha(0xE5));
-    final IconThemeData unSelectedIconTheme =
-    theme.iconTheme.copyWith(color: scheme.primary);
+    final IconThemeData selectedIconTheme = theme.iconTheme.copyWith(
+      color: scheme.onPrimary.withAlpha(0xE5),
+    );
+    final IconThemeData unSelectedIconTheme = theme.iconTheme.copyWith(
+      color: scheme.primary,
+    );
 
     return PopupMenuButton<int>(
       tooltip: '',
@@ -151,40 +156,37 @@ class SurfaceModePopupMenu extends StatelessWidget {
                 dense: true,
                 leading: index == i
                     ? IconTheme(
-                  data: selectedIconTheme,
-                  child: ColorSchemeBox(
-                    backgroundColor: scheme.primary,
-                    borderColor: scheme.primary,
-                    child: modeWidgets[i],
-                  ),
-                )
+                        data: selectedIconTheme,
+                        child: ColorSchemeBox(
+                          backgroundColor: scheme.primary,
+                          borderColor: scheme.primary,
+                          child: modeWidgets[i],
+                        ),
+                      )
                     : IconTheme(
-                  data: unSelectedIconTheme,
-                  child: ColorSchemeBox(
-                    backgroundColor: Colors.transparent,
-                    borderColor: scheme.primary,
-                    child: modeWidgets[i],
-                  ),
-                ),
+                        data: unSelectedIconTheme,
+                        child: ColorSchemeBox(
+                          backgroundColor: Colors.transparent,
+                          borderColor: scheme.primary,
+                          child: modeWidgets[i],
+                        ),
+                      ),
                 title: Text(
                   _modeShort(context, FlexSurfaceMode.values[i]),
                   style: txtStyle,
                 ),
               ),
-            )
+            ),
         ];
       },
       child: ListTile(
         enabled: enabled,
         contentPadding:
-        contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
+            contentPadding ?? const EdgeInsets.symmetric(horizontal: 16),
         title: title,
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (subtitle != null) subtitle!,
-            Text(styleName),
-          ],
+          children: <Widget>[?subtitle, Text(styleName)],
         ),
         trailing: IconTheme(
           data: selectedIconTheme,
@@ -203,70 +205,78 @@ class SurfaceModePopupMenu extends StatelessWidget {
 // need in both the popup menu and toggle buttons implementation.
 // It needs the theme ColorScheme so it can't be a const list or final, and
 // we need to control when we only included a sub set in toggle buttons case.
-List<Widget> _getModeWidget(BuildContext context, ColorScheme scheme, [bool allModes = true]) =>
-    <Widget>[
-      Tooltip(
-        message: context.tr!.blendLevelShortText,
-        child: const Icon(Icons.check_box_outline_blank),
-      ),
-      Tooltip(
-        message: context.tr!.highBackgroundLowScaffoldShortText,
-        child: const Icon(Icons.layers_outlined),
-      ),
-      Tooltip(
-        message: context.tr!.tooltipMessageSurface,
-        child: const Icon(Icons.layers),
-      ),
-      Tooltip(
-        message: context.tr!.tooltipMessageScaffold,
-        child: const Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Icon(Icons.layers_outlined),
-            ),
-            Icon(Icons.layers),
-          ],
+List<Widget> _getModeWidget(
+  BuildContext context,
+  ColorScheme scheme, [
+  bool allModes = true,
+]) => <Widget>[
+  Tooltip(
+    message: context.tr!.blendLevelShortText,
+    child: const Icon(Icons.check_box_outline_blank),
+  ),
+  Tooltip(
+    message: context.tr!.highBackgroundLowScaffoldShortText,
+    child: const Icon(Icons.layers_outlined),
+  ),
+  Tooltip(
+    message: context.tr!.tooltipMessageSurface,
+    child: const Icon(Icons.layers),
+  ),
+  Tooltip(
+    message: context.tr!.tooltipMessageScaffold,
+    child: const Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Icon(Icons.layers_outlined),
         ),
-      ),
-      if (allModes)
-        Tooltip(
-          message: context.tr!.highScaffoldLevelSurfaceShortText,
-          child: const Icon(Icons.dynamic_feed_rounded),
-        ),
-      Tooltip(
-        message: context.tr!.tooltipMessageLevelSurfaces,
-        child: const RotatedBox(quarterTurns: 2, child: Icon(Icons.horizontal_split)),
-      ),
-      Tooltip(
-        message: context.tr!.highScaffoldLowSurfacesShortText,
-        child: const Icon(Icons.horizontal_split),
-      ),
-      if (allModes)
-        Tooltip(
-          message: context.tr!.tooltipMessageTertiaryContainerDialog,
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              const RotatedBox(
-                  quarterTurns: 2, child: Icon(Icons.horizontal_split)),
-              Icon(Icons.stop, color: scheme.tertiary, size: 18),
-            ],
+        Icon(Icons.layers),
+      ],
+    ),
+  ),
+  if (allModes)
+    Tooltip(
+      message: context.tr!.highScaffoldLevelSurfaceShortText,
+      child: const Icon(Icons.dynamic_feed_rounded),
+    ),
+  Tooltip(
+    message: context.tr!.tooltipMessageLevelSurfaces,
+    child: const RotatedBox(
+      quarterTurns: 2,
+      child: Icon(Icons.horizontal_split),
+    ),
+  ),
+  Tooltip(
+    message: context.tr!.highScaffoldLowSurfacesShortText,
+    child: const Icon(Icons.horizontal_split),
+  ),
+  if (allModes)
+    Tooltip(
+      message: context.tr!.tooltipMessageTertiaryContainerDialog,
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          const RotatedBox(
+            quarterTurns: 2,
+            child: Icon(Icons.horizontal_split),
           ),
-        ),
-      if (allModes)
-        Tooltip(
-          message: context.tr!.highScaffoldLowSurfacesVariantDialogShortText,
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              const Icon(Icons.horizontal_split),
-              Icon(Icons.stop, color: scheme.tertiary, size: 18),
-            ],
-          ),
-        ),
-    ];
+          Icon(Icons.stop, color: scheme.tertiary, size: 18),
+        ],
+      ),
+    ),
+  if (allModes)
+    Tooltip(
+      message: context.tr!.highScaffoldLowSurfacesVariantDialogShortText,
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          const Icon(Icons.horizontal_split),
+          Icon(Icons.stop, color: scheme.tertiary, size: 18),
+        ],
+      ),
+    ),
+];
 
 // Short explanation of the used surface mode.
 String _modeShort(final BuildContext context, final FlexSurfaceMode mode) {

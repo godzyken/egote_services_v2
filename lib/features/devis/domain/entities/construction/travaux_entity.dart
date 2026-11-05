@@ -18,9 +18,7 @@ abstract class TravauxEntity with _$TravauxEntity {
     required List<MissionEntity> missionEntity,
   }) = _TravauxEntityDefault;
 
-  factory TravauxEntity.Init({
-    required TravauId id,
-  }) = _TravauxEntityInit;
+  factory TravauxEntity.Init({required TravauId id}) = _TravauxEntityInit;
 
   factory TravauxEntity.fromJson(Map<String, dynamic> json) =>
       _$TravauxEntityFromJson(json);
@@ -52,5 +50,5 @@ enum AreaOfServices {
   Ascenseurs,
   TraitementNuisibles,
   Isolation,
-  Bricolage
+  Bricolage,
 }

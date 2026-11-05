@@ -10,5 +10,4 @@ class DeleteUserCaseImpl implements DeleteUserCase {
 
   @override
   Future<void> execute(final UserId id) => _repositoryInterface.deleteUser(id);
-
 }

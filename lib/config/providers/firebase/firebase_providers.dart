@@ -16,14 +16,17 @@ final firebaseInitProvider = FutureProvider<FirebaseApp>((ref) async {
   FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
 
   return Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 });
 
-final firebaseAuthProvider =
-    Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
+final firebaseAuthProvider = Provider<FirebaseAuth>(
+  (ref) => FirebaseAuth.instance,
+);
 
-final firebaseDatabaseProvider =
-    Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
+final firebaseDatabaseProvider = Provider<FirebaseDatabase>(
+  (ref) => FirebaseDatabase.instance,
+);
 
 final firebaseFirestoreProvider = Provider((ref) => FirebaseFirestore.instance);
 
@@ -53,11 +56,13 @@ final emulatorSettingsProvider = Provider((ref) {
 });
 
 // <---------------- Stream<User?> Providers --------------------> //
-final authStateChangesProvider =
-    StreamProvider((ref) => ref.watch(firebaseAuthProvider).authStateChanges());
+final authStateChangesProvider = StreamProvider(
+  (ref) => ref.watch(firebaseAuthProvider).authStateChanges(),
+);
 
-final userChangesProvider =
-    StreamProvider((ref) => ref.watch(firebaseAuthProvider).userChanges());
+final userChangesProvider = StreamProvider(
+  (ref) => ref.watch(firebaseAuthProvider).userChanges(),
+);
 
 final authStreamProvider = StreamProvider.autoDispose<User?>((ref) {
   return ref.watch(firebaseAuthProvider).authStateChanges().map((user) {
@@ -111,6 +116,8 @@ final fireDatabaseProvider = Provider<FirebaseDatabase?>((ref) {
 
   return auth.asData?.value?.uid != null
       ? FirebaseDatabase.instanceFor(
-          app: database.app, databaseURL: database.databaseURL)
+          app: database.app,
+          databaseURL: database.databaseURL,
+        )
       : null;
 });

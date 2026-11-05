@@ -33,7 +33,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final Map<int?, CubeUser?> _occupants = {};
 
   late bool isLoading;
-  late StreamSubscription<List<ConnectivityResult>> connectivityStateSubscription;
+  late StreamSubscription<List<ConnectivityResult>>
+  connectivityStateSubscription;
   String? imageUrl;
 
   List<CubeMessage> listMessage = [];
@@ -65,9 +66,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     imageUrl = '';
     listScrollController.addListener(onScrollChanged);
 
-    connectivityStateSubscription = Connectivity()
-        .onConnectivityChanged
-        .listen(onConnectivityChanged);
+    connectivityStateSubscription = Connectivity().onConnectivityChanged.listen(
+      onConnectivityChanged,
+    );
 
     _editMessageFocusNode = FocusNode();
   }
@@ -92,11 +93,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       }
     });
 
-    deliveredSubscription = ChatManager.instance.deliveredMessagesStream.listen((status) {
-      if (status.dialogId == widget.cubeDialog.dialogId) {
-        onDeliveredMessage(status);
-      }
-    });
+    deliveredSubscription = ChatManager.instance.deliveredMessagesStream.listen(
+      (status) {
+        if (status.dialogId == widget.cubeDialog.dialogId) {
+          onDeliveredMessage(status);
+        }
+      },
+    );
 
     readSubscription = ChatManager.instance.readMessagesStream.listen((status) {
       if (status.dialogId == widget.cubeDialog.dialogId) {
@@ -104,7 +107,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       }
     });
 
-    typingSubscription = ChatManager.instance.typingStatusStream.listen((status) {
+    typingSubscription = ChatManager.instance.typingStatusStream.listen((
+      status,
+    ) {
       if (status.dialogId == widget.cubeDialog.dialogId) {
         onTypingMessage(status);
       }
@@ -122,7 +127,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   void _resendUnreadMessages() {
     if (_unreadMessages.isNotEmpty &&
-        CubeChatConnection.instance.chatConnectionState == CubeChatConnectionState.Ready) {
+        CubeChatConnection.instance.chatConnectionState ==
+            CubeChatConnectionState.Ready) {
       for (var msg in List<CubeMessage>.from(_unreadMessages)) {
         widget.cubeDialog.readMessage(msg);
         _unreadMessages.remove(msg);
@@ -131,7 +137,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void onScrollChanged() {
-    if (listScrollController.position.pixels == listScrollController.position.maxScrollExtent) {
+    if (listScrollController.position.pixels ==
+        listScrollController.position.maxScrollExtent) {
       // Charger la page suivante si nécessaire
     }
   }
@@ -147,7 +154,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       isLoading = true;
     });
 
-    final uploadImageFuture = ref.read(cubeRepositoryProvider).getUploadingImageFuture(result);
+    final uploadImageFuture = ref
+        .read(cubeRepositoryProvider)
+        .getUploadingImageFuture(result);
     Uint8List imageData;
 
     if (fd.kIsWeb) {
@@ -160,7 +169,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     uploadImageFile(uploadImageFuture, decodedImage);
   }
 
-  Future<void> uploadImageFile(Future<CubeFile> uploadAction, dynamic imageData) async {
+  Future<void> uploadImageFile(
+    Future<CubeFile> uploadAction,
+    dynamic imageData,
+  ) async {
     try {
       final cubeFile = await uploadAction;
       onSendChatAttachment(cubeFile, imageData);
@@ -187,10 +199,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void onTypingMessage(TypingStatus status) {
     dev.log("TypingStatus message= ${status.userId}");
     if (status.userId == widget.cubeUser.id ||
-        (status.dialogId != null && status.dialogId != widget.cubeDialog.dialogId)) {
+        (status.dialogId != null &&
+            status.dialogId != widget.cubeDialog.dialogId)) {
       return;
     }
-    userStatus = _occupants[status.userId]?.fullName ??
+    userStatus =
+        _occupants[status.userId]?.fullName ??
         _occupants[status.userId]?.login ??
         _occupants[status.userId]?.email ??
         '';
@@ -271,13 +285,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void updateReadDeliveredStatusMessage(MessageStatus status, bool isRead) {
     dev.log('[updateReadDeliveredStatusMessage]');
     setState(() {
-      final index = listMessage.indexWhere((msg) => msg.messageId == status.messageId);
+      final index = listMessage.indexWhere(
+        (msg) => msg.messageId == status.messageId,
+      );
       if (index != -1) {
         final msg = listMessage[index];
         if (isRead) {
-          msg.readIds == null ? msg.readIds = [status.userId] : msg.readIds?.add(status.userId);
+          msg.readIds == null
+              ? msg.readIds = [status.userId]
+              : msg.readIds?.add(status.userId);
         } else {
-          msg.deliveredIds == null ? msg.deliveredIds = [status.userId] : msg.deliveredIds?.add(status.userId);
+          msg.deliveredIds == null
+              ? msg.deliveredIds = [status.userId]
+              : msg.deliveredIds?.add(status.userId);
         }
       }
     });
@@ -300,7 +320,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Widget buildItem(int index, CubeMessage message) {
     void markAsReadIfNeed() {
-      var isOpponentMsgRead = message.readIds != null && message.readIds!.contains(widget.cubeUser.id);
+      var isOpponentMsgRead =
+          message.readIds != null &&
+          message.readIds!.contains(widget.cubeUser.id);
       if (message.senderId != widget.cubeUser.id && !isOpponentMsgRead) {
         if (message.readIds == null) {
           message.readIds = [widget.cubeUser.id!];
@@ -308,14 +330,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           message.readIds!.add(widget.cubeUser.id!);
         }
 
-        if (CubeChatConnection.instance.chatConnectionState == CubeChatConnectionState.Ready) {
+        if (CubeChatConnection.instance.chatConnectionState ==
+            CubeChatConnectionState.Ready) {
           widget.cubeDialog.readMessage(message);
         } else {
           _unreadMessages.add(message);
         }
 
         ChatManager.instance.readMessagesController.add(
-          MessageStatus(widget.cubeUser.id!, message.messageId!, widget.cubeDialog.dialogId!),
+          MessageStatus(
+            widget.cubeUser.id!,
+            message.messageId!,
+            widget.cubeDialog.dialogId!,
+          ),
         );
       }
     }
@@ -325,7 +352,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         DateFormat('HH:mm').format(
           DateTime.fromMillisecondsSinceEpoch((message.dateSent ?? 0) * 1000),
         ),
-        style: const TextStyle(color: Colors.grey, fontSize: 12.0, fontStyle: FontStyle.italic),
+        style: const TextStyle(
+          color: Colors.grey,
+          fontSize: 12.0,
+          fontStyle: FontStyle.italic,
+        ),
       );
     }
 
@@ -344,7 +375,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
               child: Text(
                 message.body ?? '',
-                style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
               ),
             ),
             getDateWidget(),
@@ -361,7 +394,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             CircleAvatar(
               radius: 15,
               child: Text(
-                (_occupants[message.senderId]?.fullName ?? '?')[0].toUpperCase(),
+                (_occupants[message.senderId]?.fullName ?? '?')[0]
+                    .toUpperCase(),
               ),
             ),
             const SizedBox(width: 8.0),
@@ -396,7 +430,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         margin: const EdgeInsets.all(16.0),
         child: Text(
           userStatus,
-          style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+          style: const TextStyle(
+            color: Colors.grey,
+            fontStyle: FontStyle.italic,
+          ),
         ),
       ),
     );
@@ -452,14 +489,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         future: getMessagesList(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           } else {
             listMessage = snapshot.data ?? [];
             return ListView.builder(
               padding: const EdgeInsets.all(10.0),
-              itemBuilder: (context, index) => buildItem(index, listMessage[index]),
+              itemBuilder: (context, index) =>
+                  buildItem(index, listMessage[index]),
               itemCount: listMessage.length,
               reverse: true,
               controller: listScrollController,
@@ -474,13 +510,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     if (listMessage.isNotEmpty) return listMessage;
 
     try {
-      final pagedResult = await getMessages(
-        widget.cubeDialog.dialogId!,
-        {
-          'limit': messagesPerPage,
-          'sort_desc': 'date_sent',
-        },
-      );
+      final pagedResult = await getMessages(widget.cubeDialog.dialogId!, {
+        'limit': messagesPerPage,
+        'sort_desc': 'date_sent',
+      });
       listMessage = pagedResult?.items.cast<CubeMessage>() ?? [];
       return listMessage;
     } catch (error) {
@@ -507,10 +540,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   buildInput(),
                 ],
               ),
-              if (isLoading)
-                const Center(
-                  child: CircularProgressIndicator(),
-                ),
+              if (isLoading) const Center(child: CircularProgressIndicator()),
             ],
           ),
         ),

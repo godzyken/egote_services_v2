@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer' as dev;
 
 import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:egote_services_v2/features/chat/domain/models/entities/message_state/message_state.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -9,18 +10,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../config/app_shared/extensions/extensions.dart';
-import '../../../../../config/cube_config/cube_config.dart';
-
-import 'package:egote_services_v2/features/chat/domain/models/entities/message_state/message_state.dart';
+import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart';
+import 'package:egote_services_v2/config/cube_config/cube_config.dart';
 import 'chat_screens.dart';
 
 class BodySelectedDialogLayout extends ConsumerStatefulWidget {
-  const BodySelectedDialogLayout(
-      {super.key,
-      required this.currentUser,
-      this.selectedDialog,
-      this.onDialogSelectedCallback});
+  const BodySelectedDialogLayout({
+    super.key,
+    required this.currentUser,
+    this.selectedDialog,
+    this.onDialogSelectedCallback,
+  });
 
   final CubeUser currentUser;
   final Function(CubeDialog)? onDialogSelectedCallback;
@@ -56,14 +56,13 @@ class _BodySelectedDialogLayoutState
         child: Column(
           children: [
             Visibility(
-                child: Container(
-              margin: const EdgeInsets.all(40),
-              alignment: FractionalOffset.center,
-              child: const CircularProgressIndicator(
-                strokeWidth: 2,
+              child: Container(
+                margin: const EdgeInsets.all(40),
+                alignment: FractionalOffset.center,
+                child: const CircularProgressIndicator(strokeWidth: 2),
               ),
-            )),
-            Expanded(child: _getDialogsList(context))
+            ),
+            Expanded(child: _getDialogsList(context)),
           ],
         ),
       ),
@@ -71,20 +70,19 @@ class _BodySelectedDialogLayoutState
         heroTag: context.tr!.newDialog,
         backgroundColor: Colors.blue,
         onPressed: () => _createNewDialog(context),
-        child: const Icon(
-          Icons.add_comment,
-          color: Colors.white,
-        ),
+        child: const Icon(Icons.add_comment, color: Colors.white),
       ),
     );
   }
 
   void _createNewDialog(BuildContext context) async {
     showModal(
-        context: context, child: CreateDialog(currentUser: widget.currentUser));
+      context: context,
+      child: CreateDialog(currentUser: widget.currentUser),
+    );
   }
 
-  void _processGetDialogError(exception) {
+  void _processGetDialogError(String exception) {
     dev.log("GetDialog error $exception");
     setState(() {
       _isDialogContinues = false;
@@ -94,17 +92,20 @@ class _BodySelectedDialogLayoutState
 
   Widget _getDialogsList(BuildContext context) {
     if (_isDialogContinues) {
-      getDialogs().then((dialogs) {
-        _isDialogContinues = false;
-        dev.log("getDialogs: $dialogs");
-        setState(() {
-          dialogList.clear();
-          dialogList.addAll(
-              dialogs?.items.map((dialog) => ListItem(dialog)).toList() ?? []);
-        });
-      }).catchError((exception) {
-        _processGetDialogError(exception);
-      });
+      getDialogs()
+          .then((dialogs) {
+            _isDialogContinues = false;
+            dev.log("getDialogs: $dialogs");
+            setState(() {
+              dialogList.clear();
+              dialogList.addAll(
+                dialogs?.items.map((dialog) => ListItem(dialog)).toList() ?? [],
+              );
+            });
+          })
+          .catchError((exception) {
+            _processGetDialogError(exception);
+          });
     }
 
     if (_isDialogContinues && dialogList.isEmpty) {
@@ -121,11 +122,7 @@ class _BodySelectedDialogLayoutState
         itemCount: dialogList.length,
         itemBuilder: _getListItemTile,
         separatorBuilder: (context, index) {
-          return const Divider(
-            thickness: 1,
-            indent: 68,
-            height: 1,
-          );
+          return const Divider(thickness: 1, indent: 68, height: 1);
         },
       );
     }
@@ -135,29 +132,26 @@ class _BodySelectedDialogLayoutState
     Widget getDialogIcon() {
       var dialog = dialogList[index].data;
       if (dialog.type == CubeDialogType.PRIVATE) {
-        return const Icon(
-          Icons.person,
-          size: 40.0,
-          color: Colors.grey,
-        );
+        return const Icon(Icons.person, size: 40.0, color: Colors.grey);
       } else {
-        return const Icon(
-          Icons.group,
-          size: 40.0,
-          color: Colors.grey,
-        );
+        return const Icon(Icons.group, size: 40.0, color: Colors.grey);
       }
     }
 
     getDialogAvatar() {
       var dialog = dialogList[index].data;
 
-      return getDialogAvatarWidget(dialog, 25,
-          placeholder: getDialogIcon(), errorWidget: getDialogIcon());
+      return getDialogAvatarWidget(
+        dialog,
+        25,
+        placeholder: getDialogIcon(),
+        errorWidget: getDialogIcon(),
+      );
     }
 
     return Container(
-      color: selectedDialog != null &&
+      color:
+          selectedDialog != null &&
               selectedDialog!.dialogId == dialogList[index].data.dialogId
           ? const Color.fromARGB(100, 168, 228, 160)
           : null,
@@ -178,10 +172,11 @@ class _BodySelectedDialogLayoutState
                         dialogList[index].data.name ??
                             context.tr!.dialogUnknown,
                         style: TextStyle(
-                            color: Colors.primaries.single,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                            overflow: TextOverflow.ellipsis),
+                          color: Colors.primaries.single,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         maxLines: 1,
                       ),
                     ),
@@ -190,8 +185,9 @@ class _BodySelectedDialogLayoutState
                       child: Text(
                         dialogList[index].data.lastMessage ?? '',
                         style: TextStyle(
-                            color: Colors.primaries.single,
-                            overflow: TextOverflow.ellipsis),
+                          color: Colors.primaries.single,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         maxLines: 2,
                       ),
                     ),
@@ -223,11 +219,13 @@ class _BodySelectedDialogLayoutState
                       getMessageStateWidget(AppMessageState.sent),
                     Text(
                       DateFormat('MMM dd').format(
-                          dialogList[index].data.lastMessageDateSent != null
-                              ? DateTime.fromMillisecondsSinceEpoch(
-                                  dialogList[index].data.lastMessageDateSent! *
-                                      1000)
-                              : dialogList[index].data.updatedAt!),
+                        dialogList[index].data.lastMessageDateSent != null
+                            ? DateTime.fromMillisecondsSinceEpoch(
+                                dialogList[index].data.lastMessageDateSent! *
+                                    1000,
+                              )
+                            : dialogList[index].data.updatedAt!,
+                      ),
                       style: TextStyle(color: Colors.primaries.single),
                     ),
                   ],
@@ -238,10 +236,13 @@ class _BodySelectedDialogLayoutState
                     padding: const EdgeInsets.only(top: 4),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 6),
+                        vertical: 2,
+                        horizontal: 6,
+                      ),
                       decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(10.0)),
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       child: Text(
                         dialogList[index].data.unreadMessageCount.toString(),
                         style: const TextStyle(color: Colors.white),
@@ -276,8 +277,10 @@ class _BodySelectedDialogLayoutState
         selectedDialog = dialog;
       });
     } else {
-      context.pushNamed('chat_dialog',
-          extra: {USER_ARG_NAME: widget.currentUser, DIALOG_ARG_NAME: dialog});
+      context.pushNamed(
+        'chat_dialog',
+        extra: {USER_ARG_NAME: widget.currentUser, DIALOG_ARG_NAME: dialog},
+      );
     }
   }
 
@@ -287,12 +290,12 @@ class _BodySelectedDialogLayoutState
     });
   }
 
-/*  void onReceiveMessage(CubeMessage message) {
+  /*  void onReceiveMessage(CubeMessage message) {
     dev.log("onReceiveMessage global message= $message");
     updateDialog(message);
   }*/
 
-/*  updateDialog(CubeMessage msg) {
+  /*  updateDialog(CubeMessage msg) {
     ref.watch(cubeRepositoryProvider).refreshBadgeCount();
 
     ListItem<CubeDialog>? dialogItem =
@@ -356,10 +359,11 @@ class _BodySelectedDialogLayoutState
 
     if (messageStatus.userId == widget.currentUser.id &&
         unreadMessages.containsKey(messageStatus.dialogId)) {
-      if (unreadMessages[messageStatus.dialogId]
-              ?.remove(messageStatus.messageId) ??
+      if (unreadMessages[messageStatus.dialogId]?.remove(
+            messageStatus.messageId,
+          ) ??
           false) {
-/*        setState(() {
+        /*        setState(() {
           var dialog = dialogList
               .firstWhere((dlg) => dlg.data.dialogId == messageStatus.dialogId)
               .data;
@@ -373,7 +377,7 @@ class _BodySelectedDialogLayoutState
     }
   }
 
-/*  void _updateLastMessageState(
+  /*  void _updateLastMessageState(
       MessageStatus messageStatus, MessageState state) {
     var dialog = dialogList
         .firstWhere((dlg) => dlg.data.dialogId == messageStatus.dialogId)

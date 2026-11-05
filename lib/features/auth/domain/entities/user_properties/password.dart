@@ -3,8 +3,7 @@ import 'package:formz/formz.dart';
 enum PasswordValidationError {
   empty,
   invalid,
-  short,
-  ;
+  short;
 
   String getMessage() {
     switch (this) {

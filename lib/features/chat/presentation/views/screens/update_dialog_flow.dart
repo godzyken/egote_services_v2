@@ -7,8 +7,11 @@ import '../../../../../config/cube_config/cube_config.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 
 class UpdateDialog extends ConsumerWidget {
-  const UpdateDialog(
-      {super.key, required this.currentUser, required this.currentDialog});
+  const UpdateDialog({
+    super.key,
+    required this.currentUser,
+    required this.currentDialog,
+  });
 
   final CubeUser currentUser;
   final CubeDialog currentDialog;
@@ -28,7 +31,9 @@ class UpdateDialog extends ConsumerWidget {
           case 'dialog_info':
             pageRoute = MaterialPageRoute(
               builder: (context) => DetailsScreen(
-                  cubeUser: currentUser, cubeDialog: currentDialog),
+                cubeUser: currentUser,
+                cubeDialog: currentDialog,
+              ),
             );
             break;
           case 'search_users':
@@ -41,9 +46,11 @@ class UpdateDialog extends ConsumerWidget {
             break;
           default:
             pageRoute = MaterialPageRoute(
-                builder: (context) => DetailsScreen(
-                    cubeUser: args![USER_ARG_NAME],
-                    cubeDialog: args[DIALOG_ARG_NAME]));
+              builder: (context) => DetailsScreen(
+                cubeUser: args![USER_ARG_NAME],
+                cubeDialog: args[DIALOG_ARG_NAME],
+              ),
+            );
             break;
         }
 
