@@ -63,9 +63,9 @@ class UserListViewModel extends AsyncNotifier<UserList> {
         isComplete,
         createdAt,
         updatedAt,
-        emailConfirmedAt ?? createdAt,
-        phoneConfirmedAt ?? createdAt,
-        lastSignInAt ?? createdAt,
+        emailConfirmedAt,
+        phoneConfirmedAt,
+        lastSignInAt,
       );
       return currentList.addUser(newUser);
     });

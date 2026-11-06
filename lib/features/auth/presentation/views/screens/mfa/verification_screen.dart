@@ -28,9 +28,6 @@ class VerificationScreen extends ConsumerStatefulWidget {
 }
 
 class _VerificationScreenState extends ConsumerState<VerificationScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(
-    debugLabel: 'verify',
-  );
   bool _isSubmitting = false;
 
   final _codeCtrl = TextEditingController();
@@ -143,9 +140,10 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmitting ? null : () => _verify(_codeCtrl.text),
-            child: _isSubmitting
-                ? const CircularProgressIndicator()
-                : Text(context.tr!.verify),
+            child:
+                _isSubmitting
+                    ? const CircularProgressIndicator()
+                    : Text(context.tr!.verify),
           ),
           TextButton(
             onPressed: _isSubmitting ? null : _resendCode,

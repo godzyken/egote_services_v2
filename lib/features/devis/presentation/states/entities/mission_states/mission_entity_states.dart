@@ -7,8 +7,8 @@ part 'mission_entity_states.freezed.dart';
 part 'mission_entity_states.g.dart';
 
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 abstract class MissionEntityStates with _$MissionEntityStates {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory MissionEntityStates({
     required List<MissionEntity> missionEntities,
   }) = _MissionEntityStates;

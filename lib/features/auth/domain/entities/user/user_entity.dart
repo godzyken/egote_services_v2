@@ -4,12 +4,9 @@ import 'package:egote_services_v2/features/auth/domain/adapter/user/user_convert
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:uuid/uuid.dart';
 
 part 'user_entity.freezed.dart';
 part 'user_entity.g.dart';
-
-var _uuid = const Uuid();
 
 @freezed
 abstract class UserEntityModel with _$UserEntityModel {

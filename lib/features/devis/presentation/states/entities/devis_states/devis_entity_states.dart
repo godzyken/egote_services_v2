@@ -6,8 +6,8 @@ part 'devis_entity_states.freezed.dart';
 part 'devis_entity_states.g.dart';
 
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 abstract class DevisEntityStates with _$DevisEntityStates {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory DevisEntityStates({required List<DevisModelEntity> devis}) =
       _DevisEntityStates;
 

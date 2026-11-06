@@ -4,8 +4,8 @@ part 'contact_owner_entity.freezed.dart';
 part 'contact_owner_entity.g.dart';
 
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 abstract class ContactOwnerEntity with _$ContactOwnerEntity {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory ContactOwnerEntity({
     required int id,
     required String firstName,

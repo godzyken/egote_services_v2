@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:egote_services_v2/config/providers/firebase/firebase_providers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -84,21 +83,22 @@ class PushNotificationsManager {
         );
 
     await flutterLocalNotificationsPlugin.initialize(
-      onDidReceiveNotificationResponse:
-          (NotificationResponse notificationResponse) {
-            developer.log(
-              '[onDidReceiveNotificationResponse] payload: ${notificationResponse.payload}, $TAG',
-            );
-            var data = notificationResponse.payload;
-            if (data != null) {
-              if (onNotificationClicked != null) {
-                onNotificationClicked?.call(data);
-              } else {
-                String? dialogId = jsonDecode(data)['dialog_id'];
-                SharedPrefs.instance.saveSelectedDialogId(dialogId ?? '');
-              }
-            }
-          },
+      onDidReceiveNotificationResponse: (
+        NotificationResponse notificationResponse,
+      ) {
+        developer.log(
+          '[onDidReceiveNotificationResponse] payload: ${notificationResponse.payload}, $TAG',
+        );
+        var data = notificationResponse.payload;
+        if (data != null) {
+          if (onNotificationClicked != null) {
+            onNotificationClicked?.call(data);
+          } else {
+            String? dialogId = jsonDecode(data)['dialog_id'];
+            SharedPrefs.instance.saveSelectedDialogId(dialogId ?? '');
+          }
+        }
+      },
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
       settings: initializationSettings,
     );
@@ -267,7 +267,7 @@ Future<dynamic> onNotificationSelected(String? payload, BuildContext? context) {
 
   if (payload != null) {
     return SharedPrefs.instance.init().then((sharedPrefs) async {
-      CubeUser? user = await sharedPrefs.getUser();
+      await sharedPrefs.getUser();
 
       Map<String, dynamic> payloadObject = jsonDecode(payload);
       String? dialogId = payloadObject['dialog_id'];

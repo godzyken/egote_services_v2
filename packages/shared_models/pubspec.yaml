@@ -1,0 +1,5 @@
+name: shared_models
+description: A shared models package stub for local analyzer resolution.
+version: 1.0.0+1
+environment:
+  sdk: '>=3.7.0 <4.0.0'
