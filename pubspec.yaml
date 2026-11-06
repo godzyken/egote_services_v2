@@ -63,7 +63,7 @@ dependencies:
   datadog_flutter_plugin: ^3.4.1
   mocktail: ^1.0.3
   hive: ^2.2.3
-  badges: ^4.0.1
+  badges: ^3.1.2
   multi_link_text: ^0.0.5
   google_generative_ai: ^0.4.1
   talker_riverpod_logger: ^5.1.0
