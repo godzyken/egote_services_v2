@@ -70,15 +70,16 @@ jobs:
             git@github.com:godzyken/shared_models.git \
             packages/shared_models
 
-          sed -i 's|\.\./shared_models|packages/shared_models|g' pubspec_overrides.yaml || true
-          dart format packages/shared_models
+          if [ -f pubspec_overrides.yaml ]; then
+            sed -i 's|\.\./shared_models|packages/shared_models|g' pubspec_overrides.yaml
+          fi
 
           echo "shared_models installed successfully"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.47.4'
+          flutter-version: '3.29.3'
           channel: stable
           cache: true
 
@@ -86,6 +87,9 @@ jobs:
         run: |
           flutter --version
           dart --version
+
+      - name: Format shared_models
+        run: dart format packages/shared_models
 
       - name: Install dependencies
         run: flutter pub get
