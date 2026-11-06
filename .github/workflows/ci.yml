@@ -71,6 +71,7 @@ jobs:
             packages/shared_models
 
           sed -i 's|\.\./shared_models|packages/shared_models|g' pubspec_overrides.yaml || true
+          dart format packages/shared_models
 
           echo "shared_models installed successfully"
 
