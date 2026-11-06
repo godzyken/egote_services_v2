@@ -70,6 +70,8 @@ jobs:
             git@github.com:godzyken/shared_models.git \
             packages/shared_models
 
+          sed -i 's|\.\./shared_models|packages/shared_models|g' pubspec_overrides.yaml || true
+
           echo "shared_models installed successfully"
 
       - name: Setup Flutter
