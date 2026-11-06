@@ -39,9 +39,6 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 *.json
-*.g.dart
-*.freezed.dart
-firebase_options.dart
 *.lockfile
 
 # Android Studio will place build artifacts here
