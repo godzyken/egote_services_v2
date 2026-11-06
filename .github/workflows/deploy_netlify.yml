@@ -23,6 +23,7 @@ jobs:
             exit 1
           fi
           mkdir -p ~/.ssh packages
+          rm -rf packages/shared_models
           KEY_FILE="$HOME/.ssh/shared_models_ci"
 
           if [[ "$KEY" != *"BEGIN"* ]] && echo "$KEY" | grep -qE '^[A-Za-z0-9+/=]+$'; then
