@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer' as dev;
 
 import 'package:connectycube_sdk/connectycube_chat.dart';
+import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart';
+import 'package:egote_services_v2/config/cube_config/cube_config.dart';
 import 'package:egote_services_v2/features/chat/domain/models/entities/message_state/message_state.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -10,8 +12,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import 'package:egote_services_v2/config/app_shared/extensions/extensions.dart';
-import 'package:egote_services_v2/config/cube_config/cube_config.dart';
 import 'chat_screens.dart';
 
 class BodySelectedDialogLayout extends ConsumerStatefulWidget {
@@ -152,9 +152,9 @@ class _BodySelectedDialogLayoutState
     return Container(
       color:
           selectedDialog != null &&
-              selectedDialog!.dialogId == dialogList[index].data.dialogId
-          ? const Color.fromARGB(100, 168, 228, 160)
-          : null,
+                  selectedDialog!.dialogId == dialogList[index].data.dialogId
+              ? const Color.fromARGB(100, 168, 228, 160)
+              : null,
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -221,9 +221,9 @@ class _BodySelectedDialogLayoutState
                       DateFormat('MMM dd').format(
                         dialogList[index].data.lastMessageDateSent != null
                             ? DateTime.fromMillisecondsSinceEpoch(
-                                dialogList[index].data.lastMessageDateSent! *
-                                    1000,
-                              )
+                              dialogList[index].data.lastMessageDateSent! *
+                                  1000,
+                            )
                             : dialogList[index].data.updatedAt!,
                       ),
                       style: TextStyle(color: Colors.primaries.single),

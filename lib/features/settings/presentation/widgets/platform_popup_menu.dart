@@ -102,9 +102,10 @@ class PlatformPopupMenu extends StatelessWidget {
         subtitle = '${context.tr!.nowSetTo} ${platformString[value]}';
         onChanged(value);
       },
-      itemBuilder: (BuildContext context) => <PopupMenuItem<TargetPlatform>>[
-        ...platformItems.values,
-      ],
+      itemBuilder:
+          (BuildContext context) => <PopupMenuItem<TargetPlatform>>[
+            ...platformItems.values,
+          ],
       child: ListTile(
         trailing: Padding(
           padding: const EdgeInsetsDirectional.only(end: 12),

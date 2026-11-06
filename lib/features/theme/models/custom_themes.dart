@@ -53,14 +53,15 @@ class CustomThemes {
       appBarOpacity: appBarOpacity,
       transparentStatusBar: transparentStatusBar,
       //
-      subThemesData: useSubTheme
-          ? FlexSubThemesData(
-              defaultRadius: defaultRadius,
-              thinBorderWidth: 1,
-              thickBorderWidth: 2,
-              drawerWidth: drawerWidth,
-            )
-          : null,
+      subThemesData:
+          useSubTheme
+              ? FlexSubThemesData(
+                defaultRadius: defaultRadius,
+                thinBorderWidth: 1,
+                thickBorderWidth: 2,
+                drawerWidth: drawerWidth,
+              )
+              : null,
       //
       visualDensity: FlexColorScheme.comfortablePlatformDensity,
       fontFamily: AppFonts.mainFont,
@@ -111,19 +112,20 @@ class CustomThemes {
     // `toTheme` method was demonstrated.
     return FlexThemeData.dark(
           useMaterial3: useMaterial3,
-          colors: computeDark
-              // Option to compute the dark theme from the light theme colors.
-              // This is handy if we have only defined light theme colors and
-              // want to compute a dark scheme from them. It is a bit like `seed`
-              // generated M3 scheme, but it is only based on white color alpha
-              // blend to de-saturate the light theme colors an adjustable amount.
-              // In this demo we have dark theme color definitions for all themes,
-              // this is only included to demonstrate the feature.
-              ? schemes[usedTheme].light.defaultError.toDark(
-                  darkLevel,
-                  useMaterial3,
-                )
-              : schemes[usedTheme].dark,
+          colors:
+              computeDark
+                  // Option to compute the dark theme from the light theme colors.
+                  // This is handy if we have only defined light theme colors and
+                  // want to compute a dark scheme from them. It is a bit like `seed`
+                  // generated M3 scheme, but it is only based on white color alpha
+                  // blend to de-saturate the light theme colors an adjustable amount.
+                  // In this demo we have dark theme color definitions for all themes,
+                  // this is only included to demonstrate the feature.
+                  ? schemes[usedTheme].light.defaultError.toDark(
+                    darkLevel,
+                    useMaterial3,
+                  )
+                  : schemes[usedTheme].dark,
           swapColors: swapColors,
           surfaceMode: surfaceMode,
           blendLevel: blendLevel,
@@ -142,14 +144,15 @@ class CustomThemes {
           //
           darkIsTrueBlack: darkIsTrueBlack,
           //
-          subThemesData: useSubTheme
-              ? FlexSubThemesData(
-                  defaultRadius: defaultRadius,
-                  thinBorderWidth: 1,
-                  thickBorderWidth: 2,
-                  drawerWidth: drawerWidth,
-                )
-              : null,
+          subThemesData:
+              useSubTheme
+                  ? FlexSubThemesData(
+                    defaultRadius: defaultRadius,
+                    thinBorderWidth: 1,
+                    thickBorderWidth: 2,
+                    drawerWidth: drawerWidth,
+                  )
+                  : null,
           //
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           fontFamily: AppFonts.mainFont,

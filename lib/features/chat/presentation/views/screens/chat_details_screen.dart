@@ -104,43 +104,44 @@ class _ContactDetailViewState extends BaseDetailsState<ContactDetailView> {
 
     return Scaffold(
       appBar: AppBar(title: Text(context.tr!.contactDetails)),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  getUserAvatarWidget(user, 50),
-                  const SizedBox(height: 24),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).primaryColor,
-                          width: 1.5,
+      body:
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    getUserAvatarWidget(user, 50),
+                    const SizedBox(height: 24),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 1.5,
+                          ),
                         ),
                       ),
+                      child: Text(
+                        user.fullName ?? user.login ?? user.email ?? '',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
-                    child: Text(
-                      user.fullName ?? user.login ?? user.email ?? '',
-                      style: Theme.of(context).textTheme.titleLarge,
+                    const SizedBox(height: 32),
+                    ElevatedButton.icon(
+                      onPressed: () => context.pop(),
+                      icon: const Icon(Icons.chat),
+                      label: Text(context.tr!.startDialog),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  ElevatedButton.icon(
-                    onPressed: () => context.pop(),
-                    icon: const Icon(Icons.chat),
-                    label: Text(context.tr!.startDialog),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
     );
   }
 }
@@ -266,38 +267,39 @@ class _GroupDetailViewState extends BaseDetailsState<GroupDetailView> {
   void _confirmLeaveDialog() {
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(context.tr!.leaveDialog),
-        content: Text(context.tr!.confirmLeaveDial),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(context.tr!.cancel),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(dialogContext).pop();
-              setState(() => isLoading = true);
+      builder:
+          (dialogContext) => AlertDialog(
+            title: Text(context.tr!.leaveDialog),
+            content: Text(context.tr!.confirmLeaveDial),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(context.tr!.cancel),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                  setState(() => isLoading = true);
 
-              try {
-                await deleteDialog(widget.cubeDialog.dialogId!);
-                if (mounted) {
-                  context.pushReplacementNamed(
-                    'select_dialog',
-                    extra: {USER_ARG_NAME: widget.cubeUser},
-                  );
-                }
-              } catch (e) {
-                if (mounted) {
-                  setState(() => isLoading = false);
-                  context.showAlert(e.toString());
-                }
-              }
-            },
-            child: Text(context.tr!.ok),
+                  try {
+                    await deleteDialog(widget.cubeDialog.dialogId!);
+                    if (mounted) {
+                      context.pushReplacementNamed(
+                        'select_dialog',
+                        extra: {USER_ARG_NAME: widget.cubeUser},
+                      );
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      setState(() => isLoading = false);
+                      context.showAlert(e.toString());
+                    }
+                  }
+                },
+                child: Text(context.tr!.ok),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -313,33 +315,34 @@ class _GroupDetailViewState extends BaseDetailsState<GroupDetailView> {
           ),
         ],
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
-                  child: Column(
-                    children: [
-                      _buildAvatarPicker(),
-                      const SizedBox(height: 24),
-                      TextField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          labelText: context.tr!.changeGroupName,
-                          border: const OutlineInputBorder(),
+      body:
+          isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Column(
+                      children: [
+                        _buildAvatarPicker(),
+                        const SizedBox(height: 24),
+                        TextField(
+                          controller: _nameController,
+                          decoration: InputDecoration(
+                            labelText: context.tr!.changeGroupName,
+                            border: const OutlineInputBorder(),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      _buildMembersHeader(),
-                      const Divider(thickness: 1.5),
-                      _buildOccupantsList(),
-                    ],
+                        const SizedBox(height: 24),
+                        _buildMembersHeader(),
+                        const Divider(thickness: 1.5),
+                        _buildOccupantsList(),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'update_group_btn',
         onPressed: _updateDialog,

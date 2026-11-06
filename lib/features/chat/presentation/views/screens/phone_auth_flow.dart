@@ -42,69 +42,95 @@ class VerifyPhoneNumber extends ConsumerWidget {
             );
           },
           settings: const RouteSettings(name: PHONE_INPUT_ROUTE_NAME),
-          pageBuilder: (context, animation, secondaryAnimation) => PhoneInputScreen(
-            actions: [
-              SMSCodeRequestedAction((ctx1, action, flowKey, phoneNumber) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    settings: const RouteSettings(
-                      name: SMS_CODE_INPUT_ROUTE_NAME,
-                    ),
-                    builder: (ctx2) => SMSCodeInputScreen(
-                      flowKey: flowKey,
-                      actions: [
-                        AuthStateChangeAction<SignedIn>((ctx3, state) {
-                          log('[AuthStateChangeAction] SignedIn');
-                          state.user?.getIdToken().then((idToken) {
-                            SharedPrefs.instance.saveLoginType(LoginType.phone);
-                            /*signInUsingFirebasePhone( DefaultFirebaseOptions.currentPlatform.projectId, idToken! ).then( (value) =>  Navigator.of(ctx3, rootNavigator: true) .pushNamedAndRemoveUntil('loginToChat', (route) => route.isFirst) ).catchError((onError) => context.showAlert(onError.toString()));*/
-                          });
-                        }),
-                        AuthStateChangeAction<CredentialLinked>((ctx3, state) {
-                          log('[AuthStateChangeAction] CredentialLinked');
-                          state.user.getIdToken().then((idToken) {
-                            SharedPrefs.instance.saveLoginType(LoginType.phone);
-                            Navigator.of(
-                              ctx3,
-                              rootNavigator: true,
-                            ).pushNamedAndRemoveUntil(
-                              'loginToChat',
-                              (route) => false,
-                            );
-                          });
-                        }),
-                        AuthStateChangeAction<Uninitialized>((ctx3, state) {
-                          log('[AuthStateChangeAction] Uninitialized');
-                        }),
-                        AuthStateChangeAction<CredentialReceived>((
-                          ctx3,
-                          state,
-                        ) {
-                          log('[AuthStateChangeAction] CredentialReceived');
-                        }),
-                        AuthStateChangeAction<AuthFailed>((ctx3, state) {
-                          log('[AuthStateChangeAction] AuthFailed');
-                        }),
-                        AuthStateChangeAction<UserCreated>((ctx3, state) {
-                          log('[AuthStateChangeAction] UserCreated');
-                          state.credential.user?.getIdToken().then((idToken) {
-                            SharedPrefs.instance.saveLoginType(LoginType.phone);
-                            Navigator.of(
-                              ctx3,
-                              rootNavigator: true,
-                            ).pushNamedAndRemoveUntil(
-                              'loginToChat',
-                              (route) => false,
-                            );
-                          });
-                        }),
-                      ],
-                    ),
-                  ),
-                );
-              }),
-            ],
-          ),
+          pageBuilder:
+              (context, animation, secondaryAnimation) => PhoneInputScreen(
+                actions: [
+                  SMSCodeRequestedAction((ctx1, action, flowKey, phoneNumber) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        settings: const RouteSettings(
+                          name: SMS_CODE_INPUT_ROUTE_NAME,
+                        ),
+                        builder:
+                            (ctx2) => SMSCodeInputScreen(
+                              flowKey: flowKey,
+                              actions: [
+                                AuthStateChangeAction<SignedIn>((ctx3, state) {
+                                  log('[AuthStateChangeAction] SignedIn');
+                                  state.user?.getIdToken().then((idToken) {
+                                    SharedPrefs.instance.saveLoginType(
+                                      LoginType.phone,
+                                    );
+                                    /*signInUsingFirebasePhone( DefaultFirebaseOptions.currentPlatform.projectId, idToken! ).then( (value) =>  Navigator.of(ctx3, rootNavigator: true) .pushNamedAndRemoveUntil('loginToChat', (route) => route.isFirst) ).catchError((onError) => context.showAlert(onError.toString()));*/
+                                  });
+                                }),
+                                AuthStateChangeAction<CredentialLinked>((
+                                  ctx3,
+                                  state,
+                                ) {
+                                  log(
+                                    '[AuthStateChangeAction] CredentialLinked',
+                                  );
+                                  state.user.getIdToken().then((idToken) {
+                                    SharedPrefs.instance.saveLoginType(
+                                      LoginType.phone,
+                                    );
+                                    Navigator.of(
+                                      ctx3,
+                                      rootNavigator: true,
+                                    ).pushNamedAndRemoveUntil(
+                                      'loginToChat',
+                                      (route) => false,
+                                    );
+                                  });
+                                }),
+                                AuthStateChangeAction<Uninitialized>((
+                                  ctx3,
+                                  state,
+                                ) {
+                                  log('[AuthStateChangeAction] Uninitialized');
+                                }),
+                                AuthStateChangeAction<CredentialReceived>((
+                                  ctx3,
+                                  state,
+                                ) {
+                                  log(
+                                    '[AuthStateChangeAction] CredentialReceived',
+                                  );
+                                }),
+                                AuthStateChangeAction<AuthFailed>((
+                                  ctx3,
+                                  state,
+                                ) {
+                                  log('[AuthStateChangeAction] AuthFailed');
+                                }),
+                                AuthStateChangeAction<UserCreated>((
+                                  ctx3,
+                                  state,
+                                ) {
+                                  log('[AuthStateChangeAction] UserCreated');
+                                  state.credential.user?.getIdToken().then((
+                                    idToken,
+                                  ) {
+                                    SharedPrefs.instance.saveLoginType(
+                                      LoginType.phone,
+                                    );
+                                    Navigator.of(
+                                      ctx3,
+                                      rootNavigator: true,
+                                    ).pushNamedAndRemoveUntil(
+                                      'loginToChat',
+                                      (route) => false,
+                                    );
+                                  });
+                                }),
+                              ],
+                            ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
         );
       },
     );

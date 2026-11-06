@@ -9,11 +9,8 @@ class ListMfaScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final factorListFuture = ref
-        .watch(supabaseClientProvider)
-        .auth
-        .mfa
-        .listFactors();
+    final factorListFuture =
+        ref.watch(supabaseClientProvider).auth.mfa.listFactors();
 
     return Scaffold(
       appBar: AppBar(title: Text(context.tr!.listMfa)),

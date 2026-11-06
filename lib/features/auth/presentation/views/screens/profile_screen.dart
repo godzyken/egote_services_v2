@@ -1,11 +1,11 @@
 import 'dart:io' as io;
 
-import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:connectycube_sdk/connectycube_sdk.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/entities_extension.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/widgets/widgets_extensions.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,12 +51,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       final userId = ref.watch(supabaseClientProvider).auth.currentUser!.id;
 
       if (widget.pid == userId) {
-        final data = (await ref
-            .watch(supabaseClientProvider)
-            .from('auth_users_table')
-            .select('*')
-            .eq('id', userId)
-            .single());
+        final data =
+            (await ref
+                .watch(supabaseClientProvider)
+                .from('auth_users_table')
+                .select('*')
+                .eq('id', userId)
+                .single());
 
         setState(() {
           _loadAuth(data['id']);
@@ -123,11 +124,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       final userId = ref.watch(authStreamProvider).value!.uid;
 
       if (widget.uid == userId) {
-        final doc = (await ref
-            .watch(firebaseFirestoreProvider)
-            .collection('users')
-            .doc(data.authUser.id)
-            .get());
+        final doc =
+            (await ref
+                .watch(firebaseFirestoreProvider)
+                .collection('users')
+                .doc(data.authUser.id)
+                .get());
 
         if (doc.exists && doc.id == widget.uid) {
           setState(() {
@@ -180,11 +182,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return ref
         .watch(authStateChangesProvider)
         .when(
-          data: (user) => _isLoading
-              ? userModelComplete(user, context)
-              : authUserComplete(user, context),
-          error: (error, stackTrace) =>
-              ErrorScreen(error: stackTrace.toString()),
+          data:
+              (user) =>
+                  _isLoading
+                      ? userModelComplete(user, context)
+                      : authUserComplete(user, context),
+          error:
+              (error, stackTrace) => ErrorScreen(error: stackTrace.toString()),
           loading: () => const Center(child: CircularProgressIndicator()),
         );
   }
@@ -192,14 +196,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Scaffold authUserComplete(User? user, BuildContext _) {
     return Scaffold(
       appBar: AppBar(
-        title: _userEntityModel!.isComplete
-            ? ProfileWidget(
-                imagePath: user!.photoURL!,
-                onClicked: () async {
-                  await _updatePhoto(user);
-                },
-              )
-            : Text(context.tr!.noData),
+        title:
+            _userEntityModel!.isComplete
+                ? ProfileWidget(
+                  imagePath: user!.photoURL!,
+                  onClicked: () async {
+                    await _updatePhoto(user);
+                  },
+                )
+                : Text(context.tr!.noData),
       ),
       drawer: const CustomMenuWidget(),
       body: Card(
@@ -247,13 +252,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       child: Card(
                         color: Colors.grey[300],
                         child: ListTile(
-                          leading: provider.photoURL == null
-                              ? IconButton(
-                                  icon: const Icon(Icons.remove),
-                                  onPressed: () =>
-                                      user.unlink(provider.providerId),
-                                )
-                              : Image.network(provider.photoURL!),
+                          leading:
+                              provider.photoURL == null
+                                  ? IconButton(
+                                    icon: const Icon(Icons.remove),
+                                    onPressed:
+                                        () => user.unlink(provider.providerId),
+                                  )
+                                  : Image.network(provider.photoURL!),
                           title: Text(provider.providerId),
                           subtitle: Text(
                             "${provider.uid == null ? "" : "ID: ${provider.uid}\n"}"
@@ -279,10 +285,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         icon: const Icon(Icons.refresh),
                       ),
                       IconButton(
-                        onPressed: () => showAdaptiveDialog(
-                          context: context,
-                          builder: (context) => const UpdateUserDialogScreen(),
-                        ),
+                        onPressed:
+                            () => showAdaptiveDialog(
+                              context: context,
+                              builder:
+                                  (context) => const UpdateUserDialogScreen(),
+                            ),
                         icon: const Icon(Icons.text_snippet),
                       ),
                       IconButton(
@@ -303,14 +311,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Scaffold userModelComplete(User? user, BuildContext _) {
     return Scaffold(
       appBar: AppBar(
-        title: _userEntityModel!.isComplete
-            ? ProfileWidget(
-                imagePath: user!.photoURL!,
-                onClicked: () async {
-                  await _updatePhoto(user);
-                },
-              )
-            : Text(context.tr!.noData),
+        title:
+            _userEntityModel!.isComplete
+                ? ProfileWidget(
+                  imagePath: user!.photoURL!,
+                  onClicked: () async {
+                    await _updatePhoto(user);
+                  },
+                )
+                : Text(context.tr!.noData),
       ),
       drawer: const CustomMenuWidget(),
       body: Card(
@@ -358,13 +367,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       child: Card(
                         color: Colors.grey[300],
                         child: ListTile(
-                          leading: provider.photoURL == null
-                              ? IconButton(
-                                  icon: const Icon(Icons.remove),
-                                  onPressed: () =>
-                                      user.unlink(provider.providerId),
-                                )
-                              : Image.network(provider.photoURL!),
+                          leading:
+                              provider.photoURL == null
+                                  ? IconButton(
+                                    icon: const Icon(Icons.remove),
+                                    onPressed:
+                                        () => user.unlink(provider.providerId),
+                                  )
+                                  : Image.network(provider.photoURL!),
                           title: Text(provider.providerId),
                           subtitle: Text(
                             "${provider.uid == null ? "" : "ID: ${provider.uid}\n"}"
@@ -390,10 +400,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         icon: const Icon(Icons.refresh),
                       ),
                       IconButton(
-                        onPressed: () => showAdaptiveDialog(
-                          context: context,
-                          builder: (context) => const UpdateUserDialogScreen(),
-                        ),
+                        onPressed:
+                            () => showAdaptiveDialog(
+                              context: context,
+                              builder:
+                                  (context) => const UpdateUserDialogScreen(),
+                            ),
                         icon: const Icon(Icons.text_snippet),
                       ),
                       IconButton(

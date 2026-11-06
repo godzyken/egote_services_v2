@@ -26,8 +26,8 @@ class ThemeSettings extends ConsumerWidget {
     final int flexTone = ref.watch(Settings.usedFlexToneProvider);
     final int usedFlexTone =
         flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
-        ? 0
-        : flexTone;
+            ? 0
+            : flexTone;
 
     final String explainM3Surface = useSeed ? context.tr!.useLevelZero : '';
 
@@ -69,9 +69,10 @@ class ThemeSettings extends ConsumerWidget {
               FlexToneConfigPopupMenu(
                 title: context.tr!.flexTonesTitle1,
                 index: useSeed ? usedFlexTone : 0,
-                onChanged: useSeed
-                    ? ref.read(Settings.usedFlexToneProvider.notifier).set
-                    : null,
+                onChanged:
+                    useSeed
+                        ? ref.read(Settings.usedFlexToneProvider.notifier).set
+                        : null,
               ),
               ListTile(
                 title: Text(

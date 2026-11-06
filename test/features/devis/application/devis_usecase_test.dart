@@ -19,8 +19,9 @@ void main() {
           expect(idResult, id);
           expect(date, now);
         },
-        approved: (_, _, _, _, _, _, _, _, _, _, _, _) =>
-            fail('Should be initialize'),
+        approved:
+            (_, _, _, _, _, _, _, _, _, _, _, _) =>
+                fail('Should be initialize'),
         empty: () => fail('Should be initialize'),
       );
     });

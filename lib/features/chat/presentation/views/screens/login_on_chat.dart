@@ -215,16 +215,20 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
             ),
           ),
           EmailField(
-            inputType: isEmailSelected
-                ? TextInputType.emailAddress
-                : TextInputType.text,
+            inputType:
+                isEmailSelected
+                    ? TextInputType.emailAddress
+                    : TextInputType.text,
             controller: _loginFilter,
-            hintText: isEmailSelected
-                ? context.tr!.enterUserEmail
-                : context.tr!.login,
-            onChanged: (value) => isEmailSelected
-                ? loginController.onEmailChange(value)
-                : nameController.onNameChange(value),
+            hintText:
+                isEmailSelected
+                    ? context.tr!.enterUserEmail
+                    : context.tr!.login,
+            onChanged:
+                (value) =>
+                    isEmailSelected
+                        ? loginController.onEmailChange(value)
+                        : nameController.onNameChange(value),
             label: isEmailSelected ? context.tr!.email : context.tr!.login,
           ),
           PasswordField(
@@ -248,39 +252,40 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
   Widget _buildButtons() {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 400),
-      child: _form == FormType.login
-          ? Container(
-              margin: const EdgeInsets.only(top: 8),
-              child: Column(
-                children: <Widget>[
-                  ElevatedButton(
-                    onPressed: _loginPressed,
-                    child: Text(context.tr!.login),
-                  ),
-                  TextButton(
-                    onPressed: _formChange,
-                    child: Text(context.tr!.haventAccount),
-                  ),
-                  ...createCIPButtons(),
-                ],
+      child:
+          _form == FormType.login
+              ? Container(
+                margin: const EdgeInsets.only(top: 8),
+                child: Column(
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _loginPressed,
+                      child: Text(context.tr!.login),
+                    ),
+                    TextButton(
+                      onPressed: _formChange,
+                      child: Text(context.tr!.haventAccount),
+                    ),
+                    ...createCIPButtons(),
+                  ],
+                ),
+              )
+              : Container(
+                margin: const EdgeInsets.only(top: 8),
+                child: Column(
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _createAccountPressed,
+                      child: Text(context.tr!.createAccount),
+                    ),
+                    TextButton(
+                      onPressed: _formChange,
+                      child: Text(context.tr!.haveAccount),
+                    ),
+                    ...createCIPButtons(),
+                  ],
+                ),
               ),
-            )
-          : Container(
-              margin: const EdgeInsets.only(top: 8),
-              child: Column(
-                children: <Widget>[
-                  ElevatedButton(
-                    onPressed: _createAccountPressed,
-                    child: Text(context.tr!.createAccount),
-                  ),
-                  TextButton(
-                    onPressed: _formChange,
-                    child: Text(context.tr!.haveAccount),
-                  ),
-                  ...createCIPButtons(),
-                ],
-              ),
-            ),
     );
   }
 

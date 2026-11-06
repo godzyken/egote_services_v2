@@ -28,19 +28,21 @@ class CoreModule extends AppModule {
         GoRoute(
           path: 'user_home/:pid',
           name: 'user_home',
-          builder: (context, state) => UserHomeScreen(
-            key: state.pageKey,
-            pid: state.pathParameters['pid']!,
-          ),
+          builder:
+              (context, state) => UserHomeScreen(
+                key: state.pageKey,
+                pid: state.pathParameters['pid']!,
+              ),
           routes: [
             GoRoute(
               path: 'person/:uid',
               name: 'person',
-              builder: (context, state) => ProfileScreen(
-                key: state.pageKey,
-                uid: state.pathParameters['uid']!,
-                pid: state.pathParameters['pid']!,
-              ),
+              builder:
+                  (context, state) => ProfileScreen(
+                    key: state.pageKey,
+                    uid: state.pathParameters['uid']!,
+                    pid: state.pathParameters['pid']!,
+                  ),
             ),
             GoRoute(
               path: 'drawingRoute',
@@ -55,10 +57,11 @@ class CoreModule extends AppModule {
                 GoRoute(
                   path: 'userForm',
                   name: 'userForm',
-                  builder: (context, state) => AddUserFormScreen(
-                    key: state.pageKey,
-                    userEntityModel: state.extra as UserEntityModel?,
-                  ),
+                  builder:
+                      (context, state) => AddUserFormScreen(
+                        key: state.pageKey,
+                        userEntityModel: state.extra as UserEntityModel?,
+                      ),
                 ),
               ],
             ),
@@ -86,18 +89,20 @@ class CoreModule extends AppModule {
             GoRoute(
               path: 'enrollRoute',
               name: 'enroll',
-              builder: (context, state) => MFAEnrollScreen(
-                key: state.pageKey,
-                params: state.extra as VerificationScreenParams,
-              ),
+              builder:
+                  (context, state) => MFAEnrollScreen(
+                    key: state.pageKey,
+                    params: state.extra as VerificationScreenParams,
+                  ),
             ),
             GoRoute(
               path: 'verificationRoute',
               name: 'verify',
-              builder: (context, state) => VerificationScreen(
-                key: state.pageKey,
-                params: state.extra as VerificationScreenParams,
-              ),
+              builder:
+                  (context, state) => VerificationScreen(
+                    key: state.pageKey,
+                    params: state.extra as VerificationScreenParams,
+                  ),
             ),
           ],
         ),
@@ -118,20 +123,22 @@ class CoreModule extends AppModule {
         GoRoute(
           path: 'crossPlatformRoute',
           name: 'crossPlatformRoute',
-          builder: (context, state) =>
-              CrossPlatformSettingsScreen(key: state.pageKey),
+          builder:
+              (context, state) =>
+                  CrossPlatformSettingsScreen(key: state.pageKey),
         ),
         GoRoute(
           path: 'webChromeAddressesRoute',
           name: 'webChromeAddressesRoute',
-          builder: (context, state) =>
-              WebChromeAddressesScreen(key: state.pageKey),
+          builder:
+              (context, state) => WebChromeAddressesScreen(key: state.pageKey),
         ),
         GoRoute(
           path: 'androidNotificationsRoute',
           name: 'androidNotificationsRoute',
-          builder: (context, state) =>
-              AndroidNotificationsScreen(key: state.pageKey),
+          builder:
+              (context, state) =>
+                  AndroidNotificationsScreen(key: state.pageKey),
         ),
         GoRoute(
           path: 'webChromeSettingsRoute',
@@ -150,10 +157,11 @@ class CoreModule extends AppModule {
     GoRoute(
       path: '/edit_devis/:devisId',
       name: 'devis',
-      builder: (context, state) => DevisEditScreen(
-        key: state.pageKey,
-        devisId: state.pathParameters['devisId']!,
-      ),
+      builder:
+          (context, state) => DevisEditScreen(
+            key: state.pageKey,
+            devisId: state.pathParameters['devisId']!,
+          ),
     ),
 
     // Chat Routes
@@ -165,10 +173,11 @@ class CoreModule extends AppModule {
         GoRoute(
           path: 'selectDialogRoute/:cid',
           name: 'select_dialog',
-          builder: (context, state) => SelectDialogScreen(
-            key: state.pageKey,
-            currentUser: state.extra as CubeUser,
-          ),
+          builder:
+              (context, state) => SelectDialogScreen(
+                key: state.pageKey,
+                currentUser: state.extra as CubeUser,
+              ),
           routes: [
             GoRoute(
               path: 'chatDialogRoute/:cdid',

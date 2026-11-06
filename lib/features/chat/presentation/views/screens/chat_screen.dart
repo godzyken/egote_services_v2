@@ -494,8 +494,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             listMessage = snapshot.data ?? [];
             return ListView.builder(
               padding: const EdgeInsets.all(10.0),
-              itemBuilder: (context, index) =>
-                  buildItem(index, listMessage[index]),
+              itemBuilder:
+                  (context, index) => buildItem(index, listMessage[index]),
               itemCount: listMessage.length,
               reverse: true,
               controller: listScrollController,

@@ -26,10 +26,11 @@ class DarkAppBarStylePopupMenu extends ConsumerWidget {
               .set(FlexAppBarStyle.values[index]);
         }
       },
-      customAppBarColor: CustomThemes
-          .schemes[ref.watch(Settings.schemeIndexProvider)]
-          .dark
-          .appBarColor,
+      customAppBarColor:
+          CustomThemes
+              .schemes[ref.watch(Settings.schemeIndexProvider)]
+              .dark
+              .appBarColor,
       customScaffoldColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }

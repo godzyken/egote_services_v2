@@ -34,23 +34,29 @@ class FlexToneConfigPopupMenu extends StatelessWidget {
         );
       },
       enabled: !disabled,
-      itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-        // The '0' index is excluded, it describes the disabled state.
-        for (int i = 1; i < FlexTone.values.length; i++)
-          PopupMenuItem<int>(
-            value: i,
-            child: ListTile(
-              dense: true,
-              leading: ColorSchemeBox(
-                optionIcon: FlexTone.values[i].icon,
-                backgroundColor: FlexTone.values[i].shade < 0
-                    ? colorScheme.primary.lighten(FlexTone.values[i].shade * -1)
-                    : colorScheme.primary.darken(FlexTone.values[i].shade),
+      itemBuilder:
+          (BuildContext context) => <PopupMenuItem<int>>[
+            // The '0' index is excluded, it describes the disabled state.
+            for (int i = 1; i < FlexTone.values.length; i++)
+              PopupMenuItem<int>(
+                value: i,
+                child: ListTile(
+                  dense: true,
+                  leading: ColorSchemeBox(
+                    optionIcon: FlexTone.values[i].icon,
+                    backgroundColor:
+                        FlexTone.values[i].shade < 0
+                            ? colorScheme.primary.lighten(
+                              FlexTone.values[i].shade * -1,
+                            )
+                            : colorScheme.primary.darken(
+                              FlexTone.values[i].shade,
+                            ),
+                  ),
+                  title: Text(FlexTone.values[i].tone, style: txtStyle),
+                ),
               ),
-              title: Text(FlexTone.values[i].tone, style: txtStyle),
-            ),
-          ),
-      ],
+          ],
       child: ListTile(
         enabled: !disabled,
         contentPadding:
@@ -58,9 +64,8 @@ class FlexToneConfigPopupMenu extends StatelessWidget {
         title: Text('$title ${FlexTone.values[index].tone}'),
         subtitle: Text(FlexTone.values[index].describe),
         trailing: ColorSchemeBox(
-          backgroundColor: !disabled
-              ? colorScheme.primary
-              : colorScheme.primaryContainer,
+          backgroundColor:
+              !disabled ? colorScheme.primary : colorScheme.primaryContainer,
           defaultOption: disabled,
           optionIcon: FlexTone.values[index].icon,
         ),

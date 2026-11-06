@@ -50,8 +50,8 @@ class ShowThemeDataColors extends StatelessWidget {
   // On color used when a theme color property does not have a theme onColor.
   static Color _onColor(final Color color, final Color background) =>
       _isLight(Color.alphaBlend(color, background))
-      ? Colors.black
-      : Colors.white;
+          ? Colors.black
+          : Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -87,30 +87,33 @@ class ShowThemeDataColors extends StatelessWidget {
         onBackgroundColor ?? theme.cardTheme.color ?? theme.cardColor;
 
     // Warning label for scaffold background when it uses to much blend.
-    final String scaffoldTooHigh = isDark
-        ? _isLight(theme.scaffoldBackgroundColor)
-              ? context.tr!.tooHigh
-              : ''
-        : _isDark(theme.scaffoldBackgroundColor)
-        ? context.tr!.tooHigh
-        : '';
+    final String scaffoldTooHigh =
+        isDark
+            ? _isLight(theme.scaffoldBackgroundColor)
+                ? context.tr!.tooHigh
+                : ''
+            : _isDark(theme.scaffoldBackgroundColor)
+            ? context.tr!.tooHigh
+            : '';
     // Warning label for scaffold background when it uses to much blend.
-    final String surfaceTooHigh = isDark
-        ? _isLight(theme.colorScheme.surface)
-              ? context.tr!.tooHigh
-              : ''
-        : _isDark(theme.colorScheme.surface)
-        ? context.tr!.tooHigh
-        : '';
+    final String surfaceTooHigh =
+        isDark
+            ? _isLight(theme.colorScheme.surface)
+                ? context.tr!.tooHigh
+                : ''
+            : _isDark(theme.colorScheme.surface)
+            ? context.tr!.tooHigh
+            : '';
 
     // Warning label for scaffold background when it uses to much blend.
-    final String backTooHigh = isDark
-        ? _isLight(theme.colorScheme.surface)
-              ? context.tr!.tooHigh
-              : ''
-        : _isDark(theme.colorScheme.surface)
-        ? context.tr!.tooHigh
-        : '';
+    final String backTooHigh =
+        isDark
+            ? _isLight(theme.colorScheme.surface)
+                ? context.tr!.tooHigh
+                : ''
+            : _isDark(theme.colorScheme.surface)
+            ? context.tr!.tooHigh
+            : '';
 
     // Wrap this widget branch in a custom theme where card has a border outline
     // if it did not have one, but retains in ambient themed border radius.

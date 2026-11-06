@@ -11,11 +11,10 @@ import '../../../../config/app_shared/images/list_local.dart';
 import '../entities/construction/mission_entity.dart';
 import '../entities/contact/contact_owner_entity.dart';
 
-final editDeviViewModelProvider =
-    NotifierProvider<
-      EditDeviViewModelController,
-      State<AsyncValue<DevisModelEntity>>
-    >(EditDeviViewModelController.new);
+final editDeviViewModelProvider = NotifierProvider<
+  EditDeviViewModelController,
+  State<AsyncValue<DevisModelEntity>>
+>(EditDeviViewModelController.new);
 
 class EditDeviViewModelController
     extends Notifier<State<AsyncValue<DevisModelEntity>>> {
@@ -46,51 +45,51 @@ class EditDeviViewModelController
   bool get edit => initial.toJson().isNotEmpty;
 
   DevisModelEntity get devis => initial.when(
-    approved:
-        (
-          devis,
-          createdAt,
-          validity,
-          client,
-          pro,
-          travauxEntity,
-          quantity,
-          unitPrice,
-          vatRates,
-          amountHt,
-          amountTtc,
-          approval,
-        ) {
-          try {
-            state = const State.loading();
+    approved: (
+      devis,
+      createdAt,
+      validity,
+      client,
+      pro,
+      travauxEntity,
+      quantity,
+      unitPrice,
+      vatRates,
+      amountHt,
+      amountTtc,
+      approval,
+    ) {
+      try {
+        state = const State.loading();
 
-            if (devis.id != 0 && approval != false) {
-              final DevisModelEntity newDevis = DevisModelEntity.approved(
-                id: devis,
-                createdAt: createdAt,
-                validity: validity,
-                client: client,
-                pro: pro,
-                travauxEntity: travauxEntity,
-                quantity: quantity,
-                unitPrice: unitPrice,
-                vatRates: vatRates,
-                amountHt: amountHt,
-                amountTtc: amountTtc,
-                approval: approval,
-              );
+        if (devis.id != 0 && approval != false) {
+          final DevisModelEntity newDevis = DevisModelEntity.approved(
+            id: devis,
+            createdAt: createdAt,
+            validity: validity,
+            client: client,
+            pro: pro,
+            travauxEntity: travauxEntity,
+            quantity: quantity,
+            unitPrice: unitPrice,
+            vatRates: vatRates,
+            amountHt: amountHt,
+            amountTtc: amountTtc,
+            approval: approval,
+          );
 
-              state = State.success(AsyncValue.data(newDevis));
-              return newDevis;
-            }
-            return DevisModelEntity.empty();
-          } on Exception catch (e) {
-            state = State.error(e);
-            return DevisModelEntity.initialize(id: devis, createdAt: createdAt);
-          }
-        },
-    initialize: (id, createdAt) =>
-        DevisModelEntity.initialize(id: id, createdAt: createdAt),
+          state = State.success(AsyncValue.data(newDevis));
+          return newDevis;
+        }
+        return DevisModelEntity.empty();
+      } on Exception catch (e) {
+        state = State.error(e);
+        return DevisModelEntity.initialize(id: devis, createdAt: createdAt);
+      }
+    },
+    initialize:
+        (id, createdAt) =>
+            DevisModelEntity.initialize(id: id, createdAt: createdAt),
     empty: () => DevisModelEntity.empty(),
   );
 
@@ -131,17 +130,22 @@ class EditDeviViewModelController
   SuperficieEntity get superficieEntity =>
       _superficieEntity ??
       initialSup.when(
-        initialize: (longueur, largeur, hauteur) => SuperficieEntity.initialize(
-          largeur: largeur,
-          longueur: longueur,
-          hauteur: hauteur,
-        ),
-        surface: (surface) =>
-            SuperficieEntity.surface(surface: surface = _long! * largeur),
-        perimetre: (perimetre) =>
-            SuperficieEntity.perimetre(perimetre: perimetre = _long! + _larg!),
-        volume: (volume) =>
-            SuperficieEntity.volume(volume: _larg! * _long! * _haut!),
+        initialize:
+            (longueur, largeur, hauteur) => SuperficieEntity.initialize(
+              largeur: largeur,
+              longueur: longueur,
+              hauteur: hauteur,
+            ),
+        surface:
+            (surface) =>
+                SuperficieEntity.surface(surface: surface = _long! * largeur),
+        perimetre:
+            (perimetre) => SuperficieEntity.perimetre(
+              perimetre: perimetre = _long! + _larg!,
+            ),
+        volume:
+            (volume) =>
+                SuperficieEntity.volume(volume: _larg! * _long! * _haut!),
         (longueur, largeur, hauteur) => SuperficieEntity(
           longueur: longueur = _long!,
           largeur: largeur = _larg!,
@@ -214,21 +218,23 @@ class EditDeviViewModelController
       _missionEntity ??
       initialMission.when(
         (id, denomination) => MissionEntity(id: id, denomination: denomination),
-        done: (id, denomination, startedAt, finishedAt, doneOk) =>
-            MissionEntity.done(
+        done:
+            (id, denomination, startedAt, finishedAt, doneOk) =>
+                MissionEntity.done(
+                  id: id,
+                  denomination: denomination,
+                  startedAt: startedAt,
+                  finishedAt: finishedAt,
+                  doneOk: doneOk,
+                ),
+        progress:
+            (id, denomination, startedAt) => MissionEntity.progress(
               id: id,
               denomination: denomination,
               startedAt: startedAt,
-              finishedAt: finishedAt,
-              doneOk: doneOk,
             ),
-        progress: (id, denomination, startedAt) => MissionEntity.progress(
-          id: id,
-          denomination: denomination,
-          startedAt: startedAt,
-        ),
-        abandon: (id, denomination, reason, left, isLeft) =>
-            MissionEntity.abandon(
+        abandon:
+            (id, denomination, reason, left, isLeft) => MissionEntity.abandon(
               id: id,
               denomination: denomination,
               reason: reason,

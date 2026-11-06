@@ -43,9 +43,10 @@ class _MFAEnrollScreenState extends ConsumerState<MFAEnrollScreen> {
               Text(context.tr!.openViaQr),
               const SizedBox(height: 16),
               Center(
-                child: qrCodeUrl.isNotEmpty
-                    ? Image.network(qrCodeUrl, height: 150, width: 150)
-                    : const Icon(Icons.qr_code, size: 150),
+                child:
+                    qrCodeUrl.isNotEmpty
+                        ? Image.network(qrCodeUrl, height: 150, width: 150)
+                        : const Icon(Icons.qr_code, size: 150),
               ),
               const SizedBox(height: 16),
               Row(

@@ -33,9 +33,10 @@ class _UpdateUserDialogScreenState
       final repo = ref.read(authRepositoryProvider);
       final result = await repo.updateUser(
         email: _emailController.text.isNotEmpty ? _emailController.text : null,
-        password: _passwordController.text.isNotEmpty
-            ? _passwordController.text
-            : null,
+        password:
+            _passwordController.text.isNotEmpty
+                ? _passwordController.text
+                : null,
         name: _nameController.text.isNotEmpty ? _nameController.text : null,
       );
 
@@ -86,13 +87,14 @@ class _UpdateUserDialogScreenState
         ),
         TextButton(
           onPressed: _isLoading ? null : _update,
-          child: _isLoading
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(context.tr!.update),
+          child:
+              _isLoading
+                  ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                  : Text(context.tr!.update),
         ),
       ],
     );

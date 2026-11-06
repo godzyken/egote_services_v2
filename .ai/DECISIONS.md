@@ -44,3 +44,11 @@
 - **Date** : 2025
 - **Décision** : Implémenter `NotificationBridgeService` connecté au Realtime Supabase pour écouter les événements de devis, rendez-vous et messages, couplé à un guide d'intégration Brevo SMTP / Supabase Edge Functions pour la distribution e-mail.
 - **Statut** : Validé.
+
+## DEC-010 : Ajustement de la version de `sign_in_with_apple` pour compatibilité Dart SDK 3.7
+
+- **Date** : 2026
+- **Décision** : Rétroer `sign_in_with_apple` à la version `^6.1.0` pour assurer une compatibilité
+  parfaite avec l'environnement Dart SDK `>=3.7.0 <4.0.0` utilisé par Flutter 3.29.x dans le
+  pipeline CI/CD GitHub Actions.
+- **Statut** : Validé.

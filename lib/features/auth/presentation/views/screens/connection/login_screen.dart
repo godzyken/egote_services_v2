@@ -151,25 +151,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return isLoading
         ? null
         : () async {
-            if (_formKey.currentState!.validate()) {
-              await _login();
-              if (mounted) {
-                context.showAlert(context.tr!.checkInbox);
-                context.goNamed(
-                  'verify',
-                  extra: VerificationScreenParams(
-                    email: _emailCtrl.text,
-                    password: _passwordCtrl.text,
-                    name: _nameCtrl.text,
-                  ),
-                );
-              }
-            } else {
-              setState(() {
-                _autovalidateMode = AutovalidateMode.always;
-              });
+          if (_formKey.currentState!.validate()) {
+            await _login();
+            if (mounted) {
+              context.showAlert(context.tr!.checkInbox);
+              context.goNamed(
+                'verify',
+                extra: VerificationScreenParams(
+                  email: _emailCtrl.text,
+                  password: _passwordCtrl.text,
+                  name: _nameCtrl.text,
+                ),
+              );
             }
-          };
+          } else {
+            setState(() {
+              _autovalidateMode = AutovalidateMode.always;
+            });
+          }
+        };
   }
 
   @override

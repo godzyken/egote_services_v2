@@ -41,8 +41,12 @@ Future<ProviderContainer> bootstrap() async {
       ..screenshotQuality = SentryScreenshotQuality.low
       ..maxRequestBodySize = MaxRequestBodySize.always
       ..tracesSampleRate = 1.0
-      ..tracesSampler = (samplingContext) =>
-          samplingContext.transactionContext.parentSamplingDecision?.sampleRate;
+      ..tracesSampler =
+          (samplingContext) =>
+              samplingContext
+                  .transactionContext
+                  .parentSamplingDecision
+                  ?.sampleRate;
   });
 
   final sharedPreferences = await SharedPreferences.getInstance();

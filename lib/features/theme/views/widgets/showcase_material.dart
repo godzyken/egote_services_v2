@@ -890,28 +890,29 @@ class PopupMenuButtonShowcase extends StatelessWidget {
       child: PopupMenuButton<int>(
         onSelected: (_) {},
         position: PopupMenuPosition.under,
-        itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-          PopupMenuItem<int>(
-            value: 1,
-            child: Text('${context.tr!.optionText} 1'),
-          ),
-          PopupMenuItem<int>(
-            value: 2,
-            child: Text('${context.tr!.optionText} 2'),
-          ),
-          PopupMenuItem<int>(
-            value: 3,
-            child: Text('${context.tr!.optionText} 3'),
-          ),
-          PopupMenuItem<int>(
-            value: 4,
-            child: Text('${context.tr!.optionText} 4'),
-          ),
-          PopupMenuItem<int>(
-            value: 5,
-            child: Text('${context.tr!.optionText} 5'),
-          ),
-        ],
+        itemBuilder:
+            (BuildContext context) => <PopupMenuItem<int>>[
+              PopupMenuItem<int>(
+                value: 1,
+                child: Text('${context.tr!.optionText} 1'),
+              ),
+              PopupMenuItem<int>(
+                value: 2,
+                child: Text('${context.tr!.optionText} 2'),
+              ),
+              PopupMenuItem<int>(
+                value: 3,
+                child: Text('${context.tr!.optionText} 3'),
+              ),
+              PopupMenuItem<int>(
+                value: 4,
+                child: Text('${context.tr!.optionText} 4'),
+              ),
+              PopupMenuItem<int>(
+                value: 5,
+                child: Text('${context.tr!.optionText} 5'),
+              ),
+            ],
         icon: const Icon(Icons.more_vert),
       ),
     );
@@ -927,36 +928,37 @@ class PopupMenuButtonTilesShowcase extends StatelessWidget {
       child: PopupMenuButton<int>(
         onSelected: (_) {},
         position: PopupMenuPosition.under,
-        itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
-          PopupMenuItem<int>(
-            value: 1,
-            child: ListTile(
-              leading: const Icon(Icons.alarm),
-              title: Text(context.tr!.alarm),
-            ),
-          ),
-          PopupMenuItem<int>(
-            value: 2,
-            child: ListTile(
-              leading: const Icon(Icons.cabin),
-              title: Text(context.tr!.woodCabin),
-            ),
-          ),
-          PopupMenuItem<int>(
-            value: 3,
-            child: ListTile(
-              leading: const Icon(Icons.camera_outdoor_rounded),
-              title: Text(context.tr!.surveillance),
-            ),
-          ),
-          PopupMenuItem<int>(
-            value: 4,
-            child: ListTile(
-              leading: const Icon(Icons.water_damage),
-              title: Text(context.tr!.waterDamage),
-            ),
-          ),
-        ],
+        itemBuilder:
+            (BuildContext context) => <PopupMenuItem<int>>[
+              PopupMenuItem<int>(
+                value: 1,
+                child: ListTile(
+                  leading: const Icon(Icons.alarm),
+                  title: Text(context.tr!.alarm),
+                ),
+              ),
+              PopupMenuItem<int>(
+                value: 2,
+                child: ListTile(
+                  leading: const Icon(Icons.cabin),
+                  title: Text(context.tr!.woodCabin),
+                ),
+              ),
+              PopupMenuItem<int>(
+                value: 3,
+                child: ListTile(
+                  leading: const Icon(Icons.camera_outdoor_rounded),
+                  title: Text(context.tr!.surveillance),
+                ),
+              ),
+              PopupMenuItem<int>(
+                value: 4,
+                child: ListTile(
+                  leading: const Icon(Icons.water_damage),
+                  title: Text(context.tr!.waterDamage),
+                ),
+              ),
+            ],
         icon: const Icon(Icons.more_horiz),
       ),
     );
@@ -1183,9 +1185,10 @@ class _IconButtonCircleAvatarDropdownShowcaseState
             child: IconButton(
               icon: const Icon(Icons.lock_outlined),
               selectedIcon: const Icon(Icons.lock_open_outlined),
-              tooltip: isLockOpen
-                  ? context.tr!.iconButtonCLoseM3
-                  : context.tr!.iconButtonOpenM3,
+              tooltip:
+                  isLockOpen
+                      ? context.tr!.iconButtonCLoseM3
+                      : context.tr!.iconButtonOpenM3,
               isSelected: isLockOpen,
               onPressed: () {
                 setState(() {
@@ -1465,13 +1468,14 @@ class _IconToggleButtonState extends State<IconToggleButton> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colors = Theme.of(context).colorScheme;
-    final VoidCallback? onPressed = widget.isEnabled
-        ? () {
-            setState(() {
-              selected = !selected;
-            });
-          }
-        : null;
+    final VoidCallback? onPressed =
+        widget.isEnabled
+            ? () {
+              setState(() {
+                selected = !selected;
+              });
+            }
+            : null;
     final ButtonStyle? style = widget.getDefaultStyle?.call(selected, colors);
 
     return IconButton(
@@ -1492,15 +1496,18 @@ ButtonStyle enabledFilledButtonStyle(bool selected, ColorScheme colors) {
     backgroundColor: selected ? colors.primary : colors.surfaceContainerHighest,
     disabledForegroundColor: colors.onSurface.withValues(alpha: 0.38),
     disabledBackgroundColor: colors.onSurface.withValues(alpha: 0.12),
-    hoverColor: selected
-        ? colors.onPrimary.withValues(alpha: 0.08)
-        : colors.primary.withValues(alpha: 0.08),
-    focusColor: selected
-        ? colors.onPrimary.withValues(alpha: 0.12)
-        : colors.primary.withValues(alpha: 0.12),
-    highlightColor: selected
-        ? colors.onPrimary.withValues(alpha: 0.12)
-        : colors.primary.withValues(alpha: 0.12),
+    hoverColor:
+        selected
+            ? colors.onPrimary.withValues(alpha: 0.08)
+            : colors.primary.withValues(alpha: 0.08),
+    focusColor:
+        selected
+            ? colors.onPrimary.withValues(alpha: 0.12)
+            : colors.primary.withValues(alpha: 0.12),
+    highlightColor:
+        selected
+            ? colors.onPrimary.withValues(alpha: 0.12)
+            : colors.primary.withValues(alpha: 0.12),
   );
 }
 
@@ -1513,21 +1520,22 @@ ButtonStyle disabledFilledButtonStyle(bool selected, ColorScheme colors) {
 
 ButtonStyle enabledFilledTonalButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
-    foregroundColor: selected
-        ? colors.onSecondaryContainer
-        : colors.onSurfaceVariant,
-    backgroundColor: selected
-        ? colors.secondaryContainer
-        : colors.surfaceContainerHighest,
-    hoverColor: selected
-        ? colors.onSecondaryContainer.withValues(alpha: 0.08)
-        : colors.onSurfaceVariant.withValues(alpha: 0.08),
-    focusColor: selected
-        ? colors.onSecondaryContainer.withValues(alpha: 0.12)
-        : colors.onSurfaceVariant.withValues(alpha: 0.12),
-    highlightColor: selected
-        ? colors.onSecondaryContainer.withValues(alpha: 0.12)
-        : colors.onSurfaceVariant.withValues(alpha: 0.12),
+    foregroundColor:
+        selected ? colors.onSecondaryContainer : colors.onSurfaceVariant,
+    backgroundColor:
+        selected ? colors.secondaryContainer : colors.surfaceContainerHighest,
+    hoverColor:
+        selected
+            ? colors.onSecondaryContainer.withValues(alpha: 0.08)
+            : colors.onSurfaceVariant.withValues(alpha: 0.08),
+    focusColor:
+        selected
+            ? colors.onSecondaryContainer.withValues(alpha: 0.12)
+            : colors.onSurfaceVariant.withValues(alpha: 0.12),
+    highlightColor:
+        selected
+            ? colors.onSecondaryContainer.withValues(alpha: 0.12)
+            : colors.onSurfaceVariant.withValues(alpha: 0.12),
   );
 }
 
@@ -1541,15 +1549,18 @@ ButtonStyle disabledFilledTonalButtonStyle(bool selected, ColorScheme colors) {
 ButtonStyle enabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
     backgroundColor: selected ? colors.inverseSurface : null,
-    hoverColor: selected
-        ? colors.onInverseSurface.withValues(alpha: 0.08)
-        : colors.onSurfaceVariant.withValues(alpha: 0.08),
-    focusColor: selected
-        ? colors.onInverseSurface.withValues(alpha: 0.12)
-        : colors.onSurfaceVariant.withValues(alpha: 0.12),
-    highlightColor: selected
-        ? colors.onInverseSurface.withValues(alpha: 0.12)
-        : colors.onSurface.withValues(alpha: 0.12),
+    hoverColor:
+        selected
+            ? colors.onInverseSurface.withValues(alpha: 0.08)
+            : colors.onSurfaceVariant.withValues(alpha: 0.08),
+    focusColor:
+        selected
+            ? colors.onInverseSurface.withValues(alpha: 0.12)
+            : colors.onSurfaceVariant.withValues(alpha: 0.12),
+    highlightColor:
+        selected
+            ? colors.onInverseSurface.withValues(alpha: 0.12)
+            : colors.onSurface.withValues(alpha: 0.12),
     side: BorderSide(color: colors.outline),
   ).copyWith(
     foregroundColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
@@ -1567,12 +1578,12 @@ ButtonStyle enabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
 ButtonStyle disabledOutlinedButtonStyle(bool selected, ColorScheme colors) {
   return IconButton.styleFrom(
     disabledForegroundColor: colors.onSurface.withValues(alpha: 0.38),
-    disabledBackgroundColor: selected
-        ? colors.onSurface.withValues(alpha: 0.12)
-        : null,
-    side: selected
-        ? null
-        : BorderSide(color: colors.outline.withValues(alpha: 0.12)),
+    disabledBackgroundColor:
+        selected ? colors.onSurface.withValues(alpha: 0.12) : null,
+    side:
+        selected
+            ? null
+            : BorderSide(color: colors.outline.withValues(alpha: 0.12)),
   );
 }
 
@@ -2460,9 +2471,8 @@ class _NavigationRailShowcaseState extends State<NavigationRailShowcase> {
                       child: NavigationRail(
                         extended: isExtended,
                         minExtendedWidth: 150,
-                        labelType: isExtended
-                            ? NavigationRailLabelType.none
-                            : null,
+                        labelType:
+                            isExtended ? NavigationRailLabelType.none : null,
                         selectedIndex: buttonIndex,
                         onDestinationSelected: (int value) {
                           setState(() {
@@ -2544,8 +2554,10 @@ class MenuBarShowcase extends StatelessWidget {
     );
     return Shortcuts(
       shortcuts: const <ShortcutActivator, Intent>{
-        SingleActivator(LogicalKeyboardKey.keyT, control: true):
-            VoidCallbackIntent(debugDumpApp),
+        SingleActivator(
+          LogicalKeyboardKey.keyT,
+          control: true,
+        ): VoidCallbackIntent(debugDumpApp),
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2790,9 +2802,8 @@ class _MenuAnchorContextMenuState extends State<MenuAnchorContextMenu> {
         };
     // Register the shortcuts with the ShortcutRegistry so that they are
     // available to the entire application.
-    final Map<ShortcutActivator, Intent>? entries = ShortcutRegistry.maybeOf(
-      context,
-    )?.shortcuts;
+    final Map<ShortcutActivator, Intent>? entries =
+        ShortcutRegistry.maybeOf(context)?.shortcuts;
     // TODO(rydmike): Potential issue with ShortcutRegistry? Investigate.
     // Workaround to avoid issue of entries being added multiple times, the
     // dispose of them does not seem to work all the time. This widget is in
@@ -3322,35 +3333,36 @@ class _ExpansionPanelListShowcaseState
             _items[index].isExpanded = !isExpanded;
           });
         },
-        children: _items.map<ExpansionPanel>((
-          ExpansionPanelShowcaseItems item,
-        ) {
-          return ExpansionPanel(
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(title: Text(item.headerValue));
-            },
-            body: ListTile(
-              title: Text(item.expandedValue),
-              subtitle: item.id > 2
-                  ? Text(context.tr!.expansionPanelDelete)
-                  : Text(context.tr!.expansionPanelFixed),
-              trailing: item.id > 2
-                  ? IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        setState(() {
-                          _items.removeWhere(
-                            (ExpansionPanelShowcaseItems currentItem) =>
-                                item == currentItem,
-                          );
-                        });
-                      },
-                    )
-                  : null,
-            ),
-            isExpanded: item.isExpanded,
-          );
-        }).toList(),
+        children:
+            _items.map<ExpansionPanel>((ExpansionPanelShowcaseItems item) {
+              return ExpansionPanel(
+                headerBuilder: (BuildContext context, bool isExpanded) {
+                  return ListTile(title: Text(item.headerValue));
+                },
+                body: ListTile(
+                  title: Text(item.expandedValue),
+                  subtitle:
+                      item.id > 2
+                          ? Text(context.tr!.expansionPanelDelete)
+                          : Text(context.tr!.expansionPanelFixed),
+                  trailing:
+                      item.id > 2
+                          ? IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              setState(() {
+                                _items.removeWhere(
+                                  (ExpansionPanelShowcaseItems currentItem) =>
+                                      item == currentItem,
+                                );
+                              });
+                            },
+                          )
+                          : null,
+                ),
+                isExpanded: item.isExpanded,
+              );
+            }).toList(),
       ),
     );
   }
@@ -3417,12 +3429,10 @@ class _AlertDialogExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool useMaterial3 = Theme.of(context).useMaterial3;
-    final String cancel = useMaterial3
-        ? context.tr!.cancel
-        : context.tr!.cancel.toUpperCase();
-    final String allow = useMaterial3
-        ? context.tr!.allow
-        : context.tr!.allow.toUpperCase();
+    final String cancel =
+        useMaterial3 ? context.tr!.cancel : context.tr!.cancel.toUpperCase();
+    final String allow =
+        useMaterial3 ? context.tr!.allow : context.tr!.allow.toUpperCase();
 
     return AlertDialog(
       title: Text(context.tr!.allowLocServ),
@@ -3442,8 +3452,9 @@ class TimePickerDialogShowcase extends StatelessWidget {
     await showDialog<void>(
       context: context,
       useRootNavigator: false,
-      builder: (BuildContext context) =>
-          TimePickerDialog(initialTime: TimeOfDay.now()),
+      builder:
+          (BuildContext context) =>
+              TimePickerDialog(initialTime: TimeOfDay.now()),
     );
   }
 
@@ -3471,11 +3482,12 @@ class DatePickerDialogShowcase extends StatelessWidget {
     await showDialog<void>(
       context: context,
       useRootNavigator: false,
-      builder: (BuildContext context) => DatePickerDialog(
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1930),
-        lastDate: DateTime(2050),
-      ),
+      builder:
+          (BuildContext context) => DatePickerDialog(
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1930),
+            lastDate: DateTime(2050),
+          ),
     );
   }
 
@@ -3515,25 +3527,26 @@ class BottomSheetShowcase extends StatelessWidget {
         elevation: theme.bottomSheetTheme.elevation,
         backgroundColor: theme.bottomSheetTheme.backgroundColor,
         onClosing: () {},
-        builder: (final BuildContext context) => SizedBox(
-          height: 150,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  context.tr!.materialBottomSheet,
-                  style: theme.textTheme.titleMedium,
+        builder:
+            (final BuildContext context) => SizedBox(
+              height: 150,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      context.tr!.materialBottomSheet,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    Text(
+                      context.tr!.materialBottomSheetText,
+                      style: theme.textTheme.bodySmall,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-                Text(
-                  context.tr!.materialBottomSheetText,
-                  style: theme.textTheme.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
       ),
     );
   }
@@ -3552,25 +3565,26 @@ class BottomSheetModalShowcase extends StatelessWidget {
         backgroundColor: theme.bottomSheetTheme.modalBackgroundColor,
         enableDrag: false,
         onClosing: () {},
-        builder: (final BuildContext context) => SizedBox(
-          height: 150,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  context.tr!.materialModalBottomSheet,
-                  style: theme.textTheme.titleMedium,
+        builder:
+            (final BuildContext context) => SizedBox(
+              height: 150,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      context.tr!.materialModalBottomSheet,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    Text(
+                      context.tr!.materialBottomSheetText,
+                      style: theme.textTheme.bodySmall,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
-                Text(
-                  context.tr!.materialBottomSheetText,
-                  style: theme.textTheme.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
       ),
     );
   }
@@ -3603,26 +3617,26 @@ class SnackBarShowcase extends StatelessWidget {
     final ColorScheme colorScheme = theme.colorScheme;
     final bool isLight = theme.brightness == Brightness.light;
 
-    final Color defaultBackgroundColor = isLight
-        ? useMaterial3
-              ? colorScheme.inverseSurface
-              : Color.alphaBlend(
+    final Color defaultBackgroundColor =
+        isLight
+            ? useMaterial3
+                ? colorScheme.inverseSurface
+                : Color.alphaBlend(
                   colorScheme.onSurface.withValues(alpha: 0.80),
                   colorScheme.surface,
                 )
-        : colorScheme.onSurface;
+            : colorScheme.onSurface;
     final Color snackBackground =
         theme.snackBarTheme.backgroundColor ?? defaultBackgroundColor;
 
     final Color snackForeground =
         ThemeData.estimateBrightnessForColor(snackBackground) ==
-            Brightness.light
-        ? Colors.black
-        : Colors.white;
+                Brightness.light
+            ? Colors.black
+            : Colors.white;
 
-    final Color defaultActionColor = useMaterial3
-        ? colorScheme.inversePrimary
-        : colorScheme.secondary;
+    final Color defaultActionColor =
+        useMaterial3 ? colorScheme.inversePrimary : colorScheme.secondary;
     final Color snackActionColor =
         theme.snackBarTheme.actionTextColor ?? defaultActionColor;
 

@@ -25,9 +25,10 @@ class SwitchButton extends ConsumerWidget {
       bottom: 30,
       child: TextButton(
         onPressed: onTap,
-        child: showSignIn
-            ? Text(context.tr!.switchHavent, style: _kTextStyle)
-            : Text(context.tr!.switchHave, style: _kTextStyle),
+        child:
+            showSignIn
+                ? Text(context.tr!.switchHavent, style: _kTextStyle)
+                : Text(context.tr!.switchHave, style: _kTextStyle),
       ),
     );
   }

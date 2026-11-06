@@ -69,9 +69,10 @@ class ColorSchemeBox extends StatelessWidget {
       FlexSchemeOnColors.estimateErrorBrightness(color) == Brightness.light;
 
   // On color for icon on the colored box.
-  static Color _onColor(final Color color) => _isLight(color)
-      ? Colors.black.withValues(alpha: 0.8)
-      : Colors.white.withValues(alpha: 0.8);
+  static Color _onColor(final Color color) =>
+      _isLight(color)
+          ? Colors.black.withValues(alpha: 0.8)
+          : Colors.white.withValues(alpha: 0.8);
 
   @override
   Widget build(BuildContext context) {
