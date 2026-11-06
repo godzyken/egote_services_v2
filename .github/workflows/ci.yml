@@ -98,7 +98,18 @@ jobs:
         run: dart format --output=none --set-exit-if-changed lib/ test/
 
       - name: Analyze
-        run: flutter analyze --no-pub
+        run: |
+          output=$(flutter analyze --no-pub || true)
+          echo "$output"
+          if echo "$output" | grep -q "error •"; then
+            echo "Analysis failed with errors."
+            exit 1
+          elif echo "$output" | grep -q "warning •"; then
+            echo "Analysis failed with warnings."
+            exit 1
+          else
+            echo "Analysis passed (no errors or warnings)."
+          fi
 
       - name: Run tests
         run: flutter test --no-pub
