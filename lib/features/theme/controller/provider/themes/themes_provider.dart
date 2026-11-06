@@ -17,8 +17,8 @@ final lightThemeProvider = Provider<ThemeData>((ref) {
   final int flexTone = ref.watch(Settings.usedFlexToneProvider);
   final int usedFlexTone =
       flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
-          ? 0
-          : flexTone;
+      ? 0
+      : flexTone;
 
   return CustomThemes.light(
     useMaterial3: ref.watch(Settings.useMaterial3Provider),
@@ -53,8 +53,8 @@ final darkThemeProvider = Provider<ThemeData>((ref) {
   final int flexTone = ref.watch(Settings.usedFlexToneProvider);
   final int usedFlexTone =
       flexTone < 0 || flexTone >= FlexTone.values.length || !useSeed
-          ? 0
-          : flexTone;
+      ? 0
+      : flexTone;
 
   return CustomThemes.dark(
     useMaterial3: ref.watch(Settings.useMaterial3Provider),

@@ -62,6 +62,7 @@ jobs:
           ssh-keyscan -t ed25519,rsa github.com \
             >> ~/.ssh/known_hosts 2>/dev/null
 
+          rm -rf packages/shared_models
           GIT_SSH_COMMAND="ssh -i $KEY_FILE \
             -o IdentitiesOnly=yes \
             -o StrictHostKeyChecking=yes" \

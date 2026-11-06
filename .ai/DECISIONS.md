@@ -53,3 +53,11 @@
   parfaite avec l'environnement Dart SDK `>=3.7.0 <4.0.0` utilisé par Flutter 3.29.x dans le
   pipeline CI/CD GitHub Actions.
 - **Statut** : Validé.
+
+## DEC-011 : Nettoyage préalable de `packages/shared_models` dans le workflow CI
+
+- **Date** : 2026
+- **Décision** : Ajouter `rm -rf packages/shared_models` avant l'étape de clonage Git dans le
+  workflow GitHub Actions (`.github/workflows/ci.yml`) pour garantir l'idempotence et éviter
+  l'erreur `fatal: destination path 'packages/shared_models' already exists`.
+- **Statut** : Validé.
