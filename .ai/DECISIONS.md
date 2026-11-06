@@ -22,7 +22,8 @@
 
 ## DEC-005 : Déploiement Web sur Netlify via GitHub Actions
 - **Date** : 2025
-- **Décision** : Utiliser Netlify avec un fichier `netlify.toml` et un workflow GitHub Actions (`.github/workflows/deploy_web.yml`) pour automatiser le build et le déploiement du Hub web.
+- **Décision** : Utiliser Netlify avec un fichier `netlify.toml` et un workflow GitHub Actions
+  (`.github/workflows/ci.yml`) pour automatiser le build et le déploiement du Hub web.
 - **Statut** : Validé.
 
 ## DEC-006 : Workflow de Pont Emap Services ➔ Egote Services (Hub)
