@@ -137,17 +137,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     }
                   },
                   inputType: TextInputType.name,
-                  validator:
-                      (value) =>
-                          value == null || value.isEmpty
-                              ? context.tr!.enterUsername
-                              : null,
-                  onEditingComplete:
-                      isLoading
-                          ? null
-                          : () => ref
-                              .read(authControllerProvider.notifier)
-                              .signIn(_usernameCtrl.text, _passwordCtrl.text),
+                  validator: (value) => value == null || value.isEmpty
+                      ? context.tr!.enterUsername
+                      : null,
+                  onEditingComplete: isLoading
+                      ? null
+                      : () => ref
+                            .read(authControllerProvider.notifier)
+                            .signIn(_usernameCtrl.text, _passwordCtrl.text),
                   errorText: name?.displayError?.getMessage(),
                 ),
                 const SizedBox(height: 16),
@@ -179,29 +176,28 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 SubmitButton(
                   context.tr!.submit,
                   enabled: _isSubmitting,
-                  onPressed:
-                      isLoading
-                          ? null
-                          : () async {
-                            if (_formKey.currentState!.validate()) {
-                              await _createAccount();
-                              if (mounted) {
-                                context.showAlert(context.tr!.checkInbox);
-                                context.goNamed(
-                                  'enroll',
-                                  extra: VerificationScreenParams(
-                                    email: _emailCtrl.text,
-                                    password: _passwordCtrl.text,
-                                    name: _usernameCtrl.text,
-                                  ),
-                                );
-                              }
-                            } else {
-                              setState(() {
-                                _autovalidateMode = AutovalidateMode.always;
-                              });
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          if (_formKey.currentState!.validate()) {
+                            await _createAccount();
+                            if (mounted) {
+                              context.showAlert(context.tr!.checkInbox);
+                              context.goNamed(
+                                'enroll',
+                                extra: VerificationScreenParams(
+                                  email: _emailCtrl.text,
+                                  password: _passwordCtrl.text,
+                                  name: _usernameCtrl.text,
+                                ),
+                              );
                             }
-                          },
+                          } else {
+                            setState(() {
+                              _autovalidateMode = AutovalidateMode.always;
+                            });
+                          }
+                        },
                 ),
                 const SizedBox(height: 16),
                 TextButton(

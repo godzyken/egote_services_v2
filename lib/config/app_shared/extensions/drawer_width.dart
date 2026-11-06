@@ -8,10 +8,9 @@ import 'package:flutter/material.dart';
 /// * Is never less than 244 dp wide.
 /// * Will fill max width if screen is less than 244 dp wide.
 double drawerWidth() {
-  final double screenWidth =
-      MediaQueryData.fromView(
-        WidgetsBinding.instance.platformDispatcher.views.single,
-      ).size.width;
+  final double screenWidth = MediaQueryData.fromView(
+    WidgetsBinding.instance.platformDispatcher.views.single,
+  ).size.width;
 
   /// Drawer, minimum none covered space when screen width is > 300 dp .
   const double minNotUsedSpace = 56; // This is spec in M2.

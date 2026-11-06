@@ -131,31 +131,28 @@ class ShowSubThemeColors extends StatelessWidget {
           WidgetState.selected,
         }) ??
         (theme.useMaterial3 ? colorScheme.primary : colorScheme.secondary);
-    final Color circleAvatarColor =
-        useMaterial3
-            ? theme.colorScheme.primaryContainer
-            : isDark
-            ? theme.primaryColorLight
-            : theme.primaryColorDark;
-    final Color onCircleAvatarColor =
-        useMaterial3
-            ? theme.colorScheme.onPrimaryContainer
-            : _onColor(circleAvatarColor, background);
+    final Color circleAvatarColor = useMaterial3
+        ? theme.colorScheme.primaryContainer
+        : isDark
+        ? theme.primaryColorLight
+        : theme.primaryColorDark;
+    final Color onCircleAvatarColor = useMaterial3
+        ? theme.colorScheme.onPrimaryContainer
+        : _onColor(circleAvatarColor, background);
     final Color chipColor =
         theme.chipTheme.backgroundColor ?? colorScheme.primary;
     final Color inputDecoratorColor =
         theme.inputDecorationTheme.focusColor?.withAlpha(0xFF) ??
         colorScheme.primary;
     final Decoration? tooltipDecoration = theme.tooltipTheme.decoration;
-    final Color tooltipColor =
-        tooltipDecoration is BoxDecoration
-            ? tooltipDecoration.color ??
-                (isDark
-                    ? Colors.white.withValues(alpha: 0.9)
-                    : Colors.grey[700]!.withValues(alpha: 0.9))
-            : (isDark
-                ? Colors.white.withValues(alpha: 0.9)
-                : Colors.grey[700]!.withValues(alpha: 0.9));
+    final Color tooltipColor = tooltipDecoration is BoxDecoration
+        ? tooltipDecoration.color ??
+              (isDark
+                  ? Colors.white.withValues(alpha: 0.9)
+                  : Colors.grey[700]!.withValues(alpha: 0.9))
+        : (isDark
+              ? Colors.white.withValues(alpha: 0.9)
+              : Colors.grey[700]!.withValues(alpha: 0.9));
     final Color appBarColor =
         theme.appBarTheme.backgroundColor ??
         (isDark ? colorScheme.surface : colorScheme.primary);
@@ -164,13 +161,12 @@ class ShowSubThemeColors extends StatelessWidget {
         (isDark ? colorScheme.onSurface : colorScheme.onPrimary);
     final Color dialogColor =
         theme.dialogTheme.backgroundColor ?? colorScheme.surface;
-    final Color defaultSnackBackgroundColor =
-        isDark
-            ? colorScheme.onSurface
-            : Color.alphaBlend(
-              colorScheme.onSurface.withValues(alpha: 0.80),
-              colorScheme.surface,
-            );
+    final Color defaultSnackBackgroundColor = isDark
+        ? colorScheme.onSurface
+        : Color.alphaBlend(
+            colorScheme.onSurface.withValues(alpha: 0.80),
+            colorScheme.surface,
+          );
     final Color snackBarColor =
         theme.snackBarTheme.backgroundColor ?? defaultSnackBackgroundColor;
     final Color snackForeground =
@@ -187,15 +183,15 @@ class ShowSubThemeColors extends StatelessWidget {
         theme.navigationBarTheme.backgroundColor ??
         (useMaterial3
             ? ElevationOverlay.colorWithOverlay(
-              colorScheme.surface,
-              colorScheme.primary,
-              3.0,
-            )
+                colorScheme.surface,
+                colorScheme.primary,
+                3.0,
+              )
             : ElevationOverlay.colorWithOverlay(
-              colorScheme.surface,
-              colorScheme.onSurface,
-              3.0,
-            ));
+                colorScheme.surface,
+                colorScheme.onSurface,
+                3.0,
+              ));
     final Color navigationBarItemColor =
         theme.navigationBarTheme.iconTheme?.resolve(<WidgetState>{
           WidgetState.selected,

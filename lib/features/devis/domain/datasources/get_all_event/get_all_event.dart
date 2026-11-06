@@ -16,18 +16,16 @@ final getAllEvent = ReaderTask<CheckoutService, GetAllEventState>.Do((
 
   return rd(
     ReaderTask(
-      (_) =>
-          executeQuery
-              .match<GetAllEventState>(identity, SuccessGetAllEventState.new)
-              .run(),
+      (_) => executeQuery
+          .match<GetAllEventState>(identity, SuccessGetAllEventState.new)
+          .run(),
     ),
   );
 });
 
 final getAllEventChain = ReaderTask(
-  (CheckoutService checkoutService) =>
-      TaskEither.tryCatch(
-        () => checkoutService.getAll,
-        QueryGetAllEventError.new,
-      ).match(identity, SuccessGetAllEventState.new).run(),
+  (CheckoutService checkoutService) => TaskEither.tryCatch(
+    () => checkoutService.getAll,
+    QueryGetAllEventError.new,
+  ).match(identity, SuccessGetAllEventState.new).run(),
 );

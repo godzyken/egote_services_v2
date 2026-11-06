@@ -25,9 +25,9 @@ Future<void> copyColorToClipboard(BuildContext context, Color color) async {
                 style: TextStyle(
                   color:
                       ThemeData.estimateBrightnessForColor(color) ==
-                              Brightness.light
-                          ? Colors.black
-                          : Colors.white,
+                          Brightness.light
+                      ? Colors.black
+                      : Colors.white,
                 ),
               ),
             ),

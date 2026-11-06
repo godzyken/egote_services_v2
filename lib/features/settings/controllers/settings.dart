@@ -203,19 +203,17 @@ class Settings {
   ///
   /// Defaults to [_lightSurfaceMode].
   static final NotifierProvider<SettingsEntry<FlexSurfaceMode>, FlexSurfaceMode>
-  lightSurfaceModeProvider = NotifierProvider<
-    SettingsEntry<FlexSurfaceMode>,
-    FlexSurfaceMode
-  >(
-    () {
-      return SettingsEntry<FlexSurfaceMode>(
-        defaultValue: _lightSurfaceMode,
-        key: _keyLightSurfaceMode,
+  lightSurfaceModeProvider =
+      NotifierProvider<SettingsEntry<FlexSurfaceMode>, FlexSurfaceMode>(
+        () {
+          return SettingsEntry<FlexSurfaceMode>(
+            defaultValue: _lightSurfaceMode,
+            key: _keyLightSurfaceMode,
+          );
+        },
+        // Use the unique key-value DB key as provider name, useful for debugging.
+        name: '${_keyLightSurfaceMode}Provider',
       );
-    },
-    // Use the unique key-value DB key as provider name, useful for debugging.
-    name: '${_keyLightSurfaceMode}Provider',
-  );
 
   /// String key used for storing light theme surface mode.
   ///
@@ -226,19 +224,17 @@ class Settings {
   ///
   /// Defaults to [_darkSurfaceMode].
   static final NotifierProvider<SettingsEntry<FlexSurfaceMode>, FlexSurfaceMode>
-  darkSurfaceModeProvider = NotifierProvider<
-    SettingsEntry<FlexSurfaceMode>,
-    FlexSurfaceMode
-  >(
-    () {
-      return SettingsEntry<FlexSurfaceMode>(
-        defaultValue: _darkSurfaceMode,
-        key: _keyDarkSurfaceMode,
+  darkSurfaceModeProvider =
+      NotifierProvider<SettingsEntry<FlexSurfaceMode>, FlexSurfaceMode>(
+        () {
+          return SettingsEntry<FlexSurfaceMode>(
+            defaultValue: _darkSurfaceMode,
+            key: _keyDarkSurfaceMode,
+          );
+        },
+        // Use the unique key-value DB key as provider name, useful for debugging.
+        name: '${_keyDarkSurfaceMode}Provider',
       );
-    },
-    // Use the unique key-value DB key as provider name, useful for debugging.
-    name: '${_keyDarkSurfaceMode}Provider',
-  );
 
   /// The primary colored light surface branding mode provider.
   ///
@@ -353,19 +349,17 @@ class Settings {
     SettingsEntry<FlexAppBarStyle?>,
     FlexAppBarStyle?
   >
-  lightAppBarStyleProvider = NotifierProvider<
-    SettingsEntry<FlexAppBarStyle?>,
-    FlexAppBarStyle?
-  >(
-    () {
-      return SettingsEntry<FlexAppBarStyle?>(
-        defaultValue: _lightAppBarStyle,
-        key: _keyLightAppBarStyle,
+  lightAppBarStyleProvider =
+      NotifierProvider<SettingsEntry<FlexAppBarStyle?>, FlexAppBarStyle?>(
+        () {
+          return SettingsEntry<FlexAppBarStyle?>(
+            defaultValue: _lightAppBarStyle,
+            key: _keyLightAppBarStyle,
+          );
+        },
+        // Use the unique key-value DB key as provider name, useful for debugging.
+        name: '${_keyLightAppBarStyle}Provider',
       );
-    },
-    // Use the unique key-value DB key as provider name, useful for debugging.
-    name: '${_keyLightAppBarStyle}Provider',
-  );
 
   /// The themed style of the dark theme mode [AppBar].
   ///
@@ -383,19 +377,17 @@ class Settings {
     SettingsEntry<FlexAppBarStyle?>,
     FlexAppBarStyle?
   >
-  darkAppBarStyleProvider = NotifierProvider<
-    SettingsEntry<FlexAppBarStyle?>,
-    FlexAppBarStyle?
-  >(
-    () {
-      return SettingsEntry<FlexAppBarStyle?>(
-        defaultValue: _darkAppBarStyle,
-        key: _keyDarkAppBarStyle,
+  darkAppBarStyleProvider =
+      NotifierProvider<SettingsEntry<FlexAppBarStyle?>, FlexAppBarStyle?>(
+        () {
+          return SettingsEntry<FlexAppBarStyle?>(
+            defaultValue: _darkAppBarStyle,
+            key: _keyDarkAppBarStyle,
+          );
+        },
+        // Use the unique key-value DB key as provider name, useful for debugging.
+        name: '${_keyDarkAppBarStyle}Provider',
       );
-    },
-    // Use the unique key-value DB key as provider name, useful for debugging.
-    name: '${_keyDarkAppBarStyle}Provider',
-  );
 
   /// String key used for storing android app bar scrim usage.
   ///

@@ -46,30 +46,27 @@ class _UserHomeScreenState extends ConsumerState<UserHomeScreen> {
       return _user == null
           ? const LoginScreen()
           : user.when(
-            data:
-                (data) => Scaffold(
-                  body: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      ProfileWidget(
-                        imagePath:
-                            _user!.id == data!.uid
-                                ? data.photoURL!
-                                : LocalImages.venomJpg,
-                        onClicked: () async {},
-                      ),
-                      const SizedBox(),
-                      buildName(data.uid),
-                      const SizedBox(),
-                      // Consumer(builder: (context, ref, _) => ref.watch(_usersOnTable),)
-                    ],
-                  ),
+              data: (data) => Scaffold(
+                body: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    ProfileWidget(
+                      imagePath: _user!.id == data!.uid
+                          ? data.photoURL!
+                          : LocalImages.venomJpg,
+                      onClicked: () async {},
+                    ),
+                    const SizedBox(),
+                    buildName(data.uid),
+                    const SizedBox(),
+                    // Consumer(builder: (context, ref, _) => ref.watch(_usersOnTable),)
+                  ],
                 ),
-            error:
-                (error, stackTrace) =>
-                    ErrorScreen(error: user.error.toString()),
-            loading: () => const CircularProgressIndicator(),
-          );
+              ),
+              error: (error, stackTrace) =>
+                  ErrorScreen(error: user.error.toString()),
+              loading: () => const CircularProgressIndicator(),
+            );
     } else {
       return ErrorScreen(error: user.error.toString());
     }

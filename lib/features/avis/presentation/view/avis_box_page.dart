@@ -104,35 +104,34 @@ class _AvisBoxPageState extends ConsumerState<AvisBoxPage> {
         final data = snapshot.data!;
         return ListView.builder(
           itemCount: data.length,
-          itemBuilder:
-              (context, index) => ListTile(
-                leading: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    height: 50.0,
-                    width: 50.0,
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                    ),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: CommentBox.commentImageParser(
-                        imageURLorPath: data[index]['pic'],
-                      ),
-                    ),
+          itemBuilder: (context, index) => ListTile(
+            leading: GestureDetector(
+              onTap: () {},
+              child: Container(
+                height: 50.0,
+                width: 50.0,
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                ),
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: CommentBox.commentImageParser(
+                    imageURLorPath: data[index]['pic'],
                   ),
                 ),
-                title: Text(
-                  data[index]['name'],
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(data[index]['message']),
-                trailing: Text(
-                  data[index]['created_at'],
-                  style: const TextStyle(fontSize: 10),
-                ),
               ),
+            ),
+            title: Text(
+              data[index]['name'],
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(data[index]['message']),
+            trailing: Text(
+              data[index]['created_at'],
+              style: const TextStyle(fontSize: 10),
+            ),
+          ),
         );
       },
     );

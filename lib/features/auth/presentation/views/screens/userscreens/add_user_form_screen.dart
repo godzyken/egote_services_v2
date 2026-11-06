@@ -166,20 +166,19 @@ class _AddUserFormScreenState extends ConsumerState<AddUserFormScreen> {
   Future<void> _showConfirmDeleteUserDialog() async {
     final bool res = await showAdaptiveDialog(
       context: context,
-      builder:
-          (context) => AlertDialog.adaptive(
-            content: Text(context.tr!.deleteUser),
-            actions: [
-              TextButton(
-                onPressed: () => context.pop([context, false]),
-                child: Text(context.tr!.cancel),
-              ),
-              TextButton(
-                onPressed: () => context.pop([context, true]),
-                child: Text(context.tr!.delete),
-              ),
-            ],
+      builder: (context) => AlertDialog.adaptive(
+        content: Text(context.tr!.deleteUser),
+        actions: [
+          TextButton(
+            onPressed: () => context.pop([context, false]),
+            child: Text(context.tr!.cancel),
           ),
+          TextButton(
+            onPressed: () => context.pop([context, true]),
+            child: Text(context.tr!.delete),
+          ),
+        ],
+      ),
     );
     if (res) {
       _viewModel.deleteUser();

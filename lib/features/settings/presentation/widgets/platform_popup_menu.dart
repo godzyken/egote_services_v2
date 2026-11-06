@@ -5,8 +5,6 @@
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../config/app_shared/flex_icons/flex_icons.dart';
-
 class PlatformPopupMenu extends StatelessWidget {
   const PlatformPopupMenu({
     super.key,
@@ -45,28 +43,28 @@ class PlatformPopupMenu extends StatelessWidget {
           TargetPlatform.windows: PopupMenuItem<TargetPlatform>(
             value: TargetPlatform.windows,
             child: ListTile(
-              leading: Icon(FlexIcons.windows, color: iconColor),
+              leading: Icon(Icons.desktop_windows, color: iconColor),
               title: Text(labelWindows),
             ),
           ),
           TargetPlatform.macOS: PopupMenuItem<TargetPlatform>(
             value: TargetPlatform.macOS,
             child: ListTile(
-              leading: Icon(FlexIcons.apple, color: iconColor),
+              leading: Icon(Icons.apple, color: iconColor),
               title: Text(labelMacOs),
             ),
           ),
           TargetPlatform.linux: PopupMenuItem<TargetPlatform>(
             value: TargetPlatform.linux,
             child: ListTile(
-              leading: Icon(FlexIcons.linux, color: iconColor),
+              leading: Icon(Icons.computer, color: iconColor),
               title: Text(labelLinux),
             ),
           ),
           TargetPlatform.fuchsia: PopupMenuItem<TargetPlatform>(
             value: TargetPlatform.fuchsia,
             child: ListTile(
-              leading: Icon(FlexIcons.infinity, color: iconColor),
+              leading: Icon(Icons.all_inclusive, color: iconColor),
               title: Text(labelFuchsia),
             ),
           ),
@@ -81,14 +79,14 @@ class PlatformPopupMenu extends StatelessWidget {
       TargetPlatform.fuchsia: labelFuchsia,
     };
 
-    const Map<TargetPlatform, IconData> platformIcon =
+    final Map<TargetPlatform, IconData> platformIcon =
         <TargetPlatform, IconData>{
           TargetPlatform.android: Icons.android,
           TargetPlatform.iOS: Icons.phone_iphone,
-          TargetPlatform.windows: FlexIcons.windows,
-          TargetPlatform.macOS: FlexIcons.apple,
-          TargetPlatform.linux: FlexIcons.linux,
-          TargetPlatform.fuchsia: FlexIcons.infinity,
+          TargetPlatform.windows: Icons.desktop_windows,
+          TargetPlatform.macOS: Icons.apple,
+          TargetPlatform.linux: Icons.computer,
+          TargetPlatform.fuchsia: Icons.all_inclusive,
         };
 
     String subtitle =
@@ -102,10 +100,9 @@ class PlatformPopupMenu extends StatelessWidget {
         subtitle = '${context.tr!.nowSetTo} ${platformString[value]}';
         onChanged(value);
       },
-      itemBuilder:
-          (BuildContext context) => <PopupMenuItem<TargetPlatform>>[
-            ...platformItems.values,
-          ],
+      itemBuilder: (BuildContext context) => <PopupMenuItem<TargetPlatform>>[
+        ...platformItems.values,
+      ],
       child: ListTile(
         trailing: Padding(
           padding: const EdgeInsetsDirectional.only(end: 12),

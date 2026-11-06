@@ -30,29 +30,26 @@ class UpdateDialog extends ConsumerWidget {
         switch (settings.name) {
           case 'dialog_info':
             pageRoute = MaterialPageRoute(
-              builder:
-                  (context) => DetailsScreen(
-                    cubeUser: currentUser,
-                    cubeDialog: currentDialog,
-                  ),
+              builder: (context) => DetailsScreen(
+                cubeUser: currentUser,
+                cubeDialog: currentDialog,
+              ),
             );
             break;
           case 'search_users':
             pageRoute = MaterialPageRoute(
-              builder:
-                  (context) => AddOccupantScreen(
-                    cubeUser: args![USER_ARG_NAME],
-                    id: currentUser.id!,
-                  ),
+              builder: (context) => AddOccupantScreen(
+                cubeUser: args![USER_ARG_NAME],
+                id: currentUser.id!,
+              ),
             );
             break;
           default:
             pageRoute = MaterialPageRoute(
-              builder:
-                  (context) => DetailsScreen(
-                    cubeUser: args![USER_ARG_NAME],
-                    cubeDialog: args[DIALOG_ARG_NAME],
-                  ),
+              builder: (context) => DetailsScreen(
+                cubeUser: args![USER_ARG_NAME],
+                cubeDialog: args[DIALOG_ARG_NAME],
+              ),
             );
             break;
         }

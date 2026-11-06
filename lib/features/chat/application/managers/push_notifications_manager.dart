@@ -83,22 +83,21 @@ class PushNotificationsManager {
         );
 
     await flutterLocalNotificationsPlugin.initialize(
-      onDidReceiveNotificationResponse: (
-        NotificationResponse notificationResponse,
-      ) {
-        developer.log(
-          '[onDidReceiveNotificationResponse] payload: ${notificationResponse.payload}, $TAG',
-        );
-        var data = notificationResponse.payload;
-        if (data != null) {
-          if (onNotificationClicked != null) {
-            onNotificationClicked?.call(data);
-          } else {
-            String? dialogId = jsonDecode(data)['dialog_id'];
-            SharedPrefs.instance.saveSelectedDialogId(dialogId ?? '');
-          }
-        }
-      },
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) {
+            developer.log(
+              '[onDidReceiveNotificationResponse] payload: ${notificationResponse.payload}, $TAG',
+            );
+            var data = notificationResponse.payload;
+            if (data != null) {
+              if (onNotificationClicked != null) {
+                onNotificationClicked?.call(data);
+              } else {
+                String? dialogId = jsonDecode(data)['dialog_id'];
+                SharedPrefs.instance.saveSelectedDialogId(dialogId ?? '');
+              }
+            }
+          },
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
       settings: initializationSettings,
     );

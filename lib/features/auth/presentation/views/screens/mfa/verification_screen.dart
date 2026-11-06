@@ -140,10 +140,9 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: _isSubmitting ? null : () => _verify(_codeCtrl.text),
-            child:
-                _isSubmitting
-                    ? const CircularProgressIndicator()
-                    : Text(context.tr!.verify),
+            child: _isSubmitting
+                ? const CircularProgressIndicator()
+                : Text(context.tr!.verify),
           ),
           TextButton(
             onPressed: _isSubmitting ? null : _resendCode,

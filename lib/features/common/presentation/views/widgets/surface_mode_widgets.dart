@@ -154,24 +154,23 @@ class SurfaceModePopupMenu extends StatelessWidget {
               value: i,
               child: ListTile(
                 dense: true,
-                leading:
-                    index == i
-                        ? IconTheme(
-                          data: selectedIconTheme,
-                          child: ColorSchemeBox(
-                            backgroundColor: scheme.primary,
-                            borderColor: scheme.primary,
-                            child: modeWidgets[i],
-                          ),
-                        )
-                        : IconTheme(
-                          data: unSelectedIconTheme,
-                          child: ColorSchemeBox(
-                            backgroundColor: Colors.transparent,
-                            borderColor: scheme.primary,
-                            child: modeWidgets[i],
-                          ),
+                leading: index == i
+                    ? IconTheme(
+                        data: selectedIconTheme,
+                        child: ColorSchemeBox(
+                          backgroundColor: scheme.primary,
+                          borderColor: scheme.primary,
+                          child: modeWidgets[i],
                         ),
+                      )
+                    : IconTheme(
+                        data: unSelectedIconTheme,
+                        child: ColorSchemeBox(
+                          backgroundColor: Colors.transparent,
+                          borderColor: scheme.primary,
+                          child: modeWidgets[i],
+                        ),
+                      ),
                 title: Text(
                   _modeShort(context, FlexSurfaceMode.values[i]),
                   style: txtStyle,

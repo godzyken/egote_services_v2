@@ -82,11 +82,10 @@ final supabaseChannelRProvider = Provider((ref) {
     client.onOpen(() {
       developer.log('Socket opened.');
       try {
-        final listChannels =
-            client
-                .getChannels()
-                .where((element) => element.presence.channel.canPush)
-                .toList();
+        final listChannels = client
+            .getChannels()
+            .where((element) => element.presence.channel.canPush)
+            .toList();
         final options = client.connState;
         final socket = client.conn;
 

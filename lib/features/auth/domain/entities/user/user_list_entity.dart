@@ -23,8 +23,9 @@ abstract class UserList with _$UserList {
 
   UserList updateUser(final UserEntityModel entity) {
     return copyWith(
-      values:
-          values.map((user) => entity.id == user.id ? entity : user).toList(),
+      values: values
+          .map((user) => entity.id == user.id ? entity : user)
+          .toList(),
     );
   }
 

@@ -202,8 +202,9 @@ class AuthRepository implements AuthRepositoryInterface {
         email: email,
         password: password,
         data: {'name': name},
-        emailRedirectTo:
-            kIsWeb ? null : 'com.godzy.egote-services-v2://callback/enroll',
+        emailRedirectTo: kIsWeb
+            ? null
+            : 'com.godzy.egote-services-v2://callback/enroll',
       );
 
       final user = response.user;
@@ -289,8 +290,10 @@ class AuthRepository implements AuthRepositoryInterface {
         now,
       );
 
-      final res =
-          await supabaseClient.from(_table).insert(entity.toJson()).select();
+      final res = await supabaseClient
+          .from(_table)
+          .insert(entity.toJson())
+          .select();
 
       if (res.isEmpty) {
         return left(Failure.badRequest());

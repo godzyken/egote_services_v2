@@ -96,15 +96,14 @@ class SharedPrefs {
         prefs.getString(prefUserEmail) == null) {
       return Future.value();
     }
-    var user =
-        CubeUser()
-          ..login = prefs.getString(prefUserLogin)
-          ..email = prefs.getString(prefUserEmail)
-          ..phone = prefs.getString(prefUserPhone)
-          ..password = prefs.getString(prefUserPsw)
-          ..fullName = prefs.getString(prefUserName)
-          ..id = prefs.getInt(prefUserId)
-          ..avatar = prefs.getString(prefUserAvatar);
+    var user = CubeUser()
+      ..login = prefs.getString(prefUserLogin)
+      ..email = prefs.getString(prefUserEmail)
+      ..phone = prefs.getString(prefUserPhone)
+      ..password = prefs.getString(prefUserPsw)
+      ..fullName = prefs.getString(prefUserName)
+      ..id = prefs.getInt(prefUserId)
+      ..avatar = prefs.getString(prefUserAvatar);
     return Future.value(user);
   }
 

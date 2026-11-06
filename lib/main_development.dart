@@ -11,14 +11,12 @@ import 'config/providers/watchdog/datadog_config.dart';
 void main() async {
   F.appFlavor = Flavor.development;
   final configuration = DatadogConfiguration(
-    clientToken:
-        datadogConfigProvider
-            .selectAsync((data) => AsyncValue.data(data.clientToken))
-            .toString(),
-    env:
-        datadogConfigProvider
-            .selectAsync((data) => AsyncValue.data(data.env))
-            .toString(),
+    clientToken: datadogConfigProvider
+        .selectAsync((data) => AsyncValue.data(data.clientToken))
+        .toString(),
+    env: datadogConfigProvider
+        .selectAsync((data) => AsyncValue.data(data.env))
+        .toString(),
     site: DatadogSite.eu1,
     nativeCrashReportEnabled: true,
     loggingConfiguration: DatadogLoggingConfiguration(),

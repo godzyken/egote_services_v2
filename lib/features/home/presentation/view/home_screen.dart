@@ -102,14 +102,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 //onEnd: () => context.go('/chatRoute'),
                 //onEnd: () => context.go('/authRoute'),
                 //onEnd: () => context.goNamed('mfaList'),
-                onEnd:
-                    () => context.goNamed(
-                      'select_dialog',
-                      pathParameters: {
-                        'cid': 'idMetry',
-                        // ref.watch(cubeUserControllerProvider)!.id.toString()
-                      },
-                    ),
+                onEnd: () => context.goNamed(
+                  'select_dialog',
+                  pathParameters: {
+                    'cid': 'idMetry',
+                    // ref.watch(cubeUserControllerProvider)!.id.toString()
+                  },
+                ),
                 //onEnd: () => context.goNamed('devis', pathParameters: {'devisId': '123'}),
                 //onEnd: () => context.goNamed('devisList'),
                 top: animate ? 0 : -80,
@@ -121,9 +120,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 5000),
                     reverseDuration: const Duration(milliseconds: 500),
-                    transitionBuilder:
-                        (child, animation) =>
-                            ScaleTransition(scale: animation, child: child),
+                    transitionBuilder: (child, animation) =>
+                        ScaleTransition(scale: animation, child: child),
                     switchInCurve: Curves.decelerate,
                     switchOutCurve: Curves.elasticOut,
                     child: imageWidgets[index],

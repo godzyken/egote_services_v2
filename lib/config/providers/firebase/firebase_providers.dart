@@ -116,8 +116,8 @@ final fireDatabaseProvider = Provider<FirebaseDatabase?>((ref) {
 
   return auth.asData?.value?.uid != null
       ? FirebaseDatabase.instanceFor(
-        app: database.app,
-        databaseURL: database.databaseURL,
-      )
+          app: database.app,
+          databaseURL: database.databaseURL,
+        )
       : null;
 });

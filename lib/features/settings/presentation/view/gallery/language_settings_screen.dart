@@ -21,10 +21,9 @@ class LanguageSettingsScreen extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          lang.languageCode == 'en'
-                              ? Theme.of(context).colorScheme.primaryContainer
-                              : null,
+                      backgroundColor: lang.languageCode == 'en'
+                          ? Theme.of(context).colorScheme.primaryContainer
+                          : null,
                     ),
                     child: Text(context.tr?.english ?? 'English'),
                     onPressed: () {
@@ -36,10 +35,9 @@ class LanguageSettingsScreen extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          lang.languageCode == 'es'
-                              ? Theme.of(context).colorScheme.primaryContainer
-                              : null,
+                      backgroundColor: lang.languageCode == 'es'
+                          ? Theme.of(context).colorScheme.primaryContainer
+                          : null,
                     ),
                     child: const Text('Español'),
                     onPressed: () {
@@ -51,10 +49,9 @@ class LanguageSettingsScreen extends ConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          lang.languageCode == 'fr'
-                              ? Theme.of(context).colorScheme.primaryContainer
-                              : null,
+                      backgroundColor: lang.languageCode == 'fr'
+                          ? Theme.of(context).colorScheme.primaryContainer
+                          : null,
                     ),
                     child: const Text('Français'),
                     onPressed: () {

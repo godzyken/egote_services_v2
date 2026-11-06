@@ -24,22 +24,17 @@ class UserListScreen extends ConsumerWidget {
           ChipsBarWidget(),
           const Divider(height: 2, color: Colors.grey),
           Consumer(
-            builder:
-                (context, ref, _) => ref
-                    .watch(_filteredUserListProvider)
-                    .maybeWhen(
-                      data:
-                          (data) =>
-                              _buildUserListContainerWidget(context, ref, data),
-                      error:
-                          (exception, stack) => Expanded(
-                            child: Center(child: ErrorWidget(exception)),
-                          ),
-                      orElse:
-                          () => const Expanded(
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
-                    ),
+            builder: (context, ref, _) => ref
+                .watch(_filteredUserListProvider)
+                .maybeWhen(
+                  data: (data) =>
+                      _buildUserListContainerWidget(context, ref, data),
+                  error: (exception, stack) =>
+                      Expanded(child: Center(child: ErrorWidget(exception))),
+                  orElse: () => const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                ),
           ),
         ],
       ),
@@ -68,9 +63,8 @@ class UserListScreen extends ConsumerWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: userList.length,
-        itemBuilder:
-            (final BuildContext context, final int index) =>
-                _buildUserItemCardWidget(context, ref, userList[index]),
+        itemBuilder: (final BuildContext context, final int index) =>
+            _buildUserItemCardWidget(context, ref, userList[index]),
       );
     }
   }
@@ -119,10 +113,8 @@ class UserListScreen extends ConsumerWidget {
     final UserEntityModel userEntityModel,
   ) {
     return InkResponse(
-      onTap:
-          () => ref
-              .watch(_userListProvider.notifier)
-              .availableUser(userEntityModel),
+      onTap: () =>
+          ref.watch(_userListProvider.notifier).availableUser(userEntityModel),
       splashColor: Colors.transparent,
       child: const Icon(Icons.done, size: 24, color: Colors.lightGreen),
     );
@@ -133,10 +125,9 @@ class UserListScreen extends ConsumerWidget {
     final UserEntityModel userEntityModel,
   ) {
     return InkResponse(
-      onTap:
-          () => ref
-              .watch(_userListProvider.notifier)
-              .unavailableUser(userEntityModel),
+      onTap: () => ref
+          .watch(_userListProvider.notifier)
+          .unavailableUser(userEntityModel),
       splashColor: Colors.transparent,
       child: const Icon(
         Icons.radio_button_off_rounded,

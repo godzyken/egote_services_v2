@@ -9,9 +9,8 @@ void main() {
       expect(devis, isNotNull);
       devis.when(
         initialize: (_, _) => fail('Expected empty state'),
-        approved:
-            (_, _, _, _, _, _, _, _, _, _, _, _) =>
-                fail('Expected empty state'),
+        approved: (_, _, _, _, _, _, _, _, _, _, _, _) =>
+            fail('Expected empty state'),
         empty: () => expect(true, isTrue),
       );
     });
@@ -26,9 +25,8 @@ void main() {
           expect(resultId.id, 42);
           expect(resultDate, now);
         },
-        approved:
-            (_, _, _, _, _, _, _, _, _, _, _, _) =>
-                fail('Expected initialize state'),
+        approved: (_, _, _, _, _, _, _, _, _, _, _, _) =>
+            fail('Expected initialize state'),
         empty: () => fail('Expected initialize state'),
       );
     });

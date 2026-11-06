@@ -24,28 +24,27 @@ class ChipsBarWidget extends ConsumerWidget {
                   label: Text(context.tr!.all),
                   selected: viewModel.isFilterByAll(),
                   onSelected: (value) => viewModel.filterByAll(),
-                  selectedColor:
-                      viewModel.isFilterByAll() ? Colors.lightGreen : null,
+                  selectedColor: viewModel.isFilterByAll()
+                      ? Colors.lightGreen
+                      : null,
                 ),
                 const SizedBox(width: 8),
                 InputChip(
                   label: Text(context.tr!.available),
                   selected: viewModel.isFilterByAvailable(),
                   onSelected: (value) => viewModel.filterByAvailable(),
-                  selectedColor:
-                      viewModel.isFilterByAvailable()
-                          ? Colors.lightGreen
-                          : null,
+                  selectedColor: viewModel.isFilterByAvailable()
+                      ? Colors.lightGreen
+                      : null,
                 ),
                 const SizedBox(width: 8),
                 InputChip(
                   label: Text(context.tr!.unAvailable),
                   selected: viewModel.isFilterByUnavailable(),
                   onSelected: (value) => viewModel.filterByUnavailable(),
-                  selectedColor:
-                      viewModel.isFilterByUnavailable()
-                          ? Colors.lightGreen
-                          : null,
+                  selectedColor: viewModel.isFilterByUnavailable()
+                      ? Colors.lightGreen
+                      : null,
                 ),
               ],
             ),

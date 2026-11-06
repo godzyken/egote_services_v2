@@ -152,9 +152,9 @@ class _BodySelectedDialogLayoutState
     return Container(
       color:
           selectedDialog != null &&
-                  selectedDialog!.dialogId == dialogList[index].data.dialogId
-              ? const Color.fromARGB(100, 168, 228, 160)
-              : null,
+              selectedDialog!.dialogId == dialogList[index].data.dialogId
+          ? const Color.fromARGB(100, 168, 228, 160)
+          : null,
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -221,9 +221,9 @@ class _BodySelectedDialogLayoutState
                       DateFormat('MMM dd').format(
                         dialogList[index].data.lastMessageDateSent != null
                             ? DateTime.fromMillisecondsSinceEpoch(
-                              dialogList[index].data.lastMessageDateSent! *
-                                  1000,
-                            )
+                                dialogList[index].data.lastMessageDateSent! *
+                                    1000,
+                              )
                             : dialogList[index].data.updatedAt!,
                       ),
                       style: TextStyle(color: Colors.primaries.single),

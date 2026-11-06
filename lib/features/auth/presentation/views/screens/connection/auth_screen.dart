@@ -15,9 +15,8 @@ class AuthScreen extends ConsumerWidget {
 
     return authState.when(
       initial: () => const LoginScreen(),
-      authenticated:
-          (UserModel userEntity) =>
-              UserHomeScreen(pid: userEntity.id.value.toString()),
+      authenticated: (UserModel userEntity) =>
+          UserHomeScreen(pid: userEntity.id.value.toString()),
       unauthenticated: () => const SignUpScreen(),
     );
   }

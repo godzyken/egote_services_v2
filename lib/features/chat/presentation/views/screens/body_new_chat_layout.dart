@@ -270,10 +270,9 @@ class _BodyNewChatLayoutState extends ConsumerState<BodyNewChatLayout> {
         CubeDialogType.GROUP,
         occupantsIds: users.toList(),
       );
-      List<CubeUser> usersToAdd =
-          users
-              .map((id) => userList.firstWhere((user) => user.id == id))
-              .toList();
+      List<CubeUser> usersToAdd = users
+          .map((id) => userList.firstWhere((user) => user.id == id))
+          .toList();
 
       context.pushNamed(
         'configure_group_dialog',

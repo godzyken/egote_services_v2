@@ -30,52 +30,50 @@ class ThemePopupMenu extends ConsumerWidget {
     // sub theme defined global border radius, if it is defined.
     final double optionButtonBorderRadius =
         ref.watch(Settings.useSubThemesProvider)
-            // M3 default for Card is 12.
-            ? ref.watch(Settings.defaultRadiusProvider) ??
-                // M3 or M2 default for Card, if global radius not defined.
-                (useMaterial3 ? 12 : 4)
-            // Use M3 or M2 default for Card, if not using sub-themes.
-            : useMaterial3
-            ? 12
-            : 4;
+        // M3 default for Card is 12.
+        ? ref.watch(Settings.defaultRadiusProvider) ??
+              // M3 or M2 default for Card, if global radius not defined.
+              (useMaterial3 ? 12 : 4)
+        // Use M3 or M2 default for Card, if not using sub-themes.
+        : useMaterial3
+        ? 12
+        : 4;
 
     return PopupMenuButton<int>(
       padding: EdgeInsets.zero,
       onSelected: ref.read(Settings.schemeIndexProvider.notifier).set,
-      itemBuilder:
-          (BuildContext context) => <PopupMenuItem<int>>[
-            for (int i = 0; i < CustomThemes.schemes.length; i++)
-              PopupMenuItem<int>(
-                value: i,
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(CustomThemes.schemes[i].name),
-                  leading: SizedBox(
-                    width: width * 2,
-                    child: FlexThemeModeOptionButton(
-                      flexSchemeColor:
-                          isLight
-                              ? CustomThemes.schemes[i].light
-                              : CustomThemes.schemes[i].dark,
-                      selected: selected == i,
-                      selectedBorder: BorderSide(
-                        color: scheme.onSurfaceVariant,
-                        width: 4,
-                      ),
-                      unselectedBorder: BorderSide.none,
-                      backgroundColor: scheme.surface,
-                      width: width,
-                      height: height,
-                      padding: EdgeInsets.zero,
-                      borderRadius: 0,
-                      optionButtonPadding: EdgeInsets.zero,
-                      optionButtonMargin: EdgeInsets.zero,
-                      optionButtonBorderRadius: optionButtonBorderRadius,
-                    ),
+      itemBuilder: (BuildContext context) => <PopupMenuItem<int>>[
+        for (int i = 0; i < CustomThemes.schemes.length; i++)
+          PopupMenuItem<int>(
+            value: i,
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(CustomThemes.schemes[i].name),
+              leading: SizedBox(
+                width: width * 2,
+                child: FlexThemeModeOptionButton(
+                  flexSchemeColor: isLight
+                      ? CustomThemes.schemes[i].light
+                      : CustomThemes.schemes[i].dark,
+                  selected: selected == i,
+                  selectedBorder: BorderSide(
+                    color: scheme.onSurfaceVariant,
+                    width: 4,
                   ),
+                  unselectedBorder: BorderSide.none,
+                  backgroundColor: scheme.surface,
+                  width: width,
+                  height: height,
+                  padding: EdgeInsets.zero,
+                  borderRadius: 0,
+                  optionButtonPadding: EdgeInsets.zero,
+                  optionButtonMargin: EdgeInsets.zero,
+                  optionButtonBorderRadius: optionButtonBorderRadius,
                 ),
               ),
-          ],
+            ),
+          ),
+      ],
       child: ListTile(
         contentPadding: contentPadding,
         title: Text(

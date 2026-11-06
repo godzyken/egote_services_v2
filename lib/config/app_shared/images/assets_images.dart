@@ -74,10 +74,9 @@ class ImageAssetsNotifier extends Notifier<List<ImagesAssets>> {
         final assetsData = await rootBundle.loadString(path, cache: true);
         final assetsList = json.decode(assetsData) as List<dynamic>;
 
-        final images =
-            assetsList
-                .map((e) => Images.fromJson(e as Map<String, dynamic>))
-                .toList();
+        final images = assetsList
+            .map((e) => Images.fromJson(e as Map<String, dynamic>))
+            .toList();
 
         loadedImages.addAll(images);
       }
