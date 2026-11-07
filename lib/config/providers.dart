@@ -18,7 +18,7 @@ Future<void> initializeProvider(ProviderContainer container) async {
   // Mock options must not prevent the Hub from starting.
   try {
     await container.read(firebaseInitProvider.future);
-  } catch (e, stack) {
+  } catch (e) {
     if (kIsWeb) {
       // Swallow on web – Supabase is the primary backend.
       debugPrint('Firebase init skipped on web: $e');
