@@ -4,6 +4,7 @@ import 'package:egote_services_v2/config/providers/localizations/localizations_p
 import 'package:egote_services_v2/config/providers/supabase/supabase_providers.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/config/routes/router.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,11 +14,18 @@ import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
 
 Future<void> initializeProvider(ProviderContainer container) async {
-  // Firebase is non-blocking (DEC-002). Failure must not prevent app start.
+  // Firebase is non-blocking on web (DEC-002).
+  // Mock options must not prevent the Hub from starting.
   try {
     await container.read(firebaseInitProvider.future);
-  } catch (e) {
-    // Already logged inside firebaseInitProvider
+  } catch (e, stack) {
+    if (kIsWeb) {
+      // Swallow on web – Supabase is the primary backend.
+      debugPrint('Firebase init skipped on web: $e');
+    } else {
+      // On mobile we still want to know about the failure.
+      rethrow;
+    }
   }
 
   await container.read(supabaseInitProvider.future);
