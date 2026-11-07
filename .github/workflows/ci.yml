@@ -117,6 +117,12 @@ jobs:
       - name: Build Web
         run: flutter build web --release --no-pub
 
+      - name: Create Sentry Release
+        run: |
+          dart pub global activate sentry_cli
+          export SENTRY_AUTH_TOKEN="${{ secrets.EGOTE_JETON }}"
+          sentry-cli releases -o "ta-org" -p "egote_services_v2" new "${{ github.sha }}"
+
       - name: Upload Web artifact
         uses: actions/upload-artifact@v4
         with:

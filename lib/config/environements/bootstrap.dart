@@ -28,7 +28,7 @@ Future<ProviderContainer> bootstrap() async {
     options
       ..environment = 'dev'
       ..dsn =
-          'https://0ee7fbe213ed4eeb9d8e2225896c1601@o573314.ingest.sentry.io/4505427558400000'
+          'https://822eaa260b9c8726005d7acd9aa33f04@o4505047063592960.ingest.us.sentry.io/4512392327397376'
       ..maxCacheItems = 100
       ..enableAutoPerformanceTracing = true
       ..debug = true
