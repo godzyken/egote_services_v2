@@ -13,7 +13,13 @@ import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
 
 Future<void> initializeProvider(ProviderContainer container) async {
-  await container.read(firebaseInitProvider.future);
+  // Firebase is non-blocking (DEC-002). Failure must not prevent app start.
+  try {
+    await container.read(firebaseInitProvider.future);
+  } catch (e) {
+    // Already logged inside firebaseInitProvider
+  }
+
   await container.read(supabaseInitProvider.future);
   await container.read(userFutureProvider.future);
   await container.read(datadogProvider.future);
