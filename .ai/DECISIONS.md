@@ -61,3 +61,13 @@
   workflow GitHub Actions (`.github/workflows/ci.yml`) pour garantir l'idempotence et éviter
   l'erreur `fatal: destination path 'packages/shared_models' already exists`.
 - **Statut** : Validé.
+
+## DEC-012 : Isolation des Providers et Politiques de Démarrage (`BootPolicy`)
+
+- **Date** : 2026
+- **Décision** : Introduire une énumération `BootPolicy` (`blocking`, `nonBlocking`) et un wrapper
+  sécurisé `initProviderSafely` pour l'initialisation des providers dans `initializeProvider`. Cela
+  permet d'expliciter la criticité de chaque service au démarrage (Web vs Mobile), d'éliminer les
+  erreurs silencieuses et d'assurer une journalisation structurée sans compromettre la stabilité de
+  l'application.
+- **Statut** : Validé.

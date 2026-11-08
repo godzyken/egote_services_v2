@@ -13,47 +13,90 @@ import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
 
+enum BootPolicy {
+  /// Blocking: if initialization fails, startup fails (rethrow).
+  blocking,
+
+  /// Non-blocking: if initialization fails, log warning and continue in degraded mode.
+  nonBlocking,
+}
+
+/// Safely initializes a future provider based on its [BootPolicy] and platform conditions.
+Future<void> initProviderSafely<T>(
+  ProviderContainer container,
+  dynamic provider, {
+  required String name,
+  required BootPolicy policy,
+  bool condition = true,
+}) async {
+  if (!condition) return;
+
+  try {
+    await container.read(provider.future);
+    debugPrint('✅ [Boot] Provider initialized successfully: $name');
+  } catch (e, stackTrace) {
+    if (policy == BootPolicy.blocking) {
+      debugPrint(
+        '❌ [Boot] CRITICAL: Blocking provider "$name" failed to initialize: $e',
+      );
+      debugPrint('$stackTrace');
+      rethrow;
+    } else {
+      debugPrint(
+        '⚠️ [Boot] WARNING: Non-blocking provider "$name" failed (degraded mode): $e',
+      );
+    }
+  }
+}
+
 Future<void> initializeProvider(ProviderContainer container) async {
-  // Firebase is non-blocking on web (DEC-002).
-  // Mock options must not prevent the Hub from starting.
-  try {
-    await container.read(firebaseInitProvider.future);
-  } catch (e) {
-    if (kIsWeb) {
-      // Swallow on web – Supabase is the primary backend.
-      debugPrint('Firebase init skipped on web: $e');
-    } else {
-      // On mobile we still want to know about the failure.
-      rethrow;
-    }
-  }
+  // 1. Firebase initialization (non-blocking on web, blocking on mobile)
+  await initProviderSafely(
+    container,
+    firebaseInitProvider,
+    name: 'firebaseInitProvider',
+    policy: kIsWeb ? BootPolicy.nonBlocking : BootPolicy.blocking,
+  );
 
-  await container.read(supabaseInitProvider.future);
-  try {
-    await container.read(userFutureProvider.future);
-  } catch (e) {
-    if (kIsWeb) {
-      debugPrint('User future provider skipped on web: $e');
-    } else {
-      rethrow;
-    }
-  }
-  try {
-    await container.read(datadogProvider.future);
-  } catch (e) {
-    debugPrint('Datadog provider init error: $e');
-  }
-  try {
-    await container.read(datadogConfigProvider.future);
-  } catch (e) {
-    debugPrint('Datadog config provider init error: $e');
-  }
-  try {
-    await container.read(cubeSettingsInitProvider.future);
-  } catch (e) {
-    debugPrint('Cube settings init error: $e');
-  }
+  // 2. Supabase initialization (strictly blocking)
+  await initProviderSafely(
+    container,
+    supabaseInitProvider,
+    name: 'supabaseInitProvider',
+    policy: BootPolicy.blocking,
+  );
 
+  // 3. User future initialization (non-blocking on web, blocking on mobile)
+  await initProviderSafely(
+    container,
+    userFutureProvider,
+    name: 'userFutureProvider',
+    policy: kIsWeb ? BootPolicy.nonBlocking : BootPolicy.blocking,
+  );
+
+  // 4. Monitoring & Settings providers (strictly non-blocking)
+  await initProviderSafely(
+    container,
+    datadogProvider,
+    name: 'datadogProvider',
+    policy: BootPolicy.nonBlocking,
+  );
+
+  await initProviderSafely(
+    container,
+    datadogConfigProvider,
+    name: 'datadogConfigProvider',
+    policy: BootPolicy.nonBlocking,
+  );
+
+  await initProviderSafely(
+    container,
+    cubeSettingsInitProvider,
+    name: 'cubeSettingsInitProvider',
+    policy: BootPolicy.nonBlocking,
+  );
+
+  // Synchronous initializations & reads
   container.read(sharedPreferencesProvider);
 
   if (!kIsWeb) {
