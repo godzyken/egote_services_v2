@@ -114,8 +114,10 @@ jobs:
       - name: Run tests
         run: flutter test --no-pub
 
-      - name: Build Web
-        run: flutter build web --release --no-pub
+      # ========== CHANGEMENT PRINCIPAL ==========
+      - name: Build Web (Production)
+        run: flutter build web --release --no-pub -t lib/main_production.dart
+      # =========================================
 
       - name: Create Sentry Release
         env:

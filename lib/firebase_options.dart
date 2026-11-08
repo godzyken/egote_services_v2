@@ -22,29 +22,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'mock',
-    appId: 'mock',
-    messagingSenderId: 'mock',
-    projectId: 'mock',
-    authDomain: 'mock',
-    storageBucket: 'mock',
-    measurementId: 'mock',
+    apiKey: 'AIzaSyCsxFPYVnSkAoYsXBxoo1Y5xnuytkFMJkg',
+    appId: '1:55611526582:web:21472e1ccf20a53a080517',
+    messagingSenderId: '55611526582',
+    projectId: 'egoteback',
+    authDomain: 'egoteback.firebaseapp.com',
+    storageBucket: 'egoteback.appspot.com',
+    databaseURL:
+        'https://egoteback-default-rtdb.europe-west1.firebasedatabase.app',
+    measurementId: 'G-VLYVTNDP2B',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'mock',
+    apiKey: 'AIzaSyCsxFPYVnSkAoYsXBxoo1Y5xnuytkFMJkg',
     appId: 'mock',
-    messagingSenderId: 'mock',
-    projectId: 'mock',
-    storageBucket: 'mock',
+    messagingSenderId: '55611526582',
+    projectId: 'egoteback',
+    storageBucket: 'egoteback.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'mock',
-    appId: 'mock',
-    messagingSenderId: 'mock',
-    projectId: 'mock',
-    storageBucket: 'mock',
+    apiKey: 'AIzaSyCsxFPYVnSkAoYsXBxoo1Y5xnuytkFMJkg',
+    appId: '1:55611526582:ios:46e33f72b43bcc9c080517',
+    messagingSenderId: '55611526582',
+    projectId: 'egoteback',
+    storageBucket: 'egoteback.appspot.com',
     iosBundleId: 'mock',
   );
 }

@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "55611526582",
+    "firebase_url": "https://egoteback-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "egoteback",
+    "storage_bucket": "egoteback.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55611526582:android:95f351332d982c96080517",
+        "android_client_info": {
+          "package_name": "com.example.egote_services_v4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55611526582-aufs77s766l18jglc1k4c2vlavlinu2k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqjbMd7qe5PzYgQTDm2HvpCRmpr3p42_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55611526582-aufs77s766l18jglc1k4c2vlavlinu2k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "55611526582-5dng0r77vlf1bq6pf3sui491j2ltdpsn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.godzy.egoteServicesV2.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55611526582:android:1a130efea92fc4dd080517",
+        "android_client_info": {
+          "package_name": "com.godzy.bat_track_v1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55611526582-aufs77s766l18jglc1k4c2vlavlinu2k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqjbMd7qe5PzYgQTDm2HvpCRmpr3p42_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55611526582-aufs77s766l18jglc1k4c2vlavlinu2k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "55611526582-5dng0r77vlf1bq6pf3sui491j2ltdpsn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.godzy.egoteServicesV2.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55611526582:android:00d0ca4d5ebc573f080517",
+        "android_client_info": {
+          "package_name": "com.godzy.egote_services_v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55611526582-aufs77s766l18jglc1k4c2vlavlinu2k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqjbMd7qe5PzYgQTDm2HvpCRmpr3p42_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55611526582-aufs77s766l18jglc1k4c2vlavlinu2k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "55611526582-5dng0r77vlf1bq6pf3sui491j2ltdpsn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.godzy.egoteServicesV2.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
