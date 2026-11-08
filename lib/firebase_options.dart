@@ -35,7 +35,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCsxFPYVnSkAoYsXBxoo1Y5xnuytkFMJkg',
-    appId: 'mock',
+    appId: '1:55611526582:android:00d0ca4d5ebc573f080517',
     messagingSenderId: '55611526582',
     projectId: 'egoteback',
     storageBucket: 'egoteback.appspot.com',
@@ -43,10 +43,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCsxFPYVnSkAoYsXBxoo1Y5xnuytkFMJkg',
-    appId: '1:55611526582:ios:46e33f72b43bcc9c080517',
+    appId: '1:55611526582:ios:efc806a54b8de74b080517',
     messagingSenderId: '55611526582',
     projectId: 'egoteback',
     storageBucket: 'egoteback.appspot.com',
-    iosBundleId: 'mock',
+    iosBundleId: 'com.godzy.egote-services-v2',
   );
 }
