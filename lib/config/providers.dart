@@ -29,7 +29,15 @@ Future<void> initializeProvider(ProviderContainer container) async {
   }
 
   await container.read(supabaseInitProvider.future);
-  await container.read(userFutureProvider.future);
+  try {
+    await container.read(userFutureProvider.future);
+  } catch (e) {
+    if (kIsWeb) {
+      debugPrint('User future provider skipped on web: $e');
+    } else {
+      rethrow;
+    }
+  }
   await container.read(datadogProvider.future);
   await container.read(datadogConfigProvider.future);
   await container.read(cubeSettingsInitProvider.future);

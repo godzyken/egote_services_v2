@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/features/auth/data/data_sources/database/source_base.dart';
 import 'package:egote_services_v2/features/auth/data/repository_impl/auth_repository_impl.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/repository/user_repository_interface.dart';
@@ -8,7 +9,8 @@ import 'data_sources/database/auth_user_database_impl.dart';
 
 // 1. Database Provider
 final usersDatabaseProvider = Provider<SourceBase>(
-  (ref) => AuthUserDatabaseImpl.instance,
+  (ref) =>
+      kIsWeb ? MemoryAuthUserDatabaseImpl() : AuthUserDatabaseImpl.instance,
   name: 'UsersDatabaseProvider',
 );
 

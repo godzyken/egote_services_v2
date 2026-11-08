@@ -149,3 +149,48 @@ class AuthUserDatabaseImpl implements SourceBase {
     );
   }
 }
+
+/// In-memory implementation of [SourceBase] for Flutter Web where sqflite is not supported.
+class MemoryAuthUserDatabaseImpl implements SourceBase {
+  final List<UserEntity> _users = [];
+
+  @override
+  Future close() async {}
+
+  @override
+  Future<int> deleteAllUsers() async {
+    final count = _users.length;
+    _users.clear();
+    return count;
+  }
+
+  @override
+  Future<int> deleteUser(int id) async {
+    _users.removeWhere((u) => u['id'] == id);
+    return 1;
+  }
+
+  @override
+  Future<UserListEntity> getAllUsers() async {
+    return List.from(_users);
+  }
+
+  @override
+  Future<UserEntity> insertUser(UserEntity userEntity) async {
+    final Map<String, dynamic> newUser = Map.from(userEntity);
+    if (!newUser.containsKey('id') || newUser['id'] == null) {
+      newUser['id'] = _users.length + 1;
+    }
+    _users.add(newUser);
+    return newUser;
+  }
+
+  @override
+  Future<void> updateUser(UserEntity userEntity) async {
+    final int id = userEntity['id'];
+    final index = _users.indexWhere((u) => u['id'] == id);
+    if (index != -1) {
+      _users[index] = Map.from(userEntity);
+    }
+  }
+}
