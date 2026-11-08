@@ -119,7 +119,8 @@ class ChantierDashboardPage extends ConsumerWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded, color: ChantierColors.orange),
+            selectedIcon:
+                Icon(Icons.home_rounded, color: ChantierColors.orange),
             label: 'Home',
           ),
           NavigationDestination(

@@ -60,7 +60,8 @@ class PlannedProgressPage extends ConsumerWidget {
                   children: [
                     _StatBlock(
                       label: 'Planned',
-                      value: '${chantier.plannedLotsCount + chantier.delayedLotsCount + (lots.where((l) => l.isDone).length)}',
+                      value:
+                          '${chantier.plannedLotsCount + chantier.delayedLotsCount + (lots.where((l) => l.isDone).length)}',
                       color: ChantierColors.orangeSoft,
                       emphasize: true,
                     ),
