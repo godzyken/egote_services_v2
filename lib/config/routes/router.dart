@@ -3,6 +3,7 @@ import 'package:egote_services_v2/config/routes/app_router_observer.dart';
 import 'package:egote_services_v2/config/routes/router_notifier.dart';
 import 'package:egote_services_v2/config/routes/routes.dart';
 import 'package:egote_services_v2/config/routes/sentry_navigator_observer.dart';
+import 'package:egote_services_v2/features/chantier/chantier_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,8 +18,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   // Here we assemble routes from different modules
   final allRoutes = [
     ...CoreModule().routes,
-    // Add other modules here:
-    // ...BatTrackModule().routes,
+    ...ChantierModule().routes,
     // ...Compta4meModule().routes,
   ];
 
