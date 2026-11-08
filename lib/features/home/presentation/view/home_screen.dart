@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:egote_services_v2/config/sync/sync_notifier.dart';
 import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:egote_services_v2/features/home/application/home_controller.dart';
 import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
@@ -58,6 +59,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           return Center(child: Text('${context.tr?.noNetwork}'));
         }
 
+        final syncState = ref.watch(syncNotifierProvider);
+
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -77,6 +80,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             elevation: 50.00,
             backgroundColor: Colors.greenAccent[400],
             actions: <Widget>[
+              IconButton(
+                icon: syncState.status == SyncStatus.syncing
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(Icons.sync),
+                tooltip: 'Synchroniser',
+                onPressed: syncState.status == SyncStatus.syncing
+                    ? null
+                    : () async {
+                        final success = await ref
+                            .read(syncNotifierProvider.notifier)
+                            .executeSync(() async {
+                              await Future.delayed(const Duration(seconds: 2));
+                            }, name: 'HomeScreenSync');
+                        if (success && context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Synchronisation réussie !'),
+                            ),
+                          );
+                        }
+                      },
+              ),
               IconButton(
                 icon: const Icon(Icons.comment),
                 tooltip: context.tr?.tooltipIconComment,
