@@ -71,3 +71,12 @@
   erreurs silencieuses et d'assurer une journalisation structurée sans compromettre la stabilité de
   l'application.
 - **Statut** : Validé.
+
+## DEC-013 : Implémentation du Concurrency Guard avec `SyncNotifier`
+
+- **Date** : 2026
+- **Décision** : Introduire une classe `SyncNotifier` et `SyncState` basée sur Riverpod pour gérer
+  la synchronisation des données (offline/online) avec un verrou de concurrence (*mutex guard*)
+  intégré. Cela empêche les exécutions superposées de tâches de synchronisation et assure un suivi
+  transparent des états (`idle`, `syncing`, `success`, `error`) sans erreurs silencieuses.
+- **Statut** : Validé.
