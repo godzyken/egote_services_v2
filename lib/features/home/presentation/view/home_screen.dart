@@ -21,8 +21,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool animate = false;
 
-  int index = 0;
-  late Timer _timer;
+  final int index = 0;
 
   final imageWidgets = [
     Assets.lottie.image.maisonIndiv.image(
@@ -43,11 +42,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     startAnimation();
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      setState(() {
-        index = (index + 1) % imageWidgets.length;
-      });
-    });
   }
 
   @override
@@ -195,7 +189,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   void dispose() {
-    _timer.cancel();
     super.dispose();
   }
 

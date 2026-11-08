@@ -38,7 +38,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   String? imageUrl;
 
   List<CubeMessage> listMessage = [];
-  Timer? typingTimer;
+  int _typingSeq = 0;
   bool isTyping = false;
   String userStatus = '';
 
@@ -220,9 +220,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void startTypingTimer() {
-    typingTimer?.cancel();
-    typingTimer = Timer(const Duration(milliseconds: 900), () {
-      if (mounted) {
+    final currentSeq = ++_typingSeq;
+    Future.delayed(const Duration(milliseconds: 900), () {
+      if (mounted && currentSeq == _typingSeq) {
         setState(() {
           isTyping = false;
         });
