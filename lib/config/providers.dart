@@ -38,17 +38,33 @@ Future<void> initializeProvider(ProviderContainer container) async {
       rethrow;
     }
   }
-  await container.read(datadogProvider.future);
-  await container.read(datadogConfigProvider.future);
-  await container.read(cubeSettingsInitProvider.future);
+  try {
+    await container.read(datadogProvider.future);
+  } catch (e) {
+    debugPrint('Datadog provider init error: $e');
+  }
+  try {
+    await container.read(datadogConfigProvider.future);
+  } catch (e) {
+    debugPrint('Datadog config provider init error: $e');
+  }
+  try {
+    await container.read(cubeSettingsInitProvider.future);
+  } catch (e) {
+    debugPrint('Cube settings init error: $e');
+  }
 
   container.read(sharedPreferencesProvider);
-  container.read(firebaseDatabaseProvider);
-  container.read(firebaseFirestoreProvider);
-  container.read(firebaseMessagingProvider);
-  container.read(emulatorSettingsProvider);
+
+  if (!kIsWeb) {
+    container.read(firebaseDatabaseProvider);
+    container.read(firebaseFirestoreProvider);
+    container.read(firebaseMessagingProvider);
+    container.read(emulatorSettingsProvider);
+    container.read(firebaseAuthProvider);
+  }
+
   container.read(geoFlutterFireProvider);
-  container.read(firebaseAuthProvider);
   container.read(cubeUserControllerProvider);
   container.read(cubeSessionManagerProvider);
   container.read(cubeChatConnectionSettingsProvider);
@@ -56,10 +72,12 @@ Future<void> initializeProvider(ProviderContainer container) async {
   container.read(goRouterProvider);
   container.read(localizationProvider);
 
-  container.read(authStateChangesProvider);
-  container.read(authStateProvider);
-  container.read(userChangesProvider);
-  container.read(fireDatabaseProvider);
+  if (!kIsWeb) {
+    container.read(authStateChangesProvider);
+    container.read(authStateProvider);
+    container.read(userChangesProvider);
+    container.read(fireDatabaseProvider);
+  }
 }
 
 final sharedPreferencesProvider = Provider<SharedPreferences>(
