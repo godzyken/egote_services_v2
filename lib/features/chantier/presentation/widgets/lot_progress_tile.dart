@@ -1,4 +1,5 @@
 import 'package:egote_services_v2/features/chantier/domain/entities/lot.dart';
+import 'package:egote_services_v2/features/chantier/presentation/theme/chantier_colors.dart';
 import 'package:flutter/material.dart';
 
 class LotProgressTile extends StatelessWidget {
@@ -8,27 +9,26 @@ class LotProgressTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final pct = lot.progressPercent.clamp(0, 100);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.4)),
+        color: ChantierColors.card,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: ChantierColors.softShadow,
       ),
       child: Row(
         children: [
           Container(
-            width: 36,
-            height: 36,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFE0B2),
-              borderRadius: BorderRadius.circular(10),
+              color: ChantierColors.background,
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.add, color: Color(0xFFF57C00)),
+            child: const Icon(Icons.add, color: ChantierColors.muted, size: 22),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -37,34 +37,49 @@ class LotProgressTile extends StatelessWidget {
               children: [
                 Text(
                   lot.name,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: ChantierColors.ink,
                   ),
                 ),
                 if (lot.plannedStart != null && lot.plannedEnd != null)
-                  Text(
-                    _rangeLabel(lot.plannedStart!, lot.plannedEnd!),
-                    style: theme.textTheme.bodySmall,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(
+                      _rangeLabel(lot.plannedStart!, lot.plannedEnd!),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: ChantierColors.muted,
+                      ),
+                    ),
                   ),
               ],
             ),
           ),
           SizedBox(
-            width: 48,
-            height: 48,
+            width: 52,
+            height: 52,
             child: Stack(
               alignment: Alignment.center,
               children: [
-                CircularProgressIndicator(
-                  value: pct / 100,
-                  strokeWidth: 4,
-                  backgroundColor: const Color(0xFFFFE0B2),
-                  color: const Color(0xFFF57C00),
+                SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: CircularProgressIndicator(
+                    value: pct / 100,
+                    strokeWidth: 4.5,
+                    backgroundColor: ChantierColors.track,
+                    color: ChantierColors.orange,
+                    strokeCap: StrokeCap.round,
+                  ),
                 ),
                 Text(
                   '${pct.toStringAsFixed(0)}%',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: ChantierColors.ink,
                   ),
                 ),
               ],
@@ -76,9 +91,7 @@ class LotProgressTile extends StatelessWidget {
   }
 
   String _rangeLabel(DateTime start, DateTime end) {
-    String fmt(DateTime d) =>
-        '${_month(d.month)} ${d.year}';
-    return '${fmt(start)} – ${fmt(end)}';
+    return '${_month(start.month)} ${start.year} – ${_month(end.month)} ${end.year}';
   }
 
   String _month(int m) {
