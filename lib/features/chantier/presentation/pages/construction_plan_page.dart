@@ -121,8 +121,7 @@ class ConstructionPlanPage extends ConsumerWidget {
                       .whereType<DateTime>()
                       .fold<DateTime?>(
                         null,
-                        (prev, d) =>
-                            prev == null || d.isAfter(prev) ? d : prev,
+                        (prev, d) => prev == null || d.isAfter(prev) ? d : prev,
                       );
                   return PhaseSummaryCard(
                     phase: p,
