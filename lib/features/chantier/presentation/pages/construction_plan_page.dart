@@ -48,8 +48,7 @@ class ConstructionPlanPage extends ConsumerWidget {
             return const Center(child: Text('Chantier introuvable'));
           }
 
-          String dateLabel(DateTime d) =>
-              '${d.day.toString().padLeft(2, '0')}.'
+          String dateLabel(DateTime d) => '${d.day.toString().padLeft(2, '0')}.'
               '${d.month.toString().padLeft(2, '0')}.'
               '${d.year}';
 
@@ -122,7 +121,8 @@ class ConstructionPlanPage extends ConsumerWidget {
                       .whereType<DateTime>()
                       .fold<DateTime?>(
                         null,
-                        (prev, d) => prev == null || d.isAfter(prev) ? d : prev,
+                        (prev, d) =>
+                            prev == null || d.isAfter(prev) ? d : prev,
                       );
                   return PhaseSummaryCard(
                     phase: p,
@@ -163,15 +163,33 @@ class ConstructionPlanPage extends ConsumerWidget {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Unit Range', style: TextStyle(color: ChantierColors.muted, fontSize: 12)),
-                        Text('Distance', style: TextStyle(color: ChantierColors.muted, fontSize: 12)),
+                        Text(
+                          'Unit Range',
+                          style: TextStyle(
+                            color: ChantierColors.muted,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                          'Distance',
+                          style: TextStyle(
+                            color: ChantierColors.muted,
+                            fontSize: 12,
+                          ),
+                        ),
                       ],
                     ),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('2-46', style: TextStyle(fontWeight: FontWeight.w700)),
-                        Text('366 mi', style: TextStyle(fontWeight: FontWeight.w700)),
+                        Text(
+                          '2-46',
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          '366 mi',
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -184,7 +202,9 @@ class ConstructionPlanPage extends ConsumerWidget {
                             final active = i > 8 && i < 20;
                             return Expanded(
                               child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 1),
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 1,
+                                ),
                                 color: active
                                     ? (i > 14
                                         ? ChantierColors.orange
