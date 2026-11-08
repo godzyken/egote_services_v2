@@ -1,3 +1,15 @@
 ﻿{
-  "apiUrl": "dev"
+  "supabase_url": "https://development.supabase.co",
+  "supabase_anon_key": "dev-anon-key-placeholder",
+  "app_id": "dev-app-id",
+  "auth_key": "dev-auth-key",
+  "auth_secret": "dev-auth-secret",
+  "vapid_key": "dev-vapid-key",
+  "outpoint": "dev-outpoint",
+  "client_token": "pub_dev_token_placeholder",
+  "site": "eu1",
+  "application_id": "99911285-5746-429f-8168-b7b05c9db5fb",
+  "first_party_host": [
+    "development.supabase.co"
+  ]
 }

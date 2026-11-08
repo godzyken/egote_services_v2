@@ -1,3 +1,15 @@
 ﻿{
-  "apiUrl": "local"
+  "supabase_url": "http://10.0.2.2:54321",
+  "supabase_anon_key": "local-anon-key-placeholder",
+  "app_id": "local-app-id",
+  "auth_key": "local-auth-key",
+  "auth_secret": "local-auth-secret",
+  "vapid_key": "local-vapid-key",
+  "outpoint": "local-outpoint",
+  "client_token": "pub_local_token_placeholder",
+  "site": "eu1",
+  "application_id": "99911285-5746-429f-8168-b7b05c9db5fb",
+  "first_party_host": [
+    "localhost"
+  ]
 }

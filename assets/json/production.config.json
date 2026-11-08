@@ -1,3 +1,15 @@
 ﻿{
-  "apiUrl": "prod"
+  "supabase_url": "https://production.supabase.co",
+  "supabase_anon_key": "prod-anon-key-placeholder",
+  "app_id": "prod-app-id",
+  "auth_key": "prod-auth-key",
+  "auth_secret": "prod-auth-secret",
+  "vapid_key": "prod-vapid-key",
+  "outpoint": "prod-outpoint",
+  "client_token": "pub_prod_token_placeholder",
+  "site": "eu1",
+  "application_id": "99911285-5746-429f-8168-b7b05c9db5fb",
+  "first_party_host": [
+    "production.supabase.co"
+  ]
 }
