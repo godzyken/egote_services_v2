@@ -130,6 +130,14 @@ class KeyValueDbHive implements KeyValueDb {
   @override
   T get<T>(String key, T defaultValue) {
     try {
+      if (!_isInitialized) {
+        if (_debug) {
+          debugPrint(
+            '⚠️ KeyValueDbHive: get called before init for key "$key". Returning defaultValue.',
+          );
+        }
+        return defaultValue;
+      }
       final T value = _hiveBox.get(key, defaultValue: defaultValue) as T;
       if (_debug) {
         debugPrint('Hive get    : ["$key"] = $value (${value.runtimeType})');
@@ -151,12 +159,15 @@ class KeyValueDbHive implements KeyValueDb {
   /// If type <T> is not an atomic Dart type, there must be a
   /// Hive type adapter that converts <T> into one.
   @override
-  Future<void> put<T>(String key, T value) {
+  Future<void> put<T>(String key, T value) async {
     try {
+      if (!_isInitialized) {
+        await init();
+      }
       if (_debug) {
         debugPrint('Hive put    : ["$key"] = $value (${value.runtimeType})');
       }
-      return _hiveBox.put(key, value);
+      return await _hiveBox.put(key, value);
     } catch (e) {
       debugPrint('Hive put (save) ERROR');
       debugPrint(' Error message ...... : $e');

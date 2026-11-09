@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/environements/environment.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../environements/flavors.dart';
@@ -40,12 +37,9 @@ final datadogInstanceProvider = Provider<DatadogSdk>(
 );
 
 final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
-  F.appFlavor = Flavor.development;
+  F.appFlavor ??= Flavor.development;
 
-  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  final env = Environment.fromJson(
-    json.decode(configFile) as Map<String, dynamic>,
-  );
+  final env = await Environment.load();
 
   return DatadogConfiguration(
     clientToken: env.clientToken,

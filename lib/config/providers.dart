@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../features/auth/data/data_source_providers.dart';
 import '../features/auth/presentation/controller/auth_controller_state.dart';
 import '../features/chat/application/providers/cube_settings_provider.dart';
+import '../features/common/domain/values/key_value_db_listener.dart';
+import '../features/common/domain/values/key_value_db_provider.dart';
 
 enum BootPolicy {
   /// Blocking: if initialization fails, startup fails (rethrow).
@@ -95,6 +97,15 @@ Future<void> initializeProvider(ProviderContainer container) async {
     name: 'cubeSettingsInitProvider',
     policy: BootPolicy.nonBlocking,
   );
+
+  // Initialize KeyValueDb (Hive / Prefs) before reading settings / themes
+  try {
+    final activeDb = container.read(keyValueDbProvider);
+    await activeDb.init();
+    container.read(keyValueDbListenerProvider);
+  } catch (e) {
+    debugPrint('⚠️ [Boot] KeyValueDb initialization warning: $e');
+  }
 
   // Synchronous initializations & reads
   container.read(sharedPreferencesProvider);

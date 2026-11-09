@@ -1,23 +1,17 @@
-import 'dart:convert';
 import 'dart:developer' as developer;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realtime_client/src/constants.dart' hide Constants;
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../environements/environment.dart';
-import '../../environements/flavors.dart';
 
 // <---------------- Supabase Instances Providers -------------------> //
 
 // 1. Initialisation asynchrone de Supabase
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
-  final configFile = await rootBundle.loadString(F.envFileName, cache: false);
-  final env = Environment.fromJson(
-    json.decode(configFile) as Map<String, dynamic>,
-  );
+  final env = await Environment.load();
 
   final client = supabase.GoTrueClient(
     url: env.supabaseUrl,

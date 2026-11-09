@@ -22,6 +22,7 @@ class KeyValueDbPrefs implements KeyValueDb {
   // Hold an instance to the SharedPreferences store, must be initialized
   // by the init call before accessing the stored data.
   late final SharedPreferences _prefs;
+  bool _isInitialized = false;
 
   /// KeyValueDbPrefs initialization.
   ///
@@ -37,8 +38,10 @@ class KeyValueDbPrefs implements KeyValueDb {
   @override
   Future<void> init() async {
     if (_debug) debugPrint('KeyValueDbPrefs: init called');
+    if (_isInitialized) return;
     // Get the SharedPreferences instance and assign it to our instance.
     _prefs = await SharedPreferences.getInstance();
+    _isInitialized = true;
   }
 
   /// [KeyValueDbPrefs] implementation needs no dispose.
@@ -107,6 +110,14 @@ class KeyValueDbPrefs implements KeyValueDb {
   @override
   T get<T>(String key, T defaultValue) {
     try {
+      if (!_isInitialized) {
+        if (_debug) {
+          debugPrint(
+            '⚠️ KeyValueDbPrefs: get called before init for key "$key". Returning defaultValue.',
+          );
+        }
+        return defaultValue;
+      }
       // T is boolean nullable value.
       if (sameTypes<T, bool?>()) {
         final bool? value = _prefs.getBool(key);
