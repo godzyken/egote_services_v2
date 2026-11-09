@@ -1,4 +1,5 @@
 import 'package:egote_services_v2/features/chantier/presentation/theme/chantier_colors.dart';
+import 'package:egote_services_v2/features/chantier/presentation/widgets/chantier_cover_image.dart';
 import 'package:flutter/material.dart';
 
 class BuildingHeroCard extends StatelessWidget {
@@ -76,31 +77,7 @@ class BuildingHeroCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child: AspectRatio(
                     aspectRatio: 16 / 11,
-                    child: imageUrl != null
-                        ? Image.network(imageUrl!, fit: BoxFit.cover)
-                        : Container(
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFFFFF3E0),
-                                  Color(0xFFFFE0B2),
-                                  Color(0xFFFFCC80),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                            ),
-                            child: CustomPaint(
-                              painter: _BuildingSilhouettePainter(),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.foundation,
-                                  size: 56,
-                                  color: ChantierColors.orange,
-                                ),
-                              ),
-                            ),
-                          ),
+                    child: ChantierCoverImage(imageUrl: imageUrl),
                   ),
                 ),
               ],
@@ -110,24 +87,4 @@ class BuildingHeroCard extends StatelessWidget {
       ),
     );
   }
-}
-
-class _BuildingSilhouettePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = ChantierColors.orange.withValues(alpha: 0.08)
-      ..style = PaintingStyle.fill;
-    final path = Path()
-      ..moveTo(size.width * 0.15, size.height)
-      ..lineTo(size.width * 0.15, size.height * 0.45)
-      ..lineTo(size.width * 0.35, size.height * 0.28)
-      ..lineTo(size.width * 0.55, size.height * 0.4)
-      ..lineTo(size.width * 0.55, size.height)
-      ..close();
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

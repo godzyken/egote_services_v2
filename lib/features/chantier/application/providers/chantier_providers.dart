@@ -5,13 +5,24 @@ import 'package:egote_services_v2/features/chantier/domain/repositories/chantier
 import 'package:egote_services_v2/features/devis/domain/entities/construction/travaux_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Illustration couverture : dessinateur / plan de construction (WebP local).
+/// Place le fichier ici après conversion depuis AVIF :
+///   assets/lottie/image/chantier/plan_dessinateur.webp
+const kChantierCoverAsset =
+    'assets/lottie/image/chantier/plan_dessinateur.webp';
+
+/// Fallback réseau (architecte / plans) si l'asset n'est pas encore présent.
+const kChantierCoverNetworkFallback =
+    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80';
+
 /// Mock repository — swap with Supabase implementation later.
 class MockChantierRepository implements ChantierRepository {
   static final _sample = Chantier(
     id: 'building-2',
     name: 'Building 2',
     plannedEnd: DateTime(2025, 10, 28),
-    coverImageUrl: null,
+    // WebP local (dessinateur / plan). Pas une photo d'immeuble.
+    coverImageUrl: kChantierCoverAsset,
     phases: [
       Phase(
         id: 'structural',

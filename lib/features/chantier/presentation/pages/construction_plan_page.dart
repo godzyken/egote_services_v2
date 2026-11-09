@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/features/chantier/application/providers/chantier_providers.dart';
 import 'package:egote_services_v2/features/chantier/presentation/theme/chantier_colors.dart';
+import 'package:egote_services_v2/features/chantier/presentation/widgets/chantier_cover_image.dart';
 import 'package:egote_services_v2/features/chantier/presentation/widgets/phase_summary_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,31 +78,9 @@ class ConstructionPlanPage extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(28),
                   child: AspectRatio(
                     aspectRatio: 4 / 3,
-                    child: chantier.coverImageUrl != null
-                        ? Image.network(
-                            chantier.coverImageUrl!,
-                            fit: BoxFit.cover,
-                          )
-                        : Container(
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xFFFFF8E1),
-                                  Color(0xFFFFE0B2),
-                                  Color(0xFFFFB74D),
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.apartment_rounded,
-                                size: 88,
-                                color: ChantierColors.orange,
-                              ),
-                            ),
-                          ),
+                    child: ChantierCoverImage(
+                      imageUrl: chantier.coverImageUrl,
+                    ),
                   ),
                 ),
               ),
