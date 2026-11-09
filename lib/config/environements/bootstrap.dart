@@ -12,7 +12,6 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 
 import '../providers.dart';
-import 'flavors.dart';
 
 Future<ProviderContainer> bootstrap() async {
   final binding = WidgetsFlutterBinding.ensureInitialized();
@@ -50,11 +49,30 @@ Future<ProviderContainer> bootstrap() async {
 
     talker = TalkerFlutter.init(
       settings: TalkerSettings(
-        enabled: kDebugMode,
+        enabled: true,
         useHistory: true,
-        maxHistoryItems: 200,
+        maxHistoryItems: 500,
+        useConsoleLogs: true,
       ),
     );
+
+    // Wire up global Flutter framework error handling to Talker
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      talker?.handle(details.exception, details.stack, 'Flutter UI Error');
+      dev.log(
+        '❌ [FlutterError] ${details.exception}',
+        error: details.exception,
+        stackTrace: details.stack,
+      );
+    };
+
+    // Wire up global uncaught async/platform errors to Talker
+    PlatformDispatcher.instance.onError = (error, stackTrace) {
+      talker?.handle(error, stackTrace, 'Uncaught Platform/Async Error');
+      dev.log('❌ [PlatformError] $error', error: error, stackTrace: stackTrace);
+      return true;
+    };
 
     container = ProviderContainer(
       overrides: [
@@ -62,8 +80,18 @@ Future<ProviderContainer> bootstrap() async {
         talkerProvider.overrideWithValue(talker),
       ],
       observers: [
-        TalkerRiverpodObserver(talker: talker),
-        if (F.appFlavor == Flavor.local) _Logger(),
+        TalkerRiverpodObserver(
+          talker: talker,
+          settings: const TalkerRiverpodLoggerSettings(
+            enabled: true,
+            printStateFullData: true,
+            printProviderAdded: true,
+            printProviderUpdated: true,
+            printProviderDisposed: true,
+            printProviderFailed: true,
+          ),
+        ),
+        _Logger(),
       ],
     );
 
@@ -83,6 +111,7 @@ Future<ProviderContainer> bootstrap() async {
     }
 
     FlutterError.demangleStackTrace = (StackTrace stack) {
+      if (kIsWeb) return stack;
       if (stack is stack_trace.Trace) return stack.vmTrace;
       if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
 
@@ -191,6 +220,19 @@ base class _Logger extends ProviderObserver {
   "provider": "${context.provider.name ?? context.provider.runtimeType}",
   "newValue": "$newValue"
 }''');
+  }
+
+  @override
+  void providerDidFail(
+    ProviderObserverContext context,
+    Object error,
+    StackTrace stackTrace,
+  ) {
+    dev.log(
+      '❌ [Riverpod Provider Error] ${context.provider.name ?? context.provider.runtimeType}: $error',
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 }
 
