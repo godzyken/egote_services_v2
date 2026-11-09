@@ -51,7 +51,7 @@ final datadogConfigProvider = FutureProvider<DatadogConfiguration>((ref) async {
     clientToken: env.clientToken,
     env: F.appFlavor.toString(),
     site: DatadogSite.eu1,
-    nativeCrashReportEnabled: true,
+    nativeCrashReportEnabled: !kIsWeb,
     loggingConfiguration: DatadogLoggingConfiguration(),
     rumConfiguration: DatadogRumConfiguration(
       sessionSamplingRate: 100.0,
@@ -68,42 +68,42 @@ final datadogProvider = FutureProvider<DatadogSdk>((ref) async {
   final consent = ref.watch(trackingConsentNotifierProvider);
   final datadogSdk = ref.watch(datadogInstanceProvider);
 
-  // Configuration des gestionnaires d'erreurs globalisés
-  final originalOnError = FlutterError.onError;
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    datadogSdk.rum?.handleFlutterError(details);
-    originalOnError?.call(details);
-  };
-
-  final platformOriginalOnError = PlatformDispatcher.instance.onError;
-  PlatformDispatcher.instance.onError = (e, st) {
-    datadogSdk.rum?.addErrorInfo(
-      e.toString(),
-      RumErrorSource.source,
-      stackTrace: st,
-    );
-    return platformOriginalOnError?.call(e, st) ?? false;
-  };
-
-  // Initialisation du logger de test
-  final logger = datadogSdk.logs?.createLogger(
-    DatadogLoggerConfiguration(remoteLogThreshold: LogLevel.warning),
-  );
-  logger?.debug("A debug message.");
-  logger?.info("Some relevant information?");
-  logger?.warn("An important warning…");
-  logger?.error("An error was met!");
-
   try {
     await datadogSdk.initialize(configuration, consent);
 
     if (consent == TrackingConsent.notGranted) {
       datadogSdk.clearAllData();
     }
-  } catch (e) {
+
+    // Configuration des gestionnaires d'erreurs globalisés
+    final originalOnError = FlutterError.onError;
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      datadogSdk.rum?.handleFlutterError(details);
+      originalOnError?.call(details);
+    };
+
+    final platformOriginalOnError = PlatformDispatcher.instance.onError;
+    PlatformDispatcher.instance.onError = (e, st) {
+      datadogSdk.rum?.addErrorInfo(
+        e.toString(),
+        RumErrorSource.source,
+        stackTrace: st,
+      );
+      return platformOriginalOnError?.call(e, st) ?? false;
+    };
+
+    // Initialisation du logger de test
+    final logger = datadogSdk.logs?.createLogger(
+      DatadogLoggerConfiguration(remoteLogThreshold: LogLevel.warning),
+    );
+    logger?.debug("A debug message.");
+    logger?.info("Some relevant information?");
+    logger?.warn("An important warning…");
+    logger?.error("An error was met!");
+  } catch (e, st) {
     if (kDebugMode) {
-      print('Datadog Provider error: $e');
+      print('Datadog Provider error: $e\n$st');
     }
   }
 

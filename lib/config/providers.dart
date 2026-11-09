@@ -24,7 +24,7 @@ enum BootPolicy {
 /// Safely initializes a future provider based on its [BootPolicy] and platform conditions.
 Future<void> initProviderSafely<T>(
   ProviderContainer container,
-  dynamic provider, {
+  FutureProvider<T> provider, {
   required String name,
   required BootPolicy policy,
   bool condition = true,

@@ -30,7 +30,7 @@ Future<ProviderContainer> bootstrap() async {
             'https://822eaa260b9c8726005d7acd9aa33f04@o4505047063592960.ingest.us.sentry.io/4512392327397376'
         ..maxCacheItems = 100
         ..enableAutoPerformanceTracing = true
-        ..debug = true
+        ..debug = kDebugMode
         ..reportSilentFlutterErrors = true
         ..reportPackages = false
         ..sendDefaultPii = true

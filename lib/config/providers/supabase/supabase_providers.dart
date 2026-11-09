@@ -78,60 +78,56 @@ final supabaseRealtimeErrorProvider = Provider<Object?>(
 final supabaseChannelRProvider = Provider((ref) {
   final client = ref.watch(supabaseClientProvider).realtime;
 
-  ref.onDispose(() {
-    client.onOpen(() {
-      developer.log('Socket opened.');
-      try {
-        final listChannels = client
-            .getChannels()
-            .where((element) => element.presence.channel.canPush)
-            .toList();
-        final options = client.connState;
-        final socket = client.conn;
+  client.onOpen(() {
+    developer.log('Socket opened.');
+    try {
+      final listChannels = client
+          .getChannels()
+          .where((element) => element.canPush)
+          .toList();
+      final options = client.connState;
+      final socket = client.conn;
 
-        for (var chan in listChannels) {
-          if (options != null) {
-            switch (options) {
-              case SocketStates.connecting:
-                if (chan.canPush) {
-                  Stream? streamChannel = socket?.stream;
-                  client.conn?.sink.addStream(streamChannel!);
-                  client.onConnMessage('hello 3wi Body!');
-                  chan.presenceState();
-                } else {
-                  chan.unsubscribe();
+      for (var chan in listChannels) {
+        if (options != null) {
+          switch (options) {
+            case SocketStates.connecting:
+              if (chan.canPush) {
+                Stream? streamChannel = socket?.stream;
+                if (streamChannel != null) {
+                  client.conn?.sink.addStream(streamChannel);
                 }
-              case SocketStates.open:
-                if (chan.canPush) {
-                  Stream? streamChannel = socket?.stream;
-                  client.conn?.sink.addStream(streamChannel!);
-                  client.onConnMessage('hello 3wi Body!');
-                  chan.subscribe();
-                } else {
-                  chan.unsubscribe();
+                client.onConnMessage('hello 3wi Body!');
+                chan.presenceState();
+              } else {
+                chan.unsubscribe();
+              }
+            case SocketStates.open:
+              if (chan.canPush) {
+                Stream? streamChannel = socket?.stream;
+                if (streamChannel != null) {
+                  client.conn?.sink.addStream(streamChannel);
                 }
-              case SocketStates.disconnecting:
-              case SocketStates.closed:
-                client.conn?.sink.close(socket?.closeCode, 'socket_closed');
-                client.onConnMessage('Goodbye! ${socket?.closeReason}');
+                client.onConnMessage('hello 3wi Body!');
+                chan.subscribe();
+              } else {
                 chan.unsubscribe();
-              case SocketStates.disconnected:
-                chan.unsubscribe();
-            }
+              }
+            case SocketStates.disconnecting:
+            case SocketStates.closed:
+              client.conn?.sink.close(socket?.closeCode, 'socket_closed');
+              client.onConnMessage('Goodbye! ${socket?.closeReason}');
+              chan.unsubscribe();
+            case SocketStates.disconnected:
+              chan.unsubscribe();
           }
-          client.removeChannel(chan);
         }
-      } catch (e) {
-        developer.log('Realtime socket exception: $e');
+        client.removeChannel(chan);
       }
-    });
-  });
-
-  ref.onCancel(() {
-    client.onClose((p0) {
-      client.channels.clear();
-    });
+    } catch (e) {
+      developer.log('Realtime socket exception: $e');
+    }
   });
 
   return client;
-});
+}, name: 'SupabaseChannelRProvider');
