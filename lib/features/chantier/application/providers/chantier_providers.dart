@@ -6,10 +6,9 @@ import 'package:egote_services_v2/features/devis/domain/entities/construction/tr
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Illustration couverture : dessinateur / plan de construction (WebP local).
-/// Place le fichier ici après conversion depuis AVIF :
-///   assets/lottie/image/chantier/plan_dessinateur.webp
-const kChantierCoverAsset =
-    'assets/lottie/image/chantier/plan_dessinateur.webp';
+/// Place le fichier ici après conversion depuis WEBP :
+///   assets/lottie/image/chantier/building.webp
+const kChantierCoverAsset = 'assets/lottie/image/chantier/building.webp';
 
 /// Fallback réseau (architecte / plans) si l'asset n'est pas encore présent.
 const kChantierCoverNetworkFallback =
