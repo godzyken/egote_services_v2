@@ -1,10 +1,10 @@
 import 'package:egote_services_v2/features/chantier/presentation/theme/chantier_colors.dart';
 import 'package:flutter/material.dart';
 
-/// Affiche une image de couverture chantier.
+/// Affiche une image de couverture chantier (idéalement un plan / dessinateur).
+/// - chemin `assets/...` → asset local (WebP / PNG / JPG recommandés)
 /// - URL http(s) → réseau
-/// - chemin commençant par `assets/` → asset local
-/// - null / vide → placeholder dégradé
+/// - null / erreur → placeholder
 class ChantierCoverImage extends StatelessWidget {
   const ChantierCoverImage({
     super.key,
@@ -86,10 +86,24 @@ class _CoverPlaceholder extends StatelessWidget {
                   color: ChantierColors.orange,
                 ),
               )
-            : const Icon(
-                Icons.apartment_rounded,
-                size: 64,
-                color: ChantierColors.orange,
+            : const Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.architecture,
+                    size: 56,
+                    color: ChantierColors.orange,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Plan / dessinateur',
+                    style: TextStyle(
+                      color: ChantierColors.muted,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
               ),
       ),
     );
