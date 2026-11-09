@@ -34,10 +34,10 @@ class ProgressRingHeader extends StatelessWidget {
               Text(
                 'Construction\nProgress',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: ChantierColors.ink,
-                      fontWeight: FontWeight.w600,
-                      height: 1.2,
-                    ),
+                  color: ChantierColors.ink,
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                ),
               ),
               const Spacer(),
               Container(

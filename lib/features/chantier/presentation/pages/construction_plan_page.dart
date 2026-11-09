@@ -32,10 +32,7 @@ class ConstructionPlanPage extends ConsumerWidget {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          ),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz)),
         ],
       ),
       body: asyncChantier.when(
@@ -48,7 +45,8 @@ class ConstructionPlanPage extends ConsumerWidget {
             return const Center(child: Text('Chantier introuvable'));
           }
 
-          String dateLabel(DateTime d) => '${d.day.toString().padLeft(2, '0')}.'
+          String dateLabel(DateTime d) =>
+              '${d.day.toString().padLeft(2, '0')}.'
               '${d.month.toString().padLeft(2, '0')}.'
               '${d.year}';
 
@@ -126,9 +124,8 @@ class ConstructionPlanPage extends ConsumerWidget {
                   return PhaseSummaryCard(
                     phase: p,
                     subtitle: end != null ? dateLabel(end) : null,
-                    onTap: () => context.push(
-                      '/chantiers/${chantier.id}/progress',
-                    ),
+                    onTap: () =>
+                        context.push('/chantiers/${chantier.id}/progress'),
                   );
                 }).toList(),
               ),
@@ -206,8 +203,8 @@ class ConstructionPlanPage extends ConsumerWidget {
                                 ),
                                 color: active
                                     ? (i > 14
-                                        ? ChantierColors.orange
-                                        : ChantierColors.orangeSoft)
+                                          ? ChantierColors.orange
+                                          : ChantierColors.orangeSoft)
                                     : ChantierColors.track,
                               ),
                             );

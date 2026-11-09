@@ -15,10 +15,10 @@ abstract final class ChantierColors {
   static const track = Color(0xFFE8E4DB);
 
   static List<BoxShadow> get softShadow => [
-        BoxShadow(
-          color: Colors.black.withValues(alpha: 0.06),
-          blurRadius: 20,
-          offset: const Offset(0, 8),
-        ),
-      ];
+    BoxShadow(
+      color: Colors.black.withValues(alpha: 0.06),
+      blurRadius: 20,
+      offset: const Offset(0, 8),
+    ),
+  ];
 }

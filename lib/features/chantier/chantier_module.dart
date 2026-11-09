@@ -8,26 +8,24 @@ import 'package:go_router/go_router.dart';
 class ChantierModule extends AppModule {
   @override
   List<RouteBase> get routes => [
+    GoRoute(
+      path: '/chantiers',
+      name: 'chantiers',
+      builder: (context, state) => const ChantierDashboardPage(),
+      routes: [
         GoRoute(
-          path: '/chantiers',
-          name: 'chantiers',
-          builder: (context, state) => const ChantierDashboardPage(),
-          routes: [
-            GoRoute(
-              path: ':id/plan',
-              name: 'chantier_plan',
-              builder: (context, state) => ConstructionPlanPage(
-                chantierId: state.pathParameters['id']!,
-              ),
-            ),
-            GoRoute(
-              path: ':id/progress',
-              name: 'chantier_progress',
-              builder: (context, state) => PlannedProgressPage(
-                chantierId: state.pathParameters['id']!,
-              ),
-            ),
-          ],
+          path: ':id/plan',
+          name: 'chantier_plan',
+          builder: (context, state) =>
+              ConstructionPlanPage(chantierId: state.pathParameters['id']!),
         ),
-      ];
+        GoRoute(
+          path: ':id/progress',
+          name: 'chantier_progress',
+          builder: (context, state) =>
+              PlannedProgressPage(chantierId: state.pathParameters['id']!),
+        ),
+      ],
+    ),
+  ];
 }

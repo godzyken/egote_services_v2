@@ -100,7 +100,9 @@ final chantiersProvider = FutureProvider<List<Chantier>>((ref) async {
   return ref.watch(chantierRepositoryProvider).fetchAll();
 });
 
-final chantierByIdProvider =
-    FutureProvider.family<Chantier?, String>((ref, id) async {
+final chantierByIdProvider = FutureProvider.family<Chantier?, String>((
+  ref,
+  id,
+) async {
   return ref.watch(chantierRepositoryProvider).fetchById(id);
 });

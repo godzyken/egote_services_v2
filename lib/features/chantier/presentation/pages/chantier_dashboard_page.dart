@@ -119,18 +119,17 @@ class ChantierDashboardPage extends ConsumerWidget {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon:
-                Icon(Icons.home_rounded, color: ChantierColors.orange),
+            selectedIcon: Icon(
+              Icons.home_rounded,
+              color: ChantierColors.orange,
+            ),
             label: 'Home',
           ),
           NavigationDestination(
             icon: Icon(Icons.calendar_today_outlined),
             label: 'Plan',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.access_time),
-            label: 'Time',
-          ),
+          NavigationDestination(icon: Icon(Icons.access_time), label: 'Time'),
           NavigationDestination(
             icon: Icon(Icons.grid_view_rounded),
             label: 'Modules',
