@@ -56,8 +56,8 @@ abstract class Environment with _$Environment {
         return _defaultDevelopmentEnvironment();
       }
       final decoded = json.decode(configFile);
-      if (decoded is Map<String, dynamic>) {
-        return Environment.fromJson(decoded);
+      if (decoded is Map) {
+        return Environment.fromJson(Map<String, dynamic>.from(decoded));
       }
     } catch (e) {
       debugPrint(
