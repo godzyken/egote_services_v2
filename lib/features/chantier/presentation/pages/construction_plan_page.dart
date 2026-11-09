@@ -78,9 +78,7 @@ class ConstructionPlanPage extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(28),
                   child: AspectRatio(
                     aspectRatio: 4 / 3,
-                    child: ChantierCoverImage(
-                      imageUrl: chantier.coverImageUrl,
-                    ),
+                    child: ChantierCoverImage(imageUrl: chantier.coverImageUrl),
                   ),
                 ),
               ),

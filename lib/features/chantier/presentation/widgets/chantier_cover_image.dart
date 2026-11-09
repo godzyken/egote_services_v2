@@ -6,11 +6,7 @@ import 'package:flutter/material.dart';
 /// - URL http(s) → réseau
 /// - null / erreur → placeholder
 class ChantierCoverImage extends StatelessWidget {
-  const ChantierCoverImage({
-    super.key,
-    this.imageUrl,
-    this.fit = BoxFit.cover,
-  });
+  const ChantierCoverImage({super.key, this.imageUrl, this.fit = BoxFit.cover});
 
   final String? imageUrl;
   final BoxFit fit;
@@ -67,11 +63,7 @@ class _CoverPlaceholder extends StatelessWidget {
       height: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Color(0xFFFFF8E1),
-            Color(0xFFFFE0B2),
-            Color(0xFFFFB74D),
-          ],
+          colors: [Color(0xFFFFF8E1), Color(0xFFFFE0B2), Color(0xFFFFB74D)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
