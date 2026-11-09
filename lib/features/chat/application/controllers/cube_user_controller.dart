@@ -14,7 +14,7 @@ class CubeUserController extends AsyncNotifier<CubeUser?> {
 
   Future<CubeUser?> _initialize() async {
     try {
-      final userModelEntity = ref.watch(userNotifierProvider.notifier);
+      final userModelEntity = ref.read(userNotifierProvider.notifier);
       final authModelEntity = ref.watch(autoAuthControllerProvider);
 
       if (userModelEntity.previousUser?.id != null && authModelEntity != null) {
