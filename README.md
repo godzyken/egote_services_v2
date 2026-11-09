@@ -44,6 +44,13 @@ Le projet utilise les dernières technologies et standards du développement Flu
    - Enrichissement de la classe `Failure` pour couvrir tous les cas d'erreurs (Réseau, Serveur, Cache, etc.).
 6. **Tests Unitaires** :
    - Mise en place d'une suite de tests couvrant le Domain, l'Infrastructure et l'Application.
+7. **Robustesse Web & Résilience Minification (Release/Web)** :
+   - Implémentation de `Environment.load()` pour sécuriser le chargement de la configuration face
+     aux redirections SPA Netlify (404 HTML) et aux conversions de types Dart/JSON.
+   - Ajout de gardes d'initialisation (`_isInitialized`) sur le stockage local (`KeyValueDbHive` et
+     `KeyValueDbPrefs`) pour éliminer les `LateInitializationError` au démarrage.
+   - Correction des observateurs Riverpod (`CubeUserController`) et centralisation des erreurs
+     globales (UI, async) dans Talker.
 
 ## État d'Avancement
 

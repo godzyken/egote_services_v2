@@ -80,3 +80,14 @@
   intégré. Cela empêche les exécutions superposées de tâches de synchronisation et assure un suivi
   transparent des états (`idle`, `syncing`, `success`, `error`) sans erreurs silencieuses.
 - **Statut** : Validé.
+
+## DEC-014 : Résilience Web Minifiée & Chargement Robuste d'Environnement (`Environment.load`)
+
+- **Date** : 2026
+- **Décision** : Implémenter une méthode robuste `Environment.load()` capable de gérer les
+  redirections SPA Netlify (pages 404 HTML) et les conversions de types Dart/JSON sur le Web.
+  Ajouter également des gardes d'initialisation (`_isInitialized`) sur `KeyValueDbHive` et
+  `KeyValueDbPrefs`, ainsi qu'une redirection globale des erreurs framework/async vers Talker,
+  garantissant l'absence d'erreurs en cascade (`NoSuchMethodError` / `TypeError`) lors des builds
+  Web minifiés.
+- **Statut** : Validé.

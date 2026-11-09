@@ -9,6 +9,9 @@
 - [x] Implémentation du trigger SQL Supabase (`supabase/migrations/002_devis_to_chantier_trigger.sql`) pour l'automatisation de la transformation Devis ➔ Chantier sans modifier les applications.
 - [x] Intégration de Talker (`talker`, `talker_flutter`) et du `TalkerProviderObserver` pour le logging centralisé et le suivi Riverpod.
 - [x] Implémentation du service de notifications multicanal en temps réel (`NotificationBridgeService`) et guide d'intégration e-mail Brevo/Supabase Edge Functions.
+- [x] Résolution des erreurs de minification Web, sécurisation du chargement d'environnement
+  (`Environment.load`) et des bases de données locales (`KeyValueDbHive`, `KeyValueDbPrefs`), et
+  centralisation des logs via Talker.
 
 ## En cours
 - [none] Toutes les tâches de la roadmap de transformation sont complétées avec succès.
