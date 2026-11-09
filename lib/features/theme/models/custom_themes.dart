@@ -64,7 +64,6 @@ class CustomThemes {
       //
       visualDensity: FlexColorScheme.comfortablePlatformDensity,
       fontFamily: AppFonts.mainFont,
-      typography: Typography.material2021(platform: platform) as dynamic,
       platform: platform,
     );
 
@@ -153,7 +152,6 @@ class CustomThemes {
           //
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           fontFamily: AppFonts.mainFont,
-          typography: Typography.material2021(platform: platform) as dynamic,
           platform: platform,
         )
         as dynamic;
