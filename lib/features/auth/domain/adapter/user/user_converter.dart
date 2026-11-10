@@ -9,10 +9,25 @@ class UserConverter implements JsonConverter<User, Map<String, dynamic>> {
   Map<String, dynamic> toJson(User user) => user.toJson();
 
   @override
-  User fromJson(Map<String, dynamic> json) => User.fromJson(json)!;
+  User fromJson(Map<String, dynamic> json) {
+    // Sécurisation web minifié
+    final map = Map<String, dynamic>.from(json);
+    final user = User.fromJson(map);
+    if (user == null) {
+      throw FormatException('UserConverter: User.fromJson returned null');
+    }
+    return user;
+  }
 
   User fromFirestore(DocumentSnapshot doc) {
-    final map = doc.data() as Map<String, dynamic>;
-    return User.fromJson({...map, 'id': doc.id})!;
+    final raw = doc.data();
+    final map = raw is Map
+        ? Map<String, dynamic>.from(raw)
+        : <String, dynamic>{};
+    final user = User.fromJson({...map, 'id': doc.id});
+    if (user == null) {
+      throw FormatException('UserConverter.fromFirestore: null user');
+    }
+    return user;
   }
 }

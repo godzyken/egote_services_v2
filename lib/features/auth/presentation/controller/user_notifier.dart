@@ -88,8 +88,9 @@ class DateTimeNotifier extends Notifier<DateTime> {
   }
 }
 
-final currentProvider = NotifierProvider<UserNotifier, UserEntityModel?>(
+final currentProvider = NotifierProvider<UserNotifier, UserEntityModel>(
   UserNotifier.new,
+  name: 'currentProvider',
 );
 
 final userModelProvider = Provider<UserEntityModel>((ref) {
@@ -99,6 +100,7 @@ final userModelProvider = Provider<UserEntityModel>((ref) {
 
 final userNotifierProvider = NotifierProvider<UserNotifier, UserEntityModel>(
   UserNotifier.new,
+  name: 'userNotifierProvider',
 );
 
 final userFormStateNotifierProvider =

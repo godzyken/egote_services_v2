@@ -126,9 +126,31 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
   UserModel _buildUserModel(supabase.User user) {
     final int parsedId = int.tryParse(user.id) ?? user.id.hashCode;
 
+    // Mapping manuel sûr (pas de fromJson sur le JSON Supabase)
+    final entity = UserEntityModel(
+      id: UserId(value: parsedId),
+      name:
+          user.userMetadata?['name'] as String? ??
+          user.email?.split('@').first ??
+          '',
+      role: user.userMetadata?['role'] as String? ?? '',
+      isComplete: user.emailConfirmedAt != null,
+      createdAt: DateTime.tryParse(user.createdAt) ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(user.updatedAt ?? '') ?? DateTime.now(),
+      emailConfirmedAt: user.emailConfirmedAt != null
+          ? DateTime.tryParse(user.emailConfirmedAt!)
+          : null,
+      phoneConfirmedAt: user.phoneConfirmedAt != null
+          ? DateTime.tryParse(user.phoneConfirmedAt!)
+          : null,
+      lastSignInAt: user.lastSignInAt != null
+          ? DateTime.tryParse(user.lastSignInAt!)
+          : null,
+    );
+
     return UserModel.complete(
       id: UserId(value: parsedId),
-      userEntityModel: UserEntityModel.fromJson(user.toJson()),
+      userEntityModel: entity,
       authUser: user,
       cubeUser: CubeUser(),
     );
