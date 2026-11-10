@@ -2,8 +2,8 @@ import 'dart:developer' as dev;
 
 import 'package:egote_services_v2/config/providers.dart' as providers;
 import 'package:egote_services_v2/config/providers/talker/talker_providers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,6 +55,22 @@ Future<ProviderContainer> bootstrap() async {
         useConsoleLogs: true,
       ),
     );
+
+    ErrorWidget.builder = (FlutterErrorDetails details) {
+      debugPrint('ErrorWidget: ${details.exception}');
+      return Material(
+        color: Colors.white,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Text(
+              'Erreur UI:\n${details.exception}',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
+    };
 
     // Wire up global Flutter framework error handling to Talker
     FlutterError.onError = (details) {

@@ -77,15 +77,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         themeMode: safeThemeMode(),
         scrollBehavior: const AppScrollBehavior(),
         locale: lang,
-        builder: (context, child) {
-          ErrorWidget.builder = (details) {
-            debugPrint('ErrorWidget: ${details.exception}');
-            return Material(
-              child: Center(child: Text('Erreur UI: ${details.exception}')),
-            );
-          };
-          return child ?? const SizedBox.shrink();
-        },
+        builder: (context, child) => child ?? const SizedBox.shrink(),
       ),
     );
   }

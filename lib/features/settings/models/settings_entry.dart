@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/domain/values/key_value_db.dart';
@@ -48,9 +49,37 @@ class SettingsEntry<T> extends Notifier<T> {
     final KeyValueDb db = ref.read(keyValueDbProvider);
     // Read the value for the provided key from the used key-value DB.
     // The db value get returns the default value if key does not exist in it.
-    final T newValue = db.get(key, defaultValue);
-    // Only set state to db value if it is different from current value.
-    if (state != newValue) state = newValue;
+    try {
+      final dynamic raw = db.get(key, defaultValue);
+
+      if (raw is T) {
+        if (state != raw) state = raw;
+        return;
+      }
+
+      // Récupération défensive pour les enums courants
+      if (T == ThemeMode && raw is String) {
+        final parsed = ThemeMode.values.cast<ThemeMode?>().firstWhere(
+          (e) => e.toString() == raw || e?.name == raw,
+          orElse: () => null,
+        );
+        state = (parsed ?? defaultValue) as T;
+        return;
+      }
+
+      if (T == ThemeMode && raw is int) {
+        if (raw >= 0 && raw < ThemeMode.values.length) {
+          state = ThemeMode.values[raw] as T;
+          return;
+        }
+      }
+
+      // Fallback sûr
+      state = defaultValue;
+    } catch (e) {
+      debugPrint('SettingsEntry.init failed for $key: $e → default');
+      state = defaultValue;
+    }
   }
 
   /// Update the settings state with a new value.
