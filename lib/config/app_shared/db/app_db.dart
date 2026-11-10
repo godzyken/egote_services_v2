@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../features/common/domain/values/used_key_value_db.dart';
 
 /// App name and info constants.
@@ -7,7 +9,8 @@ class AppDb {
   AppDb._();
 
   /// Default used [KeyValueDb] implementation.
-  static const UsedKeyValueDb keyValue = UsedKeyValueDb.hive;
+  static UsedKeyValueDb get keyValue =>
+      kIsWeb ? UsedKeyValueDb.sharedPreferences : UsedKeyValueDb.hive;
 
   /// Used file name for the local [KeyValueDb].
   ///
