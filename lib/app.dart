@@ -37,6 +37,31 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     final router = ref.read(goRouterProvider);
     final lang = ref.watch(localizationProvider);
     final datadog = ref.read(datadogInstanceProvider);
+
+    ThemeData safeLight() {
+      try {
+        return ref.watch(lightThemeProvider);
+      } catch (_) {
+        return ThemeData.light(useMaterial3: true);
+      }
+    }
+
+    ThemeData safeDark() {
+      try {
+        return ref.watch(darkThemeProvider);
+      } catch (_) {
+        return ThemeData.dark(useMaterial3: true);
+      }
+    }
+
+    ThemeMode safeThemeMode() {
+      try {
+        return ref.watch(Settings.themeModeProvider);
+      } catch (_) {
+        return ThemeMode.system;
+      }
+    }
+
     return RumUserActionDetector(
       rum: datadog.rum,
       child: MaterialApp.router(
@@ -47,32 +72,20 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         routerConfig: router,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        theme: () {
-          try {
-            return ref.watch(lightThemeProvider);
-          } catch (e, st) {
-            debugPrint('lightThemeProvider failed: $e\n$st');
-            return ThemeData.light(useMaterial3: true); // fallback sûr
-          }
-        }(),
-        darkTheme: () {
-          try {
-            return ref.watch(darkThemeProvider);
-          } catch (e, st) {
-            debugPrint('darkThemeProvider failed: $e\n$st');
-            return ThemeData.dark(useMaterial3: true);
-          }
-        }(),
-        themeMode: () {
-          try {
-            return ref.watch(Settings.themeModeProvider);
-          } catch (e, st) {
-            debugPrint('themeModeProvider failed: $e\n$st');
-            return ThemeMode.system;
-          }
-        }(),
+        theme: safeLight(),
+        darkTheme: safeDark(),
+        themeMode: safeThemeMode(),
         scrollBehavior: const AppScrollBehavior(),
         locale: lang,
+        builder: (context, child) {
+          ErrorWidget.builder = (details) {
+            debugPrint('ErrorWidget: ${details.exception}');
+            return Material(
+              child: Center(child: Text('Erreur UI: ${details.exception}')),
+            );
+          };
+          return child ?? const SizedBox.shrink();
+        },
       ),
     );
   }
