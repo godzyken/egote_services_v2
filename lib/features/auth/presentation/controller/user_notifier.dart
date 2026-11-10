@@ -94,9 +94,8 @@ final currentProvider = NotifierProvider<UserNotifier, UserEntityModel>(
 );
 
 final userModelProvider = Provider<UserEntityModel>((ref) {
-  Map<String, dynamic> json = UserEntityModel.empty().toJson();
-  return UserEntityModel.fromJson(json);
-});
+  return UserEntityModel.empty();
+}, name: 'userModelProvider');
 
 final userNotifierProvider = NotifierProvider<UserNotifier, UserEntityModel>(
   UserNotifier.new,
