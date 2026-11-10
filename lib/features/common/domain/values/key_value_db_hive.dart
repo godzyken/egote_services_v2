@@ -138,11 +138,32 @@ class KeyValueDbHive implements KeyValueDb {
         }
         return defaultValue;
       }
-      final T value = _hiveBox.get(key, defaultValue: defaultValue) as T;
-      if (_debug) {
-        debugPrint('Hive get    : ["$key"] = $value (${value.runtimeType})');
+      final dynamic raw = _hiveBox.get(key, defaultValue: defaultValue);
+      // Cas le plus fréquent qui casse en minifié Web
+      if (T == Map<String, dynamic>) {
+        if (raw is Map<String, dynamic>) return raw as T;
+        if (raw is Map) {
+          try {
+            return Map<String, dynamic>.from(raw) as T;
+          } catch (_) {
+            return defaultValue;
+          }
+        }
+        return defaultValue;
       }
-      return value;
+
+      // Cast normal pour les types atomiques / enums adaptés
+      if (raw is T) return raw;
+
+      // Dernier recours
+      try {
+        return raw as T;
+      } catch (e) {
+        if (_debug) {
+          debugPrint('Hive get cast failed for key "$key": $e → defaultValue');
+        }
+        return defaultValue;
+      }
     } catch (e) {
       debugPrint('Hive get (load) ERROR');
       debugPrint(' Error message ...... : $e');

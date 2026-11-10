@@ -50,17 +50,44 @@ class KeyValueDbMem implements KeyValueDb {
   @override
   T get<T>(String key, T defaultValue) {
     try {
-      if (_memKeyValueDb.containsKey(key)) {
-        final T value = _memKeyValueDb[key] as T;
-        if (_debug) {
-          debugPrint('MemDB get   : ["$key"] = $value (${value.runtimeType})');
-        }
-        if (value == null) {
+      if (!_memKeyValueDb.containsKey(key)) {
+        return defaultValue;
+      }
+
+      final dynamic raw = _memKeyValueDb[key];
+
+      // null explicite
+      if (raw == null) {
+        // Si T est nullable on peut renvoyer null, sinon defaultValue
+        if (null is T) {
           return null as T;
-        } else {
-          return value;
         }
-      } else {
+        return defaultValue;
+      }
+
+      // Cas Map fréquent qui casse en minifié
+      if (T == Map<String, dynamic>) {
+        if (raw is Map<String, dynamic>) return raw as T;
+        if (raw is Map) {
+          try {
+            return Map<String, dynamic>.from(raw) as T;
+          } catch (_) {
+            return defaultValue;
+          }
+        }
+        return defaultValue;
+      }
+
+      // Cas normal
+      if (raw is T) return raw;
+
+      // Dernier recours contrôlé
+      try {
+        return raw as T;
+      } catch (e) {
+        if (_debug) {
+          debugPrint('MemDB get cast failed for key "$key": $e → defaultValue');
+        }
         return defaultValue;
       }
     } catch (e) {
@@ -68,9 +95,8 @@ class KeyValueDbMem implements KeyValueDb {
       debugPrint(' Error message ...... : $e');
       debugPrint(' Store key .......... : $key');
       debugPrint(' defaultValue ....... : $defaultValue');
+      return defaultValue;
     }
-    // If something went wrong we return the default value.
-    return defaultValue;
   }
 
   /// Put a settings [value] to the mem db, using [key], as key for the value.
