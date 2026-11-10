@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
 import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
-import 'package:egote_services_v2/config/routes/router.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
+import 'package:egote_services_v2/config/routes/router.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -47,9 +47,30 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         routerConfig: router,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        theme: ref.watch(lightThemeProvider),
-        darkTheme: ref.watch(darkThemeProvider),
-        themeMode: ref.watch(Settings.themeModeProvider),
+        theme: () {
+          try {
+            return ref.watch(lightThemeProvider);
+          } catch (e, st) {
+            debugPrint('lightThemeProvider failed: $e\n$st');
+            return ThemeData.light(useMaterial3: true); // fallback sûr
+          }
+        }(),
+        darkTheme: () {
+          try {
+            return ref.watch(darkThemeProvider);
+          } catch (e, st) {
+            debugPrint('darkThemeProvider failed: $e\n$st');
+            return ThemeData.dark(useMaterial3: true);
+          }
+        }(),
+        themeMode: () {
+          try {
+            return ref.watch(Settings.themeModeProvider);
+          } catch (e, st) {
+            debugPrint('themeModeProvider failed: $e\n$st');
+            return ThemeMode.system;
+          }
+        }(),
         scrollBehavior: const AppScrollBehavior(),
         locale: lang,
       ),
