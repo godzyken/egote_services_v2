@@ -43,40 +43,43 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _loadProfile() async {
-    setState(() {
-      _isLoading = true;
-    });
+    if (!mounted) return;
+    setState(() => _isLoading = true);
 
     try {
-      final userId = ref.watch(supabaseClientProvider).auth.currentUser!.id;
+      final currentUser = ref.read(supabaseClientProvider).auth.currentUser;
+      if (currentUser == null) {
+        if (mounted) context.showAlert('Utilisateur non connecté');
+        return;
+      }
 
-      if (widget.pid == userId) {
-        final data = (await ref
-            .watch(supabaseClientProvider)
-            .from('auth_users_table')
-            .select('*')
-            .eq('id', userId)
-            .single());
+      final userId = currentUser.id;
+      if (widget.pid != userId) {
+        if (mounted) context.showAlert('Profil non autorisé');
+        return;
+      }
 
-        setState(() {
-          _loadAuth(data['id']);
-          _isLoading = true;
-        });
+      final data = await ref
+          .read(supabaseClientProvider)
+          .from('auth_users_table')
+          .select('*')
+          .eq('id', userId)
+          .maybeSingle(); // préférable à .single() si la ligne peut manquer
+
+      if (data == null) {
+        if (mounted) context.showAlert('Profil introuvable');
+        return;
+      }
+
+      if (mounted) {
+        _loadAuth(data['id']);
       }
     } on supa_user_exception.PostgrestException catch (error) {
-      if (mounted) {
-        context.showAlert(error.message);
-      }
+      if (mounted) context.showAlert(error.message);
     } catch (e) {
-      if (mounted) {
-        context.showAlert(e.toString());
-      }
+      if (mounted) context.showAlert(e.toString());
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 

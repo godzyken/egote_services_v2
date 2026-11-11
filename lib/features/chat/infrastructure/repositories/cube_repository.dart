@@ -169,22 +169,35 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<cc.CubeSession> createPhoneAuthSession() async {
-    var phoneAuthIdToken = await auth.currentUser?.getIdToken();
-
-    if (phoneAuthIdToken == null) {
-      var accessToken = auth.currentUser!.refreshToken;
-      await cc.createSessionUsingFirebaseEmail(
-        DefaultFirebaseOptions.currentPlatform.projectId,
-        accessToken!,
-      );
-      return cc.CubeSessionManager.instance.activeSession!;
+    final currentUser = auth.currentUser;
+    if (currentUser == null) {
+      throw StateError('Aucun utilisateur Firebase connecté');
     }
 
-    await cc.createSessionUsingFirebasePhone(
-      DefaultFirebaseOptions.currentPlatform.projectId,
-      phoneAuthIdToken,
-    );
-    return cc.CubeSessionManager.instance.activeSession!;
+    final phoneAuthIdToken = await currentUser.getIdToken();
+
+    if (phoneAuthIdToken == null || phoneAuthIdToken.isEmpty) {
+      final accessToken = currentUser.refreshToken;
+      if (accessToken == null || accessToken.isEmpty) {
+        throw StateError('Aucun token d\'accès Firebase disponible pour Cube');
+      }
+
+      await cc.createSessionUsingFirebaseEmail(
+        DefaultFirebaseOptions.currentPlatform.projectId,
+        accessToken,
+      );
+    } else {
+      await cc.createSessionUsingFirebasePhone(
+        DefaultFirebaseOptions.currentPlatform.projectId,
+        phoneAuthIdToken,
+      );
+    }
+
+    final session = cc.CubeSessionManager.instance.activeSession;
+    if (session == null) {
+      throw StateError('Session Cube non créée');
+    }
+    return session;
   }
 }
 

@@ -167,43 +167,46 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         SharedPrefs.instance.init().then((sharedPrefs) async {
-          CubeUser? user = await sharedPrefs.getUser().then(
-            (savedUser) => savedUser!,
-          );
+          final CubeUser? user = await sharedPrefs.getUser();
 
-          if (user != null) {
-            if (!CubeChatConnection.instance.isAuthenticated()) {
-              if (LoginType.phone == sharedPrefs.getLoginType()) {
-                if (CubeSessionManager.instance.isActiveSessionValid()) {
-                  user.password =
-                      CubeSessionManager.instance.activeSession?.token;
-                } else {
-                  final firebaseUser = FirebaseAuth.instance.currentUser;
-                  if (firebaseUser != null) {
-                    final accessToken = await firebaseUser.getIdToken();
-                    final projectId =
-                        DefaultFirebaseOptions.currentPlatform.projectId;
+          if (user == null) return;
 
-                    var phoneAuthSession =
-                        await createSessionUsingFirebasePhone(
-                          projectId,
-                          accessToken!,
-                        );
-                    user.password = phoneAuthSession.token;
-                  }
-                }
+          if (!CubeChatConnection.instance.isAuthenticated()) {
+            if (LoginType.phone == sharedPrefs.getLoginType()) {
+              if (CubeSessionManager.instance.isActiveSessionValid()) {
+                user.password =
+                    CubeSessionManager.instance.activeSession?.token;
+              } else {
+                final firebaseUser = FirebaseAuth.instance.currentUser;
+                if (firebaseUser == null) return;
+
+                final accessToken = await firebaseUser.getIdToken();
+                if (accessToken == null) return;
+
+                final projectId =
+                    DefaultFirebaseOptions.currentPlatform.projectId;
+
+                final phoneAuthSession = await createSessionUsingFirebasePhone(
+                  projectId,
+                  accessToken,
+                );
+                user.password = phoneAuthSession.token;
               }
-              CubeChatConnection.instance.login(user);
-            } else {
-              CubeChatConnection.instance.markActive();
             }
+            CubeChatConnection.instance.login(user);
+          } else {
+            CubeChatConnection.instance.markActive();
           }
         });
+        break;
+
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
         if (CubeChatConnection.instance.isAuthenticated()) {
           CubeChatConnection.instance.markInactive();
         }
+        break;
+
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
         break;

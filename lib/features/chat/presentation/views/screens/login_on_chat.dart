@@ -139,20 +139,23 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
 
   Future<Widget> getFilterChipsWidgets() async {
     if (_isLoginContinues) return const SizedBox.shrink();
-    SharedPrefs sharedPrefs = await SharedPrefs.instance.init();
-    var loginType = sharedPrefs.getLoginType();
-    var user = await sharedPrefs.getUser().then((value) => value);
-    if ((user != null && loginType == null) || loginType != null) {
+
+    final sharedPrefs = await SharedPrefs.instance.init();
+    final loginType = sharedPrefs.getLoginType();
+    final user = await sharedPrefs.getUser();
+
+    // Session sauvée → tenter auto-login
+    if (user != null || loginType != null) {
       _loginToCCWithSavedUser(loginType ?? LoginType.login);
       return const SizedBox.shrink();
-    } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[_buildTextFields(), _buildButtons()],
-      );
     }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[_buildTextFields(), _buildButtons()],
+    );
   }
 
   Widget _buildTextFields() {
