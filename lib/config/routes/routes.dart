@@ -7,7 +7,7 @@ import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_list_screen.dart';
 import 'package:egote_services_v2/features/home/presentation/view/home_screen.dart';
-import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
+import 'package:egote_services_v2/features/home/presentation/widget/godzylogo_screen.dart';
 import 'package:egote_services_v2/features/settings/presentation/view/gallery/gallery.dart';
 import 'package:egote_services_v2/features/settings/presentation/view/settings_ui_page.dart';
 import 'package:egote_services_v2/features/sketch/presentation/view/drawing_page.dart';
@@ -191,7 +191,7 @@ class CoreModule extends AppModule {
     GoRoute(
       path: '/godzyRoute',
       name: 'godzyRoute',
-      builder: (context, state) => Godzylogo(key: state.pageKey),
+      builder: (context, state) => GodzyLogoScreen(key: state.pageKey),
     ),
     GoRoute(
       path: '/avisRoute',

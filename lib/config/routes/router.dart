@@ -28,17 +28,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: true,
     refreshListenable: notifier,
     observers: [
-      DatadogNavigationObserver(
+      /*DatadogNavigationObserver(
         datadogSdk: DatadogSdk.instance,
         viewInfoExtractor: infoExtractor,
-      ),
+      ),*/
     ],
     routes: [
       ShellRoute(
         navigatorKey: _shellRouterKey,
-        builder: (context, state, child) {
+        builder: (context, state, child) => child,
+        /*{
           return SharedAppData(child: child);
-        },
+        }*/
         observers: [AppRouterObserver(), sentryNavigatorObserver],
         routes: allRoutes,
       ),

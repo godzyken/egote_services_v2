@@ -1,9 +1,15 @@
 import 'dart:async';
 
+import 'package:egote_services_v2/config/sync/sync_notifier.dart';
+import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../gen/assets.gen.dart';
+import '../../application/home_controller.dart';
+import '../widget/godzylogo_mark.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -40,11 +46,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext? context) {
-    return const Scaffold(body: Center(child: Text('HomeScreen OK')));
-    /*
     return Consumer(
       builder: (context, ref, child) {
-        var network = ref.watch(networkAwareProvider);
+        final network = ref.watch(networkAwareProvider);
         if (network == NetWorkStatus.off) {
           return Center(child: Text('${context.tr?.noNetwork}'));
         }
@@ -172,16 +176,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => context.go('/godzyRoute'),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              clipBehavior: Clip.hardEdge,
-              child: const Godzylogo(),
-            ),
+            child: const GodzyLogoMark(size: 40),
           ),
         );
       },
     );
-*/
   }
 
   @override
