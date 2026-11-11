@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../../../../config/cube_config/cube_config.dart';
 import '../../../../../config/providers/cube/cube_providers.dart';
@@ -407,8 +406,13 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     createSession(user)
         .then((cubeSession) {
           log("createSession cubeSession: $cubeSession");
+          final sessionUser = cubeSession.user;
+          if (sessionUser == null) {
+            _processLoginError(Exception("Cube session user is null"));
+            return;
+          }
           var tempUser = user;
-          user = cubeSession.user!..password = tempUser.password;
+          user = sessionUser..password = tempUser.password;
           if (saveUser) {
             SharedPrefs.instance.init().then((sharedPrefs) {
               sharedPrefs.saveNewUser(
@@ -441,8 +445,16 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
       repo
           .createPhoneAuthSession()
           .then((session) {
+            final sessionUser = session.user;
+            final token = session.token;
+            if (sessionUser == null || token == null) {
+              _processLoginError(
+                Exception("Phone auth session user or token is null"),
+              );
+              return;
+            }
             PushNotificationsManager.instance.init(ref);
-            _loginToCubeChat(context, session.user!..password = session.token);
+            _loginToCubeChat(context, sessionUser..password = token);
           })
           .catchError((error) {
             _processLoginError(error);
@@ -531,19 +543,19 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
         });
   }
 
-  void _processLoginError(Exception? exception) {
+  void _processLoginError(dynamic exception) {
     log("Login error $exception");
     setState(() {
       _isLoginContinues = false;
     });
-    context.showAlert(exception!.toString());
+    context.showAlert(exception?.toString() ?? 'Erreur inconnue');
   }
 
   void navigateToNextScreen(CubeUser cubeUser, CubeDialog? dialog) {
-    final cid = SharedPrefs.instance.getSelectedDialogId();
+    final cid = SharedPrefs.instance.getSelectedDialogId() ?? '';
     context.pushReplacementNamed(
       'select_dialog',
-      pathParameters: {'cid': cid!},
+      pathParameters: {'cid': cid},
       extra: {USER_ARG_NAME: cubeUser.fullName, DIALOG_ARG_NAME: dialog?.name},
     );
 
@@ -558,14 +570,11 @@ class _LoginOnChatState extends ConsumerState<LoginOnChat> {
     }
   }
 
-  void handleError(ExceptionCause? object, StackTrace stackTrace) {
-    if (object!.exception && object.stackTrace) {
-      stackTrace = object.stackTrace;
-
-      log('HandleError: ${object.exception}  with stackTrace : $stackTrace');
-      return _processLoginError(object.exception);
+  void handleError(dynamic object, StackTrace stackTrace) {
+    if (object != null) {
+      log('HandleError: $object with stackTrace : $stackTrace');
+      return _processLoginError(object);
     }
-
     return;
   }
 }

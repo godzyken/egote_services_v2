@@ -49,19 +49,20 @@ class SharedPrefs {
 
     prefs.setString(prefLoginType, loginType.name);
 
-    if (cubeUser.login != null) prefs.setString(prefUserLogin, cubeUser.login!);
-    if (cubeUser.email != null) prefs.setString(prefUserEmail, cubeUser.email!);
-    if (cubeUser.phone != null) prefs.setString(prefUserPhone, cubeUser.phone!);
-    if (cubeUser.password != null) {
-      prefs.setString(prefUserPsw, cubeUser.password!);
-    }
-    if (cubeUser.fullName != null) {
-      prefs.setString(prefUserName, cubeUser.fullName!);
-    }
-    prefs.setInt(prefUserId, cubeUser.id!);
-    if (cubeUser.avatar != null) {
-      prefs.setString(prefUserAvatar, cubeUser.avatar!);
-    }
+    final login = cubeUser.login;
+    if (login != null) prefs.setString(prefUserLogin, login);
+    final email = cubeUser.email;
+    if (email != null) prefs.setString(prefUserEmail, email);
+    final phone = cubeUser.phone;
+    if (phone != null) prefs.setString(prefUserPhone, phone);
+    final password = cubeUser.password;
+    if (password != null) prefs.setString(prefUserPsw, password);
+    final fullName = cubeUser.fullName;
+    if (fullName != null) prefs.setString(prefUserName, fullName);
+    final id = cubeUser.id;
+    if (id != null) prefs.setInt(prefUserId, id);
+    final avatar = cubeUser.avatar;
+    if (avatar != null) prefs.setString(prefUserAvatar, avatar);
   }
 
   /* startSession(CubeSession cubeSession, bool isStart) async {

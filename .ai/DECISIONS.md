@@ -115,3 +115,13 @@
 - **Statut** : Validé (à implémenter sur la branche `feature/graph-engineering-observability`).
 - **Références** : Karpathy Graph Engineering Systems (synthèse 2026), DEC-003 (Talker), DEC-008
   (TalkerProviderObserver).
+
+## DEC-016 : Service de Mise à Jour Automatique et Invalidation Intelligente du Cache
+
+- **Date** : 2026-03-31
+- **Décision** : Implémenter `AppUpdateService` et l'intégrer dans le processus de démarrage
+  (`bootstrap.dart`). Ce service compare la version actuelle (`PackageInfo.version`) avec la
+  dernière version connue stockée dans `SharedPreferences` (`last_known_version`). En cas de mise à
+  jour de version, il purge automatiquement le cache local obsolète (SharedPreferences et boîtes
+  Hive) sans exiger de déconnexion manuelle ni de vidage de cache par l'utilisateur.
+- **Statut** : Validé et testé (`app_update_service_test.dart`).

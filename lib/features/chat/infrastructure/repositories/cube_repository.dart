@@ -141,18 +141,27 @@ class CubeRepository implements CubeRepositoryInterface {
 
   @override
   Future<cc.CubeFile> getUploadingImageFuture(FilePickerResult result) async {
+    final file = result.files.single;
     if (kIsWeb) {
+      final bytes = file.bytes;
+      if (bytes == null) {
+        throw StateError('Aucun octet de fichier disponible pour le web');
+      }
       return cc.uploadRawFile(
-        result.files.single.bytes!,
-        result.files.single.name,
+        bytes,
+        file.name,
         isPublic: true,
         onProgress: (progress) {
           developer.log("uploadImageFile progress= $progress");
         },
       );
     } else {
+      final path = file.path;
+      if (path == null) {
+        throw StateError('Aucun chemin de fichier disponible');
+      }
       return cc.uploadFile(
-        File(result.files.single.path!),
+        File(path),
         isPublic: true,
         onProgress: (progress) {
           developer.log("uploadImageFile progress= $progress");

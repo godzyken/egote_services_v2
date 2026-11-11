@@ -42,12 +42,14 @@ class CubeUserRepository implements CubeUserRepositoryInterface {
 
   @override
   Future<CubeUser> getCubeUserById() async {
-    // If no ID is provided, we might be getting the current user or this is a bug in the interface
-    // For now, let's assume it fetches the current user if possible or throw
     final currentSession = CubeSessionManager.instance.activeSession;
-    if (currentSession != null && currentSession.userId != null) {
-      final result = await getUserById(currentSession.userId!);
-      return result!;
+    final userId = currentSession?.userId;
+    if (currentSession != null && userId != null) {
+      final result = await getUserById(userId);
+      if (result == null) {
+        throw Exception("Cube user not found for ID: $userId");
+      }
+      return result;
     }
     throw Exception("No active session to get current user by ID");
   }
@@ -59,7 +61,12 @@ class CubeUserRepository implements CubeUserRepositoryInterface {
     try {
       var result =
           await (getAllUsersByIds(ids) as FutureOr<PagedResult<CubeUser>>);
-      users.addAll({for (var item in result.items) item.id!: item});
+      for (var item in result.items) {
+        final id = item.id;
+        if (id != null) {
+          users[id] = item;
+        }
+      }
     } catch (ex) {
       log("exception= $ex");
     }

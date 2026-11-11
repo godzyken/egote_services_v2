@@ -22,7 +22,11 @@ class AuthController extends AsyncNotifier<UserModel?> {
   Future<UserModel?> _initialize() async {
     try {
       final res = await _repository.client.refreshSession();
-      final user = UserModel.fromJson(res.user!.toJson());
+      final supabaseUser = res.user;
+      if (supabaseUser == null) {
+        return null;
+      }
+      final user = UserModel.fromJson(supabaseUser.toJson());
       _updateAuthState();
 
       await Future.delayed(const Duration(seconds: 3));
@@ -71,7 +75,9 @@ class AuthController extends AsyncNotifier<UserModel?> {
       if (refreshToken == null) return;
 
       final res = await _repository.client.setSession(refreshToken);
-      state = AsyncValue.data(UserModel.fromJson(res.user!.toJson()));
+      final supabaseUser = res.user;
+      if (supabaseUser == null) return;
+      state = AsyncValue.data(UserModel.fromJson(supabaseUser.toJson()));
       _updateAuthState();
     } on PlatformException catch (e) {
       developer.log(
@@ -100,15 +106,18 @@ class AuthController extends AsyncNotifier<UserModel?> {
   }
 
   Future<String?> getInitialLink(String? refreshToken) async {
-    final res = await _repository.client.setSession(refreshToken!);
-    if (res.session!.isExpired) return res.session?.providerRefreshToken;
+    if (refreshToken == null) return null;
+    final res = await _repository.client.setSession(refreshToken);
+    final session = res.session;
+    if (session == null || session.isExpired)
+      return session?.providerRefreshToken;
     if (state.asData?.value != null) {
-      if (state.asData?.value?.authUser.id == res.session?.user.id) {
-        return res.session?.accessToken;
+      if (state.asData?.value?.authUser.id == session.user.id) {
+        return session.accessToken;
       }
-      return res.session?.refreshToken;
+      return session.refreshToken;
     }
-    return res.session?.providerToken;
+    return session.providerToken;
   }
 }
 
@@ -153,8 +162,11 @@ class AutoAuthController extends AsyncNotifier<UserModel?> {
     });
 
     _repository.cubeUserStateChange((cubeUser) {
+      if (cubeUser == null) return;
+      final cubeUserId = cubeUser.id;
+      if (cubeUserId == null) return;
       final user = UserModel.complete(
-        id: UserId(value: cubeUser!.id!),
+        id: UserId(value: cubeUserId),
         userEntityModel: ref.read(userNotifierProvider),
         authUser: state.asData?.value?.authUser ?? _createEmptyAuthUser(),
         cubeUser: cubeUser,

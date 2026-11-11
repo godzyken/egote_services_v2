@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa_user_exception;
 
+import '../../../../../config/app_shared/images/list_local.dart';
 import '../../../../../config/providers/firebase/firebase_providers.dart';
 import 'auth_screens.dart';
 
@@ -123,20 +124,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Future<void> _loadAuth(UserModel data) async {
     try {
-      final userId = ref.watch(authStreamProvider).value!.uid;
+      final authUser = ref.read(authStreamProvider).value;
+      final userId = authUser?.uid;
+      if (userId == null) return;
 
       if (widget.uid == userId) {
         final doc = (await ref
-            .watch(firebaseFirestoreProvider)
+            .read(firebaseFirestoreProvider)
             .collection('users')
             .doc(data.authUser.id)
             .get());
 
         if (doc.exists && doc.id == widget.uid) {
-          setState(() {
-            _isLoading = true;
-            _userEntityModel = UserEntityModel.fromFirestore(doc);
-          });
+          if (mounted) {
+            setState(() {
+              _isLoading = true;
+              _userEntityModel = UserEntityModel.fromFirestore(doc);
+            });
+          }
         }
       }
     } catch (e) {
@@ -145,9 +150,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       }
     }
 
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _updatePhoto(User user) async {
@@ -193,11 +200,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Scaffold authUserComplete(User? user, BuildContext _) {
+    final model = _userEntityModel;
+    if (user == null || model == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text(context.tr!.noData)),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    final photoUrl = user.photoURL ?? LocalImages.venomJpg;
+
     return Scaffold(
       appBar: AppBar(
-        title: _userEntityModel!.isComplete
+        title: model.isComplete
             ? ProfileWidget(
-                imagePath: user!.photoURL!,
+                imagePath: photoUrl,
                 onClicked: () async {
                   await _updatePhoto(user);
                 },
@@ -222,7 +238,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(bottom: 8),
-                child: Image.network(user!.photoURL!),
+                child: Image.network(photoUrl),
               ),
               Text(
                 '${user.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
@@ -238,14 +254,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    user.providerData.first.providerId,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
+                  if (user.providerData.isNotEmpty)
+                    Text(
+                      user.providerData.first.providerId,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
                   for (var provider in user.providerData)
                     Dismissible(
-                      key: Key(provider.uid!),
+                      key: Key(provider.uid ?? ''),
                       onDismissed: (action) => user.unlink(provider.providerId),
                       child: Card(
                         color: Colors.grey[300],
@@ -304,11 +321,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Scaffold userModelComplete(User? user, BuildContext _) {
+    final model = _userEntityModel;
+    if (user == null || model == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text(context.tr!.noData)),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    final photoUrl = user.photoURL ?? LocalImages.venomJpg;
+
     return Scaffold(
       appBar: AppBar(
-        title: _userEntityModel!.isComplete
+        title: model.isComplete
             ? ProfileWidget(
-                imagePath: user!.photoURL!,
+                imagePath: photoUrl,
                 onClicked: () async {
                   await _updatePhoto(user);
                 },
@@ -333,30 +359,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(bottom: 8),
-                child: Image.network(user!.photoURL!),
+                child: Image.network(photoUrl),
               ),
               Text(
                 '${user.isAnonymous ? '${context.tr!.userAnonymous}\n\n' : ''}'
                 '${context.tr!.email}: ${user.email} (${context.tr!.verified}: ${user.emailVerified})\n\n'
                 '${context.tr!.phoneNumber}: ${user.phoneNumber}\n\n'
-                '${context.tr!.name}: ${_userEntityModel!.name}\n\n\n'
-                'ID: ${_userEntityModel!.id}\n\n'
+                '${context.tr!.name}: ${model.name}\n\n\n'
+                'ID: ${model.id}\n\n'
                 '${context.tr!.tenantId}: ${user.tenantId}\n\n'
                 '${context.tr!.refresh} ${context.tr!.token}: ${user.refreshToken}\n\n\n'
-                '${context.tr!.created}: ${_userEntityModel!.createdAt}\n\n'
-                '${context.tr!.lastLogin}: ${_userEntityModel!.lastSignInAt}\n\n',
+                '${context.tr!.created}: ${model.createdAt}\n\n'
+                '${context.tr!.lastLogin}: ${model.lastSignInAt}\n\n',
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    user.providerData.first.providerId,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
+                  if (user.providerData.isNotEmpty)
+                    Text(
+                      user.providerData.first.providerId,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
                   for (var provider in user.providerData)
                     Dismissible(
-                      key: Key(provider.uid!),
+                      key: Key(provider.uid ?? ''),
                       onDismissed: (action) => user.unlink(provider.providerId),
                       child: Card(
                         color: Colors.grey[300],

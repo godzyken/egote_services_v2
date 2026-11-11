@@ -2,6 +2,7 @@ import 'dart:developer' as dev;
 
 import 'package:egote_services_v2/config/providers.dart' as providers;
 import 'package:egote_services_v2/config/providers/talker/talker_providers.dart';
+import 'package:egote_services_v2/config/services/app_update_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -204,6 +205,12 @@ Future<ProviderContainer> bootstrap() async {
     }
 
     await providers.initializeProvider(container);
+
+    try {
+      await container.read(appUpdateServiceProvider).checkAndHandleUpdate();
+    } catch (e) {
+      debugPrint('⚠️ [Bootstrap] AppUpdateService warning: $e');
+    }
   } catch (e, st) {
     debugPrint('❌ [Bootstrap] Critical initialization error: $e\n$st');
     try {
