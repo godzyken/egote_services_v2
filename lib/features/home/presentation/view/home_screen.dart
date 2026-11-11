@@ -1,13 +1,7 @@
 import 'dart:async';
 
-import 'package:egote_services_v2/config/sync/sync_notifier.dart';
-import 'package:egote_services_v2/features/common/presentation/extensions/extensions.dart';
-import 'package:egote_services_v2/features/home/application/home_controller.dart';
-import 'package:egote_services_v2/features/home/presentation/widget/godzylogo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../gen/assets.gen.dart';
 
@@ -46,6 +40,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext? context) {
+    return const Scaffold(body: Center(child: Text('HomeScreen OK')));
+    /*
     return Consumer(
       builder: (context, ref, child) {
         var network = ref.watch(networkAwareProvider);
@@ -185,6 +181,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         );
       },
     );
+*/
   }
 
   @override
