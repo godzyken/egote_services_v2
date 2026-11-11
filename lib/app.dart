@@ -7,7 +7,6 @@ import 'package:egote_services_v2/config/providers/localizations/localizations_p
 import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/config/routes/router.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
-import 'package:egote_services_v2/features/settings/controllers/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,13 +53,13 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       }
     }
 
-    ThemeMode safeThemeMode() {
+    /*ThemeMode safeThemeMode() {
       try {
         return ref.watch(Settings.themeModeProvider);
       } catch (_) {
         return ThemeMode.system;
       }
-    }
+    }*/
 
     final materialApp = MaterialApp.router(
       title: F.title,
@@ -72,7 +71,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       supportedLocales: AppLocalizations.supportedLocales,
       theme: safeLight(),
       darkTheme: safeDark(),
-      themeMode: safeThemeMode(),
+      themeMode: ThemeMode.system,
       scrollBehavior: const AppScrollBehavior(),
       locale: lang,
       builder: (context, child) => child ?? const SizedBox.shrink(),
