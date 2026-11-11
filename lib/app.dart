@@ -62,24 +62,26 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       }
     }
 
-    return RumUserActionDetector(
-      rum: datadog.rum,
-      child: MaterialApp.router(
-        title: F.title,
-        // routerDelegate: router.routerDelegate,
-        // routeInformationParser: router.routeInformationParser,
-        // routeInformationProvider: router.routeInformationProvider,
-        routerConfig: router,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        theme: safeLight(),
-        darkTheme: safeDark(),
-        themeMode: safeThemeMode(),
-        scrollBehavior: const AppScrollBehavior(),
-        locale: lang,
-        builder: (context, child) => child ?? const SizedBox.shrink(),
-      ),
+    final materialApp = MaterialApp.router(
+      title: F.title,
+      // routerDelegate: router.routerDelegate,
+      // routeInformationParser: router.routeInformationParser,
+      // routeInformationProvider: router.routeInformationProvider,
+      routerConfig: router,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      theme: safeLight(),
+      darkTheme: safeDark(),
+      themeMode: safeThemeMode(),
+      scrollBehavior: const AppScrollBehavior(),
+      locale: lang,
+      builder: (context, child) => child ?? const SizedBox.shrink(),
     );
+
+    final rum = datadog.rum;
+    if (rum == null) return materialApp;
+
+    return RumUserActionDetector(rum: datadog.rum, child: materialApp);
   }
 
   @override
