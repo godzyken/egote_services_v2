@@ -100,9 +100,12 @@ final authStreamProvider = StreamProvider.autoDispose<User?>((ref) {
 });
 
 final idTokenStreamProvider = StreamProvider.autoDispose((ref) {
-  return ref.watch(firebaseAuthProvider).idTokenChanges().map((event) {
-    if (event?.refreshToken != null) {
-      return event!.getIdToken(true);
+  return ref.watch(firebaseAuthProvider).idTokenChanges().asyncMap((
+    event,
+  ) async {
+    final refreshToken = event?.refreshToken;
+    if (refreshToken != null && event != null) {
+      return await event.getIdToken(true);
     } else {
       return null;
     }
