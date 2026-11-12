@@ -125,3 +125,14 @@
   jour de version, il purge automatiquement le cache local obsolète (SharedPreferences et boîtes
   Hive) sans exiger de déconnexion manuelle ni de vidage de cache par l'utilisateur.
 - **Statut** : Validé et testé (`app_update_service_test.dart`).
+
+## DEC-017 : Intégration Sécurisée de `RumUserActionDetector` et `DatadogNavigationObserver` dans le
+`ShellRoute`
+
+- **Date** : 2026-03-31
+- **Décision** : Positionner `RumUserActionDetector` au sein du `ShellRoute` avec un garde de
+  sécurité vérifiant si `DatadogSdk.instance.rum` n'est pas `null`
+  (`if (rum == null) return child;`), évitant ainsi tout risque d'écran blanc ou d'initialisation
+  prématurée. Réactiver simultanément `DatadogNavigationObserver` dans les observateurs du routeur
+  pour assurer un suivi précis des vues RUM sans perturber le cycle de vie de GoRouter.
+- **Statut** : Validé.

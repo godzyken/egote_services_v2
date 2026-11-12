@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:connectycube_sdk/connectycube_chat.dart';
-import 'package:datadog_flutter_plugin/datadog_flutter_plugin.dart';
 import 'package:egote_services_v2/config/providers/localizations/localizations_provider.dart';
-import 'package:egote_services_v2/config/providers/watchdog/datadog_config.dart';
 import 'package:egote_services_v2/config/routes/router.dart';
 import 'package:egote_services_v2/features/common/presentation/controller/providers/custom_drawer/drawer_width_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,7 +33,6 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final router = ref.read(goRouterProvider);
     final lang = ref.watch(localizationProvider);
-    final datadog = ref.read(datadogInstanceProvider);
 
     ThemeData safeLight() {
       try {
@@ -61,7 +58,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       }
     }*/
 
-    final materialApp = MaterialApp.router(
+    return MaterialApp.router(
       title: F.title,
       // routerDelegate: router.routerDelegate,
       // routeInformationParser: router.routeInformationParser,
@@ -74,13 +71,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       themeMode: ThemeMode.system,
       scrollBehavior: const AppScrollBehavior(),
       locale: lang,
-      builder: (context, child) => child ?? const SizedBox.shrink(),
     );
-
-    final rum = datadog.rum;
-    if (rum == null) return materialApp;
-
-    return RumUserActionDetector(rum: datadog.rum, child: materialApp);
   }
 
   @override

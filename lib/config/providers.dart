@@ -60,12 +60,12 @@ Future<void> initializeProvider(ProviderContainer container) async {
     policy: kIsWeb ? BootPolicy.nonBlocking : BootPolicy.blocking,
   );
 
-  // 2. Supabase initialization (strictly blocking)
+  // 2. Supabase initialization (non-blocking on web, blocking on mobile)
   await initProviderSafely(
     container,
     supabaseInitProvider,
     name: 'supabaseInitProvider',
-    policy: BootPolicy.blocking,
+    policy: kIsWeb ? BootPolicy.nonBlocking : BootPolicy.blocking,
   );
 
   // 3. User future initialization (non-blocking on web, blocking on mobile)

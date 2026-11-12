@@ -11,31 +11,41 @@ import '../../environements/environment.dart';
 
 // 1. Initialisation asynchrone de Supabase
 final supabaseInitProvider = FutureProvider<supabase.Supabase>((ref) async {
-  final env = await Environment.load();
+  try {
+    final env = await Environment.load();
 
-  final client = supabase.GoTrueClient(
-    url: env.supabaseUrl,
-    autoRefreshToken: true,
-    headers: {
-      "apiKey": env.supabaseAnonKey,
-      "Authorization": "Bearer ${env.supabaseAnonKey}",
-    },
-  );
+    final client = supabase.GoTrueClient(
+      url: env.supabaseUrl,
+      autoRefreshToken: true,
+      headers: {
+        "apiKey": env.supabaseAnonKey,
+        "Authorization": "Bearer ${env.supabaseAnonKey}",
+      },
+    );
 
-  return await supabase.Supabase.initialize(
-    url: env.supabaseUrl,
-    anonKey: env.supabaseAnonKey,
-    headers: client.headers,
-    authOptions: const supabase.FlutterAuthClientOptions(
-      authFlowType: supabase.AuthFlowType.pkce,
-    ),
-    realtimeClientOptions: const supabase.RealtimeClientOptions(
-      logLevel: RealtimeLogLevel.info,
-      eventsPerSecond: 2,
-    ),
-    storageOptions: const supabase.StorageClientOptions(retryAttempts: 10),
-    debug: kDebugMode,
-  );
+    return await supabase.Supabase.initialize(
+      url: env.supabaseUrl,
+      anonKey: env.supabaseAnonKey,
+      headers: client.headers,
+      authOptions: const supabase.FlutterAuthClientOptions(
+        authFlowType: supabase.AuthFlowType.pkce,
+      ),
+      realtimeClientOptions: const supabase.RealtimeClientOptions(
+        logLevel: RealtimeLogLevel.info,
+        eventsPerSecond: 2,
+      ),
+      storageOptions: const supabase.StorageClientOptions(retryAttempts: 10),
+      debug: kDebugMode,
+    );
+  } catch (e, stack) {
+    developer.log(
+      'Supabase init failed (non-blocking on web).\n$e',
+      name: 'Supabase',
+      error: e,
+      stackTrace: stack,
+    );
+    rethrow;
+  }
 }, name: 'Initialisation de supabase provider');
 
 // 2. Accès à l'instance Supabase
