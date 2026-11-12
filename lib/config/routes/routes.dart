@@ -57,7 +57,9 @@ class CoreModule extends AppModule {
                   name: 'userForm',
                   builder: (context, state) => AddUserFormScreen(
                     key: state.pageKey,
-                    userEntityModel: state.extra as UserEntityModel?,
+                    userEntityModel: state.extra is UserEntityModel
+                        ? state.extra as UserEntityModel
+                        : null,
                   ),
                 ),
               ],
@@ -86,18 +88,30 @@ class CoreModule extends AppModule {
             GoRoute(
               path: 'enrollRoute',
               name: 'enroll',
-              builder: (context, state) => MFAEnrollScreen(
-                key: state.pageKey,
-                params: state.extra as VerificationScreenParams,
-              ),
+              builder: (context, state) {
+                final params = state.extra is VerificationScreenParams
+                    ? state.extra as VerificationScreenParams
+                    : const VerificationScreenParams(
+                        email: '',
+                        password: '',
+                        name: '',
+                      );
+                return MFAEnrollScreen(key: state.pageKey, params: params);
+              },
             ),
             GoRoute(
               path: 'verificationRoute',
               name: 'verify',
-              builder: (context, state) => VerificationScreen(
-                key: state.pageKey,
-                params: state.extra as VerificationScreenParams,
-              ),
+              builder: (context, state) {
+                final params = state.extra is VerificationScreenParams
+                    ? state.extra as VerificationScreenParams
+                    : const VerificationScreenParams(
+                        email: '',
+                        password: '',
+                        name: '',
+                      );
+                return VerificationScreen(key: state.pageKey, params: params);
+              },
             ),
           ],
         ),
@@ -165,20 +179,29 @@ class CoreModule extends AppModule {
         GoRoute(
           path: 'selectDialogRoute/:cid',
           name: 'select_dialog',
-          builder: (context, state) => SelectDialogScreen(
-            key: state.pageKey,
-            currentUser: state.extra as CubeUser,
-          ),
+          builder: (context, state) {
+            final currentUser = state.extra is CubeUser
+                ? state.extra as CubeUser
+                : CubeUser(login: 'Guest', fullName: 'Guest User');
+            return SelectDialogScreen(
+              key: state.pageKey,
+              currentUser: currentUser,
+            );
+          },
           routes: [
             GoRoute(
               path: 'chatDialogRoute/:cdid',
               name: 'chat_dialog',
               builder: (context, state) {
-                final extras = state.extra as Map<String, dynamic>;
+                final extras = state.extra is Map<String, dynamic>
+                    ? state.extra as Map<String, dynamic>
+                    : <String, dynamic>{};
                 return ChatDialogScreen(
                   key: state.pageKey,
-                  cubeUser: extras['cubeUser'] as CubeUser,
-                  cubeDialog: extras['cubeDialog'] as CubeDialog,
+                  cubeUser: extras['cubeUser'] as CubeUser? ?? CubeUser(),
+                  cubeDialog:
+                      extras['cubeDialog'] as CubeDialog? ??
+                      CubeDialog(CubeDialogType.PRIVATE),
                 );
               },
             ),
