@@ -203,7 +203,10 @@ class AutoAuthController extends AsyncNotifier<UserModel?> {
       if (refreshToken == null) return;
 
       final res = await _repository.client.setSession(refreshToken);
-      state = AsyncValue.data(UserModel.fromJson(res.user!.toJson()));
+      final supaUser = res.user;
+      if (supaUser != null) {
+        state = AsyncValue.data(UserModel.fromJson(supaUser.toJson()));
+      }
       _updateAuthState();
     } on PlatformException catch (e) {
       developer.log(
@@ -219,7 +222,8 @@ class AutoAuthController extends AsyncNotifier<UserModel?> {
   }
 
   Future<String?> getInitialLink(String? refreshToken) async {
-    final res = await _repository.client.setSession(refreshToken!);
+    if (refreshToken == null) return null;
+    final res = await _repository.client.setSession(refreshToken);
     return res.session?.refreshToken;
   }
 

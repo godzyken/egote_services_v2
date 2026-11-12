@@ -124,7 +124,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Future<void> _loadAuth(UserModel data) async {
     try {
-      final authUser = ref.read(authStreamProvider).value;
+      final authUser = ref.read(authStreamProvider).asData?.value;
       final userId = authUser?.uid;
       if (userId == null) return;
 

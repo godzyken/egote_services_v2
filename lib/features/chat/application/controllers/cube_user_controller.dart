@@ -23,7 +23,7 @@ class CubeUserController extends AsyncNotifier<CubeUser?> {
           fullName: authModelEntity.userEntityModel.name,
           email: authModelEntity.authUser.email ?? '',
           login: authModelEntity.userEntityModel.name,
-          externalId: userModelEntity.previousUser!.id.value,
+          externalId: userModelEntity.previousUser?.id.value ?? 0,
           phone: authModelEntity.authUser.phone ?? '',
         );
       }

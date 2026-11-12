@@ -224,7 +224,8 @@ class _BodySelectedDialogLayoutState
                                 dialogList[index].data.lastMessageDateSent! *
                                     1000,
                               )
-                            : dialogList[index].data.updatedAt!,
+                            : dialogList[index].data.updatedAt ??
+                                  DateTime.now(),
                       ),
                       style: TextStyle(color: Colors.primaries.single),
                     ),
@@ -307,13 +308,11 @@ class _BodySelectedDialogLayoutState
 
       if (msg.senderId != widget.currentUser.id) {
         dialogItem.data.unreadMessageCount =
-            dialogItem.data.unreadMessageCount == null
-                ? 1
-                : dialogItem.data.unreadMessageCount! + 1;
+            (dialogItem.data.unreadMessageCount ?? 0) + 1;
 
-        unreadMessages[msg.dialogId!] = <String>{
-          ...unreadMessages[msg.dialogId] ?? [],
-          msg.messageId!
+        unreadMessages[msg.dialogId ?? ''] = <String>{
+          ...unreadMessages[msg.dialogId ?? ''] ?? [],
+          msg.messageId ?? ''
         };
 
         dialogItem.data.lastMessage = null;
@@ -328,7 +327,7 @@ class _BodySelectedDialogLayoutState
           dateA = DateTime.fromMillisecondsSinceEpoch(
               a.data.lastMessageDateSent! * 1000);
         } else {
-          dateA = a.data.updatedAt!;
+          dateA = a.data.updatedAt ?? DateTime.now();
         }
 
         DateTime dateB;
@@ -336,7 +335,7 @@ class _BodySelectedDialogLayoutState
           dateB = DateTime.fromMillisecondsSinceEpoch(
               b.data.lastMessageDateSent! * 1000);
         } else {
-          dateB = b.data.updatedAt!;
+          dateB = b.data.updatedAt ?? DateTime.now();
         }
 
         if (dateA.isAfter(dateB)) {

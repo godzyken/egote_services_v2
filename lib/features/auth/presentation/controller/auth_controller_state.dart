@@ -55,9 +55,10 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
       case supabase.AuthChangeEvent.tokenRefreshed:
       case supabase.AuthChangeEvent.userUpdated:
         _user = session?.user;
-        if (_user != null) {
+        final currentUser = _user;
+        if (currentUser != null) {
           final newState = perso.AuthState.authenticated(
-            userEntity: _buildUserModel(_user!),
+            userEntity: _buildUserModel(currentUser),
           );
           lastState = newState;
           state = newState;
@@ -96,10 +97,12 @@ class AuthControllerNotifier extends Notifier<perso.AuthState> {
       (supabaseUser) {
         _user = supabaseUser;
         final computedStatus = validator(_user);
+        final currentUser = _user;
 
-        if (computedStatus == perso.AuthStatus.authenticated) {
+        if (computedStatus == perso.AuthStatus.authenticated &&
+            currentUser != null) {
           final newState = perso.AuthState.authenticated(
-            userEntity: _buildUserModel(_user!),
+            userEntity: _buildUserModel(currentUser),
           );
           lastState = newState;
           state = newState;
