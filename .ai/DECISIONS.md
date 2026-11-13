@@ -136,3 +136,14 @@
   prématurée. Réactiver simultanément `DatadogNavigationObserver` dans les observateurs du routeur
   pour assurer un suivi précis des vues RUM sans perturber le cycle de vie de GoRouter.
 - **Statut** : Validé.
+
+## DEC-018 : Implémentation du Cockpit Mosaic Hub 4.0 avec Reconnaissance Gestuelle, Animations et Haptiques
+
+- **Date** : 2026-03-31
+- **Décision** : Implémenter l’écran `MosaicHubScreen` et le widget interactif `HubTile` intégrant
+  une reconnaissance gestuelle complète (Tap, Long Press pour mode édition avec tremblement/shake,
+  Double Tap pour épingler/désépingler, Drag & Drop pour réordonnement), des retours haptiques
+  synchronisés (`lightImpact`, `mediumImpact`, `selectionClick`) avec fallback de sécurité pour le
+  Web, des animations fluides (`Curves.easeOutBack`, `Curves.easeInOut`), ainsi qu’une persistance
+  locale de l'ordre des tuiles et des états épinglés via Riverpod et SharedPreferences.
+- **Statut** : Validé et testé (`flutter analyze`, `flutter test`).

@@ -1,7 +1,8 @@
 import 'package:egote_services_v2/config/routes/app_module.dart';
-import 'package:egote_services_v2/config/routes/ecosystem_modules.dart';
+import 'package:egote_services_v2/features/home/application/mosaic_hub_controller.dart';
 import 'package:egote_services_v2/features/home/presentation/widgets/ai_btp_assistant_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,25 +14,20 @@ class MosaicHubScreen extends ConsumerStatefulWidget {
 }
 
 class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
-  late List<AppModule> _modules;
-
-  @override
-  void initState() {
-    super.initState();
-    _modules = List.from(EcosystemRegistry.modules);
-    // Sort: pinned first, then by sortOrder
-    _modules.sort((a, b) {
-      if (a.isPinnedByDefault != b.isPinnedByDefault) {
-        return a.isPinnedByDefault ? -1 : 1;
-      }
-      return a.sortOrder.compareTo(b.sortOrder);
-    });
+  void _safeHaptic(VoidCallback action) {
+    try {
+      action();
+    } catch (_) {
+      // Fallback for web or unsupported platforms where haptics are not available
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final hubState = ref.watch(mosaicHubProvider);
+    final hubController = ref.read(mosaicHubProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,10 +61,17 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
                   ),
                 ),
                 Text(
-                  'Cockpit Unique',
+                  hubState.isEditing
+                      ? 'Mode Édition Actif'
+                      : 'Cockpit Unique Mosaic',
                   style: TextStyle(
                     fontSize: 12,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    color: hubState.isEditing
+                        ? Colors.orangeAccent
+                        : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    fontWeight: hubState.isEditing
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
                 ),
               ],
@@ -76,6 +79,35 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
           ],
         ),
         actions: [
+          if (hubState.isEditing)
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.orange,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+              ),
+              onPressed: () {
+                _safeHaptic(() => HapticFeedback.mediumImpact());
+                hubController.toggleEditMode();
+              },
+              icon: const Icon(Icons.check, size: 18),
+              label: const Text(
+                'Terminé',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.tune_rounded),
+              tooltip: 'Mode Édition / Personnaliser',
+              onPressed: () {
+                _safeHaptic(() => HapticFeedback.mediumImpact());
+                hubController.toggleEditMode();
+              },
+            ),
           IconButton(
             icon: const Icon(Icons.search_rounded),
             tooltip: 'Recherche globale',
@@ -142,23 +174,58 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
 
           return CustomScrollView(
             slivers: [
-              SliverToBoxAdapter(child: AiBtpAssistantWidget()),
+              const SliverToBoxAdapter(child: AiBtpAssistantWidget()),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Modules Actifs',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            'Modules Actifs',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (hubState.isEditing) ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Text(
+                                'Glissez pour réordonner',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                       TextButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.tune_rounded, size: 16),
-                        label: const Text('Personnaliser'),
+                        onPressed: () {
+                          _safeHaptic(() => HapticFeedback.mediumImpact());
+                          hubController.toggleEditMode();
+                        },
+                        icon: Icon(
+                          hubState.isEditing
+                              ? Icons.check_circle_rounded
+                              : Icons.tune_rounded,
+                          size: 16,
+                        ),
+                        label: Text(
+                          hubState.isEditing ? 'Terminer' : 'Personnaliser',
+                        ),
                       ),
                     ],
                   ),
@@ -174,20 +241,92 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
                     childAspectRatio: 1.15,
                   ),
                   delegate: SliverChildBuilderDelegate((context, index) {
-                    final module = _modules[index];
-                    return HubTile(
+                    final module = hubState.modules[index];
+                    final isPinned =
+                        hubState.pinnedStatus[module.id] ??
+                        module.isPinnedByDefault;
+
+                    Widget tileWidget = HubTile(
+                      key: ValueKey(module.id),
                       module: module,
                       isDark: isDark,
+                      isPinned: isPinned,
+                      isEditing: hubState.isEditing,
                       onTap: () {
+                        _safeHaptic(() => HapticFeedback.lightImpact());
                         if (module.initialRoute.isNotEmpty) {
                           context.go(module.initialRoute);
                         }
                       },
                       onLongPress: () {
-                        _showModuleOptions(context, module);
+                        _safeHaptic(() => HapticFeedback.mediumImpact());
+                        hubController.toggleEditMode();
+                      },
+                      onDoubleTap: () {
+                        _safeHaptic(() => HapticFeedback.mediumImpact());
+                        hubController.togglePin(module.id);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              isPinned
+                                  ? 'Module ${module.name} désépinglé.'
+                                  : 'Module ${module.name} épinglé en haut !',
+                            ),
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
+                      },
+                      onDragStarted: () {
+                        _safeHaptic(() => HapticFeedback.selectionClick());
+                      },
+                      onDragEnded: () {
+                        _safeHaptic(() => HapticFeedback.mediumImpact());
                       },
                     );
-                  }, childCount: _modules.length),
+
+                    // If in editing mode, wrap with DragTarget and Draggable for reordering
+                    if (hubState.isEditing) {
+                      return DragTarget<int>(
+                        onAcceptWithDetails: (details) {
+                          hubController.reorderModules(details.data, index);
+                        },
+                        builder: (context, candidateData, rejectedData) {
+                          return LongPressDraggable<int>(
+                            data: index,
+                            feedback: Material(
+                              elevation: 8,
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.transparent,
+                              child: SizedBox(
+                                width: 160,
+                                height: 140,
+                                child: Opacity(
+                                  opacity: 0.85,
+                                  child: HubTile(
+                                    module: module,
+                                    isDark: isDark,
+                                    isPinned: isPinned,
+                                    isEditing: true,
+                                    isDragging: true,
+                                    onTap: () {},
+                                    onLongPress: () {},
+                                    onDoubleTap: () {},
+                                  ),
+                                ),
+                              ),
+                            ),
+                            childWhenDragging: Opacity(
+                              opacity: 0.3,
+                              child: tileWidget,
+                            ),
+                            child: tileWidget,
+                          );
+                        },
+                      );
+                    }
+
+                    return tileWidget;
+                  }, childCount: hubState.modules.length),
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 80)),
@@ -202,65 +341,6 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
         elevation: 4,
         icon: const Icon(Icons.add_rounded),
         label: const Text('Action Rapide'),
-      ),
-    );
-  }
-
-  void _showModuleOptions(BuildContext context, AppModule module) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(module.icon, color: module.accentColor, size: 28),
-                const SizedBox(width: 12),
-                Text(
-                  module.name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(module.description),
-            const Divider(height: 24),
-            ListTile(
-              leading: Icon(
-                module.isPinnedByDefault
-                    ? Icons.push_pin
-                    : Icons.push_pin_outlined,
-              ),
-              title: Text(
-                module.isPinnedByDefault
-                    ? 'Désépingler du Hub'
-                    : 'Épingler en haut',
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.open_in_new_rounded),
-              title: const Text('Ouvrir le module'),
-              onTap: () {
-                Navigator.pop(context);
-                if (module.initialRoute.isNotEmpty) {
-                  context.go(module.initialRoute);
-                }
-              },
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -343,7 +423,7 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
               subtitle: const Text('Lancer SketchMyWishes v1'),
               onTap: () {
                 Navigator.pop(context);
-                context.go('/avisRoute');
+                context.go('/sketch');
               },
             ),
           ],
@@ -353,98 +433,217 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
   }
 }
 
-class HubTile extends StatelessWidget {
+class HubTile extends StatefulWidget {
   const HubTile({
     super.key,
     required this.module,
     required this.isDark,
+    required this.isPinned,
+    required this.isEditing,
+    this.isDragging = false,
     required this.onTap,
     required this.onLongPress,
+    required this.onDoubleTap,
+    this.onDragStarted,
+    this.onDragEnded,
   });
 
   final AppModule module;
   final bool isDark;
+  final bool isPinned;
+  final bool isEditing;
+  final bool isDragging;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
+  final VoidCallback onDoubleTap;
+  final VoidCallback? onDragStarted;
+  final VoidCallback? onDragEnded;
+
+  @override
+  State<HubTile> createState() => _HubTileState();
+}
+
+class _HubTileState extends State<HubTile> with TickerProviderStateMixin {
+  late AnimationController _scaleController;
+  late AnimationController _shakeController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _shakeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.96).animate(
+      CurvedAnimation(parent: _scaleController, curve: Curves.easeOutBack),
+    );
+
+    _shakeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _shakeAnimation = Tween<double>(begin: -0.02, end: 0.02).animate(
+      CurvedAnimation(parent: _shakeController, curve: Curves.easeInOut),
+    );
+
+    if (widget.isEditing) {
+      _shakeController.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant HubTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isEditing != oldWidget.isEditing) {
+      if (widget.isEditing) {
+        _shakeController.repeat(reverse: true);
+      } else {
+        _shakeController.stop();
+        _shakeController.reset();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scaleController.dispose();
+    _shakeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final module = widget.module;
+    final isDark = widget.isDark;
+
     final backgroundColor = isDark
         ? module.accentColor.withValues(alpha: 0.15)
         : module.accentColor.withValues(alpha: 0.08);
 
-    return InkWell(
-      onTap: onTap,
-      onLongPress: onLongPress,
-      borderRadius: BorderRadius.circular(20),
-      child: Ink(
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: module.accentColor.withValues(alpha: 0.3),
-            width: 1.5,
+    Widget tileContent = AnimatedBuilder(
+      animation: Listenable.merge([_scaleAnimation, _shakeAnimation]),
+      builder: (context, child) {
+        final transform = widget.isEditing
+            ? Matrix4.rotationZ(_shakeAnimation.value)
+            : Matrix4.identity();
+
+        return Transform(
+          transform: transform,
+          alignment: Alignment.center,
+          child: ScaleTransition(
+            scale: _scaleAnimation,
+            child: InkWell(
+              onTapDown: (_) => _scaleController.forward(),
+              onTapUp: (_) => _scaleController.reverse(),
+              onTapCancel: () => _scaleController.reverse(),
+              onTap: widget.onTap,
+              onLongPress: widget.onLongPress,
+              onDoubleTap: widget.onDoubleTap,
+              borderRadius: BorderRadius.circular(20),
+              child: Ink(
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: widget.isEditing
+                        ? Colors.orangeAccent
+                        : module.accentColor.withValues(alpha: 0.3),
+                    width: widget.isEditing ? 2.0 : 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: module.accentColor.withValues(
+                        alpha: widget.isDragging ? 0.2 : 0.05,
+                      ),
+                      blurRadius: widget.isDragging ? 16 : 10,
+                      offset: widget.isDragging
+                          ? const Offset(0, 8)
+                          : const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: module.accentColor.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Icon(
+                            module.icon,
+                            color: module.accentColor,
+                            size: 28,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            if (widget.isEditing)
+                              Container(
+                                margin: const EdgeInsets.only(right: 4),
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.withValues(alpha: 0.2),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.drag_indicator_rounded,
+                                  size: 14,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            if (widget.isPinned)
+                              Icon(
+                                Icons.push_pin_rounded,
+                                size: 16,
+                                color: module.accentColor,
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          module.name,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          module.description,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: isDark ? Colors.white60 : Colors.black54,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: module.accentColor.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: module.accentColor.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Icon(module.icon, color: module.accentColor, size: 28),
-                ),
-                if (module.isPinnedByDefault)
-                  Icon(
-                    Icons.push_pin_rounded,
-                    size: 16,
-                    color: module.accentColor,
-                  ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  module.name,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black87,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  module.description,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: isDark ? Colors.white60 : Colors.black54,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+        );
+      },
     );
+
+    return tileContent;
   }
 }
