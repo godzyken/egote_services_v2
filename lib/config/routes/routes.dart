@@ -1,5 +1,7 @@
 import 'package:connectycube_sdk/connectycube_sdk.dart';
 import 'package:egote_services_v2/config/routes/app_module.dart';
+import 'package:egote_services_v2/features/artisans/presentation/pages/artisans_page.dart';
+import 'package:egote_services_v2/features/atelier/presentation/pages/atelier_page.dart';
 import 'package:egote_services_v2/features/auth/domain/entities/user/user_entity.dart';
 import 'package:egote_services_v2/features/auth/presentation/views/screens/auth_screens.dart';
 import 'package:egote_services_v2/features/avis/presentation/view/avis_box_page.dart';
@@ -7,10 +9,11 @@ import 'package:egote_services_v2/features/chat/presentation/views/screens/chat_
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_edit_screen.dart';
 import 'package:egote_services_v2/features/devis/presentation/views/screens/devis_list_screen.dart';
 import 'package:egote_services_v2/features/home/presentation/view/home_screen.dart';
+import 'package:egote_services_v2/features/home/presentation/view/mosaic_hub_screen.dart';
 import 'package:egote_services_v2/features/home/presentation/widget/godzylogo_screen.dart';
 import 'package:egote_services_v2/features/settings/presentation/view/gallery/gallery.dart';
 import 'package:egote_services_v2/features/settings/presentation/view/settings_ui_page.dart';
-import 'package:egote_services_v2/features/sketch/presentation/view/drawing_page.dart';
+import 'package:egote_services_v2/features/sketch/presentation/view/sketch_my_wishes_screen.dart';
 import 'package:egote_services_v2/features/theme/views/screen/theme_showcase_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,12 +21,17 @@ import 'package:go_router/go_router.dart';
 class CoreModule extends AppModule {
   @override
   List<RouteBase> get routes => [
-    // Main Home Route
+    // Main Home Route (Mosaic Hub Construction 4.0)
     GoRoute(
       path: '/',
       name: 'home',
-      builder: (context, state) => HomeScreen(key: state.pageKey),
+      builder: (context, state) => const MosaicHubScreen(),
       routes: [
+        GoRoute(
+          path: 'legacy_home',
+          name: 'legacy_home',
+          builder: (context, state) => HomeScreen(key: state.pageKey),
+        ),
         // User Home and sub-routes
         GoRoute(
           path: 'user_home/:pid',
@@ -45,7 +53,7 @@ class CoreModule extends AppModule {
             GoRoute(
               path: 'drawingRoute',
               name: 'drawingRoute',
-              builder: (context, state) => const DrawingPage(),
+              builder: (context, state) => const SketchMyWishesScreen(),
             ),
             GoRoute(
               path: 'userList/:uid',
@@ -210,7 +218,22 @@ class CoreModule extends AppModule {
       ],
     ),
 
-    // Misc
+    // Misc & Phase 2 / Phase 3 Modules
+    GoRoute(
+      path: '/sketch',
+      name: 'sketch',
+      builder: (context, state) => const SketchMyWishesScreen(),
+    ),
+    GoRoute(
+      path: '/atelier',
+      name: 'atelier',
+      builder: (context, state) => const AtelierPage(),
+    ),
+    GoRoute(
+      path: '/artisans',
+      name: 'artisans',
+      builder: (context, state) => const ArtisansPage(),
+    ),
     GoRoute(
       path: '/godzyRoute',
       name: 'godzyRoute',

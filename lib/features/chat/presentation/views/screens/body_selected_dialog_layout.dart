@@ -56,6 +56,7 @@ class _BodySelectedDialogLayoutState
         child: Column(
           children: [
             Visibility(
+              visible: _isDialogContinues,
               child: Container(
                 margin: const EdgeInsets.all(40),
                 alignment: FractionalOffset.center,
