@@ -1,5 +1,6 @@
 import 'package:egote_services_v2/config/routes/app_module.dart';
 import 'package:egote_services_v2/features/home/application/mosaic_hub_controller.dart';
+import 'package:egote_services_v2/features/home/application/mosaic_hub_metrics_provider.dart';
 import 'package:egote_services_v2/features/home/presentation/widgets/ai_btp_assistant_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
     final isDark = theme.brightness == Brightness.dark;
     final hubState = ref.watch(mosaicHubProvider);
     final hubController = ref.read(mosaicHubProvider.notifier);
+    final metricsMap = ref.watch(mosaicHubMetricsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -184,7 +186,7 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
                       Row(
                         children: [
                           Text(
-                            'Modules Actifs',
+                            'Modules Actifs & Métier',
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -245,6 +247,8 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
                     final isPinned =
                         hubState.pinnedStatus[module.id] ??
                         module.isPinnedByDefault;
+                    final metrics =
+                        metricsMap[module.id] ?? const ModuleMetrics();
 
                     Widget tileWidget = HubTile(
                       key: ValueKey(module.id),
@@ -252,6 +256,7 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
                       isDark: isDark,
                       isPinned: isPinned,
                       isEditing: hubState.isEditing,
+                      metrics: metrics,
                       onTap: () {
                         _safeHaptic(() => HapticFeedback.lightImpact());
                         if (module.initialRoute.isNotEmpty) {
@@ -308,6 +313,7 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
                                     isPinned: isPinned,
                                     isEditing: true,
                                     isDragging: true,
+                                    metrics: metrics,
                                     onTap: () {},
                                     onLongPress: () {},
                                     onDoubleTap: () {},
@@ -441,6 +447,7 @@ class HubTile extends StatefulWidget {
     required this.isPinned,
     required this.isEditing,
     this.isDragging = false,
+    required this.metrics,
     required this.onTap,
     required this.onLongPress,
     required this.onDoubleTap,
@@ -453,6 +460,7 @@ class HubTile extends StatefulWidget {
   final bool isPinned;
   final bool isEditing;
   final bool isDragging;
+  final ModuleMetrics metrics;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
   final VoidCallback onDoubleTap;
@@ -517,6 +525,7 @@ class _HubTileState extends State<HubTile> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final module = widget.module;
     final isDark = widget.isDark;
+    final metrics = widget.metrics;
 
     final backgroundColor = isDark
         ? module.accentColor.withValues(alpha: 0.15)
@@ -572,17 +581,50 @@ class _HubTileState extends State<HubTile> with TickerProviderStateMixin {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: module.accentColor.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Icon(
-                            module.icon,
-                            color: module.accentColor,
-                            size: 28,
-                          ),
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: module.accentColor.withValues(
+                                  alpha: 0.2,
+                                ),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Icon(
+                                module.icon,
+                                color: module.accentColor,
+                                size: 28,
+                              ),
+                            ),
+                            if (metrics.badgeCount > 0)
+                              Positioned(
+                                top: -4,
+                                right: -4,
+                                child: Container(
+                                  padding: const EdgeInsets.all(6),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 20,
+                                    minHeight: 20,
+                                  ),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.redAccent,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '${metrics.badgeCount}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                         Row(
                           children: [
@@ -613,19 +655,33 @@ class _HubTileState extends State<HubTile> with TickerProviderStateMixin {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          module.name,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black87,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                module.name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDark ? Colors.white : Colors.black87,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            if (metrics.hasAlert)
+                              const Icon(
+                                Icons.warning_amber_rounded,
+                                size: 16,
+                                color: Colors.amber,
+                              ),
+                          ],
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          module.description,
+                          metrics.statusSummary.isNotEmpty
+                              ? metrics.statusSummary
+                              : module.description,
                           style: TextStyle(
                             fontSize: 11,
                             color: isDark ? Colors.white60 : Colors.black54,
