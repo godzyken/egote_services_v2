@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'artisan_audit_screen.dart';
+
 class ArtisansPage extends ConsumerStatefulWidget {
   const ArtisansPage({super.key});
 
@@ -19,6 +21,10 @@ class _ArtisansPageState extends ConsumerState<ArtisansPage> {
       completedProjects: 42,
       avatarUrl:
           'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+      siret: '489 321 654 00021',
+      websiteUrl: 'https://lefevre-maconnerie.fr',
+      seoScore: 92,
+      rioScore: 450,
     ),
     ArtisanItem(
       name: 'Sophie Bernard',
@@ -29,6 +35,10 @@ class _ArtisansPageState extends ConsumerState<ArtisansPage> {
       completedProjects: 38,
       avatarUrl:
           'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
+      siret: '512 874 963 00014',
+      websiteUrl: 'https://bernard-thermique.fr',
+      seoScore: 88,
+      rioScore: 410,
     ),
     ArtisanItem(
       name: 'Lucas Moreau',
@@ -39,6 +49,10 @@ class _ArtisansPageState extends ConsumerState<ArtisansPage> {
       completedProjects: 29,
       avatarUrl:
           'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200',
+      siret: '789 123 456 00039',
+      websiteUrl: 'https://moreau-electricite.fr',
+      seoScore: 85,
+      rioScore: 390,
     ),
   ];
 
@@ -71,7 +85,7 @@ class _ArtisansPageState extends ConsumerState<ArtisansPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Scoring & Fiabilité Artisans',
+                  'Scoring, SIRET & Audit Numérique',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -80,7 +94,7 @@ class _ArtisansPageState extends ConsumerState<ArtisansPage> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Évaluation basée sur les délais tenus, la conformité RGE et les retours de chantier.',
+                  'Intégration validée via SIRET, site web optimisé SEO/RIO, évaluation CA et rentabilité.',
                   style: TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ],
@@ -93,114 +107,135 @@ class _ArtisansPageState extends ConsumerState<ArtisansPage> {
           ),
           const SizedBox(height: 16),
           ..._artisans.map(
-            (artisan) => Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: Colors.grey.shade200),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+            (artisan) => InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ArtisanAuditScreen(
+                      artisanName: artisan.name,
+                      trade: artisan.trade,
+                      score: artisan.score,
+                      avatarUrl: artisan.avatarUrl,
+                      siret: artisan.siret,
+                      websiteUrl: artisan.websiteUrl,
+                      seoScore: artisan.seoScore,
+                      rioScore: artisan.rioScore,
+                    ),
                   ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 32,
-                    backgroundImage: NetworkImage(artisan.avatarUrl),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              artisan.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                'Score ${artisan.score}%',
+                );
+              },
+              borderRadius: BorderRadius.circular(18),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: Colors.grey.shade200),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 32,
+                      backgroundImage: NetworkImage(artisan.avatarUrl),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                artisan.name,
                                 style: const TextStyle(
-                                  color: Colors.green,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 12,
+                                  fontSize: 16,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          artisan.trade,
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            ...artisan.certifications.map(
-                              (cert) => Container(
-                                margin: const EdgeInsets.only(right: 6),
+                              Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
+                                  horizontal: 8,
+                                  vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: theme.colorScheme.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(4),
+                                  color: Colors.green.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  cert,
-                                  style: TextStyle(
-                                    fontSize: 10,
+                                  'Score ${artisan.score}%',
+                                  style: const TextStyle(
+                                    color: Colors.green,
                                     fontWeight: FontWeight.bold,
-                                    color:
-                                        theme.colorScheme.onSecondaryContainer,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            artisan.trade,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
                             ),
-                            const Spacer(),
-                            const Icon(
-                              Icons.star_rounded,
-                              color: Colors.amber,
-                              size: 18,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              artisan.rating.toString(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              ...artisan.certifications.map(
+                                (cert) => Container(
+                                  margin: const EdgeInsets.only(right: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.secondaryContainer,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    cert,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: theme
+                                          .colorScheme
+                                          .onSecondaryContainer,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              const Spacer(),
+                              const Icon(
+                                Icons.star_rounded,
+                                color: Colors.amber,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                artisan.rating.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -219,6 +254,10 @@ class ArtisanItem {
     required this.certifications,
     required this.completedProjects,
     required this.avatarUrl,
+    required this.siret,
+    required this.websiteUrl,
+    required this.seoScore,
+    required this.rioScore,
   });
 
   final String name;
@@ -228,4 +267,8 @@ class ArtisanItem {
   final List<String> certifications;
   final int completedProjects;
   final String avatarUrl;
+  final String siret;
+  final String websiteUrl;
+  final int seoScore;
+  final int rioScore;
 }

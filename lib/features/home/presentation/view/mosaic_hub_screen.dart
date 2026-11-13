@@ -121,6 +121,32 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
               );
             },
           ),
+          Consumer(
+            builder: (context, ref, child) {
+              final isDemoMode = ref.watch(isDemoModeProvider);
+              return IconButton(
+                icon: Icon(
+                  isDemoMode ? Icons.slideshow_rounded : Icons.sensors_rounded,
+                  color: isDemoMode ? Colors.amber : Colors.green,
+                ),
+                tooltip: isDemoMode ? 'Mode Démo actif' : 'Données Réelles',
+                onPressed: () {
+                  ref.read(isDemoModeProvider.notifier).toggle();
+                  final isDemo = ref.read(isDemoModeProvider);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        isDemo
+                            ? 'Mode Démonstration activé (Mocks actifs)'
+                            : 'Données réelles connectées (Backend / Providers)',
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
           Stack(
             alignment: Alignment.center,
             children: [
@@ -581,6 +607,36 @@ class _HubTileState extends State<HubTile> with TickerProviderStateMixin {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final isDemoMode = ref.watch(isDemoModeProvider);
+                            return IconButton(
+                              icon: Icon(
+                                isDemoMode
+                                    ? Icons.slideshow_rounded
+                                    : Icons.sensors_rounded,
+                                color: isDemoMode ? Colors.amber : Colors.green,
+                              ),
+                              tooltip: isDemoMode
+                                  ? 'Mode Démo actif'
+                                  : 'Données Réelles',
+                              onPressed: () {
+                                ref.read(isDemoModeProvider.notifier).toggle();
+                                final isDemo = ref.read(isDemoModeProvider);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      isDemo
+                                          ? 'Mode Démonstration activé (Mocks actifs)'
+                                          : 'Données réelles connectées (Backend / Providers)',
+                                    ),
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
                         Stack(
                           clipBehavior: Clip.none,
                           children: [
