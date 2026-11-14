@@ -152,14 +152,8 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
             children: [
               IconButton(
                 icon: const Icon(Icons.notifications_outlined),
-                tooltip: 'Notifications',
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Aucune nouvelle notification'),
-                    ),
-                  );
-                },
+                tooltip: 'Notifications emap-82.fr',
+                onPressed: () => _showEmapHubNotifications(context),
               ),
               Positioned(
                 top: 12,
@@ -177,14 +171,23 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: theme.colorScheme.primaryContainer,
-              child: Text(
-                'EG',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onPrimaryContainer,
+            child: GestureDetector(
+              onTap: () {
+                _safeHaptic(() => HapticFeedback.lightImpact());
+                context.push('/authRoute');
+              },
+              child: Tooltip(
+                message: 'Fiche Profil Visiteur / Auth',
+                child: CircleAvatar(
+                  radius: 18,
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                  child: Text(
+                    'EG',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -415,7 +418,7 @@ class _MosaicHubScreenState extends ConsumerState<MosaicHubScreen> {
               subtitle: const Text('Enregistrer une opportunité BTP'),
               onTap: () {
                 Navigator.pop(context);
-                context.go('/devisList');
+                context.go('/leads');
               },
             ),
             const SizedBox(height: 12),
@@ -757,5 +760,119 @@ class _HubTileState extends State<HubTile> with TickerProviderStateMixin {
     );
 
     return tileContent;
+  }
+}
+
+void _showEmapHubNotifications(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (context) => Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.notifications_active_rounded,
+                color: Colors.amber,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'Événements App & Vitrine emap-82.fr',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+          const Divider(),
+          const _EmapHubEventTile(
+            icon: Icons.flash_on_rounded,
+            color: Colors.red,
+            title: 'Nouveau Lead Chaud - PAC Air-Eau',
+            subtitle: 'M. Dupont (Montauban 82) — Demande via emap-82.fr',
+            time: 'Il y a 10 min',
+          ),
+          const _EmapHubEventTile(
+            icon: Icons.check_circle_rounded,
+            color: Colors.green,
+            title: 'Devis Accepté & Chantier Créé',
+            subtitle: 'Climatisation multisplit (SARL Techno - Castelsarrasin)',
+            time: 'Il y a 2h',
+          ),
+          const _EmapHubEventTile(
+            icon: Icons.receipt_long_rounded,
+            color: Colors.teal,
+            title: 'Facture FAC-2026-089 Payée',
+            subtitle: 'Règlement reçu : 10 140,00 € TTC',
+            time: 'Hier',
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _EmapHubEventTile extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String title;
+  final String subtitle;
+  final String time;
+
+  const _EmapHubEventTile({
+    required this.icon,
+    required this.color,
+    required this.title,
+    required this.subtitle,
+    required this.time,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 22),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          Text(time, style: const TextStyle(color: Colors.grey, fontSize: 10)),
+        ],
+      ),
+    );
   }
 }

@@ -48,47 +48,24 @@ class ChantierDashboardPage extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    'Aucune nouvelle notification — Hub Construction 4.0',
-                  ),
-                ),
-              );
-            },
+            onPressed: () => _showEmapNotifications(context),
             icon: const Icon(Icons.notifications_none_rounded),
             color: ChantierColors.ink,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Profil Artisan EMAP'),
-                    content: const Text(
-                      'Connecté : artisan@emap-82.fr\n'
-                      'Site vitrine : emap-82.fr\n'
-                      'Offres actives : Hub Basic, Devis Sync, Bat Track Lite, Compta Starter',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Fermer'),
-                      ),
-                    ],
+              onTap: () => context.push('/authRoute'),
+              child: const Tooltip(
+                message: 'Fiche Profil Visiteur / Auth',
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundColor: ChantierColors.orangePale,
+                  child: Icon(
+                    Icons.person,
+                    size: 18,
+                    color: ChantierColors.orange,
                   ),
-                );
-              },
-              child: const CircleAvatar(
-                radius: 16,
-                backgroundColor: ChantierColors.orangePale,
-                child: Icon(
-                  Icons.person,
-                  size: 18,
-                  color: ChantierColors.orange,
                 ),
               ),
             ),
@@ -233,6 +210,120 @@ class ChantierDashboardPage extends ConsumerWidget {
             icon: Icon(Icons.assignment_outlined),
             label: 'Tasks',
           ),
+        ],
+      ),
+    );
+  }
+}
+
+void _showEmapNotifications(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (context) => Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.notifications_active_rounded,
+                color: ChantierColors.orange,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'Événements App & Vitrine emap-82.fr',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+          const Divider(),
+          const _EmapEventTile(
+            icon: Icons.flash_on_rounded,
+            color: Colors.red,
+            title: 'Nouveau Lead Chaud - PAC Air-Eau',
+            subtitle: 'M. Dupont (Montauban 82) — Demande via emap-82.fr',
+            time: 'Il y a 10 min',
+          ),
+          const _EmapEventTile(
+            icon: Icons.check_circle_rounded,
+            color: Colors.green,
+            title: 'Devis Accepté & Chantier Créé',
+            subtitle: 'Climatisation multisplit (SARL Techno - Castelsarrasin)',
+            time: 'Il y a 2h',
+          ),
+          const _EmapEventTile(
+            icon: Icons.receipt_long_rounded,
+            color: Colors.teal,
+            title: 'Facture FAC-2026-089 Payée',
+            subtitle: 'Règlement reçu : 10 140,00 € TTC',
+            time: 'Hier',
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _EmapEventTile extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String title;
+  final String subtitle;
+  final String time;
+
+  const _EmapEventTile({
+    required this.icon,
+    required this.color,
+    required this.title,
+    required this.subtitle,
+    required this.time,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 22),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          Text(time, style: const TextStyle(color: Colors.grey, fontSize: 10)),
         ],
       ),
     );
