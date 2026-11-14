@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/chantier/chantier_module.dart';
-import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
+import '../../features/compta/presentation/pages/compta_finance_screen.dart';
+import '../../features/leads/presentation/pages/leads_screen.dart';
 import 'app_module.dart';
 
 /// Registry of all ecosystem modules for the Construction 4.0 Mosaic Hub
@@ -23,10 +24,11 @@ class LeadsModule extends AppModule {
   String get id => 'leads';
 
   @override
-  String get name => 'Leads';
+  String get name => 'Leads & Qualification';
 
   @override
-  String get description => 'Génération et suivi des opportunités BTP';
+  String get description =>
+      'Gestion des leads BTP, qualification et attribution d’équipe';
 
   @override
   IconData get icon => Icons.trending_up;
@@ -41,10 +43,16 @@ class LeadsModule extends AppModule {
   bool get isPinnedByDefault => true;
 
   @override
-  String get initialRoute => '/devisList';
+  String get initialRoute => '/leads';
 
   @override
-  List<RouteBase> get routes => [];
+  List<RouteBase> get routes => [
+    GoRoute(
+      path: '/leads',
+      name: 'leads',
+      builder: (context, state) => const LeadsScreen(),
+    ),
+  ];
 }
 
 class ArtisansModule extends AppModule {
@@ -84,7 +92,8 @@ class Compta4meModule extends AppModule {
   String get name => 'Compta4me';
 
   @override
-  String get description => 'Facturation, devis et comptabilité chantier';
+  String get description =>
+      'Finances, facturation, trésorerie et marges chantiers';
 
   @override
   IconData get icon => Icons.receipt_long;
@@ -99,14 +108,14 @@ class Compta4meModule extends AppModule {
   bool get isPinnedByDefault => false;
 
   @override
-  String get initialRoute => '/devisList';
+  String get initialRoute => '/compta4me';
 
   @override
   List<RouteBase> get routes => [
     GoRoute(
       path: '/compta4me',
       name: 'compta4me',
-      builder: (context, state) => const DevisListScreen(),
+      builder: (context, state) => const ComptaFinanceScreen(),
     ),
   ];
 }
