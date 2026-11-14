@@ -1,5 +1,5 @@
-import 'node_type.dart';
-import 'provenance.dart';
+import '../value_objects/node_type.dart';
+import '../value_objects/provenance.dart';
 
 class GraphNode {
   final String id;
@@ -13,7 +13,7 @@ class GraphNode {
     required this.id,
     required this.label,
     required this.type,
-    this.provenance = Provenance.system,
+    this.provenance = const Provenance(source: 'system'),
     this.metadata = const {},
     required this.createdAt,
   });
@@ -40,7 +40,7 @@ class GraphNode {
     'id': id,
     'label': label,
     'type': type.name,
-    'provenance': provenance.name,
+    'provenance': provenance.toJson(),
     'metadata': metadata,
     'createdAt': createdAt.toIso8601String(),
   };
@@ -51,12 +51,11 @@ class GraphNode {
       label: json['label'] as String,
       type: NodeType.values.firstWhere(
         (e) => e.name == json['type'],
-        orElse: () => NodeType.custom,
+        orElse: () => NodeType.other,
       ),
-      provenance: Provenance.values.firstWhere(
-        (e) => e.name == json['provenance'],
-        orElse: () => Provenance.system,
-      ),
+      provenance: json['provenance'] is Map<String, dynamic>
+          ? Provenance.fromJson(json['provenance'] as Map<String, dynamic>)
+          : const Provenance(source: 'system'),
       metadata: Map<String, dynamic>.from(json['metadata'] ?? {}),
       createdAt: DateTime.parse(json['createdAt'] as String),
     );

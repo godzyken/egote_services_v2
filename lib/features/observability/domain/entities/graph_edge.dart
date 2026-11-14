@@ -1,4 +1,5 @@
-import 'edge_type.dart';
+import '../value_objects/edge_type.dart';
+import '../value_objects/provenance.dart';
 
 class GraphEdge {
   final String id;
@@ -18,6 +19,27 @@ class GraphEdge {
     this.metadata = const {},
     required this.createdAt,
   });
+
+  factory GraphEdge.create({
+    required String sourceId,
+    required String targetId,
+    required EdgeType type,
+    double weight = 1.0,
+    Map<String, dynamic>? meta,
+    Provenance? provenance,
+  }) {
+    final id =
+        'edge_${sourceId}_${targetId}_${DateTime.now().microsecondsSinceEpoch}';
+    return GraphEdge(
+      id: id,
+      sourceId: sourceId,
+      targetId: targetId,
+      type: type,
+      weight: weight,
+      metadata: meta ?? {},
+      createdAt: DateTime.now(),
+    );
+  }
 
   GraphEdge copyWith({
     String? id,
@@ -56,7 +78,7 @@ class GraphEdge {
       targetId: json['targetId'] as String,
       type: EdgeType.values.firstWhere(
         (e) => e.name == json['type'],
-        orElse: () => EdgeType.linksTo,
+        orElse: () => EdgeType.triggers,
       ),
       weight: (json['weight'] as num?)?.toDouble() ?? 1.0,
       metadata: Map<String, dynamic>.from(json['metadata'] ?? {}),
