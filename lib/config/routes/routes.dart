@@ -11,6 +11,7 @@ import 'package:egote_services_v2/features/devis/presentation/views/screens/devi
 import 'package:egote_services_v2/features/home/presentation/view/home_screen.dart';
 import 'package:egote_services_v2/features/home/presentation/view/mosaic_hub_screen.dart';
 import 'package:egote_services_v2/features/home/presentation/widget/godzylogo_screen.dart';
+import 'package:egote_services_v2/features/observability/presentation/screens/observability_dashboard_screen.dart';
 import 'package:egote_services_v2/features/settings/presentation/view/gallery/gallery.dart';
 import 'package:egote_services_v2/features/settings/presentation/view/settings_ui_page.dart';
 import 'package:egote_services_v2/features/sketch/presentation/view/sketch_my_wishes_screen.dart';
@@ -178,6 +179,14 @@ class CoreModule extends AppModule {
       ),
     ),
 
+    // Observability Routes
+    GoRoute(
+      path: '/observability',
+      name: 'observability',
+      builder: (context, state) =>
+          ObservabilityDashboardScreen(key: state.pageKey),
+    ),
+
     // Chat Routes
     GoRoute(
       path: '/chatRoute',
@@ -248,6 +257,12 @@ class CoreModule extends AppModule {
       path: '/themeshowcase',
       name: 'themes',
       builder: (context, state) => ThemeShowcasePage(key: state.pageKey),
+    ),
+    GoRoute(
+      path: '/observability',
+      name: 'observability',
+      builder: (context, state) =>
+          ObservabilityDashboardScreen(key: state.pageKey),
     ),
   ];
 }
