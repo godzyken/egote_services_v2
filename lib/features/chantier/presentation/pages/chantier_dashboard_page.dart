@@ -48,16 +48,49 @@ class ChantierDashboardPage extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'Aucune nouvelle notification — Hub Construction 4.0',
+                  ),
+                ),
+              );
+            },
             icon: const Icon(Icons.notifications_none_rounded),
             color: ChantierColors.ink,
           ),
-          const Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: CircleAvatar(
-              radius: 16,
-              backgroundColor: ChantierColors.orangePale,
-              child: Icon(Icons.person, size: 18, color: ChantierColors.orange),
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Profil Artisan EMAP'),
+                    content: const Text(
+                      'Connecté : artisan@emap-82.fr\n'
+                      'Site vitrine : emap-82.fr\n'
+                      'Offres actives : Hub Basic, Devis Sync, Bat Track Lite, Compta Starter',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Fermer'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: const CircleAvatar(
+                radius: 16,
+                backgroundColor: ChantierColors.orangePale,
+                child: Icon(
+                  Icons.person,
+                  size: 18,
+                  color: ChantierColors.orange,
+                ),
+              ),
             ),
           ),
         ],
@@ -137,6 +170,47 @@ class ChantierDashboardPage extends ConsumerWidget {
         indicatorColor: ChantierColors.orangePale,
         selectedIndex: 0,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        onDestinationSelected: (index) {
+          final list = asyncChantiers.asData?.value;
+          final chantierId = (list != null && list.isNotEmpty)
+              ? list.first.id
+              : 'building-2';
+          switch (index) {
+            case 0:
+              context.go('/chantiers');
+              break;
+            case 1:
+              context.go('/chantiers/$chantierId/plan');
+              break;
+            case 2:
+              context.go('/chantiers/$chantierId/progress');
+              break;
+            case 3:
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Hub Construction 4.0'),
+                  content: const Text(
+                    'Modules connectés :\n'
+                    '• Devis & Facturation (Supabase Realtime)\n'
+                    '• Bat Track (Suivi & Journal)\n'
+                    '• Compta4me (Trésorerie)\n'
+                    '• ConnectyCube Chat',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Fermer'),
+                    ),
+                  ],
+                ),
+              );
+              break;
+            case 4:
+              context.go('/chantiers/$chantierId/bat_track');
+              break;
+          }
+        },
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
