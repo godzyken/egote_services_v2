@@ -12,6 +12,12 @@
 - [x] Résolution des erreurs de minification Web, sécurisation du chargement d'environnement
   (`Environment.load`) et des bases de données locales (`KeyValueDbHive`, `KeyValueDbPrefs`), et
   centralisation des logs via Talker.
+- [x] Intégration des modules **Bat Track** et **Compta4me** (résolution `checkoutServiceProvider`,
+  routage GoRouter et navigation Cockpit/Chantier).
+- [x] Implémentation de la **Phase 4 : Graph Engineering Observability**
+  (`lib/features/observability/`, entités Domain, `TalkerGraphSink`, `SupabaseGraphRepository`,
+  fournisseurs Riverpod, et migration SQL `003_graph_observability.sql`).
 
 ## En cours
-- [none] Toutes les tâches de la roadmap de transformation sont complétées avec succès.
+
+- [none] Toutes les phases majeures de la roadmap sont complétées avec succès.

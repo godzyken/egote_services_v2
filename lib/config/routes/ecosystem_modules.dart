@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/chantier/chantier_module.dart';
+import '../../features/devis/presentation/views/screens/devis_list_screen.dart';
 import 'app_module.dart';
 
 /// Registry of all ecosystem modules for the Construction 4.0 Mosaic Hub
@@ -101,7 +102,13 @@ class Compta4meModule extends AppModule {
   String get initialRoute => '/devisList';
 
   @override
-  List<RouteBase> get routes => [];
+  List<RouteBase> get routes => [
+    GoRoute(
+      path: '/compta4me',
+      name: 'compta4me',
+      builder: (context, state) => const DevisListScreen(),
+    ),
+  ];
 }
 
 class SketchMyWishesModule extends AppModule {

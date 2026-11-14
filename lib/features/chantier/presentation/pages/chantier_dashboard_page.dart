@@ -107,6 +107,27 @@ class ChantierDashboardPage extends ConsumerWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: ChantierColors.orange,
+                    side: const BorderSide(color: ChantierColors.orange),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                  onPressed: () =>
+                      context.push('/chantiers/${chantier.id}/bat_track'),
+                  icon: const Icon(Icons.camera_alt_rounded),
+                  label: const Text(
+                    'Ouvrir Bat Track (Journal & Jalons)',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
             ],
           );
         },
